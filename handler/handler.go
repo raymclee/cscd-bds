@@ -41,14 +41,15 @@ func (h handler) SendTextMessage(c echo.Context) error {
 	eg := errgroup.Group{}
 
 	userIDs := []string{
-		"oc_28cc8fc274afd392fde3e5e5c7e19160",
+		"oc_8af2e1d869f15821fc3d9bdc6dca80ad",
+		// "oc_28cc8fc274afd392fde3e5e5c7e19160",
 		// "ou_743b55f410fd90d254d4c3da3680f196",
 	}
 
 	content, err := json.Marshal(map[string]any{
 		"type": "template",
 		"data": map[string]any{
-			"template_id":       "AAqBXLd58fBQa",
+			"template_id":       "AAqBNW44n7ilw",
 			"template_variable": map[string]any{
 				// "tender_id":      tender.ID,
 				// "created_by":     tender.Edges.CreatedBy.Name,

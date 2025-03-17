@@ -7,6 +7,7 @@ func init() {
 	IsProd = true
 	IsUat = false
 	FilePath = "/home/itadmin/static/"
+	HostUrl = "https://mkm.fefacade.com"
 
 	HanaPort = 30015
 	HanaHost = "10.148.7.17"

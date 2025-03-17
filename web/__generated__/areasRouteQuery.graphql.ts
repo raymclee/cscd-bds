@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<748b4d83e4ae4f559066a86a7b6d0e3e>>
+ * @generated SignedSource<<e20d8caddefe0abe1da9fa5702f5edd3>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -16,7 +16,9 @@ export type areasRouteQuery$data = {
       readonly node: {
         readonly code: string;
         readonly id: string;
+        readonly leaderChatID: string | null | undefined;
         readonly name: string;
+        readonly salesChatID: string | null | undefined;
       } | null | undefined;
     } | null | undefined> | null | undefined;
   };
@@ -72,6 +74,20 @@ var v0 = [
                 "kind": "ScalarField",
                 "name": "code",
                 "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "leaderChatID",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "salesChatID",
+                "storageKey": null
               }
             ],
             "storageKey": null
@@ -101,16 +117,16 @@ return {
     "selections": (v0/*: any*/)
   },
   "params": {
-    "cacheID": "d4c38968c836d875f8961de705b838c3",
+    "cacheID": "1a4fd04728e49efd612daab48016a5ef",
     "id": null,
     "metadata": {},
     "name": "areasRouteQuery",
     "operationKind": "query",
-    "text": "query areasRouteQuery {\n  areas {\n    edges {\n      node {\n        id\n        name\n        code\n      }\n    }\n  }\n}\n"
+    "text": "query areasRouteQuery {\n  areas {\n    edges {\n      node {\n        id\n        name\n        code\n        leaderChatID\n        salesChatID\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "46534710c0ac60e4d6b37c643d4ee7d6";
+(node as any).hash = "2ff69be7c0a502fefe9f34eef64d9211";
 
 export default node;

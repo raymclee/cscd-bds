@@ -35,8 +35,10 @@ type Tender struct {
 	Code string `json:"code,omitempty"`
 	// Status holds the value of the "status" field.
 	Status int `json:"status,omitempty"`
-	// IsApproved holds the value of the "is_approved" field.
-	IsApproved bool `json:"is_approved,omitempty"`
+	// 1 待審核 2 已通過 3 已拒絕
+	ApprovalStatus int `json:"approval_status,omitempty"`
+	// 審核飛書訊息ID
+	ApprovalMsgID *string `json:"approval_msg_id,omitempty"`
 	// Name holds the value of the "name" field.
 	Name string `json:"name,omitempty"`
 	// EstimatedAmount holds the value of the "estimated_amount" field.
@@ -163,6 +165,8 @@ type Tender struct {
 	CompetitorID *xid.ID `json:"competitor_id,omitempty"`
 	// ApproverID holds the value of the "approver_id" field.
 	ApproverID *xid.ID `json:"approver_id,omitempty"`
+	// UpdatedByID holds the value of the "updated_by_id" field.
+	UpdatedByID *xid.ID `json:"updated_by_id,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the TenderQuery when eager-loading is set.
 	Edges        TenderEdges `json:"edges"`
@@ -193,11 +197,13 @@ type TenderEdges struct {
 	Competitor *Competitor `json:"competitor,omitempty"`
 	// Approver holds the value of the approver edge.
 	Approver *User `json:"approver,omitempty"`
+	// UpdatedBy holds the value of the updated_by edge.
+	UpdatedBy *User `json:"updated_by,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [11]bool
+	loadedTypes [12]bool
 	// totalCount holds the count of the edges above.
-	totalCount [11]map[string]int
+	totalCount [12]map[string]int
 
 	namedFollowingSales map[string][]*User
 	namedVisitRecords   map[string][]*VisitRecord
@@ -320,6 +326,17 @@ func (e TenderEdges) ApproverOrErr() (*User, error) {
 	return nil, &NotLoadedError{edge: "approver"}
 }
 
+// UpdatedByOrErr returns the UpdatedBy value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e TenderEdges) UpdatedByOrErr() (*User, error) {
+	if e.UpdatedBy != nil {
+		return e.UpdatedBy, nil
+	} else if e.loadedTypes[11] {
+		return nil, &NotFoundError{label: user.Label}
+	}
+	return nil, &NotLoadedError{edge: "updated_by"}
+}
+
 // scanValues returns the types for scanning values from sql.Rows.
 func (*Tender) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
@@ -327,17 +344,17 @@ func (*Tender) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case tender.FieldGeoCoordinate:
 			values[i] = &sql.NullScanner{S: new(geo.GeoJson)}
-		case tender.FieldProvinceID, tender.FieldCityID, tender.FieldDistrictID, tender.FieldCustomerID, tender.FieldFinderID, tender.FieldCreatedByID, tender.FieldCompetitorID, tender.FieldApproverID:
+		case tender.FieldProvinceID, tender.FieldCityID, tender.FieldDistrictID, tender.FieldCustomerID, tender.FieldFinderID, tender.FieldCreatedByID, tender.FieldCompetitorID, tender.FieldApproverID, tender.FieldUpdatedByID:
 			values[i] = &sql.NullScanner{S: new(xid.ID)}
 		case tender.FieldAttachements, tender.FieldGeoBounds, tender.FieldImages:
 			values[i] = new([]byte)
-		case tender.FieldIsApproved, tender.FieldPrepareToBid, tender.FieldKeyProject:
+		case tender.FieldPrepareToBid, tender.FieldKeyProject:
 			values[i] = new(sql.NullBool)
 		case tender.FieldEstimatedAmount, tender.FieldTenderWinAmount, tender.FieldLastTenderAmount:
 			values[i] = new(sql.NullFloat64)
-		case tender.FieldStatus, tender.FieldClassify, tender.FieldLevelInvolved, tender.FieldSizeAndValueRating, tender.FieldCreditAndPaymentRating, tender.FieldTimeLimitRating, tender.FieldCustomerRelationshipRating, tender.FieldCompetitivePartnershipRating:
+		case tender.FieldStatus, tender.FieldApprovalStatus, tender.FieldClassify, tender.FieldLevelInvolved, tender.FieldSizeAndValueRating, tender.FieldCreditAndPaymentRating, tender.FieldTimeLimitRating, tender.FieldCustomerRelationshipRating, tender.FieldCompetitivePartnershipRating:
 			values[i] = new(sql.NullInt64)
-		case tender.FieldCode, tender.FieldName, tender.FieldAddress, tender.FieldFullAddress, tender.FieldContractor, tender.FieldSizeAndValueRatingOverview, tender.FieldCreditAndPaymentRatingOverview, tender.FieldTimeLimitRatingOverview, tender.FieldCustomerRelationshipRatingOverview, tender.FieldCompetitivePartnershipRatingOverview, tender.FieldProjectCode, tender.FieldProjectType, tender.FieldProjectDefinition, tender.FieldRemark, tender.FieldTenderSituations, tender.FieldOwnerSituations, tender.FieldBiddingInstructions, tender.FieldCompetitorSituations, tender.FieldCostEngineer, tender.FieldTenderForm, tender.FieldContractForm, tender.FieldManagementCompany, tender.FieldTenderingAgency, tender.FieldFacadeConsultant, tender.FieldDesignUnit, tender.FieldConsultingFirm, tender.FieldCurrentProgress, tender.FieldTenderWinCompany, tender.FieldTenderCode, tender.FieldArchitect, tender.FieldDeveloper, tender.FieldConstructionArea:
+		case tender.FieldCode, tender.FieldApprovalMsgID, tender.FieldName, tender.FieldAddress, tender.FieldFullAddress, tender.FieldContractor, tender.FieldSizeAndValueRatingOverview, tender.FieldCreditAndPaymentRatingOverview, tender.FieldTimeLimitRatingOverview, tender.FieldCustomerRelationshipRatingOverview, tender.FieldCompetitivePartnershipRatingOverview, tender.FieldProjectCode, tender.FieldProjectType, tender.FieldProjectDefinition, tender.FieldRemark, tender.FieldTenderSituations, tender.FieldOwnerSituations, tender.FieldBiddingInstructions, tender.FieldCompetitorSituations, tender.FieldCostEngineer, tender.FieldTenderForm, tender.FieldContractForm, tender.FieldManagementCompany, tender.FieldTenderingAgency, tender.FieldFacadeConsultant, tender.FieldDesignUnit, tender.FieldConsultingFirm, tender.FieldCurrentProgress, tender.FieldTenderWinCompany, tender.FieldTenderCode, tender.FieldArchitect, tender.FieldDeveloper, tender.FieldConstructionArea:
 			values[i] = new(sql.NullString)
 		case tender.FieldCreatedAt, tender.FieldUpdatedAt, tender.FieldTenderDate, tender.FieldDiscoveryDate, tender.FieldEstimatedProjectStartDate, tender.FieldEstimatedProjectEndDate, tender.FieldBiddingDate, tender.FieldTenderClosingDate, tender.FieldTenderWinDate:
 			values[i] = new(sql.NullTime)
@@ -388,11 +405,18 @@ func (t *Tender) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				t.Status = int(value.Int64)
 			}
-		case tender.FieldIsApproved:
-			if value, ok := values[i].(*sql.NullBool); !ok {
-				return fmt.Errorf("unexpected type %T for field is_approved", values[i])
+		case tender.FieldApprovalStatus:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field approval_status", values[i])
 			} else if value.Valid {
-				t.IsApproved = value.Bool
+				t.ApprovalStatus = int(value.Int64)
+			}
+		case tender.FieldApprovalMsgID:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field approval_msg_id", values[i])
+			} else if value.Valid {
+				t.ApprovalMsgID = new(string)
+				*t.ApprovalMsgID = value.String
 			}
 		case tender.FieldName:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -821,6 +845,13 @@ func (t *Tender) assignValues(columns []string, values []any) error {
 				t.ApproverID = new(xid.ID)
 				*t.ApproverID = *value.S.(*xid.ID)
 			}
+		case tender.FieldUpdatedByID:
+			if value, ok := values[i].(*sql.NullScanner); !ok {
+				return fmt.Errorf("unexpected type %T for field updated_by_id", values[i])
+			} else if value.Valid {
+				t.UpdatedByID = new(xid.ID)
+				*t.UpdatedByID = *value.S.(*xid.ID)
+			}
 		default:
 			t.selectValues.Set(columns[i], values[i])
 		}
@@ -889,6 +920,11 @@ func (t *Tender) QueryApprover() *UserQuery {
 	return NewTenderClient(t.config).QueryApprover(t)
 }
 
+// QueryUpdatedBy queries the "updated_by" edge of the Tender entity.
+func (t *Tender) QueryUpdatedBy() *UserQuery {
+	return NewTenderClient(t.config).QueryUpdatedBy(t)
+}
+
 // Update returns a builder for updating this Tender.
 // Note that you need to call Tender.Unwrap() before calling this method if this Tender
 // was returned from a transaction, and the transaction was committed or rolled back.
@@ -924,8 +960,13 @@ func (t *Tender) String() string {
 	builder.WriteString("status=")
 	builder.WriteString(fmt.Sprintf("%v", t.Status))
 	builder.WriteString(", ")
-	builder.WriteString("is_approved=")
-	builder.WriteString(fmt.Sprintf("%v", t.IsApproved))
+	builder.WriteString("approval_status=")
+	builder.WriteString(fmt.Sprintf("%v", t.ApprovalStatus))
+	builder.WriteString(", ")
+	if v := t.ApprovalMsgID; v != nil {
+		builder.WriteString("approval_msg_id=")
+		builder.WriteString(*v)
+	}
 	builder.WriteString(", ")
 	builder.WriteString("name=")
 	builder.WriteString(t.Name)
@@ -1201,6 +1242,11 @@ func (t *Tender) String() string {
 	builder.WriteString(", ")
 	if v := t.ApproverID; v != nil {
 		builder.WriteString("approver_id=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	if v := t.UpdatedByID; v != nil {
+		builder.WriteString("updated_by_id=")
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteByte(')')

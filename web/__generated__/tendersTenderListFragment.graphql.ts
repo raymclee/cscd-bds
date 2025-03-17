@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<051d2006cff81e6cda14ebc1b0c5f917>>
+ * @generated SignedSource<<7b49a5494df68d30fb342d03311bdfde>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -28,6 +28,7 @@ export type tendersTenderListFragment$data = {
           readonly code: string;
           readonly id: string;
         };
+        readonly classify: number | null | undefined;
         readonly id: string;
         readonly name: string;
         readonly status: number;
@@ -183,6 +184,13 @@ return {
                 {
                   "alias": null,
                   "args": null,
+                  "kind": "ScalarField",
+                  "name": "classify",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
                   "concreteType": "Area",
                   "kind": "LinkedField",
                   "name": "area",
@@ -278,6 +286,6 @@ return {
 };
 })();
 
-(node as any).hash = "ae34a9b6dc3ad3479a793c9a17716b6a";
+(node as any).hash = "5987c92df228c095a9c34bdf18f246e9";
 
 export default node;

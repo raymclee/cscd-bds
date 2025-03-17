@@ -18,12 +18,12 @@ function RouteComponent() {
     graphql`
       query customersDetailPageQuery(
         $id: ID!
-        $orderBy: [VisitRecordOrder!]!
         $first: Int
         $last: Int
         $userId: ID!
-        $where: VisitRecordWhereInput
-      ) {
+      ) # $orderBy: [VisitRecordOrder!]!
+      # $where: VisitRecordWhereInput
+      {
         node(id: $id) {
           ... on Customer {
             id
@@ -47,24 +47,24 @@ function RouteComponent() {
               }
             }
 
-            visitRecords: myVisitRecords(
-              first: $first
-              last: $last
-              orderBy: $orderBy
-              where: $where
-            ) @connection(key: "customerVisitRecordListFragment_visitRecords") {
-              edges {
-                __id
-              }
-            }
+            # visitRecords: myVisitRecords(
+            #   first: $first
+            #   last: $last
+            #   orderBy: $orderBy
+            #   where: $where
+            # ) @connection(key: "customerVisitRecordListFragment_visitRecords") {
+            #   edges {
+            #     __id
+            #   }
+            # }
 
-            ...customerVisitRecordListFragment
-              @arguments(
-                first: $first
-                last: $last
-                orderBy: $orderBy
-                where: $where
-              )
+            # ...customerVisitRecordListFragment
+            #   @arguments(
+            #     first: $first
+            #     last: $last
+            #     orderBy: $orderBy
+            #     where: $where
+            #   )
           }
         }
       }
@@ -109,14 +109,14 @@ function RouteComponent() {
             key: "1",
             tab: `项目列表 (${data.user?.tenders?.edges?.length || 0})`,
           },
-          {
-            key: "2",
-            tab: `拜访记录 (${data.user?.visitRecords?.edges?.length || 0})`,
-          },
+          // {
+          //   key: "2",
+          //   tab: `拜访记录 (${data.user?.visitRecords?.edges?.length || 0})`,
+          // },
         ]}
       >
         {tab === 1 && <CustomerTenderList customer={customer} />}
-        {tab === 2 && data.user && <CustomerVisitRecordList user={data.user} />}
+        {/* {tab === 2 && data.user && <CustomerVisitRecordList user={data.user} />} */}
       </Card>
     </>
   );

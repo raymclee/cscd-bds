@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<604efa3bef6a884709ae2763ad243c85>>
+ * @generated SignedSource<<f45ecc981da3041c2c81a4c66427da3f>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -12,6 +12,7 @@ import { ReaderFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type tenderDetailFragment$data = {
   readonly address: string | null | undefined;
+  readonly approvalStatus: number;
   readonly architect: string | null | undefined;
   readonly area: {
     readonly code: string;
@@ -75,7 +76,6 @@ export type tenderDetailFragment$data = {
   } | null | undefined;
   readonly id: string;
   readonly images: ReadonlyArray<string> | null | undefined;
-  readonly isApproved: boolean;
   readonly keyProject: boolean;
   readonly lastTenderAmount: number | null | undefined;
   readonly levelInvolved: number | null | undefined;
@@ -160,7 +160,7 @@ return {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
-      "name": "isApproved",
+      "name": "approvalStatus",
       "storageKey": null
     },
     (v1/*: any*/),
@@ -642,6 +642,6 @@ return {
 };
 })();
 
-(node as any).hash = "fefed1bcb5ede14c0570a61c07168346";
+(node as any).hash = "c864c786c5468be40519d843c483f132";
 
 export default node;

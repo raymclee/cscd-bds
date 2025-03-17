@@ -13,7 +13,7 @@ export const Route = createFileRoute("/__auth/__dashboard/__scaled/__map/")({
         { field: "CLOSING_DATE", direction: "ASC" },
         { field: "CREATED_AT", direction: "ASC" },
       ],
-      visitOrderBy: [{ field: "DATE", direction: "DESC" }],
+      // visitOrderBy: [{ field: "DATE", direction: "DESC" }],
     });
   },
 });

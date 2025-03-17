@@ -80,17 +80,44 @@ func (tu *TenderUpdate) AddStatus(i int) *TenderUpdate {
 	return tu
 }
 
-// SetIsApproved sets the "is_approved" field.
-func (tu *TenderUpdate) SetIsApproved(b bool) *TenderUpdate {
-	tu.mutation.SetIsApproved(b)
+// SetApprovalStatus sets the "approval_status" field.
+func (tu *TenderUpdate) SetApprovalStatus(i int) *TenderUpdate {
+	tu.mutation.ResetApprovalStatus()
+	tu.mutation.SetApprovalStatus(i)
 	return tu
 }
 
-// SetNillableIsApproved sets the "is_approved" field if the given value is not nil.
-func (tu *TenderUpdate) SetNillableIsApproved(b *bool) *TenderUpdate {
-	if b != nil {
-		tu.SetIsApproved(*b)
+// SetNillableApprovalStatus sets the "approval_status" field if the given value is not nil.
+func (tu *TenderUpdate) SetNillableApprovalStatus(i *int) *TenderUpdate {
+	if i != nil {
+		tu.SetApprovalStatus(*i)
 	}
+	return tu
+}
+
+// AddApprovalStatus adds i to the "approval_status" field.
+func (tu *TenderUpdate) AddApprovalStatus(i int) *TenderUpdate {
+	tu.mutation.AddApprovalStatus(i)
+	return tu
+}
+
+// SetApprovalMsgID sets the "approval_msg_id" field.
+func (tu *TenderUpdate) SetApprovalMsgID(s string) *TenderUpdate {
+	tu.mutation.SetApprovalMsgID(s)
+	return tu
+}
+
+// SetNillableApprovalMsgID sets the "approval_msg_id" field if the given value is not nil.
+func (tu *TenderUpdate) SetNillableApprovalMsgID(s *string) *TenderUpdate {
+	if s != nil {
+		tu.SetApprovalMsgID(*s)
+	}
+	return tu
+}
+
+// ClearApprovalMsgID clears the value of the "approval_msg_id" field.
+func (tu *TenderUpdate) ClearApprovalMsgID() *TenderUpdate {
+	tu.mutation.ClearApprovalMsgID()
 	return tu
 }
 
@@ -1380,6 +1407,26 @@ func (tu *TenderUpdate) ClearApproverID() *TenderUpdate {
 	return tu
 }
 
+// SetUpdatedByID sets the "updated_by_id" field.
+func (tu *TenderUpdate) SetUpdatedByID(x xid.ID) *TenderUpdate {
+	tu.mutation.SetUpdatedByID(x)
+	return tu
+}
+
+// SetNillableUpdatedByID sets the "updated_by_id" field if the given value is not nil.
+func (tu *TenderUpdate) SetNillableUpdatedByID(x *xid.ID) *TenderUpdate {
+	if x != nil {
+		tu.SetUpdatedByID(*x)
+	}
+	return tu
+}
+
+// ClearUpdatedByID clears the value of the "updated_by_id" field.
+func (tu *TenderUpdate) ClearUpdatedByID() *TenderUpdate {
+	tu.mutation.ClearUpdatedByID()
+	return tu
+}
+
 // SetArea sets the "area" edge to the Area entity.
 func (tu *TenderUpdate) SetArea(a *Area) *TenderUpdate {
 	return tu.SetAreaID(a.ID)
@@ -1453,6 +1500,11 @@ func (tu *TenderUpdate) SetCompetitor(c *Competitor) *TenderUpdate {
 // SetApprover sets the "approver" edge to the User entity.
 func (tu *TenderUpdate) SetApprover(u *User) *TenderUpdate {
 	return tu.SetApproverID(u.ID)
+}
+
+// SetUpdatedBy sets the "updated_by" edge to the User entity.
+func (tu *TenderUpdate) SetUpdatedBy(u *User) *TenderUpdate {
+	return tu.SetUpdatedByID(u.ID)
 }
 
 // Mutation returns the TenderMutation object of the builder.
@@ -1556,6 +1608,12 @@ func (tu *TenderUpdate) ClearApprover() *TenderUpdate {
 	return tu
 }
 
+// ClearUpdatedBy clears the "updated_by" edge to the User entity.
+func (tu *TenderUpdate) ClearUpdatedBy() *TenderUpdate {
+	tu.mutation.ClearUpdatedBy()
+	return tu
+}
+
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (tu *TenderUpdate) Save(ctx context.Context) (int, error) {
 	tu.defaults()
@@ -1594,6 +1652,11 @@ func (tu *TenderUpdate) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (tu *TenderUpdate) check() error {
+	if v, ok := tu.mutation.ApprovalStatus(); ok {
+		if err := tender.ApprovalStatusValidator(v); err != nil {
+			return &ValidationError{Name: "approval_status", err: fmt.Errorf(`ent: validator failed for field "Tender.approval_status": %w`, err)}
+		}
+	}
 	if v, ok := tu.mutation.Classify(); ok {
 		if err := tender.ClassifyValidator(v); err != nil {
 			return &ValidationError{Name: "classify", err: fmt.Errorf(`ent: validator failed for field "Tender.classify": %w`, err)}
@@ -1669,8 +1732,17 @@ func (tu *TenderUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := tu.mutation.AddedStatus(); ok {
 		_spec.AddField(tender.FieldStatus, field.TypeInt, value)
 	}
-	if value, ok := tu.mutation.IsApproved(); ok {
-		_spec.SetField(tender.FieldIsApproved, field.TypeBool, value)
+	if value, ok := tu.mutation.ApprovalStatus(); ok {
+		_spec.SetField(tender.FieldApprovalStatus, field.TypeInt, value)
+	}
+	if value, ok := tu.mutation.AddedApprovalStatus(); ok {
+		_spec.AddField(tender.FieldApprovalStatus, field.TypeInt, value)
+	}
+	if value, ok := tu.mutation.ApprovalMsgID(); ok {
+		_spec.SetField(tender.FieldApprovalMsgID, field.TypeString, value)
+	}
+	if tu.mutation.ApprovalMsgIDCleared() {
+		_spec.ClearField(tender.FieldApprovalMsgID, field.TypeString)
 	}
 	if value, ok := tu.mutation.Name(); ok {
 		_spec.SetField(tender.FieldName, field.TypeString, value)
@@ -2380,6 +2452,35 @@ func (tu *TenderUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	if tu.mutation.UpdatedByCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   tender.UpdatedByTable,
+			Columns: []string{tender.UpdatedByColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tu.mutation.UpdatedByIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   tender.UpdatedByTable,
+			Columns: []string{tender.UpdatedByColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, tu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{tender.Label}
@@ -2441,17 +2542,44 @@ func (tuo *TenderUpdateOne) AddStatus(i int) *TenderUpdateOne {
 	return tuo
 }
 
-// SetIsApproved sets the "is_approved" field.
-func (tuo *TenderUpdateOne) SetIsApproved(b bool) *TenderUpdateOne {
-	tuo.mutation.SetIsApproved(b)
+// SetApprovalStatus sets the "approval_status" field.
+func (tuo *TenderUpdateOne) SetApprovalStatus(i int) *TenderUpdateOne {
+	tuo.mutation.ResetApprovalStatus()
+	tuo.mutation.SetApprovalStatus(i)
 	return tuo
 }
 
-// SetNillableIsApproved sets the "is_approved" field if the given value is not nil.
-func (tuo *TenderUpdateOne) SetNillableIsApproved(b *bool) *TenderUpdateOne {
-	if b != nil {
-		tuo.SetIsApproved(*b)
+// SetNillableApprovalStatus sets the "approval_status" field if the given value is not nil.
+func (tuo *TenderUpdateOne) SetNillableApprovalStatus(i *int) *TenderUpdateOne {
+	if i != nil {
+		tuo.SetApprovalStatus(*i)
 	}
+	return tuo
+}
+
+// AddApprovalStatus adds i to the "approval_status" field.
+func (tuo *TenderUpdateOne) AddApprovalStatus(i int) *TenderUpdateOne {
+	tuo.mutation.AddApprovalStatus(i)
+	return tuo
+}
+
+// SetApprovalMsgID sets the "approval_msg_id" field.
+func (tuo *TenderUpdateOne) SetApprovalMsgID(s string) *TenderUpdateOne {
+	tuo.mutation.SetApprovalMsgID(s)
+	return tuo
+}
+
+// SetNillableApprovalMsgID sets the "approval_msg_id" field if the given value is not nil.
+func (tuo *TenderUpdateOne) SetNillableApprovalMsgID(s *string) *TenderUpdateOne {
+	if s != nil {
+		tuo.SetApprovalMsgID(*s)
+	}
+	return tuo
+}
+
+// ClearApprovalMsgID clears the value of the "approval_msg_id" field.
+func (tuo *TenderUpdateOne) ClearApprovalMsgID() *TenderUpdateOne {
+	tuo.mutation.ClearApprovalMsgID()
 	return tuo
 }
 
@@ -3741,6 +3869,26 @@ func (tuo *TenderUpdateOne) ClearApproverID() *TenderUpdateOne {
 	return tuo
 }
 
+// SetUpdatedByID sets the "updated_by_id" field.
+func (tuo *TenderUpdateOne) SetUpdatedByID(x xid.ID) *TenderUpdateOne {
+	tuo.mutation.SetUpdatedByID(x)
+	return tuo
+}
+
+// SetNillableUpdatedByID sets the "updated_by_id" field if the given value is not nil.
+func (tuo *TenderUpdateOne) SetNillableUpdatedByID(x *xid.ID) *TenderUpdateOne {
+	if x != nil {
+		tuo.SetUpdatedByID(*x)
+	}
+	return tuo
+}
+
+// ClearUpdatedByID clears the value of the "updated_by_id" field.
+func (tuo *TenderUpdateOne) ClearUpdatedByID() *TenderUpdateOne {
+	tuo.mutation.ClearUpdatedByID()
+	return tuo
+}
+
 // SetArea sets the "area" edge to the Area entity.
 func (tuo *TenderUpdateOne) SetArea(a *Area) *TenderUpdateOne {
 	return tuo.SetAreaID(a.ID)
@@ -3814,6 +3962,11 @@ func (tuo *TenderUpdateOne) SetCompetitor(c *Competitor) *TenderUpdateOne {
 // SetApprover sets the "approver" edge to the User entity.
 func (tuo *TenderUpdateOne) SetApprover(u *User) *TenderUpdateOne {
 	return tuo.SetApproverID(u.ID)
+}
+
+// SetUpdatedBy sets the "updated_by" edge to the User entity.
+func (tuo *TenderUpdateOne) SetUpdatedBy(u *User) *TenderUpdateOne {
+	return tuo.SetUpdatedByID(u.ID)
 }
 
 // Mutation returns the TenderMutation object of the builder.
@@ -3917,6 +4070,12 @@ func (tuo *TenderUpdateOne) ClearApprover() *TenderUpdateOne {
 	return tuo
 }
 
+// ClearUpdatedBy clears the "updated_by" edge to the User entity.
+func (tuo *TenderUpdateOne) ClearUpdatedBy() *TenderUpdateOne {
+	tuo.mutation.ClearUpdatedBy()
+	return tuo
+}
+
 // Where appends a list predicates to the TenderUpdate builder.
 func (tuo *TenderUpdateOne) Where(ps ...predicate.Tender) *TenderUpdateOne {
 	tuo.mutation.Where(ps...)
@@ -3968,6 +4127,11 @@ func (tuo *TenderUpdateOne) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (tuo *TenderUpdateOne) check() error {
+	if v, ok := tuo.mutation.ApprovalStatus(); ok {
+		if err := tender.ApprovalStatusValidator(v); err != nil {
+			return &ValidationError{Name: "approval_status", err: fmt.Errorf(`ent: validator failed for field "Tender.approval_status": %w`, err)}
+		}
+	}
 	if v, ok := tuo.mutation.Classify(); ok {
 		if err := tender.ClassifyValidator(v); err != nil {
 			return &ValidationError{Name: "classify", err: fmt.Errorf(`ent: validator failed for field "Tender.classify": %w`, err)}
@@ -4060,8 +4224,17 @@ func (tuo *TenderUpdateOne) sqlSave(ctx context.Context) (_node *Tender, err err
 	if value, ok := tuo.mutation.AddedStatus(); ok {
 		_spec.AddField(tender.FieldStatus, field.TypeInt, value)
 	}
-	if value, ok := tuo.mutation.IsApproved(); ok {
-		_spec.SetField(tender.FieldIsApproved, field.TypeBool, value)
+	if value, ok := tuo.mutation.ApprovalStatus(); ok {
+		_spec.SetField(tender.FieldApprovalStatus, field.TypeInt, value)
+	}
+	if value, ok := tuo.mutation.AddedApprovalStatus(); ok {
+		_spec.AddField(tender.FieldApprovalStatus, field.TypeInt, value)
+	}
+	if value, ok := tuo.mutation.ApprovalMsgID(); ok {
+		_spec.SetField(tender.FieldApprovalMsgID, field.TypeString, value)
+	}
+	if tuo.mutation.ApprovalMsgIDCleared() {
+		_spec.ClearField(tender.FieldApprovalMsgID, field.TypeString)
 	}
 	if value, ok := tuo.mutation.Name(); ok {
 		_spec.SetField(tender.FieldName, field.TypeString, value)
@@ -4761,6 +4934,35 @@ func (tuo *TenderUpdateOne) sqlSave(ctx context.Context) (_node *Tender, err err
 			Inverse: false,
 			Table:   tender.ApproverTable,
 			Columns: []string{tender.ApproverColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if tuo.mutation.UpdatedByCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   tender.UpdatedByTable,
+			Columns: []string{tender.UpdatedByColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tuo.mutation.UpdatedByIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   tender.UpdatedByTable,
+			Columns: []string{tender.UpdatedByColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),

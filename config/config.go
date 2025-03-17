@@ -5,6 +5,7 @@ var (
 	IsProd      bool
 	IsUat       bool
 	FilePath    string
+	HostUrl     string
 
 	HanaPort     int
 	HanaHost     string

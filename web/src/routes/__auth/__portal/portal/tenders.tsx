@@ -15,6 +15,7 @@ const tenderSearchSchema = v.object({
   q: v.optional(v.string()),
   closing_date: v.optional(v.string()),
   classify: v.optional(v.number()),
+  create: v.optional(v.boolean()),
 });
 
 export const Route = createFileRoute("/__auth/__portal/portal/tenders")({

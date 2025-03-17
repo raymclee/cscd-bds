@@ -76,6 +76,7 @@ function TenderList({
               name
               status
               tenderClosingDate
+              classify
               area {
                 id
                 code
@@ -96,6 +97,7 @@ function TenderList({
   const statusFilter = searchParams.status;
   const areaFilter = searchParams.area;
   const closingDateFilter = searchParams.closing_date;
+  const classifyFilter = searchParams.classify;
 
   const dataSource = data?.tenders.edges
     ?.map((t) => t?.node)
@@ -104,6 +106,9 @@ function TenderList({
     )
     .filter((t) => statusFilter === undefined || t?.status === statusFilter)
     .filter((t) => areaFilter === undefined || t?.area?.code === areaFilter)
+    .filter(
+      (t) => classifyFilter === undefined || t?.classify === classifyFilter,
+    )
     .sort((a, b) => {
       if (a?.tenderClosingDate === null && b?.tenderClosingDate === null) {
         return 0;

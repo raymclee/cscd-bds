@@ -7,6 +7,36 @@ import {
   TenderConnection,
 } from "~/graphql/graphql";
 
+export function approvalStatusText(status: Maybe<number> | undefined): string {
+  if (!status) {
+    return "";
+  }
+  switch (status) {
+    case 2:
+      return "已通过";
+    case 3:
+      return "已拒绝";
+    default:
+      return "待审批";
+  }
+}
+
+export function approvalStatusTagColor(
+  status: Maybe<number> | undefined,
+): TagProps["color"] {
+  if (!status) {
+    return "default";
+  }
+  switch (status) {
+    case 2:
+      return "success";
+    case 3:
+      return "error";
+    default:
+      return "default";
+  }
+}
+
 export function percent(
   numerator?: number | null,
   denominator?: number | null,
@@ -70,6 +100,21 @@ export function classifyText(classify: Maybe<number> | undefined): string {
   return classifyOptions.find((c) => c.value === classify)?.label || "";
 }
 
+export function classifyTagColor(
+  classify: Maybe<number> | undefined,
+): TagProps["color"] {
+  if (!classify) {
+    return "default";
+  }
+  switch (classify) {
+    case 1:
+      return "#f50";
+    case 2:
+      return "#2db7f5";
+    case 3:
+      return "#87d068";
+  }
+}
 export const ownerTypeOptions = [
   { label: "政府平台", value: 1 },
   { label: "央企国企", value: 2 },

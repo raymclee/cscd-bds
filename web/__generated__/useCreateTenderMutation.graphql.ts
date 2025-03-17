@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<a9f7b83f9840d216312fc624b18246f2>>
+ * @generated SignedSource<<83f2d317e9ff07a4ab292145c2e81fae>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -12,6 +12,8 @@ import { ConcreteRequest } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type CreateTenderInput = {
   address?: string | null | undefined;
+  approvalMsgID?: string | null | undefined;
+  approvalStatus?: number | null | undefined;
   approverID?: string | null | undefined;
   architect?: string | null | undefined;
   areaID: string;
@@ -50,7 +52,6 @@ export type CreateTenderInput = {
   followingSaleIDs?: ReadonlyArray<string> | null | undefined;
   fullAddress?: string | null | undefined;
   images?: ReadonlyArray<string> | null | undefined;
-  isApproved?: boolean | null | undefined;
   keyProject?: boolean | null | undefined;
   lastTenderAmount?: number | null | undefined;
   levelInvolved?: number | null | undefined;
@@ -78,6 +79,7 @@ export type CreateTenderInput = {
   timeLimitRating?: number | null | undefined;
   timeLimitRatingOverview?: string | null | undefined;
   updatedAt?: any | null | undefined;
+  updatedByID?: string | null | undefined;
   visitRecordIDs?: ReadonlyArray<string> | null | undefined;
 };
 export type useCreateTenderMutation$variables = {
@@ -262,7 +264,7 @@ return {
                     "alias": null,
                     "args": null,
                     "kind": "ScalarField",
-                    "name": "isApproved",
+                    "name": "approvalStatus",
                     "storageKey": null
                   },
                   (v7/*: any*/),
@@ -285,6 +287,13 @@ return {
                     "args": null,
                     "kind": "ScalarField",
                     "name": "estimatedAmount",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "classify",
                     "storageKey": null
                   },
                   {
@@ -403,12 +412,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "73ea5d71d52b3cefacc39d6bf51ff5ac",
+    "cacheID": "22f5d07813f47318171e25e495b9f678",
     "id": null,
     "metadata": {},
     "name": "useCreateTenderMutation",
     "operationKind": "mutation",
-    "text": "mutation useCreateTenderMutation(\n  $input: CreateTenderInput!\n  $imageFileNames: [String!]!\n  $attachmentFileNames: [String!]!\n  $geoCoordinate: [Float!]\n) {\n  createTender(input: $input, imageFileNames: $imageFileNames, attachmentFileNames: $attachmentFileNames, geoCoordinate: $geoCoordinate) {\n    edges {\n      node {\n        ...tenderListItemFragment\n        id\n      }\n    }\n  }\n}\n\nfragment tenderListItemFragment on Tender {\n  id\n  isApproved\n  name\n  status\n  createdAt\n  estimatedAmount\n  customer {\n    id\n    name\n  }\n  images\n  fullAddress\n  tenderDate\n  discoveryDate\n  tenderClosingDate\n  area {\n    id\n    name\n    code\n  }\n  followingSales {\n    id\n  }\n  createdBy {\n    id\n  }\n}\n"
+    "text": "mutation useCreateTenderMutation(\n  $input: CreateTenderInput!\n  $imageFileNames: [String!]!\n  $attachmentFileNames: [String!]!\n  $geoCoordinate: [Float!]\n) {\n  createTender(input: $input, imageFileNames: $imageFileNames, attachmentFileNames: $attachmentFileNames, geoCoordinate: $geoCoordinate) {\n    edges {\n      node {\n        ...tenderListItemFragment\n        id\n      }\n    }\n  }\n}\n\nfragment tenderListItemFragment on Tender {\n  id\n  approvalStatus\n  name\n  status\n  createdAt\n  estimatedAmount\n  classify\n  customer {\n    id\n    name\n  }\n  images\n  fullAddress\n  tenderDate\n  discoveryDate\n  tenderClosingDate\n  area {\n    id\n    name\n    code\n  }\n  followingSales {\n    id\n  }\n  createdBy {\n    id\n  }\n}\n"
   }
 };
 })();

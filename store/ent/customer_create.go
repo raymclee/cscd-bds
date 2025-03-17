@@ -6,6 +6,7 @@ import (
 	"context"
 	"cscd-bds/store/ent/area"
 	"cscd-bds/store/ent/customer"
+	"cscd-bds/store/ent/schema/model"
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/schema/zht"
 	"cscd-bds/store/ent/tender"
@@ -63,16 +64,16 @@ func (cc *CustomerCreate) SetName(s string) *CustomerCreate {
 	return cc
 }
 
-// SetIsApproved sets the "is_approved" field.
-func (cc *CustomerCreate) SetIsApproved(b bool) *CustomerCreate {
-	cc.mutation.SetIsApproved(b)
+// SetApprovalStatus sets the "approval_status" field.
+func (cc *CustomerCreate) SetApprovalStatus(i int) *CustomerCreate {
+	cc.mutation.SetApprovalStatus(i)
 	return cc
 }
 
-// SetNillableIsApproved sets the "is_approved" field if the given value is not nil.
-func (cc *CustomerCreate) SetNillableIsApproved(b *bool) *CustomerCreate {
-	if b != nil {
-		cc.SetIsApproved(*b)
+// SetNillableApprovalStatus sets the "approval_status" field if the given value is not nil.
+func (cc *CustomerCreate) SetNillableApprovalStatus(i *int) *CustomerCreate {
+	if i != nil {
+		cc.SetApprovalStatus(*i)
 	}
 	return cc
 }
@@ -175,6 +176,12 @@ func (cc *CustomerCreate) SetNillableContactPersonEmail(s *string) *CustomerCrea
 	return cc
 }
 
+// SetDraft sets the "draft" field.
+func (cc *CustomerCreate) SetDraft(m *model.Customer) *CustomerCreate {
+	cc.mutation.SetDraft(m)
+	return cc
+}
+
 // SetFeishuGroup sets the "feishu_group" field.
 func (cc *CustomerCreate) SetFeishuGroup(z *zht.Group) *CustomerCreate {
 	cc.mutation.SetFeishuGroup(z)
@@ -211,6 +218,20 @@ func (cc *CustomerCreate) SetCreatedByID(x xid.ID) *CustomerCreate {
 func (cc *CustomerCreate) SetNillableCreatedByID(x *xid.ID) *CustomerCreate {
 	if x != nil {
 		cc.SetCreatedByID(*x)
+	}
+	return cc
+}
+
+// SetUpdatedByID sets the "updated_by_id" field.
+func (cc *CustomerCreate) SetUpdatedByID(x xid.ID) *CustomerCreate {
+	cc.mutation.SetUpdatedByID(x)
+	return cc
+}
+
+// SetNillableUpdatedByID sets the "updated_by_id" field if the given value is not nil.
+func (cc *CustomerCreate) SetNillableUpdatedByID(x *xid.ID) *CustomerCreate {
+	if x != nil {
+		cc.SetUpdatedByID(*x)
 	}
 	return cc
 }
@@ -271,6 +292,11 @@ func (cc *CustomerCreate) SetSales(u *User) *CustomerCreate {
 // SetCreatedBy sets the "created_by" edge to the User entity.
 func (cc *CustomerCreate) SetCreatedBy(u *User) *CustomerCreate {
 	return cc.SetCreatedByID(u.ID)
+}
+
+// SetUpdatedBy sets the "updated_by" edge to the User entity.
+func (cc *CustomerCreate) SetUpdatedBy(u *User) *CustomerCreate {
+	return cc.SetUpdatedByID(u.ID)
 }
 
 // SetApprover sets the "approver" edge to the User entity.
@@ -336,9 +362,9 @@ func (cc *CustomerCreate) defaults() {
 		v := customer.DefaultUpdatedAt()
 		cc.mutation.SetUpdatedAt(v)
 	}
-	if _, ok := cc.mutation.IsApproved(); !ok {
-		v := customer.DefaultIsApproved
-		cc.mutation.SetIsApproved(v)
+	if _, ok := cc.mutation.ApprovalStatus(); !ok {
+		v := customer.DefaultApprovalStatus
+		cc.mutation.SetApprovalStatus(v)
 	}
 	if _, ok := cc.mutation.ID(); !ok {
 		v := customer.DefaultID()
@@ -357,8 +383,13 @@ func (cc *CustomerCreate) check() error {
 	if _, ok := cc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`ent: missing required field "Customer.name"`)}
 	}
-	if _, ok := cc.mutation.IsApproved(); !ok {
-		return &ValidationError{Name: "is_approved", err: errors.New(`ent: missing required field "Customer.is_approved"`)}
+	if _, ok := cc.mutation.ApprovalStatus(); !ok {
+		return &ValidationError{Name: "approval_status", err: errors.New(`ent: missing required field "Customer.approval_status"`)}
+	}
+	if v, ok := cc.mutation.ApprovalStatus(); ok {
+		if err := customer.ApprovalStatusValidator(v); err != nil {
+			return &ValidationError{Name: "approval_status", err: fmt.Errorf(`ent: validator failed for field "Customer.approval_status": %w`, err)}
+		}
 	}
 	if _, ok := cc.mutation.AreaID(); !ok {
 		return &ValidationError{Name: "area_id", err: errors.New(`ent: missing required field "Customer.area_id"`)}
@@ -414,9 +445,9 @@ func (cc *CustomerCreate) createSpec() (*Customer, *sqlgraph.CreateSpec) {
 		_spec.SetField(customer.FieldName, field.TypeString, value)
 		_node.Name = value
 	}
-	if value, ok := cc.mutation.IsApproved(); ok {
-		_spec.SetField(customer.FieldIsApproved, field.TypeBool, value)
-		_node.IsApproved = value
+	if value, ok := cc.mutation.ApprovalStatus(); ok {
+		_spec.SetField(customer.FieldApprovalStatus, field.TypeInt, value)
+		_node.ApprovalStatus = value
 	}
 	if value, ok := cc.mutation.OwnerType(); ok {
 		_spec.SetField(customer.FieldOwnerType, field.TypeInt, value)
@@ -445,6 +476,10 @@ func (cc *CustomerCreate) createSpec() (*Customer, *sqlgraph.CreateSpec) {
 	if value, ok := cc.mutation.ContactPersonEmail(); ok {
 		_spec.SetField(customer.FieldContactPersonEmail, field.TypeString, value)
 		_node.ContactPersonEmail = &value
+	}
+	if value, ok := cc.mutation.Draft(); ok {
+		_spec.SetField(customer.FieldDraft, field.TypeJSON, value)
+		_node.Draft = value
 	}
 	if value, ok := cc.mutation.FeishuGroup(); ok {
 		_spec.SetField(customer.FieldFeishuGroup, field.TypeJSON, value)
@@ -515,6 +550,23 @@ func (cc *CustomerCreate) createSpec() (*Customer, *sqlgraph.CreateSpec) {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
 		_node.CreatedByID = &nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := cc.mutation.UpdatedByIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   customer.UpdatedByTable,
+			Columns: []string{customer.UpdatedByColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.UpdatedByID = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	if nodes := cc.mutation.ApproverIDs(); len(nodes) > 0 {
@@ -626,15 +678,21 @@ func (u *CustomerUpsert) UpdateName() *CustomerUpsert {
 	return u
 }
 
-// SetIsApproved sets the "is_approved" field.
-func (u *CustomerUpsert) SetIsApproved(v bool) *CustomerUpsert {
-	u.Set(customer.FieldIsApproved, v)
+// SetApprovalStatus sets the "approval_status" field.
+func (u *CustomerUpsert) SetApprovalStatus(v int) *CustomerUpsert {
+	u.Set(customer.FieldApprovalStatus, v)
 	return u
 }
 
-// UpdateIsApproved sets the "is_approved" field to the value that was provided on create.
-func (u *CustomerUpsert) UpdateIsApproved() *CustomerUpsert {
-	u.SetExcluded(customer.FieldIsApproved)
+// UpdateApprovalStatus sets the "approval_status" field to the value that was provided on create.
+func (u *CustomerUpsert) UpdateApprovalStatus() *CustomerUpsert {
+	u.SetExcluded(customer.FieldApprovalStatus)
+	return u
+}
+
+// AddApprovalStatus adds v to the "approval_status" field.
+func (u *CustomerUpsert) AddApprovalStatus(v int) *CustomerUpsert {
+	u.Add(customer.FieldApprovalStatus, v)
 	return u
 }
 
@@ -782,6 +840,24 @@ func (u *CustomerUpsert) ClearContactPersonEmail() *CustomerUpsert {
 	return u
 }
 
+// SetDraft sets the "draft" field.
+func (u *CustomerUpsert) SetDraft(v *model.Customer) *CustomerUpsert {
+	u.Set(customer.FieldDraft, v)
+	return u
+}
+
+// UpdateDraft sets the "draft" field to the value that was provided on create.
+func (u *CustomerUpsert) UpdateDraft() *CustomerUpsert {
+	u.SetExcluded(customer.FieldDraft)
+	return u
+}
+
+// ClearDraft clears the value of the "draft" field.
+func (u *CustomerUpsert) ClearDraft() *CustomerUpsert {
+	u.SetNull(customer.FieldDraft)
+	return u
+}
+
 // SetFeishuGroup sets the "feishu_group" field.
 func (u *CustomerUpsert) SetFeishuGroup(v *zht.Group) *CustomerUpsert {
 	u.Set(customer.FieldFeishuGroup, v)
@@ -845,6 +921,24 @@ func (u *CustomerUpsert) UpdateCreatedByID() *CustomerUpsert {
 // ClearCreatedByID clears the value of the "created_by_id" field.
 func (u *CustomerUpsert) ClearCreatedByID() *CustomerUpsert {
 	u.SetNull(customer.FieldCreatedByID)
+	return u
+}
+
+// SetUpdatedByID sets the "updated_by_id" field.
+func (u *CustomerUpsert) SetUpdatedByID(v xid.ID) *CustomerUpsert {
+	u.Set(customer.FieldUpdatedByID, v)
+	return u
+}
+
+// UpdateUpdatedByID sets the "updated_by_id" field to the value that was provided on create.
+func (u *CustomerUpsert) UpdateUpdatedByID() *CustomerUpsert {
+	u.SetExcluded(customer.FieldUpdatedByID)
+	return u
+}
+
+// ClearUpdatedByID clears the value of the "updated_by_id" field.
+func (u *CustomerUpsert) ClearUpdatedByID() *CustomerUpsert {
+	u.SetNull(customer.FieldUpdatedByID)
 	return u
 }
 
@@ -945,17 +1039,24 @@ func (u *CustomerUpsertOne) UpdateName() *CustomerUpsertOne {
 	})
 }
 
-// SetIsApproved sets the "is_approved" field.
-func (u *CustomerUpsertOne) SetIsApproved(v bool) *CustomerUpsertOne {
+// SetApprovalStatus sets the "approval_status" field.
+func (u *CustomerUpsertOne) SetApprovalStatus(v int) *CustomerUpsertOne {
 	return u.Update(func(s *CustomerUpsert) {
-		s.SetIsApproved(v)
+		s.SetApprovalStatus(v)
 	})
 }
 
-// UpdateIsApproved sets the "is_approved" field to the value that was provided on create.
-func (u *CustomerUpsertOne) UpdateIsApproved() *CustomerUpsertOne {
+// AddApprovalStatus adds v to the "approval_status" field.
+func (u *CustomerUpsertOne) AddApprovalStatus(v int) *CustomerUpsertOne {
 	return u.Update(func(s *CustomerUpsert) {
-		s.UpdateIsApproved()
+		s.AddApprovalStatus(v)
+	})
+}
+
+// UpdateApprovalStatus sets the "approval_status" field to the value that was provided on create.
+func (u *CustomerUpsertOne) UpdateApprovalStatus() *CustomerUpsertOne {
+	return u.Update(func(s *CustomerUpsert) {
+		s.UpdateApprovalStatus()
 	})
 }
 
@@ -1127,6 +1228,27 @@ func (u *CustomerUpsertOne) ClearContactPersonEmail() *CustomerUpsertOne {
 	})
 }
 
+// SetDraft sets the "draft" field.
+func (u *CustomerUpsertOne) SetDraft(v *model.Customer) *CustomerUpsertOne {
+	return u.Update(func(s *CustomerUpsert) {
+		s.SetDraft(v)
+	})
+}
+
+// UpdateDraft sets the "draft" field to the value that was provided on create.
+func (u *CustomerUpsertOne) UpdateDraft() *CustomerUpsertOne {
+	return u.Update(func(s *CustomerUpsert) {
+		s.UpdateDraft()
+	})
+}
+
+// ClearDraft clears the value of the "draft" field.
+func (u *CustomerUpsertOne) ClearDraft() *CustomerUpsertOne {
+	return u.Update(func(s *CustomerUpsert) {
+		s.ClearDraft()
+	})
+}
+
 // SetFeishuGroup sets the "feishu_group" field.
 func (u *CustomerUpsertOne) SetFeishuGroup(v *zht.Group) *CustomerUpsertOne {
 	return u.Update(func(s *CustomerUpsert) {
@@ -1201,6 +1323,27 @@ func (u *CustomerUpsertOne) UpdateCreatedByID() *CustomerUpsertOne {
 func (u *CustomerUpsertOne) ClearCreatedByID() *CustomerUpsertOne {
 	return u.Update(func(s *CustomerUpsert) {
 		s.ClearCreatedByID()
+	})
+}
+
+// SetUpdatedByID sets the "updated_by_id" field.
+func (u *CustomerUpsertOne) SetUpdatedByID(v xid.ID) *CustomerUpsertOne {
+	return u.Update(func(s *CustomerUpsert) {
+		s.SetUpdatedByID(v)
+	})
+}
+
+// UpdateUpdatedByID sets the "updated_by_id" field to the value that was provided on create.
+func (u *CustomerUpsertOne) UpdateUpdatedByID() *CustomerUpsertOne {
+	return u.Update(func(s *CustomerUpsert) {
+		s.UpdateUpdatedByID()
+	})
+}
+
+// ClearUpdatedByID clears the value of the "updated_by_id" field.
+func (u *CustomerUpsertOne) ClearUpdatedByID() *CustomerUpsertOne {
+	return u.Update(func(s *CustomerUpsert) {
+		s.ClearUpdatedByID()
 	})
 }
 
@@ -1471,17 +1614,24 @@ func (u *CustomerUpsertBulk) UpdateName() *CustomerUpsertBulk {
 	})
 }
 
-// SetIsApproved sets the "is_approved" field.
-func (u *CustomerUpsertBulk) SetIsApproved(v bool) *CustomerUpsertBulk {
+// SetApprovalStatus sets the "approval_status" field.
+func (u *CustomerUpsertBulk) SetApprovalStatus(v int) *CustomerUpsertBulk {
 	return u.Update(func(s *CustomerUpsert) {
-		s.SetIsApproved(v)
+		s.SetApprovalStatus(v)
 	})
 }
 
-// UpdateIsApproved sets the "is_approved" field to the value that was provided on create.
-func (u *CustomerUpsertBulk) UpdateIsApproved() *CustomerUpsertBulk {
+// AddApprovalStatus adds v to the "approval_status" field.
+func (u *CustomerUpsertBulk) AddApprovalStatus(v int) *CustomerUpsertBulk {
 	return u.Update(func(s *CustomerUpsert) {
-		s.UpdateIsApproved()
+		s.AddApprovalStatus(v)
+	})
+}
+
+// UpdateApprovalStatus sets the "approval_status" field to the value that was provided on create.
+func (u *CustomerUpsertBulk) UpdateApprovalStatus() *CustomerUpsertBulk {
+	return u.Update(func(s *CustomerUpsert) {
+		s.UpdateApprovalStatus()
 	})
 }
 
@@ -1653,6 +1803,27 @@ func (u *CustomerUpsertBulk) ClearContactPersonEmail() *CustomerUpsertBulk {
 	})
 }
 
+// SetDraft sets the "draft" field.
+func (u *CustomerUpsertBulk) SetDraft(v *model.Customer) *CustomerUpsertBulk {
+	return u.Update(func(s *CustomerUpsert) {
+		s.SetDraft(v)
+	})
+}
+
+// UpdateDraft sets the "draft" field to the value that was provided on create.
+func (u *CustomerUpsertBulk) UpdateDraft() *CustomerUpsertBulk {
+	return u.Update(func(s *CustomerUpsert) {
+		s.UpdateDraft()
+	})
+}
+
+// ClearDraft clears the value of the "draft" field.
+func (u *CustomerUpsertBulk) ClearDraft() *CustomerUpsertBulk {
+	return u.Update(func(s *CustomerUpsert) {
+		s.ClearDraft()
+	})
+}
+
 // SetFeishuGroup sets the "feishu_group" field.
 func (u *CustomerUpsertBulk) SetFeishuGroup(v *zht.Group) *CustomerUpsertBulk {
 	return u.Update(func(s *CustomerUpsert) {
@@ -1727,6 +1898,27 @@ func (u *CustomerUpsertBulk) UpdateCreatedByID() *CustomerUpsertBulk {
 func (u *CustomerUpsertBulk) ClearCreatedByID() *CustomerUpsertBulk {
 	return u.Update(func(s *CustomerUpsert) {
 		s.ClearCreatedByID()
+	})
+}
+
+// SetUpdatedByID sets the "updated_by_id" field.
+func (u *CustomerUpsertBulk) SetUpdatedByID(v xid.ID) *CustomerUpsertBulk {
+	return u.Update(func(s *CustomerUpsert) {
+		s.SetUpdatedByID(v)
+	})
+}
+
+// UpdateUpdatedByID sets the "updated_by_id" field to the value that was provided on create.
+func (u *CustomerUpsertBulk) UpdateUpdatedByID() *CustomerUpsertBulk {
+	return u.Update(func(s *CustomerUpsert) {
+		s.UpdateUpdatedByID()
+	})
+}
+
+// ClearUpdatedByID clears the value of the "updated_by_id" field.
+func (u *CustomerUpsertBulk) ClearUpdatedByID() *CustomerUpsertBulk {
+	return u.Update(func(s *CustomerUpsert) {
+		s.ClearUpdatedByID()
 	})
 }
 

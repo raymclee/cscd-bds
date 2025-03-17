@@ -7,10 +7,14 @@ package graphql
 import (
 	"context"
 	"cscd-bds/config"
+	"cscd-bds/feishu"
 	"cscd-bds/graphql/generated"
 	"cscd-bds/store/ent"
 	"cscd-bds/store/ent/area"
+	"cscd-bds/store/ent/customer"
+	"cscd-bds/store/ent/district"
 	"cscd-bds/store/ent/schema/geo"
+	"cscd-bds/store/ent/schema/model"
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/user"
@@ -18,6 +22,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"slices"
 	"strings"
 	"time"
 
@@ -119,16 +124,65 @@ func (r *mutationResolver) CreateCustomer(ctx context.Context, input ent.CreateC
 	if err != nil {
 		return nil, fmt.Errorf("failed to get session: %w", err)
 	}
-	c, err := r.store.Customer.Create().SetInput(input).SetCreatedByID(xid.ID(sess.UserId)).Save(ctx)
+	areas, err := r.store.Area.Query().All(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get area: %w", err)
+	}
+
+	var isSH bool
+	for _, a := range areas {
+		if a.Code != "GA" && a.Code != "HW" && a.ID == input.AreaID {
+			isSH = true
+		}
+	}
+	q := r.store.Customer.Create().SetInput(input).SetCreatedByID(xid.ID(sess.UserId))
+	if !isSH {
+		q.SetApprovalStatus(2)
+	}
+
+	c, err := q.Save(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create customer: %w", err)
+	}
+
+	if isSH {
+		go func() {
+			ctxx := context.Background()
+
+			cus, err := r.store.Customer.Query().
+				Where(customer.ID(c.ID)).
+				WithArea().
+				WithCreatedBy().
+				WithApprover().
+				WithSales().
+				Only(ctxx)
+			if err != nil {
+				fmt.Printf("failed to get customer: %v\n", err)
+				return
+			}
+			chatId := r.feishu.GetSalesChatId(cus.Edges.Area)
+			if chatId == nil {
+				fmt.Printf("failed to get sales chat id: %v\n", errors.New("sales chat id is nil"))
+				return
+			}
+			if _, err := r.feishu.SendGroupMessage(ctxx, feishu.TemplateIdCustomerCreateRequest, &feishu.GroupMessageParams{
+				Customer: cus,
+				ChatId:   *chatId,
+			}); err != nil {
+				fmt.Printf("failed to send group message: %v\n", err)
+			}
+		}()
 	}
 	return &ent.CustomerConnection{Edges: []*ent.CustomerEdge{{Node: c}}}, nil
 }
 
 // UpdateCustomer is the resolver for the updateCustomer field.
 func (r *mutationResolver) UpdateCustomer(ctx context.Context, id xid.ID, input ent.UpdateCustomerInput) (*ent.Customer, error) {
-	return r.store.Customer.UpdateOneID(id).SetInput(input).Save(ctx)
+	sess, err := r.session.GetSession(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get session: %w", err)
+	}
+	return r.store.Customer.UpdateOneID(id).SetInput(input).SetUpdatedByID(xid.ID(sess.UserId)).Save(ctx)
 }
 
 // DeleteCustomer is the resolver for the deleteCustomer field.
@@ -138,6 +192,156 @@ func (r *mutationResolver) DeleteCustomer(ctx context.Context, id xid.ID) (*ent.
 		return nil, fmt.Errorf("failed to get customer: %w", err)
 	}
 	return c, r.store.Customer.DeleteOne(c).Exec(ctx)
+}
+
+// UpdateCustomerRequest is the resolver for the updateCustomerRequest field.
+func (r *mutationResolver) UpdateCustomerRequest(ctx context.Context, id xid.ID, input ent.UpdateCustomerInput) (*ent.Customer, error) {
+	sess, err := r.session.GetSession(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get session: %w", err)
+	}
+	draft := &model.Customer{
+		Name:                  input.Name,
+		OwnerType:             input.OwnerType,
+		Industry:              input.Industry,
+		Size:                  input.Size,
+		ContactPerson:         input.ContactPerson,
+		ContactPersonPosition: input.ContactPersonPosition,
+		ContactPersonPhone:    input.ContactPersonPhone,
+		ContactPersonEmail:    input.ContactPersonEmail,
+	}
+	if input.AreaID != nil {
+		id := string(*input.AreaID)
+		draft.AreaID = &id
+	}
+	if input.SalesID != nil {
+		id := string(*input.SalesID)
+		draft.SalesID = &id
+	}
+
+	cus, err := r.store.Customer.UpdateOneID(id).SetApprovalStatus(1).ClearApprover().SetDraft(draft).SetUpdatedByID(xid.ID(sess.UserId)).Save(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to update customer: %w", err)
+	}
+
+	go func() {
+		ctxx := context.Background()
+		ncus, err := r.store.Customer.Query().
+			Where(customer.ID(cus.ID)).
+			WithArea().
+			WithCreatedBy().
+			WithUpdatedBy().
+			WithApprover().
+			WithSales().
+			Only(ctxx)
+		if err != nil {
+			fmt.Printf("failed to get customer: %v\n", err)
+			return
+		}
+		chatId := r.feishu.GetLeaderChatId(ncus.Edges.Area)
+		if chatId == nil {
+			fmt.Printf("failed to get leader chat id: %v\n", errors.New("leader chat id is nil"))
+			return
+		}
+		if _, err := r.feishu.SendGroupMessage(ctxx, feishu.TemplateIdCustomerUpdateRequest, &feishu.GroupMessageParams{
+			Customer: ncus,
+			ChatId:   *chatId,
+		}); err != nil {
+			fmt.Printf("failed to send group message: %v\n", err)
+		}
+	}()
+
+	return cus, nil
+}
+
+// ApproveCustomerRequest is the resolver for the approveCustomerRequest field.
+func (r *mutationResolver) ApproveCustomerRequest(ctx context.Context, id xid.ID) (*ent.Customer, error) {
+	sess, err := r.session.GetSession(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get session: %w", err)
+	}
+	cus, err := r.store.ApproveCustomerUpdate(ctx, id, xid.ID(sess.UserId))
+	if err != nil {
+		return nil, fmt.Errorf("failed to approve customer request: %w", err)
+	}
+
+	go func() {
+		ctxx := context.Background()
+
+		ncus, err := r.store.Customer.Query().
+			Where(customer.ID(cus.ID)).
+			WithArea().
+			WithCreatedBy().
+			WithUpdatedBy().
+			WithApprover().
+			WithSales().
+			Only(ctxx)
+		if err != nil {
+			fmt.Printf("failed to get customer: %v\n", err)
+			return
+		}
+
+		chatId := r.feishu.GetSalesChatId(ncus.Edges.Area)
+		if chatId == nil {
+			fmt.Printf("failed to get sales chat id: %v\n", errors.New("sales chat id is nil"))
+			return
+		}
+		if _, err := r.feishu.SendGroupMessage(ctxx, feishu.TemplateIdCustomerApproved, &feishu.GroupMessageParams{
+			Customer: ncus,
+			ChatId:   *chatId,
+		}); err != nil {
+			fmt.Printf("failed to send group message: %v\n", err)
+		}
+	}()
+
+	return cus, nil
+}
+
+// RejectCustomerRequest is the resolver for the rejectCustomerRequest field.
+func (r *mutationResolver) RejectCustomerRequest(ctx context.Context, id xid.ID) (*ent.Customer, error) {
+	// cus, err := r.store.Customer.Get(ctx, id)
+	// if err != nil {
+	// 	return nil, fmt.Errorf("failed to get customer: %w", err)
+	// }
+	sess, err := r.session.GetSession(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get session: %w", err)
+	}
+	cus, err := r.store.Customer.UpdateOneID(id).SetApprovalStatus(3).ClearDraft().SetApproverID(xid.ID(sess.UserId)).Save(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to update customer: %w", err)
+	}
+
+	go func() {
+		ctxx := context.Background()
+
+		ncus, err := r.store.Customer.Query().
+			Where(customer.ID(cus.ID)).
+			WithArea().
+			WithCreatedBy().
+			WithUpdatedBy().
+			WithApprover().
+			WithSales().
+			Only(ctxx)
+		if err != nil {
+			fmt.Printf("failed to get customer: %v\n", err)
+			return
+		}
+
+		chatId := r.feishu.GetSalesChatId(ncus.Edges.Area)
+		if chatId == nil {
+			fmt.Printf("failed to get sales chat id: %v\n", errors.New("sales chat id is nil"))
+			return
+		}
+		if _, err := r.feishu.SendGroupMessage(ctxx, feishu.TemplateIdCustomerRejected, &feishu.GroupMessageParams{
+			Customer: ncus,
+			ChatId:   *chatId,
+		}); err != nil {
+			fmt.Printf("failed to send group message: %v\n", err)
+		}
+	}()
+
+	return cus, nil
 }
 
 // CreateTender is the resolver for the createTender field.
@@ -177,30 +381,32 @@ func (r *mutationResolver) CreateTender(ctx context.Context, input ent.CreateTen
 	code := fmt.Sprintf("%s%s%03d", a.Code, date.Format("20060102"), n)
 	q.SetCode(code)
 
-	// if (a.Code == "HW" || a.Code == "GA") && input.Address != nil {
-	// 	adcode, lng, lat, address, err := r.amap.GeoCode(*input.Address)
-	// 	if err != nil {
-	// 		return nil, fmt.Errorf("failed to get geo code: %w", err)
-	// 	}
-	// 	d, err := r.store.District.Query().Where(district.Adcode(adcode)).WithCity().WithProvince().Only(ctx)
-	// 	if err != nil {
-	// 		return nil, fmt.Errorf("failed to get district: %w", err)
-	// 	}
-	// 	if d.Edges.City != nil {
-	// 		q.SetCity(d.Edges.City)
-	// 	}
-	// 	if d.Edges.Province != nil {
-	// 		q.SetProvince(d.Edges.Province)
-	// 	}
-	// 	q.SetDistrict(d)
-	// 	q.SetFullAddress(address)
-	// 	center, err := geojson.Encode(geom.NewPoint(geom.XY).MustSetCoords(geom.Coord{lng, lat}).SetSRID(4326))
-	// 	if err != nil {
-	// 		return nil, fmt.Errorf("failed to encode geo coordinate: %w", err)
-	// 	}
-	// 	coordinate := &geo.GeoJson{Geometry: center}
-	// 	q.SetGeoCoordinate(coordinate).SetDistrict(d)
-	// }
+	isSHTender := util.IsSHTender(a.Code)
+
+	if (a.Code == "HW" || a.Code == "GA") && input.Address != nil {
+		adcode, lng, lat, address, err := r.amap.GeoCode(*input.Address)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get geo code: %w", err)
+		}
+		d, err := r.store.District.Query().Where(district.Adcode(adcode)).WithCity().WithProvince().Only(ctx)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get district: %w", err)
+		}
+		if d.Edges.City != nil {
+			q.SetCity(d.Edges.City)
+		}
+		if d.Edges.Province != nil {
+			q.SetProvince(d.Edges.Province)
+		}
+		q.SetDistrict(d)
+		q.SetFullAddress(address)
+		center, err := geojson.Encode(geom.NewPoint(geom.XY).MustSetCoords(geom.Coord{lng, lat}).SetSRID(4326))
+		if err != nil {
+			return nil, fmt.Errorf("failed to encode geo coordinate: %w", err)
+		}
+		coordinate := &geo.GeoJson{Geometry: center}
+		q.SetGeoCoordinate(coordinate).SetDistrict(d)
+	}
 
 	if len(geoCoordinate) > 1 {
 		lng, lat := geoCoordinate[1], geoCoordinate[0]
@@ -240,40 +446,59 @@ func (r *mutationResolver) CreateTender(ctx context.Context, input ent.CreateTen
 		}
 	}
 
+	if !isSHTender {
+		q.SetApprovalStatus(2)
+	}
+
 	t, err := q.Save(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create tender: %w", err)
 	}
 
-	if t.Status == 3 && a.Code != "GA" && a.Code != "HW" {
+	if t.Status == 3 && isSHTender {
 		go r.sap.InsertTender(r.store, t)
 	}
 
-	if a.Code != "GA" && a.Code != "HW" {
+	if isSHTender {
 		go func() {
-			tender, err := r.store.Tender.Query().
+			ctxx := context.Background()
+			ten, err := r.store.Tender.Query().
 				Where(tender.ID(t.ID)).
 				WithCreatedBy().
 				WithArea().
 				WithCustomer().
-				WithFollowingSales().
+				WithApprover().
 				WithFinder().
-				Only(context.Background())
+				Only(ctxx)
 			if err != nil {
 				fmt.Printf("failed to get tender: %v\n", err)
 				return
 			}
-			userIDs := make([]string, len(tender.Edges.FollowingSales)+1)
-			for i, u := range tender.Edges.FollowingSales {
-				userIDs[i] = u.OpenID
+			var params *feishu.GroupMessageParams
+			if !config.IsProd {
+				params = &feishu.GroupMessageParams{
+					Tender: ten,
+					ChatId: "oc_8af2e1d869f15821fc3d9bdc6dca80ad",
+				}
+			} else {
+				if ten.Edges.Area.LeaderChatID == nil {
+					fmt.Printf("failed to get tender: %v\n", errors.New("area leader chat id is nil"))
+					return
+				}
+				params = &feishu.GroupMessageParams{
+					Tender: ten,
+					ChatId: *ten.Edges.Area.LeaderChatID,
+				}
 			}
-			userIDs[len(userIDs)-1] = tender.Edges.Finder.OpenID
-			if err := r.feishu.SendGroupMessage(context.Background(), userIDs, tender); err != nil {
+
+			msgId, err := r.feishu.SendGroupMessage(ctxx, feishu.TemplateIdTenderCreateRequest, params)
+			if err != nil {
 				fmt.Printf("failed to send message: %v\n", err)
 			}
+			if err := ten.Update().SetApprovalMsgID(msgId).Exec(ctxx); err != nil {
+				fmt.Printf("failed to set approval msg id: %v\n", err)
+			}
 		}()
-	} else {
-		q.SetIsApproved(true)
 	}
 
 	return &ent.TenderConnection{
@@ -294,13 +519,14 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input en
 		return nil, fmt.Errorf("failed to get tender: %w", err)
 	}
 
-	fmt.Println(t.Edges.Area)
-
 	if t.CreatedByID != nil && string(*t.CreatedByID) != sess.UserId && (!sess.IsAdmin && !sess.IsSuperAdmin) {
 		return nil, fmt.Errorf("failed to update tender: %w", errors.New("permission denied"))
 	}
 
-	q := r.store.Tender.UpdateOneID(id).SetInput(input)
+	q := r.store.Tender.
+		UpdateOneID(id).
+		SetInput(input).
+		SetUpdatedByID(xid.ID(sess.UserId))
 	if len(geoBounds) > 0 {
 		q.SetGeoBounds(geoBounds)
 	} else {
@@ -331,7 +557,7 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input en
 
 			if img == fn {
 				util.DeleteStaticFile(string(t.ID), image)
-				removedImages = append(t.Images[:i], t.Images[i+1:]...)
+				removedImages = slices.Delete(t.Images, i, i+1)
 				continue
 			}
 		}
@@ -360,7 +586,7 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input en
 			at := strings.TrimPrefix(att, fmt.Sprintf("/static/%s/", string(t.ID)))
 			if at == fn {
 				util.DeleteStaticFile(string(t.ID), att)
-				removedAttachments = append(t.Attachements[:i], t.Attachements[i+1:]...)
+				removedAttachments = slices.Delete(t.Attachements, i, i+1)
 				continue
 			}
 		}
@@ -369,30 +595,30 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input en
 		q.SetAttachements(removedAttachments)
 	}
 
-	// if (t.Code == "HW" || t.Code == "GA") && input.Address != nil && t.Address != nil && *input.Address != *t.Address {
-	// 	adcode, lng, lat, address, err := r.amap.GeoCode(*input.Address)
-	// 	if err != nil {
-	// 		return nil, fmt.Errorf("failed to get geo code: %w", err)
-	// 	}
-	// 	d, err := r.store.District.Query().Where(district.Adcode(adcode)).WithCity().WithProvince().Only(ctx)
-	// 	if err != nil {
-	// 		return nil, fmt.Errorf("failed to get district: %w", err)
-	// 	}
-	// 	if d.Edges.City != nil {
-	// 		q.SetCity(d.Edges.City)
-	// 	}
-	// 	if d.Edges.Province != nil {
-	// 		q.SetProvince(d.Edges.Province)
-	// 	}
-	// 	q.SetDistrict(d)
-	// 	q.SetFullAddress(address)
-	// 	center, err := geojson.Encode(geom.NewPoint(geom.XY).MustSetCoords(geom.Coord{lng, lat}).SetSRID(4326))
-	// 	if err != nil {
-	// 		return nil, fmt.Errorf("failed to encode geo coordinate: %w", err)
-	// 	}
-	// 	coordinate := &geo.GeoJson{Geometry: center}
-	// 	q.SetGeoCoordinate(coordinate).SetDistrict(d)
-	// }
+	if (t.Code == "HW" || t.Code == "GA") && input.Address != nil && t.Address != nil && *input.Address != *t.Address {
+		adcode, lng, lat, address, err := r.amap.GeoCode(*input.Address)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get geo code: %w", err)
+		}
+		d, err := r.store.District.Query().Where(district.Adcode(adcode)).WithCity().WithProvince().Only(ctx)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get district: %w", err)
+		}
+		if d.Edges.City != nil {
+			q.SetCity(d.Edges.City)
+		}
+		if d.Edges.Province != nil {
+			q.SetProvince(d.Edges.Province)
+		}
+		q.SetDistrict(d)
+		q.SetFullAddress(address)
+		center, err := geojson.Encode(geom.NewPoint(geom.XY).MustSetCoords(geom.Coord{lng, lat}).SetSRID(4326))
+		if err != nil {
+			return nil, fmt.Errorf("failed to encode geo coordinate: %w", err)
+		}
+		coordinate := &geo.GeoJson{Geometry: center}
+		q.SetGeoCoordinate(coordinate).SetDistrict(d)
+	}
 
 	if len(geoCoordinate) > 1 {
 		lng, lat := geoCoordinate[1], geoCoordinate[0]
@@ -404,38 +630,118 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input en
 		q.SetGeoCoordinate(coordinate)
 	}
 
+	if input.ApprovalStatus != nil && *input.ApprovalStatus == 2 {
+		q.SetApprovalStatus(2)
+		q.SetApproverID(xid.ID(sess.UserId))
+	}
+
+	if t.ApprovalStatus == 3 && input.ApprovalStatus == nil {
+		q.SetApprovalStatus(1)
+	}
+
 	st, err := q.Save(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to update tender: %w", err)
 	}
 
-	if st.Status == 3 && t.Edges.Area.Code != "GA" && t.Edges.Area.Code != "HW" {
+	isSHTender := util.IsSHTender(t.Edges.Area.Code)
+
+	if st.Status == 3 && isSHTender {
 		go r.sap.InsertTender(r.store, st)
+		go func() {
+			ctxx := context.Background()
+			ten, err := r.store.Tender.Query().
+				Where(tender.ID(t.ID)).
+				WithCreatedBy().
+				WithArea().
+				WithCustomer().
+				WithApprover().
+				WithFinder().
+				Only(ctxx)
+			if err != nil {
+				fmt.Printf("failed to get tender: %v\n", err)
+				return
+			}
+			chatId := r.feishu.GetSalesChatId(ten.Edges.Area)
+			if chatId == nil {
+				fmt.Printf("failed to get sales chat id: %v\n", errors.New("sales chat id is nil"))
+				return
+			}
+			if _, err = r.feishu.SendGroupMessage(ctxx, feishu.TemplateIdTenderWin, &feishu.GroupMessageParams{
+				Tender: ten,
+				ChatId: *chatId,
+			}); err != nil {
+				fmt.Printf("failed to send group message: %v\n", err)
+			}
+		}()
 	}
 
-	if t.Edges.Area.Code != "GA" && t.Edges.Area.Code != "HW" {
-		// 	go func() {
-		// 		tender, err := r.store.Tender.Query().
-		// 			Where(tender.ID(t.ID)).
-		// 			WithCreatedBy().
-		// 			WithArea().
-		// 			WithCustomer().
-		// 			WithFollowingSales().
-		// 			WithFinder().
-		// 			Only(context.Background())
-		// 		if err != nil {
-		// 			fmt.Printf("failed to get tender: %v\n", err)
-		// 			return
-		// 		}
-		// 		userIDs := make([]string, len(tender.Edges.FollowingSales)+1)
-		// 		for i, u := range tender.Edges.FollowingSales {
-		// 			userIDs[i] = u.OpenID
-		// 		}
-		// 		userIDs[len(userIDs)-1] = tender.Edges.Finder.OpenID
-		// 		if err := r.feishu.SendGroupMessage(context.Background(), userIDs, tender); err != nil {
-		// 			fmt.Printf("failed to send message: %v\n", err)
-		// 		}
-		// 	}()
+	if st.Status != 3 && isSHTender && st.ApprovalStatus == 2 && input.ApprovalStatus == nil {
+		go func() {
+			ctxx := context.Background()
+			ten, err := r.store.Tender.Query().
+				Where(tender.ID(t.ID)).
+				WithCreatedBy().
+				WithUpdatedBy().
+				WithArea().
+				WithCustomer().
+				WithApprover().
+				WithFinder().
+				Only(ctxx)
+			if err != nil {
+				fmt.Printf("failed to get tender: %v\n", err)
+				return
+			}
+
+			chatId := r.feishu.GetSalesChatId(ten.Edges.Area)
+			if chatId == nil {
+				fmt.Printf("failed to get sales chat id: %v\n", errors.New("sales chat id is nil"))
+				return
+			}
+			if _, err = r.feishu.SendGroupMessage(ctxx, feishu.TemplateIdTenderUpdated, &feishu.GroupMessageParams{
+				Tender: ten,
+				ChatId: *chatId,
+			}); err != nil {
+				fmt.Printf("failed to send group message: %v\n", err)
+			}
+		}()
+	}
+
+	if st.Status != 3 && isSHTender && input.ApprovalStatus != nil && *input.ApprovalStatus == 2 && st.ApprovalMsgID != nil {
+		go func() {
+			ctxx := context.Background()
+			ten, err := r.store.Tender.Query().
+				Where(tender.ID(t.ID)).
+				WithCreatedBy().
+				WithUpdatedBy().
+				WithArea().
+				WithCustomer().
+				WithApprover().
+				WithFinder().
+				Only(ctxx)
+			if err != nil {
+				fmt.Printf("failed to get tender: %v\n", err)
+				return
+			}
+			if st.ApprovalMsgID != nil {
+				if err := r.feishu.UpdateGroupMessage(ctxx, *st.ApprovalMsgID, ten); err != nil {
+					fmt.Printf("failed to update group message: %v\n", err)
+				}
+			}
+
+			chatId := r.feishu.GetSalesChatId(ten.Edges.Area)
+			if chatId == nil {
+				fmt.Printf("failed to get sales chat id: %v\n", errors.New("sales chat id is nil"))
+				return
+			}
+			if _, err = r.feishu.SendGroupMessage(ctxx, feishu.TemplateIdTenderApproved, &feishu.GroupMessageParams{
+				Tender: ten,
+				ChatId: *chatId,
+			}); err != nil {
+				fmt.Printf("failed to send group message: %v\n", err)
+			}
+
+		}()
 	}
 
 	return st, nil

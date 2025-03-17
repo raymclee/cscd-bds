@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<6d7334b8c394594491164395eb48f806>>
+ * @generated SignedSource<<2bbec101f5db06c345153de14124ee86>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -11,7 +11,7 @@
 import { ConcreteRequest } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type OrderDirection = "ASC" | "DESC" | "%future added value";
-export type TenderOrderField = "CLOSING_DATE" | "CREATED_AT" | "NAME" | "TENDER_DATE" | "%future added value";
+export type TenderOrderField = "APPROVAL_STATUS" | "CLOSING_DATE" | "CREATED_AT" | "NAME" | "TENDER_DATE" | "%future added value";
 export type TenderOrder = {
   direction?: OrderDirection;
   field: TenderOrderField;
@@ -249,6 +249,13 @@ return {
                           {
                             "alias": null,
                             "args": null,
+                            "kind": "ScalarField",
+                            "name": "classify",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
                             "concreteType": "Area",
                             "kind": "LinkedField",
                             "name": "area",
@@ -260,7 +267,7 @@ return {
                             "alias": null,
                             "args": null,
                             "kind": "ScalarField",
-                            "name": "isApproved",
+                            "name": "approvalStatus",
                             "storageKey": null
                           },
                           {
@@ -428,12 +435,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "bc8bd968cbbcc009aa8a0914fbded7eb",
+    "cacheID": "efae071bc4743e3d6bb04128c889f5bf",
     "id": null,
     "metadata": {},
     "name": "tendersPageQuery",
     "operationKind": "query",
-    "text": "query tendersPageQuery(\n  $userId: ID!\n  $orderBy: [TenderOrder!]\n  $first: Int\n) {\n  node(id: $userId) {\n    __typename\n    ... on User {\n      ...tendersTenderListFragment_3p2xDJ\n    }\n    id\n  }\n}\n\nfragment tenderListItemFragment on Tender {\n  id\n  isApproved\n  name\n  status\n  createdAt\n  estimatedAmount\n  customer {\n    id\n    name\n  }\n  images\n  fullAddress\n  tenderDate\n  discoveryDate\n  tenderClosingDate\n  area {\n    id\n    name\n    code\n  }\n  followingSales {\n    id\n  }\n  createdBy {\n    id\n  }\n}\n\nfragment tendersTenderListFragment_3p2xDJ on User {\n  areas {\n    edges {\n      node {\n        id\n        code\n        name\n      }\n    }\n  }\n  tenders: myTenders(orderBy: $orderBy, first: $first) {\n    edges {\n      node {\n        id\n        name\n        status\n        tenderClosingDate\n        area {\n          id\n          code\n        }\n        ...tenderListItemFragment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n"
+    "text": "query tendersPageQuery(\n  $userId: ID!\n  $orderBy: [TenderOrder!]\n  $first: Int\n) {\n  node(id: $userId) {\n    __typename\n    ... on User {\n      ...tendersTenderListFragment_3p2xDJ\n    }\n    id\n  }\n}\n\nfragment tenderListItemFragment on Tender {\n  id\n  approvalStatus\n  name\n  status\n  createdAt\n  estimatedAmount\n  classify\n  customer {\n    id\n    name\n  }\n  images\n  fullAddress\n  tenderDate\n  discoveryDate\n  tenderClosingDate\n  area {\n    id\n    name\n    code\n  }\n  followingSales {\n    id\n  }\n  createdBy {\n    id\n  }\n}\n\nfragment tendersTenderListFragment_3p2xDJ on User {\n  areas {\n    edges {\n      node {\n        id\n        code\n        name\n      }\n    }\n  }\n  tenders: myTenders(orderBy: $orderBy, first: $first) {\n    edges {\n      node {\n        id\n        name\n        status\n        tenderClosingDate\n        classify\n        area {\n          id\n          code\n        }\n        ...tenderListItemFragment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n"
   }
 };
 })();

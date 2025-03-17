@@ -1179,6 +1179,22 @@ func (c *CustomerClient) QueryCreatedBy(cu *Customer) *UserQuery {
 	return query
 }
 
+// QueryUpdatedBy queries the updated_by edge of a Customer.
+func (c *CustomerClient) QueryUpdatedBy(cu *Customer) *UserQuery {
+	query := (&UserClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := cu.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(customer.Table, customer.FieldID, id),
+			sqlgraph.To(user.Table, user.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, customer.UpdatedByTable, customer.UpdatedByColumn),
+		)
+		fromV = sqlgraph.Neighbors(cu.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // QueryApprover queries the approver edge of a Customer.
 func (c *CustomerClient) QueryApprover(cu *Customer) *UserQuery {
 	query := (&UserClient{config: c.config}).Query()
@@ -2817,6 +2833,22 @@ func (c *TenderClient) QueryApprover(t *Tender) *UserQuery {
 			sqlgraph.From(tender.Table, tender.FieldID, id),
 			sqlgraph.To(user.Table, user.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, false, tender.ApproverTable, tender.ApproverColumn),
+		)
+		fromV = sqlgraph.Neighbors(t.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryUpdatedBy queries the updated_by edge of a Tender.
+func (c *TenderClient) QueryUpdatedBy(t *Tender) *UserQuery {
+	query := (&UserClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := t.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(tender.Table, tender.FieldID, id),
+			sqlgraph.To(user.Table, user.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, tender.UpdatedByTable, tender.UpdatedByColumn),
 		)
 		fromV = sqlgraph.Neighbors(t.driver.Dialect(), step)
 		return fromV, nil

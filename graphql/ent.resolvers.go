@@ -107,6 +107,9 @@ func (r *Resolver) City() generated.CityResolver { return &cityResolver{r} }
 // Country returns generated.CountryResolver implementation.
 func (r *Resolver) Country() generated.CountryResolver { return &countryResolver{r} }
 
+// Customer returns generated.CustomerResolver implementation.
+func (r *Resolver) Customer() generated.CustomerResolver { return &customerResolver{r} }
+
 // District returns generated.DistrictResolver implementation.
 func (r *Resolver) District() generated.DistrictResolver { return &districtResolver{r} }
 
@@ -125,8 +128,138 @@ func (r *Resolver) User() generated.UserResolver { return &userResolver{r} }
 type areaResolver struct{ *Resolver }
 type cityResolver struct{ *Resolver }
 type countryResolver struct{ *Resolver }
+type customerResolver struct{ *Resolver }
 type districtResolver struct{ *Resolver }
 type provinceResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
 type tenderResolver struct{ *Resolver }
 type userResolver struct{ *Resolver }
+
+// !!! WARNING !!!
+// The code below was going to be deleted when updating resolvers. It has been copied here so you have
+// one last chance to move it out of harms way if you want. There are two reasons this happens:
+//  - When renaming or deleting a resolver the old code will be put in here. You can safely delete
+//    it when you're done.
+//  - You have helper methods in this file. Move them out to keep these resolver files clean.
+/*
+	func (r *customerResolver) UpdatedByID(ctx context.Context, obj *ent.Customer) (*string, error) {
+	panic(fmt.Errorf("not implemented: UpdatedByID - updatedByID"))
+}
+func (r *tenderResolver) UpdatedByID(ctx context.Context, obj *ent.Tender) (*string, error) {
+	panic(fmt.Errorf("not implemented: UpdatedByID - updatedByID"))
+}
+func (r *createCustomerInputResolver) UpdatedByID(ctx context.Context, obj *ent.CreateCustomerInput, data *string) error {
+	panic(fmt.Errorf("not implemented: UpdatedByID - updatedByID"))
+}
+func (r *createTenderInputResolver) UpdatedByID(ctx context.Context, obj *ent.CreateTenderInput, data *string) error {
+	panic(fmt.Errorf("not implemented: UpdatedByID - updatedByID"))
+}
+func (r *customerWhereInputResolver) UpdatedByID(ctx context.Context, obj *ent.CustomerWhereInput, data *string) error {
+	panic(fmt.Errorf("not implemented: UpdatedByID - updatedByID"))
+}
+func (r *customerWhereInputResolver) UpdatedByIdneq(ctx context.Context, obj *ent.CustomerWhereInput, data *string) error {
+	panic(fmt.Errorf("not implemented: UpdatedByIdneq - updatedByIDNEQ"))
+}
+func (r *customerWhereInputResolver) UpdatedByIDIn(ctx context.Context, obj *ent.CustomerWhereInput, data []string) error {
+	panic(fmt.Errorf("not implemented: UpdatedByIDIn - updatedByIDIn"))
+}
+func (r *customerWhereInputResolver) UpdatedByIDNotIn(ctx context.Context, obj *ent.CustomerWhereInput, data []string) error {
+	panic(fmt.Errorf("not implemented: UpdatedByIDNotIn - updatedByIDNotIn"))
+}
+func (r *customerWhereInputResolver) UpdatedByIdgt(ctx context.Context, obj *ent.CustomerWhereInput, data *string) error {
+	panic(fmt.Errorf("not implemented: UpdatedByIdgt - updatedByIDGT"))
+}
+func (r *customerWhereInputResolver) UpdatedByIdgte(ctx context.Context, obj *ent.CustomerWhereInput, data *string) error {
+	panic(fmt.Errorf("not implemented: UpdatedByIdgte - updatedByIDGTE"))
+}
+func (r *customerWhereInputResolver) UpdatedByIdlt(ctx context.Context, obj *ent.CustomerWhereInput, data *string) error {
+	panic(fmt.Errorf("not implemented: UpdatedByIdlt - updatedByIDLT"))
+}
+func (r *customerWhereInputResolver) UpdatedByIdlte(ctx context.Context, obj *ent.CustomerWhereInput, data *string) error {
+	panic(fmt.Errorf("not implemented: UpdatedByIdlte - updatedByIDLTE"))
+}
+func (r *customerWhereInputResolver) UpdatedByIDContains(ctx context.Context, obj *ent.CustomerWhereInput, data *string) error {
+	panic(fmt.Errorf("not implemented: UpdatedByIDContains - updatedByIDContains"))
+}
+func (r *customerWhereInputResolver) UpdatedByIDHasPrefix(ctx context.Context, obj *ent.CustomerWhereInput, data *string) error {
+	panic(fmt.Errorf("not implemented: UpdatedByIDHasPrefix - updatedByIDHasPrefix"))
+}
+func (r *customerWhereInputResolver) UpdatedByIDHasSuffix(ctx context.Context, obj *ent.CustomerWhereInput, data *string) error {
+	panic(fmt.Errorf("not implemented: UpdatedByIDHasSuffix - updatedByIDHasSuffix"))
+}
+func (r *customerWhereInputResolver) UpdatedByIDEqualFold(ctx context.Context, obj *ent.CustomerWhereInput, data *string) error {
+	panic(fmt.Errorf("not implemented: UpdatedByIDEqualFold - updatedByIDEqualFold"))
+}
+func (r *customerWhereInputResolver) UpdatedByIDContainsFold(ctx context.Context, obj *ent.CustomerWhereInput, data *string) error {
+	panic(fmt.Errorf("not implemented: UpdatedByIDContainsFold - updatedByIDContainsFold"))
+}
+func (r *tenderWhereInputResolver) UpdatedByID(ctx context.Context, obj *ent.TenderWhereInput, data *string) error {
+	panic(fmt.Errorf("not implemented: UpdatedByID - updatedByID"))
+}
+func (r *tenderWhereInputResolver) UpdatedByIdneq(ctx context.Context, obj *ent.TenderWhereInput, data *string) error {
+	panic(fmt.Errorf("not implemented: UpdatedByIdneq - updatedByIDNEQ"))
+}
+func (r *tenderWhereInputResolver) UpdatedByIDIn(ctx context.Context, obj *ent.TenderWhereInput, data []string) error {
+	panic(fmt.Errorf("not implemented: UpdatedByIDIn - updatedByIDIn"))
+}
+func (r *tenderWhereInputResolver) UpdatedByIDNotIn(ctx context.Context, obj *ent.TenderWhereInput, data []string) error {
+	panic(fmt.Errorf("not implemented: UpdatedByIDNotIn - updatedByIDNotIn"))
+}
+func (r *tenderWhereInputResolver) UpdatedByIdgt(ctx context.Context, obj *ent.TenderWhereInput, data *string) error {
+	panic(fmt.Errorf("not implemented: UpdatedByIdgt - updatedByIDGT"))
+}
+func (r *tenderWhereInputResolver) UpdatedByIdgte(ctx context.Context, obj *ent.TenderWhereInput, data *string) error {
+	panic(fmt.Errorf("not implemented: UpdatedByIdgte - updatedByIDGTE"))
+}
+func (r *tenderWhereInputResolver) UpdatedByIdlt(ctx context.Context, obj *ent.TenderWhereInput, data *string) error {
+	panic(fmt.Errorf("not implemented: UpdatedByIdlt - updatedByIDLT"))
+}
+func (r *tenderWhereInputResolver) UpdatedByIdlte(ctx context.Context, obj *ent.TenderWhereInput, data *string) error {
+	panic(fmt.Errorf("not implemented: UpdatedByIdlte - updatedByIDLTE"))
+}
+func (r *tenderWhereInputResolver) UpdatedByIDContains(ctx context.Context, obj *ent.TenderWhereInput, data *string) error {
+	panic(fmt.Errorf("not implemented: UpdatedByIDContains - updatedByIDContains"))
+}
+func (r *tenderWhereInputResolver) UpdatedByIDHasPrefix(ctx context.Context, obj *ent.TenderWhereInput, data *string) error {
+	panic(fmt.Errorf("not implemented: UpdatedByIDHasPrefix - updatedByIDHasPrefix"))
+}
+func (r *tenderWhereInputResolver) UpdatedByIDHasSuffix(ctx context.Context, obj *ent.TenderWhereInput, data *string) error {
+	panic(fmt.Errorf("not implemented: UpdatedByIDHasSuffix - updatedByIDHasSuffix"))
+}
+func (r *tenderWhereInputResolver) UpdatedByIDEqualFold(ctx context.Context, obj *ent.TenderWhereInput, data *string) error {
+	panic(fmt.Errorf("not implemented: UpdatedByIDEqualFold - updatedByIDEqualFold"))
+}
+func (r *tenderWhereInputResolver) UpdatedByIDContainsFold(ctx context.Context, obj *ent.TenderWhereInput, data *string) error {
+	panic(fmt.Errorf("not implemented: UpdatedByIDContainsFold - updatedByIDContainsFold"))
+}
+func (r *updateCustomerInputResolver) UpdatedByID(ctx context.Context, obj *ent.UpdateCustomerInput, data *string) error {
+	panic(fmt.Errorf("not implemented: UpdatedByID - updatedByID"))
+}
+func (r *updateTenderInputResolver) UpdatedByID(ctx context.Context, obj *ent.UpdateTenderInput, data *string) error {
+	panic(fmt.Errorf("not implemented: UpdatedByID - updatedByID"))
+}
+func (r *Resolver) CreateCustomerInput() generated.CreateCustomerInputResolver {
+	return &createCustomerInputResolver{r}
+}
+func (r *Resolver) CreateTenderInput() generated.CreateTenderInputResolver {
+	return &createTenderInputResolver{r}
+}
+func (r *Resolver) CustomerWhereInput() generated.CustomerWhereInputResolver {
+	return &customerWhereInputResolver{r}
+}
+func (r *Resolver) TenderWhereInput() generated.TenderWhereInputResolver {
+	return &tenderWhereInputResolver{r}
+}
+func (r *Resolver) UpdateCustomerInput() generated.UpdateCustomerInputResolver {
+	return &updateCustomerInputResolver{r}
+}
+func (r *Resolver) UpdateTenderInput() generated.UpdateTenderInputResolver {
+	return &updateTenderInputResolver{r}
+}
+type createCustomerInputResolver struct{ *Resolver }
+type createTenderInputResolver struct{ *Resolver }
+type customerWhereInputResolver struct{ *Resolver }
+type tenderWhereInputResolver struct{ *Resolver }
+type updateCustomerInputResolver struct{ *Resolver }
+type updateTenderInputResolver struct{ *Resolver }
+*/

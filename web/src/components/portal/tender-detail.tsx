@@ -13,11 +13,15 @@ import {
   Image,
   List,
   Space,
+  Tag,
 } from "antd";
 import dayjs from "dayjs";
 import { graphql, useFragment } from "react-relay";
 import { useUpdateTender } from "~/hooks/use-update-tender";
+import { isSH } from "~/lib/areas";
 import {
+  approvalStatusTagColor,
+  approvalStatusText,
   classifyText,
   fixAmount,
   levelInvolvedText,
@@ -33,7 +37,7 @@ type TenderDetailProps = {
 export const TenderDetailFragment = graphql`
   fragment tenderDetailFragment on Tender {
     id
-    isApproved
+    approvalStatus
     code
     name
     status
@@ -185,8 +189,9 @@ function SHTender({ tender }: { tender: tenderDetailFragment$data }) {
     attachements,
     finder,
     followingSales,
-    isApproved,
+    approvalStatus,
     classify,
+    area,
   } = tender;
   const { message, modal } = App.useApp();
   const [updateTender, inFlight] = useUpdateTender();
@@ -195,19 +200,36 @@ function SHTender({ tender }: { tender: tenderDetailFragment$data }) {
     <div className="!space-y-4">
       <Descriptions
         className="rounded-lg bg-white !p-6"
-        title={name}
+        title={
+          <div className="flex items-center gap-2">
+            <span>{name}</span>
+            {isSH(area.code) && (
+              <Tag color={approvalStatusTagColor(approvalStatus)}>
+                {approvalStatusText(approvalStatus)}
+              </Tag>
+            )}
+          </div>
+        }
         extra={
           canEdit(session, { tender }) && (
             <Space>
-              <Link to="/portal/tenders/$id/edit" params={{ id }}>
-                <Button type="primary" icon={<EditOutlined />}>
+              <Link
+                to="/portal/tenders/$id/edit"
+                params={{ id }}
+                disabled={approvalStatus == 1}
+              >
+                <Button
+                  type="primary"
+                  icon={<EditOutlined />}
+                  disabled={approvalStatus == 1}
+                >
                   编辑
                 </Button>
               </Link>
               {(session.isAdmin || session.isSuperAdmin) && (
                 <Button
                   type="primary"
-                  disabled={isApproved}
+                  disabled={approvalStatus > 1}
                   icon={<CheckOutlined />}
                   onClick={async () => {
                     const confirmed = await modal.confirm({
@@ -223,7 +245,7 @@ function SHTender({ tender }: { tender: tenderDetailFragment$data }) {
                       updateTender({
                         variables: {
                           id,
-                          input: { isApproved: true },
+                          input: { approvalStatus: 2 },
                           attachmentFileNames: [],
                           imageFileNames: [],
                         },
@@ -260,11 +282,6 @@ function SHTender({ tender }: { tender: tenderDetailFragment$data }) {
                 {customer?.name}
               </Link>
             ),
-          },
-          {
-            key: "isApproved",
-            label: "审批状态",
-            children: isApproved ? "已审批" : "未审批",
           },
           {
             key: "finder",

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<5bcab835aa660789a46e10d2ff8b1947>>
+ * @generated SignedSource<<09d0433c81ce275c90c8eacd3e01d8cc>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -124,7 +124,7 @@ return {
                       "kind": "Literal",
                       "name": "where",
                       "value": {
-                        "isApproved": true
+                        "approvalStatusGT": 1
                       }
                     }
                   ],
@@ -211,7 +211,7 @@ return {
                       "storageKey": null
                     }
                   ],
-                  "storageKey": "__tenderFormFragment_customers_connection(where:{\"isApproved\":true})"
+                  "storageKey": "__tenderFormFragment_customers_connection(where:{\"approvalStatusGT\":1})"
                 },
                 {
                   "alias": null,
@@ -263,6 +263,6 @@ return {
 };
 })();
 
-(node as any).hash = "242c76386dd7f19296322661889b2dc9";
+(node as any).hash = "e079ccd85f6f2e1e03a238f3d6dc0f9a";
 
 export default node;

@@ -23,8 +23,10 @@ const (
 	FieldCode = "code"
 	// FieldStatus holds the string denoting the status field in the database.
 	FieldStatus = "status"
-	// FieldIsApproved holds the string denoting the is_approved field in the database.
-	FieldIsApproved = "is_approved"
+	// FieldApprovalStatus holds the string denoting the approval_status field in the database.
+	FieldApprovalStatus = "approval_status"
+	// FieldApprovalMsgID holds the string denoting the approval_msg_id field in the database.
+	FieldApprovalMsgID = "approval_msg_id"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
 	// FieldEstimatedAmount holds the string denoting the estimated_amount field in the database.
@@ -151,6 +153,8 @@ const (
 	FieldCompetitorID = "competitor_id"
 	// FieldApproverID holds the string denoting the approver_id field in the database.
 	FieldApproverID = "approver_id"
+	// FieldUpdatedByID holds the string denoting the updated_by_id field in the database.
+	FieldUpdatedByID = "updated_by_id"
 	// EdgeArea holds the string denoting the area edge name in mutations.
 	EdgeArea = "area"
 	// EdgeCustomer holds the string denoting the customer edge name in mutations.
@@ -173,6 +177,8 @@ const (
 	EdgeCompetitor = "competitor"
 	// EdgeApprover holds the string denoting the approver edge name in mutations.
 	EdgeApprover = "approver"
+	// EdgeUpdatedBy holds the string denoting the updated_by edge name in mutations.
+	EdgeUpdatedBy = "updated_by"
 	// Table holds the table name of the tender in the database.
 	Table = "tenders"
 	// AreaTable is the table that holds the area relation/edge.
@@ -250,6 +256,13 @@ const (
 	ApproverInverseTable = "users"
 	// ApproverColumn is the table column denoting the approver relation/edge.
 	ApproverColumn = "approver_id"
+	// UpdatedByTable is the table that holds the updated_by relation/edge.
+	UpdatedByTable = "tenders"
+	// UpdatedByInverseTable is the table name for the User entity.
+	// It exists in this package in order to avoid circular dependency with the "user" package.
+	UpdatedByInverseTable = "users"
+	// UpdatedByColumn is the table column denoting the updated_by relation/edge.
+	UpdatedByColumn = "updated_by_id"
 )
 
 // Columns holds all SQL columns for tender fields.
@@ -259,7 +272,8 @@ var Columns = []string{
 	FieldUpdatedAt,
 	FieldCode,
 	FieldStatus,
-	FieldIsApproved,
+	FieldApprovalStatus,
+	FieldApprovalMsgID,
 	FieldName,
 	FieldEstimatedAmount,
 	FieldTenderDate,
@@ -323,6 +337,7 @@ var Columns = []string{
 	FieldCreatedByID,
 	FieldCompetitorID,
 	FieldApproverID,
+	FieldUpdatedByID,
 }
 
 var (
@@ -350,8 +365,10 @@ var (
 	UpdateDefaultUpdatedAt func() time.Time
 	// DefaultStatus holds the default value on creation for the "status" field.
 	DefaultStatus int
-	// DefaultIsApproved holds the default value on creation for the "is_approved" field.
-	DefaultIsApproved bool
+	// DefaultApprovalStatus holds the default value on creation for the "approval_status" field.
+	DefaultApprovalStatus int
+	// ApprovalStatusValidator is a validator for the "approval_status" field. It is called by the builders before save.
+	ApprovalStatusValidator func(int) error
 	// ClassifyValidator is a validator for the "classify" field. It is called by the builders before save.
 	ClassifyValidator func(int) error
 	// LevelInvolvedValidator is a validator for the "level_involved" field. It is called by the builders before save.
@@ -406,9 +423,14 @@ func ByStatus(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldStatus, opts...).ToFunc()
 }
 
-// ByIsApproved orders the results by the is_approved field.
-func ByIsApproved(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldIsApproved, opts...).ToFunc()
+// ByApprovalStatus orders the results by the approval_status field.
+func ByApprovalStatus(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldApprovalStatus, opts...).ToFunc()
+}
+
+// ByApprovalMsgID orders the results by the approval_msg_id field.
+func ByApprovalMsgID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldApprovalMsgID, opts...).ToFunc()
 }
 
 // ByName orders the results by the name field.
@@ -711,6 +733,11 @@ func ByApproverID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldApproverID, opts...).ToFunc()
 }
 
+// ByUpdatedByID orders the results by the updated_by_id field.
+func ByUpdatedByID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldUpdatedByID, opts...).ToFunc()
+}
+
 // ByAreaField orders the results by area field.
 func ByAreaField(field string, opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
@@ -801,6 +828,13 @@ func ByApproverField(field string, opts ...sql.OrderTermOption) OrderOption {
 		sqlgraph.OrderByNeighborTerms(s, newApproverStep(), sql.OrderByField(field, opts...))
 	}
 }
+
+// ByUpdatedByField orders the results by updated_by field.
+func ByUpdatedByField(field string, opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newUpdatedByStep(), sql.OrderByField(field, opts...))
+	}
+}
 func newAreaStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
@@ -876,5 +910,12 @@ func newApproverStep() *sqlgraph.Step {
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(ApproverInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.M2O, false, ApproverTable, ApproverColumn),
+	)
+}
+func newUpdatedByStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(UpdatedByInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, false, UpdatedByTable, UpdatedByColumn),
 	)
 }

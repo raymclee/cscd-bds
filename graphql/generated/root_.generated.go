@@ -38,6 +38,7 @@ type ResolverRoot interface {
 	Area() AreaResolver
 	City() CityResolver
 	Country() CountryResolver
+	Customer() CustomerResolver
 	District() DistrictResolver
 	Mutation() MutationResolver
 	Province() ProvinceResolver
@@ -143,6 +144,7 @@ type ComplexityRoot struct {
 	}
 
 	Customer struct {
+		ApprovalStatus        func(childComplexity int) int
 		Approver              func(childComplexity int) int
 		ApproverID            func(childComplexity int) int
 		Area                  func(childComplexity int) int
@@ -154,9 +156,9 @@ type ComplexityRoot struct {
 		CreatedAt             func(childComplexity int) int
 		CreatedBy             func(childComplexity int) int
 		CreatedByID           func(childComplexity int) int
+		Draft                 func(childComplexity int) int
 		ID                    func(childComplexity int) int
 		Industry              func(childComplexity int) int
-		IsApproved            func(childComplexity int) int
 		Name                  func(childComplexity int) int
 		OwnerType             func(childComplexity int) int
 		Sales                 func(childComplexity int) int
@@ -164,6 +166,8 @@ type ComplexityRoot struct {
 		Size                  func(childComplexity int) int
 		Tenders               func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.TenderOrder, where *ent.TenderWhereInput) int
 		UpdatedAt             func(childComplexity int) int
+		UpdatedBy             func(childComplexity int) int
+		UpdatedByID           func(childComplexity int) int
 		VisitRecords          func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.VisitRecordOrder, where *ent.VisitRecordWhereInput) int
 	}
 
@@ -171,6 +175,19 @@ type ComplexityRoot struct {
 		Edges      func(childComplexity int) int
 		PageInfo   func(childComplexity int) int
 		TotalCount func(childComplexity int) int
+	}
+
+	CustomerDraft struct {
+		Area                  func(childComplexity int) int
+		ContactPerson         func(childComplexity int) int
+		ContactPersonEmail    func(childComplexity int) int
+		ContactPersonPhone    func(childComplexity int) int
+		ContactPersonPosition func(childComplexity int) int
+		Industry              func(childComplexity int) int
+		Name                  func(childComplexity int) int
+		OwnerType             func(childComplexity int) int
+		Sales                 func(childComplexity int) int
+		Size                  func(childComplexity int) int
 	}
 
 	CustomerEdge struct {
@@ -230,27 +247,30 @@ type ComplexityRoot struct {
 	}
 
 	Mutation struct {
-		CreateArea        func(childComplexity int, input ent.CreateAreaInput) int
-		CreateCompetitor  func(childComplexity int, input ent.CreateCompetitorInput) int
-		CreateCustomer    func(childComplexity int, input ent.CreateCustomerInput) int
-		CreatePlot        func(childComplexity int, input ent.CreatePlotInput, geoBounds [][]float64) int
-		CreateTender      func(childComplexity int, input ent.CreateTenderInput, geoBounds [][]float64, imageFileNames []string, attachmentFileNames []string, geoCoordinate []float64) int
-		CreateUser        func(childComplexity int, input ent.CreateUserInput) int
-		CreateVisitRecord func(childComplexity int, input ent.CreateVisitRecordInput) int
-		DeleteCompetitor  func(childComplexity int, id xid.ID) int
-		DeleteCustomer    func(childComplexity int, id xid.ID) int
-		DeletePlot        func(childComplexity int, id xid.ID) int
-		DeleteTender      func(childComplexity int, id xid.ID) int
-		DeleteUser        func(childComplexity int, id xid.ID) int
-		DeleteVisitRecord func(childComplexity int, id xid.ID) int
-		UpdateArea        func(childComplexity int, id xid.ID, input ent.UpdateAreaInput) int
-		UpdateCompetitor  func(childComplexity int, id xid.ID, input ent.UpdateCompetitorInput) int
-		UpdateCustomer    func(childComplexity int, id xid.ID, input ent.UpdateCustomerInput) int
-		UpdatePlot        func(childComplexity int, id xid.ID, input ent.UpdatePlotInput, geoBounds [][]float64) int
-		UpdateProject     func(childComplexity int, id xid.ID, input ent.UpdateProjectInput) int
-		UpdateTender      func(childComplexity int, id xid.ID, input ent.UpdateTenderInput, geoBounds [][]float64, imageFileNames []string, removeImageFileNames []string, attachmentFileNames []string, removeAttachmentFileNames []string, geoCoordinate []float64) int
-		UpdateUser        func(childComplexity int, id xid.ID, input ent.UpdateUserInput) int
-		UpdateVisitRecord func(childComplexity int, id xid.ID, input ent.UpdateVisitRecordInput) int
+		ApproveCustomerRequest func(childComplexity int, id xid.ID) int
+		CreateArea             func(childComplexity int, input ent.CreateAreaInput) int
+		CreateCompetitor       func(childComplexity int, input ent.CreateCompetitorInput) int
+		CreateCustomer         func(childComplexity int, input ent.CreateCustomerInput) int
+		CreatePlot             func(childComplexity int, input ent.CreatePlotInput, geoBounds [][]float64) int
+		CreateTender           func(childComplexity int, input ent.CreateTenderInput, geoBounds [][]float64, imageFileNames []string, attachmentFileNames []string, geoCoordinate []float64) int
+		CreateUser             func(childComplexity int, input ent.CreateUserInput) int
+		CreateVisitRecord      func(childComplexity int, input ent.CreateVisitRecordInput) int
+		DeleteCompetitor       func(childComplexity int, id xid.ID) int
+		DeleteCustomer         func(childComplexity int, id xid.ID) int
+		DeletePlot             func(childComplexity int, id xid.ID) int
+		DeleteTender           func(childComplexity int, id xid.ID) int
+		DeleteUser             func(childComplexity int, id xid.ID) int
+		DeleteVisitRecord      func(childComplexity int, id xid.ID) int
+		RejectCustomerRequest  func(childComplexity int, id xid.ID) int
+		UpdateArea             func(childComplexity int, id xid.ID, input ent.UpdateAreaInput) int
+		UpdateCompetitor       func(childComplexity int, id xid.ID, input ent.UpdateCompetitorInput) int
+		UpdateCustomer         func(childComplexity int, id xid.ID, input ent.UpdateCustomerInput) int
+		UpdateCustomerRequest  func(childComplexity int, id xid.ID, input ent.UpdateCustomerInput) int
+		UpdatePlot             func(childComplexity int, id xid.ID, input ent.UpdatePlotInput, geoBounds [][]float64) int
+		UpdateProject          func(childComplexity int, id xid.ID, input ent.UpdateProjectInput) int
+		UpdateTender           func(childComplexity int, id xid.ID, input ent.UpdateTenderInput, geoBounds [][]float64, imageFileNames []string, removeImageFileNames []string, attachmentFileNames []string, removeAttachmentFileNames []string, geoCoordinate []float64) int
+		UpdateUser             func(childComplexity int, id xid.ID, input ent.UpdateUserInput) int
+		UpdateVisitRecord      func(childComplexity int, id xid.ID, input ent.UpdateVisitRecordInput) int
 	}
 
 	Operation struct {
@@ -552,6 +572,8 @@ type ComplexityRoot struct {
 
 	Tender struct {
 		Address                              func(childComplexity int) int
+		ApprovalMsgID                        func(childComplexity int) int
+		ApprovalStatus                       func(childComplexity int) int
 		Approver                             func(childComplexity int) int
 		ApproverID                           func(childComplexity int) int
 		Architect                            func(childComplexity int) int
@@ -601,7 +623,6 @@ type ComplexityRoot struct {
 		GeoCoordinate                        func(childComplexity int) int
 		ID                                   func(childComplexity int) int
 		Images                               func(childComplexity int) int
-		IsApproved                           func(childComplexity int) int
 		KeyProject                           func(childComplexity int) int
 		LastTenderAmount                     func(childComplexity int) int
 		LevelInvolved                        func(childComplexity int) int
@@ -630,6 +651,8 @@ type ComplexityRoot struct {
 		TimeLimitRating                      func(childComplexity int) int
 		TimeLimitRatingOverview              func(childComplexity int) int
 		UpdatedAt                            func(childComplexity int) int
+		UpdatedBy                            func(childComplexity int) int
+		UpdatedByID                          func(childComplexity int) int
 		VisitRecords                         func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.VisitRecordOrder, where *ent.VisitRecordWhereInput) int
 	}
 
@@ -1168,6 +1191,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.CountryEdge.Node(childComplexity), true
 
+	case "Customer.approvalStatus":
+		if e.complexity.Customer.ApprovalStatus == nil {
+			break
+		}
+
+		return e.complexity.Customer.ApprovalStatus(childComplexity), true
+
 	case "Customer.approver":
 		if e.complexity.Customer.Approver == nil {
 			break
@@ -1245,6 +1275,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Customer.CreatedByID(childComplexity), true
 
+	case "Customer.draft":
+		if e.complexity.Customer.Draft == nil {
+			break
+		}
+
+		return e.complexity.Customer.Draft(childComplexity), true
+
 	case "Customer.id":
 		if e.complexity.Customer.ID == nil {
 			break
@@ -1258,13 +1295,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Customer.Industry(childComplexity), true
-
-	case "Customer.isApproved":
-		if e.complexity.Customer.IsApproved == nil {
-			break
-		}
-
-		return e.complexity.Customer.IsApproved(childComplexity), true
 
 	case "Customer.name":
 		if e.complexity.Customer.Name == nil {
@@ -1320,6 +1350,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Customer.UpdatedAt(childComplexity), true
 
+	case "Customer.updatedBy":
+		if e.complexity.Customer.UpdatedBy == nil {
+			break
+		}
+
+		return e.complexity.Customer.UpdatedBy(childComplexity), true
+
+	case "Customer.updatedByID":
+		if e.complexity.Customer.UpdatedByID == nil {
+			break
+		}
+
+		return e.complexity.Customer.UpdatedByID(childComplexity), true
+
 	case "Customer.visitRecords":
 		if e.complexity.Customer.VisitRecords == nil {
 			break
@@ -1352,6 +1396,76 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.CustomerConnection.TotalCount(childComplexity), true
+
+	case "CustomerDraft.area":
+		if e.complexity.CustomerDraft.Area == nil {
+			break
+		}
+
+		return e.complexity.CustomerDraft.Area(childComplexity), true
+
+	case "CustomerDraft.contactPerson":
+		if e.complexity.CustomerDraft.ContactPerson == nil {
+			break
+		}
+
+		return e.complexity.CustomerDraft.ContactPerson(childComplexity), true
+
+	case "CustomerDraft.contactPersonEmail":
+		if e.complexity.CustomerDraft.ContactPersonEmail == nil {
+			break
+		}
+
+		return e.complexity.CustomerDraft.ContactPersonEmail(childComplexity), true
+
+	case "CustomerDraft.contactPersonPhone":
+		if e.complexity.CustomerDraft.ContactPersonPhone == nil {
+			break
+		}
+
+		return e.complexity.CustomerDraft.ContactPersonPhone(childComplexity), true
+
+	case "CustomerDraft.contactPersonPosition":
+		if e.complexity.CustomerDraft.ContactPersonPosition == nil {
+			break
+		}
+
+		return e.complexity.CustomerDraft.ContactPersonPosition(childComplexity), true
+
+	case "CustomerDraft.industry":
+		if e.complexity.CustomerDraft.Industry == nil {
+			break
+		}
+
+		return e.complexity.CustomerDraft.Industry(childComplexity), true
+
+	case "CustomerDraft.name":
+		if e.complexity.CustomerDraft.Name == nil {
+			break
+		}
+
+		return e.complexity.CustomerDraft.Name(childComplexity), true
+
+	case "CustomerDraft.ownerType":
+		if e.complexity.CustomerDraft.OwnerType == nil {
+			break
+		}
+
+		return e.complexity.CustomerDraft.OwnerType(childComplexity), true
+
+	case "CustomerDraft.sales":
+		if e.complexity.CustomerDraft.Sales == nil {
+			break
+		}
+
+		return e.complexity.CustomerDraft.Sales(childComplexity), true
+
+	case "CustomerDraft.size":
+		if e.complexity.CustomerDraft.Size == nil {
+			break
+		}
+
+		return e.complexity.CustomerDraft.Size(childComplexity), true
 
 	case "CustomerEdge.cursor":
 		if e.complexity.CustomerEdge.Cursor == nil {
@@ -1608,6 +1722,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Location.Province(childComplexity), true
 
+	case "Mutation.approveCustomerRequest":
+		if e.complexity.Mutation.ApproveCustomerRequest == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_approveCustomerRequest_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.ApproveCustomerRequest(childComplexity, args["id"].(xid.ID)), true
+
 	case "Mutation.createArea":
 		if e.complexity.Mutation.CreateArea == nil {
 			break
@@ -1764,6 +1890,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.DeleteVisitRecord(childComplexity, args["id"].(xid.ID)), true
 
+	case "Mutation.rejectCustomerRequest":
+		if e.complexity.Mutation.RejectCustomerRequest == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_rejectCustomerRequest_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.RejectCustomerRequest(childComplexity, args["id"].(xid.ID)), true
+
 	case "Mutation.updateArea":
 		if e.complexity.Mutation.UpdateArea == nil {
 			break
@@ -1799,6 +1937,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.UpdateCustomer(childComplexity, args["id"].(xid.ID), args["input"].(ent.UpdateCustomerInput)), true
+
+	case "Mutation.updateCustomerRequest":
+		if e.complexity.Mutation.UpdateCustomerRequest == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_updateCustomerRequest_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.UpdateCustomerRequest(childComplexity, args["id"].(xid.ID), args["input"].(ent.UpdateCustomerInput)), true
 
 	case "Mutation.updatePlot":
 		if e.complexity.Mutation.UpdatePlot == nil {
@@ -3598,6 +3748,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Tender.Address(childComplexity), true
 
+	case "Tender.approvalMsgID":
+		if e.complexity.Tender.ApprovalMsgID == nil {
+			break
+		}
+
+		return e.complexity.Tender.ApprovalMsgID(childComplexity), true
+
+	case "Tender.approvalStatus":
+		if e.complexity.Tender.ApprovalStatus == nil {
+			break
+		}
+
+		return e.complexity.Tender.ApprovalStatus(childComplexity), true
+
 	case "Tender.approver":
 		if e.complexity.Tender.Approver == nil {
 			break
@@ -3941,13 +4105,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Tender.Images(childComplexity), true
 
-	case "Tender.isApproved":
-		if e.complexity.Tender.IsApproved == nil {
-			break
-		}
-
-		return e.complexity.Tender.IsApproved(childComplexity), true
-
 	case "Tender.keyProject":
 		if e.complexity.Tender.KeyProject == nil {
 			break
@@ -4143,6 +4300,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Tender.UpdatedAt(childComplexity), true
+
+	case "Tender.updatedBy":
+		if e.complexity.Tender.UpdatedBy == nil {
+			break
+		}
+
+		return e.complexity.Tender.UpdatedBy(childComplexity), true
+
+	case "Tender.updatedByID":
+		if e.complexity.Tender.UpdatedByID == nil {
+			break
+		}
+
+		return e.complexity.Tender.UpdatedByID(childComplexity), true
 
 	case "Tender.visitRecords":
 		if e.complexity.Tender.VisitRecords == nil {
@@ -5684,7 +5855,10 @@ input CreateCustomerInput {
   createdAt: Time
   updatedAt: Time
   name: String!
-  isApproved: Boolean
+  """
+  1 待審核 2 已通過 3 已拒絕
+  """
+  approvalStatus: Int
   ownerType: Int
   industry: Int
   size: Int
@@ -5696,6 +5870,7 @@ input CreateCustomerInput {
   tenderIDs: [ID!]
   salesID: ID
   createdByID: ID
+  updatedByID: ID
   approverID: ID
   visitRecordIDs: [ID!]
 }
@@ -5773,7 +5948,14 @@ input CreateTenderInput {
   updatedAt: Time
   code: String!
   status: Int
-  isApproved: Boolean
+  """
+  1 待審核 2 已通過 3 已拒絕
+  """
+  approvalStatus: Int
+  """
+  審核飛書訊息ID
+  """
+  approvalMsgID: String
   name: String!
   estimatedAmount: Float
   tenderDate: Time
@@ -5861,6 +6043,7 @@ input CreateTenderInput {
   visitRecordIDs: [ID!]
   competitorID: ID
   approverID: ID
+  updatedByID: ID
 }
 """
 CreateUserInput is used for create User object.
@@ -5914,7 +6097,10 @@ type Customer implements Node {
   createdAt: Time!
   updatedAt: Time!
   name: String!
-  isApproved: Boolean!
+  """
+  1 待審核 2 已通過 3 已拒絕
+  """
+  approvalStatus: Int!
   ownerType: Int
   industry: Int
   size: Int
@@ -5925,6 +6111,7 @@ type Customer implements Node {
   areaID: ID!
   salesID: ID
   createdByID: ID
+  updatedByID: ID
   approverID: ID
   area: Area!
   tenders(
@@ -5960,6 +6147,7 @@ type Customer implements Node {
   ): TenderConnection!
   sales: User
   createdBy: User
+  updatedBy: User
   approver: User
   visitRecords(
     """
@@ -6042,6 +6230,7 @@ Properties by which Customer connections can be ordered.
 enum CustomerOrderField {
   CREATED_AT
   NAME
+  APPROVAL_STATUS
   OWNER_TYPE
 }
 """
@@ -6102,10 +6291,16 @@ input CustomerWhereInput {
   nameEqualFold: String
   nameContainsFold: String
   """
-  is_approved field predicates
+  approval_status field predicates
   """
-  isApproved: Boolean
-  isApprovedNEQ: Boolean
+  approvalStatus: Int
+  approvalStatusNEQ: Int
+  approvalStatusIn: [Int!]
+  approvalStatusNotIn: [Int!]
+  approvalStatusGT: Int
+  approvalStatusGTE: Int
+  approvalStatusLT: Int
+  approvalStatusLTE: Int
   """
   owner_type field predicates
   """
@@ -6270,6 +6465,24 @@ input CustomerWhereInput {
   createdByIDEqualFold: ID
   createdByIDContainsFold: ID
   """
+  updated_by_id field predicates
+  """
+  updatedByID: ID
+  updatedByIDNEQ: ID
+  updatedByIDIn: [ID!]
+  updatedByIDNotIn: [ID!]
+  updatedByIDGT: ID
+  updatedByIDGTE: ID
+  updatedByIDLT: ID
+  updatedByIDLTE: ID
+  updatedByIDContains: ID
+  updatedByIDHasPrefix: ID
+  updatedByIDHasSuffix: ID
+  updatedByIDIsNil: Boolean
+  updatedByIDNotNil: Boolean
+  updatedByIDEqualFold: ID
+  updatedByIDContainsFold: ID
+  """
   approver_id field predicates
   """
   approverID: ID
@@ -6307,6 +6520,11 @@ input CustomerWhereInput {
   """
   hasCreatedBy: Boolean
   hasCreatedByWith: [UserWhereInput!]
+  """
+  updated_by edge predicates
+  """
+  hasUpdatedBy: Boolean
+  hasUpdatedByWith: [UserWhereInput!]
   """
   approver edge predicates
   """
@@ -10112,7 +10330,14 @@ type Tender implements Node {
   updatedAt: Time!
   code: String!
   status: Int!
-  isApproved: Boolean!
+  """
+  1 待審核 2 已通過 3 已拒絕
+  """
+  approvalStatus: Int!
+  """
+  審核飛書訊息ID
+  """
+  approvalMsgID: String
   name: String!
   estimatedAmount: Float
   tenderDate: Time
@@ -10198,6 +10423,7 @@ type Tender implements Node {
   createdByID: ID
   competitorID: ID
   approverID: ID
+  updatedByID: ID
   area: Area!
   customer: Customer
   finder: User
@@ -10239,6 +10465,7 @@ type Tender implements Node {
   ): VisitRecordConnection!
   competitor: Competitor
   approver: User
+  updatedBy: User
 }
 """
 A connection to a list of items.
@@ -10288,6 +10515,7 @@ Properties by which Tender connections can be ordered.
 """
 enum TenderOrderField {
   CREATED_AT
+  APPROVAL_STATUS
   NAME
   TENDER_DATE
   CLOSING_DATE
@@ -10361,10 +10589,34 @@ input TenderWhereInput {
   statusLT: Int
   statusLTE: Int
   """
-  is_approved field predicates
+  approval_status field predicates
   """
-  isApproved: Boolean
-  isApprovedNEQ: Boolean
+  approvalStatus: Int
+  approvalStatusNEQ: Int
+  approvalStatusIn: [Int!]
+  approvalStatusNotIn: [Int!]
+  approvalStatusGT: Int
+  approvalStatusGTE: Int
+  approvalStatusLT: Int
+  approvalStatusLTE: Int
+  """
+  approval_msg_id field predicates
+  """
+  approvalMsgID: String
+  approvalMsgIDNEQ: String
+  approvalMsgIDIn: [String!]
+  approvalMsgIDNotIn: [String!]
+  approvalMsgIDGT: String
+  approvalMsgIDGTE: String
+  approvalMsgIDLT: String
+  approvalMsgIDLTE: String
+  approvalMsgIDContains: String
+  approvalMsgIDHasPrefix: String
+  approvalMsgIDHasSuffix: String
+  approvalMsgIDIsNil: Boolean
+  approvalMsgIDNotNil: Boolean
+  approvalMsgIDEqualFold: String
+  approvalMsgIDContainsFold: String
   """
   name field predicates
   """
@@ -11311,6 +11563,24 @@ input TenderWhereInput {
   approverIDEqualFold: ID
   approverIDContainsFold: ID
   """
+  updated_by_id field predicates
+  """
+  updatedByID: ID
+  updatedByIDNEQ: ID
+  updatedByIDIn: [ID!]
+  updatedByIDNotIn: [ID!]
+  updatedByIDGT: ID
+  updatedByIDGTE: ID
+  updatedByIDLT: ID
+  updatedByIDLTE: ID
+  updatedByIDContains: ID
+  updatedByIDHasPrefix: ID
+  updatedByIDHasSuffix: ID
+  updatedByIDIsNil: Boolean
+  updatedByIDNotNil: Boolean
+  updatedByIDEqualFold: ID
+  updatedByIDContainsFold: ID
+  """
   area edge predicates
   """
   hasArea: Boolean
@@ -11365,6 +11635,11 @@ input TenderWhereInput {
   """
   hasApprover: Boolean
   hasApproverWith: [UserWhereInput!]
+  """
+  updated_by edge predicates
+  """
+  hasUpdatedBy: Boolean
+  hasUpdatedByWith: [UserWhereInput!]
 }
 """
 UpdateAreaInput is used for update Area object.
@@ -11439,7 +11714,10 @@ Input was generated by ent.
 input UpdateCustomerInput {
   updatedAt: Time
   name: String
-  isApproved: Boolean
+  """
+  1 待審核 2 已通過 3 已拒絕
+  """
+  approvalStatus: Int
   ownerType: Int
   clearOwnerType: Boolean
   industry: Int
@@ -11462,6 +11740,8 @@ input UpdateCustomerInput {
   clearSales: Boolean
   createdByID: ID
   clearCreatedBy: Boolean
+  updatedByID: ID
+  clearUpdatedBy: Boolean
   approverID: ID
   clearApprover: Boolean
   addVisitRecordIDs: [ID!]
@@ -11970,7 +12250,15 @@ input UpdateTenderInput {
   updatedAt: Time
   code: String
   status: Int
-  isApproved: Boolean
+  """
+  1 待審核 2 已通過 3 已拒絕
+  """
+  approvalStatus: Int
+  """
+  審核飛書訊息ID
+  """
+  approvalMsgID: String
+  clearApprovalMsgID: Boolean
   name: String
   estimatedAmount: Float
   clearEstimatedAmount: Boolean
@@ -12120,6 +12408,8 @@ input UpdateTenderInput {
   clearCompetitor: Boolean
   approverID: ID
   clearApprover: Boolean
+  updatedByID: ID
+  clearUpdatedBy: Boolean
 }
 """
 UpdateUserInput is used for update User object.
@@ -12918,6 +13208,9 @@ type GeoJson {
   createCustomer(input: CreateCustomerInput!): CustomerConnection!
   updateCustomer(id: ID!, input: UpdateCustomerInput!): Customer!
   deleteCustomer(id: ID!): Customer!
+  updateCustomerRequest(id: ID!, input: UpdateCustomerInput!): Customer!
+  approveCustomerRequest(id: ID!): Customer!
+  rejectCustomerRequest(id: ID!): Customer!
 
   createTender(
     input: CreateTenderInput!
@@ -12968,6 +13261,23 @@ type GeoJson {
   topCompetitors(first: Int = 10): [TopCompetitor!]!
 
   biToken: String!
+}
+
+extend type Customer {
+  draft: CustomerDraft
+}
+
+type CustomerDraft {
+  name: String
+  ownerType: Int
+  industry: Int
+  size: Int
+  contactPerson: String
+  contactPersonPosition: String
+  contactPersonPhone: String
+  contactPersonEmail: String
+  area: Area
+  sales: User
 }
 
 extend type User {

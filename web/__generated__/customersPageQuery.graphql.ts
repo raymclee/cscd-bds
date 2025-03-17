@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<6e9e2cd3a998929197c0da8799c3d4d2>>
+ * @generated SignedSource<<d056b643b3e6166785a99f106d296303>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -23,6 +23,7 @@ export type customersPageQuery$data = {
           readonly customers: {
             readonly edges: ReadonlyArray<{
               readonly node: {
+                readonly approvalStatus: number;
                 readonly area: {
                   readonly code: string;
                   readonly id: string;
@@ -30,7 +31,6 @@ export type customersPageQuery$data = {
                 };
                 readonly id: string;
                 readonly industry: number | null | undefined;
-                readonly isApproved: boolean;
                 readonly name: string;
                 readonly ownerType: number | null | undefined;
                 readonly size: number | null | undefined;
@@ -42,13 +42,6 @@ export type customersPageQuery$data = {
                   } | null | undefined> | null | undefined;
                 };
                 readonly updatedAt: any;
-                readonly visitRecords: {
-                  readonly edges: ReadonlyArray<{
-                    readonly node: {
-                      readonly id: string;
-                    } | null | undefined;
-                  } | null | undefined> | null | undefined;
-                };
               } | null | undefined;
             } | null | undefined> | null | undefined;
           };
@@ -107,17 +100,14 @@ v6 = {
   "name": "id",
   "storageKey": null
 },
-v7 = [
-  (v6/*: any*/)
-],
-v8 = {
+v7 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "__typename",
   "storageKey": null
 },
-v9 = [
+v8 = [
   {
     "alias": null,
     "args": null,
@@ -139,7 +129,7 @@ v9 = [
             "alias": null,
             "args": null,
             "kind": "ScalarField",
-            "name": "isApproved",
+            "name": "approvalStatus",
             "storageKey": null
           },
           (v4/*: any*/),
@@ -208,7 +198,9 @@ v9 = [
                     "kind": "LinkedField",
                     "name": "node",
                     "plural": false,
-                    "selections": (v7/*: any*/),
+                    "selections": [
+                      (v6/*: any*/)
+                    ],
                     "storageKey": null
                   }
                 ],
@@ -217,39 +209,7 @@ v9 = [
             ],
             "storageKey": null
           },
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "VisitRecordConnection",
-            "kind": "LinkedField",
-            "name": "visitRecords",
-            "plural": false,
-            "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "concreteType": "VisitRecordEdge",
-                "kind": "LinkedField",
-                "name": "edges",
-                "plural": true,
-                "selections": [
-                  {
-                    "alias": null,
-                    "args": null,
-                    "concreteType": "VisitRecord",
-                    "kind": "LinkedField",
-                    "name": "node",
-                    "plural": false,
-                    "selections": (v7/*: any*/),
-                    "storageKey": null
-                  }
-                ],
-                "storageKey": null
-              }
-            ],
-            "storageKey": null
-          },
-          (v8/*: any*/)
+          (v7/*: any*/)
         ],
         "storageKey": null
       },
@@ -303,7 +263,7 @@ v9 = [
     "storageKey": null
   }
 ],
-v10 = [
+v9 = [
   {
     "kind": "Variable",
     "name": "first",
@@ -370,7 +330,7 @@ return {
                             "kind": "LinkedField",
                             "name": "__customersPageQuery_customers_connection",
                             "plural": false,
-                            "selections": (v9/*: any*/),
+                            "selections": (v8/*: any*/),
                             "storageKey": null
                           }
                         ],
@@ -411,7 +371,7 @@ return {
         "name": "node",
         "plural": false,
         "selections": [
-          (v8/*: any*/),
+          (v7/*: any*/),
           {
             "kind": "InlineFragment",
             "selections": [
@@ -443,17 +403,17 @@ return {
                           (v5/*: any*/),
                           {
                             "alias": null,
-                            "args": (v10/*: any*/),
+                            "args": (v9/*: any*/),
                             "concreteType": "CustomerConnection",
                             "kind": "LinkedField",
                             "name": "customers",
                             "plural": false,
-                            "selections": (v9/*: any*/),
+                            "selections": (v8/*: any*/),
                             "storageKey": null
                           },
                           {
                             "alias": null,
-                            "args": (v10/*: any*/),
+                            "args": (v9/*: any*/),
                             "filters": null,
                             "handle": "connection",
                             "key": "customersPageQuery_customers",
@@ -481,7 +441,7 @@ return {
     ]
   },
   "params": {
-    "cacheID": "634cceb5d51f4e277e4b9d0cfff64dd0",
+    "cacheID": "e388208d2c846db86add5fee7dd9a3f3",
     "id": null,
     "metadata": {
       "connection": [
@@ -495,11 +455,11 @@ return {
     },
     "name": "customersPageQuery",
     "operationKind": "query",
-    "text": "query customersPageQuery(\n  $userId: ID!\n  $first: Int\n  $last: Int\n) {\n  node(id: $userId) {\n    __typename\n    ... on User {\n      areas {\n        edges {\n          node {\n            name\n            code\n            customers(first: $first, last: $last) {\n              edges {\n                node {\n                  id\n                  isApproved\n                  name\n                  updatedAt\n                  ownerType\n                  industry\n                  size\n                  area {\n                    id\n                    code\n                    name\n                  }\n                  tenders {\n                    edges {\n                      node {\n                        id\n                      }\n                    }\n                  }\n                  visitRecords {\n                    edges {\n                      node {\n                        id\n                      }\n                    }\n                  }\n                  __typename\n                }\n                cursor\n              }\n              pageInfo {\n                endCursor\n                hasNextPage\n                hasPreviousPage\n                startCursor\n              }\n            }\n            id\n          }\n        }\n      }\n    }\n    id\n  }\n}\n"
+    "text": "query customersPageQuery(\n  $userId: ID!\n  $first: Int\n  $last: Int\n) {\n  node(id: $userId) {\n    __typename\n    ... on User {\n      areas {\n        edges {\n          node {\n            name\n            code\n            customers(first: $first, last: $last) {\n              edges {\n                node {\n                  id\n                  approvalStatus\n                  name\n                  updatedAt\n                  ownerType\n                  industry\n                  size\n                  area {\n                    id\n                    code\n                    name\n                  }\n                  tenders {\n                    edges {\n                      node {\n                        id\n                      }\n                    }\n                  }\n                  __typename\n                }\n                cursor\n              }\n              pageInfo {\n                endCursor\n                hasNextPage\n                hasPreviousPage\n                startCursor\n              }\n            }\n            id\n          }\n        }\n      }\n    }\n    id\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "4322c0c3e124530f02373f0fcbca1d68";
+(node as any).hash = "a72a2dccd588c17b720c2175cb67cc82";
 
 export default node;

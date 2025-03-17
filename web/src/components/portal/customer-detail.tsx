@@ -1,17 +1,29 @@
 import { EditOutlined } from "@ant-design/icons";
 import { useRouteContext } from "@tanstack/react-router";
 import { customerDetail_customerContact$key } from "__generated__/customerDetail_customerContact.graphql";
-import { customerDetailFragment$key } from "__generated__/customerDetailFragment.graphql";
-import { App, Button, Descriptions, Modal, Space } from "antd";
+import {
+  customerDetailFragment$data,
+  customerDetailFragment$key,
+} from "__generated__/customerDetailFragment.graphql";
+import { App, Button, Descriptions, Modal, Space, Tag } from "antd";
 import dayjs from "dayjs";
 import { BookUser, Check, X } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { graphql, useFragment, useRefetchableFragment } from "react-relay";
-import { customerSizeText, industryText, ownerTypeText } from "~/lib/helper";
+import {
+  approvalStatusTagColor,
+  approvalStatusText,
+  customerSizeText,
+  industryText,
+  ownerTypeText,
+} from "~/lib/helper";
 import { canEdit } from "~/lib/permission";
 import { usePortalStore } from "~/store/portal";
 import { VisitRecordFormDrawer } from "./visit-record-form-drawer";
 import { useUpdateCustomer } from "~/hooks/use-update-customer";
+import { useApproveCustomerRequest } from "~/hooks/use-approve-customer-request";
+import { useRejectCustomerRequest } from "~/hooks/use-reject-customer-request";
+import { isSH } from "~/lib/areas";
 
 export function CustomerDetail(props: {
   customer: customerDetailFragment$key;
@@ -37,8 +49,9 @@ export function CustomerDetail(props: {
         area {
           id
           name
+          code
         }
-        isApproved
+        approvalStatus
         contactPerson
         contactPersonPosition
         contactPersonPhone
@@ -51,6 +64,25 @@ export function CustomerDetail(props: {
             }
           }
         }
+        draft {
+          name
+          ownerType
+          industry
+          size
+          contactPerson
+          contactPersonPosition
+          contactPersonPhone
+          contactPersonEmail
+          area {
+            id
+            code
+            name
+          }
+          sales {
+            id
+            name
+          }
+        }
         # ...customerDetail_customerContact
       }
     `,
@@ -58,8 +90,7 @@ export function CustomerDetail(props: {
   );
   // const [modal, contextHolder] = Modal.useModal();
   const { session } = useRouteContext({ from: "/__auth" });
-  const [updateCustomer, inFlight] = useUpdateCustomer();
-  const { message, modal } = App.useApp();
+  // const [updateCustomer, inFlight] = useUpdateCustomer();
 
   return (
     <>
@@ -68,7 +99,9 @@ export function CustomerDetail(props: {
           canEdit(session) && (
             <Space>
               <Button
+                type="primary"
                 icon={<EditOutlined />}
+                disabled={customer.approvalStatus == 1}
                 onClick={() => {
                   usePortalStore.setState({
                     customerFormOpen: true,
@@ -78,7 +111,7 @@ export function CustomerDetail(props: {
               >
                 编辑
               </Button>
-              <Button
+              {/* <Button
                 type="primary"
                 icon={<BookUser size={16} />}
                 onClick={() => {
@@ -88,55 +121,30 @@ export function CustomerDetail(props: {
                 }}
               >
                 添加拜访记录
-              </Button>
+              </Button> */}
               {(session.isAdmin || session.isSuperAdmin) && (
-                <Button
-                  disabled={customer.isApproved}
-                  type="primary"
-                  icon={<Check size={16} />}
-                  onClick={async () => {
-                    const confirmed = await modal.confirm({
-                      title: "批核",
-                      content: "确定批核该客户吗？",
-                      okText: "同意",
-                      cancelText: "拒绝",
-                      cancelButtonProps: {
-                        danger: true,
-                      },
-                    });
-                    if (confirmed) {
-                      updateCustomer({
-                        variables: {
-                          id: customer.id,
-                          input: { isApproved: true },
-                        },
-                        onCompleted: () => {
-                          message.destroy();
-                          message.success("批核成功");
-                        },
-                        onError: (error) => {
-                          console.error(error);
-                          message.destroy();
-                          message.error("批核失败");
-                        },
-                      });
-                    }
-                  }}
-                >
-                  批核
-                </Button>
+                <ApprovalModal customer={customer} />
               )}
             </Space>
           )
         }
-        title={customer.name}
+        title={
+          <div className="flex items-center gap-2">
+            <span>{customer.draft?.name || customer.name}</span>
+            {isSH(customer.area.code) && (
+              <Tag color={approvalStatusTagColor(customer.approvalStatus)}>
+                {approvalStatusText(customer.approvalStatus)}
+              </Tag>
+            )}
+          </div>
+        }
         items={[
           {
             key: "ownerType",
             label: "业主类型",
             children: (
               <span className="font-normal">
-                {ownerTypeText(customer.ownerType)}
+                {ownerTypeText(customer.draft?.ownerType || customer.ownerType)}
               </span>
             ),
           },
@@ -145,7 +153,7 @@ export function CustomerDetail(props: {
             label: "行业",
             children: (
               <span className="font-normal">
-                {industryText(customer.industry)}
+                {industryText(customer.draft?.industry || customer.industry)}
               </span>
             ),
           },
@@ -154,20 +162,26 @@ export function CustomerDetail(props: {
             label: "规模",
             children: (
               <span className="font-normal">
-                {customerSizeText(customer.size)}
+                {customerSizeText(customer.draft?.size || customer.size)}
               </span>
             ),
           },
           {
             key: "area",
             label: "区域",
-            children: <span className="font-normal">{customer.area.name}</span>,
+            children: (
+              <span className="font-normal">
+                {customer.draft?.area?.name || customer.area.name}
+              </span>
+            ),
           },
           {
             key: "sales",
             label: "客户所有人",
             children: (
-              <span className="font-normal">{customer.sales?.name}</span>
+              <span className="font-normal">
+                {customer.draft?.sales?.name || customer.sales?.name}
+              </span>
             ),
           },
           // {
@@ -211,6 +225,7 @@ export function CustomerDetail(props: {
           {
             key: "createdAt",
             label: "创建时间",
+            span: { sm: 3, md: 1 },
             children: (
               <span className="font-normal">
                 {dayjs(customer.createdAt).format("LLL")}
@@ -220,6 +235,7 @@ export function CustomerDetail(props: {
           {
             key: "updatedAt",
             label: "更新时间",
+            span: { sm: 3, md: 1 },
             children: (
               <span className="font-normal">
                 {dayjs(customer.updatedAt).format("LLL")}
@@ -279,15 +295,6 @@ export function CustomerDetail(props: {
             span: 2,
             children: (
               <span className="font-normal">{customer.contactPersonEmail}</span>
-            ),
-          },
-          {
-            key: "isApproved",
-            label: "审批状态",
-            children: (
-              <span className="font-normal">
-                {customer.isApproved ? "已审批" : "未审批"}
-              </span>
             ),
           },
         ]}
@@ -361,5 +368,108 @@ function ContactDetail(props: {
         },
       ]}
     />
+  );
+}
+
+function ApprovalModal({
+  customer,
+}: {
+  customer: customerDetailFragment$data;
+}) {
+  const [open, setOpen] = useState(false);
+  const [commitApproveCustomerRequest, inApproveCustomerRequestFlight] =
+    useApproveCustomerRequest();
+  const [commitRejectCustomerRequest, inRejectCustomerRequestFlight] =
+    useRejectCustomerRequest();
+  const { message } = App.useApp();
+
+  const handleCancel = () => {
+    setOpen(false);
+  };
+
+  const handleReject = () => {
+    commitRejectCustomerRequest({
+      variables: {
+        id: customer.id,
+      },
+      onCompleted: () => {
+        message.destroy();
+        message.success("拒绝成功");
+        setOpen(false);
+      },
+      onError: (error) => {
+        console.error(error);
+        message.destroy();
+        message.error("拒绝失败");
+      },
+    });
+  };
+
+  const handleApprove = () => {
+    commitApproveCustomerRequest({
+      variables: {
+        id: customer.id,
+      },
+      onCompleted: () => {
+        message.destroy();
+        message.success("批核成功");
+        setOpen(false);
+      },
+      onError: (error) => {
+        console.error(error);
+        message.destroy();
+        message.error("批核失败");
+      },
+    });
+  };
+
+  if (!open) {
+    return (
+      <Button
+        disabled={customer.approvalStatus > 1}
+        type="primary"
+        icon={<Check size={16} />}
+        onClick={() => {
+          setOpen(true);
+        }}
+      >
+        批核
+      </Button>
+    );
+  }
+
+  const isLoading =
+    inApproveCustomerRequestFlight || inRejectCustomerRequestFlight;
+
+  return (
+    <Modal
+      open={open}
+      title="批核"
+      onCancel={handleCancel}
+      footer={[
+        <Button key="back" onClick={handleCancel}>
+          取消
+        </Button>,
+        <Button
+          key="reject"
+          // type="primary"
+          loading={isLoading}
+          onClick={handleReject}
+          danger
+        >
+          拒绝
+        </Button>,
+        <Button
+          key="approve"
+          type="primary"
+          loading={isLoading}
+          onClick={handleApprove}
+        >
+          同意
+        </Button>,
+      ]}
+    >
+      <p>确定批核该客户更新吗？</p>
+    </Modal>
   );
 }

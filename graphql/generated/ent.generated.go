@@ -31,6 +31,9 @@ type CityResolver interface {
 type CountryResolver interface {
 	Center(ctx context.Context, obj *ent.Country) (*model.GeoJSON, error)
 }
+type CustomerResolver interface {
+	Draft(ctx context.Context, obj *ent.Customer) (*model.CustomerDraft, error)
+}
 type DistrictResolver interface {
 	Center(ctx context.Context, obj *ent.District) (*model.GeoJSON, error)
 }
@@ -10183,8 +10186,8 @@ func (ec *executionContext) fieldContext_Customer_name(_ context.Context, field 
 	return fc, nil
 }
 
-func (ec *executionContext) _Customer_isApproved(ctx context.Context, field graphql.CollectedField, obj *ent.Customer) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Customer_isApproved(ctx, field)
+func (ec *executionContext) _Customer_approvalStatus(ctx context.Context, field graphql.CollectedField, obj *ent.Customer) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Customer_approvalStatus(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -10197,7 +10200,7 @@ func (ec *executionContext) _Customer_isApproved(ctx context.Context, field grap
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.IsApproved, nil
+		return obj.ApprovalStatus, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -10209,19 +10212,19 @@ func (ec *executionContext) _Customer_isApproved(ctx context.Context, field grap
 		}
 		return graphql.Null
 	}
-	res := resTmp.(bool)
+	res := resTmp.(int)
 	fc.Result = res
-	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
+	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Customer_isApproved(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Customer_approvalStatus(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Customer",
 		Field:      field,
 		IsMethod:   false,
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Boolean does not have child fields")
+			return nil, errors.New("field of type Int does not have child fields")
 		},
 	}
 	return fc, nil
@@ -10640,6 +10643,47 @@ func (ec *executionContext) fieldContext_Customer_createdByID(_ context.Context,
 	return fc, nil
 }
 
+func (ec *executionContext) _Customer_updatedByID(ctx context.Context, field graphql.CollectedField, obj *ent.Customer) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Customer_updatedByID(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.UpdatedByID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*xid.ID)
+	fc.Result = res
+	return ec.marshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Customer_updatedByID(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Customer",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type ID does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _Customer_approverID(ctx context.Context, field graphql.CollectedField, obj *ent.Customer) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Customer_approverID(ctx, field)
 	if err != nil {
@@ -10996,6 +11040,97 @@ func (ec *executionContext) fieldContext_Customer_createdBy(_ context.Context, f
 	return fc, nil
 }
 
+func (ec *executionContext) _Customer_updatedBy(ctx context.Context, field graphql.CollectedField, obj *ent.Customer) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Customer_updatedBy(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.UpdatedBy(ctx)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*ent.User)
+	fc.Result = res
+	return ec.marshalOUser2ᚖcscdᚑbdsᚋstoreᚋentᚐUser(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Customer_updatedBy(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Customer",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_User_id(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_User_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_User_updatedAt(ctx, field)
+			case "openID":
+				return ec.fieldContext_User_openID(ctx, field)
+			case "name":
+				return ec.fieldContext_User_name(ctx, field)
+			case "email":
+				return ec.fieldContext_User_email(ctx, field)
+			case "username":
+				return ec.fieldContext_User_username(ctx, field)
+			case "avatarURL":
+				return ec.fieldContext_User_avatarURL(ctx, field)
+			case "disabled":
+				return ec.fieldContext_User_disabled(ctx, field)
+			case "isAdmin":
+				return ec.fieldContext_User_isAdmin(ctx, field)
+			case "isCeo":
+				return ec.fieldContext_User_isCeo(ctx, field)
+			case "isSuperAdmin":
+				return ec.fieldContext_User_isSuperAdmin(ctx, field)
+			case "hasMapAccess":
+				return ec.fieldContext_User_hasMapAccess(ctx, field)
+			case "hasEditAccess":
+				return ec.fieldContext_User_hasEditAccess(ctx, field)
+			case "leaderID":
+				return ec.fieldContext_User_leaderID(ctx, field)
+			case "areas":
+				return ec.fieldContext_User_areas(ctx, field)
+			case "customers":
+				return ec.fieldContext_User_customers(ctx, field)
+			case "leader":
+				return ec.fieldContext_User_leader(ctx, field)
+			case "teamMembers":
+				return ec.fieldContext_User_teamMembers(ctx, field)
+			case "tenders":
+				return ec.fieldContext_User_tenders(ctx, field)
+			case "visitRecords":
+				return ec.fieldContext_User_visitRecords(ctx, field)
+			case "projects":
+				return ec.fieldContext_User_projects(ctx, field)
+			case "myTenders":
+				return ec.fieldContext_User_myTenders(ctx, field)
+			case "myVisitRecords":
+				return ec.fieldContext_User_myVisitRecords(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _Customer_approver(ctx context.Context, field graphql.CollectedField, obj *ent.Customer) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Customer_approver(ctx, field)
 	if err != nil {
@@ -11146,6 +11281,69 @@ func (ec *executionContext) fieldContext_Customer_visitRecords(ctx context.Conte
 	if fc.Args, err = ec.field_Customer_visitRecords_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Customer_draft(ctx context.Context, field graphql.CollectedField, obj *ent.Customer) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Customer_draft(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Customer().Draft(rctx, obj)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*model.CustomerDraft)
+	fc.Result = res
+	return ec.marshalOCustomerDraft2ᚖcscdᚑbdsᚋgraphqlᚋmodelᚐCustomerDraft(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Customer_draft(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Customer",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "name":
+				return ec.fieldContext_CustomerDraft_name(ctx, field)
+			case "ownerType":
+				return ec.fieldContext_CustomerDraft_ownerType(ctx, field)
+			case "industry":
+				return ec.fieldContext_CustomerDraft_industry(ctx, field)
+			case "size":
+				return ec.fieldContext_CustomerDraft_size(ctx, field)
+			case "contactPerson":
+				return ec.fieldContext_CustomerDraft_contactPerson(ctx, field)
+			case "contactPersonPosition":
+				return ec.fieldContext_CustomerDraft_contactPersonPosition(ctx, field)
+			case "contactPersonPhone":
+				return ec.fieldContext_CustomerDraft_contactPersonPhone(ctx, field)
+			case "contactPersonEmail":
+				return ec.fieldContext_CustomerDraft_contactPersonEmail(ctx, field)
+			case "area":
+				return ec.fieldContext_CustomerDraft_area(ctx, field)
+			case "sales":
+				return ec.fieldContext_CustomerDraft_sales(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type CustomerDraft", field.Name)
+		},
 	}
 	return fc, nil
 }
@@ -11339,8 +11537,8 @@ func (ec *executionContext) fieldContext_CustomerEdge_node(_ context.Context, fi
 				return ec.fieldContext_Customer_updatedAt(ctx, field)
 			case "name":
 				return ec.fieldContext_Customer_name(ctx, field)
-			case "isApproved":
-				return ec.fieldContext_Customer_isApproved(ctx, field)
+			case "approvalStatus":
+				return ec.fieldContext_Customer_approvalStatus(ctx, field)
 			case "ownerType":
 				return ec.fieldContext_Customer_ownerType(ctx, field)
 			case "industry":
@@ -11361,6 +11559,8 @@ func (ec *executionContext) fieldContext_CustomerEdge_node(_ context.Context, fi
 				return ec.fieldContext_Customer_salesID(ctx, field)
 			case "createdByID":
 				return ec.fieldContext_Customer_createdByID(ctx, field)
+			case "updatedByID":
+				return ec.fieldContext_Customer_updatedByID(ctx, field)
 			case "approverID":
 				return ec.fieldContext_Customer_approverID(ctx, field)
 			case "area":
@@ -11371,10 +11571,14 @@ func (ec *executionContext) fieldContext_CustomerEdge_node(_ context.Context, fi
 				return ec.fieldContext_Customer_sales(ctx, field)
 			case "createdBy":
 				return ec.fieldContext_Customer_createdBy(ctx, field)
+			case "updatedBy":
+				return ec.fieldContext_Customer_updatedBy(ctx, field)
 			case "approver":
 				return ec.fieldContext_Customer_approver(ctx, field)
 			case "visitRecords":
 				return ec.fieldContext_Customer_visitRecords(ctx, field)
+			case "draft":
+				return ec.fieldContext_Customer_draft(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Customer", field.Name)
 		},
@@ -23177,8 +23381,8 @@ func (ec *executionContext) fieldContext_Tender_status(_ context.Context, field 
 	return fc, nil
 }
 
-func (ec *executionContext) _Tender_isApproved(ctx context.Context, field graphql.CollectedField, obj *ent.Tender) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Tender_isApproved(ctx, field)
+func (ec *executionContext) _Tender_approvalStatus(ctx context.Context, field graphql.CollectedField, obj *ent.Tender) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Tender_approvalStatus(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -23191,7 +23395,7 @@ func (ec *executionContext) _Tender_isApproved(ctx context.Context, field graphq
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.IsApproved, nil
+		return obj.ApprovalStatus, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -23203,19 +23407,60 @@ func (ec *executionContext) _Tender_isApproved(ctx context.Context, field graphq
 		}
 		return graphql.Null
 	}
-	res := resTmp.(bool)
+	res := resTmp.(int)
 	fc.Result = res
-	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
+	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Tender_isApproved(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Tender_approvalStatus(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Tender",
 		Field:      field,
 		IsMethod:   false,
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Boolean does not have child fields")
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Tender_approvalMsgID(ctx context.Context, field graphql.CollectedField, obj *ent.Tender) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Tender_approvalMsgID(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ApprovalMsgID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Tender_approvalMsgID(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Tender",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
 		},
 	}
 	return fc, nil
@@ -25737,6 +25982,47 @@ func (ec *executionContext) fieldContext_Tender_approverID(_ context.Context, fi
 	return fc, nil
 }
 
+func (ec *executionContext) _Tender_updatedByID(ctx context.Context, field graphql.CollectedField, obj *ent.Tender) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Tender_updatedByID(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.UpdatedByID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*xid.ID)
+	fc.Result = res
+	return ec.marshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Tender_updatedByID(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Tender",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type ID does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _Tender_area(ctx context.Context, field graphql.CollectedField, obj *ent.Tender) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Tender_area(ctx, field)
 	if err != nil {
@@ -25851,8 +26137,8 @@ func (ec *executionContext) fieldContext_Tender_customer(_ context.Context, fiel
 				return ec.fieldContext_Customer_updatedAt(ctx, field)
 			case "name":
 				return ec.fieldContext_Customer_name(ctx, field)
-			case "isApproved":
-				return ec.fieldContext_Customer_isApproved(ctx, field)
+			case "approvalStatus":
+				return ec.fieldContext_Customer_approvalStatus(ctx, field)
 			case "ownerType":
 				return ec.fieldContext_Customer_ownerType(ctx, field)
 			case "industry":
@@ -25873,6 +26159,8 @@ func (ec *executionContext) fieldContext_Tender_customer(_ context.Context, fiel
 				return ec.fieldContext_Customer_salesID(ctx, field)
 			case "createdByID":
 				return ec.fieldContext_Customer_createdByID(ctx, field)
+			case "updatedByID":
+				return ec.fieldContext_Customer_updatedByID(ctx, field)
 			case "approverID":
 				return ec.fieldContext_Customer_approverID(ctx, field)
 			case "area":
@@ -25883,10 +26171,14 @@ func (ec *executionContext) fieldContext_Tender_customer(_ context.Context, fiel
 				return ec.fieldContext_Customer_sales(ctx, field)
 			case "createdBy":
 				return ec.fieldContext_Customer_createdBy(ctx, field)
+			case "updatedBy":
+				return ec.fieldContext_Customer_updatedBy(ctx, field)
 			case "approver":
 				return ec.fieldContext_Customer_approver(ctx, field)
 			case "visitRecords":
 				return ec.fieldContext_Customer_visitRecords(ctx, field)
+			case "draft":
+				return ec.fieldContext_Customer_draft(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Customer", field.Name)
 		},
@@ -26581,6 +26873,97 @@ func (ec *executionContext) fieldContext_Tender_approver(_ context.Context, fiel
 	return fc, nil
 }
 
+func (ec *executionContext) _Tender_updatedBy(ctx context.Context, field graphql.CollectedField, obj *ent.Tender) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Tender_updatedBy(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.UpdatedBy(ctx)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*ent.User)
+	fc.Result = res
+	return ec.marshalOUser2ᚖcscdᚑbdsᚋstoreᚋentᚐUser(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Tender_updatedBy(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Tender",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_User_id(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_User_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_User_updatedAt(ctx, field)
+			case "openID":
+				return ec.fieldContext_User_openID(ctx, field)
+			case "name":
+				return ec.fieldContext_User_name(ctx, field)
+			case "email":
+				return ec.fieldContext_User_email(ctx, field)
+			case "username":
+				return ec.fieldContext_User_username(ctx, field)
+			case "avatarURL":
+				return ec.fieldContext_User_avatarURL(ctx, field)
+			case "disabled":
+				return ec.fieldContext_User_disabled(ctx, field)
+			case "isAdmin":
+				return ec.fieldContext_User_isAdmin(ctx, field)
+			case "isCeo":
+				return ec.fieldContext_User_isCeo(ctx, field)
+			case "isSuperAdmin":
+				return ec.fieldContext_User_isSuperAdmin(ctx, field)
+			case "hasMapAccess":
+				return ec.fieldContext_User_hasMapAccess(ctx, field)
+			case "hasEditAccess":
+				return ec.fieldContext_User_hasEditAccess(ctx, field)
+			case "leaderID":
+				return ec.fieldContext_User_leaderID(ctx, field)
+			case "areas":
+				return ec.fieldContext_User_areas(ctx, field)
+			case "customers":
+				return ec.fieldContext_User_customers(ctx, field)
+			case "leader":
+				return ec.fieldContext_User_leader(ctx, field)
+			case "teamMembers":
+				return ec.fieldContext_User_teamMembers(ctx, field)
+			case "tenders":
+				return ec.fieldContext_User_tenders(ctx, field)
+			case "visitRecords":
+				return ec.fieldContext_User_visitRecords(ctx, field)
+			case "projects":
+				return ec.fieldContext_User_projects(ctx, field)
+			case "myTenders":
+				return ec.fieldContext_User_myTenders(ctx, field)
+			case "myVisitRecords":
+				return ec.fieldContext_User_myVisitRecords(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _Tender_geoCoordinate(ctx context.Context, field graphql.CollectedField, obj *ent.Tender) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Tender_geoCoordinate(ctx, field)
 	if err != nil {
@@ -26860,8 +27243,10 @@ func (ec *executionContext) fieldContext_TenderEdge_node(_ context.Context, fiel
 				return ec.fieldContext_Tender_code(ctx, field)
 			case "status":
 				return ec.fieldContext_Tender_status(ctx, field)
-			case "isApproved":
-				return ec.fieldContext_Tender_isApproved(ctx, field)
+			case "approvalStatus":
+				return ec.fieldContext_Tender_approvalStatus(ctx, field)
+			case "approvalMsgID":
+				return ec.fieldContext_Tender_approvalMsgID(ctx, field)
 			case "name":
 				return ec.fieldContext_Tender_name(ctx, field)
 			case "estimatedAmount":
@@ -26984,6 +27369,8 @@ func (ec *executionContext) fieldContext_TenderEdge_node(_ context.Context, fiel
 				return ec.fieldContext_Tender_competitorID(ctx, field)
 			case "approverID":
 				return ec.fieldContext_Tender_approverID(ctx, field)
+			case "updatedByID":
+				return ec.fieldContext_Tender_updatedByID(ctx, field)
 			case "area":
 				return ec.fieldContext_Tender_area(ctx, field)
 			case "customer":
@@ -27006,6 +27393,8 @@ func (ec *executionContext) fieldContext_TenderEdge_node(_ context.Context, fiel
 				return ec.fieldContext_Tender_competitor(ctx, field)
 			case "approver":
 				return ec.fieldContext_Tender_approver(ctx, field)
+			case "updatedBy":
+				return ec.fieldContext_Tender_updatedBy(ctx, field)
 			case "geoCoordinate":
 				return ec.fieldContext_Tender_geoCoordinate(ctx, field)
 			case "geoBounds":
@@ -29089,8 +29478,10 @@ func (ec *executionContext) fieldContext_VisitRecord_tender(_ context.Context, f
 				return ec.fieldContext_Tender_code(ctx, field)
 			case "status":
 				return ec.fieldContext_Tender_status(ctx, field)
-			case "isApproved":
-				return ec.fieldContext_Tender_isApproved(ctx, field)
+			case "approvalStatus":
+				return ec.fieldContext_Tender_approvalStatus(ctx, field)
+			case "approvalMsgID":
+				return ec.fieldContext_Tender_approvalMsgID(ctx, field)
 			case "name":
 				return ec.fieldContext_Tender_name(ctx, field)
 			case "estimatedAmount":
@@ -29213,6 +29604,8 @@ func (ec *executionContext) fieldContext_VisitRecord_tender(_ context.Context, f
 				return ec.fieldContext_Tender_competitorID(ctx, field)
 			case "approverID":
 				return ec.fieldContext_Tender_approverID(ctx, field)
+			case "updatedByID":
+				return ec.fieldContext_Tender_updatedByID(ctx, field)
 			case "area":
 				return ec.fieldContext_Tender_area(ctx, field)
 			case "customer":
@@ -29235,6 +29628,8 @@ func (ec *executionContext) fieldContext_VisitRecord_tender(_ context.Context, f
 				return ec.fieldContext_Tender_competitor(ctx, field)
 			case "approver":
 				return ec.fieldContext_Tender_approver(ctx, field)
+			case "updatedBy":
+				return ec.fieldContext_Tender_updatedBy(ctx, field)
 			case "geoCoordinate":
 				return ec.fieldContext_Tender_geoCoordinate(ctx, field)
 			case "geoBounds":
@@ -29293,8 +29688,8 @@ func (ec *executionContext) fieldContext_VisitRecord_customer(_ context.Context,
 				return ec.fieldContext_Customer_updatedAt(ctx, field)
 			case "name":
 				return ec.fieldContext_Customer_name(ctx, field)
-			case "isApproved":
-				return ec.fieldContext_Customer_isApproved(ctx, field)
+			case "approvalStatus":
+				return ec.fieldContext_Customer_approvalStatus(ctx, field)
 			case "ownerType":
 				return ec.fieldContext_Customer_ownerType(ctx, field)
 			case "industry":
@@ -29315,6 +29710,8 @@ func (ec *executionContext) fieldContext_VisitRecord_customer(_ context.Context,
 				return ec.fieldContext_Customer_salesID(ctx, field)
 			case "createdByID":
 				return ec.fieldContext_Customer_createdByID(ctx, field)
+			case "updatedByID":
+				return ec.fieldContext_Customer_updatedByID(ctx, field)
 			case "approverID":
 				return ec.fieldContext_Customer_approverID(ctx, field)
 			case "area":
@@ -29325,10 +29722,14 @@ func (ec *executionContext) fieldContext_VisitRecord_customer(_ context.Context,
 				return ec.fieldContext_Customer_sales(ctx, field)
 			case "createdBy":
 				return ec.fieldContext_Customer_createdBy(ctx, field)
+			case "updatedBy":
+				return ec.fieldContext_Customer_updatedBy(ctx, field)
 			case "approver":
 				return ec.fieldContext_Customer_approver(ctx, field)
 			case "visitRecords":
 				return ec.fieldContext_Customer_visitRecords(ctx, field)
+			case "draft":
+				return ec.fieldContext_Customer_draft(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Customer", field.Name)
 		},
@@ -32073,7 +32474,7 @@ func (ec *executionContext) unmarshalInputCreateCustomerInput(ctx context.Contex
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"createdAt", "updatedAt", "name", "isApproved", "ownerType", "industry", "size", "contactPerson", "contactPersonPosition", "contactPersonPhone", "contactPersonEmail", "areaID", "tenderIDs", "salesID", "createdByID", "approverID", "visitRecordIDs"}
+	fieldsInOrder := [...]string{"createdAt", "updatedAt", "name", "approvalStatus", "ownerType", "industry", "size", "contactPerson", "contactPersonPosition", "contactPersonPhone", "contactPersonEmail", "areaID", "tenderIDs", "salesID", "createdByID", "updatedByID", "approverID", "visitRecordIDs"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -32101,13 +32502,13 @@ func (ec *executionContext) unmarshalInputCreateCustomerInput(ctx context.Contex
 				return it, err
 			}
 			it.Name = data
-		case "isApproved":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("isApproved"))
-			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+		case "approvalStatus":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalStatus"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.IsApproved = data
+			it.ApprovalStatus = data
 		case "ownerType":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ownerType"))
 			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
@@ -32185,6 +32586,13 @@ func (ec *executionContext) unmarshalInputCreateCustomerInput(ctx context.Contex
 				return it, err
 			}
 			it.CreatedByID = data
+		case "updatedByID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedByID"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UpdatedByID = data
 		case "approverID":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approverID"))
 			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
@@ -32579,7 +32987,7 @@ func (ec *executionContext) unmarshalInputCreateTenderInput(ctx context.Context,
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"createdAt", "updatedAt", "code", "status", "isApproved", "name", "estimatedAmount", "tenderDate", "classify", "discoveryDate", "address", "fullAddress", "contractor", "levelInvolved", "sizeAndValueRating", "sizeAndValueRatingOverview", "creditAndPaymentRating", "creditAndPaymentRatingOverview", "timeLimitRating", "timeLimitRatingOverview", "customerRelationshipRating", "customerRelationshipRatingOverview", "competitivePartnershipRating", "competitivePartnershipRatingOverview", "prepareToBid", "projectCode", "projectType", "projectDefinition", "estimatedProjectStartDate", "estimatedProjectEndDate", "attachements", "remark", "images", "tenderSituations", "ownerSituations", "biddingInstructions", "competitorSituations", "costEngineer", "tenderForm", "contractForm", "managementCompany", "tenderingAgency", "biddingDate", "facadeConsultant", "designUnit", "consultingFirm", "keyProject", "currentProgress", "tenderWinCompany", "tenderCode", "architect", "developer", "tenderClosingDate", "constructionArea", "tenderWinDate", "tenderWinAmount", "lastTenderAmount", "areaID", "customerID", "finderID", "createdByID", "followingSaleIDs", "provinceID", "cityID", "districtID", "visitRecordIDs", "competitorID", "approverID"}
+	fieldsInOrder := [...]string{"createdAt", "updatedAt", "code", "status", "approvalStatus", "approvalMsgID", "name", "estimatedAmount", "tenderDate", "classify", "discoveryDate", "address", "fullAddress", "contractor", "levelInvolved", "sizeAndValueRating", "sizeAndValueRatingOverview", "creditAndPaymentRating", "creditAndPaymentRatingOverview", "timeLimitRating", "timeLimitRatingOverview", "customerRelationshipRating", "customerRelationshipRatingOverview", "competitivePartnershipRating", "competitivePartnershipRatingOverview", "prepareToBid", "projectCode", "projectType", "projectDefinition", "estimatedProjectStartDate", "estimatedProjectEndDate", "attachements", "remark", "images", "tenderSituations", "ownerSituations", "biddingInstructions", "competitorSituations", "costEngineer", "tenderForm", "contractForm", "managementCompany", "tenderingAgency", "biddingDate", "facadeConsultant", "designUnit", "consultingFirm", "keyProject", "currentProgress", "tenderWinCompany", "tenderCode", "architect", "developer", "tenderClosingDate", "constructionArea", "tenderWinDate", "tenderWinAmount", "lastTenderAmount", "areaID", "customerID", "finderID", "createdByID", "followingSaleIDs", "provinceID", "cityID", "districtID", "visitRecordIDs", "competitorID", "approverID", "updatedByID"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -32614,13 +33022,20 @@ func (ec *executionContext) unmarshalInputCreateTenderInput(ctx context.Context,
 				return it, err
 			}
 			it.Status = data
-		case "isApproved":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("isApproved"))
-			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+		case "approvalStatus":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalStatus"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.IsApproved = data
+			it.ApprovalStatus = data
+		case "approvalMsgID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalMsgID"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalMsgID = data
 		case "name":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
 			data, err := ec.unmarshalNString2string(ctx, v)
@@ -33062,6 +33477,13 @@ func (ec *executionContext) unmarshalInputCreateTenderInput(ctx context.Context,
 				return it, err
 			}
 			it.ApproverID = data
+		case "updatedByID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedByID"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UpdatedByID = data
 		}
 	}
 
@@ -33363,7 +33785,7 @@ func (ec *executionContext) unmarshalInputCustomerWhereInput(ctx context.Context
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdAt", "createdAtNEQ", "createdAtIn", "createdAtNotIn", "createdAtGT", "createdAtGTE", "createdAtLT", "createdAtLTE", "updatedAt", "updatedAtNEQ", "updatedAtIn", "updatedAtNotIn", "updatedAtGT", "updatedAtGTE", "updatedAtLT", "updatedAtLTE", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "isApproved", "isApprovedNEQ", "ownerType", "ownerTypeNEQ", "ownerTypeIn", "ownerTypeNotIn", "ownerTypeGT", "ownerTypeGTE", "ownerTypeLT", "ownerTypeLTE", "ownerTypeIsNil", "ownerTypeNotNil", "industry", "industryNEQ", "industryIn", "industryNotIn", "industryGT", "industryGTE", "industryLT", "industryLTE", "industryIsNil", "industryNotNil", "size", "sizeNEQ", "sizeIn", "sizeNotIn", "sizeGT", "sizeGTE", "sizeLT", "sizeLTE", "sizeIsNil", "sizeNotNil", "contactPerson", "contactPersonNEQ", "contactPersonIn", "contactPersonNotIn", "contactPersonGT", "contactPersonGTE", "contactPersonLT", "contactPersonLTE", "contactPersonContains", "contactPersonHasPrefix", "contactPersonHasSuffix", "contactPersonIsNil", "contactPersonNotNil", "contactPersonEqualFold", "contactPersonContainsFold", "contactPersonPosition", "contactPersonPositionNEQ", "contactPersonPositionIn", "contactPersonPositionNotIn", "contactPersonPositionGT", "contactPersonPositionGTE", "contactPersonPositionLT", "contactPersonPositionLTE", "contactPersonPositionContains", "contactPersonPositionHasPrefix", "contactPersonPositionHasSuffix", "contactPersonPositionIsNil", "contactPersonPositionNotNil", "contactPersonPositionEqualFold", "contactPersonPositionContainsFold", "contactPersonPhone", "contactPersonPhoneNEQ", "contactPersonPhoneIn", "contactPersonPhoneNotIn", "contactPersonPhoneGT", "contactPersonPhoneGTE", "contactPersonPhoneLT", "contactPersonPhoneLTE", "contactPersonPhoneContains", "contactPersonPhoneHasPrefix", "contactPersonPhoneHasSuffix", "contactPersonPhoneIsNil", "contactPersonPhoneNotNil", "contactPersonPhoneEqualFold", "contactPersonPhoneContainsFold", "contactPersonEmail", "contactPersonEmailNEQ", "contactPersonEmailIn", "contactPersonEmailNotIn", "contactPersonEmailGT", "contactPersonEmailGTE", "contactPersonEmailLT", "contactPersonEmailLTE", "contactPersonEmailContains", "contactPersonEmailHasPrefix", "contactPersonEmailHasSuffix", "contactPersonEmailIsNil", "contactPersonEmailNotNil", "contactPersonEmailEqualFold", "contactPersonEmailContainsFold", "areaID", "areaIDNEQ", "areaIDIn", "areaIDNotIn", "areaIDGT", "areaIDGTE", "areaIDLT", "areaIDLTE", "areaIDContains", "areaIDHasPrefix", "areaIDHasSuffix", "areaIDEqualFold", "areaIDContainsFold", "salesID", "salesIDNEQ", "salesIDIn", "salesIDNotIn", "salesIDGT", "salesIDGTE", "salesIDLT", "salesIDLTE", "salesIDContains", "salesIDHasPrefix", "salesIDHasSuffix", "salesIDIsNil", "salesIDNotNil", "salesIDEqualFold", "salesIDContainsFold", "createdByID", "createdByIDNEQ", "createdByIDIn", "createdByIDNotIn", "createdByIDGT", "createdByIDGTE", "createdByIDLT", "createdByIDLTE", "createdByIDContains", "createdByIDHasPrefix", "createdByIDHasSuffix", "createdByIDIsNil", "createdByIDNotNil", "createdByIDEqualFold", "createdByIDContainsFold", "approverID", "approverIDNEQ", "approverIDIn", "approverIDNotIn", "approverIDGT", "approverIDGTE", "approverIDLT", "approverIDLTE", "approverIDContains", "approverIDHasPrefix", "approverIDHasSuffix", "approverIDIsNil", "approverIDNotNil", "approverIDEqualFold", "approverIDContainsFold", "hasArea", "hasAreaWith", "hasTenders", "hasTendersWith", "hasSales", "hasSalesWith", "hasCreatedBy", "hasCreatedByWith", "hasApprover", "hasApproverWith", "hasVisitRecords", "hasVisitRecordsWith"}
+	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdAt", "createdAtNEQ", "createdAtIn", "createdAtNotIn", "createdAtGT", "createdAtGTE", "createdAtLT", "createdAtLTE", "updatedAt", "updatedAtNEQ", "updatedAtIn", "updatedAtNotIn", "updatedAtGT", "updatedAtGTE", "updatedAtLT", "updatedAtLTE", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "approvalStatus", "approvalStatusNEQ", "approvalStatusIn", "approvalStatusNotIn", "approvalStatusGT", "approvalStatusGTE", "approvalStatusLT", "approvalStatusLTE", "ownerType", "ownerTypeNEQ", "ownerTypeIn", "ownerTypeNotIn", "ownerTypeGT", "ownerTypeGTE", "ownerTypeLT", "ownerTypeLTE", "ownerTypeIsNil", "ownerTypeNotNil", "industry", "industryNEQ", "industryIn", "industryNotIn", "industryGT", "industryGTE", "industryLT", "industryLTE", "industryIsNil", "industryNotNil", "size", "sizeNEQ", "sizeIn", "sizeNotIn", "sizeGT", "sizeGTE", "sizeLT", "sizeLTE", "sizeIsNil", "sizeNotNil", "contactPerson", "contactPersonNEQ", "contactPersonIn", "contactPersonNotIn", "contactPersonGT", "contactPersonGTE", "contactPersonLT", "contactPersonLTE", "contactPersonContains", "contactPersonHasPrefix", "contactPersonHasSuffix", "contactPersonIsNil", "contactPersonNotNil", "contactPersonEqualFold", "contactPersonContainsFold", "contactPersonPosition", "contactPersonPositionNEQ", "contactPersonPositionIn", "contactPersonPositionNotIn", "contactPersonPositionGT", "contactPersonPositionGTE", "contactPersonPositionLT", "contactPersonPositionLTE", "contactPersonPositionContains", "contactPersonPositionHasPrefix", "contactPersonPositionHasSuffix", "contactPersonPositionIsNil", "contactPersonPositionNotNil", "contactPersonPositionEqualFold", "contactPersonPositionContainsFold", "contactPersonPhone", "contactPersonPhoneNEQ", "contactPersonPhoneIn", "contactPersonPhoneNotIn", "contactPersonPhoneGT", "contactPersonPhoneGTE", "contactPersonPhoneLT", "contactPersonPhoneLTE", "contactPersonPhoneContains", "contactPersonPhoneHasPrefix", "contactPersonPhoneHasSuffix", "contactPersonPhoneIsNil", "contactPersonPhoneNotNil", "contactPersonPhoneEqualFold", "contactPersonPhoneContainsFold", "contactPersonEmail", "contactPersonEmailNEQ", "contactPersonEmailIn", "contactPersonEmailNotIn", "contactPersonEmailGT", "contactPersonEmailGTE", "contactPersonEmailLT", "contactPersonEmailLTE", "contactPersonEmailContains", "contactPersonEmailHasPrefix", "contactPersonEmailHasSuffix", "contactPersonEmailIsNil", "contactPersonEmailNotNil", "contactPersonEmailEqualFold", "contactPersonEmailContainsFold", "areaID", "areaIDNEQ", "areaIDIn", "areaIDNotIn", "areaIDGT", "areaIDGTE", "areaIDLT", "areaIDLTE", "areaIDContains", "areaIDHasPrefix", "areaIDHasSuffix", "areaIDEqualFold", "areaIDContainsFold", "salesID", "salesIDNEQ", "salesIDIn", "salesIDNotIn", "salesIDGT", "salesIDGTE", "salesIDLT", "salesIDLTE", "salesIDContains", "salesIDHasPrefix", "salesIDHasSuffix", "salesIDIsNil", "salesIDNotNil", "salesIDEqualFold", "salesIDContainsFold", "createdByID", "createdByIDNEQ", "createdByIDIn", "createdByIDNotIn", "createdByIDGT", "createdByIDGTE", "createdByIDLT", "createdByIDLTE", "createdByIDContains", "createdByIDHasPrefix", "createdByIDHasSuffix", "createdByIDIsNil", "createdByIDNotNil", "createdByIDEqualFold", "createdByIDContainsFold", "updatedByID", "updatedByIDNEQ", "updatedByIDIn", "updatedByIDNotIn", "updatedByIDGT", "updatedByIDGTE", "updatedByIDLT", "updatedByIDLTE", "updatedByIDContains", "updatedByIDHasPrefix", "updatedByIDHasSuffix", "updatedByIDIsNil", "updatedByIDNotNil", "updatedByIDEqualFold", "updatedByIDContainsFold", "approverID", "approverIDNEQ", "approverIDIn", "approverIDNotIn", "approverIDGT", "approverIDGTE", "approverIDLT", "approverIDLTE", "approverIDContains", "approverIDHasPrefix", "approverIDHasSuffix", "approverIDIsNil", "approverIDNotNil", "approverIDEqualFold", "approverIDContainsFold", "hasArea", "hasAreaWith", "hasTenders", "hasTendersWith", "hasSales", "hasSalesWith", "hasCreatedBy", "hasCreatedByWith", "hasUpdatedBy", "hasUpdatedByWith", "hasApprover", "hasApproverWith", "hasVisitRecords", "hasVisitRecordsWith"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -33650,20 +34072,62 @@ func (ec *executionContext) unmarshalInputCustomerWhereInput(ctx context.Context
 				return it, err
 			}
 			it.NameContainsFold = data
-		case "isApproved":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("isApproved"))
-			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+		case "approvalStatus":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalStatus"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.IsApproved = data
-		case "isApprovedNEQ":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("isApprovedNEQ"))
-			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			it.ApprovalStatus = data
+		case "approvalStatusNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalStatusNEQ"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.IsApprovedNEQ = data
+			it.ApprovalStatusNEQ = data
+		case "approvalStatusIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalStatusIn"))
+			data, err := ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalStatusIn = data
+		case "approvalStatusNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalStatusNotIn"))
+			data, err := ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalStatusNotIn = data
+		case "approvalStatusGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalStatusGT"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalStatusGT = data
+		case "approvalStatusGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalStatusGTE"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalStatusGTE = data
+		case "approvalStatusLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalStatusLT"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalStatusLT = data
+		case "approvalStatusLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalStatusLTE"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalStatusLTE = data
 		case "ownerType":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ownerType"))
 			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
@@ -34595,6 +35059,111 @@ func (ec *executionContext) unmarshalInputCustomerWhereInput(ctx context.Context
 				return it, err
 			}
 			it.CreatedByIDContainsFold = data
+		case "updatedByID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedByID"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UpdatedByID = data
+		case "updatedByIDNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedByIDNEQ"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UpdatedByIDNEQ = data
+		case "updatedByIDIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedByIDIn"))
+			data, err := ec.unmarshalOID2ᚕcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐIDᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UpdatedByIDIn = data
+		case "updatedByIDNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedByIDNotIn"))
+			data, err := ec.unmarshalOID2ᚕcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐIDᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UpdatedByIDNotIn = data
+		case "updatedByIDGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedByIDGT"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UpdatedByIDGT = data
+		case "updatedByIDGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedByIDGTE"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UpdatedByIDGTE = data
+		case "updatedByIDLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedByIDLT"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UpdatedByIDLT = data
+		case "updatedByIDLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedByIDLTE"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UpdatedByIDLTE = data
+		case "updatedByIDContains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedByIDContains"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UpdatedByIDContains = data
+		case "updatedByIDHasPrefix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedByIDHasPrefix"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UpdatedByIDHasPrefix = data
+		case "updatedByIDHasSuffix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedByIDHasSuffix"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UpdatedByIDHasSuffix = data
+		case "updatedByIDIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedByIDIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UpdatedByIDIsNil = data
+		case "updatedByIDNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedByIDNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UpdatedByIDNotNil = data
+		case "updatedByIDEqualFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedByIDEqualFold"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UpdatedByIDEqualFold = data
+		case "updatedByIDContainsFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedByIDContainsFold"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UpdatedByIDContainsFold = data
 		case "approverID":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approverID"))
 			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
@@ -34756,6 +35325,20 @@ func (ec *executionContext) unmarshalInputCustomerWhereInput(ctx context.Context
 				return it, err
 			}
 			it.HasCreatedByWith = data
+		case "hasUpdatedBy":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasUpdatedBy"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.HasUpdatedBy = data
+		case "hasUpdatedByWith":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasUpdatedByWith"))
+			data, err := ec.unmarshalOUserWhereInput2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐUserWhereInputᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.HasUpdatedByWith = data
 		case "hasApprover":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasApprover"))
 			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
@@ -46947,7 +47530,7 @@ func (ec *executionContext) unmarshalInputTenderWhereInput(ctx context.Context, 
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdAt", "createdAtNEQ", "createdAtIn", "createdAtNotIn", "createdAtGT", "createdAtGTE", "createdAtLT", "createdAtLTE", "updatedAt", "updatedAtNEQ", "updatedAtIn", "updatedAtNotIn", "updatedAtGT", "updatedAtGTE", "updatedAtLT", "updatedAtLTE", "code", "codeNEQ", "codeIn", "codeNotIn", "codeGT", "codeGTE", "codeLT", "codeLTE", "codeContains", "codeHasPrefix", "codeHasSuffix", "codeEqualFold", "codeContainsFold", "status", "statusNEQ", "statusIn", "statusNotIn", "statusGT", "statusGTE", "statusLT", "statusLTE", "isApproved", "isApprovedNEQ", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "estimatedAmount", "estimatedAmountNEQ", "estimatedAmountIn", "estimatedAmountNotIn", "estimatedAmountGT", "estimatedAmountGTE", "estimatedAmountLT", "estimatedAmountLTE", "estimatedAmountIsNil", "estimatedAmountNotNil", "tenderDate", "tenderDateNEQ", "tenderDateIn", "tenderDateNotIn", "tenderDateGT", "tenderDateGTE", "tenderDateLT", "tenderDateLTE", "tenderDateIsNil", "tenderDateNotNil", "classify", "classifyNEQ", "classifyIn", "classifyNotIn", "classifyGT", "classifyGTE", "classifyLT", "classifyLTE", "classifyIsNil", "classifyNotNil", "discoveryDate", "discoveryDateNEQ", "discoveryDateIn", "discoveryDateNotIn", "discoveryDateGT", "discoveryDateGTE", "discoveryDateLT", "discoveryDateLTE", "address", "addressNEQ", "addressIn", "addressNotIn", "addressGT", "addressGTE", "addressLT", "addressLTE", "addressContains", "addressHasPrefix", "addressHasSuffix", "addressIsNil", "addressNotNil", "addressEqualFold", "addressContainsFold", "fullAddress", "fullAddressNEQ", "fullAddressIn", "fullAddressNotIn", "fullAddressGT", "fullAddressGTE", "fullAddressLT", "fullAddressLTE", "fullAddressContains", "fullAddressHasPrefix", "fullAddressHasSuffix", "fullAddressIsNil", "fullAddressNotNil", "fullAddressEqualFold", "fullAddressContainsFold", "contractor", "contractorNEQ", "contractorIn", "contractorNotIn", "contractorGT", "contractorGTE", "contractorLT", "contractorLTE", "contractorContains", "contractorHasPrefix", "contractorHasSuffix", "contractorIsNil", "contractorNotNil", "contractorEqualFold", "contractorContainsFold", "levelInvolved", "levelInvolvedNEQ", "levelInvolvedIn", "levelInvolvedNotIn", "levelInvolvedGT", "levelInvolvedGTE", "levelInvolvedLT", "levelInvolvedLTE", "levelInvolvedIsNil", "levelInvolvedNotNil", "sizeAndValueRating", "sizeAndValueRatingNEQ", "sizeAndValueRatingIn", "sizeAndValueRatingNotIn", "sizeAndValueRatingGT", "sizeAndValueRatingGTE", "sizeAndValueRatingLT", "sizeAndValueRatingLTE", "sizeAndValueRatingIsNil", "sizeAndValueRatingNotNil", "sizeAndValueRatingOverview", "sizeAndValueRatingOverviewNEQ", "sizeAndValueRatingOverviewIn", "sizeAndValueRatingOverviewNotIn", "sizeAndValueRatingOverviewGT", "sizeAndValueRatingOverviewGTE", "sizeAndValueRatingOverviewLT", "sizeAndValueRatingOverviewLTE", "sizeAndValueRatingOverviewContains", "sizeAndValueRatingOverviewHasPrefix", "sizeAndValueRatingOverviewHasSuffix", "sizeAndValueRatingOverviewIsNil", "sizeAndValueRatingOverviewNotNil", "sizeAndValueRatingOverviewEqualFold", "sizeAndValueRatingOverviewContainsFold", "creditAndPaymentRating", "creditAndPaymentRatingNEQ", "creditAndPaymentRatingIn", "creditAndPaymentRatingNotIn", "creditAndPaymentRatingGT", "creditAndPaymentRatingGTE", "creditAndPaymentRatingLT", "creditAndPaymentRatingLTE", "creditAndPaymentRatingIsNil", "creditAndPaymentRatingNotNil", "creditAndPaymentRatingOverview", "creditAndPaymentRatingOverviewNEQ", "creditAndPaymentRatingOverviewIn", "creditAndPaymentRatingOverviewNotIn", "creditAndPaymentRatingOverviewGT", "creditAndPaymentRatingOverviewGTE", "creditAndPaymentRatingOverviewLT", "creditAndPaymentRatingOverviewLTE", "creditAndPaymentRatingOverviewContains", "creditAndPaymentRatingOverviewHasPrefix", "creditAndPaymentRatingOverviewHasSuffix", "creditAndPaymentRatingOverviewIsNil", "creditAndPaymentRatingOverviewNotNil", "creditAndPaymentRatingOverviewEqualFold", "creditAndPaymentRatingOverviewContainsFold", "timeLimitRating", "timeLimitRatingNEQ", "timeLimitRatingIn", "timeLimitRatingNotIn", "timeLimitRatingGT", "timeLimitRatingGTE", "timeLimitRatingLT", "timeLimitRatingLTE", "timeLimitRatingIsNil", "timeLimitRatingNotNil", "timeLimitRatingOverview", "timeLimitRatingOverviewNEQ", "timeLimitRatingOverviewIn", "timeLimitRatingOverviewNotIn", "timeLimitRatingOverviewGT", "timeLimitRatingOverviewGTE", "timeLimitRatingOverviewLT", "timeLimitRatingOverviewLTE", "timeLimitRatingOverviewContains", "timeLimitRatingOverviewHasPrefix", "timeLimitRatingOverviewHasSuffix", "timeLimitRatingOverviewIsNil", "timeLimitRatingOverviewNotNil", "timeLimitRatingOverviewEqualFold", "timeLimitRatingOverviewContainsFold", "customerRelationshipRating", "customerRelationshipRatingNEQ", "customerRelationshipRatingIn", "customerRelationshipRatingNotIn", "customerRelationshipRatingGT", "customerRelationshipRatingGTE", "customerRelationshipRatingLT", "customerRelationshipRatingLTE", "customerRelationshipRatingIsNil", "customerRelationshipRatingNotNil", "customerRelationshipRatingOverview", "customerRelationshipRatingOverviewNEQ", "customerRelationshipRatingOverviewIn", "customerRelationshipRatingOverviewNotIn", "customerRelationshipRatingOverviewGT", "customerRelationshipRatingOverviewGTE", "customerRelationshipRatingOverviewLT", "customerRelationshipRatingOverviewLTE", "customerRelationshipRatingOverviewContains", "customerRelationshipRatingOverviewHasPrefix", "customerRelationshipRatingOverviewHasSuffix", "customerRelationshipRatingOverviewIsNil", "customerRelationshipRatingOverviewNotNil", "customerRelationshipRatingOverviewEqualFold", "customerRelationshipRatingOverviewContainsFold", "competitivePartnershipRating", "competitivePartnershipRatingNEQ", "competitivePartnershipRatingIn", "competitivePartnershipRatingNotIn", "competitivePartnershipRatingGT", "competitivePartnershipRatingGTE", "competitivePartnershipRatingLT", "competitivePartnershipRatingLTE", "competitivePartnershipRatingIsNil", "competitivePartnershipRatingNotNil", "competitivePartnershipRatingOverview", "competitivePartnershipRatingOverviewNEQ", "competitivePartnershipRatingOverviewIn", "competitivePartnershipRatingOverviewNotIn", "competitivePartnershipRatingOverviewGT", "competitivePartnershipRatingOverviewGTE", "competitivePartnershipRatingOverviewLT", "competitivePartnershipRatingOverviewLTE", "competitivePartnershipRatingOverviewContains", "competitivePartnershipRatingOverviewHasPrefix", "competitivePartnershipRatingOverviewHasSuffix", "competitivePartnershipRatingOverviewIsNil", "competitivePartnershipRatingOverviewNotNil", "competitivePartnershipRatingOverviewEqualFold", "competitivePartnershipRatingOverviewContainsFold", "prepareToBid", "prepareToBidNEQ", "projectCode", "projectCodeNEQ", "projectCodeIn", "projectCodeNotIn", "projectCodeGT", "projectCodeGTE", "projectCodeLT", "projectCodeLTE", "projectCodeContains", "projectCodeHasPrefix", "projectCodeHasSuffix", "projectCodeIsNil", "projectCodeNotNil", "projectCodeEqualFold", "projectCodeContainsFold", "projectType", "projectTypeNEQ", "projectTypeIn", "projectTypeNotIn", "projectTypeGT", "projectTypeGTE", "projectTypeLT", "projectTypeLTE", "projectTypeContains", "projectTypeHasPrefix", "projectTypeHasSuffix", "projectTypeIsNil", "projectTypeNotNil", "projectTypeEqualFold", "projectTypeContainsFold", "projectDefinition", "projectDefinitionNEQ", "projectDefinitionIn", "projectDefinitionNotIn", "projectDefinitionGT", "projectDefinitionGTE", "projectDefinitionLT", "projectDefinitionLTE", "projectDefinitionContains", "projectDefinitionHasPrefix", "projectDefinitionHasSuffix", "projectDefinitionIsNil", "projectDefinitionNotNil", "projectDefinitionEqualFold", "projectDefinitionContainsFold", "estimatedProjectStartDate", "estimatedProjectStartDateNEQ", "estimatedProjectStartDateIn", "estimatedProjectStartDateNotIn", "estimatedProjectStartDateGT", "estimatedProjectStartDateGTE", "estimatedProjectStartDateLT", "estimatedProjectStartDateLTE", "estimatedProjectStartDateIsNil", "estimatedProjectStartDateNotNil", "estimatedProjectEndDate", "estimatedProjectEndDateNEQ", "estimatedProjectEndDateIn", "estimatedProjectEndDateNotIn", "estimatedProjectEndDateGT", "estimatedProjectEndDateGTE", "estimatedProjectEndDateLT", "estimatedProjectEndDateLTE", "estimatedProjectEndDateIsNil", "estimatedProjectEndDateNotNil", "remark", "remarkNEQ", "remarkIn", "remarkNotIn", "remarkGT", "remarkGTE", "remarkLT", "remarkLTE", "remarkContains", "remarkHasPrefix", "remarkHasSuffix", "remarkIsNil", "remarkNotNil", "remarkEqualFold", "remarkContainsFold", "tenderSituations", "tenderSituationsNEQ", "tenderSituationsIn", "tenderSituationsNotIn", "tenderSituationsGT", "tenderSituationsGTE", "tenderSituationsLT", "tenderSituationsLTE", "tenderSituationsContains", "tenderSituationsHasPrefix", "tenderSituationsHasSuffix", "tenderSituationsIsNil", "tenderSituationsNotNil", "tenderSituationsEqualFold", "tenderSituationsContainsFold", "ownerSituations", "ownerSituationsNEQ", "ownerSituationsIn", "ownerSituationsNotIn", "ownerSituationsGT", "ownerSituationsGTE", "ownerSituationsLT", "ownerSituationsLTE", "ownerSituationsContains", "ownerSituationsHasPrefix", "ownerSituationsHasSuffix", "ownerSituationsIsNil", "ownerSituationsNotNil", "ownerSituationsEqualFold", "ownerSituationsContainsFold", "biddingInstructions", "biddingInstructionsNEQ", "biddingInstructionsIn", "biddingInstructionsNotIn", "biddingInstructionsGT", "biddingInstructionsGTE", "biddingInstructionsLT", "biddingInstructionsLTE", "biddingInstructionsContains", "biddingInstructionsHasPrefix", "biddingInstructionsHasSuffix", "biddingInstructionsIsNil", "biddingInstructionsNotNil", "biddingInstructionsEqualFold", "biddingInstructionsContainsFold", "competitorSituations", "competitorSituationsNEQ", "competitorSituationsIn", "competitorSituationsNotIn", "competitorSituationsGT", "competitorSituationsGTE", "competitorSituationsLT", "competitorSituationsLTE", "competitorSituationsContains", "competitorSituationsHasPrefix", "competitorSituationsHasSuffix", "competitorSituationsIsNil", "competitorSituationsNotNil", "competitorSituationsEqualFold", "competitorSituationsContainsFold", "costEngineer", "costEngineerNEQ", "costEngineerIn", "costEngineerNotIn", "costEngineerGT", "costEngineerGTE", "costEngineerLT", "costEngineerLTE", "costEngineerContains", "costEngineerHasPrefix", "costEngineerHasSuffix", "costEngineerIsNil", "costEngineerNotNil", "costEngineerEqualFold", "costEngineerContainsFold", "tenderForm", "tenderFormNEQ", "tenderFormIn", "tenderFormNotIn", "tenderFormGT", "tenderFormGTE", "tenderFormLT", "tenderFormLTE", "tenderFormContains", "tenderFormHasPrefix", "tenderFormHasSuffix", "tenderFormIsNil", "tenderFormNotNil", "tenderFormEqualFold", "tenderFormContainsFold", "contractForm", "contractFormNEQ", "contractFormIn", "contractFormNotIn", "contractFormGT", "contractFormGTE", "contractFormLT", "contractFormLTE", "contractFormContains", "contractFormHasPrefix", "contractFormHasSuffix", "contractFormIsNil", "contractFormNotNil", "contractFormEqualFold", "contractFormContainsFold", "managementCompany", "managementCompanyNEQ", "managementCompanyIn", "managementCompanyNotIn", "managementCompanyGT", "managementCompanyGTE", "managementCompanyLT", "managementCompanyLTE", "managementCompanyContains", "managementCompanyHasPrefix", "managementCompanyHasSuffix", "managementCompanyIsNil", "managementCompanyNotNil", "managementCompanyEqualFold", "managementCompanyContainsFold", "tenderingAgency", "tenderingAgencyNEQ", "tenderingAgencyIn", "tenderingAgencyNotIn", "tenderingAgencyGT", "tenderingAgencyGTE", "tenderingAgencyLT", "tenderingAgencyLTE", "tenderingAgencyContains", "tenderingAgencyHasPrefix", "tenderingAgencyHasSuffix", "tenderingAgencyIsNil", "tenderingAgencyNotNil", "tenderingAgencyEqualFold", "tenderingAgencyContainsFold", "biddingDate", "biddingDateNEQ", "biddingDateIn", "biddingDateNotIn", "biddingDateGT", "biddingDateGTE", "biddingDateLT", "biddingDateLTE", "biddingDateIsNil", "biddingDateNotNil", "facadeConsultant", "facadeConsultantNEQ", "facadeConsultantIn", "facadeConsultantNotIn", "facadeConsultantGT", "facadeConsultantGTE", "facadeConsultantLT", "facadeConsultantLTE", "facadeConsultantContains", "facadeConsultantHasPrefix", "facadeConsultantHasSuffix", "facadeConsultantIsNil", "facadeConsultantNotNil", "facadeConsultantEqualFold", "facadeConsultantContainsFold", "designUnit", "designUnitNEQ", "designUnitIn", "designUnitNotIn", "designUnitGT", "designUnitGTE", "designUnitLT", "designUnitLTE", "designUnitContains", "designUnitHasPrefix", "designUnitHasSuffix", "designUnitIsNil", "designUnitNotNil", "designUnitEqualFold", "designUnitContainsFold", "consultingFirm", "consultingFirmNEQ", "consultingFirmIn", "consultingFirmNotIn", "consultingFirmGT", "consultingFirmGTE", "consultingFirmLT", "consultingFirmLTE", "consultingFirmContains", "consultingFirmHasPrefix", "consultingFirmHasSuffix", "consultingFirmIsNil", "consultingFirmNotNil", "consultingFirmEqualFold", "consultingFirmContainsFold", "keyProject", "keyProjectNEQ", "currentProgress", "currentProgressNEQ", "currentProgressIn", "currentProgressNotIn", "currentProgressGT", "currentProgressGTE", "currentProgressLT", "currentProgressLTE", "currentProgressContains", "currentProgressHasPrefix", "currentProgressHasSuffix", "currentProgressIsNil", "currentProgressNotNil", "currentProgressEqualFold", "currentProgressContainsFold", "tenderWinCompany", "tenderWinCompanyNEQ", "tenderWinCompanyIn", "tenderWinCompanyNotIn", "tenderWinCompanyGT", "tenderWinCompanyGTE", "tenderWinCompanyLT", "tenderWinCompanyLTE", "tenderWinCompanyContains", "tenderWinCompanyHasPrefix", "tenderWinCompanyHasSuffix", "tenderWinCompanyIsNil", "tenderWinCompanyNotNil", "tenderWinCompanyEqualFold", "tenderWinCompanyContainsFold", "tenderCode", "tenderCodeNEQ", "tenderCodeIn", "tenderCodeNotIn", "tenderCodeGT", "tenderCodeGTE", "tenderCodeLT", "tenderCodeLTE", "tenderCodeContains", "tenderCodeHasPrefix", "tenderCodeHasSuffix", "tenderCodeIsNil", "tenderCodeNotNil", "tenderCodeEqualFold", "tenderCodeContainsFold", "architect", "architectNEQ", "architectIn", "architectNotIn", "architectGT", "architectGTE", "architectLT", "architectLTE", "architectContains", "architectHasPrefix", "architectHasSuffix", "architectIsNil", "architectNotNil", "architectEqualFold", "architectContainsFold", "developer", "developerNEQ", "developerIn", "developerNotIn", "developerGT", "developerGTE", "developerLT", "developerLTE", "developerContains", "developerHasPrefix", "developerHasSuffix", "developerIsNil", "developerNotNil", "developerEqualFold", "developerContainsFold", "tenderClosingDate", "tenderClosingDateNEQ", "tenderClosingDateIn", "tenderClosingDateNotIn", "tenderClosingDateGT", "tenderClosingDateGTE", "tenderClosingDateLT", "tenderClosingDateLTE", "tenderClosingDateIsNil", "tenderClosingDateNotNil", "constructionArea", "constructionAreaNEQ", "constructionAreaIn", "constructionAreaNotIn", "constructionAreaGT", "constructionAreaGTE", "constructionAreaLT", "constructionAreaLTE", "constructionAreaContains", "constructionAreaHasPrefix", "constructionAreaHasSuffix", "constructionAreaIsNil", "constructionAreaNotNil", "constructionAreaEqualFold", "constructionAreaContainsFold", "tenderWinDate", "tenderWinDateNEQ", "tenderWinDateIn", "tenderWinDateNotIn", "tenderWinDateGT", "tenderWinDateGTE", "tenderWinDateLT", "tenderWinDateLTE", "tenderWinDateIsNil", "tenderWinDateNotNil", "tenderWinAmount", "tenderWinAmountNEQ", "tenderWinAmountIn", "tenderWinAmountNotIn", "tenderWinAmountGT", "tenderWinAmountGTE", "tenderWinAmountLT", "tenderWinAmountLTE", "tenderWinAmountIsNil", "tenderWinAmountNotNil", "lastTenderAmount", "lastTenderAmountNEQ", "lastTenderAmountIn", "lastTenderAmountNotIn", "lastTenderAmountGT", "lastTenderAmountGTE", "lastTenderAmountLT", "lastTenderAmountLTE", "lastTenderAmountIsNil", "lastTenderAmountNotNil", "areaID", "areaIDNEQ", "areaIDIn", "areaIDNotIn", "areaIDGT", "areaIDGTE", "areaIDLT", "areaIDLTE", "areaIDContains", "areaIDHasPrefix", "areaIDHasSuffix", "areaIDEqualFold", "areaIDContainsFold", "provinceID", "provinceIDNEQ", "provinceIDIn", "provinceIDNotIn", "provinceIDGT", "provinceIDGTE", "provinceIDLT", "provinceIDLTE", "provinceIDContains", "provinceIDHasPrefix", "provinceIDHasSuffix", "provinceIDIsNil", "provinceIDNotNil", "provinceIDEqualFold", "provinceIDContainsFold", "cityID", "cityIDNEQ", "cityIDIn", "cityIDNotIn", "cityIDGT", "cityIDGTE", "cityIDLT", "cityIDLTE", "cityIDContains", "cityIDHasPrefix", "cityIDHasSuffix", "cityIDIsNil", "cityIDNotNil", "cityIDEqualFold", "cityIDContainsFold", "districtID", "districtIDNEQ", "districtIDIn", "districtIDNotIn", "districtIDGT", "districtIDGTE", "districtIDLT", "districtIDLTE", "districtIDContains", "districtIDHasPrefix", "districtIDHasSuffix", "districtIDIsNil", "districtIDNotNil", "districtIDEqualFold", "districtIDContainsFold", "customerID", "customerIDNEQ", "customerIDIn", "customerIDNotIn", "customerIDGT", "customerIDGTE", "customerIDLT", "customerIDLTE", "customerIDContains", "customerIDHasPrefix", "customerIDHasSuffix", "customerIDIsNil", "customerIDNotNil", "customerIDEqualFold", "customerIDContainsFold", "finderID", "finderIDNEQ", "finderIDIn", "finderIDNotIn", "finderIDGT", "finderIDGTE", "finderIDLT", "finderIDLTE", "finderIDContains", "finderIDHasPrefix", "finderIDHasSuffix", "finderIDIsNil", "finderIDNotNil", "finderIDEqualFold", "finderIDContainsFold", "createdByID", "createdByIDNEQ", "createdByIDIn", "createdByIDNotIn", "createdByIDGT", "createdByIDGTE", "createdByIDLT", "createdByIDLTE", "createdByIDContains", "createdByIDHasPrefix", "createdByIDHasSuffix", "createdByIDIsNil", "createdByIDNotNil", "createdByIDEqualFold", "createdByIDContainsFold", "competitorID", "competitorIDNEQ", "competitorIDIn", "competitorIDNotIn", "competitorIDGT", "competitorIDGTE", "competitorIDLT", "competitorIDLTE", "competitorIDContains", "competitorIDHasPrefix", "competitorIDHasSuffix", "competitorIDIsNil", "competitorIDNotNil", "competitorIDEqualFold", "competitorIDContainsFold", "approverID", "approverIDNEQ", "approverIDIn", "approverIDNotIn", "approverIDGT", "approverIDGTE", "approverIDLT", "approverIDLTE", "approverIDContains", "approverIDHasPrefix", "approverIDHasSuffix", "approverIDIsNil", "approverIDNotNil", "approverIDEqualFold", "approverIDContainsFold", "hasArea", "hasAreaWith", "hasCustomer", "hasCustomerWith", "hasFinder", "hasFinderWith", "hasCreatedBy", "hasCreatedByWith", "hasFollowingSales", "hasFollowingSalesWith", "hasProvince", "hasProvinceWith", "hasCity", "hasCityWith", "hasDistrict", "hasDistrictWith", "hasVisitRecords", "hasVisitRecordsWith", "hasCompetitor", "hasCompetitorWith", "hasApprover", "hasApproverWith"}
+	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdAt", "createdAtNEQ", "createdAtIn", "createdAtNotIn", "createdAtGT", "createdAtGTE", "createdAtLT", "createdAtLTE", "updatedAt", "updatedAtNEQ", "updatedAtIn", "updatedAtNotIn", "updatedAtGT", "updatedAtGTE", "updatedAtLT", "updatedAtLTE", "code", "codeNEQ", "codeIn", "codeNotIn", "codeGT", "codeGTE", "codeLT", "codeLTE", "codeContains", "codeHasPrefix", "codeHasSuffix", "codeEqualFold", "codeContainsFold", "status", "statusNEQ", "statusIn", "statusNotIn", "statusGT", "statusGTE", "statusLT", "statusLTE", "approvalStatus", "approvalStatusNEQ", "approvalStatusIn", "approvalStatusNotIn", "approvalStatusGT", "approvalStatusGTE", "approvalStatusLT", "approvalStatusLTE", "approvalMsgID", "approvalMsgIDNEQ", "approvalMsgIDIn", "approvalMsgIDNotIn", "approvalMsgIDGT", "approvalMsgIDGTE", "approvalMsgIDLT", "approvalMsgIDLTE", "approvalMsgIDContains", "approvalMsgIDHasPrefix", "approvalMsgIDHasSuffix", "approvalMsgIDIsNil", "approvalMsgIDNotNil", "approvalMsgIDEqualFold", "approvalMsgIDContainsFold", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "estimatedAmount", "estimatedAmountNEQ", "estimatedAmountIn", "estimatedAmountNotIn", "estimatedAmountGT", "estimatedAmountGTE", "estimatedAmountLT", "estimatedAmountLTE", "estimatedAmountIsNil", "estimatedAmountNotNil", "tenderDate", "tenderDateNEQ", "tenderDateIn", "tenderDateNotIn", "tenderDateGT", "tenderDateGTE", "tenderDateLT", "tenderDateLTE", "tenderDateIsNil", "tenderDateNotNil", "classify", "classifyNEQ", "classifyIn", "classifyNotIn", "classifyGT", "classifyGTE", "classifyLT", "classifyLTE", "classifyIsNil", "classifyNotNil", "discoveryDate", "discoveryDateNEQ", "discoveryDateIn", "discoveryDateNotIn", "discoveryDateGT", "discoveryDateGTE", "discoveryDateLT", "discoveryDateLTE", "address", "addressNEQ", "addressIn", "addressNotIn", "addressGT", "addressGTE", "addressLT", "addressLTE", "addressContains", "addressHasPrefix", "addressHasSuffix", "addressIsNil", "addressNotNil", "addressEqualFold", "addressContainsFold", "fullAddress", "fullAddressNEQ", "fullAddressIn", "fullAddressNotIn", "fullAddressGT", "fullAddressGTE", "fullAddressLT", "fullAddressLTE", "fullAddressContains", "fullAddressHasPrefix", "fullAddressHasSuffix", "fullAddressIsNil", "fullAddressNotNil", "fullAddressEqualFold", "fullAddressContainsFold", "contractor", "contractorNEQ", "contractorIn", "contractorNotIn", "contractorGT", "contractorGTE", "contractorLT", "contractorLTE", "contractorContains", "contractorHasPrefix", "contractorHasSuffix", "contractorIsNil", "contractorNotNil", "contractorEqualFold", "contractorContainsFold", "levelInvolved", "levelInvolvedNEQ", "levelInvolvedIn", "levelInvolvedNotIn", "levelInvolvedGT", "levelInvolvedGTE", "levelInvolvedLT", "levelInvolvedLTE", "levelInvolvedIsNil", "levelInvolvedNotNil", "sizeAndValueRating", "sizeAndValueRatingNEQ", "sizeAndValueRatingIn", "sizeAndValueRatingNotIn", "sizeAndValueRatingGT", "sizeAndValueRatingGTE", "sizeAndValueRatingLT", "sizeAndValueRatingLTE", "sizeAndValueRatingIsNil", "sizeAndValueRatingNotNil", "sizeAndValueRatingOverview", "sizeAndValueRatingOverviewNEQ", "sizeAndValueRatingOverviewIn", "sizeAndValueRatingOverviewNotIn", "sizeAndValueRatingOverviewGT", "sizeAndValueRatingOverviewGTE", "sizeAndValueRatingOverviewLT", "sizeAndValueRatingOverviewLTE", "sizeAndValueRatingOverviewContains", "sizeAndValueRatingOverviewHasPrefix", "sizeAndValueRatingOverviewHasSuffix", "sizeAndValueRatingOverviewIsNil", "sizeAndValueRatingOverviewNotNil", "sizeAndValueRatingOverviewEqualFold", "sizeAndValueRatingOverviewContainsFold", "creditAndPaymentRating", "creditAndPaymentRatingNEQ", "creditAndPaymentRatingIn", "creditAndPaymentRatingNotIn", "creditAndPaymentRatingGT", "creditAndPaymentRatingGTE", "creditAndPaymentRatingLT", "creditAndPaymentRatingLTE", "creditAndPaymentRatingIsNil", "creditAndPaymentRatingNotNil", "creditAndPaymentRatingOverview", "creditAndPaymentRatingOverviewNEQ", "creditAndPaymentRatingOverviewIn", "creditAndPaymentRatingOverviewNotIn", "creditAndPaymentRatingOverviewGT", "creditAndPaymentRatingOverviewGTE", "creditAndPaymentRatingOverviewLT", "creditAndPaymentRatingOverviewLTE", "creditAndPaymentRatingOverviewContains", "creditAndPaymentRatingOverviewHasPrefix", "creditAndPaymentRatingOverviewHasSuffix", "creditAndPaymentRatingOverviewIsNil", "creditAndPaymentRatingOverviewNotNil", "creditAndPaymentRatingOverviewEqualFold", "creditAndPaymentRatingOverviewContainsFold", "timeLimitRating", "timeLimitRatingNEQ", "timeLimitRatingIn", "timeLimitRatingNotIn", "timeLimitRatingGT", "timeLimitRatingGTE", "timeLimitRatingLT", "timeLimitRatingLTE", "timeLimitRatingIsNil", "timeLimitRatingNotNil", "timeLimitRatingOverview", "timeLimitRatingOverviewNEQ", "timeLimitRatingOverviewIn", "timeLimitRatingOverviewNotIn", "timeLimitRatingOverviewGT", "timeLimitRatingOverviewGTE", "timeLimitRatingOverviewLT", "timeLimitRatingOverviewLTE", "timeLimitRatingOverviewContains", "timeLimitRatingOverviewHasPrefix", "timeLimitRatingOverviewHasSuffix", "timeLimitRatingOverviewIsNil", "timeLimitRatingOverviewNotNil", "timeLimitRatingOverviewEqualFold", "timeLimitRatingOverviewContainsFold", "customerRelationshipRating", "customerRelationshipRatingNEQ", "customerRelationshipRatingIn", "customerRelationshipRatingNotIn", "customerRelationshipRatingGT", "customerRelationshipRatingGTE", "customerRelationshipRatingLT", "customerRelationshipRatingLTE", "customerRelationshipRatingIsNil", "customerRelationshipRatingNotNil", "customerRelationshipRatingOverview", "customerRelationshipRatingOverviewNEQ", "customerRelationshipRatingOverviewIn", "customerRelationshipRatingOverviewNotIn", "customerRelationshipRatingOverviewGT", "customerRelationshipRatingOverviewGTE", "customerRelationshipRatingOverviewLT", "customerRelationshipRatingOverviewLTE", "customerRelationshipRatingOverviewContains", "customerRelationshipRatingOverviewHasPrefix", "customerRelationshipRatingOverviewHasSuffix", "customerRelationshipRatingOverviewIsNil", "customerRelationshipRatingOverviewNotNil", "customerRelationshipRatingOverviewEqualFold", "customerRelationshipRatingOverviewContainsFold", "competitivePartnershipRating", "competitivePartnershipRatingNEQ", "competitivePartnershipRatingIn", "competitivePartnershipRatingNotIn", "competitivePartnershipRatingGT", "competitivePartnershipRatingGTE", "competitivePartnershipRatingLT", "competitivePartnershipRatingLTE", "competitivePartnershipRatingIsNil", "competitivePartnershipRatingNotNil", "competitivePartnershipRatingOverview", "competitivePartnershipRatingOverviewNEQ", "competitivePartnershipRatingOverviewIn", "competitivePartnershipRatingOverviewNotIn", "competitivePartnershipRatingOverviewGT", "competitivePartnershipRatingOverviewGTE", "competitivePartnershipRatingOverviewLT", "competitivePartnershipRatingOverviewLTE", "competitivePartnershipRatingOverviewContains", "competitivePartnershipRatingOverviewHasPrefix", "competitivePartnershipRatingOverviewHasSuffix", "competitivePartnershipRatingOverviewIsNil", "competitivePartnershipRatingOverviewNotNil", "competitivePartnershipRatingOverviewEqualFold", "competitivePartnershipRatingOverviewContainsFold", "prepareToBid", "prepareToBidNEQ", "projectCode", "projectCodeNEQ", "projectCodeIn", "projectCodeNotIn", "projectCodeGT", "projectCodeGTE", "projectCodeLT", "projectCodeLTE", "projectCodeContains", "projectCodeHasPrefix", "projectCodeHasSuffix", "projectCodeIsNil", "projectCodeNotNil", "projectCodeEqualFold", "projectCodeContainsFold", "projectType", "projectTypeNEQ", "projectTypeIn", "projectTypeNotIn", "projectTypeGT", "projectTypeGTE", "projectTypeLT", "projectTypeLTE", "projectTypeContains", "projectTypeHasPrefix", "projectTypeHasSuffix", "projectTypeIsNil", "projectTypeNotNil", "projectTypeEqualFold", "projectTypeContainsFold", "projectDefinition", "projectDefinitionNEQ", "projectDefinitionIn", "projectDefinitionNotIn", "projectDefinitionGT", "projectDefinitionGTE", "projectDefinitionLT", "projectDefinitionLTE", "projectDefinitionContains", "projectDefinitionHasPrefix", "projectDefinitionHasSuffix", "projectDefinitionIsNil", "projectDefinitionNotNil", "projectDefinitionEqualFold", "projectDefinitionContainsFold", "estimatedProjectStartDate", "estimatedProjectStartDateNEQ", "estimatedProjectStartDateIn", "estimatedProjectStartDateNotIn", "estimatedProjectStartDateGT", "estimatedProjectStartDateGTE", "estimatedProjectStartDateLT", "estimatedProjectStartDateLTE", "estimatedProjectStartDateIsNil", "estimatedProjectStartDateNotNil", "estimatedProjectEndDate", "estimatedProjectEndDateNEQ", "estimatedProjectEndDateIn", "estimatedProjectEndDateNotIn", "estimatedProjectEndDateGT", "estimatedProjectEndDateGTE", "estimatedProjectEndDateLT", "estimatedProjectEndDateLTE", "estimatedProjectEndDateIsNil", "estimatedProjectEndDateNotNil", "remark", "remarkNEQ", "remarkIn", "remarkNotIn", "remarkGT", "remarkGTE", "remarkLT", "remarkLTE", "remarkContains", "remarkHasPrefix", "remarkHasSuffix", "remarkIsNil", "remarkNotNil", "remarkEqualFold", "remarkContainsFold", "tenderSituations", "tenderSituationsNEQ", "tenderSituationsIn", "tenderSituationsNotIn", "tenderSituationsGT", "tenderSituationsGTE", "tenderSituationsLT", "tenderSituationsLTE", "tenderSituationsContains", "tenderSituationsHasPrefix", "tenderSituationsHasSuffix", "tenderSituationsIsNil", "tenderSituationsNotNil", "tenderSituationsEqualFold", "tenderSituationsContainsFold", "ownerSituations", "ownerSituationsNEQ", "ownerSituationsIn", "ownerSituationsNotIn", "ownerSituationsGT", "ownerSituationsGTE", "ownerSituationsLT", "ownerSituationsLTE", "ownerSituationsContains", "ownerSituationsHasPrefix", "ownerSituationsHasSuffix", "ownerSituationsIsNil", "ownerSituationsNotNil", "ownerSituationsEqualFold", "ownerSituationsContainsFold", "biddingInstructions", "biddingInstructionsNEQ", "biddingInstructionsIn", "biddingInstructionsNotIn", "biddingInstructionsGT", "biddingInstructionsGTE", "biddingInstructionsLT", "biddingInstructionsLTE", "biddingInstructionsContains", "biddingInstructionsHasPrefix", "biddingInstructionsHasSuffix", "biddingInstructionsIsNil", "biddingInstructionsNotNil", "biddingInstructionsEqualFold", "biddingInstructionsContainsFold", "competitorSituations", "competitorSituationsNEQ", "competitorSituationsIn", "competitorSituationsNotIn", "competitorSituationsGT", "competitorSituationsGTE", "competitorSituationsLT", "competitorSituationsLTE", "competitorSituationsContains", "competitorSituationsHasPrefix", "competitorSituationsHasSuffix", "competitorSituationsIsNil", "competitorSituationsNotNil", "competitorSituationsEqualFold", "competitorSituationsContainsFold", "costEngineer", "costEngineerNEQ", "costEngineerIn", "costEngineerNotIn", "costEngineerGT", "costEngineerGTE", "costEngineerLT", "costEngineerLTE", "costEngineerContains", "costEngineerHasPrefix", "costEngineerHasSuffix", "costEngineerIsNil", "costEngineerNotNil", "costEngineerEqualFold", "costEngineerContainsFold", "tenderForm", "tenderFormNEQ", "tenderFormIn", "tenderFormNotIn", "tenderFormGT", "tenderFormGTE", "tenderFormLT", "tenderFormLTE", "tenderFormContains", "tenderFormHasPrefix", "tenderFormHasSuffix", "tenderFormIsNil", "tenderFormNotNil", "tenderFormEqualFold", "tenderFormContainsFold", "contractForm", "contractFormNEQ", "contractFormIn", "contractFormNotIn", "contractFormGT", "contractFormGTE", "contractFormLT", "contractFormLTE", "contractFormContains", "contractFormHasPrefix", "contractFormHasSuffix", "contractFormIsNil", "contractFormNotNil", "contractFormEqualFold", "contractFormContainsFold", "managementCompany", "managementCompanyNEQ", "managementCompanyIn", "managementCompanyNotIn", "managementCompanyGT", "managementCompanyGTE", "managementCompanyLT", "managementCompanyLTE", "managementCompanyContains", "managementCompanyHasPrefix", "managementCompanyHasSuffix", "managementCompanyIsNil", "managementCompanyNotNil", "managementCompanyEqualFold", "managementCompanyContainsFold", "tenderingAgency", "tenderingAgencyNEQ", "tenderingAgencyIn", "tenderingAgencyNotIn", "tenderingAgencyGT", "tenderingAgencyGTE", "tenderingAgencyLT", "tenderingAgencyLTE", "tenderingAgencyContains", "tenderingAgencyHasPrefix", "tenderingAgencyHasSuffix", "tenderingAgencyIsNil", "tenderingAgencyNotNil", "tenderingAgencyEqualFold", "tenderingAgencyContainsFold", "biddingDate", "biddingDateNEQ", "biddingDateIn", "biddingDateNotIn", "biddingDateGT", "biddingDateGTE", "biddingDateLT", "biddingDateLTE", "biddingDateIsNil", "biddingDateNotNil", "facadeConsultant", "facadeConsultantNEQ", "facadeConsultantIn", "facadeConsultantNotIn", "facadeConsultantGT", "facadeConsultantGTE", "facadeConsultantLT", "facadeConsultantLTE", "facadeConsultantContains", "facadeConsultantHasPrefix", "facadeConsultantHasSuffix", "facadeConsultantIsNil", "facadeConsultantNotNil", "facadeConsultantEqualFold", "facadeConsultantContainsFold", "designUnit", "designUnitNEQ", "designUnitIn", "designUnitNotIn", "designUnitGT", "designUnitGTE", "designUnitLT", "designUnitLTE", "designUnitContains", "designUnitHasPrefix", "designUnitHasSuffix", "designUnitIsNil", "designUnitNotNil", "designUnitEqualFold", "designUnitContainsFold", "consultingFirm", "consultingFirmNEQ", "consultingFirmIn", "consultingFirmNotIn", "consultingFirmGT", "consultingFirmGTE", "consultingFirmLT", "consultingFirmLTE", "consultingFirmContains", "consultingFirmHasPrefix", "consultingFirmHasSuffix", "consultingFirmIsNil", "consultingFirmNotNil", "consultingFirmEqualFold", "consultingFirmContainsFold", "keyProject", "keyProjectNEQ", "currentProgress", "currentProgressNEQ", "currentProgressIn", "currentProgressNotIn", "currentProgressGT", "currentProgressGTE", "currentProgressLT", "currentProgressLTE", "currentProgressContains", "currentProgressHasPrefix", "currentProgressHasSuffix", "currentProgressIsNil", "currentProgressNotNil", "currentProgressEqualFold", "currentProgressContainsFold", "tenderWinCompany", "tenderWinCompanyNEQ", "tenderWinCompanyIn", "tenderWinCompanyNotIn", "tenderWinCompanyGT", "tenderWinCompanyGTE", "tenderWinCompanyLT", "tenderWinCompanyLTE", "tenderWinCompanyContains", "tenderWinCompanyHasPrefix", "tenderWinCompanyHasSuffix", "tenderWinCompanyIsNil", "tenderWinCompanyNotNil", "tenderWinCompanyEqualFold", "tenderWinCompanyContainsFold", "tenderCode", "tenderCodeNEQ", "tenderCodeIn", "tenderCodeNotIn", "tenderCodeGT", "tenderCodeGTE", "tenderCodeLT", "tenderCodeLTE", "tenderCodeContains", "tenderCodeHasPrefix", "tenderCodeHasSuffix", "tenderCodeIsNil", "tenderCodeNotNil", "tenderCodeEqualFold", "tenderCodeContainsFold", "architect", "architectNEQ", "architectIn", "architectNotIn", "architectGT", "architectGTE", "architectLT", "architectLTE", "architectContains", "architectHasPrefix", "architectHasSuffix", "architectIsNil", "architectNotNil", "architectEqualFold", "architectContainsFold", "developer", "developerNEQ", "developerIn", "developerNotIn", "developerGT", "developerGTE", "developerLT", "developerLTE", "developerContains", "developerHasPrefix", "developerHasSuffix", "developerIsNil", "developerNotNil", "developerEqualFold", "developerContainsFold", "tenderClosingDate", "tenderClosingDateNEQ", "tenderClosingDateIn", "tenderClosingDateNotIn", "tenderClosingDateGT", "tenderClosingDateGTE", "tenderClosingDateLT", "tenderClosingDateLTE", "tenderClosingDateIsNil", "tenderClosingDateNotNil", "constructionArea", "constructionAreaNEQ", "constructionAreaIn", "constructionAreaNotIn", "constructionAreaGT", "constructionAreaGTE", "constructionAreaLT", "constructionAreaLTE", "constructionAreaContains", "constructionAreaHasPrefix", "constructionAreaHasSuffix", "constructionAreaIsNil", "constructionAreaNotNil", "constructionAreaEqualFold", "constructionAreaContainsFold", "tenderWinDate", "tenderWinDateNEQ", "tenderWinDateIn", "tenderWinDateNotIn", "tenderWinDateGT", "tenderWinDateGTE", "tenderWinDateLT", "tenderWinDateLTE", "tenderWinDateIsNil", "tenderWinDateNotNil", "tenderWinAmount", "tenderWinAmountNEQ", "tenderWinAmountIn", "tenderWinAmountNotIn", "tenderWinAmountGT", "tenderWinAmountGTE", "tenderWinAmountLT", "tenderWinAmountLTE", "tenderWinAmountIsNil", "tenderWinAmountNotNil", "lastTenderAmount", "lastTenderAmountNEQ", "lastTenderAmountIn", "lastTenderAmountNotIn", "lastTenderAmountGT", "lastTenderAmountGTE", "lastTenderAmountLT", "lastTenderAmountLTE", "lastTenderAmountIsNil", "lastTenderAmountNotNil", "areaID", "areaIDNEQ", "areaIDIn", "areaIDNotIn", "areaIDGT", "areaIDGTE", "areaIDLT", "areaIDLTE", "areaIDContains", "areaIDHasPrefix", "areaIDHasSuffix", "areaIDEqualFold", "areaIDContainsFold", "provinceID", "provinceIDNEQ", "provinceIDIn", "provinceIDNotIn", "provinceIDGT", "provinceIDGTE", "provinceIDLT", "provinceIDLTE", "provinceIDContains", "provinceIDHasPrefix", "provinceIDHasSuffix", "provinceIDIsNil", "provinceIDNotNil", "provinceIDEqualFold", "provinceIDContainsFold", "cityID", "cityIDNEQ", "cityIDIn", "cityIDNotIn", "cityIDGT", "cityIDGTE", "cityIDLT", "cityIDLTE", "cityIDContains", "cityIDHasPrefix", "cityIDHasSuffix", "cityIDIsNil", "cityIDNotNil", "cityIDEqualFold", "cityIDContainsFold", "districtID", "districtIDNEQ", "districtIDIn", "districtIDNotIn", "districtIDGT", "districtIDGTE", "districtIDLT", "districtIDLTE", "districtIDContains", "districtIDHasPrefix", "districtIDHasSuffix", "districtIDIsNil", "districtIDNotNil", "districtIDEqualFold", "districtIDContainsFold", "customerID", "customerIDNEQ", "customerIDIn", "customerIDNotIn", "customerIDGT", "customerIDGTE", "customerIDLT", "customerIDLTE", "customerIDContains", "customerIDHasPrefix", "customerIDHasSuffix", "customerIDIsNil", "customerIDNotNil", "customerIDEqualFold", "customerIDContainsFold", "finderID", "finderIDNEQ", "finderIDIn", "finderIDNotIn", "finderIDGT", "finderIDGTE", "finderIDLT", "finderIDLTE", "finderIDContains", "finderIDHasPrefix", "finderIDHasSuffix", "finderIDIsNil", "finderIDNotNil", "finderIDEqualFold", "finderIDContainsFold", "createdByID", "createdByIDNEQ", "createdByIDIn", "createdByIDNotIn", "createdByIDGT", "createdByIDGTE", "createdByIDLT", "createdByIDLTE", "createdByIDContains", "createdByIDHasPrefix", "createdByIDHasSuffix", "createdByIDIsNil", "createdByIDNotNil", "createdByIDEqualFold", "createdByIDContainsFold", "competitorID", "competitorIDNEQ", "competitorIDIn", "competitorIDNotIn", "competitorIDGT", "competitorIDGTE", "competitorIDLT", "competitorIDLTE", "competitorIDContains", "competitorIDHasPrefix", "competitorIDHasSuffix", "competitorIDIsNil", "competitorIDNotNil", "competitorIDEqualFold", "competitorIDContainsFold", "approverID", "approverIDNEQ", "approverIDIn", "approverIDNotIn", "approverIDGT", "approverIDGTE", "approverIDLT", "approverIDLTE", "approverIDContains", "approverIDHasPrefix", "approverIDHasSuffix", "approverIDIsNil", "approverIDNotNil", "approverIDEqualFold", "approverIDContainsFold", "updatedByID", "updatedByIDNEQ", "updatedByIDIn", "updatedByIDNotIn", "updatedByIDGT", "updatedByIDGTE", "updatedByIDLT", "updatedByIDLTE", "updatedByIDContains", "updatedByIDHasPrefix", "updatedByIDHasSuffix", "updatedByIDIsNil", "updatedByIDNotNil", "updatedByIDEqualFold", "updatedByIDContainsFold", "hasArea", "hasAreaWith", "hasCustomer", "hasCustomerWith", "hasFinder", "hasFinderWith", "hasCreatedBy", "hasCreatedByWith", "hasFollowingSales", "hasFollowingSalesWith", "hasProvince", "hasProvinceWith", "hasCity", "hasCityWith", "hasDistrict", "hasDistrictWith", "hasVisitRecords", "hasVisitRecordsWith", "hasCompetitor", "hasCompetitorWith", "hasApprover", "hasApproverWith", "hasUpdatedBy", "hasUpdatedByWith"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -47290,20 +47873,167 @@ func (ec *executionContext) unmarshalInputTenderWhereInput(ctx context.Context, 
 				return it, err
 			}
 			it.StatusLTE = data
-		case "isApproved":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("isApproved"))
-			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+		case "approvalStatus":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalStatus"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.IsApproved = data
-		case "isApprovedNEQ":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("isApprovedNEQ"))
-			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			it.ApprovalStatus = data
+		case "approvalStatusNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalStatusNEQ"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.IsApprovedNEQ = data
+			it.ApprovalStatusNEQ = data
+		case "approvalStatusIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalStatusIn"))
+			data, err := ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalStatusIn = data
+		case "approvalStatusNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalStatusNotIn"))
+			data, err := ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalStatusNotIn = data
+		case "approvalStatusGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalStatusGT"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalStatusGT = data
+		case "approvalStatusGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalStatusGTE"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalStatusGTE = data
+		case "approvalStatusLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalStatusLT"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalStatusLT = data
+		case "approvalStatusLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalStatusLTE"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalStatusLTE = data
+		case "approvalMsgID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalMsgID"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalMsgID = data
+		case "approvalMsgIDNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalMsgIDNEQ"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalMsgIDNEQ = data
+		case "approvalMsgIDIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalMsgIDIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalMsgIDIn = data
+		case "approvalMsgIDNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalMsgIDNotIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalMsgIDNotIn = data
+		case "approvalMsgIDGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalMsgIDGT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalMsgIDGT = data
+		case "approvalMsgIDGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalMsgIDGTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalMsgIDGTE = data
+		case "approvalMsgIDLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalMsgIDLT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalMsgIDLT = data
+		case "approvalMsgIDLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalMsgIDLTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalMsgIDLTE = data
+		case "approvalMsgIDContains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalMsgIDContains"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalMsgIDContains = data
+		case "approvalMsgIDHasPrefix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalMsgIDHasPrefix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalMsgIDHasPrefix = data
+		case "approvalMsgIDHasSuffix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalMsgIDHasSuffix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalMsgIDHasSuffix = data
+		case "approvalMsgIDIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalMsgIDIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalMsgIDIsNil = data
+		case "approvalMsgIDNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalMsgIDNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalMsgIDNotNil = data
+		case "approvalMsgIDEqualFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalMsgIDEqualFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalMsgIDEqualFold = data
+		case "approvalMsgIDContainsFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalMsgIDContainsFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalMsgIDContainsFold = data
 		case "name":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
 			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
@@ -52680,6 +53410,111 @@ func (ec *executionContext) unmarshalInputTenderWhereInput(ctx context.Context, 
 				return it, err
 			}
 			it.ApproverIDContainsFold = data
+		case "updatedByID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedByID"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UpdatedByID = data
+		case "updatedByIDNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedByIDNEQ"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UpdatedByIDNEQ = data
+		case "updatedByIDIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedByIDIn"))
+			data, err := ec.unmarshalOID2ᚕcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐIDᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UpdatedByIDIn = data
+		case "updatedByIDNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedByIDNotIn"))
+			data, err := ec.unmarshalOID2ᚕcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐIDᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UpdatedByIDNotIn = data
+		case "updatedByIDGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedByIDGT"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UpdatedByIDGT = data
+		case "updatedByIDGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedByIDGTE"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UpdatedByIDGTE = data
+		case "updatedByIDLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedByIDLT"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UpdatedByIDLT = data
+		case "updatedByIDLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedByIDLTE"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UpdatedByIDLTE = data
+		case "updatedByIDContains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedByIDContains"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UpdatedByIDContains = data
+		case "updatedByIDHasPrefix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedByIDHasPrefix"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UpdatedByIDHasPrefix = data
+		case "updatedByIDHasSuffix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedByIDHasSuffix"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UpdatedByIDHasSuffix = data
+		case "updatedByIDIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedByIDIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UpdatedByIDIsNil = data
+		case "updatedByIDNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedByIDNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UpdatedByIDNotNil = data
+		case "updatedByIDEqualFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedByIDEqualFold"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UpdatedByIDEqualFold = data
+		case "updatedByIDContainsFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedByIDContainsFold"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UpdatedByIDContainsFold = data
 		case "hasArea":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasArea"))
 			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
@@ -52834,6 +53669,20 @@ func (ec *executionContext) unmarshalInputTenderWhereInput(ctx context.Context, 
 				return it, err
 			}
 			it.HasApproverWith = data
+		case "hasUpdatedBy":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasUpdatedBy"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.HasUpdatedBy = data
+		case "hasUpdatedByWith":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasUpdatedByWith"))
+			data, err := ec.unmarshalOUserWhereInput2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐUserWhereInputᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.HasUpdatedByWith = data
 		}
 	}
 
@@ -53221,7 +54070,7 @@ func (ec *executionContext) unmarshalInputUpdateCustomerInput(ctx context.Contex
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"updatedAt", "name", "isApproved", "ownerType", "clearOwnerType", "industry", "clearIndustry", "size", "clearSize", "contactPerson", "clearContactPerson", "contactPersonPosition", "clearContactPersonPosition", "contactPersonPhone", "clearContactPersonPhone", "contactPersonEmail", "clearContactPersonEmail", "areaID", "addTenderIDs", "removeTenderIDs", "clearTenders", "salesID", "clearSales", "createdByID", "clearCreatedBy", "approverID", "clearApprover", "addVisitRecordIDs", "removeVisitRecordIDs", "clearVisitRecords"}
+	fieldsInOrder := [...]string{"updatedAt", "name", "approvalStatus", "ownerType", "clearOwnerType", "industry", "clearIndustry", "size", "clearSize", "contactPerson", "clearContactPerson", "contactPersonPosition", "clearContactPersonPosition", "contactPersonPhone", "clearContactPersonPhone", "contactPersonEmail", "clearContactPersonEmail", "areaID", "addTenderIDs", "removeTenderIDs", "clearTenders", "salesID", "clearSales", "createdByID", "clearCreatedBy", "updatedByID", "clearUpdatedBy", "approverID", "clearApprover", "addVisitRecordIDs", "removeVisitRecordIDs", "clearVisitRecords"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -53242,13 +54091,13 @@ func (ec *executionContext) unmarshalInputUpdateCustomerInput(ctx context.Contex
 				return it, err
 			}
 			it.Name = data
-		case "isApproved":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("isApproved"))
-			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+		case "approvalStatus":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalStatus"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.IsApproved = data
+			it.ApprovalStatus = data
 		case "ownerType":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ownerType"))
 			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
@@ -53403,6 +54252,20 @@ func (ec *executionContext) unmarshalInputUpdateCustomerInput(ctx context.Contex
 				return it, err
 			}
 			it.ClearCreatedBy = data
+		case "updatedByID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedByID"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UpdatedByID = data
+		case "clearUpdatedBy":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearUpdatedBy"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearUpdatedBy = data
 		case "approverID":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approverID"))
 			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
@@ -55161,7 +56024,7 @@ func (ec *executionContext) unmarshalInputUpdateTenderInput(ctx context.Context,
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"updatedAt", "code", "status", "isApproved", "name", "estimatedAmount", "clearEstimatedAmount", "tenderDate", "clearTenderDate", "classify", "clearClassify", "discoveryDate", "address", "clearAddress", "fullAddress", "clearFullAddress", "contractor", "clearContractor", "levelInvolved", "clearLevelInvolved", "sizeAndValueRating", "clearSizeAndValueRating", "sizeAndValueRatingOverview", "clearSizeAndValueRatingOverview", "creditAndPaymentRating", "clearCreditAndPaymentRating", "creditAndPaymentRatingOverview", "clearCreditAndPaymentRatingOverview", "timeLimitRating", "clearTimeLimitRating", "timeLimitRatingOverview", "clearTimeLimitRatingOverview", "customerRelationshipRating", "clearCustomerRelationshipRating", "customerRelationshipRatingOverview", "clearCustomerRelationshipRatingOverview", "competitivePartnershipRating", "clearCompetitivePartnershipRating", "competitivePartnershipRatingOverview", "clearCompetitivePartnershipRatingOverview", "prepareToBid", "projectCode", "clearProjectCode", "projectType", "clearProjectType", "projectDefinition", "clearProjectDefinition", "estimatedProjectStartDate", "clearEstimatedProjectStartDate", "estimatedProjectEndDate", "clearEstimatedProjectEndDate", "attachements", "appendAttachements", "clearAttachements", "remark", "clearRemark", "images", "appendImages", "clearImages", "tenderSituations", "clearTenderSituations", "ownerSituations", "clearOwnerSituations", "biddingInstructions", "clearBiddingInstructions", "competitorSituations", "clearCompetitorSituations", "costEngineer", "clearCostEngineer", "tenderForm", "clearTenderForm", "contractForm", "clearContractForm", "managementCompany", "clearManagementCompany", "tenderingAgency", "clearTenderingAgency", "biddingDate", "clearBiddingDate", "facadeConsultant", "clearFacadeConsultant", "designUnit", "clearDesignUnit", "consultingFirm", "clearConsultingFirm", "keyProject", "currentProgress", "clearCurrentProgress", "tenderWinCompany", "clearTenderWinCompany", "tenderCode", "clearTenderCode", "architect", "clearArchitect", "developer", "clearDeveloper", "tenderClosingDate", "clearTenderClosingDate", "constructionArea", "clearConstructionArea", "tenderWinDate", "clearTenderWinDate", "tenderWinAmount", "clearTenderWinAmount", "lastTenderAmount", "clearLastTenderAmount", "areaID", "customerID", "clearCustomer", "finderID", "clearFinder", "createdByID", "clearCreatedBy", "addFollowingSaleIDs", "removeFollowingSaleIDs", "clearFollowingSales", "provinceID", "clearProvince", "cityID", "clearCity", "districtID", "clearDistrict", "addVisitRecordIDs", "removeVisitRecordIDs", "clearVisitRecords", "competitorID", "clearCompetitor", "approverID", "clearApprover"}
+	fieldsInOrder := [...]string{"updatedAt", "code", "status", "approvalStatus", "approvalMsgID", "clearApprovalMsgID", "name", "estimatedAmount", "clearEstimatedAmount", "tenderDate", "clearTenderDate", "classify", "clearClassify", "discoveryDate", "address", "clearAddress", "fullAddress", "clearFullAddress", "contractor", "clearContractor", "levelInvolved", "clearLevelInvolved", "sizeAndValueRating", "clearSizeAndValueRating", "sizeAndValueRatingOverview", "clearSizeAndValueRatingOverview", "creditAndPaymentRating", "clearCreditAndPaymentRating", "creditAndPaymentRatingOverview", "clearCreditAndPaymentRatingOverview", "timeLimitRating", "clearTimeLimitRating", "timeLimitRatingOverview", "clearTimeLimitRatingOverview", "customerRelationshipRating", "clearCustomerRelationshipRating", "customerRelationshipRatingOverview", "clearCustomerRelationshipRatingOverview", "competitivePartnershipRating", "clearCompetitivePartnershipRating", "competitivePartnershipRatingOverview", "clearCompetitivePartnershipRatingOverview", "prepareToBid", "projectCode", "clearProjectCode", "projectType", "clearProjectType", "projectDefinition", "clearProjectDefinition", "estimatedProjectStartDate", "clearEstimatedProjectStartDate", "estimatedProjectEndDate", "clearEstimatedProjectEndDate", "attachements", "appendAttachements", "clearAttachements", "remark", "clearRemark", "images", "appendImages", "clearImages", "tenderSituations", "clearTenderSituations", "ownerSituations", "clearOwnerSituations", "biddingInstructions", "clearBiddingInstructions", "competitorSituations", "clearCompetitorSituations", "costEngineer", "clearCostEngineer", "tenderForm", "clearTenderForm", "contractForm", "clearContractForm", "managementCompany", "clearManagementCompany", "tenderingAgency", "clearTenderingAgency", "biddingDate", "clearBiddingDate", "facadeConsultant", "clearFacadeConsultant", "designUnit", "clearDesignUnit", "consultingFirm", "clearConsultingFirm", "keyProject", "currentProgress", "clearCurrentProgress", "tenderWinCompany", "clearTenderWinCompany", "tenderCode", "clearTenderCode", "architect", "clearArchitect", "developer", "clearDeveloper", "tenderClosingDate", "clearTenderClosingDate", "constructionArea", "clearConstructionArea", "tenderWinDate", "clearTenderWinDate", "tenderWinAmount", "clearTenderWinAmount", "lastTenderAmount", "clearLastTenderAmount", "areaID", "customerID", "clearCustomer", "finderID", "clearFinder", "createdByID", "clearCreatedBy", "addFollowingSaleIDs", "removeFollowingSaleIDs", "clearFollowingSales", "provinceID", "clearProvince", "cityID", "clearCity", "districtID", "clearDistrict", "addVisitRecordIDs", "removeVisitRecordIDs", "clearVisitRecords", "competitorID", "clearCompetitor", "approverID", "clearApprover", "updatedByID", "clearUpdatedBy"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -55189,13 +56052,27 @@ func (ec *executionContext) unmarshalInputUpdateTenderInput(ctx context.Context,
 				return it, err
 			}
 			it.Status = data
-		case "isApproved":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("isApproved"))
-			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+		case "approvalStatus":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalStatus"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.IsApproved = data
+			it.ApprovalStatus = data
+		case "approvalMsgID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalMsgID"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalMsgID = data
+		case "clearApprovalMsgID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearApprovalMsgID"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearApprovalMsgID = data
 		case "name":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
 			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
@@ -56071,6 +56948,20 @@ func (ec *executionContext) unmarshalInputUpdateTenderInput(ctx context.Context,
 				return it, err
 			}
 			it.ClearApprover = data
+		case "updatedByID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedByID"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UpdatedByID = data
+		case "clearUpdatedBy":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearUpdatedBy"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearUpdatedBy = data
 		}
 	}
 
@@ -59538,8 +60429,8 @@ func (ec *executionContext) _Customer(ctx context.Context, sel ast.SelectionSet,
 			if out.Values[i] == graphql.Null {
 				atomic.AddUint32(&out.Invalids, 1)
 			}
-		case "isApproved":
-			out.Values[i] = ec._Customer_isApproved(ctx, field, obj)
+		case "approvalStatus":
+			out.Values[i] = ec._Customer_approvalStatus(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				atomic.AddUint32(&out.Invalids, 1)
 			}
@@ -59566,6 +60457,8 @@ func (ec *executionContext) _Customer(ctx context.Context, sel ast.SelectionSet,
 			out.Values[i] = ec._Customer_salesID(ctx, field, obj)
 		case "createdByID":
 			out.Values[i] = ec._Customer_createdByID(ctx, field, obj)
+		case "updatedByID":
+			out.Values[i] = ec._Customer_updatedByID(ctx, field, obj)
 		case "approverID":
 			out.Values[i] = ec._Customer_approverID(ctx, field, obj)
 		case "area":
@@ -59706,6 +60599,39 @@ func (ec *executionContext) _Customer(ctx context.Context, sel ast.SelectionSet,
 			}
 
 			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "updatedBy":
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Customer_updatedBy(ctx, field, obj)
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		case "approver":
 			field := field
 
@@ -59752,6 +60678,39 @@ func (ec *executionContext) _Customer(ctx context.Context, sel ast.SelectionSet,
 				if res == graphql.Null {
 					atomic.AddUint32(&fs.Invalids, 1)
 				}
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "draft":
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Customer_draft(ctx, field, obj)
 				return res
 			}
 
@@ -62460,11 +63419,13 @@ func (ec *executionContext) _Tender(ctx context.Context, sel ast.SelectionSet, o
 			if out.Values[i] == graphql.Null {
 				atomic.AddUint32(&out.Invalids, 1)
 			}
-		case "isApproved":
-			out.Values[i] = ec._Tender_isApproved(ctx, field, obj)
+		case "approvalStatus":
+			out.Values[i] = ec._Tender_approvalStatus(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				atomic.AddUint32(&out.Invalids, 1)
 			}
+		case "approvalMsgID":
+			out.Values[i] = ec._Tender_approvalMsgID(ctx, field, obj)
 		case "name":
 			out.Values[i] = ec._Tender_name(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
@@ -62602,6 +63563,8 @@ func (ec *executionContext) _Tender(ctx context.Context, sel ast.SelectionSet, o
 			out.Values[i] = ec._Tender_competitorID(ctx, field, obj)
 		case "approverID":
 			out.Values[i] = ec._Tender_approverID(ctx, field, obj)
+		case "updatedByID":
+			out.Values[i] = ec._Tender_updatedByID(ctx, field, obj)
 		case "area":
 			field := field
 
@@ -62948,6 +63911,39 @@ func (ec *executionContext) _Tender(ctx context.Context, sel ast.SelectionSet, o
 					}
 				}()
 				res = ec._Tender_approver(ctx, field, obj)
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "updatedBy":
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Tender_updatedBy(ctx, field, obj)
 				return res
 			}
 

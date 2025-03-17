@@ -8,6 +8,7 @@ import (
 	"context"
 	"cscd-bds/graphql/model"
 	"cscd-bds/store/ent"
+	"cscd-bds/store/ent/area"
 	"cscd-bds/store/ent/competitor"
 	"cscd-bds/store/ent/district"
 	"cscd-bds/store/ent/province"
@@ -25,6 +26,52 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"golang.org/x/sync/errgroup"
 )
+
+// Draft is the resolver for the draft field.
+func (r *customerResolver) Draft(ctx context.Context, obj *ent.Customer) (*model.CustomerDraft, error) {
+	var out model.CustomerDraft
+	if obj.Draft != nil {
+		if obj.Draft.Name != nil {
+			out.Name = obj.Draft.Name
+		}
+		if obj.Draft.OwnerType != nil {
+			out.OwnerType = obj.Draft.OwnerType
+		}
+		if obj.Draft.Industry != nil {
+			out.Industry = obj.Draft.Industry
+		}
+		if obj.Draft.Size != nil {
+			out.Size = obj.Draft.Size
+		}
+		if obj.Draft.ContactPerson != nil {
+			out.ContactPerson = obj.Draft.ContactPerson
+		}
+		if obj.Draft.ContactPersonPosition != nil {
+			out.ContactPersonPosition = obj.Draft.ContactPersonPosition
+		}
+		if obj.Draft.ContactPersonPhone != nil {
+			out.ContactPersonPhone = obj.Draft.ContactPersonPhone
+		}
+		if obj.Draft.ContactPersonEmail != nil {
+			out.ContactPersonEmail = obj.Draft.ContactPersonEmail
+		}
+		if obj.Draft.AreaID != nil {
+			area, err := r.store.Area.Query().Where(area.ID(xid.ID(*obj.Draft.AreaID))).Only(ctx)
+			if err != nil {
+				return nil, err
+			}
+			out.Area = area
+		}
+		if obj.Draft.SalesID != nil {
+			user, err := r.store.User.Query().Where(user.ID(xid.ID(*obj.Draft.SalesID))).Only(ctx)
+			if err != nil {
+				return nil, err
+			}
+			out.Sales = user
+		}
+	}
+	return &out, nil
+}
 
 // SearchFeishuUser is the resolver for the searchFeishuUser field.
 func (r *queryResolver) SearchFeishuUser(ctx context.Context, keyword string) ([]*model.FeishuUser, error) {

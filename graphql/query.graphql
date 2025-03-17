@@ -11,6 +11,23 @@ extend type Query {
   biToken: String!
 }
 
+extend type Customer {
+  draft: CustomerDraft
+}
+
+type CustomerDraft {
+  name: String
+  ownerType: Int
+  industry: Int
+  size: Int
+  contactPerson: String
+  contactPersonPosition: String
+  contactPersonPhone: String
+  contactPersonEmail: String
+  area: Area
+  sales: User
+}
+
 extend type User {
   myTenders(
     after: Cursor

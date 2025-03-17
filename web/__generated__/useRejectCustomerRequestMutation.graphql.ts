@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<a5826e1e377a103ea8607524e9075ac5>>
+ * @generated SignedSource<<c35c5b07ee5b6a2611b306e28fe40785>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -261,7 +261,7 @@ return {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
-            "name": "isApproved",
+            "name": "approvalStatus",
             "storageKey": null
           },
           (v6/*: any*/),
@@ -397,12 +397,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "7dd620619fbb8c075b96134aa25983c8",
+    "cacheID": "f4aaa1eec5def97aca35fd6a35445382",
     "id": null,
     "metadata": {},
     "name": "useRejectCustomerRequestMutation",
     "operationKind": "mutation",
-    "text": "mutation useRejectCustomerRequestMutation(\n  $id: ID!\n) {\n  rejectCustomerRequest(id: $id) {\n    ...customerDetailFragment\n    draft {\n      name\n      ownerType\n      industry\n      size\n      contactPerson\n      contactPersonPosition\n      contactPersonPhone\n      contactPersonEmail\n      area {\n        id\n        name\n        code\n      }\n      sales {\n        id\n        name\n      }\n    }\n    id\n  }\n}\n\nfragment customerDetailFragment on Customer {\n  id\n  name\n  createdAt\n  createdBy {\n    name\n    id\n  }\n  updatedAt\n  ownerType\n  industry\n  size\n  sales {\n    id\n    name\n  }\n  area {\n    id\n    name\n    code\n  }\n  isApproved\n  contactPerson\n  contactPersonPosition\n  contactPersonPhone\n  contactPersonEmail\n  lastVisitRecord: visitRecords(last: 1) {\n    edges {\n      node {\n        date\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasPreviousPage\n      startCursor\n    }\n  }\n  draft {\n    name\n    ownerType\n    industry\n    size\n    contactPerson\n    contactPersonPosition\n    contactPersonPhone\n    contactPersonEmail\n    area {\n      id\n      code\n      name\n    }\n    sales {\n      id\n      name\n    }\n  }\n}\n"
+    "text": "mutation useRejectCustomerRequestMutation(\n  $id: ID!\n) {\n  rejectCustomerRequest(id: $id) {\n    ...customerDetailFragment\n    draft {\n      name\n      ownerType\n      industry\n      size\n      contactPerson\n      contactPersonPosition\n      contactPersonPhone\n      contactPersonEmail\n      area {\n        id\n        name\n        code\n      }\n      sales {\n        id\n        name\n      }\n    }\n    id\n  }\n}\n\nfragment customerDetailFragment on Customer {\n  id\n  name\n  createdAt\n  createdBy {\n    name\n    id\n  }\n  updatedAt\n  ownerType\n  industry\n  size\n  sales {\n    id\n    name\n  }\n  area {\n    id\n    name\n    code\n  }\n  approvalStatus\n  contactPerson\n  contactPersonPosition\n  contactPersonPhone\n  contactPersonEmail\n  lastVisitRecord: visitRecords(last: 1) {\n    edges {\n      node {\n        date\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasPreviousPage\n      startCursor\n    }\n  }\n  draft {\n    name\n    ownerType\n    industry\n    size\n    contactPerson\n    contactPersonPosition\n    contactPersonPhone\n    contactPersonEmail\n    area {\n      id\n      code\n      name\n    }\n    sales {\n      id\n      name\n    }\n  }\n}\n"
   }
 };
 })();

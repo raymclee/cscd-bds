@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<12063ea1c8a5e3fe0531349451af8113>>
+ * @generated SignedSource<<d55ff00c2e3b6a0bf2151264671f3b0f>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -16,6 +16,8 @@ export type UpdateTenderInput = {
   address?: string | null | undefined;
   appendAttachements?: ReadonlyArray<string> | null | undefined;
   appendImages?: ReadonlyArray<string> | null | undefined;
+  approvalMsgID?: string | null | undefined;
+  approvalStatus?: number | null | undefined;
   approverID?: string | null | undefined;
   architect?: string | null | undefined;
   areaID?: string | null | undefined;
@@ -25,6 +27,7 @@ export type UpdateTenderInput = {
   cityID?: string | null | undefined;
   classify?: number | null | undefined;
   clearAddress?: boolean | null | undefined;
+  clearApprovalMsgID?: boolean | null | undefined;
   clearApprover?: boolean | null | undefined;
   clearArchitect?: boolean | null | undefined;
   clearAttachements?: boolean | null | undefined;
@@ -81,6 +84,7 @@ export type UpdateTenderInput = {
   clearTenderingAgency?: boolean | null | undefined;
   clearTimeLimitRating?: boolean | null | undefined;
   clearTimeLimitRatingOverview?: boolean | null | undefined;
+  clearUpdatedBy?: boolean | null | undefined;
   clearVisitRecords?: boolean | null | undefined;
   code?: string | null | undefined;
   competitivePartnershipRating?: number | null | undefined;
@@ -110,7 +114,6 @@ export type UpdateTenderInput = {
   finderID?: string | null | undefined;
   fullAddress?: string | null | undefined;
   images?: ReadonlyArray<string> | null | undefined;
-  isApproved?: boolean | null | undefined;
   keyProject?: boolean | null | undefined;
   lastTenderAmount?: number | null | undefined;
   levelInvolved?: number | null | undefined;
@@ -140,6 +143,7 @@ export type UpdateTenderInput = {
   timeLimitRating?: number | null | undefined;
   timeLimitRatingOverview?: string | null | undefined;
   updatedAt?: any | null | undefined;
+  updatedByID?: string | null | undefined;
 };
 export type useUpdateTenderMutation$variables = {
   attachmentFileNames: ReadonlyArray<string>;
@@ -345,7 +349,7 @@ return {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
-            "name": "isApproved",
+            "name": "approvalStatus",
             "storageKey": null
           },
           (v11/*: any*/),
@@ -827,12 +831,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "2d0aa4c60bbd7d50dc763bbba06b81e1",
+    "cacheID": "7e58dcf2632f240594b8b06d3ef82a47",
     "id": null,
     "metadata": {},
     "name": "useUpdateTenderMutation",
     "operationKind": "mutation",
-    "text": "mutation useUpdateTenderMutation(\n  $id: ID!\n  $input: UpdateTenderInput!\n  $imageFileNames: [String!]!\n  $attachmentFileNames: [String!]!\n  $removeImageFileNames: [String!]\n  $removeAttachmentFileNames: [String!]\n  $geoCoordinate: [Float!]\n) {\n  updateTender(id: $id, input: $input, imageFileNames: $imageFileNames, attachmentFileNames: $attachmentFileNames, removeImageFileNames: $removeImageFileNames, removeAttachmentFileNames: $removeAttachmentFileNames, geoCoordinate: $geoCoordinate) {\n    ...tenderDetailFragment\n    customer {\n      id\n      name\n    }\n    id\n  }\n}\n\nfragment tenderDetailFragment on Tender {\n  id\n  isApproved\n  code\n  name\n  status\n  estimatedAmount\n  tenderDate\n  discoveryDate\n  address\n  fullAddress\n  contractor\n  prepareToBid\n  projectCode\n  projectType\n  estimatedProjectStartDate\n  estimatedProjectEndDate\n  levelInvolved\n  costEngineer\n  sizeAndValueRating\n  sizeAndValueRatingOverview\n  creditAndPaymentRating\n  creditAndPaymentRatingOverview\n  timeLimitRating\n  timeLimitRatingOverview\n  customerRelationshipRating\n  customerRelationshipRatingOverview\n  competitivePartnershipRating\n  competitivePartnershipRatingOverview\n  tenderSituations\n  ownerSituations\n  biddingInstructions\n  competitorSituations\n  tenderForm\n  contractForm\n  managementCompany\n  tenderingAgency\n  biddingDate\n  facadeConsultant\n  designUnit\n  consultingFirm\n  keyProject\n  currentProgress\n  tenderWinCompany\n  tenderWinDate\n  tenderWinAmount\n  lastTenderAmount\n  attachements\n  tenderCode\n  developer\n  architect\n  tenderClosingDate\n  constructionArea\n  remark\n  images\n  geoCoordinate {\n    coordinates\n  }\n  createdBy {\n    id\n  }\n  finder {\n    id\n    name\n  }\n  area {\n    id\n    code\n    name\n  }\n  followingSales {\n    id\n    name\n  }\n  customer {\n    id\n    ownerType\n    name\n  }\n  province {\n    id\n    adcode\n    name\n  }\n  city {\n    id\n    adcode\n    name\n  }\n  district {\n    id\n    adcode\n    name\n  }\n  classify\n}\n"
+    "text": "mutation useUpdateTenderMutation(\n  $id: ID!\n  $input: UpdateTenderInput!\n  $imageFileNames: [String!]!\n  $attachmentFileNames: [String!]!\n  $removeImageFileNames: [String!]\n  $removeAttachmentFileNames: [String!]\n  $geoCoordinate: [Float!]\n) {\n  updateTender(id: $id, input: $input, imageFileNames: $imageFileNames, attachmentFileNames: $attachmentFileNames, removeImageFileNames: $removeImageFileNames, removeAttachmentFileNames: $removeAttachmentFileNames, geoCoordinate: $geoCoordinate) {\n    ...tenderDetailFragment\n    customer {\n      id\n      name\n    }\n    id\n  }\n}\n\nfragment tenderDetailFragment on Tender {\n  id\n  approvalStatus\n  code\n  name\n  status\n  estimatedAmount\n  tenderDate\n  discoveryDate\n  address\n  fullAddress\n  contractor\n  prepareToBid\n  projectCode\n  projectType\n  estimatedProjectStartDate\n  estimatedProjectEndDate\n  levelInvolved\n  costEngineer\n  sizeAndValueRating\n  sizeAndValueRatingOverview\n  creditAndPaymentRating\n  creditAndPaymentRatingOverview\n  timeLimitRating\n  timeLimitRatingOverview\n  customerRelationshipRating\n  customerRelationshipRatingOverview\n  competitivePartnershipRating\n  competitivePartnershipRatingOverview\n  tenderSituations\n  ownerSituations\n  biddingInstructions\n  competitorSituations\n  tenderForm\n  contractForm\n  managementCompany\n  tenderingAgency\n  biddingDate\n  facadeConsultant\n  designUnit\n  consultingFirm\n  keyProject\n  currentProgress\n  tenderWinCompany\n  tenderWinDate\n  tenderWinAmount\n  lastTenderAmount\n  attachements\n  tenderCode\n  developer\n  architect\n  tenderClosingDate\n  constructionArea\n  remark\n  images\n  geoCoordinate {\n    coordinates\n  }\n  createdBy {\n    id\n  }\n  finder {\n    id\n    name\n  }\n  area {\n    id\n    code\n    name\n  }\n  followingSales {\n    id\n    name\n  }\n  customer {\n    id\n    ownerType\n    name\n  }\n  province {\n    id\n    adcode\n    name\n  }\n  city {\n    id\n    adcode\n    name\n  }\n  district {\n    id\n    adcode\n    name\n  }\n  classify\n}\n"
   }
 };
 })();

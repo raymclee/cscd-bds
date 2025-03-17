@@ -24,7 +24,8 @@ export function canEdit(
       return false;
     }
     switch (areaCode) {
-      case "GA" || "HW":
+      case "GA":
+      case "HW":
         return session.isAdmin || session.hasEditAccess;
       default:
         if (session.isAdmin || session.isSuperAdmin) {

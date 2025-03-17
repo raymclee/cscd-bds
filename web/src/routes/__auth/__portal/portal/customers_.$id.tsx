@@ -19,9 +19,9 @@ export const Route = createFileRoute("/__auth/__portal/portal/customers_/$id")({
   loader({ context: { RelayEnvironment, session }, params: { id } }) {
     return loadQuery<customersDetailPageQuery>(RelayEnvironment, node, {
       id,
-      orderBy: [{ field: "DATE", direction: "DESC" }],
       userId: session.userId,
-      where: { customerID: id },
+      // orderBy: [{ field: "DATE", direction: "DESC" }],
+      // where: { customerID: id },
     });
   },
   validateSearch: customerDetailSearchSchema,

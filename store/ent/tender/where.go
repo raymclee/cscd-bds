@@ -77,9 +77,14 @@ func Status(v int) predicate.Tender {
 	return predicate.Tender(sql.FieldEQ(FieldStatus, v))
 }
 
-// IsApproved applies equality check predicate on the "is_approved" field. It's identical to IsApprovedEQ.
-func IsApproved(v bool) predicate.Tender {
-	return predicate.Tender(sql.FieldEQ(FieldIsApproved, v))
+// ApprovalStatus applies equality check predicate on the "approval_status" field. It's identical to ApprovalStatusEQ.
+func ApprovalStatus(v int) predicate.Tender {
+	return predicate.Tender(sql.FieldEQ(FieldApprovalStatus, v))
+}
+
+// ApprovalMsgID applies equality check predicate on the "approval_msg_id" field. It's identical to ApprovalMsgIDEQ.
+func ApprovalMsgID(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldEQ(FieldApprovalMsgID, v))
 }
 
 // Name applies equality check predicate on the "name" field. It's identical to NameEQ.
@@ -382,6 +387,11 @@ func ApproverID(v xid.ID) predicate.Tender {
 	return predicate.Tender(sql.FieldEQ(FieldApproverID, v))
 }
 
+// UpdatedByID applies equality check predicate on the "updated_by_id" field. It's identical to UpdatedByIDEQ.
+func UpdatedByID(v xid.ID) predicate.Tender {
+	return predicate.Tender(sql.FieldEQ(FieldUpdatedByID, v))
+}
+
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
 func CreatedAtEQ(v time.Time) predicate.Tender {
 	return predicate.Tender(sql.FieldEQ(FieldCreatedAt, v))
@@ -567,14 +577,119 @@ func StatusLTE(v int) predicate.Tender {
 	return predicate.Tender(sql.FieldLTE(FieldStatus, v))
 }
 
-// IsApprovedEQ applies the EQ predicate on the "is_approved" field.
-func IsApprovedEQ(v bool) predicate.Tender {
-	return predicate.Tender(sql.FieldEQ(FieldIsApproved, v))
+// ApprovalStatusEQ applies the EQ predicate on the "approval_status" field.
+func ApprovalStatusEQ(v int) predicate.Tender {
+	return predicate.Tender(sql.FieldEQ(FieldApprovalStatus, v))
 }
 
-// IsApprovedNEQ applies the NEQ predicate on the "is_approved" field.
-func IsApprovedNEQ(v bool) predicate.Tender {
-	return predicate.Tender(sql.FieldNEQ(FieldIsApproved, v))
+// ApprovalStatusNEQ applies the NEQ predicate on the "approval_status" field.
+func ApprovalStatusNEQ(v int) predicate.Tender {
+	return predicate.Tender(sql.FieldNEQ(FieldApprovalStatus, v))
+}
+
+// ApprovalStatusIn applies the In predicate on the "approval_status" field.
+func ApprovalStatusIn(vs ...int) predicate.Tender {
+	return predicate.Tender(sql.FieldIn(FieldApprovalStatus, vs...))
+}
+
+// ApprovalStatusNotIn applies the NotIn predicate on the "approval_status" field.
+func ApprovalStatusNotIn(vs ...int) predicate.Tender {
+	return predicate.Tender(sql.FieldNotIn(FieldApprovalStatus, vs...))
+}
+
+// ApprovalStatusGT applies the GT predicate on the "approval_status" field.
+func ApprovalStatusGT(v int) predicate.Tender {
+	return predicate.Tender(sql.FieldGT(FieldApprovalStatus, v))
+}
+
+// ApprovalStatusGTE applies the GTE predicate on the "approval_status" field.
+func ApprovalStatusGTE(v int) predicate.Tender {
+	return predicate.Tender(sql.FieldGTE(FieldApprovalStatus, v))
+}
+
+// ApprovalStatusLT applies the LT predicate on the "approval_status" field.
+func ApprovalStatusLT(v int) predicate.Tender {
+	return predicate.Tender(sql.FieldLT(FieldApprovalStatus, v))
+}
+
+// ApprovalStatusLTE applies the LTE predicate on the "approval_status" field.
+func ApprovalStatusLTE(v int) predicate.Tender {
+	return predicate.Tender(sql.FieldLTE(FieldApprovalStatus, v))
+}
+
+// ApprovalMsgIDEQ applies the EQ predicate on the "approval_msg_id" field.
+func ApprovalMsgIDEQ(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldEQ(FieldApprovalMsgID, v))
+}
+
+// ApprovalMsgIDNEQ applies the NEQ predicate on the "approval_msg_id" field.
+func ApprovalMsgIDNEQ(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldNEQ(FieldApprovalMsgID, v))
+}
+
+// ApprovalMsgIDIn applies the In predicate on the "approval_msg_id" field.
+func ApprovalMsgIDIn(vs ...string) predicate.Tender {
+	return predicate.Tender(sql.FieldIn(FieldApprovalMsgID, vs...))
+}
+
+// ApprovalMsgIDNotIn applies the NotIn predicate on the "approval_msg_id" field.
+func ApprovalMsgIDNotIn(vs ...string) predicate.Tender {
+	return predicate.Tender(sql.FieldNotIn(FieldApprovalMsgID, vs...))
+}
+
+// ApprovalMsgIDGT applies the GT predicate on the "approval_msg_id" field.
+func ApprovalMsgIDGT(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldGT(FieldApprovalMsgID, v))
+}
+
+// ApprovalMsgIDGTE applies the GTE predicate on the "approval_msg_id" field.
+func ApprovalMsgIDGTE(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldGTE(FieldApprovalMsgID, v))
+}
+
+// ApprovalMsgIDLT applies the LT predicate on the "approval_msg_id" field.
+func ApprovalMsgIDLT(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldLT(FieldApprovalMsgID, v))
+}
+
+// ApprovalMsgIDLTE applies the LTE predicate on the "approval_msg_id" field.
+func ApprovalMsgIDLTE(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldLTE(FieldApprovalMsgID, v))
+}
+
+// ApprovalMsgIDContains applies the Contains predicate on the "approval_msg_id" field.
+func ApprovalMsgIDContains(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldContains(FieldApprovalMsgID, v))
+}
+
+// ApprovalMsgIDHasPrefix applies the HasPrefix predicate on the "approval_msg_id" field.
+func ApprovalMsgIDHasPrefix(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldHasPrefix(FieldApprovalMsgID, v))
+}
+
+// ApprovalMsgIDHasSuffix applies the HasSuffix predicate on the "approval_msg_id" field.
+func ApprovalMsgIDHasSuffix(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldHasSuffix(FieldApprovalMsgID, v))
+}
+
+// ApprovalMsgIDIsNil applies the IsNil predicate on the "approval_msg_id" field.
+func ApprovalMsgIDIsNil() predicate.Tender {
+	return predicate.Tender(sql.FieldIsNull(FieldApprovalMsgID))
+}
+
+// ApprovalMsgIDNotNil applies the NotNil predicate on the "approval_msg_id" field.
+func ApprovalMsgIDNotNil() predicate.Tender {
+	return predicate.Tender(sql.FieldNotNull(FieldApprovalMsgID))
+}
+
+// ApprovalMsgIDEqualFold applies the EqualFold predicate on the "approval_msg_id" field.
+func ApprovalMsgIDEqualFold(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldEqualFold(FieldApprovalMsgID, v))
+}
+
+// ApprovalMsgIDContainsFold applies the ContainsFold predicate on the "approval_msg_id" field.
+func ApprovalMsgIDContainsFold(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldContainsFold(FieldApprovalMsgID, v))
 }
 
 // NameEQ applies the EQ predicate on the "name" field.
@@ -4542,6 +4657,86 @@ func ApproverIDContainsFold(v xid.ID) predicate.Tender {
 	return predicate.Tender(sql.FieldContainsFold(FieldApproverID, vc))
 }
 
+// UpdatedByIDEQ applies the EQ predicate on the "updated_by_id" field.
+func UpdatedByIDEQ(v xid.ID) predicate.Tender {
+	return predicate.Tender(sql.FieldEQ(FieldUpdatedByID, v))
+}
+
+// UpdatedByIDNEQ applies the NEQ predicate on the "updated_by_id" field.
+func UpdatedByIDNEQ(v xid.ID) predicate.Tender {
+	return predicate.Tender(sql.FieldNEQ(FieldUpdatedByID, v))
+}
+
+// UpdatedByIDIn applies the In predicate on the "updated_by_id" field.
+func UpdatedByIDIn(vs ...xid.ID) predicate.Tender {
+	return predicate.Tender(sql.FieldIn(FieldUpdatedByID, vs...))
+}
+
+// UpdatedByIDNotIn applies the NotIn predicate on the "updated_by_id" field.
+func UpdatedByIDNotIn(vs ...xid.ID) predicate.Tender {
+	return predicate.Tender(sql.FieldNotIn(FieldUpdatedByID, vs...))
+}
+
+// UpdatedByIDGT applies the GT predicate on the "updated_by_id" field.
+func UpdatedByIDGT(v xid.ID) predicate.Tender {
+	return predicate.Tender(sql.FieldGT(FieldUpdatedByID, v))
+}
+
+// UpdatedByIDGTE applies the GTE predicate on the "updated_by_id" field.
+func UpdatedByIDGTE(v xid.ID) predicate.Tender {
+	return predicate.Tender(sql.FieldGTE(FieldUpdatedByID, v))
+}
+
+// UpdatedByIDLT applies the LT predicate on the "updated_by_id" field.
+func UpdatedByIDLT(v xid.ID) predicate.Tender {
+	return predicate.Tender(sql.FieldLT(FieldUpdatedByID, v))
+}
+
+// UpdatedByIDLTE applies the LTE predicate on the "updated_by_id" field.
+func UpdatedByIDLTE(v xid.ID) predicate.Tender {
+	return predicate.Tender(sql.FieldLTE(FieldUpdatedByID, v))
+}
+
+// UpdatedByIDContains applies the Contains predicate on the "updated_by_id" field.
+func UpdatedByIDContains(v xid.ID) predicate.Tender {
+	vc := string(v)
+	return predicate.Tender(sql.FieldContains(FieldUpdatedByID, vc))
+}
+
+// UpdatedByIDHasPrefix applies the HasPrefix predicate on the "updated_by_id" field.
+func UpdatedByIDHasPrefix(v xid.ID) predicate.Tender {
+	vc := string(v)
+	return predicate.Tender(sql.FieldHasPrefix(FieldUpdatedByID, vc))
+}
+
+// UpdatedByIDHasSuffix applies the HasSuffix predicate on the "updated_by_id" field.
+func UpdatedByIDHasSuffix(v xid.ID) predicate.Tender {
+	vc := string(v)
+	return predicate.Tender(sql.FieldHasSuffix(FieldUpdatedByID, vc))
+}
+
+// UpdatedByIDIsNil applies the IsNil predicate on the "updated_by_id" field.
+func UpdatedByIDIsNil() predicate.Tender {
+	return predicate.Tender(sql.FieldIsNull(FieldUpdatedByID))
+}
+
+// UpdatedByIDNotNil applies the NotNil predicate on the "updated_by_id" field.
+func UpdatedByIDNotNil() predicate.Tender {
+	return predicate.Tender(sql.FieldNotNull(FieldUpdatedByID))
+}
+
+// UpdatedByIDEqualFold applies the EqualFold predicate on the "updated_by_id" field.
+func UpdatedByIDEqualFold(v xid.ID) predicate.Tender {
+	vc := string(v)
+	return predicate.Tender(sql.FieldEqualFold(FieldUpdatedByID, vc))
+}
+
+// UpdatedByIDContainsFold applies the ContainsFold predicate on the "updated_by_id" field.
+func UpdatedByIDContainsFold(v xid.ID) predicate.Tender {
+	vc := string(v)
+	return predicate.Tender(sql.FieldContainsFold(FieldUpdatedByID, vc))
+}
+
 // HasArea applies the HasEdge predicate on the "area" edge.
 func HasArea() predicate.Tender {
 	return predicate.Tender(func(s *sql.Selector) {
@@ -4787,6 +4982,29 @@ func HasApprover() predicate.Tender {
 func HasApproverWith(preds ...predicate.User) predicate.Tender {
 	return predicate.Tender(func(s *sql.Selector) {
 		step := newApproverStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasUpdatedBy applies the HasEdge predicate on the "updated_by" edge.
+func HasUpdatedBy() predicate.Tender {
+	return predicate.Tender(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, UpdatedByTable, UpdatedByColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasUpdatedByWith applies the HasEdge predicate on the "updated_by" edge with a given conditions (other predicates).
+func HasUpdatedByWith(preds ...predicate.User) predicate.Tender {
+	return predicate.Tender(func(s *sql.Selector) {
+		step := newUpdatedByStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

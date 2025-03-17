@@ -71,9 +71,9 @@ func Name(v string) predicate.Customer {
 	return predicate.Customer(sql.FieldEQ(FieldName, v))
 }
 
-// IsApproved applies equality check predicate on the "is_approved" field. It's identical to IsApprovedEQ.
-func IsApproved(v bool) predicate.Customer {
-	return predicate.Customer(sql.FieldEQ(FieldIsApproved, v))
+// ApprovalStatus applies equality check predicate on the "approval_status" field. It's identical to ApprovalStatusEQ.
+func ApprovalStatus(v int) predicate.Customer {
+	return predicate.Customer(sql.FieldEQ(FieldApprovalStatus, v))
 }
 
 // OwnerType applies equality check predicate on the "owner_type" field. It's identical to OwnerTypeEQ.
@@ -124,6 +124,11 @@ func SalesID(v xid.ID) predicate.Customer {
 // CreatedByID applies equality check predicate on the "created_by_id" field. It's identical to CreatedByIDEQ.
 func CreatedByID(v xid.ID) predicate.Customer {
 	return predicate.Customer(sql.FieldEQ(FieldCreatedByID, v))
+}
+
+// UpdatedByID applies equality check predicate on the "updated_by_id" field. It's identical to UpdatedByIDEQ.
+func UpdatedByID(v xid.ID) predicate.Customer {
+	return predicate.Customer(sql.FieldEQ(FieldUpdatedByID, v))
 }
 
 // ApproverID applies equality check predicate on the "approver_id" field. It's identical to ApproverIDEQ.
@@ -276,14 +281,44 @@ func NameContainsFold(v string) predicate.Customer {
 	return predicate.Customer(sql.FieldContainsFold(FieldName, v))
 }
 
-// IsApprovedEQ applies the EQ predicate on the "is_approved" field.
-func IsApprovedEQ(v bool) predicate.Customer {
-	return predicate.Customer(sql.FieldEQ(FieldIsApproved, v))
+// ApprovalStatusEQ applies the EQ predicate on the "approval_status" field.
+func ApprovalStatusEQ(v int) predicate.Customer {
+	return predicate.Customer(sql.FieldEQ(FieldApprovalStatus, v))
 }
 
-// IsApprovedNEQ applies the NEQ predicate on the "is_approved" field.
-func IsApprovedNEQ(v bool) predicate.Customer {
-	return predicate.Customer(sql.FieldNEQ(FieldIsApproved, v))
+// ApprovalStatusNEQ applies the NEQ predicate on the "approval_status" field.
+func ApprovalStatusNEQ(v int) predicate.Customer {
+	return predicate.Customer(sql.FieldNEQ(FieldApprovalStatus, v))
+}
+
+// ApprovalStatusIn applies the In predicate on the "approval_status" field.
+func ApprovalStatusIn(vs ...int) predicate.Customer {
+	return predicate.Customer(sql.FieldIn(FieldApprovalStatus, vs...))
+}
+
+// ApprovalStatusNotIn applies the NotIn predicate on the "approval_status" field.
+func ApprovalStatusNotIn(vs ...int) predicate.Customer {
+	return predicate.Customer(sql.FieldNotIn(FieldApprovalStatus, vs...))
+}
+
+// ApprovalStatusGT applies the GT predicate on the "approval_status" field.
+func ApprovalStatusGT(v int) predicate.Customer {
+	return predicate.Customer(sql.FieldGT(FieldApprovalStatus, v))
+}
+
+// ApprovalStatusGTE applies the GTE predicate on the "approval_status" field.
+func ApprovalStatusGTE(v int) predicate.Customer {
+	return predicate.Customer(sql.FieldGTE(FieldApprovalStatus, v))
+}
+
+// ApprovalStatusLT applies the LT predicate on the "approval_status" field.
+func ApprovalStatusLT(v int) predicate.Customer {
+	return predicate.Customer(sql.FieldLT(FieldApprovalStatus, v))
+}
+
+// ApprovalStatusLTE applies the LTE predicate on the "approval_status" field.
+func ApprovalStatusLTE(v int) predicate.Customer {
+	return predicate.Customer(sql.FieldLTE(FieldApprovalStatus, v))
 }
 
 // OwnerTypeEQ applies the EQ predicate on the "owner_type" field.
@@ -736,6 +771,16 @@ func ContactPersonEmailContainsFold(v string) predicate.Customer {
 	return predicate.Customer(sql.FieldContainsFold(FieldContactPersonEmail, v))
 }
 
+// DraftIsNil applies the IsNil predicate on the "draft" field.
+func DraftIsNil() predicate.Customer {
+	return predicate.Customer(sql.FieldIsNull(FieldDraft))
+}
+
+// DraftNotNil applies the NotNil predicate on the "draft" field.
+func DraftNotNil() predicate.Customer {
+	return predicate.Customer(sql.FieldNotNull(FieldDraft))
+}
+
 // FeishuGroupIsNil applies the IsNil predicate on the "feishu_group" field.
 func FeishuGroupIsNil() predicate.Customer {
 	return predicate.Customer(sql.FieldIsNull(FieldFeishuGroup))
@@ -976,6 +1021,86 @@ func CreatedByIDContainsFold(v xid.ID) predicate.Customer {
 	return predicate.Customer(sql.FieldContainsFold(FieldCreatedByID, vc))
 }
 
+// UpdatedByIDEQ applies the EQ predicate on the "updated_by_id" field.
+func UpdatedByIDEQ(v xid.ID) predicate.Customer {
+	return predicate.Customer(sql.FieldEQ(FieldUpdatedByID, v))
+}
+
+// UpdatedByIDNEQ applies the NEQ predicate on the "updated_by_id" field.
+func UpdatedByIDNEQ(v xid.ID) predicate.Customer {
+	return predicate.Customer(sql.FieldNEQ(FieldUpdatedByID, v))
+}
+
+// UpdatedByIDIn applies the In predicate on the "updated_by_id" field.
+func UpdatedByIDIn(vs ...xid.ID) predicate.Customer {
+	return predicate.Customer(sql.FieldIn(FieldUpdatedByID, vs...))
+}
+
+// UpdatedByIDNotIn applies the NotIn predicate on the "updated_by_id" field.
+func UpdatedByIDNotIn(vs ...xid.ID) predicate.Customer {
+	return predicate.Customer(sql.FieldNotIn(FieldUpdatedByID, vs...))
+}
+
+// UpdatedByIDGT applies the GT predicate on the "updated_by_id" field.
+func UpdatedByIDGT(v xid.ID) predicate.Customer {
+	return predicate.Customer(sql.FieldGT(FieldUpdatedByID, v))
+}
+
+// UpdatedByIDGTE applies the GTE predicate on the "updated_by_id" field.
+func UpdatedByIDGTE(v xid.ID) predicate.Customer {
+	return predicate.Customer(sql.FieldGTE(FieldUpdatedByID, v))
+}
+
+// UpdatedByIDLT applies the LT predicate on the "updated_by_id" field.
+func UpdatedByIDLT(v xid.ID) predicate.Customer {
+	return predicate.Customer(sql.FieldLT(FieldUpdatedByID, v))
+}
+
+// UpdatedByIDLTE applies the LTE predicate on the "updated_by_id" field.
+func UpdatedByIDLTE(v xid.ID) predicate.Customer {
+	return predicate.Customer(sql.FieldLTE(FieldUpdatedByID, v))
+}
+
+// UpdatedByIDContains applies the Contains predicate on the "updated_by_id" field.
+func UpdatedByIDContains(v xid.ID) predicate.Customer {
+	vc := string(v)
+	return predicate.Customer(sql.FieldContains(FieldUpdatedByID, vc))
+}
+
+// UpdatedByIDHasPrefix applies the HasPrefix predicate on the "updated_by_id" field.
+func UpdatedByIDHasPrefix(v xid.ID) predicate.Customer {
+	vc := string(v)
+	return predicate.Customer(sql.FieldHasPrefix(FieldUpdatedByID, vc))
+}
+
+// UpdatedByIDHasSuffix applies the HasSuffix predicate on the "updated_by_id" field.
+func UpdatedByIDHasSuffix(v xid.ID) predicate.Customer {
+	vc := string(v)
+	return predicate.Customer(sql.FieldHasSuffix(FieldUpdatedByID, vc))
+}
+
+// UpdatedByIDIsNil applies the IsNil predicate on the "updated_by_id" field.
+func UpdatedByIDIsNil() predicate.Customer {
+	return predicate.Customer(sql.FieldIsNull(FieldUpdatedByID))
+}
+
+// UpdatedByIDNotNil applies the NotNil predicate on the "updated_by_id" field.
+func UpdatedByIDNotNil() predicate.Customer {
+	return predicate.Customer(sql.FieldNotNull(FieldUpdatedByID))
+}
+
+// UpdatedByIDEqualFold applies the EqualFold predicate on the "updated_by_id" field.
+func UpdatedByIDEqualFold(v xid.ID) predicate.Customer {
+	vc := string(v)
+	return predicate.Customer(sql.FieldEqualFold(FieldUpdatedByID, vc))
+}
+
+// UpdatedByIDContainsFold applies the ContainsFold predicate on the "updated_by_id" field.
+func UpdatedByIDContainsFold(v xid.ID) predicate.Customer {
+	vc := string(v)
+	return predicate.Customer(sql.FieldContainsFold(FieldUpdatedByID, vc))
+}
+
 // ApproverIDEQ applies the EQ predicate on the "approver_id" field.
 func ApproverIDEQ(v xid.ID) predicate.Customer {
 	return predicate.Customer(sql.FieldEQ(FieldApproverID, v))
@@ -1140,6 +1265,29 @@ func HasCreatedBy() predicate.Customer {
 func HasCreatedByWith(preds ...predicate.User) predicate.Customer {
 	return predicate.Customer(func(s *sql.Selector) {
 		step := newCreatedByStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasUpdatedBy applies the HasEdge predicate on the "updated_by" edge.
+func HasUpdatedBy() predicate.Customer {
+	return predicate.Customer(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, UpdatedByTable, UpdatedByColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasUpdatedByWith applies the HasEdge predicate on the "updated_by" edge with a given conditions (other predicates).
+func HasUpdatedByWith(preds ...predicate.User) predicate.Customer {
+	return predicate.Customer(func(s *sql.Selector) {
+		step := newUpdatedByStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

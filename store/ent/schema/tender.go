@@ -29,7 +29,16 @@ func (Tender) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("code").Unique(),
 		field.Int("status").Default(1),
-		field.Bool("is_approved").Default(false),
+		field.Int("approval_status").
+			Default(1).
+			Min(1).
+			Max(3).
+			Annotations(
+				entgql.OrderField("APPROVAL_STATUS"),
+			).
+			Comment("1 待審核 2 已通過 3 已拒絕"),
+		field.String("approval_msg_id").Optional().Nillable().Comment("審核飛書訊息ID"),
+
 		field.String("name").
 			Annotations(
 				entgql.OrderField("NAME"),
@@ -149,6 +158,10 @@ func (Tender) Fields() []ent.Field {
 			GoType(xid.ID("")).
 			Optional().
 			Nillable(),
+		field.String("updated_by_id").
+			GoType(xid.ID("")).
+			Optional().
+			Nillable(),
 	}
 }
 
@@ -193,6 +206,9 @@ func (Tender) Edges() []ent.Edge {
 			Unique(),
 		edge.To("approver", User.Type).
 			Field("approver_id").
+			Unique(),
+		edge.To("updated_by", User.Type).
+			Field("updated_by_id").
 			Unique(),
 	}
 }

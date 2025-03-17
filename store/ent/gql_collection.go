@@ -1358,6 +1358,21 @@ func (c *CustomerQuery) collectField(ctx context.Context, oneNode bool, opCtx *g
 				fieldSeen[customer.FieldCreatedByID] = struct{}{}
 			}
 
+		case "updatedBy":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&UserClient{config: c.config}).Query()
+			)
+			if err := query.collectField(ctx, oneNode, opCtx, field, path, mayAddCondition(satisfies, userImplementors)...); err != nil {
+				return err
+			}
+			c.withUpdatedBy = query
+			if _, ok := fieldSeen[customer.FieldUpdatedByID]; !ok {
+				selectedFields = append(selectedFields, customer.FieldUpdatedByID)
+				fieldSeen[customer.FieldUpdatedByID] = struct{}{}
+			}
+
 		case "approver":
 			var (
 				alias = field.Alias
@@ -1416,10 +1431,10 @@ func (c *CustomerQuery) collectField(ctx context.Context, oneNode bool, opCtx *g
 						}
 						for i := range nodes {
 							n := m[nodes[i].ID]
-							if nodes[i].Edges.totalCount[5] == nil {
-								nodes[i].Edges.totalCount[5] = make(map[string]int)
+							if nodes[i].Edges.totalCount[6] == nil {
+								nodes[i].Edges.totalCount[6] = make(map[string]int)
 							}
-							nodes[i].Edges.totalCount[5][alias] = n
+							nodes[i].Edges.totalCount[6][alias] = n
 						}
 						return nil
 					})
@@ -1427,10 +1442,10 @@ func (c *CustomerQuery) collectField(ctx context.Context, oneNode bool, opCtx *g
 					c.loadTotal = append(c.loadTotal, func(_ context.Context, nodes []*Customer) error {
 						for i := range nodes {
 							n := len(nodes[i].Edges.VisitRecords)
-							if nodes[i].Edges.totalCount[5] == nil {
-								nodes[i].Edges.totalCount[5] = make(map[string]int)
+							if nodes[i].Edges.totalCount[6] == nil {
+								nodes[i].Edges.totalCount[6] = make(map[string]int)
 							}
-							nodes[i].Edges.totalCount[5][alias] = n
+							nodes[i].Edges.totalCount[6][alias] = n
 						}
 						return nil
 					})
@@ -1476,10 +1491,10 @@ func (c *CustomerQuery) collectField(ctx context.Context, oneNode bool, opCtx *g
 				selectedFields = append(selectedFields, customer.FieldName)
 				fieldSeen[customer.FieldName] = struct{}{}
 			}
-		case "isApproved":
-			if _, ok := fieldSeen[customer.FieldIsApproved]; !ok {
-				selectedFields = append(selectedFields, customer.FieldIsApproved)
-				fieldSeen[customer.FieldIsApproved] = struct{}{}
+		case "approvalStatus":
+			if _, ok := fieldSeen[customer.FieldApprovalStatus]; !ok {
+				selectedFields = append(selectedFields, customer.FieldApprovalStatus)
+				fieldSeen[customer.FieldApprovalStatus] = struct{}{}
 			}
 		case "ownerType":
 			if _, ok := fieldSeen[customer.FieldOwnerType]; !ok {
@@ -1530,6 +1545,11 @@ func (c *CustomerQuery) collectField(ctx context.Context, oneNode bool, opCtx *g
 			if _, ok := fieldSeen[customer.FieldCreatedByID]; !ok {
 				selectedFields = append(selectedFields, customer.FieldCreatedByID)
 				fieldSeen[customer.FieldCreatedByID] = struct{}{}
+			}
+		case "updatedByID":
+			if _, ok := fieldSeen[customer.FieldUpdatedByID]; !ok {
+				selectedFields = append(selectedFields, customer.FieldUpdatedByID)
+				fieldSeen[customer.FieldUpdatedByID] = struct{}{}
 			}
 		case "approverID":
 			if _, ok := fieldSeen[customer.FieldApproverID]; !ok {
@@ -4018,6 +4038,21 @@ func (t *TenderQuery) collectField(ctx context.Context, oneNode bool, opCtx *gra
 				selectedFields = append(selectedFields, tender.FieldApproverID)
 				fieldSeen[tender.FieldApproverID] = struct{}{}
 			}
+
+		case "updatedBy":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&UserClient{config: t.config}).Query()
+			)
+			if err := query.collectField(ctx, oneNode, opCtx, field, path, mayAddCondition(satisfies, userImplementors)...); err != nil {
+				return err
+			}
+			t.withUpdatedBy = query
+			if _, ok := fieldSeen[tender.FieldUpdatedByID]; !ok {
+				selectedFields = append(selectedFields, tender.FieldUpdatedByID)
+				fieldSeen[tender.FieldUpdatedByID] = struct{}{}
+			}
 		case "createdAt":
 			if _, ok := fieldSeen[tender.FieldCreatedAt]; !ok {
 				selectedFields = append(selectedFields, tender.FieldCreatedAt)
@@ -4038,10 +4073,15 @@ func (t *TenderQuery) collectField(ctx context.Context, oneNode bool, opCtx *gra
 				selectedFields = append(selectedFields, tender.FieldStatus)
 				fieldSeen[tender.FieldStatus] = struct{}{}
 			}
-		case "isApproved":
-			if _, ok := fieldSeen[tender.FieldIsApproved]; !ok {
-				selectedFields = append(selectedFields, tender.FieldIsApproved)
-				fieldSeen[tender.FieldIsApproved] = struct{}{}
+		case "approvalStatus":
+			if _, ok := fieldSeen[tender.FieldApprovalStatus]; !ok {
+				selectedFields = append(selectedFields, tender.FieldApprovalStatus)
+				fieldSeen[tender.FieldApprovalStatus] = struct{}{}
+			}
+		case "approvalMsgID":
+			if _, ok := fieldSeen[tender.FieldApprovalMsgID]; !ok {
+				selectedFields = append(selectedFields, tender.FieldApprovalMsgID)
+				fieldSeen[tender.FieldApprovalMsgID] = struct{}{}
 			}
 		case "name":
 			if _, ok := fieldSeen[tender.FieldName]; !ok {
@@ -4347,6 +4387,11 @@ func (t *TenderQuery) collectField(ctx context.Context, oneNode bool, opCtx *gra
 			if _, ok := fieldSeen[tender.FieldApproverID]; !ok {
 				selectedFields = append(selectedFields, tender.FieldApproverID)
 				fieldSeen[tender.FieldApproverID] = struct{}{}
+			}
+		case "updatedByID":
+			if _, ok := fieldSeen[tender.FieldUpdatedByID]; !ok {
+				selectedFields = append(selectedFields, tender.FieldUpdatedByID)
+				fieldSeen[tender.FieldUpdatedByID] = struct{}{}
 			}
 		case "id":
 		case "__typename":

@@ -5,6 +5,7 @@ func init() {
 	IsProd = false
 	IsUat = false
 	FilePath = "static/"
+	HostUrl = "http://localhost:5173"
 
 	HanaPort = 30071
 	HanaHost = "10.148.8.9"

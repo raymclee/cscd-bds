@@ -1,6 +1,7 @@
 package schema
 
 import (
+	"cscd-bds/store/ent/schema/model"
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/schema/zht"
 
@@ -31,7 +32,14 @@ func (Customer) Fields() []ent.Field {
 			Annotations(
 				entgql.OrderField("NAME"),
 			),
-		field.Bool("is_approved").Default(false),
+		field.Int("approval_status").
+			Default(1).
+			Min(1).
+			Max(3).
+			Annotations(
+				entgql.OrderField("APPROVAL_STATUS"),
+			).
+			Comment("1 待審核 2 已通過 3 已拒絕"),
 		field.Int("owner_type").
 			Optional().
 			Nillable().
@@ -57,6 +65,10 @@ func (Customer) Fields() []ent.Field {
 			Optional().
 			Nillable(),
 
+		field.JSON("draft", &model.Customer{}).
+			Optional().
+			Annotations(entgql.Skip(entgql.SkipAll)),
+
 		field.JSON("feishu_group", &zht.Group{}).
 			Optional().
 			Annotations(entgql.Skip(entgql.SkipAll)),
@@ -68,6 +80,10 @@ func (Customer) Fields() []ent.Field {
 			Optional().
 			Nillable(),
 		field.String("created_by_id").
+			GoType(xid.ID("")).
+			Optional().
+			Nillable(),
+		field.String("updated_by_id").
 			GoType(xid.ID("")).
 			Optional().
 			Nillable(),
@@ -96,6 +112,9 @@ func (Customer) Edges() []ent.Edge {
 			Unique(),
 		edge.To("created_by", User.Type).
 			Field("created_by_id").
+			Unique(),
+		edge.To("updated_by", User.Type).
+			Field("updated_by_id").
 			Unique(),
 		edge.To("approver", User.Type).
 			Field("approver_id").

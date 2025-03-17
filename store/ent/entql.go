@@ -119,7 +119,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			customer.FieldCreatedAt:             {Type: field.TypeTime, Column: customer.FieldCreatedAt},
 			customer.FieldUpdatedAt:             {Type: field.TypeTime, Column: customer.FieldUpdatedAt},
 			customer.FieldName:                  {Type: field.TypeString, Column: customer.FieldName},
-			customer.FieldIsApproved:            {Type: field.TypeBool, Column: customer.FieldIsApproved},
+			customer.FieldApprovalStatus:        {Type: field.TypeInt, Column: customer.FieldApprovalStatus},
 			customer.FieldOwnerType:             {Type: field.TypeInt, Column: customer.FieldOwnerType},
 			customer.FieldIndustry:              {Type: field.TypeInt, Column: customer.FieldIndustry},
 			customer.FieldSize:                  {Type: field.TypeInt, Column: customer.FieldSize},
@@ -127,10 +127,12 @@ var schemaGraph = func() *sqlgraph.Schema {
 			customer.FieldContactPersonPosition: {Type: field.TypeString, Column: customer.FieldContactPersonPosition},
 			customer.FieldContactPersonPhone:    {Type: field.TypeString, Column: customer.FieldContactPersonPhone},
 			customer.FieldContactPersonEmail:    {Type: field.TypeString, Column: customer.FieldContactPersonEmail},
+			customer.FieldDraft:                 {Type: field.TypeJSON, Column: customer.FieldDraft},
 			customer.FieldFeishuGroup:           {Type: field.TypeJSON, Column: customer.FieldFeishuGroup},
 			customer.FieldAreaID:                {Type: field.TypeString, Column: customer.FieldAreaID},
 			customer.FieldSalesID:               {Type: field.TypeString, Column: customer.FieldSalesID},
 			customer.FieldCreatedByID:           {Type: field.TypeString, Column: customer.FieldCreatedByID},
+			customer.FieldUpdatedByID:           {Type: field.TypeString, Column: customer.FieldUpdatedByID},
 			customer.FieldApproverID:            {Type: field.TypeString, Column: customer.FieldApproverID},
 		},
 	}
@@ -400,7 +402,8 @@ var schemaGraph = func() *sqlgraph.Schema {
 			tender.FieldUpdatedAt:                            {Type: field.TypeTime, Column: tender.FieldUpdatedAt},
 			tender.FieldCode:                                 {Type: field.TypeString, Column: tender.FieldCode},
 			tender.FieldStatus:                               {Type: field.TypeInt, Column: tender.FieldStatus},
-			tender.FieldIsApproved:                           {Type: field.TypeBool, Column: tender.FieldIsApproved},
+			tender.FieldApprovalStatus:                       {Type: field.TypeInt, Column: tender.FieldApprovalStatus},
+			tender.FieldApprovalMsgID:                        {Type: field.TypeString, Column: tender.FieldApprovalMsgID},
 			tender.FieldName:                                 {Type: field.TypeString, Column: tender.FieldName},
 			tender.FieldEstimatedAmount:                      {Type: field.TypeFloat64, Column: tender.FieldEstimatedAmount},
 			tender.FieldTenderDate:                           {Type: field.TypeTime, Column: tender.FieldTenderDate},
@@ -464,6 +467,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			tender.FieldCreatedByID:                          {Type: field.TypeString, Column: tender.FieldCreatedByID},
 			tender.FieldCompetitorID:                         {Type: field.TypeString, Column: tender.FieldCompetitorID},
 			tender.FieldApproverID:                           {Type: field.TypeString, Column: tender.FieldApproverID},
+			tender.FieldUpdatedByID:                          {Type: field.TypeString, Column: tender.FieldUpdatedByID},
 		},
 	}
 	graph.Nodes[14] = &sqlgraph.Node{
@@ -666,6 +670,18 @@ var schemaGraph = func() *sqlgraph.Schema {
 			Inverse: false,
 			Table:   customer.CreatedByTable,
 			Columns: []string{customer.CreatedByColumn},
+			Bidi:    false,
+		},
+		"Customer",
+		"User",
+	)
+	graph.MustAddE(
+		"updated_by",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   customer.UpdatedByTable,
+			Columns: []string{customer.UpdatedByColumn},
 			Bidi:    false,
 		},
 		"Customer",
@@ -1002,6 +1018,18 @@ var schemaGraph = func() *sqlgraph.Schema {
 			Inverse: false,
 			Table:   tender.ApproverTable,
 			Columns: []string{tender.ApproverColumn},
+			Bidi:    false,
+		},
+		"Tender",
+		"User",
+	)
+	graph.MustAddE(
+		"updated_by",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   tender.UpdatedByTable,
+			Columns: []string{tender.UpdatedByColumn},
 			Bidi:    false,
 		},
 		"Tender",
@@ -1592,9 +1620,9 @@ func (f *CustomerFilter) WhereName(p entql.StringP) {
 	f.Where(p.Field(customer.FieldName))
 }
 
-// WhereIsApproved applies the entql bool predicate on the is_approved field.
-func (f *CustomerFilter) WhereIsApproved(p entql.BoolP) {
-	f.Where(p.Field(customer.FieldIsApproved))
+// WhereApprovalStatus applies the entql int predicate on the approval_status field.
+func (f *CustomerFilter) WhereApprovalStatus(p entql.IntP) {
+	f.Where(p.Field(customer.FieldApprovalStatus))
 }
 
 // WhereOwnerType applies the entql int predicate on the owner_type field.
@@ -1632,6 +1660,11 @@ func (f *CustomerFilter) WhereContactPersonEmail(p entql.StringP) {
 	f.Where(p.Field(customer.FieldContactPersonEmail))
 }
 
+// WhereDraft applies the entql json.RawMessage predicate on the draft field.
+func (f *CustomerFilter) WhereDraft(p entql.BytesP) {
+	f.Where(p.Field(customer.FieldDraft))
+}
+
 // WhereFeishuGroup applies the entql json.RawMessage predicate on the feishu_group field.
 func (f *CustomerFilter) WhereFeishuGroup(p entql.BytesP) {
 	f.Where(p.Field(customer.FieldFeishuGroup))
@@ -1650,6 +1683,11 @@ func (f *CustomerFilter) WhereSalesID(p entql.StringP) {
 // WhereCreatedByID applies the entql string predicate on the created_by_id field.
 func (f *CustomerFilter) WhereCreatedByID(p entql.StringP) {
 	f.Where(p.Field(customer.FieldCreatedByID))
+}
+
+// WhereUpdatedByID applies the entql string predicate on the updated_by_id field.
+func (f *CustomerFilter) WhereUpdatedByID(p entql.StringP) {
+	f.Where(p.Field(customer.FieldUpdatedByID))
 }
 
 // WhereApproverID applies the entql string predicate on the approver_id field.
@@ -1707,6 +1745,20 @@ func (f *CustomerFilter) WhereHasCreatedBy() {
 // WhereHasCreatedByWith applies a predicate to check if query has an edge created_by with a given conditions (other predicates).
 func (f *CustomerFilter) WhereHasCreatedByWith(preds ...predicate.User) {
 	f.Where(entql.HasEdgeWith("created_by", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
+// WhereHasUpdatedBy applies a predicate to check if query has an edge updated_by.
+func (f *CustomerFilter) WhereHasUpdatedBy() {
+	f.Where(entql.HasEdge("updated_by"))
+}
+
+// WhereHasUpdatedByWith applies a predicate to check if query has an edge updated_by with a given conditions (other predicates).
+func (f *CustomerFilter) WhereHasUpdatedByWith(preds ...predicate.User) {
+	f.Where(entql.HasEdgeWith("updated_by", sqlgraph.WrapFunc(func(s *sql.Selector) {
 		for _, p := range preds {
 			p(s)
 		}
@@ -3066,9 +3118,14 @@ func (f *TenderFilter) WhereStatus(p entql.IntP) {
 	f.Where(p.Field(tender.FieldStatus))
 }
 
-// WhereIsApproved applies the entql bool predicate on the is_approved field.
-func (f *TenderFilter) WhereIsApproved(p entql.BoolP) {
-	f.Where(p.Field(tender.FieldIsApproved))
+// WhereApprovalStatus applies the entql int predicate on the approval_status field.
+func (f *TenderFilter) WhereApprovalStatus(p entql.IntP) {
+	f.Where(p.Field(tender.FieldApprovalStatus))
+}
+
+// WhereApprovalMsgID applies the entql string predicate on the approval_msg_id field.
+func (f *TenderFilter) WhereApprovalMsgID(p entql.StringP) {
+	f.Where(p.Field(tender.FieldApprovalMsgID))
 }
 
 // WhereName applies the entql string predicate on the name field.
@@ -3386,6 +3443,11 @@ func (f *TenderFilter) WhereApproverID(p entql.StringP) {
 	f.Where(p.Field(tender.FieldApproverID))
 }
 
+// WhereUpdatedByID applies the entql string predicate on the updated_by_id field.
+func (f *TenderFilter) WhereUpdatedByID(p entql.StringP) {
+	f.Where(p.Field(tender.FieldUpdatedByID))
+}
+
 // WhereHasArea applies a predicate to check if query has an edge area.
 func (f *TenderFilter) WhereHasArea() {
 	f.Where(entql.HasEdge("area"))
@@ -3534,6 +3596,20 @@ func (f *TenderFilter) WhereHasApprover() {
 // WhereHasApproverWith applies a predicate to check if query has an edge approver with a given conditions (other predicates).
 func (f *TenderFilter) WhereHasApproverWith(preds ...predicate.User) {
 	f.Where(entql.HasEdgeWith("approver", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
+// WhereHasUpdatedBy applies a predicate to check if query has an edge updated_by.
+func (f *TenderFilter) WhereHasUpdatedBy() {
+	f.Where(entql.HasEdge("updated_by"))
+}
+
+// WhereHasUpdatedByWith applies a predicate to check if query has an edge updated_by with a given conditions (other predicates).
+func (f *TenderFilter) WhereHasUpdatedByWith(preds ...predicate.User) {
+	f.Where(entql.HasEdgeWith("updated_by", sqlgraph.WrapFunc(func(s *sql.Selector) {
 		for _, p := range preds {
 			p(s)
 		}

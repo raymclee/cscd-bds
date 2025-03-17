@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<e4742702ee2480810554329e7c561ec8>>
+ * @generated SignedSource<<7e7adfb15013b342b34b036fb5e2b83e>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -11,6 +11,7 @@
 import { ConcreteRequest } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type CreateCustomerInput = {
+  approvalStatus?: number | null | undefined;
   approverID?: string | null | undefined;
   areaID: string;
   contactPerson?: string | null | undefined;
@@ -20,13 +21,13 @@ export type CreateCustomerInput = {
   createdAt?: any | null | undefined;
   createdByID?: string | null | undefined;
   industry?: number | null | undefined;
-  isApproved?: boolean | null | undefined;
   name: string;
   ownerType?: number | null | undefined;
   salesID?: string | null | undefined;
   size?: number | null | undefined;
   tenderIDs?: ReadonlyArray<string> | null | undefined;
   updatedAt?: any | null | undefined;
+  updatedByID?: string | null | undefined;
   visitRecordIDs?: ReadonlyArray<string> | null | undefined;
 };
 export type useCreateCustomerMutation$variables = {
@@ -79,11 +80,76 @@ v4 = {
   "name": "name",
   "storageKey": null
 },
-v5 = [
-  (v3/*: any*/),
-  (v4/*: any*/)
-],
-v6 = [
+v5 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "ownerType",
+  "storageKey": null
+},
+v6 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "industry",
+  "storageKey": null
+},
+v7 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "size",
+  "storageKey": null
+},
+v8 = {
+  "alias": null,
+  "args": null,
+  "concreteType": "User",
+  "kind": "LinkedField",
+  "name": "sales",
+  "plural": false,
+  "selections": [
+    (v3/*: any*/),
+    (v4/*: any*/)
+  ],
+  "storageKey": null
+},
+v9 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "code",
+  "storageKey": null
+},
+v10 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "contactPerson",
+  "storageKey": null
+},
+v11 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "contactPersonPosition",
+  "storageKey": null
+},
+v12 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "contactPersonPhone",
+  "storageKey": null
+},
+v13 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "contactPersonEmail",
+  "storageKey": null
+},
+v14 = [
   {
     "kind": "Literal",
     "name": "last",
@@ -204,37 +270,10 @@ return {
                     "name": "updatedAt",
                     "storageKey": null
                   },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "ownerType",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "industry",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "size",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "concreteType": "User",
-                    "kind": "LinkedField",
-                    "name": "sales",
-                    "plural": false,
-                    "selections": (v5/*: any*/),
-                    "storageKey": null
-                  },
+                  (v5/*: any*/),
+                  (v6/*: any*/),
+                  (v7/*: any*/),
+                  (v8/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -242,47 +281,27 @@ return {
                     "kind": "LinkedField",
                     "name": "area",
                     "plural": false,
-                    "selections": (v5/*: any*/),
+                    "selections": [
+                      (v3/*: any*/),
+                      (v4/*: any*/),
+                      (v9/*: any*/)
+                    ],
                     "storageKey": null
                   },
                   {
                     "alias": null,
                     "args": null,
                     "kind": "ScalarField",
-                    "name": "isApproved",
+                    "name": "approvalStatus",
                     "storageKey": null
                   },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "contactPerson",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "contactPersonPosition",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "contactPersonPhone",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "contactPersonEmail",
-                    "storageKey": null
-                  },
+                  (v10/*: any*/),
+                  (v11/*: any*/),
+                  (v12/*: any*/),
+                  (v13/*: any*/),
                   {
                     "alias": "lastVisitRecord",
-                    "args": (v6/*: any*/),
+                    "args": (v14/*: any*/),
                     "concreteType": "VisitRecordConnection",
                     "kind": "LinkedField",
                     "name": "visitRecords",
@@ -362,12 +381,46 @@ return {
                   },
                   {
                     "alias": "lastVisitRecord",
-                    "args": (v6/*: any*/),
+                    "args": (v14/*: any*/),
                     "filters": null,
                     "handle": "connection",
                     "key": "customerDetailFragment_lastVisitRecord",
                     "kind": "LinkedHandle",
                     "name": "visitRecords"
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "CustomerDraft",
+                    "kind": "LinkedField",
+                    "name": "draft",
+                    "plural": false,
+                    "selections": [
+                      (v4/*: any*/),
+                      (v5/*: any*/),
+                      (v6/*: any*/),
+                      (v7/*: any*/),
+                      (v10/*: any*/),
+                      (v11/*: any*/),
+                      (v12/*: any*/),
+                      (v13/*: any*/),
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Area",
+                        "kind": "LinkedField",
+                        "name": "area",
+                        "plural": false,
+                        "selections": [
+                          (v3/*: any*/),
+                          (v9/*: any*/),
+                          (v4/*: any*/)
+                        ],
+                        "storageKey": null
+                      },
+                      (v8/*: any*/)
+                    ],
+                    "storageKey": null
                   }
                 ],
                 "storageKey": null
@@ -397,12 +450,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "89a83989c5e89ad0b47c12a5afe3a42a",
+    "cacheID": "484653f1d086850523ad6790e3f0b06b",
     "id": null,
     "metadata": {},
     "name": "useCreateCustomerMutation",
     "operationKind": "mutation",
-    "text": "mutation useCreateCustomerMutation(\n  $input: CreateCustomerInput!\n) {\n  createCustomer(input: $input) {\n    edges {\n      node {\n        ...customerDetailFragment\n        id\n      }\n    }\n  }\n}\n\nfragment customerDetailFragment on Customer {\n  id\n  name\n  createdAt\n  createdBy {\n    name\n    id\n  }\n  updatedAt\n  ownerType\n  industry\n  size\n  sales {\n    id\n    name\n  }\n  area {\n    id\n    name\n  }\n  isApproved\n  contactPerson\n  contactPersonPosition\n  contactPersonPhone\n  contactPersonEmail\n  lastVisitRecord: visitRecords(last: 1) {\n    edges {\n      node {\n        date\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n"
+    "text": "mutation useCreateCustomerMutation(\n  $input: CreateCustomerInput!\n) {\n  createCustomer(input: $input) {\n    edges {\n      node {\n        ...customerDetailFragment\n        id\n      }\n    }\n  }\n}\n\nfragment customerDetailFragment on Customer {\n  id\n  name\n  createdAt\n  createdBy {\n    name\n    id\n  }\n  updatedAt\n  ownerType\n  industry\n  size\n  sales {\n    id\n    name\n  }\n  area {\n    id\n    name\n    code\n  }\n  approvalStatus\n  contactPerson\n  contactPersonPosition\n  contactPersonPhone\n  contactPersonEmail\n  lastVisitRecord: visitRecords(last: 1) {\n    edges {\n      node {\n        date\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasPreviousPage\n      startCursor\n    }\n  }\n  draft {\n    name\n    ownerType\n    industry\n    size\n    contactPerson\n    contactPersonPosition\n    contactPersonPhone\n    contactPersonEmail\n    area {\n      id\n      code\n      name\n    }\n    sales {\n      id\n      name\n    }\n  }\n}\n"
   }
 };
 })();

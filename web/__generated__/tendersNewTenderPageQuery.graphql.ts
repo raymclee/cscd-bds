@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<3747bafc4996186acf55d59e7bfede36>>
+ * @generated SignedSource<<ebe27e720679a06c28f02aae5461e0f7>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -65,7 +65,7 @@ v5 = [
     "kind": "Literal",
     "name": "where",
     "value": {
-      "isApproved": true
+      "approvalStatusGT": 1
     }
   }
 ],
@@ -236,7 +236,7 @@ return {
                                 "storageKey": null
                               }
                             ],
-                            "storageKey": "customers(where:{\"isApproved\":true})"
+                            "storageKey": "customers(where:{\"approvalStatusGT\":1})"
                           },
                           {
                             "alias": null,
@@ -333,12 +333,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "98fe0c5ce073389ae8584e2739cc75e1",
+    "cacheID": "0d8be190567882ac9e61195d9eac3c2f",
     "id": null,
     "metadata": {},
     "name": "tendersNewTenderPageQuery",
     "operationKind": "query",
-    "text": "query tendersNewTenderPageQuery(\n  $userId: ID!\n) {\n  node(id: $userId) {\n    __typename\n    ...tenderFormFragment\n    id\n  }\n  ...tenderFormFragment_competitors\n}\n\nfragment tenderFormFragment on User {\n  areas {\n    edges {\n      node {\n        id\n        name\n        code\n        customers(where: {isApproved: true}) {\n          edges {\n            node {\n              id\n              name\n              __typename\n            }\n            cursor\n          }\n          pageInfo {\n            endCursor\n            hasNextPage\n            hasPreviousPage\n            startCursor\n          }\n        }\n        users {\n          edges {\n            node {\n              id\n              name\n            }\n          }\n        }\n      }\n    }\n  }\n}\n\nfragment tenderFormFragment_competitors on Query {\n  competitors {\n    edges {\n      node {\n        id\n        name\n      }\n    }\n  }\n}\n"
+    "text": "query tendersNewTenderPageQuery(\n  $userId: ID!\n) {\n  node(id: $userId) {\n    __typename\n    ...tenderFormFragment\n    id\n  }\n  ...tenderFormFragment_competitors\n}\n\nfragment tenderFormFragment on User {\n  areas {\n    edges {\n      node {\n        id\n        name\n        code\n        customers(where: {approvalStatusGT: 1}) {\n          edges {\n            node {\n              id\n              name\n              __typename\n            }\n            cursor\n          }\n          pageInfo {\n            endCursor\n            hasNextPage\n            hasPreviousPage\n            startCursor\n          }\n        }\n        users {\n          edges {\n            node {\n              id\n              name\n            }\n          }\n        }\n      }\n    }\n  }\n}\n\nfragment tenderFormFragment_competitors on Query {\n  competitors {\n    edges {\n      node {\n        id\n        name\n      }\n    }\n  }\n}\n"
   }
 };
 })();

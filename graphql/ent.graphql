@@ -932,7 +932,10 @@ input CreateCustomerInput {
   createdAt: Time
   updatedAt: Time
   name: String!
-  isApproved: Boolean
+  """
+  1 待審核 2 已通過 3 已拒絕
+  """
+  approvalStatus: Int
   ownerType: Int
   industry: Int
   size: Int
@@ -944,6 +947,7 @@ input CreateCustomerInput {
   tenderIDs: [ID!]
   salesID: ID
   createdByID: ID
+  updatedByID: ID
   approverID: ID
   visitRecordIDs: [ID!]
 }
@@ -1021,7 +1025,14 @@ input CreateTenderInput {
   updatedAt: Time
   code: String!
   status: Int
-  isApproved: Boolean
+  """
+  1 待審核 2 已通過 3 已拒絕
+  """
+  approvalStatus: Int
+  """
+  審核飛書訊息ID
+  """
+  approvalMsgID: String
   name: String!
   estimatedAmount: Float
   tenderDate: Time
@@ -1109,6 +1120,7 @@ input CreateTenderInput {
   visitRecordIDs: [ID!]
   competitorID: ID
   approverID: ID
+  updatedByID: ID
 }
 """
 CreateUserInput is used for create User object.
@@ -1162,7 +1174,10 @@ type Customer implements Node {
   createdAt: Time!
   updatedAt: Time!
   name: String!
-  isApproved: Boolean!
+  """
+  1 待審核 2 已通過 3 已拒絕
+  """
+  approvalStatus: Int!
   ownerType: Int
   industry: Int
   size: Int
@@ -1173,6 +1188,7 @@ type Customer implements Node {
   areaID: ID!
   salesID: ID
   createdByID: ID
+  updatedByID: ID
   approverID: ID
   area: Area!
   tenders(
@@ -1208,6 +1224,7 @@ type Customer implements Node {
   ): TenderConnection!
   sales: User
   createdBy: User
+  updatedBy: User
   approver: User
   visitRecords(
     """
@@ -1290,6 +1307,7 @@ Properties by which Customer connections can be ordered.
 enum CustomerOrderField {
   CREATED_AT
   NAME
+  APPROVAL_STATUS
   OWNER_TYPE
 }
 """
@@ -1350,10 +1368,16 @@ input CustomerWhereInput {
   nameEqualFold: String
   nameContainsFold: String
   """
-  is_approved field predicates
+  approval_status field predicates
   """
-  isApproved: Boolean
-  isApprovedNEQ: Boolean
+  approvalStatus: Int
+  approvalStatusNEQ: Int
+  approvalStatusIn: [Int!]
+  approvalStatusNotIn: [Int!]
+  approvalStatusGT: Int
+  approvalStatusGTE: Int
+  approvalStatusLT: Int
+  approvalStatusLTE: Int
   """
   owner_type field predicates
   """
@@ -1518,6 +1542,24 @@ input CustomerWhereInput {
   createdByIDEqualFold: ID
   createdByIDContainsFold: ID
   """
+  updated_by_id field predicates
+  """
+  updatedByID: ID
+  updatedByIDNEQ: ID
+  updatedByIDIn: [ID!]
+  updatedByIDNotIn: [ID!]
+  updatedByIDGT: ID
+  updatedByIDGTE: ID
+  updatedByIDLT: ID
+  updatedByIDLTE: ID
+  updatedByIDContains: ID
+  updatedByIDHasPrefix: ID
+  updatedByIDHasSuffix: ID
+  updatedByIDIsNil: Boolean
+  updatedByIDNotNil: Boolean
+  updatedByIDEqualFold: ID
+  updatedByIDContainsFold: ID
+  """
   approver_id field predicates
   """
   approverID: ID
@@ -1555,6 +1597,11 @@ input CustomerWhereInput {
   """
   hasCreatedBy: Boolean
   hasCreatedByWith: [UserWhereInput!]
+  """
+  updated_by edge predicates
+  """
+  hasUpdatedBy: Boolean
+  hasUpdatedByWith: [UserWhereInput!]
   """
   approver edge predicates
   """
@@ -5360,7 +5407,14 @@ type Tender implements Node {
   updatedAt: Time!
   code: String!
   status: Int!
-  isApproved: Boolean!
+  """
+  1 待審核 2 已通過 3 已拒絕
+  """
+  approvalStatus: Int!
+  """
+  審核飛書訊息ID
+  """
+  approvalMsgID: String
   name: String!
   estimatedAmount: Float
   tenderDate: Time
@@ -5446,6 +5500,7 @@ type Tender implements Node {
   createdByID: ID
   competitorID: ID
   approverID: ID
+  updatedByID: ID
   area: Area!
   customer: Customer
   finder: User
@@ -5487,6 +5542,7 @@ type Tender implements Node {
   ): VisitRecordConnection!
   competitor: Competitor
   approver: User
+  updatedBy: User
 }
 """
 A connection to a list of items.
@@ -5536,6 +5592,7 @@ Properties by which Tender connections can be ordered.
 """
 enum TenderOrderField {
   CREATED_AT
+  APPROVAL_STATUS
   NAME
   TENDER_DATE
   CLOSING_DATE
@@ -5609,10 +5666,34 @@ input TenderWhereInput {
   statusLT: Int
   statusLTE: Int
   """
-  is_approved field predicates
+  approval_status field predicates
   """
-  isApproved: Boolean
-  isApprovedNEQ: Boolean
+  approvalStatus: Int
+  approvalStatusNEQ: Int
+  approvalStatusIn: [Int!]
+  approvalStatusNotIn: [Int!]
+  approvalStatusGT: Int
+  approvalStatusGTE: Int
+  approvalStatusLT: Int
+  approvalStatusLTE: Int
+  """
+  approval_msg_id field predicates
+  """
+  approvalMsgID: String
+  approvalMsgIDNEQ: String
+  approvalMsgIDIn: [String!]
+  approvalMsgIDNotIn: [String!]
+  approvalMsgIDGT: String
+  approvalMsgIDGTE: String
+  approvalMsgIDLT: String
+  approvalMsgIDLTE: String
+  approvalMsgIDContains: String
+  approvalMsgIDHasPrefix: String
+  approvalMsgIDHasSuffix: String
+  approvalMsgIDIsNil: Boolean
+  approvalMsgIDNotNil: Boolean
+  approvalMsgIDEqualFold: String
+  approvalMsgIDContainsFold: String
   """
   name field predicates
   """
@@ -6559,6 +6640,24 @@ input TenderWhereInput {
   approverIDEqualFold: ID
   approverIDContainsFold: ID
   """
+  updated_by_id field predicates
+  """
+  updatedByID: ID
+  updatedByIDNEQ: ID
+  updatedByIDIn: [ID!]
+  updatedByIDNotIn: [ID!]
+  updatedByIDGT: ID
+  updatedByIDGTE: ID
+  updatedByIDLT: ID
+  updatedByIDLTE: ID
+  updatedByIDContains: ID
+  updatedByIDHasPrefix: ID
+  updatedByIDHasSuffix: ID
+  updatedByIDIsNil: Boolean
+  updatedByIDNotNil: Boolean
+  updatedByIDEqualFold: ID
+  updatedByIDContainsFold: ID
+  """
   area edge predicates
   """
   hasArea: Boolean
@@ -6613,6 +6712,11 @@ input TenderWhereInput {
   """
   hasApprover: Boolean
   hasApproverWith: [UserWhereInput!]
+  """
+  updated_by edge predicates
+  """
+  hasUpdatedBy: Boolean
+  hasUpdatedByWith: [UserWhereInput!]
 }
 """
 UpdateAreaInput is used for update Area object.
@@ -6687,7 +6791,10 @@ Input was generated by ent.
 input UpdateCustomerInput {
   updatedAt: Time
   name: String
-  isApproved: Boolean
+  """
+  1 待審核 2 已通過 3 已拒絕
+  """
+  approvalStatus: Int
   ownerType: Int
   clearOwnerType: Boolean
   industry: Int
@@ -6710,6 +6817,8 @@ input UpdateCustomerInput {
   clearSales: Boolean
   createdByID: ID
   clearCreatedBy: Boolean
+  updatedByID: ID
+  clearUpdatedBy: Boolean
   approverID: ID
   clearApprover: Boolean
   addVisitRecordIDs: [ID!]
@@ -7218,7 +7327,15 @@ input UpdateTenderInput {
   updatedAt: Time
   code: String
   status: Int
-  isApproved: Boolean
+  """
+  1 待審核 2 已通過 3 已拒絕
+  """
+  approvalStatus: Int
+  """
+  審核飛書訊息ID
+  """
+  approvalMsgID: String
+  clearApprovalMsgID: Boolean
   name: String
   estimatedAmount: Float
   clearEstimatedAmount: Boolean
@@ -7368,6 +7485,8 @@ input UpdateTenderInput {
   clearCompetitor: Boolean
   approverID: ID
   clearApprover: Boolean
+  updatedByID: ID
+  clearUpdatedBy: Boolean
 }
 """
 UpdateUserInput is used for update User object.

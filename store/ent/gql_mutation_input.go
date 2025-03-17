@@ -408,7 +408,7 @@ type CreateCustomerInput struct {
 	CreatedAt             *time.Time
 	UpdatedAt             *time.Time
 	Name                  string
-	IsApproved            *bool
+	ApprovalStatus        *int
 	OwnerType             *int
 	Industry              *int
 	Size                  *int
@@ -420,6 +420,7 @@ type CreateCustomerInput struct {
 	TenderIDs             []xid.ID
 	SalesID               *xid.ID
 	CreatedByID           *xid.ID
+	UpdatedByID           *xid.ID
 	ApproverID            *xid.ID
 	VisitRecordIDs        []xid.ID
 }
@@ -433,8 +434,8 @@ func (i *CreateCustomerInput) Mutate(m *CustomerMutation) {
 		m.SetUpdatedAt(*v)
 	}
 	m.SetName(i.Name)
-	if v := i.IsApproved; v != nil {
-		m.SetIsApproved(*v)
+	if v := i.ApprovalStatus; v != nil {
+		m.SetApprovalStatus(*v)
 	}
 	if v := i.OwnerType; v != nil {
 		m.SetOwnerType(*v)
@@ -467,6 +468,9 @@ func (i *CreateCustomerInput) Mutate(m *CustomerMutation) {
 	if v := i.CreatedByID; v != nil {
 		m.SetCreatedByID(*v)
 	}
+	if v := i.UpdatedByID; v != nil {
+		m.SetUpdatedByID(*v)
+	}
 	if v := i.ApproverID; v != nil {
 		m.SetApproverID(*v)
 	}
@@ -485,7 +489,7 @@ func (c *CustomerCreate) SetInput(i CreateCustomerInput) *CustomerCreate {
 type UpdateCustomerInput struct {
 	UpdatedAt                  *time.Time
 	Name                       *string
-	IsApproved                 *bool
+	ApprovalStatus             *int
 	ClearOwnerType             bool
 	OwnerType                  *int
 	ClearIndustry              bool
@@ -508,6 +512,8 @@ type UpdateCustomerInput struct {
 	SalesID                    *xid.ID
 	ClearCreatedBy             bool
 	CreatedByID                *xid.ID
+	ClearUpdatedBy             bool
+	UpdatedByID                *xid.ID
 	ClearApprover              bool
 	ApproverID                 *xid.ID
 	ClearVisitRecords          bool
@@ -523,8 +529,8 @@ func (i *UpdateCustomerInput) Mutate(m *CustomerMutation) {
 	if v := i.Name; v != nil {
 		m.SetName(*v)
 	}
-	if v := i.IsApproved; v != nil {
-		m.SetIsApproved(*v)
+	if v := i.ApprovalStatus; v != nil {
+		m.SetApprovalStatus(*v)
 	}
 	if i.ClearOwnerType {
 		m.ClearOwnerType()
@@ -591,6 +597,12 @@ func (i *UpdateCustomerInput) Mutate(m *CustomerMutation) {
 	}
 	if v := i.CreatedByID; v != nil {
 		m.SetCreatedByID(*v)
+	}
+	if i.ClearUpdatedBy {
+		m.ClearUpdatedBy()
+	}
+	if v := i.UpdatedByID; v != nil {
+		m.SetUpdatedByID(*v)
 	}
 	if i.ClearApprover {
 		m.ClearApprover()
@@ -1841,7 +1853,8 @@ type CreateTenderInput struct {
 	UpdatedAt                            *time.Time
 	Code                                 string
 	Status                               *int
-	IsApproved                           *bool
+	ApprovalStatus                       *int
+	ApprovalMsgID                        *string
 	Name                                 string
 	EstimatedAmount                      *float64
 	TenderDate                           *time.Time
@@ -1905,6 +1918,7 @@ type CreateTenderInput struct {
 	VisitRecordIDs                       []xid.ID
 	CompetitorID                         *xid.ID
 	ApproverID                           *xid.ID
+	UpdatedByID                          *xid.ID
 }
 
 // Mutate applies the CreateTenderInput on the TenderMutation builder.
@@ -1919,8 +1933,11 @@ func (i *CreateTenderInput) Mutate(m *TenderMutation) {
 	if v := i.Status; v != nil {
 		m.SetStatus(*v)
 	}
-	if v := i.IsApproved; v != nil {
-		m.SetIsApproved(*v)
+	if v := i.ApprovalStatus; v != nil {
+		m.SetApprovalStatus(*v)
+	}
+	if v := i.ApprovalMsgID; v != nil {
+		m.SetApprovalMsgID(*v)
 	}
 	m.SetName(i.Name)
 	if v := i.EstimatedAmount; v != nil {
@@ -2105,6 +2122,9 @@ func (i *CreateTenderInput) Mutate(m *TenderMutation) {
 	if v := i.ApproverID; v != nil {
 		m.SetApproverID(*v)
 	}
+	if v := i.UpdatedByID; v != nil {
+		m.SetUpdatedByID(*v)
+	}
 }
 
 // SetInput applies the change-set in the CreateTenderInput on the TenderCreate builder.
@@ -2118,7 +2138,9 @@ type UpdateTenderInput struct {
 	UpdatedAt                                 *time.Time
 	Code                                      *string
 	Status                                    *int
-	IsApproved                                *bool
+	ApprovalStatus                            *int
+	ClearApprovalMsgID                        bool
+	ApprovalMsgID                             *string
 	Name                                      *string
 	ClearEstimatedAmount                      bool
 	EstimatedAmount                           *float64
@@ -2244,6 +2266,8 @@ type UpdateTenderInput struct {
 	CompetitorID                              *xid.ID
 	ClearApprover                             bool
 	ApproverID                                *xid.ID
+	ClearUpdatedBy                            bool
+	UpdatedByID                               *xid.ID
 }
 
 // Mutate applies the UpdateTenderInput on the TenderMutation builder.
@@ -2257,8 +2281,14 @@ func (i *UpdateTenderInput) Mutate(m *TenderMutation) {
 	if v := i.Status; v != nil {
 		m.SetStatus(*v)
 	}
-	if v := i.IsApproved; v != nil {
-		m.SetIsApproved(*v)
+	if v := i.ApprovalStatus; v != nil {
+		m.SetApprovalStatus(*v)
+	}
+	if i.ClearApprovalMsgID {
+		m.ClearApprovalMsgID()
+	}
+	if v := i.ApprovalMsgID; v != nil {
+		m.SetApprovalMsgID(*v)
 	}
 	if v := i.Name; v != nil {
 		m.SetName(*v)
@@ -2634,6 +2664,12 @@ func (i *UpdateTenderInput) Mutate(m *TenderMutation) {
 	}
 	if v := i.ApproverID; v != nil {
 		m.SetApproverID(*v)
+	}
+	if i.ClearUpdatedBy {
+		m.ClearUpdatedBy()
+	}
+	if v := i.UpdatedByID; v != nil {
+		m.SetUpdatedByID(*v)
 	}
 }
 

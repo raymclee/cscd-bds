@@ -174,25 +174,25 @@ export function MapTenderDetail() {
               defaultValue="detail"
               className="mt-4 w-full"
             >
-              <TabsList className="grid w-full grid-cols-3 bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 text-white">
+              <TabsList className="grid w-full grid-cols-2 bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 text-white">
                 <TabsTrigger
                   value="detail"
-                  className="data-[state=active]:bg-brand/70 data-[state=active]:text-white"
+                  className="data-[state=active]:bg-brand/70 cursor-pointer data-[state=active]:text-white"
                 >
                   基本信息
                 </TabsTrigger>
                 <TabsTrigger
                   value="rating"
-                  className="data-[state=active]:bg-brand/70 data-[state=active]:text-white"
+                  className="data-[state=active]:bg-brand/70 cursor-pointer data-[state=active]:text-white"
                 >
                   项目评分
                 </TabsTrigger>
-                <TabsTrigger
+                {/* <TabsTrigger
                   value="follow-up"
                   className="data-[state=active]:bg-brand/70 data-[state=active]:text-white"
                 >
                   跟进情况
-                </TabsTrigger>
+                </TabsTrigger> */}
               </TabsList>
               <ScrollArea className="-mx-4 h-[60vh] px-4 pb-6">
                 <TabsContent value="detail" className="mt-4 space-y-2">
@@ -327,7 +327,7 @@ export function MapTenderDetail() {
                     }
                   />
                 </TabsContent>
-                <TabsContent value="follow-up" className="">
+                {/* <TabsContent value="follow-up" className="">
                   {selectedTender?.visitRecords?.edges &&
                   selectedTender?.visitRecords?.edges?.length < 1 ? (
                     <div className="mt-8 flex items-center justify-center">
@@ -371,7 +371,7 @@ export function MapTenderDetail() {
                         </div>
                       ))
                   )}
-                </TabsContent>
+                </TabsContent> */}
               </ScrollArea>
             </Tabs>
           )}

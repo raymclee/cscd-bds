@@ -1625,6 +1625,20 @@ var (
 			}
 		},
 	}
+	// CustomerOrderFieldApprovalStatus orders Customer by approval_status.
+	CustomerOrderFieldApprovalStatus = &CustomerOrderField{
+		Value: func(c *Customer) (ent.Value, error) {
+			return c.ApprovalStatus, nil
+		},
+		column: customer.FieldApprovalStatus,
+		toTerm: customer.ByApprovalStatus,
+		toCursor: func(c *Customer) Cursor {
+			return Cursor{
+				ID:    c.ID,
+				Value: c.ApprovalStatus,
+			}
+		},
+	}
 	// CustomerOrderFieldOwnerType orders Customer by owner_type.
 	CustomerOrderFieldOwnerType = &CustomerOrderField{
 		Value: func(c *Customer) (ent.Value, error) {
@@ -1649,6 +1663,8 @@ func (f CustomerOrderField) String() string {
 		str = "CREATED_AT"
 	case CustomerOrderFieldName.column:
 		str = "NAME"
+	case CustomerOrderFieldApprovalStatus.column:
+		str = "APPROVAL_STATUS"
 	case CustomerOrderFieldOwnerType.column:
 		str = "OWNER_TYPE"
 	}
@@ -1671,6 +1687,8 @@ func (f *CustomerOrderField) UnmarshalGQL(v interface{}) error {
 		*f = *CustomerOrderFieldCreatedAt
 	case "NAME":
 		*f = *CustomerOrderFieldName
+	case "APPROVAL_STATUS":
+		*f = *CustomerOrderFieldApprovalStatus
 	case "OWNER_TYPE":
 		*f = *CustomerOrderFieldOwnerType
 	default:
@@ -4491,6 +4509,20 @@ var (
 			}
 		},
 	}
+	// TenderOrderFieldApprovalStatus orders Tender by approval_status.
+	TenderOrderFieldApprovalStatus = &TenderOrderField{
+		Value: func(t *Tender) (ent.Value, error) {
+			return t.ApprovalStatus, nil
+		},
+		column: tender.FieldApprovalStatus,
+		toTerm: tender.ByApprovalStatus,
+		toCursor: func(t *Tender) Cursor {
+			return Cursor{
+				ID:    t.ID,
+				Value: t.ApprovalStatus,
+			}
+		},
+	}
 	// TenderOrderFieldName orders Tender by name.
 	TenderOrderFieldName = &TenderOrderField{
 		Value: func(t *Tender) (ent.Value, error) {
@@ -4541,6 +4573,8 @@ func (f TenderOrderField) String() string {
 	switch f.column {
 	case TenderOrderFieldCreatedAt.column:
 		str = "CREATED_AT"
+	case TenderOrderFieldApprovalStatus.column:
+		str = "APPROVAL_STATUS"
 	case TenderOrderFieldName.column:
 		str = "NAME"
 	case TenderOrderFieldTenderDate.column:
@@ -4565,6 +4599,8 @@ func (f *TenderOrderField) UnmarshalGQL(v interface{}) error {
 	switch str {
 	case "CREATED_AT":
 		*f = *TenderOrderFieldCreatedAt
+	case "APPROVAL_STATUS":
+		*f = *TenderOrderFieldApprovalStatus
 	case "NAME":
 		*f = *TenderOrderFieldName
 	case "TENDER_DATE":

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<667da8dbe008dd4c9e34261d2f67de18>>
+ * @generated SignedSource<<4defbbff48034e3b75a2963ceb0234c7>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -11,7 +11,9 @@
 import { ReaderFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type customerDetailFragment$data = {
+  readonly approvalStatus: number;
   readonly area: {
+    readonly code: string;
     readonly id: string;
     readonly name: string;
   };
@@ -23,9 +25,27 @@ export type customerDetailFragment$data = {
   readonly createdBy: {
     readonly name: string | null | undefined;
   } | null | undefined;
+  readonly draft: {
+    readonly area: {
+      readonly code: string;
+      readonly id: string;
+      readonly name: string;
+    } | null | undefined;
+    readonly contactPerson: string | null | undefined;
+    readonly contactPersonEmail: string | null | undefined;
+    readonly contactPersonPhone: string | null | undefined;
+    readonly contactPersonPosition: string | null | undefined;
+    readonly industry: number | null | undefined;
+    readonly name: string | null | undefined;
+    readonly ownerType: number | null | undefined;
+    readonly sales: {
+      readonly id: string;
+      readonly name: string | null | undefined;
+    } | null | undefined;
+    readonly size: number | null | undefined;
+  } | null | undefined;
   readonly id: string;
   readonly industry: number | null | undefined;
-  readonly isApproved: boolean;
   readonly lastVisitRecord: {
     readonly edges: ReadonlyArray<{
       readonly node: {
@@ -63,10 +83,75 @@ v1 = {
   "name": "name",
   "storageKey": null
 },
-v2 = [
-  (v0/*: any*/),
-  (v1/*: any*/)
-];
+v2 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "ownerType",
+  "storageKey": null
+},
+v3 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "industry",
+  "storageKey": null
+},
+v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "size",
+  "storageKey": null
+},
+v5 = {
+  "alias": null,
+  "args": null,
+  "concreteType": "User",
+  "kind": "LinkedField",
+  "name": "sales",
+  "plural": false,
+  "selections": [
+    (v0/*: any*/),
+    (v1/*: any*/)
+  ],
+  "storageKey": null
+},
+v6 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "code",
+  "storageKey": null
+},
+v7 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "contactPerson",
+  "storageKey": null
+},
+v8 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "contactPersonPosition",
+  "storageKey": null
+},
+v9 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "contactPersonPhone",
+  "storageKey": null
+},
+v10 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "contactPersonEmail",
+  "storageKey": null
+};
 return {
   "argumentDefinitions": [],
   "kind": "Fragment",
@@ -112,37 +197,10 @@ return {
       "name": "updatedAt",
       "storageKey": null
     },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "ownerType",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "industry",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "size",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "concreteType": "User",
-      "kind": "LinkedField",
-      "name": "sales",
-      "plural": false,
-      "selections": (v2/*: any*/),
-      "storageKey": null
-    },
+    (v2/*: any*/),
+    (v3/*: any*/),
+    (v4/*: any*/),
+    (v5/*: any*/),
     {
       "alias": null,
       "args": null,
@@ -150,44 +208,24 @@ return {
       "kind": "LinkedField",
       "name": "area",
       "plural": false,
-      "selections": (v2/*: any*/),
+      "selections": [
+        (v0/*: any*/),
+        (v1/*: any*/),
+        (v6/*: any*/)
+      ],
       "storageKey": null
     },
     {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
-      "name": "isApproved",
+      "name": "approvalStatus",
       "storageKey": null
     },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "contactPerson",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "contactPersonPosition",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "contactPersonPhone",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "contactPersonEmail",
-      "storageKey": null
-    },
+    (v7/*: any*/),
+    (v8/*: any*/),
+    (v9/*: any*/),
+    (v10/*: any*/),
     {
       "alias": "lastVisitRecord",
       "args": null,
@@ -266,6 +304,40 @@ return {
         }
       ],
       "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "CustomerDraft",
+      "kind": "LinkedField",
+      "name": "draft",
+      "plural": false,
+      "selections": [
+        (v1/*: any*/),
+        (v2/*: any*/),
+        (v3/*: any*/),
+        (v4/*: any*/),
+        (v7/*: any*/),
+        (v8/*: any*/),
+        (v9/*: any*/),
+        (v10/*: any*/),
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "Area",
+          "kind": "LinkedField",
+          "name": "area",
+          "plural": false,
+          "selections": [
+            (v0/*: any*/),
+            (v6/*: any*/),
+            (v1/*: any*/)
+          ],
+          "storageKey": null
+        },
+        (v5/*: any*/)
+      ],
+      "storageKey": null
     }
   ],
   "type": "Customer",
@@ -273,6 +345,6 @@ return {
 };
 })();
 
-(node as any).hash = "2557100fdca845b36f202017d332fc09";
+(node as any).hash = "d21a328eebc5fd85f18bd06b36b21a7d";
 
 export default node;

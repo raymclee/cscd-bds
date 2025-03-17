@@ -7,6 +7,7 @@ import (
 	"cscd-bds/store/ent/area"
 	"cscd-bds/store/ent/customer"
 	"cscd-bds/store/ent/predicate"
+	"cscd-bds/store/ent/schema/model"
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/schema/zht"
 	"cscd-bds/store/ent/tender"
@@ -54,17 +55,24 @@ func (cu *CustomerUpdate) SetNillableName(s *string) *CustomerUpdate {
 	return cu
 }
 
-// SetIsApproved sets the "is_approved" field.
-func (cu *CustomerUpdate) SetIsApproved(b bool) *CustomerUpdate {
-	cu.mutation.SetIsApproved(b)
+// SetApprovalStatus sets the "approval_status" field.
+func (cu *CustomerUpdate) SetApprovalStatus(i int) *CustomerUpdate {
+	cu.mutation.ResetApprovalStatus()
+	cu.mutation.SetApprovalStatus(i)
 	return cu
 }
 
-// SetNillableIsApproved sets the "is_approved" field if the given value is not nil.
-func (cu *CustomerUpdate) SetNillableIsApproved(b *bool) *CustomerUpdate {
-	if b != nil {
-		cu.SetIsApproved(*b)
+// SetNillableApprovalStatus sets the "approval_status" field if the given value is not nil.
+func (cu *CustomerUpdate) SetNillableApprovalStatus(i *int) *CustomerUpdate {
+	if i != nil {
+		cu.SetApprovalStatus(*i)
 	}
+	return cu
+}
+
+// AddApprovalStatus adds i to the "approval_status" field.
+func (cu *CustomerUpdate) AddApprovalStatus(i int) *CustomerUpdate {
+	cu.mutation.AddApprovalStatus(i)
 	return cu
 }
 
@@ -229,6 +237,18 @@ func (cu *CustomerUpdate) ClearContactPersonEmail() *CustomerUpdate {
 	return cu
 }
 
+// SetDraft sets the "draft" field.
+func (cu *CustomerUpdate) SetDraft(m *model.Customer) *CustomerUpdate {
+	cu.mutation.SetDraft(m)
+	return cu
+}
+
+// ClearDraft clears the value of the "draft" field.
+func (cu *CustomerUpdate) ClearDraft() *CustomerUpdate {
+	cu.mutation.ClearDraft()
+	return cu
+}
+
 // SetFeishuGroup sets the "feishu_group" field.
 func (cu *CustomerUpdate) SetFeishuGroup(z *zht.Group) *CustomerUpdate {
 	cu.mutation.SetFeishuGroup(z)
@@ -295,6 +315,26 @@ func (cu *CustomerUpdate) ClearCreatedByID() *CustomerUpdate {
 	return cu
 }
 
+// SetUpdatedByID sets the "updated_by_id" field.
+func (cu *CustomerUpdate) SetUpdatedByID(x xid.ID) *CustomerUpdate {
+	cu.mutation.SetUpdatedByID(x)
+	return cu
+}
+
+// SetNillableUpdatedByID sets the "updated_by_id" field if the given value is not nil.
+func (cu *CustomerUpdate) SetNillableUpdatedByID(x *xid.ID) *CustomerUpdate {
+	if x != nil {
+		cu.SetUpdatedByID(*x)
+	}
+	return cu
+}
+
+// ClearUpdatedByID clears the value of the "updated_by_id" field.
+func (cu *CustomerUpdate) ClearUpdatedByID() *CustomerUpdate {
+	cu.mutation.ClearUpdatedByID()
+	return cu
+}
+
 // SetApproverID sets the "approver_id" field.
 func (cu *CustomerUpdate) SetApproverID(x xid.ID) *CustomerUpdate {
 	cu.mutation.SetApproverID(x)
@@ -343,6 +383,11 @@ func (cu *CustomerUpdate) SetSales(u *User) *CustomerUpdate {
 // SetCreatedBy sets the "created_by" edge to the User entity.
 func (cu *CustomerUpdate) SetCreatedBy(u *User) *CustomerUpdate {
 	return cu.SetCreatedByID(u.ID)
+}
+
+// SetUpdatedBy sets the "updated_by" edge to the User entity.
+func (cu *CustomerUpdate) SetUpdatedBy(u *User) *CustomerUpdate {
+	return cu.SetUpdatedByID(u.ID)
 }
 
 // SetApprover sets the "approver" edge to the User entity.
@@ -406,6 +451,12 @@ func (cu *CustomerUpdate) ClearSales() *CustomerUpdate {
 // ClearCreatedBy clears the "created_by" edge to the User entity.
 func (cu *CustomerUpdate) ClearCreatedBy() *CustomerUpdate {
 	cu.mutation.ClearCreatedBy()
+	return cu
+}
+
+// ClearUpdatedBy clears the "updated_by" edge to the User entity.
+func (cu *CustomerUpdate) ClearUpdatedBy() *CustomerUpdate {
+	cu.mutation.ClearUpdatedBy()
 	return cu
 }
 
@@ -474,6 +525,11 @@ func (cu *CustomerUpdate) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (cu *CustomerUpdate) check() error {
+	if v, ok := cu.mutation.ApprovalStatus(); ok {
+		if err := customer.ApprovalStatusValidator(v); err != nil {
+			return &ValidationError{Name: "approval_status", err: fmt.Errorf(`ent: validator failed for field "Customer.approval_status": %w`, err)}
+		}
+	}
 	if cu.mutation.AreaCleared() && len(cu.mutation.AreaIDs()) > 0 {
 		return errors.New(`ent: clearing a required unique edge "Customer.area"`)
 	}
@@ -498,8 +554,11 @@ func (cu *CustomerUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := cu.mutation.Name(); ok {
 		_spec.SetField(customer.FieldName, field.TypeString, value)
 	}
-	if value, ok := cu.mutation.IsApproved(); ok {
-		_spec.SetField(customer.FieldIsApproved, field.TypeBool, value)
+	if value, ok := cu.mutation.ApprovalStatus(); ok {
+		_spec.SetField(customer.FieldApprovalStatus, field.TypeInt, value)
+	}
+	if value, ok := cu.mutation.AddedApprovalStatus(); ok {
+		_spec.AddField(customer.FieldApprovalStatus, field.TypeInt, value)
 	}
 	if value, ok := cu.mutation.OwnerType(); ok {
 		_spec.SetField(customer.FieldOwnerType, field.TypeInt, value)
@@ -551,6 +610,12 @@ func (cu *CustomerUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if cu.mutation.ContactPersonEmailCleared() {
 		_spec.ClearField(customer.FieldContactPersonEmail, field.TypeString)
+	}
+	if value, ok := cu.mutation.Draft(); ok {
+		_spec.SetField(customer.FieldDraft, field.TypeJSON, value)
+	}
+	if cu.mutation.DraftCleared() {
+		_spec.ClearField(customer.FieldDraft, field.TypeJSON)
 	}
 	if value, ok := cu.mutation.FeishuGroup(); ok {
 		_spec.SetField(customer.FieldFeishuGroup, field.TypeJSON, value)
@@ -690,6 +755,35 @@ func (cu *CustomerUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	if cu.mutation.UpdatedByCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   customer.UpdatedByTable,
+			Columns: []string{customer.UpdatedByColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cu.mutation.UpdatedByIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   customer.UpdatedByTable,
+			Columns: []string{customer.UpdatedByColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if cu.mutation.ApproverCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
@@ -804,17 +898,24 @@ func (cuo *CustomerUpdateOne) SetNillableName(s *string) *CustomerUpdateOne {
 	return cuo
 }
 
-// SetIsApproved sets the "is_approved" field.
-func (cuo *CustomerUpdateOne) SetIsApproved(b bool) *CustomerUpdateOne {
-	cuo.mutation.SetIsApproved(b)
+// SetApprovalStatus sets the "approval_status" field.
+func (cuo *CustomerUpdateOne) SetApprovalStatus(i int) *CustomerUpdateOne {
+	cuo.mutation.ResetApprovalStatus()
+	cuo.mutation.SetApprovalStatus(i)
 	return cuo
 }
 
-// SetNillableIsApproved sets the "is_approved" field if the given value is not nil.
-func (cuo *CustomerUpdateOne) SetNillableIsApproved(b *bool) *CustomerUpdateOne {
-	if b != nil {
-		cuo.SetIsApproved(*b)
+// SetNillableApprovalStatus sets the "approval_status" field if the given value is not nil.
+func (cuo *CustomerUpdateOne) SetNillableApprovalStatus(i *int) *CustomerUpdateOne {
+	if i != nil {
+		cuo.SetApprovalStatus(*i)
 	}
+	return cuo
+}
+
+// AddApprovalStatus adds i to the "approval_status" field.
+func (cuo *CustomerUpdateOne) AddApprovalStatus(i int) *CustomerUpdateOne {
+	cuo.mutation.AddApprovalStatus(i)
 	return cuo
 }
 
@@ -979,6 +1080,18 @@ func (cuo *CustomerUpdateOne) ClearContactPersonEmail() *CustomerUpdateOne {
 	return cuo
 }
 
+// SetDraft sets the "draft" field.
+func (cuo *CustomerUpdateOne) SetDraft(m *model.Customer) *CustomerUpdateOne {
+	cuo.mutation.SetDraft(m)
+	return cuo
+}
+
+// ClearDraft clears the value of the "draft" field.
+func (cuo *CustomerUpdateOne) ClearDraft() *CustomerUpdateOne {
+	cuo.mutation.ClearDraft()
+	return cuo
+}
+
 // SetFeishuGroup sets the "feishu_group" field.
 func (cuo *CustomerUpdateOne) SetFeishuGroup(z *zht.Group) *CustomerUpdateOne {
 	cuo.mutation.SetFeishuGroup(z)
@@ -1045,6 +1158,26 @@ func (cuo *CustomerUpdateOne) ClearCreatedByID() *CustomerUpdateOne {
 	return cuo
 }
 
+// SetUpdatedByID sets the "updated_by_id" field.
+func (cuo *CustomerUpdateOne) SetUpdatedByID(x xid.ID) *CustomerUpdateOne {
+	cuo.mutation.SetUpdatedByID(x)
+	return cuo
+}
+
+// SetNillableUpdatedByID sets the "updated_by_id" field if the given value is not nil.
+func (cuo *CustomerUpdateOne) SetNillableUpdatedByID(x *xid.ID) *CustomerUpdateOne {
+	if x != nil {
+		cuo.SetUpdatedByID(*x)
+	}
+	return cuo
+}
+
+// ClearUpdatedByID clears the value of the "updated_by_id" field.
+func (cuo *CustomerUpdateOne) ClearUpdatedByID() *CustomerUpdateOne {
+	cuo.mutation.ClearUpdatedByID()
+	return cuo
+}
+
 // SetApproverID sets the "approver_id" field.
 func (cuo *CustomerUpdateOne) SetApproverID(x xid.ID) *CustomerUpdateOne {
 	cuo.mutation.SetApproverID(x)
@@ -1093,6 +1226,11 @@ func (cuo *CustomerUpdateOne) SetSales(u *User) *CustomerUpdateOne {
 // SetCreatedBy sets the "created_by" edge to the User entity.
 func (cuo *CustomerUpdateOne) SetCreatedBy(u *User) *CustomerUpdateOne {
 	return cuo.SetCreatedByID(u.ID)
+}
+
+// SetUpdatedBy sets the "updated_by" edge to the User entity.
+func (cuo *CustomerUpdateOne) SetUpdatedBy(u *User) *CustomerUpdateOne {
+	return cuo.SetUpdatedByID(u.ID)
 }
 
 // SetApprover sets the "approver" edge to the User entity.
@@ -1156,6 +1294,12 @@ func (cuo *CustomerUpdateOne) ClearSales() *CustomerUpdateOne {
 // ClearCreatedBy clears the "created_by" edge to the User entity.
 func (cuo *CustomerUpdateOne) ClearCreatedBy() *CustomerUpdateOne {
 	cuo.mutation.ClearCreatedBy()
+	return cuo
+}
+
+// ClearUpdatedBy clears the "updated_by" edge to the User entity.
+func (cuo *CustomerUpdateOne) ClearUpdatedBy() *CustomerUpdateOne {
+	cuo.mutation.ClearUpdatedBy()
 	return cuo
 }
 
@@ -1237,6 +1381,11 @@ func (cuo *CustomerUpdateOne) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (cuo *CustomerUpdateOne) check() error {
+	if v, ok := cuo.mutation.ApprovalStatus(); ok {
+		if err := customer.ApprovalStatusValidator(v); err != nil {
+			return &ValidationError{Name: "approval_status", err: fmt.Errorf(`ent: validator failed for field "Customer.approval_status": %w`, err)}
+		}
+	}
 	if cuo.mutation.AreaCleared() && len(cuo.mutation.AreaIDs()) > 0 {
 		return errors.New(`ent: clearing a required unique edge "Customer.area"`)
 	}
@@ -1278,8 +1427,11 @@ func (cuo *CustomerUpdateOne) sqlSave(ctx context.Context) (_node *Customer, err
 	if value, ok := cuo.mutation.Name(); ok {
 		_spec.SetField(customer.FieldName, field.TypeString, value)
 	}
-	if value, ok := cuo.mutation.IsApproved(); ok {
-		_spec.SetField(customer.FieldIsApproved, field.TypeBool, value)
+	if value, ok := cuo.mutation.ApprovalStatus(); ok {
+		_spec.SetField(customer.FieldApprovalStatus, field.TypeInt, value)
+	}
+	if value, ok := cuo.mutation.AddedApprovalStatus(); ok {
+		_spec.AddField(customer.FieldApprovalStatus, field.TypeInt, value)
 	}
 	if value, ok := cuo.mutation.OwnerType(); ok {
 		_spec.SetField(customer.FieldOwnerType, field.TypeInt, value)
@@ -1331,6 +1483,12 @@ func (cuo *CustomerUpdateOne) sqlSave(ctx context.Context) (_node *Customer, err
 	}
 	if cuo.mutation.ContactPersonEmailCleared() {
 		_spec.ClearField(customer.FieldContactPersonEmail, field.TypeString)
+	}
+	if value, ok := cuo.mutation.Draft(); ok {
+		_spec.SetField(customer.FieldDraft, field.TypeJSON, value)
+	}
+	if cuo.mutation.DraftCleared() {
+		_spec.ClearField(customer.FieldDraft, field.TypeJSON)
 	}
 	if value, ok := cuo.mutation.FeishuGroup(); ok {
 		_spec.SetField(customer.FieldFeishuGroup, field.TypeJSON, value)
@@ -1460,6 +1618,35 @@ func (cuo *CustomerUpdateOne) sqlSave(ctx context.Context) (_node *Customer, err
 			Inverse: false,
 			Table:   customer.CreatedByTable,
 			Columns: []string{customer.CreatedByColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if cuo.mutation.UpdatedByCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   customer.UpdatedByTable,
+			Columns: []string{customer.UpdatedByColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cuo.mutation.UpdatedByIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   customer.UpdatedByTable,
+			Columns: []string{customer.UpdatedByColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),

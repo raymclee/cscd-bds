@@ -14,6 +14,18 @@ import (
 	larkcontact "github.com/larksuite/oapi-sdk-go/v3/service/contact/v3"
 )
 
+const (
+	TemplateIdTenderCreateRequest   = "AAqBNW44n7ilw"
+	TemplateIdTenderApproved        = "AAqBWVpaKCZdj"
+	TemplateIdTenderRejected        = "AAqBP5xjh7xEX"
+	TemplateIdTenderUpdated         = "AAqBTrx72i3Sg"
+	TemplateIdCustomerUpdateRequest = "AAqBGHwfrmoK6"
+	TemplateIdCustomerCreateRequest = "AAqBNaYBYPmu8"
+	TemplateIdCustomerApproved      = "AAqBTqzWTYgz2"
+	TemplateIdCustomerRejected      = "AAqBTqnEDgP5x"
+	TemplateIdTenderWin             = "AAqBGFwKSuNWp"
+)
+
 type Feishu struct {
 	Client    *lark.Client
 	hc        *http.Client

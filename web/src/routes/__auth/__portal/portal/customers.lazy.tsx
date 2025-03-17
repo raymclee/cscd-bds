@@ -1,13 +1,19 @@
 import { createLazyFileRoute, Link } from "@tanstack/react-router";
 import { customersPageQuery } from "__generated__/customersPageQuery.graphql";
-import { Button, Space, Table, TableProps, Typography } from "antd";
+import { Button, Space, Table, TableProps, Tag, Typography } from "antd";
 import dayjs from "dayjs";
 import { Plus } from "lucide-react";
 import { usePreloadedQuery } from "react-relay";
 import { graphql } from "relay-runtime";
 import { ListFilter } from "~/components/portal/list-filter";
 import { Customer } from "~/graphql/graphql";
-import { customerSizeText, industryText, ownerTypeText } from "~/lib/helper";
+import {
+  approvalStatusTagColor,
+  approvalStatusText,
+  customerSizeText,
+  industryText,
+  ownerTypeText,
+} from "~/lib/helper";
 import { canEdit } from "~/lib/permission";
 import { usePortalStore } from "~/store/portal";
 
@@ -29,7 +35,7 @@ const query = graphql`
                 edges {
                   node {
                     id
-                    isApproved
+                    approvalStatus
                     name
                     updatedAt
                     ownerType
@@ -47,13 +53,13 @@ const query = graphql`
                         }
                       }
                     }
-                    visitRecords {
-                      edges {
-                        node {
-                          id
-                        }
-                      }
-                    }
+                    # visitRecords {
+                    #   edges {
+                    #     node {
+                    #       id
+                    #     }
+                    #   }
+                    # }
                   }
                 }
               }
@@ -138,9 +144,13 @@ function RouteComponent() {
   if (!isGAOrHW) {
     columns.push({
       width: 100,
-      dataIndex: "isApproved",
+      dataIndex: "approvalStatus",
       title: "审批状态",
-      render: (value, record) => (value ? "已审批" : "未审批"),
+      render: (value) => (
+        <Tag color={approvalStatusTagColor(value)}>
+          {approvalStatusText(value)}
+        </Tag>
+      ),
     });
   }
 
@@ -152,12 +162,12 @@ function RouteComponent() {
         title: "商机数",
         render: (value, record) => record.tenders?.edges?.length,
       },
-      {
-        width: 100,
-        dataIndex: "visitRecords",
-        title: "拜访数",
-        render: (value, record) => record.visitRecords?.edges?.length,
-      },
+      // {
+      //   width: 100,
+      //   dataIndex: "visitRecords",
+      //   title: "拜访数",
+      //   render: (value, record) => record.visitRecords?.edges?.length,
+      // },
     );
   }
 

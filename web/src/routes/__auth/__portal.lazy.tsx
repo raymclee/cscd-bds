@@ -85,13 +85,13 @@ function RouteComponent() {
         "/portal/customers",
         <ContactRound size={16} />,
       ),
-      getItem(
-        <Link to="/portal/potential-tenders" disabled={!session.isSuperAdmin}>
-          潜在商机
-        </Link>,
-        "/portal/potential-tenders",
-        <Bot size={16} />,
-      ),
+      // getItem(
+      //   <Link to="/portal/potential-tenders" disabled={!session.isSuperAdmin}>
+      //     潜在商机
+      //   </Link>,
+      //   "/portal/potential-tenders",
+      //   <Bot size={16} />,
+      // ),
     ],
     [],
   );
@@ -169,7 +169,7 @@ function RouteComponent() {
                 usePortalStore.setState({ sidebarCollapsed: collapsed })
               }
             >
-              <div className="flex items-center justify-center h-10 gap-2 m-4">
+              <div className="m-4 flex h-10 items-center justify-center gap-2">
                 <img src={logoImg} alt="logo" className="h-full" />
                 {/* <span className="text-lg font-bold text-white">远东幕墙</span> */}
               </div>

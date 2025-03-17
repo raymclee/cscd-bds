@@ -31,6 +31,492 @@ import (
 
 // region    **************************** field.gotpl *****************************
 
+func (ec *executionContext) _CustomerDraft_name(ctx context.Context, field graphql.CollectedField, obj *model.CustomerDraft) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_CustomerDraft_name(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Name, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_CustomerDraft_name(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "CustomerDraft",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _CustomerDraft_ownerType(ctx context.Context, field graphql.CollectedField, obj *model.CustomerDraft) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_CustomerDraft_ownerType(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.OwnerType, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*int)
+	fc.Result = res
+	return ec.marshalOInt2ᚖint(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_CustomerDraft_ownerType(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "CustomerDraft",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _CustomerDraft_industry(ctx context.Context, field graphql.CollectedField, obj *model.CustomerDraft) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_CustomerDraft_industry(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Industry, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*int)
+	fc.Result = res
+	return ec.marshalOInt2ᚖint(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_CustomerDraft_industry(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "CustomerDraft",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _CustomerDraft_size(ctx context.Context, field graphql.CollectedField, obj *model.CustomerDraft) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_CustomerDraft_size(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Size, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*int)
+	fc.Result = res
+	return ec.marshalOInt2ᚖint(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_CustomerDraft_size(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "CustomerDraft",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _CustomerDraft_contactPerson(ctx context.Context, field graphql.CollectedField, obj *model.CustomerDraft) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_CustomerDraft_contactPerson(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ContactPerson, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_CustomerDraft_contactPerson(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "CustomerDraft",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _CustomerDraft_contactPersonPosition(ctx context.Context, field graphql.CollectedField, obj *model.CustomerDraft) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_CustomerDraft_contactPersonPosition(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ContactPersonPosition, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_CustomerDraft_contactPersonPosition(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "CustomerDraft",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _CustomerDraft_contactPersonPhone(ctx context.Context, field graphql.CollectedField, obj *model.CustomerDraft) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_CustomerDraft_contactPersonPhone(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ContactPersonPhone, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_CustomerDraft_contactPersonPhone(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "CustomerDraft",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _CustomerDraft_contactPersonEmail(ctx context.Context, field graphql.CollectedField, obj *model.CustomerDraft) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_CustomerDraft_contactPersonEmail(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ContactPersonEmail, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_CustomerDraft_contactPersonEmail(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "CustomerDraft",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _CustomerDraft_area(ctx context.Context, field graphql.CollectedField, obj *model.CustomerDraft) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_CustomerDraft_area(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Area, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*ent.Area)
+	fc.Result = res
+	return ec.marshalOArea2ᚖcscdᚑbdsᚋstoreᚋentᚐArea(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_CustomerDraft_area(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "CustomerDraft",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_Area_id(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_Area_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_Area_updatedAt(ctx, field)
+			case "name":
+				return ec.fieldContext_Area_name(ctx, field)
+			case "code":
+				return ec.fieldContext_Area_code(ctx, field)
+			case "leaderChatID":
+				return ec.fieldContext_Area_leaderChatID(ctx, field)
+			case "salesChatID":
+				return ec.fieldContext_Area_salesChatID(ctx, field)
+			case "customers":
+				return ec.fieldContext_Area_customers(ctx, field)
+			case "tenders":
+				return ec.fieldContext_Area_tenders(ctx, field)
+			case "users":
+				return ec.fieldContext_Area_users(ctx, field)
+			case "provinces":
+				return ec.fieldContext_Area_provinces(ctx, field)
+			case "center":
+				return ec.fieldContext_Area_center(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Area", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _CustomerDraft_sales(ctx context.Context, field graphql.CollectedField, obj *model.CustomerDraft) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_CustomerDraft_sales(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Sales, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*ent.User)
+	fc.Result = res
+	return ec.marshalOUser2ᚖcscdᚑbdsᚋstoreᚋentᚐUser(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_CustomerDraft_sales(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "CustomerDraft",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_User_id(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_User_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_User_updatedAt(ctx, field)
+			case "openID":
+				return ec.fieldContext_User_openID(ctx, field)
+			case "name":
+				return ec.fieldContext_User_name(ctx, field)
+			case "email":
+				return ec.fieldContext_User_email(ctx, field)
+			case "username":
+				return ec.fieldContext_User_username(ctx, field)
+			case "avatarURL":
+				return ec.fieldContext_User_avatarURL(ctx, field)
+			case "disabled":
+				return ec.fieldContext_User_disabled(ctx, field)
+			case "isAdmin":
+				return ec.fieldContext_User_isAdmin(ctx, field)
+			case "isCeo":
+				return ec.fieldContext_User_isCeo(ctx, field)
+			case "isSuperAdmin":
+				return ec.fieldContext_User_isSuperAdmin(ctx, field)
+			case "hasMapAccess":
+				return ec.fieldContext_User_hasMapAccess(ctx, field)
+			case "hasEditAccess":
+				return ec.fieldContext_User_hasEditAccess(ctx, field)
+			case "leaderID":
+				return ec.fieldContext_User_leaderID(ctx, field)
+			case "areas":
+				return ec.fieldContext_User_areas(ctx, field)
+			case "customers":
+				return ec.fieldContext_User_customers(ctx, field)
+			case "leader":
+				return ec.fieldContext_User_leader(ctx, field)
+			case "teamMembers":
+				return ec.fieldContext_User_teamMembers(ctx, field)
+			case "tenders":
+				return ec.fieldContext_User_tenders(ctx, field)
+			case "visitRecords":
+				return ec.fieldContext_User_visitRecords(ctx, field)
+			case "projects":
+				return ec.fieldContext_User_projects(ctx, field)
+			case "myTenders":
+				return ec.fieldContext_User_myTenders(ctx, field)
+			case "myVisitRecords":
+				return ec.fieldContext_User_myVisitRecords(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _FeishuUser_openId(ctx context.Context, field graphql.CollectedField, obj *model.FeishuUser) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_FeishuUser_openId(ctx, field)
 	if err != nil {
@@ -1020,6 +1506,60 @@ func (ec *executionContext) fieldContext_TopCompetitor_wonTendersCount(_ context
 
 // region    **************************** object.gotpl ****************************
 
+var customerDraftImplementors = []string{"CustomerDraft"}
+
+func (ec *executionContext) _CustomerDraft(ctx context.Context, sel ast.SelectionSet, obj *model.CustomerDraft) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, customerDraftImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("CustomerDraft")
+		case "name":
+			out.Values[i] = ec._CustomerDraft_name(ctx, field, obj)
+		case "ownerType":
+			out.Values[i] = ec._CustomerDraft_ownerType(ctx, field, obj)
+		case "industry":
+			out.Values[i] = ec._CustomerDraft_industry(ctx, field, obj)
+		case "size":
+			out.Values[i] = ec._CustomerDraft_size(ctx, field, obj)
+		case "contactPerson":
+			out.Values[i] = ec._CustomerDraft_contactPerson(ctx, field, obj)
+		case "contactPersonPosition":
+			out.Values[i] = ec._CustomerDraft_contactPersonPosition(ctx, field, obj)
+		case "contactPersonPhone":
+			out.Values[i] = ec._CustomerDraft_contactPersonPhone(ctx, field, obj)
+		case "contactPersonEmail":
+			out.Values[i] = ec._CustomerDraft_contactPersonEmail(ctx, field, obj)
+		case "area":
+			out.Values[i] = ec._CustomerDraft_area(ctx, field, obj)
+		case "sales":
+			out.Values[i] = ec._CustomerDraft_sales(ctx, field, obj)
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
 var feishuUserImplementors = []string{"FeishuUser"}
 
 func (ec *executionContext) _FeishuUser(ctx context.Context, sel ast.SelectionSet, obj *model.FeishuUser) graphql.Marshaler {
@@ -1417,6 +1957,13 @@ func (ec *executionContext) marshalNTopCompetitor2ᚖcscdᚑbdsᚋgraphqlᚋmode
 		return graphql.Null
 	}
 	return ec._TopCompetitor(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalOCustomerDraft2ᚖcscdᚑbdsᚋgraphqlᚋmodelᚐCustomerDraft(ctx context.Context, sel ast.SelectionSet, v *model.CustomerDraft) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._CustomerDraft(ctx, sel, v)
 }
 
 // endregion ***************************** type.gotpl *****************************

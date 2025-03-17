@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<7c9847c527fa871c045d86eead4f3381>>
+ * @generated SignedSource<<bc8bc3d38e40700a711a1dac89d88dd1>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -11,11 +11,13 @@
 import { ReaderFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type tenderListItemFragment$data = {
+  readonly approvalStatus: number;
   readonly area: {
     readonly code: string;
     readonly id: string;
     readonly name: string;
   };
+  readonly classify: number | null | undefined;
   readonly createdAt: any;
   readonly createdBy: {
     readonly id: string;
@@ -32,7 +34,6 @@ export type tenderListItemFragment$data = {
   readonly fullAddress: string | null | undefined;
   readonly id: string;
   readonly images: ReadonlyArray<string> | null | undefined;
-  readonly isApproved: boolean;
   readonly name: string;
   readonly status: number;
   readonly tenderClosingDate: any | null | undefined;
@@ -73,7 +74,7 @@ return {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
-      "name": "isApproved",
+      "name": "approvalStatus",
       "storageKey": null
     },
     (v1/*: any*/),
@@ -96,6 +97,13 @@ return {
       "args": null,
       "kind": "ScalarField",
       "name": "estimatedAmount",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "classify",
       "storageKey": null
     },
     {
@@ -192,6 +200,6 @@ return {
 };
 })();
 
-(node as any).hash = "818b0355c84dd89b5b289a2138550d2e";
+(node as any).hash = "0ddaba898b6feba012946c21ae00a5ab";
 
 export default node;

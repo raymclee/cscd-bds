@@ -21,6 +21,8 @@ function RouteComponent() {
               id
               name
               code
+              leaderChatID
+              salesChatID
             }
           }
         }
@@ -47,6 +49,14 @@ function RouteComponent() {
     {
       title: "编码",
       dataIndex: "code",
+    },
+    {
+      title: "负责人群組",
+      dataIndex: "leaderChatId",
+    },
+    {
+      title: "销售群組",
+      dataIndex: "salesChatId",
     },
   ];
 

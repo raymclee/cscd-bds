@@ -32,6 +32,7 @@ type CustomerQuery struct {
 	withTenders           *TenderQuery
 	withSales             *UserQuery
 	withCreatedBy         *UserQuery
+	withUpdatedBy         *UserQuery
 	withApprover          *UserQuery
 	withVisitRecords      *VisitRecordQuery
 	modifiers             []func(*sql.Selector)
@@ -155,6 +156,28 @@ func (cq *CustomerQuery) QueryCreatedBy() *UserQuery {
 			sqlgraph.From(customer.Table, customer.FieldID, selector),
 			sqlgraph.To(user.Table, user.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, false, customer.CreatedByTable, customer.CreatedByColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(cq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryUpdatedBy chains the current query on the "updated_by" edge.
+func (cq *CustomerQuery) QueryUpdatedBy() *UserQuery {
+	query := (&UserClient{config: cq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := cq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := cq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(customer.Table, customer.FieldID, selector),
+			sqlgraph.To(user.Table, user.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, customer.UpdatedByTable, customer.UpdatedByColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(cq.driver.Dialect(), step)
 		return fromU, nil
@@ -402,6 +425,7 @@ func (cq *CustomerQuery) Clone() *CustomerQuery {
 		withTenders:      cq.withTenders.Clone(),
 		withSales:        cq.withSales.Clone(),
 		withCreatedBy:    cq.withCreatedBy.Clone(),
+		withUpdatedBy:    cq.withUpdatedBy.Clone(),
 		withApprover:     cq.withApprover.Clone(),
 		withVisitRecords: cq.withVisitRecords.Clone(),
 		// clone intermediate query.
@@ -451,6 +475,17 @@ func (cq *CustomerQuery) WithCreatedBy(opts ...func(*UserQuery)) *CustomerQuery 
 		opt(query)
 	}
 	cq.withCreatedBy = query
+	return cq
+}
+
+// WithUpdatedBy tells the query-builder to eager-load the nodes that are connected to
+// the "updated_by" edge. The optional arguments are used to configure the query builder of the edge.
+func (cq *CustomerQuery) WithUpdatedBy(opts ...func(*UserQuery)) *CustomerQuery {
+	query := (&UserClient{config: cq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	cq.withUpdatedBy = query
 	return cq
 }
 
@@ -554,11 +589,12 @@ func (cq *CustomerQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Cus
 	var (
 		nodes       = []*Customer{}
 		_spec       = cq.querySpec()
-		loadedTypes = [6]bool{
+		loadedTypes = [7]bool{
 			cq.withArea != nil,
 			cq.withTenders != nil,
 			cq.withSales != nil,
 			cq.withCreatedBy != nil,
+			cq.withUpdatedBy != nil,
 			cq.withApprover != nil,
 			cq.withVisitRecords != nil,
 		}
@@ -606,6 +642,12 @@ func (cq *CustomerQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Cus
 	if query := cq.withCreatedBy; query != nil {
 		if err := cq.loadCreatedBy(ctx, query, nodes, nil,
 			func(n *Customer, e *User) { n.Edges.CreatedBy = e }); err != nil {
+			return nil, err
+		}
+	}
+	if query := cq.withUpdatedBy; query != nil {
+		if err := cq.loadUpdatedBy(ctx, query, nodes, nil,
+			func(n *Customer, e *User) { n.Edges.UpdatedBy = e }); err != nil {
 			return nil, err
 		}
 	}
@@ -770,6 +812,38 @@ func (cq *CustomerQuery) loadCreatedBy(ctx context.Context, query *UserQuery, no
 	}
 	return nil
 }
+func (cq *CustomerQuery) loadUpdatedBy(ctx context.Context, query *UserQuery, nodes []*Customer, init func(*Customer), assign func(*Customer, *User)) error {
+	ids := make([]xid.ID, 0, len(nodes))
+	nodeids := make(map[xid.ID][]*Customer)
+	for i := range nodes {
+		if nodes[i].UpdatedByID == nil {
+			continue
+		}
+		fk := *nodes[i].UpdatedByID
+		if _, ok := nodeids[fk]; !ok {
+			ids = append(ids, fk)
+		}
+		nodeids[fk] = append(nodeids[fk], nodes[i])
+	}
+	if len(ids) == 0 {
+		return nil
+	}
+	query.Where(user.IDIn(ids...))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nodeids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "updated_by_id" returned %v`, n.ID)
+		}
+		for i := range nodes {
+			assign(nodes[i], n)
+		}
+	}
+	return nil
+}
 func (cq *CustomerQuery) loadApprover(ctx context.Context, query *UserQuery, nodes []*Customer, init func(*Customer), assign func(*Customer, *User)) error {
 	ids := make([]xid.ID, 0, len(nodes))
 	nodeids := make(map[xid.ID][]*Customer)
@@ -869,6 +943,9 @@ func (cq *CustomerQuery) querySpec() *sqlgraph.QuerySpec {
 		}
 		if cq.withCreatedBy != nil {
 			_spec.Node.AddColumnOnce(customer.FieldCreatedByID)
+		}
+		if cq.withUpdatedBy != nil {
+			_spec.Node.AddColumnOnce(customer.FieldUpdatedByID)
 		}
 		if cq.withApprover != nil {
 			_spec.Node.AddColumnOnce(customer.FieldApproverID)

@@ -55,8 +55,7 @@ export const mapIndexPageQuery = graphql`
     $userId: ID!
     $orderBy: [TenderOrder!]
     $first: Int
-    $last: Int
-    $visitOrderBy: [VisitRecordOrder!]
+    $last: Int # $visitOrderBy: [VisitRecordOrder!]
   ) {
     node(id: $userId) {
       ... on User {
@@ -86,7 +85,7 @@ export const mapIndexPageQuery = graphql`
                 orderBy: $orderBy
                 first: $first
                 last: $last
-                where: { statusNEQ: 7, isApproved: true }
+                where: { statusNEQ: 7, approvalStatus: 2 }
               ) @connection(key: "MapIndexPageQuery_tenders") {
                 edges {
                   node {
@@ -159,24 +158,24 @@ export const mapIndexPageQuery = graphql`
                       coordinates
                     }
                     geoBounds
-                    visitRecords(orderBy: $visitOrderBy) {
-                      edges {
-                        node {
-                          visitType
-                          nextStep
-                          commPeople
-                          commContent
-                          date
-                          customer {
-                            name
-                          }
-                          tender {
-                            id
-                            name
-                          }
-                        }
-                      }
-                    }
+                    # visitRecords(orderBy: $visitOrderBy) {
+                    #   edges {
+                    #     node {
+                    #       visitType
+                    #       nextStep
+                    #       commPeople
+                    #       commContent
+                    #       date
+                    #       customer {
+                    #         name
+                    #       }
+                    #       tender {
+                    #         id
+                    #         name
+                    #       }
+                    #     }
+                    #   }
+                    # }
                   }
                 }
               }
@@ -884,36 +883,36 @@ function RouteComponent() {
   //   [data.node, map, map, renderMarker],
   // );
 
-  useCopilotReadable(
-    {
-      description: "這是遠東幕牆市場拓展地圖系統裡的客戶列表",
-      value: data.node?.areas?.edges?.flatMap((e) =>
-        e?.node?.tenders?.edges
-          ?.map((t) => t?.node?.customer)
-          .map((c) => ({ ...c, ownerType: ownerTypeText(c?.ownerType) }))
-          .filter(Boolean),
-      ),
-    },
-    [data.node],
-  );
+  // useCopilotReadable(
+  //   {
+  //     description: "這是遠東幕牆市場拓展地圖系統裡的客戶列表",
+  //     value: data.node?.areas?.edges?.flatMap((e) =>
+  //       e?.node?.tenders?.edges
+  //         ?.map((t) => t?.node?.customer)
+  //         .map((c) => ({ ...c, ownerType: ownerTypeText(c?.ownerType) }))
+  //         .filter(Boolean),
+  //     ),
+  //   },
+  //   [data.node],
+  // );
 
-  useCopilotReadable(
-    {
-      description: "這是遠東幕牆市場拓展地圖系統裡的商機列表",
-      value: data.node?.areas?.edges?.flatMap((e) =>
-        e?.node?.tenders?.edges
-          ?.map((t) => ({
-            id: t?.node?.id,
-            name: t?.node?.name,
-            estimatedAmount: t?.node?.estimatedAmount,
-            status: tenderStatusText(t?.node?.status),
-            tenderDate: t?.node?.tenderDate,
-          }))
-          .filter(Boolean),
-      ),
-    },
-    [data.node],
-  );
+  // useCopilotReadable(
+  //   {
+  //     description: "這是遠東幕牆市場拓展地圖系統裡的商機列表",
+  //     value: data.node?.areas?.edges?.flatMap((e) =>
+  //       e?.node?.tenders?.edges
+  //         ?.map((t) => ({
+  //           id: t?.node?.id,
+  //           name: t?.node?.name,
+  //           estimatedAmount: t?.node?.estimatedAmount,
+  //           status: tenderStatusText(t?.node?.status),
+  //           tenderDate: t?.node?.tenderDate,
+  //         }))
+  //         .filter(Boolean),
+  //     ),
+  //   },
+  //   [data.node],
+  // );
 
   // useCopilotReadable(
   //   {
@@ -934,37 +933,37 @@ function RouteComponent() {
   //   [data.visitRecords],
   // );
 
-  useCreateVisitRecordAction({
-    users: (data.users.edges?.map((e) => e?.node).filter(Boolean) || []) as {
-      readonly id: string;
-      readonly name: string;
-    }[],
-    customers: data.customers.edges?.map((c) => c?.node).filter(Boolean) as {
-      readonly id: string;
-      readonly name: string;
-      readonly ownerType: number;
-    }[],
-  });
+  // useCreateVisitRecordAction({
+  //   users: (data.users.edges?.map((e) => e?.node).filter(Boolean) || []) as {
+  //     readonly id: string;
+  //     readonly name: string;
+  //   }[],
+  //   customers: data.customers.edges?.map((c) => c?.node).filter(Boolean) as {
+  //     readonly id: string;
+  //     readonly name: string;
+  //     readonly ownerType: number;
+  //   }[],
+  // });
 
-  useCopilotAction({
-    name: "bi_get_financial_data",
-    available: "disabled",
-    parameters: [
-      {
-        name: "year",
-        type: "number",
-      },
-    ],
-    render: ({ status, args, result }) => {
-      if (status !== "complete") {
-        return <SkeletonCard />;
-      }
-      if (status === "complete" && Array.isArray(result)) {
-        return <AgentChart chartData={result} />;
-      }
-      return <></>;
-    },
-  });
+  // useCopilotAction({
+  //   name: "bi_get_financial_data",
+  //   available: "disabled",
+  //   parameters: [
+  //     {
+  //       name: "year",
+  //       type: "number",
+  //     },
+  //   ],
+  //   render: ({ status, args, result }) => {
+  //     if (status !== "complete") {
+  //       return <SkeletonCard />;
+  //     }
+  //     if (status === "complete" && Array.isArray(result)) {
+  //       return <AgentChart chartData={result} />;
+  //     }
+  //     return <></>;
+  //   },
+  // });
 
   return (
     <>

@@ -43,6 +43,7 @@ type TenderQuery struct {
 	withVisitRecords        *VisitRecordQuery
 	withCompetitor          *CompetitorQuery
 	withApprover            *UserQuery
+	withUpdatedBy           *UserQuery
 	modifiers               []func(*sql.Selector)
 	loadTotal               []func(context.Context, []*Tender) error
 	withNamedFollowingSales map[string]*UserQuery
@@ -325,6 +326,28 @@ func (tq *TenderQuery) QueryApprover() *UserQuery {
 	return query
 }
 
+// QueryUpdatedBy chains the current query on the "updated_by" edge.
+func (tq *TenderQuery) QueryUpdatedBy() *UserQuery {
+	query := (&UserClient{config: tq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := tq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := tq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(tender.Table, tender.FieldID, selector),
+			sqlgraph.To(user.Table, user.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, tender.UpdatedByTable, tender.UpdatedByColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(tq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
 // First returns the first Tender entity from the query.
 // Returns a *NotFoundError when no Tender was found.
 func (tq *TenderQuery) First(ctx context.Context) (*Tender, error) {
@@ -528,6 +551,7 @@ func (tq *TenderQuery) Clone() *TenderQuery {
 		withVisitRecords:   tq.withVisitRecords.Clone(),
 		withCompetitor:     tq.withCompetitor.Clone(),
 		withApprover:       tq.withApprover.Clone(),
+		withUpdatedBy:      tq.withUpdatedBy.Clone(),
 		// clone intermediate query.
 		sql:  tq.sql.Clone(),
 		path: tq.path,
@@ -655,6 +679,17 @@ func (tq *TenderQuery) WithApprover(opts ...func(*UserQuery)) *TenderQuery {
 	return tq
 }
 
+// WithUpdatedBy tells the query-builder to eager-load the nodes that are connected to
+// the "updated_by" edge. The optional arguments are used to configure the query builder of the edge.
+func (tq *TenderQuery) WithUpdatedBy(opts ...func(*UserQuery)) *TenderQuery {
+	query := (&UserClient{config: tq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	tq.withUpdatedBy = query
+	return tq
+}
+
 // GroupBy is used to group vertices by one or more fields/columns.
 // It is often used with aggregate functions, like: count, max, mean, min, sum.
 //
@@ -733,7 +768,7 @@ func (tq *TenderQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Tende
 	var (
 		nodes       = []*Tender{}
 		_spec       = tq.querySpec()
-		loadedTypes = [11]bool{
+		loadedTypes = [12]bool{
 			tq.withArea != nil,
 			tq.withCustomer != nil,
 			tq.withFinder != nil,
@@ -745,6 +780,7 @@ func (tq *TenderQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Tende
 			tq.withVisitRecords != nil,
 			tq.withCompetitor != nil,
 			tq.withApprover != nil,
+			tq.withUpdatedBy != nil,
 		}
 	)
 	_spec.ScanValues = func(columns []string) ([]any, error) {
@@ -833,6 +869,12 @@ func (tq *TenderQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Tende
 	if query := tq.withApprover; query != nil {
 		if err := tq.loadApprover(ctx, query, nodes, nil,
 			func(n *Tender, e *User) { n.Edges.Approver = e }); err != nil {
+			return nil, err
+		}
+	}
+	if query := tq.withUpdatedBy; query != nil {
+		if err := tq.loadUpdatedBy(ctx, query, nodes, nil,
+			func(n *Tender, e *User) { n.Edges.UpdatedBy = e }); err != nil {
 			return nil, err
 		}
 	}
@@ -1237,6 +1279,38 @@ func (tq *TenderQuery) loadApprover(ctx context.Context, query *UserQuery, nodes
 	}
 	return nil
 }
+func (tq *TenderQuery) loadUpdatedBy(ctx context.Context, query *UserQuery, nodes []*Tender, init func(*Tender), assign func(*Tender, *User)) error {
+	ids := make([]xid.ID, 0, len(nodes))
+	nodeids := make(map[xid.ID][]*Tender)
+	for i := range nodes {
+		if nodes[i].UpdatedByID == nil {
+			continue
+		}
+		fk := *nodes[i].UpdatedByID
+		if _, ok := nodeids[fk]; !ok {
+			ids = append(ids, fk)
+		}
+		nodeids[fk] = append(nodeids[fk], nodes[i])
+	}
+	if len(ids) == 0 {
+		return nil
+	}
+	query.Where(user.IDIn(ids...))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nodeids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "updated_by_id" returned %v`, n.ID)
+		}
+		for i := range nodes {
+			assign(nodes[i], n)
+		}
+	}
+	return nil
+}
 
 func (tq *TenderQuery) sqlCount(ctx context.Context) (int, error) {
 	_spec := tq.querySpec()
@@ -1292,6 +1366,9 @@ func (tq *TenderQuery) querySpec() *sqlgraph.QuerySpec {
 		}
 		if tq.withApprover != nil {
 			_spec.Node.AddColumnOnce(tender.FieldApproverID)
+		}
+		if tq.withUpdatedBy != nil {
+			_spec.Node.AddColumnOnce(tender.FieldUpdatedByID)
 		}
 	}
 	if ps := tq.predicates; len(ps) > 0 {

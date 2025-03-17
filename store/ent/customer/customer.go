@@ -21,8 +21,8 @@ const (
 	FieldUpdatedAt = "updated_at"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
-	// FieldIsApproved holds the string denoting the is_approved field in the database.
-	FieldIsApproved = "is_approved"
+	// FieldApprovalStatus holds the string denoting the approval_status field in the database.
+	FieldApprovalStatus = "approval_status"
 	// FieldOwnerType holds the string denoting the owner_type field in the database.
 	FieldOwnerType = "owner_type"
 	// FieldIndustry holds the string denoting the industry field in the database.
@@ -37,6 +37,8 @@ const (
 	FieldContactPersonPhone = "contact_person_phone"
 	// FieldContactPersonEmail holds the string denoting the contact_person_email field in the database.
 	FieldContactPersonEmail = "contact_person_email"
+	// FieldDraft holds the string denoting the draft field in the database.
+	FieldDraft = "draft"
 	// FieldFeishuGroup holds the string denoting the feishu_group field in the database.
 	FieldFeishuGroup = "feishu_group"
 	// FieldAreaID holds the string denoting the area_id field in the database.
@@ -45,6 +47,8 @@ const (
 	FieldSalesID = "sales_id"
 	// FieldCreatedByID holds the string denoting the created_by_id field in the database.
 	FieldCreatedByID = "created_by_id"
+	// FieldUpdatedByID holds the string denoting the updated_by_id field in the database.
+	FieldUpdatedByID = "updated_by_id"
 	// FieldApproverID holds the string denoting the approver_id field in the database.
 	FieldApproverID = "approver_id"
 	// EdgeArea holds the string denoting the area edge name in mutations.
@@ -55,6 +59,8 @@ const (
 	EdgeSales = "sales"
 	// EdgeCreatedBy holds the string denoting the created_by edge name in mutations.
 	EdgeCreatedBy = "created_by"
+	// EdgeUpdatedBy holds the string denoting the updated_by edge name in mutations.
+	EdgeUpdatedBy = "updated_by"
 	// EdgeApprover holds the string denoting the approver edge name in mutations.
 	EdgeApprover = "approver"
 	// EdgeVisitRecords holds the string denoting the visit_records edge name in mutations.
@@ -89,6 +95,13 @@ const (
 	CreatedByInverseTable = "users"
 	// CreatedByColumn is the table column denoting the created_by relation/edge.
 	CreatedByColumn = "created_by_id"
+	// UpdatedByTable is the table that holds the updated_by relation/edge.
+	UpdatedByTable = "customers"
+	// UpdatedByInverseTable is the table name for the User entity.
+	// It exists in this package in order to avoid circular dependency with the "user" package.
+	UpdatedByInverseTable = "users"
+	// UpdatedByColumn is the table column denoting the updated_by relation/edge.
+	UpdatedByColumn = "updated_by_id"
 	// ApproverTable is the table that holds the approver relation/edge.
 	ApproverTable = "customers"
 	// ApproverInverseTable is the table name for the User entity.
@@ -111,7 +124,7 @@ var Columns = []string{
 	FieldCreatedAt,
 	FieldUpdatedAt,
 	FieldName,
-	FieldIsApproved,
+	FieldApprovalStatus,
 	FieldOwnerType,
 	FieldIndustry,
 	FieldSize,
@@ -119,10 +132,12 @@ var Columns = []string{
 	FieldContactPersonPosition,
 	FieldContactPersonPhone,
 	FieldContactPersonEmail,
+	FieldDraft,
 	FieldFeishuGroup,
 	FieldAreaID,
 	FieldSalesID,
 	FieldCreatedByID,
+	FieldUpdatedByID,
 	FieldApproverID,
 }
 
@@ -143,8 +158,10 @@ var (
 	DefaultUpdatedAt func() time.Time
 	// UpdateDefaultUpdatedAt holds the default value on update for the "updated_at" field.
 	UpdateDefaultUpdatedAt func() time.Time
-	// DefaultIsApproved holds the default value on creation for the "is_approved" field.
-	DefaultIsApproved bool
+	// DefaultApprovalStatus holds the default value on creation for the "approval_status" field.
+	DefaultApprovalStatus int
+	// ApprovalStatusValidator is a validator for the "approval_status" field. It is called by the builders before save.
+	ApprovalStatusValidator func(int) error
 	// DefaultID holds the default value on creation for the "id" field.
 	DefaultID func() xid.ID
 )
@@ -172,9 +189,9 @@ func ByName(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldName, opts...).ToFunc()
 }
 
-// ByIsApproved orders the results by the is_approved field.
-func ByIsApproved(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldIsApproved, opts...).ToFunc()
+// ByApprovalStatus orders the results by the approval_status field.
+func ByApprovalStatus(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldApprovalStatus, opts...).ToFunc()
 }
 
 // ByOwnerType orders the results by the owner_type field.
@@ -227,6 +244,11 @@ func ByCreatedByID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCreatedByID, opts...).ToFunc()
 }
 
+// ByUpdatedByID orders the results by the updated_by_id field.
+func ByUpdatedByID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldUpdatedByID, opts...).ToFunc()
+}
+
 // ByApproverID orders the results by the approver_id field.
 func ByApproverID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldApproverID, opts...).ToFunc()
@@ -264,6 +286,13 @@ func BySalesField(field string, opts ...sql.OrderTermOption) OrderOption {
 func ByCreatedByField(field string, opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborTerms(s, newCreatedByStep(), sql.OrderByField(field, opts...))
+	}
+}
+
+// ByUpdatedByField orders the results by updated_by field.
+func ByUpdatedByField(field string, opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newUpdatedByStep(), sql.OrderByField(field, opts...))
 	}
 }
 
@@ -313,6 +342,13 @@ func newCreatedByStep() *sqlgraph.Step {
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(CreatedByInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.M2O, false, CreatedByTable, CreatedByColumn),
+	)
+}
+func newUpdatedByStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(UpdatedByInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, false, UpdatedByTable, UpdatedByColumn),
 	)
 }
 func newApproverStep() *sqlgraph.Step {

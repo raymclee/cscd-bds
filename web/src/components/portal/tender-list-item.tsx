@@ -10,7 +10,14 @@ import { useFragment } from "react-relay";
 import { graphql } from "relay-runtime";
 import { Tender } from "~/graphql/graphql";
 import { useUpdateTender } from "~/hooks/use-update-tender";
-import { tenderStatusTagColor, tenderStatusText } from "~/lib/helper";
+import {
+  approvalStatusTagColor,
+  approvalStatusText,
+  classifyTagColor,
+  classifyText,
+  tenderStatusTagColor,
+  tenderStatusText,
+} from "~/lib/helper";
 import { canEdit } from "~/lib/permission";
 import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel";
 
@@ -27,11 +34,12 @@ export function TenderListItem({
     graphql`
       fragment tenderListItemFragment on Tender {
         id
-        isApproved
+        approvalStatus
         name
         status
         createdAt
         estimatedAmount
+        classify
         customer {
           id
           name
@@ -78,8 +86,13 @@ export function TenderListItem({
                 key="edit-link"
                 to="/portal/tenders/$id/edit"
                 params={{ id: item.id }}
+                disabled={item.approvalStatus == 1}
               >
-                <Button type="link" size="small">
+                <Button
+                  type="link"
+                  size="small"
+                  disabled={item.approvalStatus == 1}
+                >
                   修改
                 </Button>
               </Link>,
@@ -137,7 +150,7 @@ export function TenderListItem({
             </Carousel>
           ) : (
             <div className="flex aspect-[16/9] h-full w-[60vw] flex-col items-center justify-center rounded-lg bg-gray-100 sm:w-[30vw] lg:w-[280px]">
-              <ImageOff className="w-12 h-12 mb-2" />
+              <ImageOff className="mb-2 h-12 w-12" />
               暂没图片
             </div>
           )}
@@ -154,13 +167,18 @@ export function TenderListItem({
       />
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div>
+          {!isGAOrHW && item.classify && (
+            <Tag color={classifyTagColor(item.classify)}>
+              {classifyText(item.classify)}
+            </Tag>
+          )}
           <Tag>{item?.area.name}</Tag>
           <Tag color={tenderStatusTagColor(item.status)}>
             {tenderStatusText(item?.status)}
           </Tag>
           {!isGAOrHW && (
-            <Tag color={item.isApproved ? "success" : "default"}>
-              {item.isApproved ? "已审批" : "未审批"}
+            <Tag color={approvalStatusTagColor(item.approvalStatus)}>
+              {approvalStatusText(item.approvalStatus)}
             </Tag>
           )}
         </div>

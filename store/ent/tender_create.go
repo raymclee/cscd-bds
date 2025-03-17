@@ -81,16 +81,30 @@ func (tc *TenderCreate) SetNillableStatus(i *int) *TenderCreate {
 	return tc
 }
 
-// SetIsApproved sets the "is_approved" field.
-func (tc *TenderCreate) SetIsApproved(b bool) *TenderCreate {
-	tc.mutation.SetIsApproved(b)
+// SetApprovalStatus sets the "approval_status" field.
+func (tc *TenderCreate) SetApprovalStatus(i int) *TenderCreate {
+	tc.mutation.SetApprovalStatus(i)
 	return tc
 }
 
-// SetNillableIsApproved sets the "is_approved" field if the given value is not nil.
-func (tc *TenderCreate) SetNillableIsApproved(b *bool) *TenderCreate {
-	if b != nil {
-		tc.SetIsApproved(*b)
+// SetNillableApprovalStatus sets the "approval_status" field if the given value is not nil.
+func (tc *TenderCreate) SetNillableApprovalStatus(i *int) *TenderCreate {
+	if i != nil {
+		tc.SetApprovalStatus(*i)
+	}
+	return tc
+}
+
+// SetApprovalMsgID sets the "approval_msg_id" field.
+func (tc *TenderCreate) SetApprovalMsgID(s string) *TenderCreate {
+	tc.mutation.SetApprovalMsgID(s)
+	return tc
+}
+
+// SetNillableApprovalMsgID sets the "approval_msg_id" field if the given value is not nil.
+func (tc *TenderCreate) SetNillableApprovalMsgID(s *string) *TenderCreate {
+	if s != nil {
+		tc.SetApprovalMsgID(*s)
 	}
 	return tc
 }
@@ -921,6 +935,20 @@ func (tc *TenderCreate) SetNillableApproverID(x *xid.ID) *TenderCreate {
 	return tc
 }
 
+// SetUpdatedByID sets the "updated_by_id" field.
+func (tc *TenderCreate) SetUpdatedByID(x xid.ID) *TenderCreate {
+	tc.mutation.SetUpdatedByID(x)
+	return tc
+}
+
+// SetNillableUpdatedByID sets the "updated_by_id" field if the given value is not nil.
+func (tc *TenderCreate) SetNillableUpdatedByID(x *xid.ID) *TenderCreate {
+	if x != nil {
+		tc.SetUpdatedByID(*x)
+	}
+	return tc
+}
+
 // SetID sets the "id" field.
 func (tc *TenderCreate) SetID(x xid.ID) *TenderCreate {
 	tc.mutation.SetID(x)
@@ -1010,6 +1038,11 @@ func (tc *TenderCreate) SetApprover(u *User) *TenderCreate {
 	return tc.SetApproverID(u.ID)
 }
 
+// SetUpdatedBy sets the "updated_by" edge to the User entity.
+func (tc *TenderCreate) SetUpdatedBy(u *User) *TenderCreate {
+	return tc.SetUpdatedByID(u.ID)
+}
+
 // Mutation returns the TenderMutation object of the builder.
 func (tc *TenderCreate) Mutation() *TenderMutation {
 	return tc.mutation
@@ -1057,9 +1090,9 @@ func (tc *TenderCreate) defaults() {
 		v := tender.DefaultStatus
 		tc.mutation.SetStatus(v)
 	}
-	if _, ok := tc.mutation.IsApproved(); !ok {
-		v := tender.DefaultIsApproved
-		tc.mutation.SetIsApproved(v)
+	if _, ok := tc.mutation.ApprovalStatus(); !ok {
+		v := tender.DefaultApprovalStatus
+		tc.mutation.SetApprovalStatus(v)
 	}
 	if _, ok := tc.mutation.PrepareToBid(); !ok {
 		v := tender.DefaultPrepareToBid
@@ -1089,8 +1122,13 @@ func (tc *TenderCreate) check() error {
 	if _, ok := tc.mutation.Status(); !ok {
 		return &ValidationError{Name: "status", err: errors.New(`ent: missing required field "Tender.status"`)}
 	}
-	if _, ok := tc.mutation.IsApproved(); !ok {
-		return &ValidationError{Name: "is_approved", err: errors.New(`ent: missing required field "Tender.is_approved"`)}
+	if _, ok := tc.mutation.ApprovalStatus(); !ok {
+		return &ValidationError{Name: "approval_status", err: errors.New(`ent: missing required field "Tender.approval_status"`)}
+	}
+	if v, ok := tc.mutation.ApprovalStatus(); ok {
+		if err := tender.ApprovalStatusValidator(v); err != nil {
+			return &ValidationError{Name: "approval_status", err: fmt.Errorf(`ent: validator failed for field "Tender.approval_status": %w`, err)}
+		}
 	}
 	if _, ok := tc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`ent: missing required field "Tender.name"`)}
@@ -1207,9 +1245,13 @@ func (tc *TenderCreate) createSpec() (*Tender, *sqlgraph.CreateSpec) {
 		_spec.SetField(tender.FieldStatus, field.TypeInt, value)
 		_node.Status = value
 	}
-	if value, ok := tc.mutation.IsApproved(); ok {
-		_spec.SetField(tender.FieldIsApproved, field.TypeBool, value)
-		_node.IsApproved = value
+	if value, ok := tc.mutation.ApprovalStatus(); ok {
+		_spec.SetField(tender.FieldApprovalStatus, field.TypeInt, value)
+		_node.ApprovalStatus = value
+	}
+	if value, ok := tc.mutation.ApprovalMsgID(); ok {
+		_spec.SetField(tender.FieldApprovalMsgID, field.TypeString, value)
+		_node.ApprovalMsgID = &value
 	}
 	if value, ok := tc.mutation.Name(); ok {
 		_spec.SetField(tender.FieldName, field.TypeString, value)
@@ -1612,6 +1654,23 @@ func (tc *TenderCreate) createSpec() (*Tender, *sqlgraph.CreateSpec) {
 		_node.ApproverID = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
+	if nodes := tc.mutation.UpdatedByIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   tender.UpdatedByTable,
+			Columns: []string{tender.UpdatedByColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.UpdatedByID = &nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
 	return _node, _spec
 }
 
@@ -1706,15 +1765,39 @@ func (u *TenderUpsert) AddStatus(v int) *TenderUpsert {
 	return u
 }
 
-// SetIsApproved sets the "is_approved" field.
-func (u *TenderUpsert) SetIsApproved(v bool) *TenderUpsert {
-	u.Set(tender.FieldIsApproved, v)
+// SetApprovalStatus sets the "approval_status" field.
+func (u *TenderUpsert) SetApprovalStatus(v int) *TenderUpsert {
+	u.Set(tender.FieldApprovalStatus, v)
 	return u
 }
 
-// UpdateIsApproved sets the "is_approved" field to the value that was provided on create.
-func (u *TenderUpsert) UpdateIsApproved() *TenderUpsert {
-	u.SetExcluded(tender.FieldIsApproved)
+// UpdateApprovalStatus sets the "approval_status" field to the value that was provided on create.
+func (u *TenderUpsert) UpdateApprovalStatus() *TenderUpsert {
+	u.SetExcluded(tender.FieldApprovalStatus)
+	return u
+}
+
+// AddApprovalStatus adds v to the "approval_status" field.
+func (u *TenderUpsert) AddApprovalStatus(v int) *TenderUpsert {
+	u.Add(tender.FieldApprovalStatus, v)
+	return u
+}
+
+// SetApprovalMsgID sets the "approval_msg_id" field.
+func (u *TenderUpsert) SetApprovalMsgID(v string) *TenderUpsert {
+	u.Set(tender.FieldApprovalMsgID, v)
+	return u
+}
+
+// UpdateApprovalMsgID sets the "approval_msg_id" field to the value that was provided on create.
+func (u *TenderUpsert) UpdateApprovalMsgID() *TenderUpsert {
+	u.SetExcluded(tender.FieldApprovalMsgID)
+	return u
+}
+
+// ClearApprovalMsgID clears the value of the "approval_msg_id" field.
+func (u *TenderUpsert) ClearApprovalMsgID() *TenderUpsert {
+	u.SetNull(tender.FieldApprovalMsgID)
 	return u
 }
 
@@ -2882,6 +2965,24 @@ func (u *TenderUpsert) ClearApproverID() *TenderUpsert {
 	return u
 }
 
+// SetUpdatedByID sets the "updated_by_id" field.
+func (u *TenderUpsert) SetUpdatedByID(v xid.ID) *TenderUpsert {
+	u.Set(tender.FieldUpdatedByID, v)
+	return u
+}
+
+// UpdateUpdatedByID sets the "updated_by_id" field to the value that was provided on create.
+func (u *TenderUpsert) UpdateUpdatedByID() *TenderUpsert {
+	u.SetExcluded(tender.FieldUpdatedByID)
+	return u
+}
+
+// ClearUpdatedByID clears the value of the "updated_by_id" field.
+func (u *TenderUpsert) ClearUpdatedByID() *TenderUpsert {
+	u.SetNull(tender.FieldUpdatedByID)
+	return u
+}
+
 // UpdateNewValues updates the mutable fields using the new values that were set on create except the ID field.
 // Using this option is equivalent to using:
 //
@@ -2982,17 +3083,45 @@ func (u *TenderUpsertOne) UpdateStatus() *TenderUpsertOne {
 	})
 }
 
-// SetIsApproved sets the "is_approved" field.
-func (u *TenderUpsertOne) SetIsApproved(v bool) *TenderUpsertOne {
+// SetApprovalStatus sets the "approval_status" field.
+func (u *TenderUpsertOne) SetApprovalStatus(v int) *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
-		s.SetIsApproved(v)
+		s.SetApprovalStatus(v)
 	})
 }
 
-// UpdateIsApproved sets the "is_approved" field to the value that was provided on create.
-func (u *TenderUpsertOne) UpdateIsApproved() *TenderUpsertOne {
+// AddApprovalStatus adds v to the "approval_status" field.
+func (u *TenderUpsertOne) AddApprovalStatus(v int) *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
-		s.UpdateIsApproved()
+		s.AddApprovalStatus(v)
+	})
+}
+
+// UpdateApprovalStatus sets the "approval_status" field to the value that was provided on create.
+func (u *TenderUpsertOne) UpdateApprovalStatus() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateApprovalStatus()
+	})
+}
+
+// SetApprovalMsgID sets the "approval_msg_id" field.
+func (u *TenderUpsertOne) SetApprovalMsgID(v string) *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetApprovalMsgID(v)
+	})
+}
+
+// UpdateApprovalMsgID sets the "approval_msg_id" field to the value that was provided on create.
+func (u *TenderUpsertOne) UpdateApprovalMsgID() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateApprovalMsgID()
+	})
+}
+
+// ClearApprovalMsgID clears the value of the "approval_msg_id" field.
+func (u *TenderUpsertOne) ClearApprovalMsgID() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearApprovalMsgID()
 	})
 }
 
@@ -4354,6 +4483,27 @@ func (u *TenderUpsertOne) ClearApproverID() *TenderUpsertOne {
 	})
 }
 
+// SetUpdatedByID sets the "updated_by_id" field.
+func (u *TenderUpsertOne) SetUpdatedByID(v xid.ID) *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetUpdatedByID(v)
+	})
+}
+
+// UpdateUpdatedByID sets the "updated_by_id" field to the value that was provided on create.
+func (u *TenderUpsertOne) UpdateUpdatedByID() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateUpdatedByID()
+	})
+}
+
+// ClearUpdatedByID clears the value of the "updated_by_id" field.
+func (u *TenderUpsertOne) ClearUpdatedByID() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearUpdatedByID()
+	})
+}
+
 // Exec executes the query.
 func (u *TenderUpsertOne) Exec(ctx context.Context) error {
 	if len(u.create.conflict) == 0 {
@@ -4621,17 +4771,45 @@ func (u *TenderUpsertBulk) UpdateStatus() *TenderUpsertBulk {
 	})
 }
 
-// SetIsApproved sets the "is_approved" field.
-func (u *TenderUpsertBulk) SetIsApproved(v bool) *TenderUpsertBulk {
+// SetApprovalStatus sets the "approval_status" field.
+func (u *TenderUpsertBulk) SetApprovalStatus(v int) *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
-		s.SetIsApproved(v)
+		s.SetApprovalStatus(v)
 	})
 }
 
-// UpdateIsApproved sets the "is_approved" field to the value that was provided on create.
-func (u *TenderUpsertBulk) UpdateIsApproved() *TenderUpsertBulk {
+// AddApprovalStatus adds v to the "approval_status" field.
+func (u *TenderUpsertBulk) AddApprovalStatus(v int) *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
-		s.UpdateIsApproved()
+		s.AddApprovalStatus(v)
+	})
+}
+
+// UpdateApprovalStatus sets the "approval_status" field to the value that was provided on create.
+func (u *TenderUpsertBulk) UpdateApprovalStatus() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateApprovalStatus()
+	})
+}
+
+// SetApprovalMsgID sets the "approval_msg_id" field.
+func (u *TenderUpsertBulk) SetApprovalMsgID(v string) *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetApprovalMsgID(v)
+	})
+}
+
+// UpdateApprovalMsgID sets the "approval_msg_id" field to the value that was provided on create.
+func (u *TenderUpsertBulk) UpdateApprovalMsgID() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateApprovalMsgID()
+	})
+}
+
+// ClearApprovalMsgID clears the value of the "approval_msg_id" field.
+func (u *TenderUpsertBulk) ClearApprovalMsgID() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearApprovalMsgID()
 	})
 }
 
@@ -5990,6 +6168,27 @@ func (u *TenderUpsertBulk) UpdateApproverID() *TenderUpsertBulk {
 func (u *TenderUpsertBulk) ClearApproverID() *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
 		s.ClearApproverID()
+	})
+}
+
+// SetUpdatedByID sets the "updated_by_id" field.
+func (u *TenderUpsertBulk) SetUpdatedByID(v xid.ID) *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetUpdatedByID(v)
+	})
+}
+
+// UpdateUpdatedByID sets the "updated_by_id" field to the value that was provided on create.
+func (u *TenderUpsertBulk) UpdateUpdatedByID() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateUpdatedByID()
+	})
+}
+
+// ClearUpdatedByID clears the value of the "updated_by_id" field.
+func (u *TenderUpsertBulk) ClearUpdatedByID() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearUpdatedByID()
 	})
 }
 

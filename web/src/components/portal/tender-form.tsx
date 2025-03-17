@@ -57,7 +57,7 @@ import { Plus, Space } from "lucide-react";
 import { cn } from "~/lib/utils";
 import { useFormLocalStorage } from "~/hooks/use-form-localstorage";
 import { useBlocker } from "@tanstack/react-router";
-
+import { useLocalStorage } from "usehooks-ts";
 const { Dragger } = Upload;
 
 const fragment = graphql`
@@ -69,7 +69,7 @@ const fragment = graphql`
           id
           name
           code
-          customers(first: $first, last: $last, where: { isApproved: true })
+          customers(first: $first, last: $last, where: { approvalStatusGT: 1 })
             @connection(key: "tenderFormFragment_customers") {
             edges {
               node {
@@ -129,22 +129,37 @@ export function TenderForm({
   const [commitCreateMutation, isCreateInFlight] = useCreateTender();
   const [commitUpdateMutation, isUpdateInFlight] = useUpdateTender();
   const navigate = useNavigate();
-  const { pathname } = useLocation();
 
   const { state, update, clear } = useFormLocalStorage({
     form,
     id: "tender-form",
     enabled: !tender && form.isFieldsTouched(),
+    // enabled: false,
   });
 
-  useEffect(() => {
-    if (!tender && form.isFieldsTouched()) {
-      update("tender-form", form.getFieldsValue());
-    }
-  }, [tender, pathname]);
+  // const [state, setState, removeState] = useLocalStorage<
+  //   (CreateTenderInput & { geoCoordinate: number[] }) | null
+  // >("tender-form", null);
+
+  useBlocker({
+    shouldBlockFn: ({ next }) => {
+      // @ts-ignore
+      if (!next.search["create"] && !tender && form.isFieldsTouched()) {
+        update("tender-form", form.getFieldsValue());
+      }
+      return false;
+    },
+    disabled: !form.isFieldsTouched(),
+    enableBeforeUnload: false,
+  });
+
+  // useEffect(() => {
+  //   if (!tender && form.isFieldsTouched()) {
+  //     update("tender-form", form.getFieldsValue());
+  //   }
+  // }, [tender, pathname]);
 
   const areaID = Form.useWatch("areaID", form);
-
   const status = Form.useWatch("status", form);
   const prepareToBid = Form.useWatch("prepareToBid", form);
 
@@ -249,6 +264,8 @@ export function TenderForm({
         competitivePartnershipRatingOverview:
           tender.competitivePartnershipRatingOverview,
         levelInvolved: tender.levelInvolved,
+        approvalStatus: tender.approvalStatus,
+        classify: tender.classify,
       });
     }
   }, [tender]);
@@ -283,7 +300,9 @@ export function TenderForm({
       form={form}
       className="relative !pb-24"
       // requiredMark="optional"
-      disabled={isCreateInFlight || isUpdateInFlight}
+      disabled={
+        isCreateInFlight || isUpdateInFlight || tender?.approvalStatus == 1
+      }
       scrollToFirstError={{
         behavior: "smooth",
         block: "start",
@@ -383,8 +402,11 @@ export function TenderForm({
               geoCoordinate,
             },
             onCompleted() {
-              navigate({ to: "/portal/tenders", search: (prev) => prev });
               clear();
+              navigate({
+                to: "/portal/tenders",
+                search: (prev) => ({ ...prev, create: true }),
+              });
               message.success("创建成功");
             },
             onError(error) {
@@ -412,8 +434,8 @@ export function TenderForm({
               type="text"
               size="small"
               onClick={() => {
-                clear();
                 form.resetFields();
+                clear();
               }}
             >
               清除缓存
@@ -554,7 +576,7 @@ export function TenderForm({
                 <DatePicker className="w-full" />
               </Form.Item>
 
-              <ProvinceCityDistrictSelectorLoader />
+              <ProvinceCityDistrictSelectorLoader showSHFields={showSHFields} />
 
               {/* <Form.Item
                 name="address"
@@ -1199,15 +1221,19 @@ function ProvinceCityDistrictSelectorLoader({
                     />
                   }
                 /> */}
-        <SearchLocationSelect
-          areaId={areaID}
-          onAddressSelected={({ data }) => {
-            form.setFieldValue("provinceID", data.province?.id);
-            form.setFieldValue("cityID", data.city?.id);
-            form.setFieldValue("districtID", data.district?.id);
-            form.setFieldValue("geoCoordinate", [data.lng, data.lat]);
-          }}
-        />
+        {showSHFields ? (
+          <SearchLocationSelect
+            areaId={areaID}
+            onAddressSelected={({ data }) => {
+              form.setFieldValue("provinceID", data.province?.id);
+              form.setFieldValue("cityID", data.city?.id);
+              form.setFieldValue("districtID", data.district?.id);
+              form.setFieldValue("geoCoordinate", [data.lng, data.lat]);
+            }}
+          />
+        ) : (
+          <Input />
+        )}
       </Form.Item>
       {queryRef ? (
         <ProvinceCityDistrictSelector queryRef={queryRef} />

@@ -7,6 +7,19 @@ import (
 	"cscd-bds/store/ent/schema/xid"
 )
 
+type CustomerDraft struct {
+	Name                  *string   `json:"name,omitempty"`
+	OwnerType             *int      `json:"ownerType,omitempty"`
+	Industry              *int      `json:"industry,omitempty"`
+	Size                  *int      `json:"size,omitempty"`
+	ContactPerson         *string   `json:"contactPerson,omitempty"`
+	ContactPersonPosition *string   `json:"contactPersonPosition,omitempty"`
+	ContactPersonPhone    *string   `json:"contactPersonPhone,omitempty"`
+	ContactPersonEmail    *string   `json:"contactPersonEmail,omitempty"`
+	Area                  *ent.Area `json:"area,omitempty"`
+	Sales                 *ent.User `json:"sales,omitempty"`
+}
+
 type FeishuUser struct {
 	OpenID    string `json:"openId"`
 	Name      string `json:"name"`

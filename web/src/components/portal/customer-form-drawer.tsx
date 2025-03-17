@@ -22,6 +22,8 @@ import {
 import { CreateCustomerInput } from "~/graphql/graphql";
 import { useCreateCustomer } from "~/hooks/use-create-customer";
 import { useUpdateCustomer } from "~/hooks/use-update-customer";
+import { useUpdateCustomerRequest } from "~/hooks/use-update-customer-request";
+import { isSH } from "~/lib/areas";
 import {
   customerSizeOptions,
   industryOptions,
@@ -102,6 +104,8 @@ function CustomerForm({ queryRef }: CustomerFormProps) {
   const [form] = Form.useForm<CreateCustomerInput>();
   const [commitCreateCustomer, isCreateCustomerInFlight] = useCreateCustomer();
   const [commitUpdateCustomer, isUpdateCustomerInFlight] = useUpdateCustomer();
+  const [commitUpdateCustomerRequest, isUpdateCustomerRequestInFlight] =
+    useUpdateCustomerRequest();
   const { message } = App.useApp();
   const selectedCustomer = usePortalStore(
     (state) => state.customerFormCustomer,
@@ -121,19 +125,34 @@ function CustomerForm({ queryRef }: CustomerFormProps) {
   useEffect(() => {
     if (selectedCustomer?.id) {
       form.setFieldsValue({
-        name: selectedCustomer.name,
-        areaID: selectedCustomer.area.id,
-        industry: selectedCustomer.industry,
-        size: selectedCustomer.size,
-        ownerType: selectedCustomer.ownerType,
-        salesID: selectedCustomer.sales?.id,
-        contactPerson: selectedCustomer.contactPerson,
-        contactPersonPosition: selectedCustomer.contactPersonPosition,
-        contactPersonEmail: selectedCustomer.contactPersonEmail,
-        contactPersonPhone: selectedCustomer.contactPersonPhone,
+        name: selectedCustomer.draft?.name || selectedCustomer.name,
+        areaID: selectedCustomer.draft?.area?.id || selectedCustomer.area?.id,
+        industry: selectedCustomer.draft?.industry || selectedCustomer.industry,
+        size: selectedCustomer.draft?.size || selectedCustomer.size,
+        ownerType:
+          selectedCustomer.draft?.ownerType || selectedCustomer.ownerType,
+        salesID:
+          selectedCustomer.draft?.sales?.id || selectedCustomer.sales?.id,
+        contactPerson:
+          selectedCustomer.draft?.contactPerson ||
+          selectedCustomer.contactPerson,
+        contactPersonPosition:
+          selectedCustomer.draft?.contactPersonPosition ||
+          selectedCustomer.contactPersonPosition,
+        contactPersonEmail:
+          selectedCustomer.draft?.contactPersonEmail ||
+          selectedCustomer.contactPersonEmail,
+        contactPersonPhone:
+          selectedCustomer.draft?.contactPersonPhone ||
+          selectedCustomer.contactPersonPhone,
       });
     }
   }, [selectedCustomer]);
+
+  const isSubmitting =
+    isCreateCustomerInFlight ||
+    isUpdateCustomerInFlight ||
+    isUpdateCustomerRequestInFlight;
 
   return (
     <div className="h-full">
@@ -145,9 +164,29 @@ function CustomerForm({ queryRef }: CustomerFormProps) {
           areaID: selectedAreaID,
         }}
         // requiredMark="optional"
-        disabled={isCreateCustomerInFlight || isUpdateCustomerInFlight}
+        disabled={isSubmitting || selectedCustomer?.approvalStatus == 1}
         onFinish={(values) => {
           if (selectedCustomer?.id) {
+            if (isSH(selectedCustomer.area.code)) {
+              commitUpdateCustomerRequest({
+                variables: {
+                  id: selectedCustomer.id,
+                  input: values,
+                },
+                onCompleted: () => {
+                  message.destroy();
+                  message.success("提交客户修改申请成功");
+                  onClose();
+                },
+                onError: (error) => {
+                  message.destroy();
+                  console.error(error);
+                  message.error("提交客户修改申请失败");
+                },
+              });
+              return;
+            }
+
             commitUpdateCustomer({
               variables: {
                 id: selectedCustomer.id,
@@ -314,13 +353,13 @@ function CustomerForm({ queryRef }: CustomerFormProps) {
         </Form.Item>
       </Form>
 
-      <div className="absolute bottom-0 left-0 right-0 flex justify-end gap-3 px-6 py-3 bg-white border-t border-neutral-200">
+      <div className="absolute right-0 bottom-0 left-0 flex justify-end gap-3 border-t border-neutral-200 bg-white px-6 py-3">
         <Space>
           <Button onClick={onClose}>取消</Button>
           <Button
             htmlType="submit"
             type="primary"
-            loading={isCreateCustomerInFlight || isUpdateCustomerInFlight}
+            loading={isSubmitting}
             // loading={isCreateUserInFlight || isUpdateUserInFlight}
             onClick={() => form.submit()}
           >

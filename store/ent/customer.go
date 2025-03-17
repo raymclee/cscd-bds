@@ -5,6 +5,7 @@ package ent
 import (
 	"cscd-bds/store/ent/area"
 	"cscd-bds/store/ent/customer"
+	"cscd-bds/store/ent/schema/model"
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/schema/zht"
 	"cscd-bds/store/ent/user"
@@ -28,8 +29,8 @@ type Customer struct {
 	UpdatedAt time.Time `json:"updated_at,omitempty"`
 	// Name holds the value of the "name" field.
 	Name string `json:"name,omitempty"`
-	// IsApproved holds the value of the "is_approved" field.
-	IsApproved bool `json:"is_approved,omitempty"`
+	// 1 待審核 2 已通過 3 已拒絕
+	ApprovalStatus int `json:"approval_status,omitempty"`
 	// OwnerType holds the value of the "owner_type" field.
 	OwnerType *int `json:"owner_type,omitempty"`
 	// Industry holds the value of the "industry" field.
@@ -44,6 +45,8 @@ type Customer struct {
 	ContactPersonPhone *string `json:"contact_person_phone,omitempty"`
 	// ContactPersonEmail holds the value of the "contact_person_email" field.
 	ContactPersonEmail *string `json:"contact_person_email,omitempty"`
+	// Draft holds the value of the "draft" field.
+	Draft *model.Customer `json:"draft,omitempty"`
 	// FeishuGroup holds the value of the "feishu_group" field.
 	FeishuGroup *zht.Group `json:"feishu_group,omitempty"`
 	// AreaID holds the value of the "area_id" field.
@@ -52,6 +55,8 @@ type Customer struct {
 	SalesID *xid.ID `json:"sales_id,omitempty"`
 	// CreatedByID holds the value of the "created_by_id" field.
 	CreatedByID *xid.ID `json:"created_by_id,omitempty"`
+	// UpdatedByID holds the value of the "updated_by_id" field.
+	UpdatedByID *xid.ID `json:"updated_by_id,omitempty"`
 	// ApproverID holds the value of the "approver_id" field.
 	ApproverID *xid.ID `json:"approver_id,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
@@ -70,15 +75,17 @@ type CustomerEdges struct {
 	Sales *User `json:"sales,omitempty"`
 	// CreatedBy holds the value of the created_by edge.
 	CreatedBy *User `json:"created_by,omitempty"`
+	// UpdatedBy holds the value of the updated_by edge.
+	UpdatedBy *User `json:"updated_by,omitempty"`
 	// Approver holds the value of the approver edge.
 	Approver *User `json:"approver,omitempty"`
 	// VisitRecords holds the value of the visit_records edge.
 	VisitRecords []*VisitRecord `json:"visit_records,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [6]bool
+	loadedTypes [7]bool
 	// totalCount holds the count of the edges above.
-	totalCount [6]map[string]int
+	totalCount [7]map[string]int
 
 	namedTenders      map[string][]*Tender
 	namedVisitRecords map[string][]*VisitRecord
@@ -126,12 +133,23 @@ func (e CustomerEdges) CreatedByOrErr() (*User, error) {
 	return nil, &NotLoadedError{edge: "created_by"}
 }
 
+// UpdatedByOrErr returns the UpdatedBy value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e CustomerEdges) UpdatedByOrErr() (*User, error) {
+	if e.UpdatedBy != nil {
+		return e.UpdatedBy, nil
+	} else if e.loadedTypes[4] {
+		return nil, &NotFoundError{label: user.Label}
+	}
+	return nil, &NotLoadedError{edge: "updated_by"}
+}
+
 // ApproverOrErr returns the Approver value or an error if the edge
 // was not loaded in eager-loading, or loaded but was not found.
 func (e CustomerEdges) ApproverOrErr() (*User, error) {
 	if e.Approver != nil {
 		return e.Approver, nil
-	} else if e.loadedTypes[4] {
+	} else if e.loadedTypes[5] {
 		return nil, &NotFoundError{label: user.Label}
 	}
 	return nil, &NotLoadedError{edge: "approver"}
@@ -140,7 +158,7 @@ func (e CustomerEdges) ApproverOrErr() (*User, error) {
 // VisitRecordsOrErr returns the VisitRecords value or an error if the edge
 // was not loaded in eager-loading.
 func (e CustomerEdges) VisitRecordsOrErr() ([]*VisitRecord, error) {
-	if e.loadedTypes[5] {
+	if e.loadedTypes[6] {
 		return e.VisitRecords, nil
 	}
 	return nil, &NotLoadedError{edge: "visit_records"}
@@ -151,13 +169,11 @@ func (*Customer) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case customer.FieldSalesID, customer.FieldCreatedByID, customer.FieldApproverID:
+		case customer.FieldSalesID, customer.FieldCreatedByID, customer.FieldUpdatedByID, customer.FieldApproverID:
 			values[i] = &sql.NullScanner{S: new(xid.ID)}
-		case customer.FieldFeishuGroup:
+		case customer.FieldDraft, customer.FieldFeishuGroup:
 			values[i] = new([]byte)
-		case customer.FieldIsApproved:
-			values[i] = new(sql.NullBool)
-		case customer.FieldOwnerType, customer.FieldIndustry, customer.FieldSize:
+		case customer.FieldApprovalStatus, customer.FieldOwnerType, customer.FieldIndustry, customer.FieldSize:
 			values[i] = new(sql.NullInt64)
 		case customer.FieldName, customer.FieldContactPerson, customer.FieldContactPersonPosition, customer.FieldContactPersonPhone, customer.FieldContactPersonEmail:
 			values[i] = new(sql.NullString)
@@ -204,11 +220,11 @@ func (c *Customer) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				c.Name = value.String
 			}
-		case customer.FieldIsApproved:
-			if value, ok := values[i].(*sql.NullBool); !ok {
-				return fmt.Errorf("unexpected type %T for field is_approved", values[i])
+		case customer.FieldApprovalStatus:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field approval_status", values[i])
 			} else if value.Valid {
-				c.IsApproved = value.Bool
+				c.ApprovalStatus = int(value.Int64)
 			}
 		case customer.FieldOwnerType:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -259,6 +275,14 @@ func (c *Customer) assignValues(columns []string, values []any) error {
 				c.ContactPersonEmail = new(string)
 				*c.ContactPersonEmail = value.String
 			}
+		case customer.FieldDraft:
+			if value, ok := values[i].(*[]byte); !ok {
+				return fmt.Errorf("unexpected type %T for field draft", values[i])
+			} else if value != nil && len(*value) > 0 {
+				if err := json.Unmarshal(*value, &c.Draft); err != nil {
+					return fmt.Errorf("unmarshal field draft: %w", err)
+				}
+			}
 		case customer.FieldFeishuGroup:
 			if value, ok := values[i].(*[]byte); !ok {
 				return fmt.Errorf("unexpected type %T for field feishu_group", values[i])
@@ -286,6 +310,13 @@ func (c *Customer) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				c.CreatedByID = new(xid.ID)
 				*c.CreatedByID = *value.S.(*xid.ID)
+			}
+		case customer.FieldUpdatedByID:
+			if value, ok := values[i].(*sql.NullScanner); !ok {
+				return fmt.Errorf("unexpected type %T for field updated_by_id", values[i])
+			} else if value.Valid {
+				c.UpdatedByID = new(xid.ID)
+				*c.UpdatedByID = *value.S.(*xid.ID)
 			}
 		case customer.FieldApproverID:
 			if value, ok := values[i].(*sql.NullScanner); !ok {
@@ -325,6 +356,11 @@ func (c *Customer) QuerySales() *UserQuery {
 // QueryCreatedBy queries the "created_by" edge of the Customer entity.
 func (c *Customer) QueryCreatedBy() *UserQuery {
 	return NewCustomerClient(c.config).QueryCreatedBy(c)
+}
+
+// QueryUpdatedBy queries the "updated_by" edge of the Customer entity.
+func (c *Customer) QueryUpdatedBy() *UserQuery {
+	return NewCustomerClient(c.config).QueryUpdatedBy(c)
 }
 
 // QueryApprover queries the "approver" edge of the Customer entity.
@@ -369,8 +405,8 @@ func (c *Customer) String() string {
 	builder.WriteString("name=")
 	builder.WriteString(c.Name)
 	builder.WriteString(", ")
-	builder.WriteString("is_approved=")
-	builder.WriteString(fmt.Sprintf("%v", c.IsApproved))
+	builder.WriteString("approval_status=")
+	builder.WriteString(fmt.Sprintf("%v", c.ApprovalStatus))
 	builder.WriteString(", ")
 	if v := c.OwnerType; v != nil {
 		builder.WriteString("owner_type=")
@@ -407,6 +443,9 @@ func (c *Customer) String() string {
 		builder.WriteString(*v)
 	}
 	builder.WriteString(", ")
+	builder.WriteString("draft=")
+	builder.WriteString(fmt.Sprintf("%v", c.Draft))
+	builder.WriteString(", ")
 	builder.WriteString("feishu_group=")
 	builder.WriteString(fmt.Sprintf("%v", c.FeishuGroup))
 	builder.WriteString(", ")
@@ -420,6 +459,11 @@ func (c *Customer) String() string {
 	builder.WriteString(", ")
 	if v := c.CreatedByID; v != nil {
 		builder.WriteString("created_by_id=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	if v := c.UpdatedByID; v != nil {
+		builder.WriteString("updated_by_id=")
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteString(", ")

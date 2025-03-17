@@ -19,6 +19,7 @@ import (
 	"cscd-bds/store/ent/projectvo"
 	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/schema/geo"
+	"cscd-bds/store/ent/schema/model"
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/schema/zht"
 	"cscd-bds/store/ent/tender"
@@ -3338,7 +3339,8 @@ type CustomerMutation struct {
 	created_at              *time.Time
 	updated_at              *time.Time
 	name                    *string
-	is_approved             *bool
+	approval_status         *int
+	addapproval_status      *int
 	owner_type              *int
 	addowner_type           *int
 	industry                *int
@@ -3349,6 +3351,7 @@ type CustomerMutation struct {
 	contact_person_position *string
 	contact_person_phone    *string
 	contact_person_email    *string
+	draft                   **model.Customer
 	feishu_group            **zht.Group
 	clearedFields           map[string]struct{}
 	area                    *xid.ID
@@ -3360,6 +3363,8 @@ type CustomerMutation struct {
 	clearedsales            bool
 	created_by              *xid.ID
 	clearedcreated_by       bool
+	updated_by              *xid.ID
+	clearedupdated_by       bool
 	approver                *xid.ID
 	clearedapprover         bool
 	visit_records           map[xid.ID]struct{}
@@ -3582,40 +3587,60 @@ func (m *CustomerMutation) ResetName() {
 	m.name = nil
 }
 
-// SetIsApproved sets the "is_approved" field.
-func (m *CustomerMutation) SetIsApproved(b bool) {
-	m.is_approved = &b
+// SetApprovalStatus sets the "approval_status" field.
+func (m *CustomerMutation) SetApprovalStatus(i int) {
+	m.approval_status = &i
+	m.addapproval_status = nil
 }
 
-// IsApproved returns the value of the "is_approved" field in the mutation.
-func (m *CustomerMutation) IsApproved() (r bool, exists bool) {
-	v := m.is_approved
+// ApprovalStatus returns the value of the "approval_status" field in the mutation.
+func (m *CustomerMutation) ApprovalStatus() (r int, exists bool) {
+	v := m.approval_status
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldIsApproved returns the old "is_approved" field's value of the Customer entity.
+// OldApprovalStatus returns the old "approval_status" field's value of the Customer entity.
 // If the Customer object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CustomerMutation) OldIsApproved(ctx context.Context) (v bool, err error) {
+func (m *CustomerMutation) OldApprovalStatus(ctx context.Context) (v int, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldIsApproved is only allowed on UpdateOne operations")
+		return v, errors.New("OldApprovalStatus is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldIsApproved requires an ID field in the mutation")
+		return v, errors.New("OldApprovalStatus requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldIsApproved: %w", err)
+		return v, fmt.Errorf("querying old value for OldApprovalStatus: %w", err)
 	}
-	return oldValue.IsApproved, nil
+	return oldValue.ApprovalStatus, nil
 }
 
-// ResetIsApproved resets all changes to the "is_approved" field.
-func (m *CustomerMutation) ResetIsApproved() {
-	m.is_approved = nil
+// AddApprovalStatus adds i to the "approval_status" field.
+func (m *CustomerMutation) AddApprovalStatus(i int) {
+	if m.addapproval_status != nil {
+		*m.addapproval_status += i
+	} else {
+		m.addapproval_status = &i
+	}
+}
+
+// AddedApprovalStatus returns the value that was added to the "approval_status" field in this mutation.
+func (m *CustomerMutation) AddedApprovalStatus() (r int, exists bool) {
+	v := m.addapproval_status
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetApprovalStatus resets all changes to the "approval_status" field.
+func (m *CustomerMutation) ResetApprovalStatus() {
+	m.approval_status = nil
+	m.addapproval_status = nil
 }
 
 // SetOwnerType sets the "owner_type" field.
@@ -4024,6 +4049,55 @@ func (m *CustomerMutation) ResetContactPersonEmail() {
 	delete(m.clearedFields, customer.FieldContactPersonEmail)
 }
 
+// SetDraft sets the "draft" field.
+func (m *CustomerMutation) SetDraft(value *model.Customer) {
+	m.draft = &value
+}
+
+// Draft returns the value of the "draft" field in the mutation.
+func (m *CustomerMutation) Draft() (r *model.Customer, exists bool) {
+	v := m.draft
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDraft returns the old "draft" field's value of the Customer entity.
+// If the Customer object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CustomerMutation) OldDraft(ctx context.Context) (v *model.Customer, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDraft is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDraft requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDraft: %w", err)
+	}
+	return oldValue.Draft, nil
+}
+
+// ClearDraft clears the value of the "draft" field.
+func (m *CustomerMutation) ClearDraft() {
+	m.draft = nil
+	m.clearedFields[customer.FieldDraft] = struct{}{}
+}
+
+// DraftCleared returns if the "draft" field was cleared in this mutation.
+func (m *CustomerMutation) DraftCleared() bool {
+	_, ok := m.clearedFields[customer.FieldDraft]
+	return ok
+}
+
+// ResetDraft resets all changes to the "draft" field.
+func (m *CustomerMutation) ResetDraft() {
+	m.draft = nil
+	delete(m.clearedFields, customer.FieldDraft)
+}
+
 // SetFeishuGroup sets the "feishu_group" field.
 func (m *CustomerMutation) SetFeishuGroup(z *zht.Group) {
 	m.feishu_group = &z
@@ -4205,6 +4279,55 @@ func (m *CustomerMutation) CreatedByIDCleared() bool {
 func (m *CustomerMutation) ResetCreatedByID() {
 	m.created_by = nil
 	delete(m.clearedFields, customer.FieldCreatedByID)
+}
+
+// SetUpdatedByID sets the "updated_by_id" field.
+func (m *CustomerMutation) SetUpdatedByID(x xid.ID) {
+	m.updated_by = &x
+}
+
+// UpdatedByID returns the value of the "updated_by_id" field in the mutation.
+func (m *CustomerMutation) UpdatedByID() (r xid.ID, exists bool) {
+	v := m.updated_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdatedByID returns the old "updated_by_id" field's value of the Customer entity.
+// If the Customer object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CustomerMutation) OldUpdatedByID(ctx context.Context) (v *xid.ID, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdatedByID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdatedByID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdatedByID: %w", err)
+	}
+	return oldValue.UpdatedByID, nil
+}
+
+// ClearUpdatedByID clears the value of the "updated_by_id" field.
+func (m *CustomerMutation) ClearUpdatedByID() {
+	m.updated_by = nil
+	m.clearedFields[customer.FieldUpdatedByID] = struct{}{}
+}
+
+// UpdatedByIDCleared returns if the "updated_by_id" field was cleared in this mutation.
+func (m *CustomerMutation) UpdatedByIDCleared() bool {
+	_, ok := m.clearedFields[customer.FieldUpdatedByID]
+	return ok
+}
+
+// ResetUpdatedByID resets all changes to the "updated_by_id" field.
+func (m *CustomerMutation) ResetUpdatedByID() {
+	m.updated_by = nil
+	delete(m.clearedFields, customer.FieldUpdatedByID)
 }
 
 // SetApproverID sets the "approver_id" field.
@@ -4391,6 +4514,33 @@ func (m *CustomerMutation) ResetCreatedBy() {
 	m.clearedcreated_by = false
 }
 
+// ClearUpdatedBy clears the "updated_by" edge to the User entity.
+func (m *CustomerMutation) ClearUpdatedBy() {
+	m.clearedupdated_by = true
+	m.clearedFields[customer.FieldUpdatedByID] = struct{}{}
+}
+
+// UpdatedByCleared reports if the "updated_by" edge to the User entity was cleared.
+func (m *CustomerMutation) UpdatedByCleared() bool {
+	return m.UpdatedByIDCleared() || m.clearedupdated_by
+}
+
+// UpdatedByIDs returns the "updated_by" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// UpdatedByID instead. It exists only for internal usage by the builders.
+func (m *CustomerMutation) UpdatedByIDs() (ids []xid.ID) {
+	if id := m.updated_by; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetUpdatedBy resets all changes to the "updated_by" edge.
+func (m *CustomerMutation) ResetUpdatedBy() {
+	m.updated_by = nil
+	m.clearedupdated_by = false
+}
+
 // ClearApprover clears the "approver" edge to the User entity.
 func (m *CustomerMutation) ClearApprover() {
 	m.clearedapprover = true
@@ -4506,7 +4656,7 @@ func (m *CustomerMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *CustomerMutation) Fields() []string {
-	fields := make([]string, 0, 16)
+	fields := make([]string, 0, 18)
 	if m.created_at != nil {
 		fields = append(fields, customer.FieldCreatedAt)
 	}
@@ -4516,8 +4666,8 @@ func (m *CustomerMutation) Fields() []string {
 	if m.name != nil {
 		fields = append(fields, customer.FieldName)
 	}
-	if m.is_approved != nil {
-		fields = append(fields, customer.FieldIsApproved)
+	if m.approval_status != nil {
+		fields = append(fields, customer.FieldApprovalStatus)
 	}
 	if m.owner_type != nil {
 		fields = append(fields, customer.FieldOwnerType)
@@ -4540,6 +4690,9 @@ func (m *CustomerMutation) Fields() []string {
 	if m.contact_person_email != nil {
 		fields = append(fields, customer.FieldContactPersonEmail)
 	}
+	if m.draft != nil {
+		fields = append(fields, customer.FieldDraft)
+	}
 	if m.feishu_group != nil {
 		fields = append(fields, customer.FieldFeishuGroup)
 	}
@@ -4551,6 +4704,9 @@ func (m *CustomerMutation) Fields() []string {
 	}
 	if m.created_by != nil {
 		fields = append(fields, customer.FieldCreatedByID)
+	}
+	if m.updated_by != nil {
+		fields = append(fields, customer.FieldUpdatedByID)
 	}
 	if m.approver != nil {
 		fields = append(fields, customer.FieldApproverID)
@@ -4569,8 +4725,8 @@ func (m *CustomerMutation) Field(name string) (ent.Value, bool) {
 		return m.UpdatedAt()
 	case customer.FieldName:
 		return m.Name()
-	case customer.FieldIsApproved:
-		return m.IsApproved()
+	case customer.FieldApprovalStatus:
+		return m.ApprovalStatus()
 	case customer.FieldOwnerType:
 		return m.OwnerType()
 	case customer.FieldIndustry:
@@ -4585,6 +4741,8 @@ func (m *CustomerMutation) Field(name string) (ent.Value, bool) {
 		return m.ContactPersonPhone()
 	case customer.FieldContactPersonEmail:
 		return m.ContactPersonEmail()
+	case customer.FieldDraft:
+		return m.Draft()
 	case customer.FieldFeishuGroup:
 		return m.FeishuGroup()
 	case customer.FieldAreaID:
@@ -4593,6 +4751,8 @@ func (m *CustomerMutation) Field(name string) (ent.Value, bool) {
 		return m.SalesID()
 	case customer.FieldCreatedByID:
 		return m.CreatedByID()
+	case customer.FieldUpdatedByID:
+		return m.UpdatedByID()
 	case customer.FieldApproverID:
 		return m.ApproverID()
 	}
@@ -4610,8 +4770,8 @@ func (m *CustomerMutation) OldField(ctx context.Context, name string) (ent.Value
 		return m.OldUpdatedAt(ctx)
 	case customer.FieldName:
 		return m.OldName(ctx)
-	case customer.FieldIsApproved:
-		return m.OldIsApproved(ctx)
+	case customer.FieldApprovalStatus:
+		return m.OldApprovalStatus(ctx)
 	case customer.FieldOwnerType:
 		return m.OldOwnerType(ctx)
 	case customer.FieldIndustry:
@@ -4626,6 +4786,8 @@ func (m *CustomerMutation) OldField(ctx context.Context, name string) (ent.Value
 		return m.OldContactPersonPhone(ctx)
 	case customer.FieldContactPersonEmail:
 		return m.OldContactPersonEmail(ctx)
+	case customer.FieldDraft:
+		return m.OldDraft(ctx)
 	case customer.FieldFeishuGroup:
 		return m.OldFeishuGroup(ctx)
 	case customer.FieldAreaID:
@@ -4634,6 +4796,8 @@ func (m *CustomerMutation) OldField(ctx context.Context, name string) (ent.Value
 		return m.OldSalesID(ctx)
 	case customer.FieldCreatedByID:
 		return m.OldCreatedByID(ctx)
+	case customer.FieldUpdatedByID:
+		return m.OldUpdatedByID(ctx)
 	case customer.FieldApproverID:
 		return m.OldApproverID(ctx)
 	}
@@ -4666,12 +4830,12 @@ func (m *CustomerMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetName(v)
 		return nil
-	case customer.FieldIsApproved:
-		v, ok := value.(bool)
+	case customer.FieldApprovalStatus:
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetIsApproved(v)
+		m.SetApprovalStatus(v)
 		return nil
 	case customer.FieldOwnerType:
 		v, ok := value.(int)
@@ -4722,6 +4886,13 @@ func (m *CustomerMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetContactPersonEmail(v)
 		return nil
+	case customer.FieldDraft:
+		v, ok := value.(*model.Customer)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDraft(v)
+		return nil
 	case customer.FieldFeishuGroup:
 		v, ok := value.(*zht.Group)
 		if !ok {
@@ -4750,6 +4921,13 @@ func (m *CustomerMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetCreatedByID(v)
 		return nil
+	case customer.FieldUpdatedByID:
+		v, ok := value.(xid.ID)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdatedByID(v)
+		return nil
 	case customer.FieldApproverID:
 		v, ok := value.(xid.ID)
 		if !ok {
@@ -4765,6 +4943,9 @@ func (m *CustomerMutation) SetField(name string, value ent.Value) error {
 // this mutation.
 func (m *CustomerMutation) AddedFields() []string {
 	var fields []string
+	if m.addapproval_status != nil {
+		fields = append(fields, customer.FieldApprovalStatus)
+	}
 	if m.addowner_type != nil {
 		fields = append(fields, customer.FieldOwnerType)
 	}
@@ -4782,6 +4963,8 @@ func (m *CustomerMutation) AddedFields() []string {
 // was not set, or was not defined in the schema.
 func (m *CustomerMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
+	case customer.FieldApprovalStatus:
+		return m.AddedApprovalStatus()
 	case customer.FieldOwnerType:
 		return m.AddedOwnerType()
 	case customer.FieldIndustry:
@@ -4797,6 +4980,13 @@ func (m *CustomerMutation) AddedField(name string) (ent.Value, bool) {
 // type.
 func (m *CustomerMutation) AddField(name string, value ent.Value) error {
 	switch name {
+	case customer.FieldApprovalStatus:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddApprovalStatus(v)
+		return nil
 	case customer.FieldOwnerType:
 		v, ok := value.(int)
 		if !ok {
@@ -4847,6 +5037,9 @@ func (m *CustomerMutation) ClearedFields() []string {
 	if m.FieldCleared(customer.FieldContactPersonEmail) {
 		fields = append(fields, customer.FieldContactPersonEmail)
 	}
+	if m.FieldCleared(customer.FieldDraft) {
+		fields = append(fields, customer.FieldDraft)
+	}
 	if m.FieldCleared(customer.FieldFeishuGroup) {
 		fields = append(fields, customer.FieldFeishuGroup)
 	}
@@ -4855,6 +5048,9 @@ func (m *CustomerMutation) ClearedFields() []string {
 	}
 	if m.FieldCleared(customer.FieldCreatedByID) {
 		fields = append(fields, customer.FieldCreatedByID)
+	}
+	if m.FieldCleared(customer.FieldUpdatedByID) {
+		fields = append(fields, customer.FieldUpdatedByID)
 	}
 	if m.FieldCleared(customer.FieldApproverID) {
 		fields = append(fields, customer.FieldApproverID)
@@ -4894,6 +5090,9 @@ func (m *CustomerMutation) ClearField(name string) error {
 	case customer.FieldContactPersonEmail:
 		m.ClearContactPersonEmail()
 		return nil
+	case customer.FieldDraft:
+		m.ClearDraft()
+		return nil
 	case customer.FieldFeishuGroup:
 		m.ClearFeishuGroup()
 		return nil
@@ -4902,6 +5101,9 @@ func (m *CustomerMutation) ClearField(name string) error {
 		return nil
 	case customer.FieldCreatedByID:
 		m.ClearCreatedByID()
+		return nil
+	case customer.FieldUpdatedByID:
+		m.ClearUpdatedByID()
 		return nil
 	case customer.FieldApproverID:
 		m.ClearApproverID()
@@ -4923,8 +5125,8 @@ func (m *CustomerMutation) ResetField(name string) error {
 	case customer.FieldName:
 		m.ResetName()
 		return nil
-	case customer.FieldIsApproved:
-		m.ResetIsApproved()
+	case customer.FieldApprovalStatus:
+		m.ResetApprovalStatus()
 		return nil
 	case customer.FieldOwnerType:
 		m.ResetOwnerType()
@@ -4947,6 +5149,9 @@ func (m *CustomerMutation) ResetField(name string) error {
 	case customer.FieldContactPersonEmail:
 		m.ResetContactPersonEmail()
 		return nil
+	case customer.FieldDraft:
+		m.ResetDraft()
+		return nil
 	case customer.FieldFeishuGroup:
 		m.ResetFeishuGroup()
 		return nil
@@ -4959,6 +5164,9 @@ func (m *CustomerMutation) ResetField(name string) error {
 	case customer.FieldCreatedByID:
 		m.ResetCreatedByID()
 		return nil
+	case customer.FieldUpdatedByID:
+		m.ResetUpdatedByID()
+		return nil
 	case customer.FieldApproverID:
 		m.ResetApproverID()
 		return nil
@@ -4968,7 +5176,7 @@ func (m *CustomerMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *CustomerMutation) AddedEdges() []string {
-	edges := make([]string, 0, 6)
+	edges := make([]string, 0, 7)
 	if m.area != nil {
 		edges = append(edges, customer.EdgeArea)
 	}
@@ -4980,6 +5188,9 @@ func (m *CustomerMutation) AddedEdges() []string {
 	}
 	if m.created_by != nil {
 		edges = append(edges, customer.EdgeCreatedBy)
+	}
+	if m.updated_by != nil {
+		edges = append(edges, customer.EdgeUpdatedBy)
 	}
 	if m.approver != nil {
 		edges = append(edges, customer.EdgeApprover)
@@ -5012,6 +5223,10 @@ func (m *CustomerMutation) AddedIDs(name string) []ent.Value {
 		if id := m.created_by; id != nil {
 			return []ent.Value{*id}
 		}
+	case customer.EdgeUpdatedBy:
+		if id := m.updated_by; id != nil {
+			return []ent.Value{*id}
+		}
 	case customer.EdgeApprover:
 		if id := m.approver; id != nil {
 			return []ent.Value{*id}
@@ -5028,7 +5243,7 @@ func (m *CustomerMutation) AddedIDs(name string) []ent.Value {
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *CustomerMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 6)
+	edges := make([]string, 0, 7)
 	if m.removedtenders != nil {
 		edges = append(edges, customer.EdgeTenders)
 	}
@@ -5060,7 +5275,7 @@ func (m *CustomerMutation) RemovedIDs(name string) []ent.Value {
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *CustomerMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 6)
+	edges := make([]string, 0, 7)
 	if m.clearedarea {
 		edges = append(edges, customer.EdgeArea)
 	}
@@ -5072,6 +5287,9 @@ func (m *CustomerMutation) ClearedEdges() []string {
 	}
 	if m.clearedcreated_by {
 		edges = append(edges, customer.EdgeCreatedBy)
+	}
+	if m.clearedupdated_by {
+		edges = append(edges, customer.EdgeUpdatedBy)
 	}
 	if m.clearedapprover {
 		edges = append(edges, customer.EdgeApprover)
@@ -5094,6 +5312,8 @@ func (m *CustomerMutation) EdgeCleared(name string) bool {
 		return m.clearedsales
 	case customer.EdgeCreatedBy:
 		return m.clearedcreated_by
+	case customer.EdgeUpdatedBy:
+		return m.clearedupdated_by
 	case customer.EdgeApprover:
 		return m.clearedapprover
 	case customer.EdgeVisitRecords:
@@ -5114,6 +5334,9 @@ func (m *CustomerMutation) ClearEdge(name string) error {
 		return nil
 	case customer.EdgeCreatedBy:
 		m.ClearCreatedBy()
+		return nil
+	case customer.EdgeUpdatedBy:
+		m.ClearUpdatedBy()
 		return nil
 	case customer.EdgeApprover:
 		m.ClearApprover()
@@ -5137,6 +5360,9 @@ func (m *CustomerMutation) ResetEdge(name string) error {
 		return nil
 	case customer.EdgeCreatedBy:
 		m.ResetCreatedBy()
+		return nil
+	case customer.EdgeUpdatedBy:
+		m.ResetUpdatedBy()
 		return nil
 	case customer.EdgeApprover:
 		m.ResetApprover()
@@ -21342,7 +21568,9 @@ type TenderMutation struct {
 	code                                    *string
 	status                                  *int
 	addstatus                               *int
-	is_approved                             *bool
+	approval_status                         *int
+	addapproval_status                      *int
+	approval_msg_id                         *string
 	name                                    *string
 	estimated_amount                        *float64
 	addestimated_amount                     *float64
@@ -21435,6 +21663,8 @@ type TenderMutation struct {
 	clearedcompetitor                       bool
 	approver                                *xid.ID
 	clearedapprover                         bool
+	updated_by                              *xid.ID
+	clearedupdated_by                       bool
 	done                                    bool
 	oldValue                                func(context.Context) (*Tender, error)
 	predicates                              []predicate.Tender
@@ -21708,40 +21938,109 @@ func (m *TenderMutation) ResetStatus() {
 	m.addstatus = nil
 }
 
-// SetIsApproved sets the "is_approved" field.
-func (m *TenderMutation) SetIsApproved(b bool) {
-	m.is_approved = &b
+// SetApprovalStatus sets the "approval_status" field.
+func (m *TenderMutation) SetApprovalStatus(i int) {
+	m.approval_status = &i
+	m.addapproval_status = nil
 }
 
-// IsApproved returns the value of the "is_approved" field in the mutation.
-func (m *TenderMutation) IsApproved() (r bool, exists bool) {
-	v := m.is_approved
+// ApprovalStatus returns the value of the "approval_status" field in the mutation.
+func (m *TenderMutation) ApprovalStatus() (r int, exists bool) {
+	v := m.approval_status
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldIsApproved returns the old "is_approved" field's value of the Tender entity.
+// OldApprovalStatus returns the old "approval_status" field's value of the Tender entity.
 // If the Tender object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *TenderMutation) OldIsApproved(ctx context.Context) (v bool, err error) {
+func (m *TenderMutation) OldApprovalStatus(ctx context.Context) (v int, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldIsApproved is only allowed on UpdateOne operations")
+		return v, errors.New("OldApprovalStatus is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldIsApproved requires an ID field in the mutation")
+		return v, errors.New("OldApprovalStatus requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldIsApproved: %w", err)
+		return v, fmt.Errorf("querying old value for OldApprovalStatus: %w", err)
 	}
-	return oldValue.IsApproved, nil
+	return oldValue.ApprovalStatus, nil
 }
 
-// ResetIsApproved resets all changes to the "is_approved" field.
-func (m *TenderMutation) ResetIsApproved() {
-	m.is_approved = nil
+// AddApprovalStatus adds i to the "approval_status" field.
+func (m *TenderMutation) AddApprovalStatus(i int) {
+	if m.addapproval_status != nil {
+		*m.addapproval_status += i
+	} else {
+		m.addapproval_status = &i
+	}
+}
+
+// AddedApprovalStatus returns the value that was added to the "approval_status" field in this mutation.
+func (m *TenderMutation) AddedApprovalStatus() (r int, exists bool) {
+	v := m.addapproval_status
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetApprovalStatus resets all changes to the "approval_status" field.
+func (m *TenderMutation) ResetApprovalStatus() {
+	m.approval_status = nil
+	m.addapproval_status = nil
+}
+
+// SetApprovalMsgID sets the "approval_msg_id" field.
+func (m *TenderMutation) SetApprovalMsgID(s string) {
+	m.approval_msg_id = &s
+}
+
+// ApprovalMsgID returns the value of the "approval_msg_id" field in the mutation.
+func (m *TenderMutation) ApprovalMsgID() (r string, exists bool) {
+	v := m.approval_msg_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldApprovalMsgID returns the old "approval_msg_id" field's value of the Tender entity.
+// If the Tender object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *TenderMutation) OldApprovalMsgID(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldApprovalMsgID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldApprovalMsgID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldApprovalMsgID: %w", err)
+	}
+	return oldValue.ApprovalMsgID, nil
+}
+
+// ClearApprovalMsgID clears the value of the "approval_msg_id" field.
+func (m *TenderMutation) ClearApprovalMsgID() {
+	m.approval_msg_id = nil
+	m.clearedFields[tender.FieldApprovalMsgID] = struct{}{}
+}
+
+// ApprovalMsgIDCleared returns if the "approval_msg_id" field was cleared in this mutation.
+func (m *TenderMutation) ApprovalMsgIDCleared() bool {
+	_, ok := m.clearedFields[tender.FieldApprovalMsgID]
+	return ok
+}
+
+// ResetApprovalMsgID resets all changes to the "approval_msg_id" field.
+func (m *TenderMutation) ResetApprovalMsgID() {
+	m.approval_msg_id = nil
+	delete(m.clearedFields, tender.FieldApprovalMsgID)
 }
 
 // SetName sets the "name" field.
@@ -25024,6 +25323,55 @@ func (m *TenderMutation) ResetApproverID() {
 	delete(m.clearedFields, tender.FieldApproverID)
 }
 
+// SetUpdatedByID sets the "updated_by_id" field.
+func (m *TenderMutation) SetUpdatedByID(x xid.ID) {
+	m.updated_by = &x
+}
+
+// UpdatedByID returns the value of the "updated_by_id" field in the mutation.
+func (m *TenderMutation) UpdatedByID() (r xid.ID, exists bool) {
+	v := m.updated_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdatedByID returns the old "updated_by_id" field's value of the Tender entity.
+// If the Tender object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *TenderMutation) OldUpdatedByID(ctx context.Context) (v *xid.ID, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdatedByID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdatedByID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdatedByID: %w", err)
+	}
+	return oldValue.UpdatedByID, nil
+}
+
+// ClearUpdatedByID clears the value of the "updated_by_id" field.
+func (m *TenderMutation) ClearUpdatedByID() {
+	m.updated_by = nil
+	m.clearedFields[tender.FieldUpdatedByID] = struct{}{}
+}
+
+// UpdatedByIDCleared returns if the "updated_by_id" field was cleared in this mutation.
+func (m *TenderMutation) UpdatedByIDCleared() bool {
+	_, ok := m.clearedFields[tender.FieldUpdatedByID]
+	return ok
+}
+
+// ResetUpdatedByID resets all changes to the "updated_by_id" field.
+func (m *TenderMutation) ResetUpdatedByID() {
+	m.updated_by = nil
+	delete(m.clearedFields, tender.FieldUpdatedByID)
+}
+
 // ClearArea clears the "area" edge to the Area entity.
 func (m *TenderMutation) ClearArea() {
 	m.clearedarea = true
@@ -25375,6 +25723,33 @@ func (m *TenderMutation) ResetApprover() {
 	m.clearedapprover = false
 }
 
+// ClearUpdatedBy clears the "updated_by" edge to the User entity.
+func (m *TenderMutation) ClearUpdatedBy() {
+	m.clearedupdated_by = true
+	m.clearedFields[tender.FieldUpdatedByID] = struct{}{}
+}
+
+// UpdatedByCleared reports if the "updated_by" edge to the User entity was cleared.
+func (m *TenderMutation) UpdatedByCleared() bool {
+	return m.UpdatedByIDCleared() || m.clearedupdated_by
+}
+
+// UpdatedByIDs returns the "updated_by" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// UpdatedByID instead. It exists only for internal usage by the builders.
+func (m *TenderMutation) UpdatedByIDs() (ids []xid.ID) {
+	if id := m.updated_by; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetUpdatedBy resets all changes to the "updated_by" edge.
+func (m *TenderMutation) ResetUpdatedBy() {
+	m.updated_by = nil
+	m.clearedupdated_by = false
+}
+
 // Where appends a list predicates to the TenderMutation builder.
 func (m *TenderMutation) Where(ps ...predicate.Tender) {
 	m.predicates = append(m.predicates, ps...)
@@ -25409,7 +25784,7 @@ func (m *TenderMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *TenderMutation) Fields() []string {
-	fields := make([]string, 0, 68)
+	fields := make([]string, 0, 70)
 	if m.created_at != nil {
 		fields = append(fields, tender.FieldCreatedAt)
 	}
@@ -25422,8 +25797,11 @@ func (m *TenderMutation) Fields() []string {
 	if m.status != nil {
 		fields = append(fields, tender.FieldStatus)
 	}
-	if m.is_approved != nil {
-		fields = append(fields, tender.FieldIsApproved)
+	if m.approval_status != nil {
+		fields = append(fields, tender.FieldApprovalStatus)
+	}
+	if m.approval_msg_id != nil {
+		fields = append(fields, tender.FieldApprovalMsgID)
 	}
 	if m.name != nil {
 		fields = append(fields, tender.FieldName)
@@ -25614,6 +25992,9 @@ func (m *TenderMutation) Fields() []string {
 	if m.approver != nil {
 		fields = append(fields, tender.FieldApproverID)
 	}
+	if m.updated_by != nil {
+		fields = append(fields, tender.FieldUpdatedByID)
+	}
 	return fields
 }
 
@@ -25630,8 +26011,10 @@ func (m *TenderMutation) Field(name string) (ent.Value, bool) {
 		return m.Code()
 	case tender.FieldStatus:
 		return m.Status()
-	case tender.FieldIsApproved:
-		return m.IsApproved()
+	case tender.FieldApprovalStatus:
+		return m.ApprovalStatus()
+	case tender.FieldApprovalMsgID:
+		return m.ApprovalMsgID()
 	case tender.FieldName:
 		return m.Name()
 	case tender.FieldEstimatedAmount:
@@ -25758,6 +26141,8 @@ func (m *TenderMutation) Field(name string) (ent.Value, bool) {
 		return m.CompetitorID()
 	case tender.FieldApproverID:
 		return m.ApproverID()
+	case tender.FieldUpdatedByID:
+		return m.UpdatedByID()
 	}
 	return nil, false
 }
@@ -25775,8 +26160,10 @@ func (m *TenderMutation) OldField(ctx context.Context, name string) (ent.Value, 
 		return m.OldCode(ctx)
 	case tender.FieldStatus:
 		return m.OldStatus(ctx)
-	case tender.FieldIsApproved:
-		return m.OldIsApproved(ctx)
+	case tender.FieldApprovalStatus:
+		return m.OldApprovalStatus(ctx)
+	case tender.FieldApprovalMsgID:
+		return m.OldApprovalMsgID(ctx)
 	case tender.FieldName:
 		return m.OldName(ctx)
 	case tender.FieldEstimatedAmount:
@@ -25903,6 +26290,8 @@ func (m *TenderMutation) OldField(ctx context.Context, name string) (ent.Value, 
 		return m.OldCompetitorID(ctx)
 	case tender.FieldApproverID:
 		return m.OldApproverID(ctx)
+	case tender.FieldUpdatedByID:
+		return m.OldUpdatedByID(ctx)
 	}
 	return nil, fmt.Errorf("unknown Tender field %s", name)
 }
@@ -25940,12 +26329,19 @@ func (m *TenderMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetStatus(v)
 		return nil
-	case tender.FieldIsApproved:
-		v, ok := value.(bool)
+	case tender.FieldApprovalStatus:
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetIsApproved(v)
+		m.SetApprovalStatus(v)
+		return nil
+	case tender.FieldApprovalMsgID:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetApprovalMsgID(v)
 		return nil
 	case tender.FieldName:
 		v, ok := value.(string)
@@ -26388,6 +26784,13 @@ func (m *TenderMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetApproverID(v)
 		return nil
+	case tender.FieldUpdatedByID:
+		v, ok := value.(xid.ID)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdatedByID(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Tender field %s", name)
 }
@@ -26398,6 +26801,9 @@ func (m *TenderMutation) AddedFields() []string {
 	var fields []string
 	if m.addstatus != nil {
 		fields = append(fields, tender.FieldStatus)
+	}
+	if m.addapproval_status != nil {
+		fields = append(fields, tender.FieldApprovalStatus)
 	}
 	if m.addestimated_amount != nil {
 		fields = append(fields, tender.FieldEstimatedAmount)
@@ -26439,6 +26845,8 @@ func (m *TenderMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
 	case tender.FieldStatus:
 		return m.AddedStatus()
+	case tender.FieldApprovalStatus:
+		return m.AddedApprovalStatus()
 	case tender.FieldEstimatedAmount:
 		return m.AddedEstimatedAmount()
 	case tender.FieldClassify:
@@ -26474,6 +26882,13 @@ func (m *TenderMutation) AddField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddStatus(v)
+		return nil
+	case tender.FieldApprovalStatus:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddApprovalStatus(v)
 		return nil
 	case tender.FieldEstimatedAmount:
 		v, ok := value.(float64)
@@ -26553,6 +26968,9 @@ func (m *TenderMutation) AddField(name string, value ent.Value) error {
 // mutation.
 func (m *TenderMutation) ClearedFields() []string {
 	var fields []string
+	if m.FieldCleared(tender.FieldApprovalMsgID) {
+		fields = append(fields, tender.FieldApprovalMsgID)
+	}
 	if m.FieldCleared(tender.FieldEstimatedAmount) {
 		fields = append(fields, tender.FieldEstimatedAmount)
 	}
@@ -26727,6 +27145,9 @@ func (m *TenderMutation) ClearedFields() []string {
 	if m.FieldCleared(tender.FieldApproverID) {
 		fields = append(fields, tender.FieldApproverID)
 	}
+	if m.FieldCleared(tender.FieldUpdatedByID) {
+		fields = append(fields, tender.FieldUpdatedByID)
+	}
 	return fields
 }
 
@@ -26741,6 +27162,9 @@ func (m *TenderMutation) FieldCleared(name string) bool {
 // error if the field is not defined in the schema.
 func (m *TenderMutation) ClearField(name string) error {
 	switch name {
+	case tender.FieldApprovalMsgID:
+		m.ClearApprovalMsgID()
+		return nil
 	case tender.FieldEstimatedAmount:
 		m.ClearEstimatedAmount()
 		return nil
@@ -26915,6 +27339,9 @@ func (m *TenderMutation) ClearField(name string) error {
 	case tender.FieldApproverID:
 		m.ClearApproverID()
 		return nil
+	case tender.FieldUpdatedByID:
+		m.ClearUpdatedByID()
+		return nil
 	}
 	return fmt.Errorf("unknown Tender nullable field %s", name)
 }
@@ -26935,8 +27362,11 @@ func (m *TenderMutation) ResetField(name string) error {
 	case tender.FieldStatus:
 		m.ResetStatus()
 		return nil
-	case tender.FieldIsApproved:
-		m.ResetIsApproved()
+	case tender.FieldApprovalStatus:
+		m.ResetApprovalStatus()
+		return nil
+	case tender.FieldApprovalMsgID:
+		m.ResetApprovalMsgID()
 		return nil
 	case tender.FieldName:
 		m.ResetName()
@@ -27127,13 +27557,16 @@ func (m *TenderMutation) ResetField(name string) error {
 	case tender.FieldApproverID:
 		m.ResetApproverID()
 		return nil
+	case tender.FieldUpdatedByID:
+		m.ResetUpdatedByID()
+		return nil
 	}
 	return fmt.Errorf("unknown Tender field %s", name)
 }
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *TenderMutation) AddedEdges() []string {
-	edges := make([]string, 0, 11)
+	edges := make([]string, 0, 12)
 	if m.area != nil {
 		edges = append(edges, tender.EdgeArea)
 	}
@@ -27166,6 +27599,9 @@ func (m *TenderMutation) AddedEdges() []string {
 	}
 	if m.approver != nil {
 		edges = append(edges, tender.EdgeApprover)
+	}
+	if m.updated_by != nil {
+		edges = append(edges, tender.EdgeUpdatedBy)
 	}
 	return edges
 }
@@ -27222,13 +27658,17 @@ func (m *TenderMutation) AddedIDs(name string) []ent.Value {
 		if id := m.approver; id != nil {
 			return []ent.Value{*id}
 		}
+	case tender.EdgeUpdatedBy:
+		if id := m.updated_by; id != nil {
+			return []ent.Value{*id}
+		}
 	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *TenderMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 11)
+	edges := make([]string, 0, 12)
 	if m.removedfollowing_sales != nil {
 		edges = append(edges, tender.EdgeFollowingSales)
 	}
@@ -27260,7 +27700,7 @@ func (m *TenderMutation) RemovedIDs(name string) []ent.Value {
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *TenderMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 11)
+	edges := make([]string, 0, 12)
 	if m.clearedarea {
 		edges = append(edges, tender.EdgeArea)
 	}
@@ -27294,6 +27734,9 @@ func (m *TenderMutation) ClearedEdges() []string {
 	if m.clearedapprover {
 		edges = append(edges, tender.EdgeApprover)
 	}
+	if m.clearedupdated_by {
+		edges = append(edges, tender.EdgeUpdatedBy)
+	}
 	return edges
 }
 
@@ -27323,6 +27766,8 @@ func (m *TenderMutation) EdgeCleared(name string) bool {
 		return m.clearedcompetitor
 	case tender.EdgeApprover:
 		return m.clearedapprover
+	case tender.EdgeUpdatedBy:
+		return m.clearedupdated_by
 	}
 	return false
 }
@@ -27357,6 +27802,9 @@ func (m *TenderMutation) ClearEdge(name string) error {
 		return nil
 	case tender.EdgeApprover:
 		m.ClearApprover()
+		return nil
+	case tender.EdgeUpdatedBy:
+		m.ClearUpdatedBy()
 		return nil
 	}
 	return fmt.Errorf("unknown Tender unique edge %s", name)
@@ -27398,6 +27846,9 @@ func (m *TenderMutation) ResetEdge(name string) error {
 		return nil
 	case tender.EdgeApprover:
 		m.ResetApprover()
+		return nil
+	case tender.EdgeUpdatedBy:
+		m.ResetUpdatedBy()
 		return nil
 	}
 	return fmt.Errorf("unknown Tender edge %s", name)

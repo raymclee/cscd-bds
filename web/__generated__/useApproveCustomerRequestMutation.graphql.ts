@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<7b0b8e1c7f7ec01ade06d2455b73bdbb>>
+ * @generated SignedSource<<6a364d6683cb1f914a2587974a659393>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -17,6 +17,7 @@ export type useApproveCustomerRequestMutation$data = {
   readonly approveCustomerRequest: {
     readonly draft: {
       readonly area: {
+        readonly code: string;
         readonly id: string;
         readonly name: string;
       } | null | undefined;
@@ -119,25 +120,38 @@ v10 = {
   "name": "id",
   "storageKey": null
 },
-v11 = [
-  (v10/*: any*/),
-  (v2/*: any*/)
-],
+v11 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "code",
+  "storageKey": null
+},
 v12 = {
+  "alias": null,
+  "args": null,
+  "concreteType": "Area",
+  "kind": "LinkedField",
+  "name": "area",
+  "plural": false,
+  "selections": [
+    (v10/*: any*/),
+    (v2/*: any*/),
+    (v11/*: any*/)
+  ],
+  "storageKey": null
+},
+v13 = {
   "alias": null,
   "args": null,
   "concreteType": "User",
   "kind": "LinkedField",
   "name": "sales",
   "plural": false,
-  "selections": (v11/*: any*/),
-  "storageKey": null
-},
-v13 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "code",
+  "selections": [
+    (v10/*: any*/),
+    (v2/*: any*/)
+  ],
   "storageKey": null
 },
 v14 = [
@@ -183,17 +197,8 @@ return {
               (v7/*: any*/),
               (v8/*: any*/),
               (v9/*: any*/),
-              {
-                "alias": null,
-                "args": null,
-                "concreteType": "Area",
-                "kind": "LinkedField",
-                "name": "area",
-                "plural": false,
-                "selections": (v11/*: any*/),
-                "storageKey": null
-              },
-              (v12/*: any*/)
+              (v12/*: any*/),
+              (v13/*: any*/)
             ],
             "storageKey": null
           }
@@ -250,26 +255,13 @@ return {
           (v3/*: any*/),
           (v4/*: any*/),
           (v5/*: any*/),
+          (v13/*: any*/),
           (v12/*: any*/),
           {
             "alias": null,
             "args": null,
-            "concreteType": "Area",
-            "kind": "LinkedField",
-            "name": "area",
-            "plural": false,
-            "selections": [
-              (v10/*: any*/),
-              (v2/*: any*/),
-              (v13/*: any*/)
-            ],
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
             "kind": "ScalarField",
-            "name": "isApproved",
+            "name": "approvalStatus",
             "storageKey": null
           },
           (v6/*: any*/),
@@ -390,12 +382,12 @@ return {
                 "plural": false,
                 "selections": [
                   (v10/*: any*/),
-                  (v13/*: any*/),
+                  (v11/*: any*/),
                   (v2/*: any*/)
                 ],
                 "storageKey": null
               },
-              (v12/*: any*/)
+              (v13/*: any*/)
             ],
             "storageKey": null
           }
@@ -405,16 +397,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "9aa03bb1623df8dcc148a16795024265",
+    "cacheID": "5dc4d341c3fc847439c88b30fbc8f043",
     "id": null,
     "metadata": {},
     "name": "useApproveCustomerRequestMutation",
     "operationKind": "mutation",
-    "text": "mutation useApproveCustomerRequestMutation(\n  $id: ID!\n) {\n  approveCustomerRequest(id: $id) {\n    ...customerDetailFragment\n    draft {\n      name\n      ownerType\n      industry\n      size\n      contactPerson\n      contactPersonPosition\n      contactPersonPhone\n      contactPersonEmail\n      area {\n        id\n        name\n      }\n      sales {\n        id\n        name\n      }\n    }\n    id\n  }\n}\n\nfragment customerDetailFragment on Customer {\n  id\n  name\n  createdAt\n  createdBy {\n    name\n    id\n  }\n  updatedAt\n  ownerType\n  industry\n  size\n  sales {\n    id\n    name\n  }\n  area {\n    id\n    name\n    code\n  }\n  isApproved\n  contactPerson\n  contactPersonPosition\n  contactPersonPhone\n  contactPersonEmail\n  lastVisitRecord: visitRecords(last: 1) {\n    edges {\n      node {\n        date\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasPreviousPage\n      startCursor\n    }\n  }\n  draft {\n    name\n    ownerType\n    industry\n    size\n    contactPerson\n    contactPersonPosition\n    contactPersonPhone\n    contactPersonEmail\n    area {\n      id\n      code\n      name\n    }\n    sales {\n      id\n      name\n    }\n  }\n}\n"
+    "text": "mutation useApproveCustomerRequestMutation(\n  $id: ID!\n) {\n  approveCustomerRequest(id: $id) {\n    ...customerDetailFragment\n    draft {\n      name\n      ownerType\n      industry\n      size\n      contactPerson\n      contactPersonPosition\n      contactPersonPhone\n      contactPersonEmail\n      area {\n        id\n        name\n        code\n      }\n      sales {\n        id\n        name\n      }\n    }\n    id\n  }\n}\n\nfragment customerDetailFragment on Customer {\n  id\n  name\n  createdAt\n  createdBy {\n    name\n    id\n  }\n  updatedAt\n  ownerType\n  industry\n  size\n  sales {\n    id\n    name\n  }\n  area {\n    id\n    name\n    code\n  }\n  approvalStatus\n  contactPerson\n  contactPersonPosition\n  contactPersonPhone\n  contactPersonEmail\n  lastVisitRecord: visitRecords(last: 1) {\n    edges {\n      node {\n        date\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasPreviousPage\n      startCursor\n    }\n  }\n  draft {\n    name\n    ownerType\n    industry\n    size\n    contactPerson\n    contactPersonPosition\n    contactPersonPhone\n    contactPersonEmail\n    area {\n      id\n      code\n      name\n    }\n    sales {\n      id\n      name\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "7c243119db355f8b0bc0527084dd2f5a";
+(node as any).hash = "6669f4433f658adf5dc9c21dd26e20ba";
 
 export default node;

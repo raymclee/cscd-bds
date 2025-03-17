@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<c455f1e2397ae82bc7dd282d8f0dd76f>>
+ * @generated SignedSource<<6550770c993a4d83dad94f84664bbb50>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -15,6 +15,8 @@ export type UpdateTenderInput = {
   address?: string | null | undefined;
   appendAttachements?: ReadonlyArray<string> | null | undefined;
   appendImages?: ReadonlyArray<string> | null | undefined;
+  approvalMsgID?: string | null | undefined;
+  approvalStatus?: number | null | undefined;
   approverID?: string | null | undefined;
   architect?: string | null | undefined;
   areaID?: string | null | undefined;
@@ -24,6 +26,7 @@ export type UpdateTenderInput = {
   cityID?: string | null | undefined;
   classify?: number | null | undefined;
   clearAddress?: boolean | null | undefined;
+  clearApprovalMsgID?: boolean | null | undefined;
   clearApprover?: boolean | null | undefined;
   clearArchitect?: boolean | null | undefined;
   clearAttachements?: boolean | null | undefined;
@@ -80,6 +83,7 @@ export type UpdateTenderInput = {
   clearTenderingAgency?: boolean | null | undefined;
   clearTimeLimitRating?: boolean | null | undefined;
   clearTimeLimitRatingOverview?: boolean | null | undefined;
+  clearUpdatedBy?: boolean | null | undefined;
   clearVisitRecords?: boolean | null | undefined;
   code?: string | null | undefined;
   competitivePartnershipRating?: number | null | undefined;
@@ -109,7 +113,6 @@ export type UpdateTenderInput = {
   finderID?: string | null | undefined;
   fullAddress?: string | null | undefined;
   images?: ReadonlyArray<string> | null | undefined;
-  isApproved?: boolean | null | undefined;
   keyProject?: boolean | null | undefined;
   lastTenderAmount?: number | null | undefined;
   levelInvolved?: number | null | undefined;
@@ -139,6 +142,7 @@ export type UpdateTenderInput = {
   timeLimitRating?: number | null | undefined;
   timeLimitRatingOverview?: string | null | undefined;
   updatedAt?: any | null | undefined;
+  updatedByID?: string | null | undefined;
 };
 export type tendersDetailPageMutation$variables = {
   geoBounds?: ReadonlyArray<ReadonlyArray<number>> | null | undefined;

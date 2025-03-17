@@ -1648,9 +1648,15 @@ type CustomerWhereInput struct {
 	NameEqualFold    *string  `json:"nameEqualFold,omitempty"`
 	NameContainsFold *string  `json:"nameContainsFold,omitempty"`
 
-	// "is_approved" field predicates.
-	IsApproved    *bool `json:"isApproved,omitempty"`
-	IsApprovedNEQ *bool `json:"isApprovedNEQ,omitempty"`
+	// "approval_status" field predicates.
+	ApprovalStatus      *int  `json:"approvalStatus,omitempty"`
+	ApprovalStatusNEQ   *int  `json:"approvalStatusNEQ,omitempty"`
+	ApprovalStatusIn    []int `json:"approvalStatusIn,omitempty"`
+	ApprovalStatusNotIn []int `json:"approvalStatusNotIn,omitempty"`
+	ApprovalStatusGT    *int  `json:"approvalStatusGT,omitempty"`
+	ApprovalStatusGTE   *int  `json:"approvalStatusGTE,omitempty"`
+	ApprovalStatusLT    *int  `json:"approvalStatusLT,omitempty"`
+	ApprovalStatusLTE   *int  `json:"approvalStatusLTE,omitempty"`
 
 	// "owner_type" field predicates.
 	OwnerType       *int  `json:"ownerType,omitempty"`
@@ -1805,6 +1811,23 @@ type CustomerWhereInput struct {
 	CreatedByIDEqualFold    *xid.ID  `json:"createdByIDEqualFold,omitempty"`
 	CreatedByIDContainsFold *xid.ID  `json:"createdByIDContainsFold,omitempty"`
 
+	// "updated_by_id" field predicates.
+	UpdatedByID             *xid.ID  `json:"updatedByID,omitempty"`
+	UpdatedByIDNEQ          *xid.ID  `json:"updatedByIDNEQ,omitempty"`
+	UpdatedByIDIn           []xid.ID `json:"updatedByIDIn,omitempty"`
+	UpdatedByIDNotIn        []xid.ID `json:"updatedByIDNotIn,omitempty"`
+	UpdatedByIDGT           *xid.ID  `json:"updatedByIDGT,omitempty"`
+	UpdatedByIDGTE          *xid.ID  `json:"updatedByIDGTE,omitempty"`
+	UpdatedByIDLT           *xid.ID  `json:"updatedByIDLT,omitempty"`
+	UpdatedByIDLTE          *xid.ID  `json:"updatedByIDLTE,omitempty"`
+	UpdatedByIDContains     *xid.ID  `json:"updatedByIDContains,omitempty"`
+	UpdatedByIDHasPrefix    *xid.ID  `json:"updatedByIDHasPrefix,omitempty"`
+	UpdatedByIDHasSuffix    *xid.ID  `json:"updatedByIDHasSuffix,omitempty"`
+	UpdatedByIDIsNil        bool     `json:"updatedByIDIsNil,omitempty"`
+	UpdatedByIDNotNil       bool     `json:"updatedByIDNotNil,omitempty"`
+	UpdatedByIDEqualFold    *xid.ID  `json:"updatedByIDEqualFold,omitempty"`
+	UpdatedByIDContainsFold *xid.ID  `json:"updatedByIDContainsFold,omitempty"`
+
 	// "approver_id" field predicates.
 	ApproverID             *xid.ID  `json:"approverID,omitempty"`
 	ApproverIDNEQ          *xid.ID  `json:"approverIDNEQ,omitempty"`
@@ -1837,6 +1860,10 @@ type CustomerWhereInput struct {
 	// "created_by" edge predicates.
 	HasCreatedBy     *bool             `json:"hasCreatedBy,omitempty"`
 	HasCreatedByWith []*UserWhereInput `json:"hasCreatedByWith,omitempty"`
+
+	// "updated_by" edge predicates.
+	HasUpdatedBy     *bool             `json:"hasUpdatedBy,omitempty"`
+	HasUpdatedByWith []*UserWhereInput `json:"hasUpdatedByWith,omitempty"`
 
 	// "approver" edge predicates.
 	HasApprover     *bool             `json:"hasApprover,omitempty"`
@@ -2029,11 +2056,29 @@ func (i *CustomerWhereInput) P() (predicate.Customer, error) {
 	if i.NameContainsFold != nil {
 		predicates = append(predicates, customer.NameContainsFold(*i.NameContainsFold))
 	}
-	if i.IsApproved != nil {
-		predicates = append(predicates, customer.IsApprovedEQ(*i.IsApproved))
+	if i.ApprovalStatus != nil {
+		predicates = append(predicates, customer.ApprovalStatusEQ(*i.ApprovalStatus))
 	}
-	if i.IsApprovedNEQ != nil {
-		predicates = append(predicates, customer.IsApprovedNEQ(*i.IsApprovedNEQ))
+	if i.ApprovalStatusNEQ != nil {
+		predicates = append(predicates, customer.ApprovalStatusNEQ(*i.ApprovalStatusNEQ))
+	}
+	if len(i.ApprovalStatusIn) > 0 {
+		predicates = append(predicates, customer.ApprovalStatusIn(i.ApprovalStatusIn...))
+	}
+	if len(i.ApprovalStatusNotIn) > 0 {
+		predicates = append(predicates, customer.ApprovalStatusNotIn(i.ApprovalStatusNotIn...))
+	}
+	if i.ApprovalStatusGT != nil {
+		predicates = append(predicates, customer.ApprovalStatusGT(*i.ApprovalStatusGT))
+	}
+	if i.ApprovalStatusGTE != nil {
+		predicates = append(predicates, customer.ApprovalStatusGTE(*i.ApprovalStatusGTE))
+	}
+	if i.ApprovalStatusLT != nil {
+		predicates = append(predicates, customer.ApprovalStatusLT(*i.ApprovalStatusLT))
+	}
+	if i.ApprovalStatusLTE != nil {
+		predicates = append(predicates, customer.ApprovalStatusLTE(*i.ApprovalStatusLTE))
 	}
 	if i.OwnerType != nil {
 		predicates = append(predicates, customer.OwnerTypeEQ(*i.OwnerType))
@@ -2434,6 +2479,51 @@ func (i *CustomerWhereInput) P() (predicate.Customer, error) {
 	if i.CreatedByIDContainsFold != nil {
 		predicates = append(predicates, customer.CreatedByIDContainsFold(*i.CreatedByIDContainsFold))
 	}
+	if i.UpdatedByID != nil {
+		predicates = append(predicates, customer.UpdatedByIDEQ(*i.UpdatedByID))
+	}
+	if i.UpdatedByIDNEQ != nil {
+		predicates = append(predicates, customer.UpdatedByIDNEQ(*i.UpdatedByIDNEQ))
+	}
+	if len(i.UpdatedByIDIn) > 0 {
+		predicates = append(predicates, customer.UpdatedByIDIn(i.UpdatedByIDIn...))
+	}
+	if len(i.UpdatedByIDNotIn) > 0 {
+		predicates = append(predicates, customer.UpdatedByIDNotIn(i.UpdatedByIDNotIn...))
+	}
+	if i.UpdatedByIDGT != nil {
+		predicates = append(predicates, customer.UpdatedByIDGT(*i.UpdatedByIDGT))
+	}
+	if i.UpdatedByIDGTE != nil {
+		predicates = append(predicates, customer.UpdatedByIDGTE(*i.UpdatedByIDGTE))
+	}
+	if i.UpdatedByIDLT != nil {
+		predicates = append(predicates, customer.UpdatedByIDLT(*i.UpdatedByIDLT))
+	}
+	if i.UpdatedByIDLTE != nil {
+		predicates = append(predicates, customer.UpdatedByIDLTE(*i.UpdatedByIDLTE))
+	}
+	if i.UpdatedByIDContains != nil {
+		predicates = append(predicates, customer.UpdatedByIDContains(*i.UpdatedByIDContains))
+	}
+	if i.UpdatedByIDHasPrefix != nil {
+		predicates = append(predicates, customer.UpdatedByIDHasPrefix(*i.UpdatedByIDHasPrefix))
+	}
+	if i.UpdatedByIDHasSuffix != nil {
+		predicates = append(predicates, customer.UpdatedByIDHasSuffix(*i.UpdatedByIDHasSuffix))
+	}
+	if i.UpdatedByIDIsNil {
+		predicates = append(predicates, customer.UpdatedByIDIsNil())
+	}
+	if i.UpdatedByIDNotNil {
+		predicates = append(predicates, customer.UpdatedByIDNotNil())
+	}
+	if i.UpdatedByIDEqualFold != nil {
+		predicates = append(predicates, customer.UpdatedByIDEqualFold(*i.UpdatedByIDEqualFold))
+	}
+	if i.UpdatedByIDContainsFold != nil {
+		predicates = append(predicates, customer.UpdatedByIDContainsFold(*i.UpdatedByIDContainsFold))
+	}
 	if i.ApproverID != nil {
 		predicates = append(predicates, customer.ApproverIDEQ(*i.ApproverID))
 	}
@@ -2551,6 +2641,24 @@ func (i *CustomerWhereInput) P() (predicate.Customer, error) {
 			with = append(with, p)
 		}
 		predicates = append(predicates, customer.HasCreatedByWith(with...))
+	}
+	if i.HasUpdatedBy != nil {
+		p := customer.HasUpdatedBy()
+		if !*i.HasUpdatedBy {
+			p = customer.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasUpdatedByWith) > 0 {
+		with := make([]predicate.User, 0, len(i.HasUpdatedByWith))
+		for _, w := range i.HasUpdatedByWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'HasUpdatedByWith'", err)
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, customer.HasUpdatedByWith(with...))
 	}
 	if i.HasApprover != nil {
 		p := customer.HasApprover()
@@ -10454,9 +10562,32 @@ type TenderWhereInput struct {
 	StatusLT    *int  `json:"statusLT,omitempty"`
 	StatusLTE   *int  `json:"statusLTE,omitempty"`
 
-	// "is_approved" field predicates.
-	IsApproved    *bool `json:"isApproved,omitempty"`
-	IsApprovedNEQ *bool `json:"isApprovedNEQ,omitempty"`
+	// "approval_status" field predicates.
+	ApprovalStatus      *int  `json:"approvalStatus,omitempty"`
+	ApprovalStatusNEQ   *int  `json:"approvalStatusNEQ,omitempty"`
+	ApprovalStatusIn    []int `json:"approvalStatusIn,omitempty"`
+	ApprovalStatusNotIn []int `json:"approvalStatusNotIn,omitempty"`
+	ApprovalStatusGT    *int  `json:"approvalStatusGT,omitempty"`
+	ApprovalStatusGTE   *int  `json:"approvalStatusGTE,omitempty"`
+	ApprovalStatusLT    *int  `json:"approvalStatusLT,omitempty"`
+	ApprovalStatusLTE   *int  `json:"approvalStatusLTE,omitempty"`
+
+	// "approval_msg_id" field predicates.
+	ApprovalMsgID             *string  `json:"approvalMsgID,omitempty"`
+	ApprovalMsgIDNEQ          *string  `json:"approvalMsgIDNEQ,omitempty"`
+	ApprovalMsgIDIn           []string `json:"approvalMsgIDIn,omitempty"`
+	ApprovalMsgIDNotIn        []string `json:"approvalMsgIDNotIn,omitempty"`
+	ApprovalMsgIDGT           *string  `json:"approvalMsgIDGT,omitempty"`
+	ApprovalMsgIDGTE          *string  `json:"approvalMsgIDGTE,omitempty"`
+	ApprovalMsgIDLT           *string  `json:"approvalMsgIDLT,omitempty"`
+	ApprovalMsgIDLTE          *string  `json:"approvalMsgIDLTE,omitempty"`
+	ApprovalMsgIDContains     *string  `json:"approvalMsgIDContains,omitempty"`
+	ApprovalMsgIDHasPrefix    *string  `json:"approvalMsgIDHasPrefix,omitempty"`
+	ApprovalMsgIDHasSuffix    *string  `json:"approvalMsgIDHasSuffix,omitempty"`
+	ApprovalMsgIDIsNil        bool     `json:"approvalMsgIDIsNil,omitempty"`
+	ApprovalMsgIDNotNil       bool     `json:"approvalMsgIDNotNil,omitempty"`
+	ApprovalMsgIDEqualFold    *string  `json:"approvalMsgIDEqualFold,omitempty"`
+	ApprovalMsgIDContainsFold *string  `json:"approvalMsgIDContainsFold,omitempty"`
 
 	// "name" field predicates.
 	Name             *string  `json:"name,omitempty"`
@@ -11344,6 +11475,23 @@ type TenderWhereInput struct {
 	ApproverIDEqualFold    *xid.ID  `json:"approverIDEqualFold,omitempty"`
 	ApproverIDContainsFold *xid.ID  `json:"approverIDContainsFold,omitempty"`
 
+	// "updated_by_id" field predicates.
+	UpdatedByID             *xid.ID  `json:"updatedByID,omitempty"`
+	UpdatedByIDNEQ          *xid.ID  `json:"updatedByIDNEQ,omitempty"`
+	UpdatedByIDIn           []xid.ID `json:"updatedByIDIn,omitempty"`
+	UpdatedByIDNotIn        []xid.ID `json:"updatedByIDNotIn,omitempty"`
+	UpdatedByIDGT           *xid.ID  `json:"updatedByIDGT,omitempty"`
+	UpdatedByIDGTE          *xid.ID  `json:"updatedByIDGTE,omitempty"`
+	UpdatedByIDLT           *xid.ID  `json:"updatedByIDLT,omitempty"`
+	UpdatedByIDLTE          *xid.ID  `json:"updatedByIDLTE,omitempty"`
+	UpdatedByIDContains     *xid.ID  `json:"updatedByIDContains,omitempty"`
+	UpdatedByIDHasPrefix    *xid.ID  `json:"updatedByIDHasPrefix,omitempty"`
+	UpdatedByIDHasSuffix    *xid.ID  `json:"updatedByIDHasSuffix,omitempty"`
+	UpdatedByIDIsNil        bool     `json:"updatedByIDIsNil,omitempty"`
+	UpdatedByIDNotNil       bool     `json:"updatedByIDNotNil,omitempty"`
+	UpdatedByIDEqualFold    *xid.ID  `json:"updatedByIDEqualFold,omitempty"`
+	UpdatedByIDContainsFold *xid.ID  `json:"updatedByIDContainsFold,omitempty"`
+
 	// "area" edge predicates.
 	HasArea     *bool             `json:"hasArea,omitempty"`
 	HasAreaWith []*AreaWhereInput `json:"hasAreaWith,omitempty"`
@@ -11387,6 +11535,10 @@ type TenderWhereInput struct {
 	// "approver" edge predicates.
 	HasApprover     *bool             `json:"hasApprover,omitempty"`
 	HasApproverWith []*UserWhereInput `json:"hasApproverWith,omitempty"`
+
+	// "updated_by" edge predicates.
+	HasUpdatedBy     *bool             `json:"hasUpdatedBy,omitempty"`
+	HasUpdatedByWith []*UserWhereInput `json:"hasUpdatedByWith,omitempty"`
 }
 
 // AddPredicates adds custom predicates to the where input to be used during the filtering phase.
@@ -11595,11 +11747,74 @@ func (i *TenderWhereInput) P() (predicate.Tender, error) {
 	if i.StatusLTE != nil {
 		predicates = append(predicates, tender.StatusLTE(*i.StatusLTE))
 	}
-	if i.IsApproved != nil {
-		predicates = append(predicates, tender.IsApprovedEQ(*i.IsApproved))
+	if i.ApprovalStatus != nil {
+		predicates = append(predicates, tender.ApprovalStatusEQ(*i.ApprovalStatus))
 	}
-	if i.IsApprovedNEQ != nil {
-		predicates = append(predicates, tender.IsApprovedNEQ(*i.IsApprovedNEQ))
+	if i.ApprovalStatusNEQ != nil {
+		predicates = append(predicates, tender.ApprovalStatusNEQ(*i.ApprovalStatusNEQ))
+	}
+	if len(i.ApprovalStatusIn) > 0 {
+		predicates = append(predicates, tender.ApprovalStatusIn(i.ApprovalStatusIn...))
+	}
+	if len(i.ApprovalStatusNotIn) > 0 {
+		predicates = append(predicates, tender.ApprovalStatusNotIn(i.ApprovalStatusNotIn...))
+	}
+	if i.ApprovalStatusGT != nil {
+		predicates = append(predicates, tender.ApprovalStatusGT(*i.ApprovalStatusGT))
+	}
+	if i.ApprovalStatusGTE != nil {
+		predicates = append(predicates, tender.ApprovalStatusGTE(*i.ApprovalStatusGTE))
+	}
+	if i.ApprovalStatusLT != nil {
+		predicates = append(predicates, tender.ApprovalStatusLT(*i.ApprovalStatusLT))
+	}
+	if i.ApprovalStatusLTE != nil {
+		predicates = append(predicates, tender.ApprovalStatusLTE(*i.ApprovalStatusLTE))
+	}
+	if i.ApprovalMsgID != nil {
+		predicates = append(predicates, tender.ApprovalMsgIDEQ(*i.ApprovalMsgID))
+	}
+	if i.ApprovalMsgIDNEQ != nil {
+		predicates = append(predicates, tender.ApprovalMsgIDNEQ(*i.ApprovalMsgIDNEQ))
+	}
+	if len(i.ApprovalMsgIDIn) > 0 {
+		predicates = append(predicates, tender.ApprovalMsgIDIn(i.ApprovalMsgIDIn...))
+	}
+	if len(i.ApprovalMsgIDNotIn) > 0 {
+		predicates = append(predicates, tender.ApprovalMsgIDNotIn(i.ApprovalMsgIDNotIn...))
+	}
+	if i.ApprovalMsgIDGT != nil {
+		predicates = append(predicates, tender.ApprovalMsgIDGT(*i.ApprovalMsgIDGT))
+	}
+	if i.ApprovalMsgIDGTE != nil {
+		predicates = append(predicates, tender.ApprovalMsgIDGTE(*i.ApprovalMsgIDGTE))
+	}
+	if i.ApprovalMsgIDLT != nil {
+		predicates = append(predicates, tender.ApprovalMsgIDLT(*i.ApprovalMsgIDLT))
+	}
+	if i.ApprovalMsgIDLTE != nil {
+		predicates = append(predicates, tender.ApprovalMsgIDLTE(*i.ApprovalMsgIDLTE))
+	}
+	if i.ApprovalMsgIDContains != nil {
+		predicates = append(predicates, tender.ApprovalMsgIDContains(*i.ApprovalMsgIDContains))
+	}
+	if i.ApprovalMsgIDHasPrefix != nil {
+		predicates = append(predicates, tender.ApprovalMsgIDHasPrefix(*i.ApprovalMsgIDHasPrefix))
+	}
+	if i.ApprovalMsgIDHasSuffix != nil {
+		predicates = append(predicates, tender.ApprovalMsgIDHasSuffix(*i.ApprovalMsgIDHasSuffix))
+	}
+	if i.ApprovalMsgIDIsNil {
+		predicates = append(predicates, tender.ApprovalMsgIDIsNil())
+	}
+	if i.ApprovalMsgIDNotNil {
+		predicates = append(predicates, tender.ApprovalMsgIDNotNil())
+	}
+	if i.ApprovalMsgIDEqualFold != nil {
+		predicates = append(predicates, tender.ApprovalMsgIDEqualFold(*i.ApprovalMsgIDEqualFold))
+	}
+	if i.ApprovalMsgIDContainsFold != nil {
+		predicates = append(predicates, tender.ApprovalMsgIDContainsFold(*i.ApprovalMsgIDContainsFold))
 	}
 	if i.Name != nil {
 		predicates = append(predicates, tender.NameEQ(*i.Name))
@@ -13905,6 +14120,51 @@ func (i *TenderWhereInput) P() (predicate.Tender, error) {
 	if i.ApproverIDContainsFold != nil {
 		predicates = append(predicates, tender.ApproverIDContainsFold(*i.ApproverIDContainsFold))
 	}
+	if i.UpdatedByID != nil {
+		predicates = append(predicates, tender.UpdatedByIDEQ(*i.UpdatedByID))
+	}
+	if i.UpdatedByIDNEQ != nil {
+		predicates = append(predicates, tender.UpdatedByIDNEQ(*i.UpdatedByIDNEQ))
+	}
+	if len(i.UpdatedByIDIn) > 0 {
+		predicates = append(predicates, tender.UpdatedByIDIn(i.UpdatedByIDIn...))
+	}
+	if len(i.UpdatedByIDNotIn) > 0 {
+		predicates = append(predicates, tender.UpdatedByIDNotIn(i.UpdatedByIDNotIn...))
+	}
+	if i.UpdatedByIDGT != nil {
+		predicates = append(predicates, tender.UpdatedByIDGT(*i.UpdatedByIDGT))
+	}
+	if i.UpdatedByIDGTE != nil {
+		predicates = append(predicates, tender.UpdatedByIDGTE(*i.UpdatedByIDGTE))
+	}
+	if i.UpdatedByIDLT != nil {
+		predicates = append(predicates, tender.UpdatedByIDLT(*i.UpdatedByIDLT))
+	}
+	if i.UpdatedByIDLTE != nil {
+		predicates = append(predicates, tender.UpdatedByIDLTE(*i.UpdatedByIDLTE))
+	}
+	if i.UpdatedByIDContains != nil {
+		predicates = append(predicates, tender.UpdatedByIDContains(*i.UpdatedByIDContains))
+	}
+	if i.UpdatedByIDHasPrefix != nil {
+		predicates = append(predicates, tender.UpdatedByIDHasPrefix(*i.UpdatedByIDHasPrefix))
+	}
+	if i.UpdatedByIDHasSuffix != nil {
+		predicates = append(predicates, tender.UpdatedByIDHasSuffix(*i.UpdatedByIDHasSuffix))
+	}
+	if i.UpdatedByIDIsNil {
+		predicates = append(predicates, tender.UpdatedByIDIsNil())
+	}
+	if i.UpdatedByIDNotNil {
+		predicates = append(predicates, tender.UpdatedByIDNotNil())
+	}
+	if i.UpdatedByIDEqualFold != nil {
+		predicates = append(predicates, tender.UpdatedByIDEqualFold(*i.UpdatedByIDEqualFold))
+	}
+	if i.UpdatedByIDContainsFold != nil {
+		predicates = append(predicates, tender.UpdatedByIDContainsFold(*i.UpdatedByIDContainsFold))
+	}
 
 	if i.HasArea != nil {
 		p := tender.HasArea()
@@ -14103,6 +14363,24 @@ func (i *TenderWhereInput) P() (predicate.Tender, error) {
 			with = append(with, p)
 		}
 		predicates = append(predicates, tender.HasApproverWith(with...))
+	}
+	if i.HasUpdatedBy != nil {
+		p := tender.HasUpdatedBy()
+		if !*i.HasUpdatedBy {
+			p = tender.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasUpdatedByWith) > 0 {
+		with := make([]predicate.User, 0, len(i.HasUpdatedByWith))
+		for _, w := range i.HasUpdatedByWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'HasUpdatedByWith'", err)
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, tender.HasUpdatedByWith(with...))
 	}
 	switch len(predicates) {
 	case 0:
