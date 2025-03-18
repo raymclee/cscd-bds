@@ -1,21 +1,41 @@
-import { fetchQuery, graphql, useRelayEnvironment } from "react-relay";
+import { useRelayEnvironment } from "react-relay";
 
 import { useRef } from "react";
 
 import { Select, SelectProps, Spin } from "antd";
+import { DefaultOptionType } from "antd/es/select";
 import { useState } from "react";
 import { useDebounceCallback } from "usehooks-ts";
-import {
-  searchLocationSelectQuery,
-  searchLocationSelectQuery$data,
-} from "__generated__/searchLocationSelectQuery.graphql";
-import { DefaultOptionType } from "antd/es/select";
+
+type SearchLocationResult = {
+  inputtips: Array<{
+    id: string;
+    name: string;
+    address: string;
+    province: {
+      area: {
+        id: string;
+      };
+      id: string;
+      name: string;
+    };
+    city: {
+      id: string;
+      name: string;
+    };
+    district: {
+      id: string;
+      name: string;
+    };
+    lng: number;
+    lat: number;
+  }>;
+};
 
 type SearchLocationSelectProps = {
   areaId?: string;
   onAddressSelected?: (
-    data: searchLocationSelectQuery$data["inputtips"][number] &
-      DefaultOptionType,
+    data: SearchLocationResult["inputtips"][number] & DefaultOptionType,
   ) => void;
 } & SelectProps;
 
@@ -24,52 +44,73 @@ export function SearchLocationSelect({
   onAddressSelected,
   ...props
 }: SearchLocationSelectProps) {
-  const environment = useRelayEnvironment();
   const [fetching, setFetching] = useState(false);
   const refFetchId = useRef<string | null>(null);
   const [options, setOptions] = useState<SelectProps["options"]>([]);
   const [notFoundText, setNotFoundText] = useState<string | null>("请输入地址");
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   const onSearch = useDebounceCallback((keyword) => {
     if (!areaId || keyword.length < 2) return;
+    // Abort any pending requests
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+
+    // Create new abort controller
+    const newAbortController = new AbortController();
+
+    abortControllerRef.current = newAbortController;
+    // Call onSearch with new search term and abort controller
 
     refFetchId.current = Date.now().toString();
     const fetchId = refFetchId.current;
     setFetching(true);
     props.onChange?.(null);
     setOptions([]);
-    fetchQuery<searchLocationSelectQuery>(
-      environment,
-      graphql`
-        query searchLocationSelectQuery($areaId: ID!, $keyword: String!) {
-          inputtips(areaId: $areaId, keyword: $keyword) {
-            id
-            name
-            address
-            province {
-              area {
+
+    fetch("/graphql", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        query: `
+          query searchLocationSelectQuery($areaId: ID!, $keyword: String!) {
+            inputtips(areaId: $areaId, keyword: $keyword) {
+              id
+              name
+              address
+              province {
+                area {
+                  id
+                }
                 id
+                name
               }
-              id
-              name
+              city {
+                id
+                name
+              }
+              district {
+                id
+                name
+              }
+              lng
+              lat
             }
-            city {
-              id
-              name
-            }
-            district {
-              id
-              name
-            }
-            lng
-            lat
           }
-        }
-      `,
-      { areaId, keyword },
-    )
-      .toPromise()
-      .then((result) => {
+        `,
+        variables: {
+          areaId,
+          keyword,
+        },
+      }),
+      signal: abortControllerRef.current?.signal,
+    })
+      .then((res) => res.json() as Promise<{ data: SearchLocationResult }>)
+      .then(({ data: result }) => {
         if (refFetchId.current === fetchId) {
           setOptions(
             result?.inputtips.map((u) => ({
@@ -101,7 +142,7 @@ export function SearchLocationSelect({
       onSelect={(value, option) => {
         props.onChange?.(value);
         onAddressSelected?.(
-          option as searchLocationSelectQuery$data["inputtips"][number] &
+          option as SearchLocationResult["inputtips"][number] &
             DefaultOptionType,
         );
       }}

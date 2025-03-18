@@ -52,7 +52,7 @@ export function TenderLoseModal({
       </Button>
       <Modal
         open={open}
-        title="请输入竞争对手名称"
+        title="商机失标"
         okText="提交"
         maskClosable={false}
         okButtonProps={{
