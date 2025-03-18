@@ -3,8 +3,9 @@ import { domAnimation, LazyMotion } from "motion/react";
 import { Switcher } from "~/components/switcher";
 import { CopilotPopup } from "@copilotkit/react-ui";
 import { CopilotKit } from "@copilotkit/react-core";
-import "@copilotkit/react-ui/styles.css";
 import { CustomInput } from "~/components/customer-input";
+// import "@copilotkit/react-ui/styles.css";
+
 export const Route = createLazyFileRoute("/__auth/__dashboard")({
   component: RouteComponent,
 });

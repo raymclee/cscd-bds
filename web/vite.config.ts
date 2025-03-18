@@ -3,27 +3,20 @@ import react from "@vitejs/plugin-react";
 import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
 import viteTsconfigPaths from "vite-tsconfig-paths";
 import relay from "vite-plugin-relay";
-import tailwindcss from "@tailwindcss/vite";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
-  plugins: [
-    relay,
-    TanStackRouterVite({}),
-    react(),
-    viteTsconfigPaths(),
-    tailwindcss() as any,
-  ],
+  plugins: [relay, TanStackRouterVite({}), react(), viteTsconfigPaths()],
   server:
     mode === "development"
       ? {
           proxy: {
             "/graphql": {
-              target: "http://localhost:3000",
+              target: "http://localhost:7000",
               changeOrigin: true,
             },
             "/static": {
-              target: "http://localhost:3000",
+              target: "http://localhost:7000",
               changeOrigin: true,
             },
             "/3dm": {
@@ -31,15 +24,15 @@ export default defineConfig(({ mode }) => ({
               changeOrigin: true,
             },
             "/api/v1": {
-              target: "http://localhost:3000",
+              target: "http://localhost:7000",
               changeOrigin: true,
             },
             "/webroot/decision": {
-              target: "http://localhost:3000",
+              target: "http://localhost:7000",
               changeOrigin: true,
             },
             "/_AMapService": {
-              target: "http://localhost:3000",
+              target: "http://localhost:7000",
               changeOrigin: true,
               secure: true,
             },

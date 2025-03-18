@@ -16,6 +16,7 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as authImport } from './routes/__auth'
 import { Route as authportalImport } from './routes/__auth/__portal'
 import { Route as authdashboardImport } from './routes/__auth/__dashboard'
+import { Route as authdashboardV2Import } from './routes/__auth/__dashboard/v2'
 import { Route as authdashboardRainbowImport } from './routes/__auth/__dashboard/rainbow'
 import { Route as authdashboardBiImport } from './routes/__auth/__dashboard/bi'
 import { Route as authportalPortalIndexImport } from './routes/__auth/__portal/portal/index'
@@ -45,7 +46,6 @@ const LogoutLazyImport = createFileRoute('/logout')()
 const LoginLazyImport = createFileRoute('/login')()
 const AccessDeniedLazyImport = createFileRoute('/access-denied')()
 const authportalPortalImport = createFileRoute('/__auth/__portal/portal')()
-const authdashboardMapLazyImport = createFileRoute('/__auth/__dashboard/map')()
 const authdashboardscaledLazyImport = createFileRoute(
   '/__auth/__dashboard/__scaled',
 )()
@@ -106,16 +106,6 @@ const authportalPortalRoute = authportalPortalImport.update({
   getParentRoute: () => authportalRoute,
 } as any)
 
-const authdashboardMapLazyRoute = authdashboardMapLazyImport
-  .update({
-    id: '/map',
-    path: '/map',
-    getParentRoute: () => authdashboardRoute,
-  } as any)
-  .lazy(() =>
-    import('./routes/__auth/__dashboard/map.lazy').then((d) => d.Route),
-  )
-
 const authdashboardscaledLazyRoute = authdashboardscaledLazyImport
   .update({
     id: '/__scaled',
@@ -123,6 +113,16 @@ const authdashboardscaledLazyRoute = authdashboardscaledLazyImport
   } as any)
   .lazy(() =>
     import('./routes/__auth/__dashboard/__scaled.lazy').then((d) => d.Route),
+  )
+
+const authdashboardV2Route = authdashboardV2Import
+  .update({
+    id: '/v2',
+    path: '/v2',
+    getParentRoute: () => authdashboardRoute,
+  } as any)
+  .lazy(() =>
+    import('./routes/__auth/__dashboard/v2.lazy').then((d) => d.Route),
   )
 
 const authdashboardRainbowRoute = authdashboardRainbowImport.update({
@@ -426,18 +426,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authdashboardRainbowImport
       parentRoute: typeof authdashboardImport
     }
+    '/__auth/__dashboard/v2': {
+      id: '/__auth/__dashboard/v2'
+      path: '/v2'
+      fullPath: '/v2'
+      preLoaderRoute: typeof authdashboardV2Import
+      parentRoute: typeof authdashboardImport
+    }
     '/__auth/__dashboard/__scaled': {
       id: '/__auth/__dashboard/__scaled'
       path: ''
       fullPath: ''
       preLoaderRoute: typeof authdashboardscaledLazyImport
-      parentRoute: typeof authdashboardImport
-    }
-    '/__auth/__dashboard/map': {
-      id: '/__auth/__dashboard/map'
-      path: '/map'
-      fullPath: '/map'
-      preLoaderRoute: typeof authdashboardMapLazyImport
       parentRoute: typeof authdashboardImport
     }
     '/__auth/__dashboard/__scaled/__map': {
@@ -628,15 +628,15 @@ const authdashboardscaledLazyRouteWithChildren =
 interface authdashboardRouteChildren {
   authdashboardBiRoute: typeof authdashboardBiRoute
   authdashboardRainbowRoute: typeof authdashboardRainbowRoute
+  authdashboardV2Route: typeof authdashboardV2Route
   authdashboardscaledLazyRoute: typeof authdashboardscaledLazyRouteWithChildren
-  authdashboardMapLazyRoute: typeof authdashboardMapLazyRoute
 }
 
 const authdashboardRouteChildren: authdashboardRouteChildren = {
   authdashboardBiRoute: authdashboardBiRoute,
   authdashboardRainbowRoute: authdashboardRainbowRoute,
+  authdashboardV2Route: authdashboardV2Route,
   authdashboardscaledLazyRoute: authdashboardscaledLazyRouteWithChildren,
-  authdashboardMapLazyRoute: authdashboardMapLazyRoute,
 }
 
 const authdashboardRouteWithChildren = authdashboardRoute._addFileChildren(
@@ -741,7 +741,7 @@ export interface FileRoutesByFullPath {
   '/r': typeof RLazyRoute
   '/bi': typeof authdashboardBiRoute
   '/rainbow': typeof authdashboardRainbowRoute
-  '/map': typeof authdashboardMapLazyRoute
+  '/v2': typeof authdashboardV2Route
   '/operations': typeof authdashboardscaledOperationsRoute
   '/portal': typeof authportalPortalSuperAdminRouteWithChildren
   '/portal/customers': typeof authportalPortalCustomersRoute
@@ -770,7 +770,7 @@ export interface FileRoutesByTo {
   '/r': typeof RLazyRoute
   '/bi': typeof authdashboardBiRoute
   '/rainbow': typeof authdashboardRainbowRoute
-  '/map': typeof authdashboardMapLazyRoute
+  '/v2': typeof authdashboardV2Route
   '/operations': typeof authdashboardscaledOperationsRoute
   '/portal': typeof authportalPortalIndexRoute
   '/portal/customers': typeof authportalPortalCustomersRoute
@@ -801,8 +801,8 @@ export interface FileRoutesById {
   '/__auth/__portal': typeof authportalRouteWithChildren
   '/__auth/__dashboard/bi': typeof authdashboardBiRoute
   '/__auth/__dashboard/rainbow': typeof authdashboardRainbowRoute
+  '/__auth/__dashboard/v2': typeof authdashboardV2Route
   '/__auth/__dashboard/__scaled': typeof authdashboardscaledLazyRouteWithChildren
-  '/__auth/__dashboard/map': typeof authdashboardMapLazyRoute
   '/__auth/__dashboard/__scaled/__map': typeof authdashboardscaledmapRouteWithChildren
   '/__auth/__dashboard/__scaled/operations': typeof authdashboardscaledOperationsRoute
   '/__auth/__portal/portal': typeof authportalPortalRouteWithChildren
@@ -836,7 +836,7 @@ export interface FileRouteTypes {
     | '/r'
     | '/bi'
     | '/rainbow'
-    | '/map'
+    | '/v2'
     | '/operations'
     | '/portal'
     | '/portal/customers'
@@ -864,7 +864,7 @@ export interface FileRouteTypes {
     | '/r'
     | '/bi'
     | '/rainbow'
-    | '/map'
+    | '/v2'
     | '/operations'
     | '/portal'
     | '/portal/customers'
@@ -893,8 +893,8 @@ export interface FileRouteTypes {
     | '/__auth/__portal'
     | '/__auth/__dashboard/bi'
     | '/__auth/__dashboard/rainbow'
+    | '/__auth/__dashboard/v2'
     | '/__auth/__dashboard/__scaled'
-    | '/__auth/__dashboard/map'
     | '/__auth/__dashboard/__scaled/__map'
     | '/__auth/__dashboard/__scaled/operations'
     | '/__auth/__portal/portal'
@@ -977,8 +977,8 @@ export const routeTree = rootRoute
       "children": [
         "/__auth/__dashboard/bi",
         "/__auth/__dashboard/rainbow",
-        "/__auth/__dashboard/__scaled",
-        "/__auth/__dashboard/map"
+        "/__auth/__dashboard/v2",
+        "/__auth/__dashboard/__scaled"
       ]
     },
     "/__auth/__portal": {
@@ -996,6 +996,10 @@ export const routeTree = rootRoute
       "filePath": "__auth/__dashboard/rainbow.tsx",
       "parent": "/__auth/__dashboard"
     },
+    "/__auth/__dashboard/v2": {
+      "filePath": "__auth/__dashboard/v2.tsx",
+      "parent": "/__auth/__dashboard"
+    },
     "/__auth/__dashboard/__scaled": {
       "filePath": "__auth/__dashboard/__scaled.lazy.tsx",
       "parent": "/__auth/__dashboard",
@@ -1003,10 +1007,6 @@ export const routeTree = rootRoute
         "/__auth/__dashboard/__scaled/__map",
         "/__auth/__dashboard/__scaled/operations"
       ]
-    },
-    "/__auth/__dashboard/map": {
-      "filePath": "__auth/__dashboard/map.lazy.tsx",
-      "parent": "/__auth/__dashboard"
     },
     "/__auth/__dashboard/__scaled/__map": {
       "filePath": "__auth/__dashboard/__scaled/__map.tsx",

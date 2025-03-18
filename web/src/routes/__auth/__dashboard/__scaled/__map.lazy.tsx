@@ -46,10 +46,11 @@ function RouteComponent() {
     <>
       <div
         id="map"
-        className="fixed top-0 right-0 bottom-0 left-0 h-full max-h-screen"
+        className="fixed bottom-0 left-0 right-0 top-0 h-full max-h-screen"
       ></div>
 
-      <div className="absolute top-0 right-0 left-0 flex h-[90px] w-full items-center justify-between bg-(image:--bg-dashboard-head) bg-cover bg-bottom bg-no-repeat text-white">
+      {/* <div className="absolute top-0 right-0 left-0 flex h-[90px] w-full items-center justify-between bg-(image:--bg-dashboard-head) bg-cover bg-bottom bg-no-repeat text-white"> */}
+      <div className="absolute left-0 right-0 top-0 flex h-[90px] w-full items-center justify-between bg-dashboard-head bg-cover bg-bottom bg-no-repeat text-white">
         <div className="relative left-2 flex -translate-y-full gap-2">
           {/* {(session.isAdmin || session.isSuperAdmin || session.isCeo) && (
             <Tooltip title="运营大屏">
@@ -65,7 +66,7 @@ function RouteComponent() {
           )} */}
         </div>
 
-        <div className="text-3xl font-bold text-ellipsis whitespace-nowrap select-none">
+        <div className="select-none text-ellipsis whitespace-nowrap text-3xl font-bold">
           远东幕墙市场拓展地图
         </div>
 
