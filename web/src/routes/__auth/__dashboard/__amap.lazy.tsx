@@ -14,15 +14,17 @@ function RouteComponent() {
       mapStyle: "amap://styles/darkblue",
       center: [114.33, 30.57],
       zoom: 4,
+      zoomEnable: false,
+      scrollWheel: false,
     });
   }, [initMap]);
 
   return (
     <>
-      <div id="map" className="fixed inset-0"></div>
       <div className="relative">
         <Outlet />
       </div>
+      <div id="map" className="fixed inset-0"></div>
     </>
   );
 }

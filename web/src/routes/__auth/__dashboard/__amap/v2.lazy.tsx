@@ -38,7 +38,7 @@ function RouteComponent() {
   return (
     <>
       {/* Navigation */}
-      <nav className="sticky top-0 z-10 h-14 border-b border-slate-800 bg-[#0A1428] px-6 py-4">
+      <nav className="sticky top-0 z-20 h-14 border-b border-slate-800 bg-[#0A1428] px-6 py-4">
         <div className="flex items-center justify-between">
           {/* <div className="flex items-center space-x-8">
               <div className="text-2xl text-white">🚚</div>
@@ -82,10 +82,10 @@ function RouteComponent() {
       <div className="hidden px-6 py-4">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="relative w-72">
-            <Search className="absolute w-4 h-4 -translate-y-1/2 left-3 top-1/2 text-slate-400" />
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
             <Input
               placeholder="Search by ID, status, departure, arrival..."
-              className="pl-10 text-white border-slate-800 bg-slate-900"
+              className="border-slate-800 bg-slate-900 pl-10 text-white"
             />
           </div>
 
@@ -101,7 +101,7 @@ function RouteComponent() {
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="outline"
-                    className="text-white border-slate-800 bg-slate-900"
+                    className="border-slate-800 bg-slate-900 text-white"
                   >
                     {filter}
                   </Button>
@@ -143,7 +143,7 @@ function RouteComponent() {
 
         <div className="grid gap-6 lg:grid-cols-[1fr_2fr]">
           {/* Shipment Details */}
-          <div className="order-last h-[5000px] rounded-xl bg-slate-900 p-6 lg:order-first">
+          <div className="z-10 order-last h-[5000px] rounded-xl bg-slate-900 p-6 lg:order-first">
             <Tabs defaultValue="general">
               <TabsList className="flex flex-wrap gap-2 bg-slate-800">
                 <TabsTrigger value="general">General</TabsTrigger>
@@ -167,15 +167,15 @@ function RouteComponent() {
                     </Button>
                   </div>
                   <div>
-                    <div className="flex items-center mb-2 space-x-2">
-                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                    <div className="mb-2 flex items-center space-x-2">
+                      <div className="h-2 w-2 rounded-full bg-blue-500"></div>
                       <div className="text-white">New York, NY</div>
                       <div className="text-sm text-slate-400">
                         03/12/2024 10:00 AM
                       </div>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                      <div className="h-2 w-2 rounded-full bg-purple-500"></div>
                       <div className="text-white">Atlanta, GA</div>
                       <div className="text-sm text-slate-400">
                         03/13/2024 02:00 PM
@@ -188,9 +188,9 @@ function RouteComponent() {
           </div>
 
           {/* Stats */}
-          <div className="sticky top-[5rem] mb-6 grid gap-6 self-start lg:grid-cols-3">
-            <div className="p-6 rounded-xl bg-slate-900">
-              <div className="flex items-center justify-between mb-4">
+          <div className="sticky top-[5rem] z-10 mb-6 grid gap-6 self-start lg:grid-cols-3">
+            <div className="rounded-xl bg-slate-900 p-6">
+              <div className="mb-4 flex items-center justify-between">
                 <div className="flex items-center space-x-2">
                   <MapPin className="text-green-500" />
                   <span className="text-slate-400">Total distance</span>
@@ -204,8 +204,8 @@ function RouteComponent() {
               </div>
             </div>
 
-            <div className="p-6 rounded-xl bg-slate-900">
-              <div className="flex items-center justify-between mb-4">
+            <div className="rounded-xl bg-slate-900 p-6">
+              <div className="mb-4 flex items-center justify-between">
                 <div className="flex items-center space-x-2">
                   <Package className="text-blue-500" />
                   <span className="text-slate-400">Total weight</span>
@@ -219,8 +219,8 @@ function RouteComponent() {
               </div>
             </div>
 
-            <div className="p-6 rounded-xl bg-slate-900">
-              <div className="flex items-center justify-between mb-4">
+            <div className="rounded-xl bg-slate-900 p-6">
+              <div className="mb-4 flex items-center justify-between">
                 <div className="flex items-center space-x-2">
                   <Truck className="text-purple-500" />
                   <span className="text-slate-400">Total value</span>
@@ -270,7 +270,7 @@ function CarouselDApiDemo() {
           {Array.from({ length: 5 }).map((_, index) => (
             <CarouselItem key={index}>
               <Card>
-                <CardContent className="flex items-center justify-center p-6 aspect-square">
+                <CardContent className="flex aspect-square items-center justify-center p-6">
                   <span className="text-4xl font-semibold">{index + 1}</span>
                 </CardContent>
               </Card>
@@ -280,7 +280,7 @@ function CarouselDApiDemo() {
         {/* <CarouselPrevious />
         <CarouselNext /> */}
       </Carousel>
-      <div className="py-2 text-sm text-center text-muted-foreground">
+      <div className="py-2 text-center text-sm text-muted-foreground">
         Slide {current} of {count}
       </div>
     </div>
