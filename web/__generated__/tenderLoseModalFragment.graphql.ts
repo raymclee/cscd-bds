@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<13bf9574d4913d23beb92407a04c37ea>>
+ * @generated SignedSource<<c0b62b15193db3ad0b368d3ce9284737>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,7 +10,7 @@
 
 import { ReaderFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
-export type tenderFormFragment_competitors$data = {
+export type tenderLoseModalFragment$data = {
   readonly competitors: {
     readonly edges: ReadonlyArray<{
       readonly node: {
@@ -19,18 +19,18 @@ export type tenderFormFragment_competitors$data = {
       } | null | undefined;
     } | null | undefined> | null | undefined;
   };
-  readonly " $fragmentType": "tenderFormFragment_competitors";
+  readonly " $fragmentType": "tenderLoseModalFragment";
 };
-export type tenderFormFragment_competitors$key = {
-  readonly " $data"?: tenderFormFragment_competitors$data;
-  readonly " $fragmentSpreads": FragmentRefs<"tenderFormFragment_competitors">;
+export type tenderLoseModalFragment$key = {
+  readonly " $data"?: tenderLoseModalFragment$data;
+  readonly " $fragmentSpreads": FragmentRefs<"tenderLoseModalFragment">;
 };
 
 const node: ReaderFragment = {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
-  "name": "tenderFormFragment_competitors",
+  "name": "tenderLoseModalFragment",
   "selections": [
     {
       "alias": null,
@@ -84,6 +84,6 @@ const node: ReaderFragment = {
   "abstractKey": null
 };
 
-(node as any).hash = "c6f7c4422c5af0197b41e9de085fffcc";
+(node as any).hash = "0a22039d9b3944fafcb6ba0731fc0812";
 
 export default node;
