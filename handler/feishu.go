@@ -72,9 +72,9 @@ func (h handler) AuthFeishuCallback(c echo.Context) error {
 		return c.Redirect(301, url+accessDeniedUrl)
 	}
 
-	if err := h.store.User.UpdateOne(us).SetOpenID(*userInfo.Data.OpenId).SetAvatarURL(*userInfo.Data.AvatarUrl).Exec(c.Request().Context()); err != nil {
-		fmt.Println("update openid error: ", err)
-	}
+	// if err := h.store.User.UpdateOne(us).SetOpenID(*userInfo.Data.OpenId).SetAvatarURL(*userInfo.Data.AvatarUrl).Exec(c.Request().Context()); err != nil {
+	// 	fmt.Println("update openid error: ", err)
+	// }
 
 	if err := h.session.RenewToken(c.Request().Context()); err != nil {
 		return c.Redirect(301, url+accessDeniedUrl)

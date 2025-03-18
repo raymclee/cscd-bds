@@ -486,11 +486,10 @@ var (
 		{Name: "tender_closing_date", Type: field.TypeTime, Nullable: true},
 		{Name: "construction_area", Type: field.TypeString, Nullable: true},
 		{Name: "tender_win_date", Type: field.TypeTime, Nullable: true},
-		{Name: "tender_win_amount", Type: field.TypeFloat64, Nullable: true},
+		{Name: "tender_win_amount", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"postgres": "numeric"}},
 		{Name: "last_tender_amount", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"postgres": "numeric"}},
 		{Name: "area_id", Type: field.TypeString},
 		{Name: "city_id", Type: field.TypeString, Nullable: true},
-		{Name: "competitor_id", Type: field.TypeString, Nullable: true},
 		{Name: "customer_id", Type: field.TypeString, Nullable: true},
 		{Name: "district_id", Type: field.TypeString, Nullable: true},
 		{Name: "province_id", Type: field.TypeString, Nullable: true},
@@ -518,52 +517,75 @@ var (
 				OnDelete:   schema.SetNull,
 			},
 			{
-				Symbol:     "tenders_competitors_won_tenders",
-				Columns:    []*schema.Column{TendersColumns[63]},
-				RefColumns: []*schema.Column{CompetitorsColumns[0]},
-				OnDelete:   schema.SetNull,
-			},
-			{
 				Symbol:     "tenders_customers_tenders",
-				Columns:    []*schema.Column{TendersColumns[64]},
+				Columns:    []*schema.Column{TendersColumns[63]},
 				RefColumns: []*schema.Column{CustomersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "tenders_districts_tenders",
-				Columns:    []*schema.Column{TendersColumns[65]},
+				Columns:    []*schema.Column{TendersColumns[64]},
 				RefColumns: []*schema.Column{DistrictsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "tenders_provinces_tenders",
-				Columns:    []*schema.Column{TendersColumns[66]},
+				Columns:    []*schema.Column{TendersColumns[65]},
 				RefColumns: []*schema.Column{ProvincesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "tenders_users_finder",
-				Columns:    []*schema.Column{TendersColumns[67]},
+				Columns:    []*schema.Column{TendersColumns[66]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "tenders_users_created_by",
-				Columns:    []*schema.Column{TendersColumns[68]},
+				Columns:    []*schema.Column{TendersColumns[67]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "tenders_users_approver",
-				Columns:    []*schema.Column{TendersColumns[69]},
+				Columns:    []*schema.Column{TendersColumns[68]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "tenders_users_updated_by",
-				Columns:    []*schema.Column{TendersColumns[70]},
+				Columns:    []*schema.Column{TendersColumns[69]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
+			},
+		},
+	}
+	// TenderCompetitorsColumns holds the columns for the "tender_competitors" table.
+	TenderCompetitorsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeString, Unique: true},
+		{Name: "created_at", Type: field.TypeTime},
+		{Name: "updated_at", Type: field.TypeTime},
+		{Name: "amount", Type: field.TypeFloat64, SchemaType: map[string]string{"postgres": "numeric"}},
+		{Name: "competitor_id", Type: field.TypeString},
+		{Name: "tender_id", Type: field.TypeString},
+	}
+	// TenderCompetitorsTable holds the schema information for the "tender_competitors" table.
+	TenderCompetitorsTable = &schema.Table{
+		Name:       "tender_competitors",
+		Columns:    TenderCompetitorsColumns,
+		PrimaryKey: []*schema.Column{TenderCompetitorsColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "tender_competitors_competitors_tenders",
+				Columns:    []*schema.Column{TenderCompetitorsColumns[4]},
+				RefColumns: []*schema.Column{CompetitorsColumns[0]},
+				OnDelete:   schema.NoAction,
+			},
+			{
+				Symbol:     "tender_competitors_tenders_competitors",
+				Columns:    []*schema.Column{TenderCompetitorsColumns[5]},
+				RefColumns: []*schema.Column{TendersColumns[0]},
+				OnDelete:   schema.NoAction,
 			},
 		},
 	}
@@ -748,6 +770,7 @@ var (
 		ProjectVosTable,
 		ProvincesTable,
 		TendersTable,
+		TenderCompetitorsTable,
 		UsersTable,
 		VisitRecordsTable,
 		AreaUsersTable,
@@ -773,14 +796,15 @@ func init() {
 	ProvincesTable.ForeignKeys[1].RefTable = CountriesTable
 	TendersTable.ForeignKeys[0].RefTable = AreasTable
 	TendersTable.ForeignKeys[1].RefTable = CitiesTable
-	TendersTable.ForeignKeys[2].RefTable = CompetitorsTable
-	TendersTable.ForeignKeys[3].RefTable = CustomersTable
-	TendersTable.ForeignKeys[4].RefTable = DistrictsTable
-	TendersTable.ForeignKeys[5].RefTable = ProvincesTable
+	TendersTable.ForeignKeys[2].RefTable = CustomersTable
+	TendersTable.ForeignKeys[3].RefTable = DistrictsTable
+	TendersTable.ForeignKeys[4].RefTable = ProvincesTable
+	TendersTable.ForeignKeys[5].RefTable = UsersTable
 	TendersTable.ForeignKeys[6].RefTable = UsersTable
 	TendersTable.ForeignKeys[7].RefTable = UsersTable
 	TendersTable.ForeignKeys[8].RefTable = UsersTable
-	TendersTable.ForeignKeys[9].RefTable = UsersTable
+	TenderCompetitorsTable.ForeignKeys[0].RefTable = CompetitorsTable
+	TenderCompetitorsTable.ForeignKeys[1].RefTable = TendersTable
 	UsersTable.ForeignKeys[0].RefTable = UsersTable
 	VisitRecordsTable.ForeignKeys[0].RefTable = CustomersTable
 	VisitRecordsTable.ForeignKeys[1].RefTable = TendersTable

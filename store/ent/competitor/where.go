@@ -286,21 +286,21 @@ func NameContainsFold(v string) predicate.Competitor {
 	return predicate.Competitor(sql.FieldContainsFold(FieldName, v))
 }
 
-// HasWonTenders applies the HasEdge predicate on the "won_tenders" edge.
-func HasWonTenders() predicate.Competitor {
+// HasTenders applies the HasEdge predicate on the "tenders" edge.
+func HasTenders() predicate.Competitor {
 	return predicate.Competitor(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, WonTendersTable, WonTendersColumn),
+			sqlgraph.Edge(sqlgraph.O2M, false, TendersTable, TendersColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
 
-// HasWonTendersWith applies the HasEdge predicate on the "won_tenders" edge with a given conditions (other predicates).
-func HasWonTendersWith(preds ...predicate.Tender) predicate.Competitor {
+// HasTendersWith applies the HasEdge predicate on the "tenders" edge with a given conditions (other predicates).
+func HasTendersWith(preds ...predicate.TenderCompetitor) predicate.Competitor {
 	return predicate.Competitor(func(s *sql.Selector) {
-		step := newWonTendersStep()
+		step := newTendersStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

@@ -85,13 +85,11 @@ function RouteComponent() {
         "/portal/customers",
         <ContactRound size={16} />,
       ),
-      // getItem(
-      //   <Link to="/portal/potential-tenders" disabled={!session.isSuperAdmin}>
-      //     潜在商机
-      //   </Link>,
-      //   "/portal/potential-tenders",
-      //   <Bot size={16} />,
-      // ),
+      getItem(
+        <Link to="/portal/potential-tenders">潜在商机</Link>,
+        "/portal/potential-tenders",
+        <Bot size={16} />,
+      ),
     ],
     [],
   );

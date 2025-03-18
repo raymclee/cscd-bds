@@ -26,6 +26,7 @@ import (
 	"cscd-bds/store/ent/projectvo"
 	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/tender"
+	"cscd-bds/store/ent/tendercompetitor"
 	"cscd-bds/store/ent/user"
 	"cscd-bds/store/ent/visitrecord"
 
@@ -68,6 +69,8 @@ type Client struct {
 	Province *ProvinceClient
 	// Tender is the client for interacting with the Tender builders.
 	Tender *TenderClient
+	// TenderCompetitor is the client for interacting with the TenderCompetitor builders.
+	TenderCompetitor *TenderCompetitorClient
 	// User is the client for interacting with the User builders.
 	User *UserClient
 	// VisitRecord is the client for interacting with the VisitRecord builders.
@@ -97,6 +100,7 @@ func (c *Client) init() {
 	c.ProjectVO = NewProjectVOClient(c.config)
 	c.Province = NewProvinceClient(c.config)
 	c.Tender = NewTenderClient(c.config)
+	c.TenderCompetitor = NewTenderCompetitorClient(c.config)
 	c.User = NewUserClient(c.config)
 	c.VisitRecord = NewVisitRecordClient(c.config)
 }
@@ -189,24 +193,25 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 	cfg := c.config
 	cfg.driver = tx
 	return &Tx{
-		ctx:             ctx,
-		config:          cfg,
-		Area:            NewAreaClient(cfg),
-		City:            NewCityClient(cfg),
-		Competitor:      NewCompetitorClient(cfg),
-		Country:         NewCountryClient(cfg),
-		Customer:        NewCustomerClient(cfg),
-		District:        NewDistrictClient(cfg),
-		Operation:       NewOperationClient(cfg),
-		Plot:            NewPlotClient(cfg),
-		PotentialTender: NewPotentialTenderClient(cfg),
-		Project:         NewProjectClient(cfg),
-		ProjectStaff:    NewProjectStaffClient(cfg),
-		ProjectVO:       NewProjectVOClient(cfg),
-		Province:        NewProvinceClient(cfg),
-		Tender:          NewTenderClient(cfg),
-		User:            NewUserClient(cfg),
-		VisitRecord:     NewVisitRecordClient(cfg),
+		ctx:              ctx,
+		config:           cfg,
+		Area:             NewAreaClient(cfg),
+		City:             NewCityClient(cfg),
+		Competitor:       NewCompetitorClient(cfg),
+		Country:          NewCountryClient(cfg),
+		Customer:         NewCustomerClient(cfg),
+		District:         NewDistrictClient(cfg),
+		Operation:        NewOperationClient(cfg),
+		Plot:             NewPlotClient(cfg),
+		PotentialTender:  NewPotentialTenderClient(cfg),
+		Project:          NewProjectClient(cfg),
+		ProjectStaff:     NewProjectStaffClient(cfg),
+		ProjectVO:        NewProjectVOClient(cfg),
+		Province:         NewProvinceClient(cfg),
+		Tender:           NewTenderClient(cfg),
+		TenderCompetitor: NewTenderCompetitorClient(cfg),
+		User:             NewUserClient(cfg),
+		VisitRecord:      NewVisitRecordClient(cfg),
 	}, nil
 }
 
@@ -224,24 +229,25 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 	cfg := c.config
 	cfg.driver = &txDriver{tx: tx, drv: c.driver}
 	return &Tx{
-		ctx:             ctx,
-		config:          cfg,
-		Area:            NewAreaClient(cfg),
-		City:            NewCityClient(cfg),
-		Competitor:      NewCompetitorClient(cfg),
-		Country:         NewCountryClient(cfg),
-		Customer:        NewCustomerClient(cfg),
-		District:        NewDistrictClient(cfg),
-		Operation:       NewOperationClient(cfg),
-		Plot:            NewPlotClient(cfg),
-		PotentialTender: NewPotentialTenderClient(cfg),
-		Project:         NewProjectClient(cfg),
-		ProjectStaff:    NewProjectStaffClient(cfg),
-		ProjectVO:       NewProjectVOClient(cfg),
-		Province:        NewProvinceClient(cfg),
-		Tender:          NewTenderClient(cfg),
-		User:            NewUserClient(cfg),
-		VisitRecord:     NewVisitRecordClient(cfg),
+		ctx:              ctx,
+		config:           cfg,
+		Area:             NewAreaClient(cfg),
+		City:             NewCityClient(cfg),
+		Competitor:       NewCompetitorClient(cfg),
+		Country:          NewCountryClient(cfg),
+		Customer:         NewCustomerClient(cfg),
+		District:         NewDistrictClient(cfg),
+		Operation:        NewOperationClient(cfg),
+		Plot:             NewPlotClient(cfg),
+		PotentialTender:  NewPotentialTenderClient(cfg),
+		Project:          NewProjectClient(cfg),
+		ProjectStaff:     NewProjectStaffClient(cfg),
+		ProjectVO:        NewProjectVOClient(cfg),
+		Province:         NewProvinceClient(cfg),
+		Tender:           NewTenderClient(cfg),
+		TenderCompetitor: NewTenderCompetitorClient(cfg),
+		User:             NewUserClient(cfg),
+		VisitRecord:      NewVisitRecordClient(cfg),
 	}, nil
 }
 
@@ -273,7 +279,7 @@ func (c *Client) Use(hooks ...Hook) {
 	for _, n := range []interface{ Use(...Hook) }{
 		c.Area, c.City, c.Competitor, c.Country, c.Customer, c.District, c.Operation,
 		c.Plot, c.PotentialTender, c.Project, c.ProjectStaff, c.ProjectVO, c.Province,
-		c.Tender, c.User, c.VisitRecord,
+		c.Tender, c.TenderCompetitor, c.User, c.VisitRecord,
 	} {
 		n.Use(hooks...)
 	}
@@ -285,7 +291,7 @@ func (c *Client) Intercept(interceptors ...Interceptor) {
 	for _, n := range []interface{ Intercept(...Interceptor) }{
 		c.Area, c.City, c.Competitor, c.Country, c.Customer, c.District, c.Operation,
 		c.Plot, c.PotentialTender, c.Project, c.ProjectStaff, c.ProjectVO, c.Province,
-		c.Tender, c.User, c.VisitRecord,
+		c.Tender, c.TenderCompetitor, c.User, c.VisitRecord,
 	} {
 		n.Intercept(interceptors...)
 	}
@@ -322,6 +328,8 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 		return c.Province.mutate(ctx, m)
 	case *TenderMutation:
 		return c.Tender.mutate(ctx, m)
+	case *TenderCompetitorMutation:
+		return c.TenderCompetitor.mutate(ctx, m)
 	case *UserMutation:
 		return c.User.mutate(ctx, m)
 	case *VisitRecordMutation:
@@ -817,15 +825,15 @@ func (c *CompetitorClient) GetX(ctx context.Context, id xid.ID) *Competitor {
 	return obj
 }
 
-// QueryWonTenders queries the won_tenders edge of a Competitor.
-func (c *CompetitorClient) QueryWonTenders(co *Competitor) *TenderQuery {
-	query := (&TenderClient{config: c.config}).Query()
+// QueryTenders queries the tenders edge of a Competitor.
+func (c *CompetitorClient) QueryTenders(co *Competitor) *TenderCompetitorQuery {
+	query := (&TenderCompetitorClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
 		id := co.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(competitor.Table, competitor.FieldID, id),
-			sqlgraph.To(tender.Table, tender.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, competitor.WonTendersTable, competitor.WonTendersColumn),
+			sqlgraph.To(tendercompetitor.Table, tendercompetitor.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, competitor.TendersTable, competitor.TendersColumn),
 		)
 		fromV = sqlgraph.Neighbors(co.driver.Dialect(), step)
 		return fromV, nil
@@ -2808,15 +2816,15 @@ func (c *TenderClient) QueryVisitRecords(t *Tender) *VisitRecordQuery {
 	return query
 }
 
-// QueryCompetitor queries the competitor edge of a Tender.
-func (c *TenderClient) QueryCompetitor(t *Tender) *CompetitorQuery {
-	query := (&CompetitorClient{config: c.config}).Query()
+// QueryCompetitors queries the competitors edge of a Tender.
+func (c *TenderClient) QueryCompetitors(t *Tender) *TenderCompetitorQuery {
+	query := (&TenderCompetitorClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
 		id := t.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(tender.Table, tender.FieldID, id),
-			sqlgraph.To(competitor.Table, competitor.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, tender.CompetitorTable, tender.CompetitorColumn),
+			sqlgraph.To(tendercompetitor.Table, tendercompetitor.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, tender.CompetitorsTable, tender.CompetitorsColumn),
 		)
 		fromV = sqlgraph.Neighbors(t.driver.Dialect(), step)
 		return fromV, nil
@@ -2878,6 +2886,171 @@ func (c *TenderClient) mutate(ctx context.Context, m *TenderMutation) (Value, er
 		return (&TenderDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
 	default:
 		return nil, fmt.Errorf("ent: unknown Tender mutation op: %q", m.Op())
+	}
+}
+
+// TenderCompetitorClient is a client for the TenderCompetitor schema.
+type TenderCompetitorClient struct {
+	config
+}
+
+// NewTenderCompetitorClient returns a client for the TenderCompetitor from the given config.
+func NewTenderCompetitorClient(c config) *TenderCompetitorClient {
+	return &TenderCompetitorClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `tendercompetitor.Hooks(f(g(h())))`.
+func (c *TenderCompetitorClient) Use(hooks ...Hook) {
+	c.hooks.TenderCompetitor = append(c.hooks.TenderCompetitor, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `tendercompetitor.Intercept(f(g(h())))`.
+func (c *TenderCompetitorClient) Intercept(interceptors ...Interceptor) {
+	c.inters.TenderCompetitor = append(c.inters.TenderCompetitor, interceptors...)
+}
+
+// Create returns a builder for creating a TenderCompetitor entity.
+func (c *TenderCompetitorClient) Create() *TenderCompetitorCreate {
+	mutation := newTenderCompetitorMutation(c.config, OpCreate)
+	return &TenderCompetitorCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of TenderCompetitor entities.
+func (c *TenderCompetitorClient) CreateBulk(builders ...*TenderCompetitorCreate) *TenderCompetitorCreateBulk {
+	return &TenderCompetitorCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *TenderCompetitorClient) MapCreateBulk(slice any, setFunc func(*TenderCompetitorCreate, int)) *TenderCompetitorCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &TenderCompetitorCreateBulk{err: fmt.Errorf("calling to TenderCompetitorClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*TenderCompetitorCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &TenderCompetitorCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for TenderCompetitor.
+func (c *TenderCompetitorClient) Update() *TenderCompetitorUpdate {
+	mutation := newTenderCompetitorMutation(c.config, OpUpdate)
+	return &TenderCompetitorUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *TenderCompetitorClient) UpdateOne(tc *TenderCompetitor) *TenderCompetitorUpdateOne {
+	mutation := newTenderCompetitorMutation(c.config, OpUpdateOne, withTenderCompetitor(tc))
+	return &TenderCompetitorUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *TenderCompetitorClient) UpdateOneID(id xid.ID) *TenderCompetitorUpdateOne {
+	mutation := newTenderCompetitorMutation(c.config, OpUpdateOne, withTenderCompetitorID(id))
+	return &TenderCompetitorUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for TenderCompetitor.
+func (c *TenderCompetitorClient) Delete() *TenderCompetitorDelete {
+	mutation := newTenderCompetitorMutation(c.config, OpDelete)
+	return &TenderCompetitorDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *TenderCompetitorClient) DeleteOne(tc *TenderCompetitor) *TenderCompetitorDeleteOne {
+	return c.DeleteOneID(tc.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *TenderCompetitorClient) DeleteOneID(id xid.ID) *TenderCompetitorDeleteOne {
+	builder := c.Delete().Where(tendercompetitor.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &TenderCompetitorDeleteOne{builder}
+}
+
+// Query returns a query builder for TenderCompetitor.
+func (c *TenderCompetitorClient) Query() *TenderCompetitorQuery {
+	return &TenderCompetitorQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeTenderCompetitor},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a TenderCompetitor entity by its id.
+func (c *TenderCompetitorClient) Get(ctx context.Context, id xid.ID) (*TenderCompetitor, error) {
+	return c.Query().Where(tendercompetitor.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *TenderCompetitorClient) GetX(ctx context.Context, id xid.ID) *TenderCompetitor {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryTender queries the tender edge of a TenderCompetitor.
+func (c *TenderCompetitorClient) QueryTender(tc *TenderCompetitor) *TenderQuery {
+	query := (&TenderClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := tc.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(tendercompetitor.Table, tendercompetitor.FieldID, id),
+			sqlgraph.To(tender.Table, tender.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, tendercompetitor.TenderTable, tendercompetitor.TenderColumn),
+		)
+		fromV = sqlgraph.Neighbors(tc.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryCompetitor queries the competitor edge of a TenderCompetitor.
+func (c *TenderCompetitorClient) QueryCompetitor(tc *TenderCompetitor) *CompetitorQuery {
+	query := (&CompetitorClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := tc.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(tendercompetitor.Table, tendercompetitor.FieldID, id),
+			sqlgraph.To(competitor.Table, competitor.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, tendercompetitor.CompetitorTable, tendercompetitor.CompetitorColumn),
+		)
+		fromV = sqlgraph.Neighbors(tc.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *TenderCompetitorClient) Hooks() []Hook {
+	return c.hooks.TenderCompetitor
+}
+
+// Interceptors returns the client interceptors.
+func (c *TenderCompetitorClient) Interceptors() []Interceptor {
+	return c.inters.TenderCompetitor
+}
+
+func (c *TenderCompetitorClient) mutate(ctx context.Context, m *TenderCompetitorMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&TenderCompetitorCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&TenderCompetitorUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&TenderCompetitorUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&TenderCompetitorDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("ent: unknown TenderCompetitor mutation op: %q", m.Op())
 	}
 }
 
@@ -3311,12 +3484,12 @@ func (c *VisitRecordClient) mutate(ctx context.Context, m *VisitRecordMutation) 
 type (
 	hooks struct {
 		Area, City, Competitor, Country, Customer, District, Operation, Plot,
-		PotentialTender, Project, ProjectStaff, ProjectVO, Province, Tender, User,
-		VisitRecord []ent.Hook
+		PotentialTender, Project, ProjectStaff, ProjectVO, Province, Tender,
+		TenderCompetitor, User, VisitRecord []ent.Hook
 	}
 	inters struct {
 		Area, City, Competitor, Country, Customer, District, Operation, Plot,
-		PotentialTender, Project, ProjectStaff, ProjectVO, Province, Tender, User,
-		VisitRecord []ent.Interceptor
+		PotentialTender, Project, ProjectStaff, ProjectVO, Province, Tender,
+		TenderCompetitor, User, VisitRecord []ent.Interceptor
 	}
 )

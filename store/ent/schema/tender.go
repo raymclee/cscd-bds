@@ -118,7 +118,11 @@ func (Tender) Fields() []ent.Field {
 		),
 		field.String("construction_area").Optional().Comment("施工面積，只限港澳"),
 		field.Time("tender_win_date").Optional().Comment("得標日期，只限港澳"),
-		field.Float("tender_win_amount").Optional().Comment("得標金額"),
+		field.Float("tender_win_amount").Optional().
+			SchemaType(map[string]string{
+				dialect.Postgres: "numeric",
+			}).
+			Comment("得標金額"),
 		field.Float("last_tender_amount").Optional().Comment("最後一次投標金額，只限港澳").
 			SchemaType(map[string]string{
 				dialect.Postgres: "numeric",
@@ -147,10 +151,6 @@ func (Tender) Fields() []ent.Field {
 			Optional().
 			Nillable(),
 		field.String("created_by_id").
-			GoType(xid.ID("")).
-			Optional().
-			Nillable(),
-		field.String("competitor_id").
 			GoType(xid.ID("")).
 			Optional().
 			Nillable(),
@@ -200,10 +200,7 @@ func (Tender) Edges() []ent.Edge {
 			Annotations(
 				entgql.RelayConnection(),
 			),
-		edge.From("competitor", Competitor.Type).
-			Ref("won_tenders").
-			Field("competitor_id").
-			Unique(),
+		edge.To("competitors", TenderCompetitor.Type),
 		edge.To("approver", User.Type).
 			Field("approver_id").
 			Unique(),

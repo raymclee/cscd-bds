@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<ebe27e720679a06c28f02aae5461e0f7>>
+ * @generated SignedSource<<864a1cac80867e8725e518455c637b1b>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -17,7 +17,6 @@ export type tendersNewTenderPageQuery$data = {
   readonly node: {
     readonly " $fragmentSpreads": FragmentRefs<"tenderFormFragment">;
   } | null | undefined;
-  readonly " $fragmentSpreads": FragmentRefs<"tenderFormFragment_competitors">;
 };
 export type tendersNewTenderPageQuery = {
   response: tendersNewTenderPageQuery$data;
@@ -68,10 +67,6 @@ v5 = [
       "approvalStatusGT": 1
     }
   }
-],
-v6 = [
-  (v3/*: any*/),
-  (v4/*: any*/)
 ];
 return {
   "fragment": {
@@ -95,11 +90,6 @@ return {
           }
         ],
         "storageKey": null
-      },
-      {
-        "args": null,
-        "kind": "FragmentSpread",
-        "name": "tenderFormFragment_competitors"
       }
     ],
     "type": "Query",
@@ -272,7 +262,10 @@ return {
                                     "kind": "LinkedField",
                                     "name": "node",
                                     "plural": false,
-                                    "selections": (v6/*: any*/),
+                                    "selections": [
+                                      (v3/*: any*/),
+                                      (v4/*: any*/)
+                                    ],
                                     "storageKey": null
                                   }
                                 ],
@@ -297,52 +290,20 @@ return {
           (v3/*: any*/)
         ],
         "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "concreteType": "CompetitorConnection",
-        "kind": "LinkedField",
-        "name": "competitors",
-        "plural": false,
-        "selections": [
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "CompetitorEdge",
-            "kind": "LinkedField",
-            "name": "edges",
-            "plural": true,
-            "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "concreteType": "Competitor",
-                "kind": "LinkedField",
-                "name": "node",
-                "plural": false,
-                "selections": (v6/*: any*/),
-                "storageKey": null
-              }
-            ],
-            "storageKey": null
-          }
-        ],
-        "storageKey": null
       }
     ]
   },
   "params": {
-    "cacheID": "0d8be190567882ac9e61195d9eac3c2f",
+    "cacheID": "13c15c1174030a6d70be0b0a661a4144",
     "id": null,
     "metadata": {},
     "name": "tendersNewTenderPageQuery",
     "operationKind": "query",
-    "text": "query tendersNewTenderPageQuery(\n  $userId: ID!\n) {\n  node(id: $userId) {\n    __typename\n    ...tenderFormFragment\n    id\n  }\n  ...tenderFormFragment_competitors\n}\n\nfragment tenderFormFragment on User {\n  areas {\n    edges {\n      node {\n        id\n        name\n        code\n        customers(where: {approvalStatusGT: 1}) {\n          edges {\n            node {\n              id\n              name\n              __typename\n            }\n            cursor\n          }\n          pageInfo {\n            endCursor\n            hasNextPage\n            hasPreviousPage\n            startCursor\n          }\n        }\n        users {\n          edges {\n            node {\n              id\n              name\n            }\n          }\n        }\n      }\n    }\n  }\n}\n\nfragment tenderFormFragment_competitors on Query {\n  competitors {\n    edges {\n      node {\n        id\n        name\n      }\n    }\n  }\n}\n"
+    "text": "query tendersNewTenderPageQuery(\n  $userId: ID!\n) {\n  node(id: $userId) {\n    __typename\n    ...tenderFormFragment\n    id\n  }\n}\n\nfragment tenderFormFragment on User {\n  areas {\n    edges {\n      node {\n        id\n        name\n        code\n        customers(where: {approvalStatusGT: 1}) {\n          edges {\n            node {\n              id\n              name\n              __typename\n            }\n            cursor\n          }\n          pageInfo {\n            endCursor\n            hasNextPage\n            hasPreviousPage\n            startCursor\n          }\n        }\n        users {\n          edges {\n            node {\n              id\n              name\n            }\n          }\n        }\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "b6ce2d490f644ec267d53a10eb7fddc2";
+(node as any).hash = "b2a3b2fb1378fd70c8c2833f52a63217";
 
 export default node;

@@ -31,6 +31,8 @@ type Mutation {
     geoCoordinate: [Float!]
   ): Tender!
   deleteTender(id: ID!): Tender!
+  winTender(id: ID!, input: WinTenderInput!): Tender!
+  loseTender(id: ID!, input: LoseTenderInput!): Tender!
 
   createPlot(input: CreatePlotInput!, geoBounds: [[Float!]!]): PlotConnection!
   updatePlot(id: ID!, input: UpdatePlotInput!, geoBounds: [[Float!]!]): Plot!
@@ -45,4 +47,20 @@ type Mutation {
   deleteCompetitor(id: ID!): Competitor!
 
   updateProject(id: ID!, input: UpdateProjectInput!): Project!
+}
+
+input WinTenderInput {
+  projectCode: String!
+  projectDefinition: String!
+  tenderWinAmount: Float!
+  competitors: [WinLostTenderCompetitorInput!]!
+}
+
+input LoseTenderInput {
+  competitors: [WinLostTenderCompetitorInput!]!
+}
+
+input WinLostTenderCompetitorInput {
+  id: ID!
+  amount: Float!
 }

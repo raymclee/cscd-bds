@@ -5,7 +5,6 @@ package ent
 import (
 	"cscd-bds/store/ent/area"
 	"cscd-bds/store/ent/city"
-	"cscd-bds/store/ent/competitor"
 	"cscd-bds/store/ent/customer"
 	"cscd-bds/store/ent/district"
 	"cscd-bds/store/ent/province"
@@ -161,8 +160,6 @@ type Tender struct {
 	FinderID *xid.ID `json:"finder_id,omitempty"`
 	// CreatedByID holds the value of the "created_by_id" field.
 	CreatedByID *xid.ID `json:"created_by_id,omitempty"`
-	// CompetitorID holds the value of the "competitor_id" field.
-	CompetitorID *xid.ID `json:"competitor_id,omitempty"`
 	// ApproverID holds the value of the "approver_id" field.
 	ApproverID *xid.ID `json:"approver_id,omitempty"`
 	// UpdatedByID holds the value of the "updated_by_id" field.
@@ -193,8 +190,8 @@ type TenderEdges struct {
 	District *District `json:"district,omitempty"`
 	// VisitRecords holds the value of the visit_records edge.
 	VisitRecords []*VisitRecord `json:"visit_records,omitempty"`
-	// Competitor holds the value of the competitor edge.
-	Competitor *Competitor `json:"competitor,omitempty"`
+	// Competitors holds the value of the competitors edge.
+	Competitors []*TenderCompetitor `json:"competitors,omitempty"`
 	// Approver holds the value of the approver edge.
 	Approver *User `json:"approver,omitempty"`
 	// UpdatedBy holds the value of the updated_by edge.
@@ -207,6 +204,7 @@ type TenderEdges struct {
 
 	namedFollowingSales map[string][]*User
 	namedVisitRecords   map[string][]*VisitRecord
+	namedCompetitors    map[string][]*TenderCompetitor
 }
 
 // AreaOrErr returns the Area value or an error if the edge
@@ -304,15 +302,13 @@ func (e TenderEdges) VisitRecordsOrErr() ([]*VisitRecord, error) {
 	return nil, &NotLoadedError{edge: "visit_records"}
 }
 
-// CompetitorOrErr returns the Competitor value or an error if the edge
-// was not loaded in eager-loading, or loaded but was not found.
-func (e TenderEdges) CompetitorOrErr() (*Competitor, error) {
-	if e.Competitor != nil {
-		return e.Competitor, nil
-	} else if e.loadedTypes[9] {
-		return nil, &NotFoundError{label: competitor.Label}
+// CompetitorsOrErr returns the Competitors value or an error if the edge
+// was not loaded in eager-loading.
+func (e TenderEdges) CompetitorsOrErr() ([]*TenderCompetitor, error) {
+	if e.loadedTypes[9] {
+		return e.Competitors, nil
 	}
-	return nil, &NotLoadedError{edge: "competitor"}
+	return nil, &NotLoadedError{edge: "competitors"}
 }
 
 // ApproverOrErr returns the Approver value or an error if the edge
@@ -344,7 +340,7 @@ func (*Tender) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case tender.FieldGeoCoordinate:
 			values[i] = &sql.NullScanner{S: new(geo.GeoJson)}
-		case tender.FieldProvinceID, tender.FieldCityID, tender.FieldDistrictID, tender.FieldCustomerID, tender.FieldFinderID, tender.FieldCreatedByID, tender.FieldCompetitorID, tender.FieldApproverID, tender.FieldUpdatedByID:
+		case tender.FieldProvinceID, tender.FieldCityID, tender.FieldDistrictID, tender.FieldCustomerID, tender.FieldFinderID, tender.FieldCreatedByID, tender.FieldApproverID, tender.FieldUpdatedByID:
 			values[i] = &sql.NullScanner{S: new(xid.ID)}
 		case tender.FieldAttachements, tender.FieldGeoBounds, tender.FieldImages:
 			values[i] = new([]byte)
@@ -831,13 +827,6 @@ func (t *Tender) assignValues(columns []string, values []any) error {
 				t.CreatedByID = new(xid.ID)
 				*t.CreatedByID = *value.S.(*xid.ID)
 			}
-		case tender.FieldCompetitorID:
-			if value, ok := values[i].(*sql.NullScanner); !ok {
-				return fmt.Errorf("unexpected type %T for field competitor_id", values[i])
-			} else if value.Valid {
-				t.CompetitorID = new(xid.ID)
-				*t.CompetitorID = *value.S.(*xid.ID)
-			}
 		case tender.FieldApproverID:
 			if value, ok := values[i].(*sql.NullScanner); !ok {
 				return fmt.Errorf("unexpected type %T for field approver_id", values[i])
@@ -910,9 +899,9 @@ func (t *Tender) QueryVisitRecords() *VisitRecordQuery {
 	return NewTenderClient(t.config).QueryVisitRecords(t)
 }
 
-// QueryCompetitor queries the "competitor" edge of the Tender entity.
-func (t *Tender) QueryCompetitor() *CompetitorQuery {
-	return NewTenderClient(t.config).QueryCompetitor(t)
+// QueryCompetitors queries the "competitors" edge of the Tender entity.
+func (t *Tender) QueryCompetitors() *TenderCompetitorQuery {
+	return NewTenderClient(t.config).QueryCompetitors(t)
 }
 
 // QueryApprover queries the "approver" edge of the Tender entity.
@@ -1235,11 +1224,6 @@ func (t *Tender) String() string {
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteString(", ")
-	if v := t.CompetitorID; v != nil {
-		builder.WriteString("competitor_id=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
-	}
-	builder.WriteString(", ")
 	if v := t.ApproverID; v != nil {
 		builder.WriteString("approver_id=")
 		builder.WriteString(fmt.Sprintf("%v", *v))
@@ -1298,6 +1282,30 @@ func (t *Tender) appendNamedVisitRecords(name string, edges ...*VisitRecord) {
 		t.Edges.namedVisitRecords[name] = []*VisitRecord{}
 	} else {
 		t.Edges.namedVisitRecords[name] = append(t.Edges.namedVisitRecords[name], edges...)
+	}
+}
+
+// NamedCompetitors returns the Competitors named value or an error if the edge was not
+// loaded in eager-loading with this name.
+func (t *Tender) NamedCompetitors(name string) ([]*TenderCompetitor, error) {
+	if t.Edges.namedCompetitors == nil {
+		return nil, &NotLoadedError{edge: name}
+	}
+	nodes, ok := t.Edges.namedCompetitors[name]
+	if !ok {
+		return nil, &NotLoadedError{edge: name}
+	}
+	return nodes, nil
+}
+
+func (t *Tender) appendNamedCompetitors(name string, edges ...*TenderCompetitor) {
+	if t.Edges.namedCompetitors == nil {
+		t.Edges.namedCompetitors = make(map[string][]*TenderCompetitor)
+	}
+	if len(edges) == 0 {
+		t.Edges.namedCompetitors[name] = []*TenderCompetitor{}
+	} else {
+		t.Edges.namedCompetitors[name] = append(t.Edges.namedCompetitors[name], edges...)
 	}
 }
 

@@ -149,8 +149,6 @@ const (
 	FieldFinderID = "finder_id"
 	// FieldCreatedByID holds the string denoting the created_by_id field in the database.
 	FieldCreatedByID = "created_by_id"
-	// FieldCompetitorID holds the string denoting the competitor_id field in the database.
-	FieldCompetitorID = "competitor_id"
 	// FieldApproverID holds the string denoting the approver_id field in the database.
 	FieldApproverID = "approver_id"
 	// FieldUpdatedByID holds the string denoting the updated_by_id field in the database.
@@ -173,8 +171,8 @@ const (
 	EdgeDistrict = "district"
 	// EdgeVisitRecords holds the string denoting the visit_records edge name in mutations.
 	EdgeVisitRecords = "visit_records"
-	// EdgeCompetitor holds the string denoting the competitor edge name in mutations.
-	EdgeCompetitor = "competitor"
+	// EdgeCompetitors holds the string denoting the competitors edge name in mutations.
+	EdgeCompetitors = "competitors"
 	// EdgeApprover holds the string denoting the approver edge name in mutations.
 	EdgeApprover = "approver"
 	// EdgeUpdatedBy holds the string denoting the updated_by edge name in mutations.
@@ -242,13 +240,13 @@ const (
 	VisitRecordsInverseTable = "visit_records"
 	// VisitRecordsColumn is the table column denoting the visit_records relation/edge.
 	VisitRecordsColumn = "tender_id"
-	// CompetitorTable is the table that holds the competitor relation/edge.
-	CompetitorTable = "tenders"
-	// CompetitorInverseTable is the table name for the Competitor entity.
-	// It exists in this package in order to avoid circular dependency with the "competitor" package.
-	CompetitorInverseTable = "competitors"
-	// CompetitorColumn is the table column denoting the competitor relation/edge.
-	CompetitorColumn = "competitor_id"
+	// CompetitorsTable is the table that holds the competitors relation/edge.
+	CompetitorsTable = "tender_competitors"
+	// CompetitorsInverseTable is the table name for the TenderCompetitor entity.
+	// It exists in this package in order to avoid circular dependency with the "tendercompetitor" package.
+	CompetitorsInverseTable = "tender_competitors"
+	// CompetitorsColumn is the table column denoting the competitors relation/edge.
+	CompetitorsColumn = "tender_id"
 	// ApproverTable is the table that holds the approver relation/edge.
 	ApproverTable = "tenders"
 	// ApproverInverseTable is the table name for the User entity.
@@ -335,7 +333,6 @@ var Columns = []string{
 	FieldCustomerID,
 	FieldFinderID,
 	FieldCreatedByID,
-	FieldCompetitorID,
 	FieldApproverID,
 	FieldUpdatedByID,
 }
@@ -723,11 +720,6 @@ func ByCreatedByID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCreatedByID, opts...).ToFunc()
 }
 
-// ByCompetitorID orders the results by the competitor_id field.
-func ByCompetitorID(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldCompetitorID, opts...).ToFunc()
-}
-
 // ByApproverID orders the results by the approver_id field.
 func ByApproverID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldApproverID, opts...).ToFunc()
@@ -815,10 +807,17 @@ func ByVisitRecords(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	}
 }
 
-// ByCompetitorField orders the results by competitor field.
-func ByCompetitorField(field string, opts ...sql.OrderTermOption) OrderOption {
+// ByCompetitorsCount orders the results by competitors count.
+func ByCompetitorsCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newCompetitorStep(), sql.OrderByField(field, opts...))
+		sqlgraph.OrderByNeighborsCount(s, newCompetitorsStep(), opts...)
+	}
+}
+
+// ByCompetitors orders the results by competitors terms.
+func ByCompetitors(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newCompetitorsStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
 
@@ -898,11 +897,11 @@ func newVisitRecordsStep() *sqlgraph.Step {
 		sqlgraph.Edge(sqlgraph.O2M, false, VisitRecordsTable, VisitRecordsColumn),
 	)
 }
-func newCompetitorStep() *sqlgraph.Step {
+func newCompetitorsStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(CompetitorInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.M2O, true, CompetitorTable, CompetitorColumn),
+		sqlgraph.To(CompetitorsInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, CompetitorsTable, CompetitorsColumn),
 	)
 }
 func newApproverStep() *sqlgraph.Step {

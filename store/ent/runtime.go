@@ -19,6 +19,7 @@ import (
 	"cscd-bds/store/ent/schema"
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/tender"
+	"cscd-bds/store/ent/tendercompetitor"
 	"cscd-bds/store/ent/user"
 	"cscd-bds/store/ent/visitrecord"
 	"time"
@@ -528,6 +529,27 @@ func init() {
 	tenderDescID := tenderMixinFields0[0].Descriptor()
 	// tender.DefaultID holds the default value on creation for the id field.
 	tender.DefaultID = tenderDescID.Default.(func() xid.ID)
+	tendercompetitorMixin := schema.TenderCompetitor{}.Mixin()
+	tendercompetitorMixinFields0 := tendercompetitorMixin[0].Fields()
+	_ = tendercompetitorMixinFields0
+	tendercompetitorMixinFields1 := tendercompetitorMixin[1].Fields()
+	_ = tendercompetitorMixinFields1
+	tendercompetitorFields := schema.TenderCompetitor{}.Fields()
+	_ = tendercompetitorFields
+	// tendercompetitorDescCreatedAt is the schema descriptor for created_at field.
+	tendercompetitorDescCreatedAt := tendercompetitorMixinFields1[0].Descriptor()
+	// tendercompetitor.DefaultCreatedAt holds the default value on creation for the created_at field.
+	tendercompetitor.DefaultCreatedAt = tendercompetitorDescCreatedAt.Default.(func() time.Time)
+	// tendercompetitorDescUpdatedAt is the schema descriptor for updated_at field.
+	tendercompetitorDescUpdatedAt := tendercompetitorMixinFields1[1].Descriptor()
+	// tendercompetitor.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	tendercompetitor.DefaultUpdatedAt = tendercompetitorDescUpdatedAt.Default.(func() time.Time)
+	// tendercompetitor.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	tendercompetitor.UpdateDefaultUpdatedAt = tendercompetitorDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// tendercompetitorDescID is the schema descriptor for id field.
+	tendercompetitorDescID := tendercompetitorMixinFields0[0].Descriptor()
+	// tendercompetitor.DefaultID holds the default value on creation for the id field.
+	tendercompetitor.DefaultID = tendercompetitorDescID.Default.(func() xid.ID)
 	userMixin := schema.User{}.Mixin()
 	userMixinFields0 := userMixin[0].Fields()
 	_ = userMixinFields0

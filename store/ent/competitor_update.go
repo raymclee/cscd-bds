@@ -7,7 +7,7 @@ import (
 	"cscd-bds/store/ent/competitor"
 	"cscd-bds/store/ent/predicate"
 	"cscd-bds/store/ent/schema/xid"
-	"cscd-bds/store/ent/tender"
+	"cscd-bds/store/ent/tendercompetitor"
 	"errors"
 	"fmt"
 	"time"
@@ -64,19 +64,19 @@ func (cu *CompetitorUpdate) SetNillableName(s *string) *CompetitorUpdate {
 	return cu
 }
 
-// AddWonTenderIDs adds the "won_tenders" edge to the Tender entity by IDs.
-func (cu *CompetitorUpdate) AddWonTenderIDs(ids ...xid.ID) *CompetitorUpdate {
-	cu.mutation.AddWonTenderIDs(ids...)
+// AddTenderIDs adds the "tenders" edge to the TenderCompetitor entity by IDs.
+func (cu *CompetitorUpdate) AddTenderIDs(ids ...xid.ID) *CompetitorUpdate {
+	cu.mutation.AddTenderIDs(ids...)
 	return cu
 }
 
-// AddWonTenders adds the "won_tenders" edges to the Tender entity.
-func (cu *CompetitorUpdate) AddWonTenders(t ...*Tender) *CompetitorUpdate {
+// AddTenders adds the "tenders" edges to the TenderCompetitor entity.
+func (cu *CompetitorUpdate) AddTenders(t ...*TenderCompetitor) *CompetitorUpdate {
 	ids := make([]xid.ID, len(t))
 	for i := range t {
 		ids[i] = t[i].ID
 	}
-	return cu.AddWonTenderIDs(ids...)
+	return cu.AddTenderIDs(ids...)
 }
 
 // Mutation returns the CompetitorMutation object of the builder.
@@ -84,25 +84,25 @@ func (cu *CompetitorUpdate) Mutation() *CompetitorMutation {
 	return cu.mutation
 }
 
-// ClearWonTenders clears all "won_tenders" edges to the Tender entity.
-func (cu *CompetitorUpdate) ClearWonTenders() *CompetitorUpdate {
-	cu.mutation.ClearWonTenders()
+// ClearTenders clears all "tenders" edges to the TenderCompetitor entity.
+func (cu *CompetitorUpdate) ClearTenders() *CompetitorUpdate {
+	cu.mutation.ClearTenders()
 	return cu
 }
 
-// RemoveWonTenderIDs removes the "won_tenders" edge to Tender entities by IDs.
-func (cu *CompetitorUpdate) RemoveWonTenderIDs(ids ...xid.ID) *CompetitorUpdate {
-	cu.mutation.RemoveWonTenderIDs(ids...)
+// RemoveTenderIDs removes the "tenders" edge to TenderCompetitor entities by IDs.
+func (cu *CompetitorUpdate) RemoveTenderIDs(ids ...xid.ID) *CompetitorUpdate {
+	cu.mutation.RemoveTenderIDs(ids...)
 	return cu
 }
 
-// RemoveWonTenders removes "won_tenders" edges to Tender entities.
-func (cu *CompetitorUpdate) RemoveWonTenders(t ...*Tender) *CompetitorUpdate {
+// RemoveTenders removes "tenders" edges to TenderCompetitor entities.
+func (cu *CompetitorUpdate) RemoveTenders(t ...*TenderCompetitor) *CompetitorUpdate {
 	ids := make([]xid.ID, len(t))
 	for i := range t {
 		ids[i] = t[i].ID
 	}
-	return cu.RemoveWonTenderIDs(ids...)
+	return cu.RemoveTenderIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -159,28 +159,28 @@ func (cu *CompetitorUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := cu.mutation.Name(); ok {
 		_spec.SetField(competitor.FieldName, field.TypeString, value)
 	}
-	if cu.mutation.WonTendersCleared() {
+	if cu.mutation.TendersCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   competitor.WonTendersTable,
-			Columns: []string{competitor.WonTendersColumn},
+			Table:   competitor.TendersTable,
+			Columns: []string{competitor.TendersColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(tender.FieldID, field.TypeString),
+				IDSpec: sqlgraph.NewFieldSpec(tendercompetitor.FieldID, field.TypeString),
 			},
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := cu.mutation.RemovedWonTendersIDs(); len(nodes) > 0 && !cu.mutation.WonTendersCleared() {
+	if nodes := cu.mutation.RemovedTendersIDs(); len(nodes) > 0 && !cu.mutation.TendersCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   competitor.WonTendersTable,
-			Columns: []string{competitor.WonTendersColumn},
+			Table:   competitor.TendersTable,
+			Columns: []string{competitor.TendersColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(tender.FieldID, field.TypeString),
+				IDSpec: sqlgraph.NewFieldSpec(tendercompetitor.FieldID, field.TypeString),
 			},
 		}
 		for _, k := range nodes {
@@ -188,15 +188,15 @@ func (cu *CompetitorUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := cu.mutation.WonTendersIDs(); len(nodes) > 0 {
+	if nodes := cu.mutation.TendersIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   competitor.WonTendersTable,
-			Columns: []string{competitor.WonTendersColumn},
+			Table:   competitor.TendersTable,
+			Columns: []string{competitor.TendersColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(tender.FieldID, field.TypeString),
+				IDSpec: sqlgraph.NewFieldSpec(tendercompetitor.FieldID, field.TypeString),
 			},
 		}
 		for _, k := range nodes {
@@ -258,19 +258,19 @@ func (cuo *CompetitorUpdateOne) SetNillableName(s *string) *CompetitorUpdateOne 
 	return cuo
 }
 
-// AddWonTenderIDs adds the "won_tenders" edge to the Tender entity by IDs.
-func (cuo *CompetitorUpdateOne) AddWonTenderIDs(ids ...xid.ID) *CompetitorUpdateOne {
-	cuo.mutation.AddWonTenderIDs(ids...)
+// AddTenderIDs adds the "tenders" edge to the TenderCompetitor entity by IDs.
+func (cuo *CompetitorUpdateOne) AddTenderIDs(ids ...xid.ID) *CompetitorUpdateOne {
+	cuo.mutation.AddTenderIDs(ids...)
 	return cuo
 }
 
-// AddWonTenders adds the "won_tenders" edges to the Tender entity.
-func (cuo *CompetitorUpdateOne) AddWonTenders(t ...*Tender) *CompetitorUpdateOne {
+// AddTenders adds the "tenders" edges to the TenderCompetitor entity.
+func (cuo *CompetitorUpdateOne) AddTenders(t ...*TenderCompetitor) *CompetitorUpdateOne {
 	ids := make([]xid.ID, len(t))
 	for i := range t {
 		ids[i] = t[i].ID
 	}
-	return cuo.AddWonTenderIDs(ids...)
+	return cuo.AddTenderIDs(ids...)
 }
 
 // Mutation returns the CompetitorMutation object of the builder.
@@ -278,25 +278,25 @@ func (cuo *CompetitorUpdateOne) Mutation() *CompetitorMutation {
 	return cuo.mutation
 }
 
-// ClearWonTenders clears all "won_tenders" edges to the Tender entity.
-func (cuo *CompetitorUpdateOne) ClearWonTenders() *CompetitorUpdateOne {
-	cuo.mutation.ClearWonTenders()
+// ClearTenders clears all "tenders" edges to the TenderCompetitor entity.
+func (cuo *CompetitorUpdateOne) ClearTenders() *CompetitorUpdateOne {
+	cuo.mutation.ClearTenders()
 	return cuo
 }
 
-// RemoveWonTenderIDs removes the "won_tenders" edge to Tender entities by IDs.
-func (cuo *CompetitorUpdateOne) RemoveWonTenderIDs(ids ...xid.ID) *CompetitorUpdateOne {
-	cuo.mutation.RemoveWonTenderIDs(ids...)
+// RemoveTenderIDs removes the "tenders" edge to TenderCompetitor entities by IDs.
+func (cuo *CompetitorUpdateOne) RemoveTenderIDs(ids ...xid.ID) *CompetitorUpdateOne {
+	cuo.mutation.RemoveTenderIDs(ids...)
 	return cuo
 }
 
-// RemoveWonTenders removes "won_tenders" edges to Tender entities.
-func (cuo *CompetitorUpdateOne) RemoveWonTenders(t ...*Tender) *CompetitorUpdateOne {
+// RemoveTenders removes "tenders" edges to TenderCompetitor entities.
+func (cuo *CompetitorUpdateOne) RemoveTenders(t ...*TenderCompetitor) *CompetitorUpdateOne {
 	ids := make([]xid.ID, len(t))
 	for i := range t {
 		ids[i] = t[i].ID
 	}
-	return cuo.RemoveWonTenderIDs(ids...)
+	return cuo.RemoveTenderIDs(ids...)
 }
 
 // Where appends a list predicates to the CompetitorUpdate builder.
@@ -383,28 +383,28 @@ func (cuo *CompetitorUpdateOne) sqlSave(ctx context.Context) (_node *Competitor,
 	if value, ok := cuo.mutation.Name(); ok {
 		_spec.SetField(competitor.FieldName, field.TypeString, value)
 	}
-	if cuo.mutation.WonTendersCleared() {
+	if cuo.mutation.TendersCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   competitor.WonTendersTable,
-			Columns: []string{competitor.WonTendersColumn},
+			Table:   competitor.TendersTable,
+			Columns: []string{competitor.TendersColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(tender.FieldID, field.TypeString),
+				IDSpec: sqlgraph.NewFieldSpec(tendercompetitor.FieldID, field.TypeString),
 			},
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := cuo.mutation.RemovedWonTendersIDs(); len(nodes) > 0 && !cuo.mutation.WonTendersCleared() {
+	if nodes := cuo.mutation.RemovedTendersIDs(); len(nodes) > 0 && !cuo.mutation.TendersCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   competitor.WonTendersTable,
-			Columns: []string{competitor.WonTendersColumn},
+			Table:   competitor.TendersTable,
+			Columns: []string{competitor.TendersColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(tender.FieldID, field.TypeString),
+				IDSpec: sqlgraph.NewFieldSpec(tendercompetitor.FieldID, field.TypeString),
 			},
 		}
 		for _, k := range nodes {
@@ -412,15 +412,15 @@ func (cuo *CompetitorUpdateOne) sqlSave(ctx context.Context) (_node *Competitor,
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := cuo.mutation.WonTendersIDs(); len(nodes) > 0 {
+	if nodes := cuo.mutation.TendersIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   competitor.WonTendersTable,
-			Columns: []string{competitor.WonTendersColumn},
+			Table:   competitor.TendersTable,
+			Columns: []string{competitor.TendersColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(tender.FieldID, field.TypeString),
+				IDSpec: sqlgraph.NewFieldSpec(tendercompetitor.FieldID, field.TypeString),
 			},
 		}
 		for _, k := range nodes {

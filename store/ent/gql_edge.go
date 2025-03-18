@@ -142,25 +142,16 @@ func (c *City) Tenders(
 	return c.QueryTenders().Paginate(ctx, after, first, before, last, opts...)
 }
 
-func (c *Competitor) WonTenders(
-	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy []*TenderOrder, where *TenderWhereInput,
-) (*TenderConnection, error) {
-	opts := []TenderPaginateOption{
-		WithTenderOrder(orderBy),
-		WithTenderFilter(where.Filter),
+func (c *Competitor) Tenders(ctx context.Context) (result []*TenderCompetitor, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = c.NamedTenders(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = c.Edges.TendersOrErr()
 	}
-	alias := graphql.GetFieldContext(ctx).Field.Alias
-	totalCount, hasTotalCount := c.Edges.totalCount[0][alias]
-	if nodes, err := c.NamedWonTenders(alias); err == nil || hasTotalCount {
-		pager, err := newTenderPager(opts, last != nil)
-		if err != nil {
-			return nil, err
-		}
-		conn := &TenderConnection{Edges: []*TenderEdge{}, TotalCount: totalCount}
-		conn.build(nodes, pager, after, first, before, last)
-		return conn, nil
+	if IsNotLoaded(err) {
+		result, err = c.QueryTenders().All(ctx)
 	}
-	return c.QueryWonTenders().Paginate(ctx, after, first, before, last, opts...)
+	return result, err
 }
 
 func (c *Country) Provinces(
@@ -570,12 +561,16 @@ func (t *Tender) VisitRecords(
 	return t.QueryVisitRecords().Paginate(ctx, after, first, before, last, opts...)
 }
 
-func (t *Tender) Competitor(ctx context.Context) (*Competitor, error) {
-	result, err := t.Edges.CompetitorOrErr()
-	if IsNotLoaded(err) {
-		result, err = t.QueryCompetitor().Only(ctx)
+func (t *Tender) Competitors(ctx context.Context) (result []*TenderCompetitor, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = t.NamedCompetitors(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = t.Edges.CompetitorsOrErr()
 	}
-	return result, MaskNotFound(err)
+	if IsNotLoaded(err) {
+		result, err = t.QueryCompetitors().All(ctx)
+	}
+	return result, err
 }
 
 func (t *Tender) Approver(ctx context.Context) (*User, error) {
@@ -592,6 +587,22 @@ func (t *Tender) UpdatedBy(ctx context.Context) (*User, error) {
 		result, err = t.QueryUpdatedBy().Only(ctx)
 	}
 	return result, MaskNotFound(err)
+}
+
+func (tc *TenderCompetitor) Tender(ctx context.Context) (*Tender, error) {
+	result, err := tc.Edges.TenderOrErr()
+	if IsNotLoaded(err) {
+		result, err = tc.QueryTender().Only(ctx)
+	}
+	return result, err
+}
+
+func (tc *TenderCompetitor) Competitor(ctx context.Context) (*Competitor, error) {
+	result, err := tc.Edges.CompetitorOrErr()
+	if IsNotLoaded(err) {
+		result, err = tc.QueryCompetitor().Only(ctx)
+	}
+	return result, err
 }
 
 func (u *User) Areas(

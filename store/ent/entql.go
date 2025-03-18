@@ -18,6 +18,7 @@ import (
 	"cscd-bds/store/ent/projectvo"
 	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/tender"
+	"cscd-bds/store/ent/tendercompetitor"
 	"cscd-bds/store/ent/user"
 	"cscd-bds/store/ent/visitrecord"
 
@@ -29,7 +30,7 @@ import (
 
 // schemaGraph holds a representation of ent/schema at runtime.
 var schemaGraph = func() *sqlgraph.Schema {
-	graph := &sqlgraph.Schema{Nodes: make([]*sqlgraph.Node, 16)}
+	graph := &sqlgraph.Schema{Nodes: make([]*sqlgraph.Node, 17)}
 	graph.Nodes[0] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   area.Table,
@@ -465,12 +466,29 @@ var schemaGraph = func() *sqlgraph.Schema {
 			tender.FieldCustomerID:                           {Type: field.TypeString, Column: tender.FieldCustomerID},
 			tender.FieldFinderID:                             {Type: field.TypeString, Column: tender.FieldFinderID},
 			tender.FieldCreatedByID:                          {Type: field.TypeString, Column: tender.FieldCreatedByID},
-			tender.FieldCompetitorID:                         {Type: field.TypeString, Column: tender.FieldCompetitorID},
 			tender.FieldApproverID:                           {Type: field.TypeString, Column: tender.FieldApproverID},
 			tender.FieldUpdatedByID:                          {Type: field.TypeString, Column: tender.FieldUpdatedByID},
 		},
 	}
 	graph.Nodes[14] = &sqlgraph.Node{
+		NodeSpec: sqlgraph.NodeSpec{
+			Table:   tendercompetitor.Table,
+			Columns: tendercompetitor.Columns,
+			ID: &sqlgraph.FieldSpec{
+				Type:   field.TypeString,
+				Column: tendercompetitor.FieldID,
+			},
+		},
+		Type: "TenderCompetitor",
+		Fields: map[string]*sqlgraph.FieldSpec{
+			tendercompetitor.FieldCreatedAt:    {Type: field.TypeTime, Column: tendercompetitor.FieldCreatedAt},
+			tendercompetitor.FieldUpdatedAt:    {Type: field.TypeTime, Column: tendercompetitor.FieldUpdatedAt},
+			tendercompetitor.FieldTenderID:     {Type: field.TypeString, Column: tendercompetitor.FieldTenderID},
+			tendercompetitor.FieldCompetitorID: {Type: field.TypeString, Column: tendercompetitor.FieldCompetitorID},
+			tendercompetitor.FieldAmount:       {Type: field.TypeFloat64, Column: tendercompetitor.FieldAmount},
+		},
+	}
+	graph.Nodes[15] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   user.Table,
 			Columns: user.Columns,
@@ -497,7 +515,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			user.FieldLeaderID:      {Type: field.TypeString, Column: user.FieldLeaderID},
 		},
 	}
-	graph.Nodes[15] = &sqlgraph.Node{
+	graph.Nodes[16] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   visitrecord.Table,
 			Columns: visitrecord.Columns,
@@ -604,16 +622,16 @@ var schemaGraph = func() *sqlgraph.Schema {
 		"Tender",
 	)
 	graph.MustAddE(
-		"won_tenders",
+		"tenders",
 		&sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   competitor.WonTendersTable,
-			Columns: []string{competitor.WonTendersColumn},
+			Table:   competitor.TendersTable,
+			Columns: []string{competitor.TendersColumn},
 			Bidi:    false,
 		},
 		"Competitor",
-		"Tender",
+		"TenderCompetitor",
 	)
 	graph.MustAddE(
 		"provinces",
@@ -1000,16 +1018,16 @@ var schemaGraph = func() *sqlgraph.Schema {
 		"VisitRecord",
 	)
 	graph.MustAddE(
-		"competitor",
+		"competitors",
 		&sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   tender.CompetitorTable,
-			Columns: []string{tender.CompetitorColumn},
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   tender.CompetitorsTable,
+			Columns: []string{tender.CompetitorsColumn},
 			Bidi:    false,
 		},
 		"Tender",
-		"Competitor",
+		"TenderCompetitor",
 	)
 	graph.MustAddE(
 		"approver",
@@ -1034,6 +1052,30 @@ var schemaGraph = func() *sqlgraph.Schema {
 		},
 		"Tender",
 		"User",
+	)
+	graph.MustAddE(
+		"tender",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   tendercompetitor.TenderTable,
+			Columns: []string{tendercompetitor.TenderColumn},
+			Bidi:    false,
+		},
+		"TenderCompetitor",
+		"Tender",
+	)
+	graph.MustAddE(
+		"competitor",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   tendercompetitor.CompetitorTable,
+			Columns: []string{tendercompetitor.CompetitorColumn},
+			Bidi:    false,
+		},
+		"TenderCompetitor",
+		"Competitor",
 	)
 	graph.MustAddE(
 		"areas",
@@ -1472,14 +1514,14 @@ func (f *CompetitorFilter) WhereName(p entql.StringP) {
 	f.Where(p.Field(competitor.FieldName))
 }
 
-// WhereHasWonTenders applies a predicate to check if query has an edge won_tenders.
-func (f *CompetitorFilter) WhereHasWonTenders() {
-	f.Where(entql.HasEdge("won_tenders"))
+// WhereHasTenders applies a predicate to check if query has an edge tenders.
+func (f *CompetitorFilter) WhereHasTenders() {
+	f.Where(entql.HasEdge("tenders"))
 }
 
-// WhereHasWonTendersWith applies a predicate to check if query has an edge won_tenders with a given conditions (other predicates).
-func (f *CompetitorFilter) WhereHasWonTendersWith(preds ...predicate.Tender) {
-	f.Where(entql.HasEdgeWith("won_tenders", sqlgraph.WrapFunc(func(s *sql.Selector) {
+// WhereHasTendersWith applies a predicate to check if query has an edge tenders with a given conditions (other predicates).
+func (f *CompetitorFilter) WhereHasTendersWith(preds ...predicate.TenderCompetitor) {
+	f.Where(entql.HasEdgeWith("tenders", sqlgraph.WrapFunc(func(s *sql.Selector) {
 		for _, p := range preds {
 			p(s)
 		}
@@ -3433,11 +3475,6 @@ func (f *TenderFilter) WhereCreatedByID(p entql.StringP) {
 	f.Where(p.Field(tender.FieldCreatedByID))
 }
 
-// WhereCompetitorID applies the entql string predicate on the competitor_id field.
-func (f *TenderFilter) WhereCompetitorID(p entql.StringP) {
-	f.Where(p.Field(tender.FieldCompetitorID))
-}
-
 // WhereApproverID applies the entql string predicate on the approver_id field.
 func (f *TenderFilter) WhereApproverID(p entql.StringP) {
 	f.Where(p.Field(tender.FieldApproverID))
@@ -3574,14 +3611,14 @@ func (f *TenderFilter) WhereHasVisitRecordsWith(preds ...predicate.VisitRecord) 
 	})))
 }
 
-// WhereHasCompetitor applies a predicate to check if query has an edge competitor.
-func (f *TenderFilter) WhereHasCompetitor() {
-	f.Where(entql.HasEdge("competitor"))
+// WhereHasCompetitors applies a predicate to check if query has an edge competitors.
+func (f *TenderFilter) WhereHasCompetitors() {
+	f.Where(entql.HasEdge("competitors"))
 }
 
-// WhereHasCompetitorWith applies a predicate to check if query has an edge competitor with a given conditions (other predicates).
-func (f *TenderFilter) WhereHasCompetitorWith(preds ...predicate.Competitor) {
-	f.Where(entql.HasEdgeWith("competitor", sqlgraph.WrapFunc(func(s *sql.Selector) {
+// WhereHasCompetitorsWith applies a predicate to check if query has an edge competitors with a given conditions (other predicates).
+func (f *TenderFilter) WhereHasCompetitorsWith(preds ...predicate.TenderCompetitor) {
+	f.Where(entql.HasEdgeWith("competitors", sqlgraph.WrapFunc(func(s *sql.Selector) {
 		for _, p := range preds {
 			p(s)
 		}
@@ -3617,6 +3654,99 @@ func (f *TenderFilter) WhereHasUpdatedByWith(preds ...predicate.User) {
 }
 
 // addPredicate implements the predicateAdder interface.
+func (tcq *TenderCompetitorQuery) addPredicate(pred func(s *sql.Selector)) {
+	tcq.predicates = append(tcq.predicates, pred)
+}
+
+// Filter returns a Filter implementation to apply filters on the TenderCompetitorQuery builder.
+func (tcq *TenderCompetitorQuery) Filter() *TenderCompetitorFilter {
+	return &TenderCompetitorFilter{config: tcq.config, predicateAdder: tcq}
+}
+
+// addPredicate implements the predicateAdder interface.
+func (m *TenderCompetitorMutation) addPredicate(pred func(s *sql.Selector)) {
+	m.predicates = append(m.predicates, pred)
+}
+
+// Filter returns an entql.Where implementation to apply filters on the TenderCompetitorMutation builder.
+func (m *TenderCompetitorMutation) Filter() *TenderCompetitorFilter {
+	return &TenderCompetitorFilter{config: m.config, predicateAdder: m}
+}
+
+// TenderCompetitorFilter provides a generic filtering capability at runtime for TenderCompetitorQuery.
+type TenderCompetitorFilter struct {
+	predicateAdder
+	config
+}
+
+// Where applies the entql predicate on the query filter.
+func (f *TenderCompetitorFilter) Where(p entql.P) {
+	f.addPredicate(func(s *sql.Selector) {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[14].Type, p, s); err != nil {
+			s.AddError(err)
+		}
+	})
+}
+
+// WhereID applies the entql string predicate on the id field.
+func (f *TenderCompetitorFilter) WhereID(p entql.StringP) {
+	f.Where(p.Field(tendercompetitor.FieldID))
+}
+
+// WhereCreatedAt applies the entql time.Time predicate on the created_at field.
+func (f *TenderCompetitorFilter) WhereCreatedAt(p entql.TimeP) {
+	f.Where(p.Field(tendercompetitor.FieldCreatedAt))
+}
+
+// WhereUpdatedAt applies the entql time.Time predicate on the updated_at field.
+func (f *TenderCompetitorFilter) WhereUpdatedAt(p entql.TimeP) {
+	f.Where(p.Field(tendercompetitor.FieldUpdatedAt))
+}
+
+// WhereTenderID applies the entql string predicate on the tender_id field.
+func (f *TenderCompetitorFilter) WhereTenderID(p entql.StringP) {
+	f.Where(p.Field(tendercompetitor.FieldTenderID))
+}
+
+// WhereCompetitorID applies the entql string predicate on the competitor_id field.
+func (f *TenderCompetitorFilter) WhereCompetitorID(p entql.StringP) {
+	f.Where(p.Field(tendercompetitor.FieldCompetitorID))
+}
+
+// WhereAmount applies the entql float64 predicate on the amount field.
+func (f *TenderCompetitorFilter) WhereAmount(p entql.Float64P) {
+	f.Where(p.Field(tendercompetitor.FieldAmount))
+}
+
+// WhereHasTender applies a predicate to check if query has an edge tender.
+func (f *TenderCompetitorFilter) WhereHasTender() {
+	f.Where(entql.HasEdge("tender"))
+}
+
+// WhereHasTenderWith applies a predicate to check if query has an edge tender with a given conditions (other predicates).
+func (f *TenderCompetitorFilter) WhereHasTenderWith(preds ...predicate.Tender) {
+	f.Where(entql.HasEdgeWith("tender", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
+// WhereHasCompetitor applies a predicate to check if query has an edge competitor.
+func (f *TenderCompetitorFilter) WhereHasCompetitor() {
+	f.Where(entql.HasEdge("competitor"))
+}
+
+// WhereHasCompetitorWith applies a predicate to check if query has an edge competitor with a given conditions (other predicates).
+func (f *TenderCompetitorFilter) WhereHasCompetitorWith(preds ...predicate.Competitor) {
+	f.Where(entql.HasEdgeWith("competitor", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
+// addPredicate implements the predicateAdder interface.
 func (uq *UserQuery) addPredicate(pred func(s *sql.Selector)) {
 	uq.predicates = append(uq.predicates, pred)
 }
@@ -3645,7 +3775,7 @@ type UserFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *UserFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[14].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[15].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
@@ -3853,7 +3983,7 @@ type VisitRecordFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *VisitRecordFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[15].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[16].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})

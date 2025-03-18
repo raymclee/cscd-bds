@@ -6,13 +6,13 @@ import (
 	"context"
 	"cscd-bds/store/ent/area"
 	"cscd-bds/store/ent/city"
-	"cscd-bds/store/ent/competitor"
 	"cscd-bds/store/ent/customer"
 	"cscd-bds/store/ent/district"
 	"cscd-bds/store/ent/predicate"
 	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/tender"
+	"cscd-bds/store/ent/tendercompetitor"
 	"cscd-bds/store/ent/user"
 	"cscd-bds/store/ent/visitrecord"
 	"database/sql/driver"
@@ -41,13 +41,14 @@ type TenderQuery struct {
 	withCity                *CityQuery
 	withDistrict            *DistrictQuery
 	withVisitRecords        *VisitRecordQuery
-	withCompetitor          *CompetitorQuery
+	withCompetitors         *TenderCompetitorQuery
 	withApprover            *UserQuery
 	withUpdatedBy           *UserQuery
 	modifiers               []func(*sql.Selector)
 	loadTotal               []func(context.Context, []*Tender) error
 	withNamedFollowingSales map[string]*UserQuery
 	withNamedVisitRecords   map[string]*VisitRecordQuery
+	withNamedCompetitors    map[string]*TenderCompetitorQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -282,9 +283,9 @@ func (tq *TenderQuery) QueryVisitRecords() *VisitRecordQuery {
 	return query
 }
 
-// QueryCompetitor chains the current query on the "competitor" edge.
-func (tq *TenderQuery) QueryCompetitor() *CompetitorQuery {
-	query := (&CompetitorClient{config: tq.config}).Query()
+// QueryCompetitors chains the current query on the "competitors" edge.
+func (tq *TenderQuery) QueryCompetitors() *TenderCompetitorQuery {
+	query := (&TenderCompetitorClient{config: tq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := tq.prepareQuery(ctx); err != nil {
 			return nil, err
@@ -295,8 +296,8 @@ func (tq *TenderQuery) QueryCompetitor() *CompetitorQuery {
 		}
 		step := sqlgraph.NewStep(
 			sqlgraph.From(tender.Table, tender.FieldID, selector),
-			sqlgraph.To(competitor.Table, competitor.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, tender.CompetitorTable, tender.CompetitorColumn),
+			sqlgraph.To(tendercompetitor.Table, tendercompetitor.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, tender.CompetitorsTable, tender.CompetitorsColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(tq.driver.Dialect(), step)
 		return fromU, nil
@@ -549,7 +550,7 @@ func (tq *TenderQuery) Clone() *TenderQuery {
 		withCity:           tq.withCity.Clone(),
 		withDistrict:       tq.withDistrict.Clone(),
 		withVisitRecords:   tq.withVisitRecords.Clone(),
-		withCompetitor:     tq.withCompetitor.Clone(),
+		withCompetitors:    tq.withCompetitors.Clone(),
 		withApprover:       tq.withApprover.Clone(),
 		withUpdatedBy:      tq.withUpdatedBy.Clone(),
 		// clone intermediate query.
@@ -657,14 +658,14 @@ func (tq *TenderQuery) WithVisitRecords(opts ...func(*VisitRecordQuery)) *Tender
 	return tq
 }
 
-// WithCompetitor tells the query-builder to eager-load the nodes that are connected to
-// the "competitor" edge. The optional arguments are used to configure the query builder of the edge.
-func (tq *TenderQuery) WithCompetitor(opts ...func(*CompetitorQuery)) *TenderQuery {
-	query := (&CompetitorClient{config: tq.config}).Query()
+// WithCompetitors tells the query-builder to eager-load the nodes that are connected to
+// the "competitors" edge. The optional arguments are used to configure the query builder of the edge.
+func (tq *TenderQuery) WithCompetitors(opts ...func(*TenderCompetitorQuery)) *TenderQuery {
+	query := (&TenderCompetitorClient{config: tq.config}).Query()
 	for _, opt := range opts {
 		opt(query)
 	}
-	tq.withCompetitor = query
+	tq.withCompetitors = query
 	return tq
 }
 
@@ -778,7 +779,7 @@ func (tq *TenderQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Tende
 			tq.withCity != nil,
 			tq.withDistrict != nil,
 			tq.withVisitRecords != nil,
-			tq.withCompetitor != nil,
+			tq.withCompetitors != nil,
 			tq.withApprover != nil,
 			tq.withUpdatedBy != nil,
 		}
@@ -860,9 +861,10 @@ func (tq *TenderQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Tende
 			return nil, err
 		}
 	}
-	if query := tq.withCompetitor; query != nil {
-		if err := tq.loadCompetitor(ctx, query, nodes, nil,
-			func(n *Tender, e *Competitor) { n.Edges.Competitor = e }); err != nil {
+	if query := tq.withCompetitors; query != nil {
+		if err := tq.loadCompetitors(ctx, query, nodes,
+			func(n *Tender) { n.Edges.Competitors = []*TenderCompetitor{} },
+			func(n *Tender, e *TenderCompetitor) { n.Edges.Competitors = append(n.Edges.Competitors, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -889,6 +891,13 @@ func (tq *TenderQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Tende
 		if err := tq.loadVisitRecords(ctx, query, nodes,
 			func(n *Tender) { n.appendNamedVisitRecords(name) },
 			func(n *Tender, e *VisitRecord) { n.appendNamedVisitRecords(name, e) }); err != nil {
+			return nil, err
+		}
+	}
+	for name, query := range tq.withNamedCompetitors {
+		if err := tq.loadCompetitors(ctx, query, nodes,
+			func(n *Tender) { n.appendNamedCompetitors(name) },
+			func(n *Tender, e *TenderCompetitor) { n.appendNamedCompetitors(name, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -1215,35 +1224,33 @@ func (tq *TenderQuery) loadVisitRecords(ctx context.Context, query *VisitRecordQ
 	}
 	return nil
 }
-func (tq *TenderQuery) loadCompetitor(ctx context.Context, query *CompetitorQuery, nodes []*Tender, init func(*Tender), assign func(*Tender, *Competitor)) error {
-	ids := make([]xid.ID, 0, len(nodes))
-	nodeids := make(map[xid.ID][]*Tender)
+func (tq *TenderQuery) loadCompetitors(ctx context.Context, query *TenderCompetitorQuery, nodes []*Tender, init func(*Tender), assign func(*Tender, *TenderCompetitor)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[xid.ID]*Tender)
 	for i := range nodes {
-		if nodes[i].CompetitorID == nil {
-			continue
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
 		}
-		fk := *nodes[i].CompetitorID
-		if _, ok := nodeids[fk]; !ok {
-			ids = append(ids, fk)
-		}
-		nodeids[fk] = append(nodeids[fk], nodes[i])
 	}
-	if len(ids) == 0 {
-		return nil
+	if len(query.ctx.Fields) > 0 {
+		query.ctx.AppendFieldOnce(tendercompetitor.FieldTenderID)
 	}
-	query.Where(competitor.IDIn(ids...))
+	query.Where(predicate.TenderCompetitor(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(tender.CompetitorsColumn), fks...))
+	}))
 	neighbors, err := query.All(ctx)
 	if err != nil {
 		return err
 	}
 	for _, n := range neighbors {
-		nodes, ok := nodeids[n.ID]
+		fk := n.TenderID
+		node, ok := nodeids[fk]
 		if !ok {
-			return fmt.Errorf(`unexpected foreign-key "competitor_id" returned %v`, n.ID)
+			return fmt.Errorf(`unexpected referenced foreign-key "tender_id" returned %v for node %v`, fk, n.ID)
 		}
-		for i := range nodes {
-			assign(nodes[i], n)
-		}
+		assign(node, n)
 	}
 	return nil
 }
@@ -1361,9 +1368,6 @@ func (tq *TenderQuery) querySpec() *sqlgraph.QuerySpec {
 		if tq.withDistrict != nil {
 			_spec.Node.AddColumnOnce(tender.FieldDistrictID)
 		}
-		if tq.withCompetitor != nil {
-			_spec.Node.AddColumnOnce(tender.FieldCompetitorID)
-		}
 		if tq.withApprover != nil {
 			_spec.Node.AddColumnOnce(tender.FieldApproverID)
 		}
@@ -1451,6 +1455,20 @@ func (tq *TenderQuery) WithNamedVisitRecords(name string, opts ...func(*VisitRec
 		tq.withNamedVisitRecords = make(map[string]*VisitRecordQuery)
 	}
 	tq.withNamedVisitRecords[name] = query
+	return tq
+}
+
+// WithNamedCompetitors tells the query-builder to eager-load the nodes that are connected to the "competitors"
+// edge with the given name. The optional arguments are used to configure the query builder of the edge.
+func (tq *TenderQuery) WithNamedCompetitors(name string, opts ...func(*TenderCompetitorQuery)) *TenderQuery {
+	query := (&TenderCompetitorClient{config: tq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	if tq.withNamedCompetitors == nil {
+		tq.withNamedCompetitors = make(map[string]*TenderCompetitorQuery)
+	}
+	tq.withNamedCompetitors[name] = query
 	return tq
 }
 

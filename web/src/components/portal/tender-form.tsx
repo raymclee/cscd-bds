@@ -7,7 +7,6 @@ import {
 } from "@tanstack/react-router";
 import { tenderDetailFragment$key } from "__generated__/tenderDetailFragment.graphql";
 import { tenderFormFragment$key } from "__generated__/tenderFormFragment.graphql";
-import { tenderFormFragment_competitors$key } from "__generated__/tenderFormFragment_competitors.graphql";
 import { tenderForm_provinceCityDistrictSelectorQuery } from "__generated__/tenderForm_provinceCityDistrictSelectorQuery.graphql";
 import {
   Alert,
@@ -95,14 +94,9 @@ const fragment = graphql`
 export type TenderFormProps = {
   queryRef: tenderFormFragment$key;
   tenderRef?: tenderDetailFragment$key | null;
-  competitorRef: tenderFormFragment_competitors$key;
 };
 
-export function TenderForm({
-  queryRef,
-  tenderRef,
-  competitorRef,
-}: TenderFormProps) {
+export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
   const { message } = App.useApp();
   const [form] = Form.useForm<
     CreateTenderInput & { geoCoordinate: number[] }
@@ -110,21 +104,6 @@ export function TenderForm({
   const data = useFragment(fragment, queryRef);
   const tender = useFragment(TenderDetailFragment, tenderRef);
   const { session } = useRouteContext({ from: "/__auth" });
-  const competitorsData = useFragment(
-    graphql`
-      fragment tenderFormFragment_competitors on Query {
-        competitors {
-          edges {
-            node {
-              id
-              name
-            }
-          }
-        }
-      }
-    `,
-    competitorRef,
-  );
 
   const [commitCreateMutation, isCreateInFlight] = useCreateTender();
   const [commitUpdateMutation, isUpdateInFlight] = useUpdateTender();
@@ -160,7 +139,7 @@ export function TenderForm({
   // }, [tender, pathname]);
 
   const areaID = Form.useWatch("areaID", form);
-  const status = Form.useWatch("status", form);
+  // const status = Form.useWatch("status", form);
   const prepareToBid = Form.useWatch("prepareToBid", form);
 
   const [imageFileNames, setImageFileNames] = useState<string[]>([]);
@@ -666,13 +645,15 @@ export function TenderForm({
                 rules={[{ required: true }]}
               >
                 <Select
-                  options={tenderStatusOptions}
+                  options={tenderStatusOptions.filter(
+                    (o) => o.value !== 3 && o.value !== 4,
+                  )}
                   showSearch
                   optionFilterProp="label"
                 />
               </Form.Item>
 
-              {status == 3 && (
+              {/* {status == 3 && (
                 <>
                   <Form.Item
                     name="projectCode"
@@ -701,9 +682,9 @@ export function TenderForm({
                     <Input prefix="￥" suffix="亿元" />
                   </Form.Item>
                 </>
-              )}
+              )} */}
 
-              {status === 4 && (
+              {/* {status === 4 && (
                 <>
                   <Form.Item
                     className="md:col-span-2 lg:col-span-4"
@@ -733,7 +714,7 @@ export function TenderForm({
                     <Input prefix="￥" suffix="亿元" />
                   </Form.Item>
                 </>
-              )}
+              )} */}
 
               <Form.Item
                 name="finderID"
@@ -795,7 +776,7 @@ export function TenderForm({
               <Form.Item
                 name="estimatedProjectStartDate"
                 label="预计项目开始日期"
-                rules={[{ required: status === 3 }]}
+                // rules={[{ required: status === 3 }]}
               >
                 <DatePicker className="w-full" />
               </Form.Item>
@@ -803,7 +784,7 @@ export function TenderForm({
               <Form.Item
                 name="estimatedProjectEndDate"
                 label="项目预计结束日期"
-                rules={[{ required: status === 3 }]}
+                // rules={[{ required: status === 3 }]}
               >
                 <DatePicker className="w-full" />
               </Form.Item>

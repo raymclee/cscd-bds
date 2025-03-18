@@ -40,6 +40,8 @@ type Tx struct {
 	Province *ProvinceClient
 	// Tender is the client for interacting with the Tender builders.
 	Tender *TenderClient
+	// TenderCompetitor is the client for interacting with the TenderCompetitor builders.
+	TenderCompetitor *TenderCompetitorClient
 	// User is the client for interacting with the User builders.
 	User *UserClient
 	// VisitRecord is the client for interacting with the VisitRecord builders.
@@ -189,6 +191,7 @@ func (tx *Tx) init() {
 	tx.ProjectVO = NewProjectVOClient(tx.config)
 	tx.Province = NewProvinceClient(tx.config)
 	tx.Tender = NewTenderClient(tx.config)
+	tx.TenderCompetitor = NewTenderCompetitorClient(tx.config)
 	tx.User = NewUserClient(tx.config)
 	tx.VisitRecord = NewVisitRecordClient(tx.config)
 }

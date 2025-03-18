@@ -35,11 +35,8 @@ func (Competitor) Fields() []ent.Field {
 // Edges of the Competitor.
 func (Competitor) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.To("won_tenders", Tender.Type).
-			Annotations(
-				entgql.RelayConnection(),
-				// entgql.OrderField("WON_TENDERS_COUNT"),
-			),
+		// edge.To("tenders", TenderCompetitor.Type),
+		edge.To("tenders", TenderCompetitor.Type),
 	}
 }
 

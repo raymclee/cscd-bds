@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<83f2d317e9ff07a4ab292145c2e81fae>>
+ * @generated SignedSource<<f7e26f54d215768ec8b76ff34efddaef>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -25,7 +25,7 @@ export type CreateTenderInput = {
   code: string;
   competitivePartnershipRating?: number | null | undefined;
   competitivePartnershipRatingOverview?: string | null | undefined;
-  competitorID?: string | null | undefined;
+  competitorIDs?: ReadonlyArray<string> | null | undefined;
   competitorSituations?: string | null | undefined;
   constructionArea?: string | null | undefined;
   consultingFirm?: string | null | undefined;

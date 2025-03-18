@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<762bb3442c562358bf18ae5fbb81166f>>
+ * @generated SignedSource<<0069631c15b6b77beae836f74d88bfae>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -12,7 +12,6 @@ import { ConcreteRequest } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type WinTenderInput = {
   competitors: ReadonlyArray<WinLostTenderCompetitorInput>;
-  id: string;
   projectCode: string;
   projectDefinition: string;
   tenderWinAmount: number;

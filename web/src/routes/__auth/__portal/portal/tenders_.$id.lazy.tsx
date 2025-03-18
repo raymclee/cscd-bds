@@ -1,14 +1,14 @@
-import { createLazyFileRoute } from '@tanstack/react-router'
-import { tendersDetailPageQuery } from '__generated__/tendersDetailPageQuery.graphql'
-import { Result } from 'antd'
-import { graphql, usePreloadedQuery } from 'react-relay'
-import { TenderDetail } from '~/components/portal/tender-detail'
+import { createLazyFileRoute } from "@tanstack/react-router";
+import { tendersDetailPageQuery } from "__generated__/tendersDetailPageQuery.graphql";
+import { Result } from "antd";
+import { graphql, usePreloadedQuery } from "react-relay";
+import { TenderDetail } from "~/components/portal/tender-detail";
 
 export const Route = createLazyFileRoute(
-  '/__auth/__portal/portal/tenders_/$id',
+  "/__auth/__portal/portal/tenders_/$id",
 )({
   component: RouteComponent,
-})
+});
 
 function RouteComponent() {
   const data = usePreloadedQuery<tendersDetailPageQuery>(
@@ -21,10 +21,13 @@ function RouteComponent() {
         user: node(id: $userId) {
           ...tenderFormFragment
         }
+
+        ...tenderWinModalFragment
+        ...tenderLoseModalFragment
       }
     `,
     Route.useLoaderData(),
-  )
+  );
 
   if (!data.node || !data.user) {
     return (
@@ -33,12 +36,16 @@ function RouteComponent() {
         title="找不到该招标信息"
         subTitle="请检查链接是否正确"
       />
-    )
+    );
   }
 
   return (
     <>
-      <TenderDetail queryRef={data.node} />
+      <TenderDetail
+        queryRef={data.node}
+        competitorRef={data}
+        lostCompetitorRef={data}
+      />
     </>
-  )
+  );
 }

@@ -48,6 +48,9 @@ type Province func(*sql.Selector)
 // Tender is the predicate function for tender builders.
 type Tender func(*sql.Selector)
 
+// TenderCompetitor is the predicate function for tendercompetitor builders.
+type TenderCompetitor func(*sql.Selector)
+
 // User is the predicate function for user builders.
 type User func(*sql.Selector)
 

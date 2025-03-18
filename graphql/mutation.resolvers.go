@@ -9,6 +9,7 @@ import (
 	"cscd-bds/config"
 	"cscd-bds/feishu"
 	"cscd-bds/graphql/generated"
+	model1 "cscd-bds/graphql/model"
 	"cscd-bds/store/ent"
 	"cscd-bds/store/ent/area"
 	"cscd-bds/store/ent/customer"
@@ -19,7 +20,6 @@ import (
 	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/user"
 	"cscd-bds/util"
-	"database/sql"
 	"errors"
 	"fmt"
 	"slices"
@@ -646,8 +646,99 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input en
 
 	isSHTender := util.IsSHTender(t.Edges.Area.Code)
 
-	if st.Status == 3 && isSHTender {
-		go r.sap.InsertTender(r.store, st)
+	if isSHTender && st.ApprovalStatus == 2 && input.ApprovalStatus == nil {
+		go func() {
+			ctxx := context.Background()
+			ten, err := r.store.Tender.Query().
+				Where(tender.ID(t.ID)).
+				WithCreatedBy().
+				WithUpdatedBy().
+				WithArea().
+				WithCustomer().
+				WithApprover().
+				WithFinder().
+				Only(ctxx)
+			if err != nil {
+				fmt.Printf("failed to get tender: %v\n", err)
+				return
+			}
+			if st.ApprovalMsgID != nil {
+				if err := r.feishu.UpdateGroupMessage(ctxx, *st.ApprovalMsgID, ten); err != nil {
+					fmt.Printf("failed to update group message: %v\n", err)
+				}
+			}
+
+			chatId := r.feishu.GetSalesChatId(ten.Edges.Area)
+			if chatId == nil {
+				fmt.Printf("failed to get sales chat id: %v\n", errors.New("sales chat id is nil"))
+				return
+			}
+			var templateId string
+			if input.ApprovalStatus != nil && *input.ApprovalStatus == 2 {
+				templateId = feishu.TemplateIdTenderApproved
+			} else {
+				templateId = feishu.TemplateIdTenderUpdated
+			}
+			if _, err = r.feishu.SendGroupMessage(ctxx, templateId, &feishu.GroupMessageParams{
+				Tender: ten,
+				ChatId: *chatId,
+			}); err != nil {
+				fmt.Printf("failed to send group message: %v\n", err)
+			}
+		}()
+	}
+
+	return st, nil
+}
+
+// DeleteTender is the resolver for the deleteTender field.
+func (r *mutationResolver) DeleteTender(ctx context.Context, id xid.ID) (*ent.Tender, error) {
+	t, err := r.store.Tender.Query().Where(tender.ID(id)).Only(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get tender: %w", err)
+	}
+	if err := r.store.Tender.DeleteOne(t).Exec(ctx); err != nil {
+		return nil, fmt.Errorf("failed to delete tender: %w", err)
+	}
+	return t, nil
+}
+
+// WinTender is the resolver for the winTender field.
+func (r *mutationResolver) WinTender(ctx context.Context, id xid.ID, input model1.WinTenderInput) (*ent.Tender, error) {
+	sess, err := r.session.GetSession(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get session: %w", err)
+	}
+
+	if err := r.store.Tender.UpdateOneID(id).
+		SetStatus(3).
+		SetProjectCode(input.ProjectCode).
+		SetProjectDefinition(input.ProjectDefinition).
+		SetTenderWinAmount(input.TenderWinAmount).
+		SetUpdatedByID(xid.ID(sess.UserId)).
+		Exec(ctx); err != nil {
+		return nil, fmt.Errorf("failed to update tender: %w", err)
+	}
+
+	t, err := r.store.Tender.Query().Where(tender.ID(id)).WithArea().Only(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get tender: %w", err)
+	}
+
+	competitorCreates := make([]*ent.TenderCompetitorCreate, len(input.Competitors))
+	for i, co := range input.Competitors {
+		competitorCreates[i] = r.store.TenderCompetitor.Create().SetCompetitorID(xid.ID(co.ID)).SetTender(t).SetAmount(co.Amount)
+	}
+	if err := r.store.TenderCompetitor.CreateBulk(competitorCreates...).Exec(ctx); err != nil {
+		return nil, fmt.Errorf("failed to create competitors: %w", err)
+	}
+
+	isSHTender := util.IsSHTender(t.Edges.Area.Code)
+
+	if isSHTender {
+		if !config.IsDev {
+			go r.sap.InsertTender(r.store, t)
+		}
 		go func() {
 			ctxx := context.Background()
 			ten, err := r.store.Tender.Query().
@@ -676,13 +767,47 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input en
 		}()
 	}
 
-	if st.Status != 3 && isSHTender && st.ApprovalStatus == 2 && input.ApprovalStatus == nil {
+	return t, nil
+}
+
+// LoseTender is the resolver for the loseTender field.
+func (r *mutationResolver) LoseTender(ctx context.Context, id xid.ID, input model1.LoseTenderInput) (*ent.Tender, error) {
+	sess, err := r.session.GetSession(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get session: %w", err)
+	}
+
+	if err := r.store.Tender.UpdateOneID(id).
+		SetStatus(4).
+		SetUpdatedByID(xid.ID(sess.UserId)).
+		Exec(ctx); err != nil {
+		return nil, fmt.Errorf("failed to update tender: %w", err)
+	}
+
+	t, err := r.store.Tender.Query().Where(tender.ID(id)).WithArea().Only(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get tender: %w", err)
+	}
+
+	competitorCreates := make([]*ent.TenderCompetitorCreate, len(input.Competitors))
+	for i, c := range input.Competitors {
+		competitorCreates[i] = r.store.TenderCompetitor.Create().SetCompetitorID(xid.ID(c.ID)).SetTender(t).SetAmount(c.Amount)
+	}
+	if err := r.store.TenderCompetitor.CreateBulk(competitorCreates...).Exec(ctx); err != nil {
+		return nil, fmt.Errorf("failed to create competitors: %w", err)
+	}
+
+	isSHTender := util.IsSHTender(t.Edges.Area.Code)
+
+	if isSHTender {
+		if !config.IsDev {
+			go r.sap.InsertTender(r.store, t)
+		}
 		go func() {
 			ctxx := context.Background()
 			ten, err := r.store.Tender.Query().
 				Where(tender.ID(t.ID)).
 				WithCreatedBy().
-				WithUpdatedBy().
 				WithArea().
 				WithCustomer().
 				WithApprover().
@@ -692,7 +817,6 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input en
 				fmt.Printf("failed to get tender: %v\n", err)
 				return
 			}
-
 			chatId := r.feishu.GetSalesChatId(ten.Edges.Area)
 			if chatId == nil {
 				fmt.Printf("failed to get sales chat id: %v\n", errors.New("sales chat id is nil"))
@@ -707,55 +831,6 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input en
 		}()
 	}
 
-	if st.Status != 3 && isSHTender && input.ApprovalStatus != nil && *input.ApprovalStatus == 2 && st.ApprovalMsgID != nil {
-		go func() {
-			ctxx := context.Background()
-			ten, err := r.store.Tender.Query().
-				Where(tender.ID(t.ID)).
-				WithCreatedBy().
-				WithUpdatedBy().
-				WithArea().
-				WithCustomer().
-				WithApprover().
-				WithFinder().
-				Only(ctxx)
-			if err != nil {
-				fmt.Printf("failed to get tender: %v\n", err)
-				return
-			}
-			if st.ApprovalMsgID != nil {
-				if err := r.feishu.UpdateGroupMessage(ctxx, *st.ApprovalMsgID, ten); err != nil {
-					fmt.Printf("failed to update group message: %v\n", err)
-				}
-			}
-
-			chatId := r.feishu.GetSalesChatId(ten.Edges.Area)
-			if chatId == nil {
-				fmt.Printf("failed to get sales chat id: %v\n", errors.New("sales chat id is nil"))
-				return
-			}
-			if _, err = r.feishu.SendGroupMessage(ctxx, feishu.TemplateIdTenderApproved, &feishu.GroupMessageParams{
-				Tender: ten,
-				ChatId: *chatId,
-			}); err != nil {
-				fmt.Printf("failed to send group message: %v\n", err)
-			}
-
-		}()
-	}
-
-	return st, nil
-}
-
-// DeleteTender is the resolver for the deleteTender field.
-func (r *mutationResolver) DeleteTender(ctx context.Context, id xid.ID) (*ent.Tender, error) {
-	t, err := r.store.Tender.Query().Where(tender.ID(id)).Only(ctx)
-	if err != nil {
-		return nil, fmt.Errorf("failed to get tender: %w", err)
-	}
-	if err := r.store.Tender.DeleteOne(t).Exec(ctx); err != nil {
-		return nil, fmt.Errorf("failed to delete tender: %w", err)
-	}
 	return t, nil
 }
 
@@ -853,27 +928,27 @@ func (r *mutationResolver) UpdateProject(ctx context.Context, id xid.ID, input e
 	if err != nil {
 		return nil, fmt.Errorf("failed to update project: %w", err)
 	}
-	if config.IsProd {
-		go func() {
-			if _, err := r.stgDb.Exec(`
-			update mst_jobbasfil 
-				set 
-					opdate = @opdate, 
-					fsdate = @fsdate 
-			where 
-				jobcode = @jobcode
-				and pk_corp = '2837'
-				and finishedflag in ('N','Y')
-				AND JOBTYPE='J'
-			`,
-				sql.Named("opdate", p.OpDate),
-				sql.Named("fsdate", p.FsDate),
-				sql.Named("jobcode", p.Code),
-			); err != nil {
-				fmt.Printf("failed to update project: %v\n", err)
-			}
-		}()
-	}
+	// if config.IsProd {
+	// 	go func() {
+	// 		if _, err := r.stgDb.Exec(`
+	// 		update mst_jobbasfil
+	// 			set
+	// 				opdate = @opdate,
+	// 				fsdate = @fsdate
+	// 		where
+	// 			jobcode = @jobcode
+	// 			and pk_corp = '2837'
+	// 			and finishedflag in ('N','Y')
+	// 			AND JOBTYPE='J'
+	// 		`,
+	// 			sql.Named("opdate", p.OpDate),
+	// 			sql.Named("fsdate", p.FsDate),
+	// 			sql.Named("jobcode", p.Code),
+	// 		); err != nil {
+	// 			fmt.Printf("failed to update project: %v\n", err)
+	// 		}
+	// 	}()
+	// }
 	return p, nil
 }
 

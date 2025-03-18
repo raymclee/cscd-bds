@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<f99d5319f754686554d2fc0fec3a37e2>>
+ * @generated SignedSource<<01a32058ccd767c2ac62ec3ec3a1aa0f>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -13,8 +13,8 @@ export type CreateCompetitorInput = {
   createdAt?: any | null | undefined;
   name: string;
   shortName: string;
+  tenderIDs?: ReadonlyArray<string> | null | undefined;
   updatedAt?: any | null | undefined;
-  wonTenderIDs?: ReadonlyArray<string> | null | undefined;
 };
 export type useCreateCompetitorMutation$variables = {
   connections: ReadonlyArray<string>;

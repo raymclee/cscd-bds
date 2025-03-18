@@ -5,6 +5,7 @@ package generated
 import (
 	"bytes"
 	"context"
+	"cscd-bds/graphql/model"
 	"cscd-bds/store/ent"
 	"cscd-bds/store/ent/schema/xid"
 	"errors"
@@ -103,12 +104,12 @@ type ComplexityRoot struct {
 	}
 
 	Competitor struct {
-		CreatedAt  func(childComplexity int) int
-		ID         func(childComplexity int) int
-		Name       func(childComplexity int) int
-		ShortName  func(childComplexity int) int
-		UpdatedAt  func(childComplexity int) int
-		WonTenders func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.TenderOrder, where *ent.TenderWhereInput) int
+		CreatedAt func(childComplexity int) int
+		ID        func(childComplexity int) int
+		Name      func(childComplexity int) int
+		ShortName func(childComplexity int) int
+		Tenders   func(childComplexity int) int
+		UpdatedAt func(childComplexity int) int
 	}
 
 	CompetitorConnection struct {
@@ -261,6 +262,7 @@ type ComplexityRoot struct {
 		DeleteTender           func(childComplexity int, id xid.ID) int
 		DeleteUser             func(childComplexity int, id xid.ID) int
 		DeleteVisitRecord      func(childComplexity int, id xid.ID) int
+		LoseTender             func(childComplexity int, id xid.ID, input model.LoseTenderInput) int
 		RejectCustomerRequest  func(childComplexity int, id xid.ID) int
 		UpdateArea             func(childComplexity int, id xid.ID, input ent.UpdateAreaInput) int
 		UpdateCompetitor       func(childComplexity int, id xid.ID, input ent.UpdateCompetitorInput) int
@@ -271,6 +273,7 @@ type ComplexityRoot struct {
 		UpdateTender           func(childComplexity int, id xid.ID, input ent.UpdateTenderInput, geoBounds [][]float64, imageFileNames []string, removeImageFileNames []string, attachmentFileNames []string, removeAttachmentFileNames []string, geoCoordinate []float64) int
 		UpdateUser             func(childComplexity int, id xid.ID, input ent.UpdateUserInput) int
 		UpdateVisitRecord      func(childComplexity int, id xid.ID, input ent.UpdateVisitRecordInput) int
+		WinTender              func(childComplexity int, id xid.ID, input model.WinTenderInput) int
 	}
 
 	Operation struct {
@@ -531,30 +534,31 @@ type ComplexityRoot struct {
 	}
 
 	Query struct {
-		AmapRegeo        func(childComplexity int, lng float64, lat float64) int
-		Areas            func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.AreaOrder, where *ent.AreaWhereInput) int
-		BiToken          func(childComplexity int) int
-		Cities           func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.CityOrder, where *ent.CityWhereInput) int
-		Competitors      func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.CompetitorOrder, where *ent.CompetitorWhereInput) int
-		Countries        func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.CountryOrder, where *ent.CountryWhereInput) int
-		Customers        func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.CustomerOrder, where *ent.CustomerWhereInput) int
-		Districts        func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.DistrictOrder, where *ent.DistrictWhereInput) int
-		Inputtips        func(childComplexity int, areaID xid.ID, keyword string) int
-		Node             func(childComplexity int, id xid.ID) int
-		Nodes            func(childComplexity int, ids []xid.ID) int
-		Operations       func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.OperationOrder, where *ent.OperationWhereInput) int
-		Plots            func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.PlotOrder, where *ent.PlotWhereInput) int
-		PotentialTenders func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.PotentialTenderOrder, where *ent.PotentialTenderWhereInput) int
-		ProjectStaffs    func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.ProjectStaffOrder, where *ent.ProjectStaffWhereInput) int
-		Projects         func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.ProjectOrder, where *ent.ProjectWhereInput) int
-		Provinces        func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.ProvinceOrder, where *ent.ProvinceWhereInput) int
-		SearchFeishuUser func(childComplexity int, keyword string) int
-		SearchLocation   func(childComplexity int, keyword string) int
-		Session          func(childComplexity int) int
-		Tenders          func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.TenderOrder, where *ent.TenderWhereInput) int
-		TopCompetitors   func(childComplexity int, first *int) int
-		Users            func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.UserOrder, where *ent.UserWhereInput) int
-		VisitRecords     func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.VisitRecordOrder, where *ent.VisitRecordWhereInput) int
+		AmapRegeo         func(childComplexity int, lng float64, lat float64) int
+		Areas             func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.AreaOrder, where *ent.AreaWhereInput) int
+		BiToken           func(childComplexity int) int
+		Cities            func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.CityOrder, where *ent.CityWhereInput) int
+		Competitors       func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.CompetitorOrder, where *ent.CompetitorWhereInput) int
+		Countries         func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.CountryOrder, where *ent.CountryWhereInput) int
+		Customers         func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.CustomerOrder, where *ent.CustomerWhereInput) int
+		Districts         func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.DistrictOrder, where *ent.DistrictWhereInput) int
+		Inputtips         func(childComplexity int, areaID xid.ID, keyword string) int
+		Node              func(childComplexity int, id xid.ID) int
+		Nodes             func(childComplexity int, ids []xid.ID) int
+		Operations        func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.OperationOrder, where *ent.OperationWhereInput) int
+		Plots             func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.PlotOrder, where *ent.PlotWhereInput) int
+		PotentialTenders  func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.PotentialTenderOrder, where *ent.PotentialTenderWhereInput) int
+		ProjectStaffs     func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.ProjectStaffOrder, where *ent.ProjectStaffWhereInput) int
+		Projects          func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.ProjectOrder, where *ent.ProjectWhereInput) int
+		Provinces         func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.ProvinceOrder, where *ent.ProvinceWhereInput) int
+		SearchFeishuUser  func(childComplexity int, keyword string) int
+		SearchLocation    func(childComplexity int, keyword string) int
+		Session           func(childComplexity int) int
+		TenderCompetitors func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.TenderCompetitorOrder, where *ent.TenderCompetitorWhereInput) int
+		Tenders           func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.TenderOrder, where *ent.TenderWhereInput) int
+		TopCompetitors    func(childComplexity int, first *int) int
+		Users             func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.UserOrder, where *ent.UserWhereInput) int
+		VisitRecords      func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.VisitRecordOrder, where *ent.VisitRecordWhereInput) int
 	}
 
 	Session struct {
@@ -588,9 +592,8 @@ type ComplexityRoot struct {
 		Code                                 func(childComplexity int) int
 		CompetitivePartnershipRating         func(childComplexity int) int
 		CompetitivePartnershipRatingOverview func(childComplexity int) int
-		Competitor                           func(childComplexity int) int
-		CompetitorID                         func(childComplexity int) int
 		CompetitorSituations                 func(childComplexity int) int
+		Competitors                          func(childComplexity int) int
 		ConstructionArea                     func(childComplexity int) int
 		ConsultingFirm                       func(childComplexity int) int
 		ContractForm                         func(childComplexity int) int
@@ -654,6 +657,28 @@ type ComplexityRoot struct {
 		UpdatedBy                            func(childComplexity int) int
 		UpdatedByID                          func(childComplexity int) int
 		VisitRecords                         func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.VisitRecordOrder, where *ent.VisitRecordWhereInput) int
+	}
+
+	TenderCompetitor struct {
+		Amount       func(childComplexity int) int
+		Competitor   func(childComplexity int) int
+		CompetitorID func(childComplexity int) int
+		CreatedAt    func(childComplexity int) int
+		ID           func(childComplexity int) int
+		Tender       func(childComplexity int) int
+		TenderID     func(childComplexity int) int
+		UpdatedAt    func(childComplexity int) int
+	}
+
+	TenderCompetitorConnection struct {
+		Edges      func(childComplexity int) int
+		PageInfo   func(childComplexity int) int
+		TotalCount func(childComplexity int) int
+	}
+
+	TenderCompetitorEdge struct {
+		Cursor func(childComplexity int) int
+		Node   func(childComplexity int) int
 	}
 
 	TenderConnection struct {
@@ -1048,24 +1073,19 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Competitor.ShortName(childComplexity), true
 
+	case "Competitor.tenders":
+		if e.complexity.Competitor.Tenders == nil {
+			break
+		}
+
+		return e.complexity.Competitor.Tenders(childComplexity), true
+
 	case "Competitor.updatedAt":
 		if e.complexity.Competitor.UpdatedAt == nil {
 			break
 		}
 
 		return e.complexity.Competitor.UpdatedAt(childComplexity), true
-
-	case "Competitor.wonTenders":
-		if e.complexity.Competitor.WonTenders == nil {
-			break
-		}
-
-		args, err := ec.field_Competitor_wonTenders_args(context.TODO(), rawArgs)
-		if err != nil {
-			return 0, false
-		}
-
-		return e.complexity.Competitor.WonTenders(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].([]*ent.TenderOrder), args["where"].(*ent.TenderWhereInput)), true
 
 	case "CompetitorConnection.edges":
 		if e.complexity.CompetitorConnection.Edges == nil {
@@ -1890,6 +1910,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.DeleteVisitRecord(childComplexity, args["id"].(xid.ID)), true
 
+	case "Mutation.loseTender":
+		if e.complexity.Mutation.LoseTender == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_loseTender_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.LoseTender(childComplexity, args["id"].(xid.ID), args["input"].(model.LoseTenderInput)), true
+
 	case "Mutation.rejectCustomerRequest":
 		if e.complexity.Mutation.RejectCustomerRequest == nil {
 			break
@@ -2009,6 +2041,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.UpdateVisitRecord(childComplexity, args["id"].(xid.ID), args["input"].(ent.UpdateVisitRecordInput)), true
+
+	case "Mutation.winTender":
+		if e.complexity.Mutation.WinTender == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_winTender_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.WinTender(childComplexity, args["id"].(xid.ID), args["input"].(model.WinTenderInput)), true
 
 	case "Operation.cjeLj":
 		if e.complexity.Operation.CjeLj == nil {
@@ -3623,6 +3667,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Query.Session(childComplexity), true
 
+	case "Query.tenderCompetitors":
+		if e.complexity.Query.TenderCompetitors == nil {
+			break
+		}
+
+		args, err := ec.field_Query_tenderCompetitors_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.TenderCompetitors(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].([]*ent.TenderCompetitorOrder), args["where"].(*ent.TenderCompetitorWhereInput)), true
+
 	case "Query.tenders":
 		if e.complexity.Query.Tenders == nil {
 			break
@@ -3860,26 +3916,19 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Tender.CompetitivePartnershipRatingOverview(childComplexity), true
 
-	case "Tender.competitor":
-		if e.complexity.Tender.Competitor == nil {
-			break
-		}
-
-		return e.complexity.Tender.Competitor(childComplexity), true
-
-	case "Tender.competitorID":
-		if e.complexity.Tender.CompetitorID == nil {
-			break
-		}
-
-		return e.complexity.Tender.CompetitorID(childComplexity), true
-
 	case "Tender.competitorSituations":
 		if e.complexity.Tender.CompetitorSituations == nil {
 			break
 		}
 
 		return e.complexity.Tender.CompetitorSituations(childComplexity), true
+
+	case "Tender.competitors":
+		if e.complexity.Tender.Competitors == nil {
+			break
+		}
+
+		return e.complexity.Tender.Competitors(childComplexity), true
 
 	case "Tender.constructionArea":
 		if e.complexity.Tender.ConstructionArea == nil {
@@ -4326,6 +4375,97 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Tender.VisitRecords(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].([]*ent.VisitRecordOrder), args["where"].(*ent.VisitRecordWhereInput)), true
+
+	case "TenderCompetitor.amount":
+		if e.complexity.TenderCompetitor.Amount == nil {
+			break
+		}
+
+		return e.complexity.TenderCompetitor.Amount(childComplexity), true
+
+	case "TenderCompetitor.competitor":
+		if e.complexity.TenderCompetitor.Competitor == nil {
+			break
+		}
+
+		return e.complexity.TenderCompetitor.Competitor(childComplexity), true
+
+	case "TenderCompetitor.competitorID":
+		if e.complexity.TenderCompetitor.CompetitorID == nil {
+			break
+		}
+
+		return e.complexity.TenderCompetitor.CompetitorID(childComplexity), true
+
+	case "TenderCompetitor.createdAt":
+		if e.complexity.TenderCompetitor.CreatedAt == nil {
+			break
+		}
+
+		return e.complexity.TenderCompetitor.CreatedAt(childComplexity), true
+
+	case "TenderCompetitor.id":
+		if e.complexity.TenderCompetitor.ID == nil {
+			break
+		}
+
+		return e.complexity.TenderCompetitor.ID(childComplexity), true
+
+	case "TenderCompetitor.tender":
+		if e.complexity.TenderCompetitor.Tender == nil {
+			break
+		}
+
+		return e.complexity.TenderCompetitor.Tender(childComplexity), true
+
+	case "TenderCompetitor.tenderID":
+		if e.complexity.TenderCompetitor.TenderID == nil {
+			break
+		}
+
+		return e.complexity.TenderCompetitor.TenderID(childComplexity), true
+
+	case "TenderCompetitor.updatedAt":
+		if e.complexity.TenderCompetitor.UpdatedAt == nil {
+			break
+		}
+
+		return e.complexity.TenderCompetitor.UpdatedAt(childComplexity), true
+
+	case "TenderCompetitorConnection.edges":
+		if e.complexity.TenderCompetitorConnection.Edges == nil {
+			break
+		}
+
+		return e.complexity.TenderCompetitorConnection.Edges(childComplexity), true
+
+	case "TenderCompetitorConnection.pageInfo":
+		if e.complexity.TenderCompetitorConnection.PageInfo == nil {
+			break
+		}
+
+		return e.complexity.TenderCompetitorConnection.PageInfo(childComplexity), true
+
+	case "TenderCompetitorConnection.totalCount":
+		if e.complexity.TenderCompetitorConnection.TotalCount == nil {
+			break
+		}
+
+		return e.complexity.TenderCompetitorConnection.TotalCount(childComplexity), true
+
+	case "TenderCompetitorEdge.cursor":
+		if e.complexity.TenderCompetitorEdge.Cursor == nil {
+			break
+		}
+
+		return e.complexity.TenderCompetitorEdge.Cursor(childComplexity), true
+
+	case "TenderCompetitorEdge.node":
+		if e.complexity.TenderCompetitorEdge.Node == nil {
+			break
+		}
+
+		return e.complexity.TenderCompetitorEdge.Node(childComplexity), true
 
 	case "TenderConnection.edges":
 		if e.complexity.TenderConnection.Edges == nil {
@@ -4784,6 +4924,7 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputCreatePlotInput,
 		ec.unmarshalInputCreatePotentialTenderInput,
 		ec.unmarshalInputCreateProvinceInput,
+		ec.unmarshalInputCreateTenderCompetitorInput,
 		ec.unmarshalInputCreateTenderInput,
 		ec.unmarshalInputCreateUserInput,
 		ec.unmarshalInputCreateVisitRecordInput,
@@ -4791,6 +4932,7 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputCustomerWhereInput,
 		ec.unmarshalInputDistrictOrder,
 		ec.unmarshalInputDistrictWhereInput,
+		ec.unmarshalInputLoseTenderInput,
 		ec.unmarshalInputOperationOrder,
 		ec.unmarshalInputOperationWhereInput,
 		ec.unmarshalInputPlotOrder,
@@ -4805,6 +4947,8 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputProjectWhereInput,
 		ec.unmarshalInputProvinceOrder,
 		ec.unmarshalInputProvinceWhereInput,
+		ec.unmarshalInputTenderCompetitorOrder,
+		ec.unmarshalInputTenderCompetitorWhereInput,
 		ec.unmarshalInputTenderOrder,
 		ec.unmarshalInputTenderWhereInput,
 		ec.unmarshalInputUpdateAreaInput,
@@ -4817,6 +4961,7 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputUpdatePotentialTenderInput,
 		ec.unmarshalInputUpdateProjectInput,
 		ec.unmarshalInputUpdateProvinceInput,
+		ec.unmarshalInputUpdateTenderCompetitorInput,
 		ec.unmarshalInputUpdateTenderInput,
 		ec.unmarshalInputUpdateUserInput,
 		ec.unmarshalInputUpdateVisitRecordInput,
@@ -4824,6 +4969,8 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputUserWhereInput,
 		ec.unmarshalInputVisitRecordOrder,
 		ec.unmarshalInputVisitRecordWhereInput,
+		ec.unmarshalInputWinLostTenderCompetitorInput,
+		ec.unmarshalInputWinTenderInput,
 	)
 	first := true
 
@@ -5473,37 +5620,7 @@ type Competitor implements Node {
   updatedAt: Time!
   shortName: String!
   name: String!
-  wonTenders(
-    """
-    Returns the elements in the list that come after the specified cursor.
-    """
-    after: Cursor
-
-    """
-    Returns the first _n_ elements from the list.
-    """
-    first: Int
-
-    """
-    Returns the elements in the list that come before the specified cursor.
-    """
-    before: Cursor
-
-    """
-    Returns the last _n_ elements from the list.
-    """
-    last: Int
-
-    """
-    Ordering options for Tenders returned from the connection.
-    """
-    orderBy: [TenderOrder!]
-
-    """
-    Filtering options for Tenders returned from the connection.
-    """
-    where: TenderWhereInput
-  ): TenderConnection!
+  tenders: [TenderCompetitor!]
 }
 """
 A connection to a list of items.
@@ -5629,10 +5746,10 @@ input CompetitorWhereInput {
   nameEqualFold: String
   nameContainsFold: String
   """
-  won_tenders edge predicates
+  tenders edge predicates
   """
-  hasWonTenders: Boolean
-  hasWonTendersWith: [TenderWhereInput!]
+  hasTenders: Boolean
+  hasTendersWith: [TenderCompetitorWhereInput!]
 }
 type Country implements Node {
   id: ID!
@@ -5834,7 +5951,7 @@ input CreateCompetitorInput {
   updatedAt: Time
   shortName: String!
   name: String!
-  wonTenderIDs: [ID!]
+  tenderIDs: [ID!]
 }
 """
 CreateCountryInput is used for create Country object.
@@ -5940,6 +6057,17 @@ input CreateProvinceInput {
   areaID: ID
 }
 """
+CreateTenderCompetitorInput is used for create TenderCompetitor object.
+Input was generated by ent.
+"""
+input CreateTenderCompetitorInput {
+  createdAt: Time
+  updatedAt: Time
+  amount: Float!
+  tenderID: ID!
+  competitorID: ID!
+}
+"""
 CreateTenderInput is used for create Tender object.
 Input was generated by ent.
 """
@@ -6041,7 +6169,7 @@ input CreateTenderInput {
   cityID: ID
   districtID: ID
   visitRecordIDs: [ID!]
-  competitorID: ID
+  competitorIDs: [ID!]
   approverID: ID
   updatedByID: ID
 }
@@ -10261,6 +10389,37 @@ type Query {
     """
     where: TenderWhereInput
   ): TenderConnection!
+  tenderCompetitors(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for TenderCompetitors returned from the connection.
+    """
+    orderBy: [TenderCompetitorOrder!]
+
+    """
+    Filtering options for TenderCompetitors returned from the connection.
+    """
+    where: TenderCompetitorWhereInput
+  ): TenderCompetitorConnection!
   users(
     """
     Returns the elements in the list that come after the specified cursor.
@@ -10421,7 +10580,6 @@ type Tender implements Node {
   customerID: ID
   finderID: ID
   createdByID: ID
-  competitorID: ID
   approverID: ID
   updatedByID: ID
   area: Area!
@@ -10463,9 +10621,163 @@ type Tender implements Node {
     """
     where: VisitRecordWhereInput
   ): VisitRecordConnection!
-  competitor: Competitor
+  competitors: [TenderCompetitor!]
   approver: User
   updatedBy: User
+}
+type TenderCompetitor implements Node {
+  id: ID!
+  createdAt: Time!
+  updatedAt: Time!
+  tenderID: ID!
+  competitorID: ID!
+  amount: Float!
+  tender: Tender!
+  competitor: Competitor!
+}
+"""
+A connection to a list of items.
+"""
+type TenderCompetitorConnection {
+  """
+  A list of edges.
+  """
+  edges: [TenderCompetitorEdge]
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+  """
+  Identifies the total count of items in the connection.
+  """
+  totalCount: Int!
+}
+"""
+An edge in a connection.
+"""
+type TenderCompetitorEdge {
+  """
+  The item at the end of the edge.
+  """
+  node: TenderCompetitor
+  """
+  A cursor for use in pagination.
+  """
+  cursor: Cursor!
+}
+"""
+Ordering options for TenderCompetitor connections
+"""
+input TenderCompetitorOrder {
+  """
+  The ordering direction.
+  """
+  direction: OrderDirection! = ASC
+  """
+  The field by which to order TenderCompetitors.
+  """
+  field: TenderCompetitorOrderField!
+}
+"""
+Properties by which TenderCompetitor connections can be ordered.
+"""
+enum TenderCompetitorOrderField {
+  CREATED_AT
+}
+"""
+TenderCompetitorWhereInput is used for filtering TenderCompetitor objects.
+Input was generated by ent.
+"""
+input TenderCompetitorWhereInput {
+  not: TenderCompetitorWhereInput
+  and: [TenderCompetitorWhereInput!]
+  or: [TenderCompetitorWhereInput!]
+  """
+  id field predicates
+  """
+  id: ID
+  idNEQ: ID
+  idIn: [ID!]
+  idNotIn: [ID!]
+  idGT: ID
+  idGTE: ID
+  idLT: ID
+  idLTE: ID
+  """
+  created_at field predicates
+  """
+  createdAt: Time
+  createdAtNEQ: Time
+  createdAtIn: [Time!]
+  createdAtNotIn: [Time!]
+  createdAtGT: Time
+  createdAtGTE: Time
+  createdAtLT: Time
+  createdAtLTE: Time
+  """
+  updated_at field predicates
+  """
+  updatedAt: Time
+  updatedAtNEQ: Time
+  updatedAtIn: [Time!]
+  updatedAtNotIn: [Time!]
+  updatedAtGT: Time
+  updatedAtGTE: Time
+  updatedAtLT: Time
+  updatedAtLTE: Time
+  """
+  tender_id field predicates
+  """
+  tenderID: ID
+  tenderIDNEQ: ID
+  tenderIDIn: [ID!]
+  tenderIDNotIn: [ID!]
+  tenderIDGT: ID
+  tenderIDGTE: ID
+  tenderIDLT: ID
+  tenderIDLTE: ID
+  tenderIDContains: ID
+  tenderIDHasPrefix: ID
+  tenderIDHasSuffix: ID
+  tenderIDEqualFold: ID
+  tenderIDContainsFold: ID
+  """
+  competitor_id field predicates
+  """
+  competitorID: ID
+  competitorIDNEQ: ID
+  competitorIDIn: [ID!]
+  competitorIDNotIn: [ID!]
+  competitorIDGT: ID
+  competitorIDGTE: ID
+  competitorIDLT: ID
+  competitorIDLTE: ID
+  competitorIDContains: ID
+  competitorIDHasPrefix: ID
+  competitorIDHasSuffix: ID
+  competitorIDEqualFold: ID
+  competitorIDContainsFold: ID
+  """
+  amount field predicates
+  """
+  amount: Float
+  amountNEQ: Float
+  amountIn: [Float!]
+  amountNotIn: [Float!]
+  amountGT: Float
+  amountGTE: Float
+  amountLT: Float
+  amountLTE: Float
+  """
+  tender edge predicates
+  """
+  hasTender: Boolean
+  hasTenderWith: [TenderWhereInput!]
+  """
+  competitor edge predicates
+  """
+  hasCompetitor: Boolean
+  hasCompetitorWith: [CompetitorWhereInput!]
 }
 """
 A connection to a list of items.
@@ -11527,24 +11839,6 @@ input TenderWhereInput {
   createdByIDEqualFold: ID
   createdByIDContainsFold: ID
   """
-  competitor_id field predicates
-  """
-  competitorID: ID
-  competitorIDNEQ: ID
-  competitorIDIn: [ID!]
-  competitorIDNotIn: [ID!]
-  competitorIDGT: ID
-  competitorIDGTE: ID
-  competitorIDLT: ID
-  competitorIDLTE: ID
-  competitorIDContains: ID
-  competitorIDHasPrefix: ID
-  competitorIDHasSuffix: ID
-  competitorIDIsNil: Boolean
-  competitorIDNotNil: Boolean
-  competitorIDEqualFold: ID
-  competitorIDContainsFold: ID
-  """
   approver_id field predicates
   """
   approverID: ID
@@ -11626,10 +11920,10 @@ input TenderWhereInput {
   hasVisitRecords: Boolean
   hasVisitRecordsWith: [VisitRecordWhereInput!]
   """
-  competitor edge predicates
+  competitors edge predicates
   """
-  hasCompetitor: Boolean
-  hasCompetitorWith: [CompetitorWhereInput!]
+  hasCompetitors: Boolean
+  hasCompetitorsWith: [TenderCompetitorWhereInput!]
   """
   approver edge predicates
   """
@@ -11691,9 +11985,9 @@ input UpdateCompetitorInput {
   updatedAt: Time
   shortName: String
   name: String
-  addWonTenderIDs: [ID!]
-  removeWonTenderIDs: [ID!]
-  clearWonTenders: Boolean
+  addTenderIDs: [ID!]
+  removeTenderIDs: [ID!]
+  clearTenders: Boolean
 }
 """
 UpdateCountryInput is used for update Country object.
@@ -12243,6 +12537,16 @@ input UpdateProvinceInput {
   clearArea: Boolean
 }
 """
+UpdateTenderCompetitorInput is used for update TenderCompetitor object.
+Input was generated by ent.
+"""
+input UpdateTenderCompetitorInput {
+  updatedAt: Time
+  amount: Float
+  tenderID: ID
+  competitorID: ID
+}
+"""
 UpdateTenderInput is used for update Tender object.
 Input was generated by ent.
 """
@@ -12404,8 +12708,9 @@ input UpdateTenderInput {
   addVisitRecordIDs: [ID!]
   removeVisitRecordIDs: [ID!]
   clearVisitRecords: Boolean
-  competitorID: ID
-  clearCompetitor: Boolean
+  addCompetitorIDs: [ID!]
+  removeCompetitorIDs: [ID!]
+  clearCompetitors: Boolean
   approverID: ID
   clearApprover: Boolean
   updatedByID: ID
@@ -13230,6 +13535,8 @@ type GeoJson {
     geoCoordinate: [Float!]
   ): Tender!
   deleteTender(id: ID!): Tender!
+  winTender(id: ID!, input: WinTenderInput!): Tender!
+  loseTender(id: ID!, input: LoseTenderInput!): Tender!
 
   createPlot(input: CreatePlotInput!, geoBounds: [[Float!]!]): PlotConnection!
   updatePlot(id: ID!, input: UpdatePlotInput!, geoBounds: [[Float!]!]): Plot!
@@ -13244,6 +13551,22 @@ type GeoJson {
   deleteCompetitor(id: ID!): Competitor!
 
   updateProject(id: ID!, input: UpdateProjectInput!): Project!
+}
+
+input WinTenderInput {
+  projectCode: String!
+  projectDefinition: String!
+  tenderWinAmount: Float!
+  competitors: [WinLostTenderCompetitorInput!]!
+}
+
+input LoseTenderInput {
+  competitors: [WinLostTenderCompetitorInput!]!
+}
+
+input WinLostTenderCompetitorInput {
+  id: ID!
+  amount: Float!
 }
 `, BuiltIn: false},
 	{Name: "../plot.graphql", Input: `extend type Plot {

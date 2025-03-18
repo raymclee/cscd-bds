@@ -47,6 +47,7 @@ func (s *Store) ApproveCustomerUpdate(ctx context.Context, id xid.ID, approverId
 		Where(customer.ID(id)).
 		WithArea().
 		WithCreatedBy().
+		WithUpdatedBy().
 		WithApprover().
 		WithSales().
 		Only(ctx)

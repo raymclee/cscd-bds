@@ -29,9 +29,15 @@ import {
   tenderStatusText,
 } from "~/lib/helper";
 import { canEdit } from "~/lib/permission";
+import { TenderWinModal } from "./tender-win-modal";
+import { TenderLoseModal } from "./tender-lose-modal";
+import { tenderWinModalFragment$key } from "__generated__/tenderWinModalFragment.graphql";
+import { tenderLoseModalFragment$key } from "__generated__/tenderLoseModalFragment.graphql";
 
 type TenderDetailProps = {
   queryRef: tenderDetailFragment$key;
+  competitorRef: tenderWinModalFragment$key;
+  lostCompetitorRef: tenderLoseModalFragment$key;
 };
 
 export const TenderDetailFragment = graphql`
@@ -134,16 +140,32 @@ export const TenderDetailFragment = graphql`
   }
 `;
 
-export function TenderDetail({ queryRef }: TenderDetailProps) {
+export function TenderDetail({
+  queryRef,
+  competitorRef,
+  lostCompetitorRef,
+}: TenderDetailProps) {
   const data = useFragment(TenderDetailFragment, queryRef);
   return data.area.code === "GA" || data.area.code === "HW" ? (
     <GAAndHWTender tender={data} />
   ) : (
-    <SHTender tender={data} />
+    <SHTender
+      tender={data}
+      competitorRef={competitorRef}
+      lostCompetitorRef={lostCompetitorRef}
+    />
   );
 }
 
-function SHTender({ tender }: { tender: tenderDetailFragment$data }) {
+function SHTender({
+  tender,
+  competitorRef,
+  lostCompetitorRef,
+}: {
+  tender: tenderDetailFragment$data;
+  competitorRef: tenderWinModalFragment$key;
+  lostCompetitorRef: tenderLoseModalFragment$key;
+}) {
   const { session } = useRouteContext({ from: "/__auth" });
   const {
     id,
@@ -226,6 +248,16 @@ function SHTender({ tender }: { tender: tenderDetailFragment$data }) {
                   编辑
                 </Button>
               </Link>
+              <TenderWinModal
+                id={id}
+                disabled={approvalStatus == 1}
+                competitorRef={competitorRef}
+              />
+              <TenderLoseModal
+                id={id}
+                disabled={approvalStatus == 1}
+                competitorRef={lostCompetitorRef}
+              />
               {(session.isAdmin || session.isSuperAdmin) && (
                 <Button
                   type="primary"

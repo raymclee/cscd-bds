@@ -257,11 +257,11 @@ func (c *CityUpdateOne) SetInput(i UpdateCityInput) *CityUpdateOne {
 
 // CreateCompetitorInput represents a mutation input for creating competitors.
 type CreateCompetitorInput struct {
-	CreatedAt    *time.Time
-	UpdatedAt    *time.Time
-	ShortName    string
-	Name         string
-	WonTenderIDs []xid.ID
+	CreatedAt *time.Time
+	UpdatedAt *time.Time
+	ShortName string
+	Name      string
+	TenderIDs []xid.ID
 }
 
 // Mutate applies the CreateCompetitorInput on the CompetitorMutation builder.
@@ -274,8 +274,8 @@ func (i *CreateCompetitorInput) Mutate(m *CompetitorMutation) {
 	}
 	m.SetShortName(i.ShortName)
 	m.SetName(i.Name)
-	if v := i.WonTenderIDs; len(v) > 0 {
-		m.AddWonTenderIDs(v...)
+	if v := i.TenderIDs; len(v) > 0 {
+		m.AddTenderIDs(v...)
 	}
 }
 
@@ -287,12 +287,12 @@ func (c *CompetitorCreate) SetInput(i CreateCompetitorInput) *CompetitorCreate {
 
 // UpdateCompetitorInput represents a mutation input for updating competitors.
 type UpdateCompetitorInput struct {
-	UpdatedAt          *time.Time
-	ShortName          *string
-	Name               *string
-	ClearWonTenders    bool
-	AddWonTenderIDs    []xid.ID
-	RemoveWonTenderIDs []xid.ID
+	UpdatedAt       *time.Time
+	ShortName       *string
+	Name            *string
+	ClearTenders    bool
+	AddTenderIDs    []xid.ID
+	RemoveTenderIDs []xid.ID
 }
 
 // Mutate applies the UpdateCompetitorInput on the CompetitorMutation builder.
@@ -306,14 +306,14 @@ func (i *UpdateCompetitorInput) Mutate(m *CompetitorMutation) {
 	if v := i.Name; v != nil {
 		m.SetName(*v)
 	}
-	if i.ClearWonTenders {
-		m.ClearWonTenders()
+	if i.ClearTenders {
+		m.ClearTenders()
 	}
-	if v := i.AddWonTenderIDs; len(v) > 0 {
-		m.AddWonTenderIDs(v...)
+	if v := i.AddTenderIDs; len(v) > 0 {
+		m.AddTenderIDs(v...)
 	}
-	if v := i.RemoveWonTenderIDs; len(v) > 0 {
-		m.RemoveWonTenderIDs(v...)
+	if v := i.RemoveTenderIDs; len(v) > 0 {
+		m.RemoveTenderIDs(v...)
 	}
 }
 
@@ -1916,7 +1916,7 @@ type CreateTenderInput struct {
 	CityID                               *xid.ID
 	DistrictID                           *xid.ID
 	VisitRecordIDs                       []xid.ID
-	CompetitorID                         *xid.ID
+	CompetitorIDs                        []xid.ID
 	ApproverID                           *xid.ID
 	UpdatedByID                          *xid.ID
 }
@@ -2116,8 +2116,8 @@ func (i *CreateTenderInput) Mutate(m *TenderMutation) {
 	if v := i.VisitRecordIDs; len(v) > 0 {
 		m.AddVisitRecordIDs(v...)
 	}
-	if v := i.CompetitorID; v != nil {
-		m.SetCompetitorID(*v)
+	if v := i.CompetitorIDs; len(v) > 0 {
+		m.AddCompetitorIDs(v...)
 	}
 	if v := i.ApproverID; v != nil {
 		m.SetApproverID(*v)
@@ -2262,8 +2262,9 @@ type UpdateTenderInput struct {
 	ClearVisitRecords                         bool
 	AddVisitRecordIDs                         []xid.ID
 	RemoveVisitRecordIDs                      []xid.ID
-	ClearCompetitor                           bool
-	CompetitorID                              *xid.ID
+	ClearCompetitors                          bool
+	AddCompetitorIDs                          []xid.ID
+	RemoveCompetitorIDs                       []xid.ID
 	ClearApprover                             bool
 	ApproverID                                *xid.ID
 	ClearUpdatedBy                            bool
@@ -2653,11 +2654,14 @@ func (i *UpdateTenderInput) Mutate(m *TenderMutation) {
 	if v := i.RemoveVisitRecordIDs; len(v) > 0 {
 		m.RemoveVisitRecordIDs(v...)
 	}
-	if i.ClearCompetitor {
-		m.ClearCompetitor()
+	if i.ClearCompetitors {
+		m.ClearCompetitors()
 	}
-	if v := i.CompetitorID; v != nil {
-		m.SetCompetitorID(*v)
+	if v := i.AddCompetitorIDs; len(v) > 0 {
+		m.AddCompetitorIDs(v...)
+	}
+	if v := i.RemoveCompetitorIDs; len(v) > 0 {
+		m.RemoveCompetitorIDs(v...)
 	}
 	if i.ClearApprover {
 		m.ClearApprover()
@@ -2681,6 +2685,70 @@ func (c *TenderUpdate) SetInput(i UpdateTenderInput) *TenderUpdate {
 
 // SetInput applies the change-set in the UpdateTenderInput on the TenderUpdateOne builder.
 func (c *TenderUpdateOne) SetInput(i UpdateTenderInput) *TenderUpdateOne {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// CreateTenderCompetitorInput represents a mutation input for creating tendercompetitors.
+type CreateTenderCompetitorInput struct {
+	CreatedAt    *time.Time
+	UpdatedAt    *time.Time
+	Amount       float64
+	TenderID     xid.ID
+	CompetitorID xid.ID
+}
+
+// Mutate applies the CreateTenderCompetitorInput on the TenderCompetitorMutation builder.
+func (i *CreateTenderCompetitorInput) Mutate(m *TenderCompetitorMutation) {
+	if v := i.CreatedAt; v != nil {
+		m.SetCreatedAt(*v)
+	}
+	if v := i.UpdatedAt; v != nil {
+		m.SetUpdatedAt(*v)
+	}
+	m.SetAmount(i.Amount)
+	m.SetTenderID(i.TenderID)
+	m.SetCompetitorID(i.CompetitorID)
+}
+
+// SetInput applies the change-set in the CreateTenderCompetitorInput on the TenderCompetitorCreate builder.
+func (c *TenderCompetitorCreate) SetInput(i CreateTenderCompetitorInput) *TenderCompetitorCreate {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// UpdateTenderCompetitorInput represents a mutation input for updating tendercompetitors.
+type UpdateTenderCompetitorInput struct {
+	UpdatedAt    *time.Time
+	Amount       *float64
+	TenderID     *xid.ID
+	CompetitorID *xid.ID
+}
+
+// Mutate applies the UpdateTenderCompetitorInput on the TenderCompetitorMutation builder.
+func (i *UpdateTenderCompetitorInput) Mutate(m *TenderCompetitorMutation) {
+	if v := i.UpdatedAt; v != nil {
+		m.SetUpdatedAt(*v)
+	}
+	if v := i.Amount; v != nil {
+		m.SetAmount(*v)
+	}
+	if v := i.TenderID; v != nil {
+		m.SetTenderID(*v)
+	}
+	if v := i.CompetitorID; v != nil {
+		m.SetCompetitorID(*v)
+	}
+}
+
+// SetInput applies the change-set in the UpdateTenderCompetitorInput on the TenderCompetitorUpdate builder.
+func (c *TenderCompetitorUpdate) SetInput(i UpdateTenderCompetitorInput) *TenderCompetitorUpdate {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// SetInput applies the change-set in the UpdateTenderCompetitorInput on the TenderCompetitorUpdateOne builder.
+func (c *TenderCompetitorUpdateOne) SetInput(i UpdateTenderCompetitorInput) *TenderCompetitorUpdateOne {
 	i.Mutate(c.Mutation())
 	return c
 }

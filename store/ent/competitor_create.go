@@ -6,7 +6,7 @@ import (
 	"context"
 	"cscd-bds/store/ent/competitor"
 	"cscd-bds/store/ent/schema/xid"
-	"cscd-bds/store/ent/tender"
+	"cscd-bds/store/ent/tendercompetitor"
 	"errors"
 	"fmt"
 	"time"
@@ -79,19 +79,19 @@ func (cc *CompetitorCreate) SetNillableID(x *xid.ID) *CompetitorCreate {
 	return cc
 }
 
-// AddWonTenderIDs adds the "won_tenders" edge to the Tender entity by IDs.
-func (cc *CompetitorCreate) AddWonTenderIDs(ids ...xid.ID) *CompetitorCreate {
-	cc.mutation.AddWonTenderIDs(ids...)
+// AddTenderIDs adds the "tenders" edge to the TenderCompetitor entity by IDs.
+func (cc *CompetitorCreate) AddTenderIDs(ids ...xid.ID) *CompetitorCreate {
+	cc.mutation.AddTenderIDs(ids...)
 	return cc
 }
 
-// AddWonTenders adds the "won_tenders" edges to the Tender entity.
-func (cc *CompetitorCreate) AddWonTenders(t ...*Tender) *CompetitorCreate {
+// AddTenders adds the "tenders" edges to the TenderCompetitor entity.
+func (cc *CompetitorCreate) AddTenders(t ...*TenderCompetitor) *CompetitorCreate {
 	ids := make([]xid.ID, len(t))
 	for i := range t {
 		ids[i] = t[i].ID
 	}
-	return cc.AddWonTenderIDs(ids...)
+	return cc.AddTenderIDs(ids...)
 }
 
 // Mutation returns the CompetitorMutation object of the builder.
@@ -209,15 +209,15 @@ func (cc *CompetitorCreate) createSpec() (*Competitor, *sqlgraph.CreateSpec) {
 		_spec.SetField(competitor.FieldName, field.TypeString, value)
 		_node.Name = value
 	}
-	if nodes := cc.mutation.WonTendersIDs(); len(nodes) > 0 {
+	if nodes := cc.mutation.TendersIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   competitor.WonTendersTable,
-			Columns: []string{competitor.WonTendersColumn},
+			Table:   competitor.TendersTable,
+			Columns: []string{competitor.TendersColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(tender.FieldID, field.TypeString),
+				IDSpec: sqlgraph.NewFieldSpec(tendercompetitor.FieldID, field.TypeString),
 			},
 		}
 		for _, k := range nodes {

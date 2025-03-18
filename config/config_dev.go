@@ -4,6 +4,7 @@ func init() {
 	DatabaseUrl = "postgresql://postgres:postgres@localhost:5432/cscd_mkm?sslmode=disable"
 	IsProd = false
 	IsUat = false
+	IsDev = true
 	FilePath = "static/"
 	HostUrl = "http://localhost:5173"
 

@@ -17,7 +17,6 @@ function RouteComponent() {
         node(id: $userId) {
           ...tenderFormFragment
         }
-        ...tenderFormFragment_competitors
       }
     `,
     preload,
@@ -27,7 +26,7 @@ function RouteComponent() {
 
   return (
     <>
-      <TenderForm queryRef={data?.node} competitorRef={data} />
+      <TenderForm queryRef={data?.node} />
     </>
   );
 }

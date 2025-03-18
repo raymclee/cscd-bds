@@ -9,7 +9,6 @@ import (
 	"cscd-bds/graphql/model"
 	"cscd-bds/store/ent"
 	"cscd-bds/store/ent/area"
-	"cscd-bds/store/ent/competitor"
 	"cscd-bds/store/ent/district"
 	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/schema/xid"
@@ -23,7 +22,6 @@ import (
 	"strings"
 
 	"entgo.io/contrib/entgql"
-	"entgo.io/ent/dialect/sql"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -264,8 +262,8 @@ func (r *queryResolver) AmapRegeo(ctx context.Context, lng float64, lat float64)
 // TopCompetitors is the resolver for the topCompetitors field.
 func (r *queryResolver) TopCompetitors(ctx context.Context, first *int) ([]*model.TopCompetitor, error) {
 	comps, err := r.store.Competitor.Query().
-		Order(competitor.ByWonTendersCount(sql.OrderDesc())).
-		WithWonTenders().
+		// Order(competitor.ByWonTendersCount(sql.OrderDesc())).
+		WithTenders().
 		All(ctx)
 	if err != nil {
 		return nil, err
@@ -276,7 +274,7 @@ func (r *queryResolver) TopCompetitors(ctx context.Context, first *int) ([]*mode
 			ID:              xid.ID(fmt.Sprintf("TC-%s", strings.ReplaceAll(string(comp.ID), "CP-", ""))),
 			Name:            comp.Name,
 			ShortName:       comp.ShortName,
-			WonTendersCount: int(len(comp.Edges.WonTenders)),
+			WonTendersCount: int(len(comp.Edges.Tenders)),
 		})
 	}
 	return out, nil

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<d55ff00c2e3b6a0bf2151264671f3b0f>>
+ * @generated SignedSource<<47c915cdd8fc3bafd2fe4ef302fc5683>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -11,6 +11,7 @@
 import { ConcreteRequest } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type UpdateTenderInput = {
+  addCompetitorIDs?: ReadonlyArray<string> | null | undefined;
   addFollowingSaleIDs?: ReadonlyArray<string> | null | undefined;
   addVisitRecordIDs?: ReadonlyArray<string> | null | undefined;
   address?: string | null | undefined;
@@ -37,8 +38,8 @@ export type UpdateTenderInput = {
   clearClassify?: boolean | null | undefined;
   clearCompetitivePartnershipRating?: boolean | null | undefined;
   clearCompetitivePartnershipRatingOverview?: boolean | null | undefined;
-  clearCompetitor?: boolean | null | undefined;
   clearCompetitorSituations?: boolean | null | undefined;
+  clearCompetitors?: boolean | null | undefined;
   clearConstructionArea?: boolean | null | undefined;
   clearConsultingFirm?: boolean | null | undefined;
   clearContractForm?: boolean | null | undefined;
@@ -89,7 +90,6 @@ export type UpdateTenderInput = {
   code?: string | null | undefined;
   competitivePartnershipRating?: number | null | undefined;
   competitivePartnershipRatingOverview?: string | null | undefined;
-  competitorID?: string | null | undefined;
   competitorSituations?: string | null | undefined;
   constructionArea?: string | null | undefined;
   consultingFirm?: string | null | undefined;
@@ -126,6 +126,7 @@ export type UpdateTenderInput = {
   projectType?: string | null | undefined;
   provinceID?: string | null | undefined;
   remark?: string | null | undefined;
+  removeCompetitorIDs?: ReadonlyArray<string> | null | undefined;
   removeFollowingSaleIDs?: ReadonlyArray<string> | null | undefined;
   removeVisitRecordIDs?: ReadonlyArray<string> | null | undefined;
   sizeAndValueRating?: number | null | undefined;

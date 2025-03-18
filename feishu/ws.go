@@ -43,6 +43,7 @@ func (f *Feishu) StartWSClient(ctx context.Context) {
 					t, err := f.store.Tender.Query().
 						Where(tender.ID(xid.ID(tenderId))).
 						WithCreatedBy().
+						WithUpdatedBy().
 						WithCustomer().
 						WithApprover().
 						WithFinder().
@@ -85,6 +86,7 @@ func (f *Feishu) StartWSClient(ctx context.Context) {
 					t, err := f.store.Tender.Query().
 						Where(tender.ID(xid.ID(tenderId))).
 						WithCreatedBy().
+						WithUpdatedBy().
 						WithCustomer().
 						WithApprover().
 						WithFinder().
@@ -95,6 +97,9 @@ func (f *Feishu) StartWSClient(ctx context.Context) {
 
 					templateId = TemplateIdTenderRejected
 					templateVars = tenderTemplateVars(t)
+					if t.Edges.UpdatedBy != nil {
+						templateVars["created_by_id"] = t.Edges.UpdatedBy.OpenID
+					}
 
 					go func() {
 						ctxx := context.Background()
@@ -128,6 +133,9 @@ func (f *Feishu) StartWSClient(ctx context.Context) {
 					}
 					templateId = TemplateIdCustomerApproved
 					templateVars = customerTemplateVars(cus)
+					if cus.Edges.UpdatedBy != nil {
+						templateVars["created_by_id"] = cus.Edges.UpdatedBy.OpenID
+					}
 
 					go func() {
 						ctxx := context.Background()
@@ -163,6 +171,7 @@ func (f *Feishu) StartWSClient(ctx context.Context) {
 						WithArea().
 						WithCreatedBy().
 						WithApprover().
+						WithUpdatedBy().
 						WithSales().
 						Only(ctx)
 					if err != nil {
@@ -171,6 +180,9 @@ func (f *Feishu) StartWSClient(ctx context.Context) {
 					}
 					templateVars = customerTemplateVars(cus)
 					templateId = TemplateIdCustomerRejected
+					if cus.Edges.UpdatedBy != nil {
+						templateVars["created_by_id"] = cus.Edges.UpdatedBy.OpenID
+					}
 
 					go func() {
 						ctxx := context.Background()

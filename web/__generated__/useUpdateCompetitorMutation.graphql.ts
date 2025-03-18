@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<7080b07758ad349e1809feacd10e1c79>>
+ * @generated SignedSource<<97f2cbf6d2ab66049c2344c93bb5d9a5>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,10 +10,10 @@
 
 import { ConcreteRequest } from 'relay-runtime';
 export type UpdateCompetitorInput = {
-  addWonTenderIDs?: ReadonlyArray<string> | null | undefined;
-  clearWonTenders?: boolean | null | undefined;
+  addTenderIDs?: ReadonlyArray<string> | null | undefined;
+  clearTenders?: boolean | null | undefined;
   name?: string | null | undefined;
-  removeWonTenderIDs?: ReadonlyArray<string> | null | undefined;
+  removeTenderIDs?: ReadonlyArray<string> | null | undefined;
   shortName?: string | null | undefined;
   updatedAt?: any | null | undefined;
 };

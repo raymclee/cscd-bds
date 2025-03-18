@@ -71,6 +71,18 @@ function RouteComponent() {
       ellipsis: true,
     },
     {
+      dataIndex: "contact",
+      title: "联系人",
+    },
+    {
+      dataIndex: "contactPhone",
+      title: "联系电话",
+    },
+    {
+      dataIndex: "contactEmail",
+      title: "联系邮箱",
+    },
+    {
       dataIndex: "requirement",
       title: "需求",
       ellipsis: true,
@@ -102,28 +114,22 @@ function RouteComponent() {
       ellipsis: true,
     },
     {
-      dataIndex: "contact",
-      title: "联系人",
-    },
-    {
-      dataIndex: "contactPhone",
-      title: "联系电话",
-    },
-    {
-      dataIndex: "contactEmail",
-      title: "联系邮箱",
-    },
-    {
-      dataIndex: "refURL",
-      title: "链接",
-      render: (value) => (
-        <a href={value} target="_blank">
-          <Button type="link" size="small" className="!pl-0">
-            查看原文
+      dataIndex: "actions",
+      render: (_, record) => (
+        <div className="flex items-center gap-2 pl-0">
+          <a href={record.refURL} target="_blank">
+            <Button type="link" size="small">
+              查看原文
+            </Button>
+          </a>
+          <Button type="link" size="small">
+            录入
           </Button>
-        </a>
+          <Button type="link" size="small" danger>
+            删除
+          </Button>
+        </div>
       ),
-      width: 160,
       fixed: "right",
     },
   ];
