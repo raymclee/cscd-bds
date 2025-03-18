@@ -127,7 +127,7 @@ func main() {
 	} else if config.IsUat {
 		port = ":3001"
 	} else {
-		port = ":7000"
+		port = ":3000"
 	}
 	e.Start(port)
 }

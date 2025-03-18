@@ -211,6 +211,7 @@ export function UserForm({
             //   label: a?.node?.name,
             //   value: a?.node?.id,
             // }))}
+            disabled={!session.isSuperAdmin}
             options={avaliableAreas.edges?.map((a) => ({
               label: a?.node?.name,
               value: a?.node?.id,
