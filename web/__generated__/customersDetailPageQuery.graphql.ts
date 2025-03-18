@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<f3af56f6c064eb32676ad4c1dd27b862>>
+ * @generated SignedSource<<2f8b7fdcbf56a0ead041ec12044a1c3c>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,17 +10,10 @@
 
 import { ConcreteRequest } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
-export type OrderDirection = "ASC" | "DESC" | "%future added value";
-export type VisitRecordOrderField = "CREATED_AT" | "DATE" | "%future added value";
-export type VisitRecordOrder = {
-  direction?: OrderDirection;
-  field: VisitRecordOrderField;
-};
 export type customersDetailPageQuery$variables = {
   first?: number | null | undefined;
   id: string;
   last?: number | null | undefined;
-  orderBy?: VisitRecordOrder | null | undefined;
 };
 export type customersDetailPageQuery$data = {
   readonly node: {
@@ -33,12 +26,7 @@ export type customersDetailPageQuery$data = {
         readonly __id: string;
       } | null | undefined> | null | undefined;
     };
-    readonly visitRecords?: {
-      readonly edges: ReadonlyArray<{
-        readonly __id: string;
-      } | null | undefined> | null | undefined;
-    };
-    readonly " $fragmentSpreads": FragmentRefs<"customerDetailFragment" | "customerTenderListFragment" | "customerVisitRecordListFragment">;
+    readonly " $fragmentSpreads": FragmentRefs<"customerDetailFragment" | "customerTenderListFragment">;
   } | null | undefined;
 };
 export type customersDetailPageQuery = {
@@ -62,46 +50,38 @@ v2 = {
   "kind": "LocalArgument",
   "name": "last"
 },
-v3 = {
-  "defaultValue": null,
-  "kind": "LocalArgument",
-  "name": "orderBy"
-},
-v4 = [
+v3 = [
   {
     "kind": "Variable",
     "name": "id",
     "variableName": "id"
   }
 ],
-v5 = {
+v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v6 = [
-  (v5/*: any*/)
+v5 = [
+  (v4/*: any*/)
 ],
-v7 = {
+v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "cursor",
   "storageKey": null
 },
-v8 = {
+v7 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "__typename",
   "storageKey": null
 },
-v9 = [
-  (v8/*: any*/)
-],
-v10 = {
+v8 = {
   "kind": "ClientExtension",
   "selections": [
     {
@@ -113,21 +93,21 @@ v10 = {
     }
   ]
 },
-v11 = {
+v9 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "hasPreviousPage",
   "storageKey": null
 },
-v12 = {
+v10 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "startCursor",
   "storageKey": null
 },
-v13 = {
+v11 = {
   "alias": null,
   "args": null,
   "concreteType": "PageInfo",
@@ -149,61 +129,42 @@ v13 = {
       "name": "hasNextPage",
       "storageKey": null
     },
-    (v11/*: any*/),
-    (v12/*: any*/)
+    (v9/*: any*/),
+    (v10/*: any*/)
   ],
   "storageKey": null
 },
-v14 = {
-  "kind": "Variable",
-  "name": "orderBy",
-  "variableName": "orderBy"
-},
-v15 = {
-  "kind": "Variable",
-  "name": "first",
-  "variableName": "first"
-},
-v16 = {
-  "kind": "Variable",
-  "name": "last",
-  "variableName": "last"
-},
-v17 = [
-  (v15/*: any*/),
-  (v16/*: any*/),
-  (v14/*: any*/)
+v12 = [
+  {
+    "kind": "Variable",
+    "name": "first",
+    "variableName": "first"
+  },
+  {
+    "kind": "Variable",
+    "name": "last",
+    "variableName": "last"
+  }
 ],
-v18 = [
-  (v15/*: any*/),
-  (v16/*: any*/)
-],
-v19 = {
+v13 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
 },
-v20 = [
-  (v5/*: any*/),
-  (v19/*: any*/)
+v14 = [
+  (v4/*: any*/),
+  (v13/*: any*/)
 ],
-v21 = {
+v15 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "createdAt",
   "storageKey": null
 },
-v22 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "date",
-  "storageKey": null
-},
-v23 = [
+v16 = [
   {
     "kind": "Literal",
     "name": "last",
@@ -215,8 +176,7 @@ return {
     "argumentDefinitions": [
       (v0/*: any*/),
       (v1/*: any*/),
-      (v2/*: any*/),
-      (v3/*: any*/)
+      (v2/*: any*/)
     ],
     "kind": "Fragment",
     "metadata": null,
@@ -224,7 +184,7 @@ return {
     "selections": [
       {
         "alias": null,
-        "args": (v4/*: any*/),
+        "args": (v3/*: any*/),
         "concreteType": null,
         "kind": "LinkedField",
         "name": "node",
@@ -233,7 +193,7 @@ return {
           {
             "kind": "InlineFragment",
             "selections": [
-              (v5/*: any*/),
+              (v4/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -241,7 +201,7 @@ return {
                 "kind": "LinkedField",
                 "name": "sales",
                 "plural": false,
-                "selections": (v6/*: any*/),
+                "selections": (v5/*: any*/),
                 "storageKey": null
               },
               {
@@ -260,7 +220,7 @@ return {
                     "name": "edges",
                     "plural": true,
                     "selections": [
-                      (v7/*: any*/),
+                      (v6/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -268,51 +228,16 @@ return {
                         "kind": "LinkedField",
                         "name": "node",
                         "plural": false,
-                        "selections": (v9/*: any*/),
+                        "selections": [
+                          (v7/*: any*/)
+                        ],
                         "storageKey": null
                       },
-                      (v10/*: any*/)
+                      (v8/*: any*/)
                     ],
                     "storageKey": null
                   },
-                  (v13/*: any*/)
-                ],
-                "storageKey": null
-              },
-              {
-                "alias": "visitRecords",
-                "args": [
-                  (v14/*: any*/)
-                ],
-                "concreteType": "VisitRecordConnection",
-                "kind": "LinkedField",
-                "name": "__customerVisitRecordListFragment_visitRecords_connection",
-                "plural": false,
-                "selections": [
-                  {
-                    "alias": null,
-                    "args": null,
-                    "concreteType": "VisitRecordEdge",
-                    "kind": "LinkedField",
-                    "name": "edges",
-                    "plural": true,
-                    "selections": [
-                      (v7/*: any*/),
-                      {
-                        "alias": null,
-                        "args": null,
-                        "concreteType": "VisitRecord",
-                        "kind": "LinkedField",
-                        "name": "node",
-                        "plural": false,
-                        "selections": (v9/*: any*/),
-                        "storageKey": null
-                      },
-                      (v10/*: any*/)
-                    ],
-                    "storageKey": null
-                  },
-                  (v13/*: any*/)
+                  (v11/*: any*/)
                 ],
                 "storageKey": null
               },
@@ -322,12 +247,7 @@ return {
                 "name": "customerDetailFragment"
               },
               {
-                "args": (v17/*: any*/),
-                "kind": "FragmentSpread",
-                "name": "customerVisitRecordListFragment"
-              },
-              {
-                "args": (v18/*: any*/),
+                "args": (v12/*: any*/),
                 "kind": "FragmentSpread",
                 "name": "customerTenderListFragment"
               }
@@ -346,7 +266,6 @@ return {
   "operation": {
     "argumentDefinitions": [
       (v1/*: any*/),
-      (v3/*: any*/),
       (v0/*: any*/),
       (v2/*: any*/)
     ],
@@ -355,14 +274,14 @@ return {
     "selections": [
       {
         "alias": null,
-        "args": (v4/*: any*/),
+        "args": (v3/*: any*/),
         "concreteType": null,
         "kind": "LinkedField",
         "name": "node",
         "plural": false,
         "selections": [
-          (v8/*: any*/),
-          (v5/*: any*/),
+          (v7/*: any*/),
+          (v4/*: any*/),
           {
             "kind": "InlineFragment",
             "selections": [
@@ -373,12 +292,12 @@ return {
                 "kind": "LinkedField",
                 "name": "sales",
                 "plural": false,
-                "selections": (v20/*: any*/),
+                "selections": (v14/*: any*/),
                 "storageKey": null
               },
               {
                 "alias": null,
-                "args": (v18/*: any*/),
+                "args": (v12/*: any*/),
                 "concreteType": "TenderConnection",
                 "kind": "LinkedField",
                 "name": "tenders",
@@ -392,7 +311,7 @@ return {
                     "name": "edges",
                     "plural": true,
                     "selections": [
-                      (v7/*: any*/),
+                      (v6/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -401,9 +320,9 @@ return {
                         "name": "node",
                         "plural": false,
                         "selections": [
-                          (v8/*: any*/),
-                          (v5/*: any*/),
-                          (v19/*: any*/),
+                          (v7/*: any*/),
+                          (v4/*: any*/),
+                          (v13/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -411,7 +330,7 @@ return {
                             "name": "status",
                             "storageKey": null
                           },
-                          (v21/*: any*/),
+                          (v15/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -426,7 +345,7 @@ return {
                             "kind": "LinkedField",
                             "name": "customer",
                             "plural": false,
-                            "selections": (v20/*: any*/),
+                            "selections": (v14/*: any*/),
                             "storageKey": null
                           },
                           {
@@ -472,8 +391,8 @@ return {
                             "name": "area",
                             "plural": false,
                             "selections": [
-                              (v5/*: any*/),
-                              (v19/*: any*/),
+                              (v4/*: any*/),
+                              (v13/*: any*/),
                               {
                                 "alias": null,
                                 "args": null,
@@ -491,7 +410,7 @@ return {
                             "kind": "LinkedField",
                             "name": "followingSales",
                             "plural": true,
-                            "selections": (v6/*: any*/),
+                            "selections": (v5/*: any*/),
                             "storageKey": null
                           },
                           {
@@ -501,159 +420,31 @@ return {
                             "kind": "LinkedField",
                             "name": "createdBy",
                             "plural": false,
-                            "selections": (v6/*: any*/),
+                            "selections": (v5/*: any*/),
                             "storageKey": null
                           }
                         ],
                         "storageKey": null
                       },
-                      (v10/*: any*/)
+                      (v8/*: any*/)
                     ],
                     "storageKey": null
                   },
-                  (v13/*: any*/)
+                  (v11/*: any*/)
                 ],
                 "storageKey": null
               },
               {
                 "alias": null,
-                "args": (v18/*: any*/),
+                "args": (v12/*: any*/),
                 "filters": null,
                 "handle": "connection",
                 "key": "customerTenderListFragment_tenders",
                 "kind": "LinkedHandle",
                 "name": "tenders"
               },
-              {
-                "alias": null,
-                "args": (v17/*: any*/),
-                "concreteType": "VisitRecordConnection",
-                "kind": "LinkedField",
-                "name": "visitRecords",
-                "plural": false,
-                "selections": [
-                  {
-                    "alias": null,
-                    "args": null,
-                    "concreteType": "VisitRecordEdge",
-                    "kind": "LinkedField",
-                    "name": "edges",
-                    "plural": true,
-                    "selections": [
-                      (v7/*: any*/),
-                      {
-                        "alias": null,
-                        "args": null,
-                        "concreteType": "VisitRecord",
-                        "kind": "LinkedField",
-                        "name": "node",
-                        "plural": false,
-                        "selections": [
-                          (v8/*: any*/),
-                          (v5/*: any*/),
-                          (v22/*: any*/),
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "visitType",
-                            "storageKey": null
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "commPeople",
-                            "storageKey": null
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "commContent",
-                            "storageKey": null
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "nextStep",
-                            "storageKey": null
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "customerID",
-                            "storageKey": null
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "concreteType": "UserConnection",
-                            "kind": "LinkedField",
-                            "name": "followupbys",
-                            "plural": false,
-                            "selections": [
-                              {
-                                "alias": null,
-                                "args": null,
-                                "concreteType": "UserEdge",
-                                "kind": "LinkedField",
-                                "name": "edges",
-                                "plural": true,
-                                "selections": [
-                                  {
-                                    "alias": null,
-                                    "args": null,
-                                    "concreteType": "User",
-                                    "kind": "LinkedField",
-                                    "name": "node",
-                                    "plural": false,
-                                    "selections": (v6/*: any*/),
-                                    "storageKey": null
-                                  }
-                                ],
-                                "storageKey": null
-                              }
-                            ],
-                            "storageKey": null
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "concreteType": "Tender",
-                            "kind": "LinkedField",
-                            "name": "tender",
-                            "plural": false,
-                            "selections": (v20/*: any*/),
-                            "storageKey": null
-                          }
-                        ],
-                        "storageKey": null
-                      },
-                      (v10/*: any*/)
-                    ],
-                    "storageKey": null
-                  },
-                  (v13/*: any*/),
-                  (v10/*: any*/)
-                ],
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": (v17/*: any*/),
-                "filters": [
-                  "orderBy"
-                ],
-                "handle": "connection",
-                "key": "customerVisitRecordListFragment_visitRecords",
-                "kind": "LinkedHandle",
-                "name": "visitRecords"
-              },
-              (v19/*: any*/),
-              (v21/*: any*/),
+              (v13/*: any*/),
+              (v15/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -662,8 +453,8 @@ return {
                 "name": "createdBy",
                 "plural": false,
                 "selections": [
-                  (v19/*: any*/),
-                  (v5/*: any*/)
+                  (v13/*: any*/),
+                  (v4/*: any*/)
                 ],
                 "storageKey": null
               },
@@ -702,7 +493,7 @@ return {
                 "kind": "LinkedField",
                 "name": "area",
                 "plural": false,
-                "selections": (v20/*: any*/),
+                "selections": (v14/*: any*/),
                 "storageKey": null
               },
               {
@@ -735,7 +526,7 @@ return {
               },
               {
                 "alias": "lastVisitRecord",
-                "args": (v23/*: any*/),
+                "args": (v16/*: any*/),
                 "concreteType": "VisitRecordConnection",
                 "kind": "LinkedField",
                 "name": "visitRecords",
@@ -757,13 +548,19 @@ return {
                         "name": "node",
                         "plural": false,
                         "selections": [
-                          (v22/*: any*/),
-                          (v5/*: any*/),
-                          (v8/*: any*/)
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "date",
+                            "storageKey": null
+                          },
+                          (v4/*: any*/),
+                          (v7/*: any*/)
                         ],
                         "storageKey": null
                       },
-                      (v7/*: any*/)
+                      (v6/*: any*/)
                     ],
                     "storageKey": null
                   },
@@ -775,8 +572,8 @@ return {
                     "name": "pageInfo",
                     "plural": false,
                     "selections": [
-                      (v11/*: any*/),
-                      (v12/*: any*/)
+                      (v9/*: any*/),
+                      (v10/*: any*/)
                     ],
                     "storageKey": null
                   }
@@ -785,7 +582,7 @@ return {
               },
               {
                 "alias": "lastVisitRecord",
-                "args": (v23/*: any*/),
+                "args": (v16/*: any*/),
                 "filters": null,
                 "handle": "connection",
                 "key": "customerDetailFragment_lastVisitRecord",
@@ -802,7 +599,7 @@ return {
     ]
   },
   "params": {
-    "cacheID": "583e5fef8521b2df62a9456815da68b8",
+    "cacheID": "871abf601bd4633ef302a6b5101f7920",
     "id": null,
     "metadata": {
       "connection": [
@@ -814,25 +611,16 @@ return {
             "node",
             "tenders"
           ]
-        },
-        {
-          "count": null,
-          "cursor": null,
-          "direction": "bidirectional",
-          "path": [
-            "node",
-            "visitRecords"
-          ]
         }
       ]
     },
     "name": "customersDetailPageQuery",
     "operationKind": "query",
-    "text": "query customersDetailPageQuery(\n  $id: ID!\n  $orderBy: VisitRecordOrder\n  $first: Int\n  $last: Int\n) {\n  node(id: $id) {\n    __typename\n    ... on Customer {\n      id\n      sales {\n        id\n      }\n      tenders(first: $first, last: $last) {\n        edges {\n          cursor\n          node {\n            __typename\n            id\n          }\n        }\n        pageInfo {\n          endCursor\n          hasNextPage\n          hasPreviousPage\n          startCursor\n        }\n      }\n      visitRecords(first: $first, last: $last, orderBy: $orderBy) {\n        edges {\n          cursor\n          node {\n            __typename\n            id\n          }\n        }\n        pageInfo {\n          endCursor\n          hasNextPage\n          hasPreviousPage\n          startCursor\n        }\n      }\n      ...customerDetailFragment\n      ...customerVisitRecordListFragment_4d76iu\n      ...customerTenderListFragment_2pIUTM\n    }\n    id\n  }\n}\n\nfragment customerDetailFragment on Customer {\n  id\n  name\n  createdAt\n  createdBy {\n    name\n    id\n  }\n  updatedAt\n  ownerType\n  industry\n  size\n  sales {\n    id\n    name\n  }\n  area {\n    id\n    name\n  }\n  contactPerson\n  contactPersonPosition\n  contactPersonPhone\n  contactPersonEmail\n  lastVisitRecord: visitRecords(last: 1) {\n    edges {\n      node {\n        date\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n\nfragment customerTenderListFragment_2pIUTM on Customer {\n  tenders(first: $first, last: $last) {\n    edges {\n      node {\n        id\n        ...tenderListItemFragment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n\nfragment customerVisitRecordListFragment_4d76iu on Customer {\n  visitRecords(first: $first, last: $last, orderBy: $orderBy) {\n    edges {\n      node {\n        id\n        ...visitRecordItemFragment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n\nfragment tenderListItemFragment on Tender {\n  id\n  name\n  status\n  createdAt\n  estimatedAmount\n  customer {\n    id\n    name\n  }\n  images\n  fullAddress\n  tenderDate\n  discoveryDate\n  tenderClosingDate\n  area {\n    id\n    name\n    code\n  }\n  followingSales {\n    id\n  }\n  createdBy {\n    id\n  }\n}\n\nfragment visitRecordItemFragment on VisitRecord {\n  id\n  date\n  visitType\n  commPeople\n  commContent\n  nextStep\n  customerID\n  followupbys {\n    edges {\n      node {\n        id\n      }\n    }\n  }\n  tender {\n    id\n    name\n  }\n}\n"
+    "text": "query customersDetailPageQuery(\n  $id: ID!\n  $first: Int\n  $last: Int\n) {\n  node(id: $id) {\n    __typename\n    ... on Customer {\n      id\n      sales {\n        id\n      }\n      tenders(first: $first, last: $last) {\n        edges {\n          cursor\n          node {\n            __typename\n            id\n          }\n        }\n        pageInfo {\n          endCursor\n          hasNextPage\n          hasPreviousPage\n          startCursor\n        }\n      }\n      ...customerDetailFragment\n      ...customerTenderListFragment_2pIUTM\n    }\n    id\n  }\n}\n\nfragment customerDetailFragment on Customer {\n  id\n  name\n  createdAt\n  createdBy {\n    name\n    id\n  }\n  updatedAt\n  ownerType\n  industry\n  size\n  sales {\n    id\n    name\n  }\n  area {\n    id\n    name\n  }\n  contactPerson\n  contactPersonPosition\n  contactPersonPhone\n  contactPersonEmail\n  lastVisitRecord: visitRecords(last: 1) {\n    edges {\n      node {\n        date\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n\nfragment customerTenderListFragment_2pIUTM on Customer {\n  tenders(first: $first, last: $last) {\n    edges {\n      node {\n        id\n        ...tenderListItemFragment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n\nfragment tenderListItemFragment on Tender {\n  id\n  name\n  status\n  createdAt\n  estimatedAmount\n  customer {\n    id\n    name\n  }\n  images\n  fullAddress\n  tenderDate\n  discoveryDate\n  tenderClosingDate\n  area {\n    id\n    name\n    code\n  }\n  followingSales {\n    id\n  }\n  createdBy {\n    id\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "5c6ff73ee0c09144659e04ab8c56a582";
+(node as any).hash = "987420d0379a14b00ba6d2d5f7238052";
 
 export default node;

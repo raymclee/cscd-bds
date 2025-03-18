@@ -74,7 +74,7 @@ export function CustomerDetail(props: {
               >
                 编辑
               </Button>
-              <Button
+              {/* <Button
                 type="primary"
                 icon={<BookUser size={16} />}
                 onClick={() => {
@@ -84,7 +84,7 @@ export function CustomerDetail(props: {
                 }}
               >
                 添加拜访记录
-              </Button>
+              </Button> */}
             </Space>
           )
         }
