@@ -349,7 +349,7 @@ function RouteComponent() {
 
         <div className="relative flex flex-wrap gap-1 md:gap-6">
           {/* Shipment Details */}
-          <div className="z-10 order-last min-h-screen w-full rounded-xl bg-black/30 p-6 backdrop-blur-lg md:order-first md:w-[50%] lg:w-[50%] xl:w-[40%] 2xl:w-[30%]">
+          <div className="z-10 order-last min-h-screen w-full rounded-lg bg-black/30 p-6 backdrop-blur-lg md:order-first md:w-[50%] lg:w-[50%] xl:w-[40%] 2xl:w-[30%]">
             <img
               src={subHeadTenderListSvg}
               alt="sub-head"
@@ -577,8 +577,6 @@ function CarouselDemo() {
   //   const progress = Math.max(0, Math.min(1, emblaApi.scrollProgress()));
   //   setScrollProgress(progress * 100);
   // }, []);
-
-  console.log({ scrollSnaps });
 
   return (
     <Carousel plugins={[]} opts={{ loop: true }} setApi={setApi} className="">
