@@ -35,6 +35,7 @@ import { Route as authportalPortalTendersIdImport } from './routes/__auth/__port
 import { Route as authportalPortalCustomersIdImport } from './routes/__auth/__portal/portal/customers_.$id'
 import { Route as authportalPortalAdminUsersImport } from './routes/__auth/__portal/portal/_admin/users'
 import { Route as authportalPortalAdminCompetitorsImport } from './routes/__auth/__portal/portal/_admin/competitors'
+import { Route as authdashboardamapTendersIdImport } from './routes/__auth/__dashboard/__amap/tenders.$id'
 import { Route as authportalPortalTendersIdPlotImport } from './routes/__auth/__portal/portal/tenders_.$id_.plot'
 import { Route as authportalPortalTendersIdEditImport } from './routes/__auth/__portal/portal/tenders_.$id_.edit'
 import { Route as authportalPortalSuperAdminSaUsersImport } from './routes/__auth/__portal/portal/_super-admin/sa/users'
@@ -319,6 +320,18 @@ const authportalPortalAdminCompetitorsRoute =
       ),
     )
 
+const authdashboardamapTendersIdRoute = authdashboardamapTendersIdImport
+  .update({
+    id: '/tenders/$id',
+    path: '/tenders/$id',
+    getParentRoute: () => authdashboardamapRoute,
+  } as any)
+  .lazy(() =>
+    import('./routes/__auth/__dashboard/__amap/tenders.$id.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
 const authportalPortalTendersIdPlotRoute = authportalPortalTendersIdPlotImport
   .update({
     id: '/tenders_/$id_/plot',
@@ -527,6 +540,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authportalPortalIndexImport
       parentRoute: typeof authportalPortalImport
     }
+    '/__auth/__dashboard/__amap/tenders/$id': {
+      id: '/__auth/__dashboard/__amap/tenders/$id'
+      path: '/tenders/$id'
+      fullPath: '/tenders/$id'
+      preLoaderRoute: typeof authdashboardamapTendersIdImport
+      parentRoute: typeof authdashboardamapImport
+    }
     '/__auth/__portal/portal/_admin/competitors': {
       id: '/__auth/__portal/portal/_admin/competitors'
       path: '/competitors'
@@ -611,10 +631,12 @@ declare module '@tanstack/react-router' {
 
 interface authdashboardamapRouteChildren {
   authdashboardamapV2Route: typeof authdashboardamapV2Route
+  authdashboardamapTendersIdRoute: typeof authdashboardamapTendersIdRoute
 }
 
 const authdashboardamapRouteChildren: authdashboardamapRouteChildren = {
   authdashboardamapV2Route: authdashboardamapV2Route,
+  authdashboardamapTendersIdRoute: authdashboardamapTendersIdRoute,
 }
 
 const authdashboardamapRouteWithChildren =
@@ -777,6 +799,7 @@ export interface FileRoutesByFullPath {
   '/portal/potential-tenders': typeof authportalPortalPotentialTendersRoute
   '/portal/tenders': typeof authportalPortalTendersRoute
   '/portal/': typeof authportalPortalIndexRoute
+  '/tenders/$id': typeof authdashboardamapTendersIdRoute
   '/portal/competitors': typeof authportalPortalAdminCompetitorsRoute
   '/portal/users': typeof authportalPortalAdminUsersRoute
   '/portal/customers/$id': typeof authportalPortalCustomersIdRoute
@@ -805,6 +828,7 @@ export interface FileRoutesByTo {
   '/portal/plots': typeof authportalPortalPlotsRoute
   '/portal/potential-tenders': typeof authportalPortalPotentialTendersRoute
   '/portal/tenders': typeof authportalPortalTendersRoute
+  '/tenders/$id': typeof authdashboardamapTendersIdRoute
   '/portal/competitors': typeof authportalPortalAdminCompetitorsRoute
   '/portal/users': typeof authportalPortalAdminUsersRoute
   '/portal/customers/$id': typeof authportalPortalCustomersIdRoute
@@ -842,6 +866,7 @@ export interface FileRoutesById {
   '/__auth/__portal/portal/potential-tenders': typeof authportalPortalPotentialTendersRoute
   '/__auth/__portal/portal/tenders': typeof authportalPortalTendersRoute
   '/__auth/__portal/portal/': typeof authportalPortalIndexRoute
+  '/__auth/__dashboard/__amap/tenders/$id': typeof authdashboardamapTendersIdRoute
   '/__auth/__portal/portal/_admin/competitors': typeof authportalPortalAdminCompetitorsRoute
   '/__auth/__portal/portal/_admin/users': typeof authportalPortalAdminUsersRoute
   '/__auth/__portal/portal/customers_/$id': typeof authportalPortalCustomersIdRoute
@@ -873,6 +898,7 @@ export interface FileRouteTypes {
     | '/portal/potential-tenders'
     | '/portal/tenders'
     | '/portal/'
+    | '/tenders/$id'
     | '/portal/competitors'
     | '/portal/users'
     | '/portal/customers/$id'
@@ -900,6 +926,7 @@ export interface FileRouteTypes {
     | '/portal/plots'
     | '/portal/potential-tenders'
     | '/portal/tenders'
+    | '/tenders/$id'
     | '/portal/competitors'
     | '/portal/users'
     | '/portal/customers/$id'
@@ -935,6 +962,7 @@ export interface FileRouteTypes {
     | '/__auth/__portal/portal/potential-tenders'
     | '/__auth/__portal/portal/tenders'
     | '/__auth/__portal/portal/'
+    | '/__auth/__dashboard/__amap/tenders/$id'
     | '/__auth/__portal/portal/_admin/competitors'
     | '/__auth/__portal/portal/_admin/users'
     | '/__auth/__portal/portal/customers_/$id'
@@ -1022,7 +1050,8 @@ export const routeTree = rootRoute
       "filePath": "__auth/__dashboard/__amap.tsx",
       "parent": "/__auth/__dashboard",
       "children": [
-        "/__auth/__dashboard/__amap/v2"
+        "/__auth/__dashboard/__amap/v2",
+        "/__auth/__dashboard/__amap/tenders/$id"
       ]
     },
     "/__auth/__dashboard/bi": {
@@ -1110,6 +1139,10 @@ export const routeTree = rootRoute
     "/__auth/__portal/portal/": {
       "filePath": "__auth/__portal/portal/index.tsx",
       "parent": "/__auth/__portal/portal"
+    },
+    "/__auth/__dashboard/__amap/tenders/$id": {
+      "filePath": "__auth/__dashboard/__amap/tenders.$id.tsx",
+      "parent": "/__auth/__dashboard/__amap"
     },
     "/__auth/__portal/portal/_admin/competitors": {
       "filePath": "__auth/__portal/portal/_admin/competitors.tsx",

@@ -1,5 +1,5 @@
-import { createLazyFileRoute } from "@tanstack/react-router";
-import { Search } from "lucide-react";
+import { createLazyFileRoute, Link } from "@tanstack/react-router";
+import { ChevronLeft, ChevronRight, Search } from "lucide-react";
 // import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
 import { Button } from "~/components/ui/button";
 import {
@@ -36,6 +36,14 @@ import dayjs from "dayjs";
 import headSvg from "~/assets/dashboard/svg/head.svg";
 import subHeadSvg from "~/assets/dashboard/svg/sub-head.svg";
 import subHeadAmountSvg from "~/assets/dashboard/svg/sub-head-amount.svg";
+import subHeadANewTenderSvg from "~/assets/dashboard/svg/sub-head-new-tender.svg";
+import subHeadTenderListSvg from "~/assets/dashboard/svg/sub-head-tender-list.svg";
+import subHeadRankingSvg from "~/assets/dashboard/svg/sub-head-ranking.svg";
+import subHeadTenderTypeSvg from "~/assets/dashboard/svg/sub-head-tender-type.svg";
+import { fixAmount } from "~/lib/helper";
+import { ComponentPropsWithRef, useCallback, useEffect, useState } from "react";
+import { UseEmblaCarouselType } from "embla-carousel-react";
+import { useMapStore } from "~/store/map";
 
 export const V2IndexPageQuery = graphql`
   query v2PageQuery(
@@ -275,13 +283,6 @@ function RouteComponent() {
           </div>
         </div>
       </nav> */}
-      <nav className="sticky top-0 z-20 h-16">
-        <img
-          src={headSvg}
-          alt="head"
-          className="mx-auto h-[80%] w-full object-cover lg:w-[70%]"
-        />
-      </nav>
 
       {/* Search and Filters */}
       <div className="hidden px-6 py-4">
@@ -346,21 +347,29 @@ function RouteComponent() {
             </div>
           </div> */}
 
-        <div className="relative flex flex-wrap gap-1 lg:gap-6">
+        <div className="relative flex flex-wrap gap-1 md:gap-6">
           {/* Shipment Details */}
-          <div className="z-10 order-last min-h-screen w-full rounded-xl bg-black/30 p-6 backdrop-blur-lg lg:order-first lg:w-[35%]">
+          <div className="z-10 order-last min-h-screen w-full rounded-xl bg-black/30 p-6 backdrop-blur-lg md:order-first md:w-[50%] lg:w-[50%] xl:w-[40%] 2xl:w-[30%]">
             <img
-              src={subHeadSvg}
+              src={subHeadTenderListSvg}
               alt="sub-head"
-              className="-mt-4 mb-2 h-12 w-full"
+              className="-mt-4 mb-6 h-8 w-full"
             />
             <Tabs defaultValue="general">
-              <div className="sticky top-[17rem] lg:top-[7rem]">
+              <div className="sticky top-[17rem] lg:top-[6rem]">
                 <TabsList className="flex flex-wrap gap-2 bg-slate-800">
-                  <TabsTrigger value="general">General</TabsTrigger>
-                  <TabsTrigger value="tracking">Tracking</TabsTrigger>
-                  <TabsTrigger value="chat">Chat</TabsTrigger>
-                  <TabsTrigger value="documents">Documents</TabsTrigger>
+                  <TabsTrigger value="general" className="font-bold">
+                    华北
+                  </TabsTrigger>
+                  <TabsTrigger value="tracking" className="font-bold">
+                    华东
+                  </TabsTrigger>
+                  <TabsTrigger value="chat" className="font-bold">
+                    华南
+                  </TabsTrigger>
+                  <TabsTrigger value="documents" className="font-bold">
+                    西部
+                  </TabsTrigger>
                 </TabsList>
               </div>
               <TabsContent value="general" className="mt-4">
@@ -397,10 +406,12 @@ function RouteComponent() {
                 </div> */}
 
                 <div className="space-y-4">
-                  {tenders?.map((tender) => (
-                    <div
+                  {tenders?.toSpliced(0, 20)?.map((tender) => (
+                    <Link
                       key={tender?.id}
-                      className="grid grid-cols-3 gap-2 py-2"
+                      to="/tenders/$id"
+                      params={{ id: tender?.id ?? "" }}
+                      className="grid grid-cols-3 gap-4 py-2"
                     >
                       <img
                         src={tender?.images?.at(0)}
@@ -408,14 +419,21 @@ function RouteComponent() {
                         className="aspect-video rounded-md"
                       />
                       <div className="col-span-2">
-                        <div>{tender?.name}</div>
-                        <div>
+                        <h2 className="line-clamp-1 font-semibold">
+                          {tender?.name}
+                        </h2>
+                        <div className="text-sm text-slate-300">
                           {tender?.tenderDate
                             ? dayjs(tender?.tenderDate).format("LL")
                             : "-"}
                         </div>
+                        <div className="text-sm text-slate-300">
+                          {tender?.estimatedAmount
+                            ? `¥${fixAmount(tender?.estimatedAmount)}亿`
+                            : "-"}
+                        </div>
                       </div>
-                    </div>
+                    </Link>
                   ))}
                 </div>
               </TabsContent>
@@ -481,81 +499,201 @@ function RouteComponent() {
   );
 }
 
+type UsePrevNextButtonsType = {
+  prevBtnDisabled: boolean;
+  nextBtnDisabled: boolean;
+  onPrevButtonClick: () => void;
+  onNextButtonClick: () => void;
+};
+
+function usePrevNextButtons(
+  emblaApi: CarouselApi | undefined,
+  onButtonClick?: (emblaApi: CarouselApi) => void,
+): UsePrevNextButtonsType {
+  const [prevBtnDisabled, setPrevBtnDisabled] = useState(true);
+  const [nextBtnDisabled, setNextBtnDisabled] = useState(true);
+
+  const onPrevButtonClick = useCallback(() => {
+    if (!emblaApi) return;
+    emblaApi.scrollPrev();
+    if (onButtonClick) onButtonClick(emblaApi);
+  }, [emblaApi, onButtonClick]);
+
+  const onNextButtonClick = useCallback(() => {
+    if (!emblaApi) return;
+    emblaApi.scrollNext();
+    if (onButtonClick) onButtonClick(emblaApi);
+  }, [emblaApi, onButtonClick]);
+
+  const onSelect = useCallback((emblaApi: CarouselApi) => {
+    setPrevBtnDisabled(!emblaApi?.canScrollPrev());
+    setNextBtnDisabled(!emblaApi?.canScrollNext());
+  }, []);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+
+    onSelect(emblaApi);
+    emblaApi.on("reInit", onSelect).on("select", onSelect);
+  }, [emblaApi, onSelect]);
+
+  return {
+    prevBtnDisabled,
+    nextBtnDisabled,
+    onPrevButtonClick,
+    onNextButtonClick,
+  };
+}
+
 function CarouselDemo() {
   const [api, setApi] = React.useState<CarouselApi>();
+  const [scrollProgress, setScrollProgress] = React.useState(0);
+
+  const { selectedIndex, scrollSnaps, onDotButtonClick } = useDotButton(api);
+
+  const {
+    prevBtnDisabled,
+    nextBtnDisabled,
+    onPrevButtonClick,
+    onNextButtonClick,
+  } = usePrevNextButtons(api);
 
   // useEffect(() => {
   //   if (!api) {
   //     return;
   //   }
 
-  //   api.
+  //   onScroll(api);
+  //   api
+  //     .on("reInit", onScroll)
+  //     .on("scroll", onScroll)
+  //     .on("slideFocus", onScroll);
+  // }, [api]);
 
-  // }, [api])
+  // const onScroll = useCallback((emblaApi: CarouselApi) => {
+  //   if (!emblaApi) {
+  //     return;
+  //   }
+  //   const progress = Math.max(0, Math.min(1, emblaApi.scrollProgress()));
+  //   setScrollProgress(progress * 100);
+  // }, []);
+
+  console.log({ scrollSnaps });
+
   return (
-    <Carousel plugins={[]} opts={{ loop: true }} setApi={setApi}>
+    <Carousel plugins={[]} opts={{ loop: true }} setApi={setApi} className="">
       <CarouselContent>
-        {Array.from({ length: 5 }).map((_, index) => (
-          <CarouselItem key={index} className="lg:basis-1/3">
+        {[
+          subHeadAmountSvg,
+          subHeadRankingSvg,
+          subHeadTenderTypeSvg,
+          subHeadANewTenderSvg,
+        ].map((item, index) => (
+          <CarouselItem key={index} className="md:basis-1/2 xl:basis-1/3">
             <Card className="border-none bg-black/30 text-white backdrop-blur-lg">
               <CardHeader>
                 <img
-                  src={subHeadAmountSvg}
+                  src={item}
                   alt="sub-head"
-                  className="h-12 w-full"
+                  className="h-8 w-full select-none"
                 />
               </CardHeader>
               <CardContent className="flex items-center justify-center p-6">
-                <span className="text-4xl font-semibold">{index + 1}</span>
+                <span className="text-4xl font-semibold">{1}</span>
               </CardContent>
             </Card>
           </CarouselItem>
         ))}
       </CarouselContent>
-      {/* <CarouselPrevious />
-        <CarouselNext /> */}
+      {/* <CarouselPrevious className="invisible border-none bg-[#071925] md:visible" /> */}
+      {/* <CarouselNext className="invisible border-none bg-[#071925] md:visible" /> */}
+      <div className="mt-2 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="icon"
+            className="rounded-full border-none bg-black/50 hover:bg-black/70 hover:text-white"
+            disabled={prevBtnDisabled}
+            onClick={onPrevButtonClick}
+          >
+            <ChevronLeft />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="rounded-full border-none bg-black/50 hover:bg-black/70 hover:text-white"
+            disabled={nextBtnDisabled}
+            onClick={onNextButtonClick}
+          >
+            <ChevronRight />
+          </Button>
+        </div>
+
+        {/* <div className="relative h-1 w-full max-w-[90%] self-center justify-self-end overflow-hidden rounded bg-neutral-500">
+          <div
+            className="absolute -left-full bottom-0 top-0 w-full bg-white"
+            style={{ transform: `translate3d(${scrollProgress}%,0px,0px)` }}
+          />
+        </div> */}
+        <div className="mr-[calc((2.6rem-1.4rem)/2*-1)] flex flex-wrap items-center justify-end">
+          {scrollSnaps.map((_, index) => (
+            <div key={index} className="h-10 w-10" />
+          ))}
+        </div>
+      </div>
     </Carousel>
   );
 }
 
-// function CarouselDApiDemo() {
-//   const [api, setApi] = React.useState<CarouselApi>();
-//   const [current, setCurrent] = React.useState(0);
-//   const [count, setCount] = React.useState(0);
+type UseDotButtonType = {
+  selectedIndex: number;
+  scrollSnaps: number[];
+  onDotButtonClick: (index: number) => void;
+};
 
-//   React.useEffect(() => {
-//     if (!api) {
-//       return;
-//     }
+function useDotButton(emblaApi: CarouselApi | undefined): UseDotButtonType {
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
 
-//     setCount(api.scrollSnapList().length);
-//     setCurrent(api.selectedScrollSnap() + 1);
+  const onDotButtonClick = useCallback(
+    (index: number) => {
+      if (!emblaApi) return;
+      emblaApi.scrollTo(index);
+    },
+    [emblaApi],
+  );
 
-//     api.on("select", () => {
-//       setCurrent(api.selectedScrollSnap() + 1);
-//     });
-//   }, [api]);
+  const onInit = useCallback((emblaApi: CarouselApi) => {
+    setScrollSnaps(emblaApi?.scrollSnapList() ?? []);
+  }, []);
 
-//   return (
-//     <div className="sticky top-[5rem] z-10 self-start lg:grid-cols-3">
-//       <Carousel setApi={setApi} className="w-full">
-//         <CarouselContent>
-//           {Array.from({ length: 5 }).map((_, index) => (
-//             <CarouselItem key={index}>
-//               <Card>
-//                 <CardContent className="flex aspect-square items-center justify-center p-6">
-//                   <span className="text-4xl font-semibold">{index + 1}</span>
-//                 </CardContent>
-//               </Card>
-//             </CarouselItem>
-//           ))}
-//         </CarouselContent>
-//         {/* <CarouselPrevious />
-//         <CarouselNext /> */}
-//       </Carousel>
-//       <div className="py-2 text-center text-sm text-muted-foreground">
-//         Slide {current} of {count}
-//       </div>
-//     </div>
-//   );
-// }
+  const onSelect = useCallback((emblaApi: CarouselApi) => {
+    setSelectedIndex(emblaApi?.selectedScrollSnap() ?? 0);
+  }, []);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+
+    onInit(emblaApi);
+    onSelect(emblaApi);
+    emblaApi.on("reInit", onInit).on("reInit", onSelect).on("select", onSelect);
+  }, [emblaApi, onInit, onSelect]);
+
+  return {
+    selectedIndex,
+    scrollSnaps,
+    onDotButtonClick,
+  };
+}
+
+type PropType = ComponentPropsWithRef<"button">;
+
+export const DotButton: React.FC<PropType> = (props) => {
+  const { children, ...restProps } = props;
+
+  return (
+    <button type="button" {...restProps}>
+      {children}
+    </button>
+  );
+};

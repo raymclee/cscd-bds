@@ -2,6 +2,9 @@ import { create } from "zustand";
 import { Area, Maybe, Plot, Tender } from "~/graphql/graphql";
 import { getDistrictColor, tenderStatusBoundColor } from "~/lib/color";
 
+const DEFAULT_CENTER = [80.33, 39.91] as [number, number];
+const DEFAULT_ZOOM = 4;
+
 type Navigation = {
   name: string;
   adcode?: number;
@@ -57,6 +60,8 @@ type Action = {
   setTenderListHovering: (tenderId: string | number | null) => void;
   setSelectedTender: (tender: Partial<Tender> | null) => void;
   navigateToTender: (tender: Tender, plots: Partial<Plot>[]) => void;
+  toDefaultCenter: () => void;
+  moveToTender: (tender: Tender) => void;
 };
 
 export const useMapStore = create<MapState & Action>()((set, get) => ({
@@ -416,6 +421,20 @@ export const useMapStore = create<MapState & Action>()((set, get) => ({
       selectedTender: tender,
       navigations: [],
     });
+  },
+  toDefaultCenter() {
+    const { map, satelliteLayer } = get();
+    map?.removeLayer(satelliteLayer!);
+    map?.setZoomAndCenter(DEFAULT_ZOOM, DEFAULT_CENTER);
+  },
+  moveToTender(tender) {
+    const { map, satelliteLayer } = get();
+    if (!tender.geoCoordinate?.coordinates) {
+      return;
+    }
+    map?.addLayer(satelliteLayer!);
+    const [lng, lat] = tender.geoCoordinate.coordinates;
+    map?.setZoomAndCenter(16, [lng, lat]);
   },
 }));
 

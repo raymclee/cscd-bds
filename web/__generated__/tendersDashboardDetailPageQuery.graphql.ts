@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<86305bde526fd37e2950096088fb54e3>>
+ * @generated SignedSource<<5fa11dcf58b1b439c401ca85d81dcd76>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -14,7 +14,11 @@ export type tendersDashboardDetailPageQuery$variables = {
 };
 export type tendersDashboardDetailPageQuery$data = {
   readonly node: {
+    readonly geoCoordinate?: {
+      readonly coordinates: ReadonlyArray<number>;
+    } | null | undefined;
     readonly id?: string;
+    readonly name?: string;
   } | null | undefined;
 };
 export type tendersDashboardDetailPageQuery = {
@@ -43,6 +47,31 @@ v2 = {
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
+},
+v3 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "name",
+  "storageKey": null
+},
+v4 = {
+  "alias": null,
+  "args": null,
+  "concreteType": "GeoJson",
+  "kind": "LinkedField",
+  "name": "geoCoordinate",
+  "plural": false,
+  "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "coordinates",
+      "storageKey": null
+    }
+  ],
+  "storageKey": null
 };
 return {
   "fragment": {
@@ -62,7 +91,9 @@ return {
           {
             "kind": "InlineFragment",
             "selections": [
-              (v2/*: any*/)
+              (v2/*: any*/),
+              (v3/*: any*/),
+              (v4/*: any*/)
             ],
             "type": "Tender",
             "abstractKey": null
@@ -95,23 +126,32 @@ return {
             "name": "__typename",
             "storageKey": null
           },
-          (v2/*: any*/)
+          (v2/*: any*/),
+          {
+            "kind": "InlineFragment",
+            "selections": [
+              (v3/*: any*/),
+              (v4/*: any*/)
+            ],
+            "type": "Tender",
+            "abstractKey": null
+          }
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "cacheID": "4f8928d4af96a84141298e5106d1bb0a",
+    "cacheID": "1fb69b88cd7c2a23c6dda416b75ba9b9",
     "id": null,
     "metadata": {},
     "name": "tendersDashboardDetailPageQuery",
     "operationKind": "query",
-    "text": "query tendersDashboardDetailPageQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ... on Tender {\n      id\n    }\n    id\n  }\n}\n"
+    "text": "query tendersDashboardDetailPageQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ... on Tender {\n      id\n      name\n      geoCoordinate {\n        coordinates\n      }\n    }\n    id\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "4f6ac00c23dc38e0c53bf5577d17b43f";
+(node as any).hash = "dcfc714a87fe20150846f7d37d6e583b";
 
 export default node;
