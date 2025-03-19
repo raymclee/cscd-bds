@@ -261,12 +261,12 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input en
 	if err != nil {
 		return nil, fmt.Errorf("failed to get session: %w", err)
 	}
-	t, err := r.store.Tender.Get(ctx, id)
+	t, err := r.store.Tender.Query().Where(tender.ID(id)).WithArea().Only(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get tender: %w", err)
 	}
 
-	if t.CreatedByID != nil && string(*t.CreatedByID) != sess.UserId && (!sess.IsAdmin && !sess.IsSuperAdmin) {
+	if t.Edges.Area != nil && t.Edges.Area.Code != "HW" && t.Edges.Area.Code != "GA" && t.CreatedByID != nil && string(*t.CreatedByID) != sess.UserId && (!sess.IsAdmin && !sess.IsSuperAdmin) {
 		return nil, fmt.Errorf("failed to update tender: %w", errors.New("permission denied"))
 	}
 
