@@ -28,6 +28,7 @@ import { Route as authportalPortalSuperAdminImport } from './routes/__auth/__por
 import { Route as authportalPortalAdminImport } from './routes/__auth/__portal/portal/_admin'
 import { Route as authdashboardscaledOperationsImport } from './routes/__auth/__dashboard/__scaled/operations'
 import { Route as authdashboardscaledmapImport } from './routes/__auth/__dashboard/__scaled/__map'
+import { Route as authdashboardamapV2Import } from './routes/__auth/__dashboard/__amap/v2'
 import { Route as authdashboardscaledmapIndexImport } from './routes/__auth/__dashboard/__scaled/__map/index'
 import { Route as authportalPortalTendersNewImport } from './routes/__auth/__portal/portal/tenders_.new'
 import { Route as authportalPortalTendersIdImport } from './routes/__auth/__portal/portal/tenders_.$id'
@@ -48,9 +49,6 @@ const AccessDeniedLazyImport = createFileRoute('/access-denied')()
 const authportalPortalImport = createFileRoute('/__auth/__portal/portal')()
 const authdashboardscaledLazyImport = createFileRoute(
   '/__auth/__dashboard/__scaled',
-)()
-const authdashboardamapV2LazyImport = createFileRoute(
-  '/__auth/__dashboard/__amap/v2',
 )()
 const authdashboardscaledmapTendersLazyImport = createFileRoute(
   '/__auth/__dashboard/__scaled/__map/tenders',
@@ -145,16 +143,6 @@ const authportalPortalIndexRoute = authportalPortalIndexImport.update({
   getParentRoute: () => authportalPortalRoute,
 } as any)
 
-const authdashboardamapV2LazyRoute = authdashboardamapV2LazyImport
-  .update({
-    id: '/v2',
-    path: '/v2',
-    getParentRoute: () => authdashboardamapRoute,
-  } as any)
-  .lazy(() =>
-    import('./routes/__auth/__dashboard/__amap/v2.lazy').then((d) => d.Route),
-  )
-
 const authportalPortalTendersRoute = authportalPortalTendersImport
   .update({
     id: '/tenders',
@@ -233,6 +221,16 @@ const authdashboardscaledmapRoute = authdashboardscaledmapImport
     import('./routes/__auth/__dashboard/__scaled/__map.lazy').then(
       (d) => d.Route,
     ),
+  )
+
+const authdashboardamapV2Route = authdashboardamapV2Import
+  .update({
+    id: '/v2',
+    path: '/v2',
+    getParentRoute: () => authdashboardamapRoute,
+  } as any)
+  .lazy(() =>
+    import('./routes/__auth/__dashboard/__amap/v2.lazy').then((d) => d.Route),
   )
 
 const authdashboardscaledmapIndexRoute = authdashboardscaledmapIndexImport
@@ -452,6 +450,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authdashboardscaledLazyImport
       parentRoute: typeof authdashboardImport
     }
+    '/__auth/__dashboard/__amap/v2': {
+      id: '/__auth/__dashboard/__amap/v2'
+      path: '/v2'
+      fullPath: '/v2'
+      preLoaderRoute: typeof authdashboardamapV2Import
+      parentRoute: typeof authdashboardamapImport
+    }
     '/__auth/__dashboard/__scaled/__map': {
       id: '/__auth/__dashboard/__scaled/__map'
       path: ''
@@ -514,13 +519,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/portal/tenders'
       preLoaderRoute: typeof authportalPortalTendersImport
       parentRoute: typeof authportalPortalImport
-    }
-    '/__auth/__dashboard/__amap/v2': {
-      id: '/__auth/__dashboard/__amap/v2'
-      path: '/v2'
-      fullPath: '/v2'
-      preLoaderRoute: typeof authdashboardamapV2LazyImport
-      parentRoute: typeof authdashboardamapImport
     }
     '/__auth/__portal/portal/': {
       id: '/__auth/__portal/portal/'
@@ -612,11 +610,11 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 interface authdashboardamapRouteChildren {
-  authdashboardamapV2LazyRoute: typeof authdashboardamapV2LazyRoute
+  authdashboardamapV2Route: typeof authdashboardamapV2Route
 }
 
 const authdashboardamapRouteChildren: authdashboardamapRouteChildren = {
-  authdashboardamapV2LazyRoute: authdashboardamapV2LazyRoute,
+  authdashboardamapV2Route: authdashboardamapV2Route,
 }
 
 const authdashboardamapRouteWithChildren =
@@ -771,13 +769,13 @@ export interface FileRoutesByFullPath {
   '/r': typeof RLazyRoute
   '/bi': typeof authdashboardBiRoute
   '/rainbow': typeof authdashboardRainbowRoute
+  '/v2': typeof authdashboardamapV2Route
   '/operations': typeof authdashboardscaledOperationsRoute
   '/portal': typeof authportalPortalSuperAdminRouteWithChildren
   '/portal/customers': typeof authportalPortalCustomersRoute
   '/portal/plots': typeof authportalPortalPlotsRoute
   '/portal/potential-tenders': typeof authportalPortalPotentialTendersRoute
   '/portal/tenders': typeof authportalPortalTendersRoute
-  '/v2': typeof authdashboardamapV2LazyRoute
   '/portal/': typeof authportalPortalIndexRoute
   '/portal/competitors': typeof authportalPortalAdminCompetitorsRoute
   '/portal/users': typeof authportalPortalAdminUsersRoute
@@ -800,13 +798,13 @@ export interface FileRoutesByTo {
   '/r': typeof RLazyRoute
   '/bi': typeof authdashboardBiRoute
   '/rainbow': typeof authdashboardRainbowRoute
+  '/v2': typeof authdashboardamapV2Route
   '/operations': typeof authdashboardscaledOperationsRoute
   '/portal': typeof authportalPortalIndexRoute
   '/portal/customers': typeof authportalPortalCustomersRoute
   '/portal/plots': typeof authportalPortalPlotsRoute
   '/portal/potential-tenders': typeof authportalPortalPotentialTendersRoute
   '/portal/tenders': typeof authportalPortalTendersRoute
-  '/v2': typeof authdashboardamapV2LazyRoute
   '/portal/competitors': typeof authportalPortalAdminCompetitorsRoute
   '/portal/users': typeof authportalPortalAdminUsersRoute
   '/portal/customers/$id': typeof authportalPortalCustomersIdRoute
@@ -833,6 +831,7 @@ export interface FileRoutesById {
   '/__auth/__dashboard/bi': typeof authdashboardBiRoute
   '/__auth/__dashboard/rainbow': typeof authdashboardRainbowRoute
   '/__auth/__dashboard/__scaled': typeof authdashboardscaledLazyRouteWithChildren
+  '/__auth/__dashboard/__amap/v2': typeof authdashboardamapV2Route
   '/__auth/__dashboard/__scaled/__map': typeof authdashboardscaledmapRouteWithChildren
   '/__auth/__dashboard/__scaled/operations': typeof authdashboardscaledOperationsRoute
   '/__auth/__portal/portal': typeof authportalPortalRouteWithChildren
@@ -842,7 +841,6 @@ export interface FileRoutesById {
   '/__auth/__portal/portal/plots': typeof authportalPortalPlotsRoute
   '/__auth/__portal/portal/potential-tenders': typeof authportalPortalPotentialTendersRoute
   '/__auth/__portal/portal/tenders': typeof authportalPortalTendersRoute
-  '/__auth/__dashboard/__amap/v2': typeof authdashboardamapV2LazyRoute
   '/__auth/__portal/portal/': typeof authportalPortalIndexRoute
   '/__auth/__portal/portal/_admin/competitors': typeof authportalPortalAdminCompetitorsRoute
   '/__auth/__portal/portal/_admin/users': typeof authportalPortalAdminUsersRoute
@@ -867,13 +865,13 @@ export interface FileRouteTypes {
     | '/r'
     | '/bi'
     | '/rainbow'
+    | '/v2'
     | '/operations'
     | '/portal'
     | '/portal/customers'
     | '/portal/plots'
     | '/portal/potential-tenders'
     | '/portal/tenders'
-    | '/v2'
     | '/portal/'
     | '/portal/competitors'
     | '/portal/users'
@@ -895,13 +893,13 @@ export interface FileRouteTypes {
     | '/r'
     | '/bi'
     | '/rainbow'
+    | '/v2'
     | '/operations'
     | '/portal'
     | '/portal/customers'
     | '/portal/plots'
     | '/portal/potential-tenders'
     | '/portal/tenders'
-    | '/v2'
     | '/portal/competitors'
     | '/portal/users'
     | '/portal/customers/$id'
@@ -926,6 +924,7 @@ export interface FileRouteTypes {
     | '/__auth/__dashboard/bi'
     | '/__auth/__dashboard/rainbow'
     | '/__auth/__dashboard/__scaled'
+    | '/__auth/__dashboard/__amap/v2'
     | '/__auth/__dashboard/__scaled/__map'
     | '/__auth/__dashboard/__scaled/operations'
     | '/__auth/__portal/portal'
@@ -935,7 +934,6 @@ export interface FileRouteTypes {
     | '/__auth/__portal/portal/plots'
     | '/__auth/__portal/portal/potential-tenders'
     | '/__auth/__portal/portal/tenders'
-    | '/__auth/__dashboard/__amap/v2'
     | '/__auth/__portal/portal/'
     | '/__auth/__portal/portal/_admin/competitors'
     | '/__auth/__portal/portal/_admin/users'
@@ -1043,6 +1041,10 @@ export const routeTree = rootRoute
         "/__auth/__dashboard/__scaled/operations"
       ]
     },
+    "/__auth/__dashboard/__amap/v2": {
+      "filePath": "__auth/__dashboard/__amap/v2.tsx",
+      "parent": "/__auth/__dashboard/__amap"
+    },
     "/__auth/__dashboard/__scaled/__map": {
       "filePath": "__auth/__dashboard/__scaled/__map.tsx",
       "parent": "/__auth/__dashboard/__scaled",
@@ -1104,10 +1106,6 @@ export const routeTree = rootRoute
     "/__auth/__portal/portal/tenders": {
       "filePath": "__auth/__portal/portal/tenders.tsx",
       "parent": "/__auth/__portal/portal"
-    },
-    "/__auth/__dashboard/__amap/v2": {
-      "filePath": "__auth/__dashboard/__amap/v2.lazy.tsx",
-      "parent": "/__auth/__dashboard/__amap"
     },
     "/__auth/__portal/portal/": {
       "filePath": "__auth/__portal/portal/index.tsx",

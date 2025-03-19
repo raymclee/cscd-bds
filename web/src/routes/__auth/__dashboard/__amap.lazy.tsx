@@ -11,11 +11,12 @@ function RouteComponent() {
 
   useEffect(() => {
     initMap("map", {
-      mapStyle: "amap://styles/darkblue",
+      mapStyle: "amap://styles/blue",
       center: [114.33, 30.57],
       zoom: 4,
       zoomEnable: false,
       scrollWheel: false,
+      dragEnable: false,
     });
   }, [initMap]);
 
