@@ -3,7 +3,7 @@ import { Tender, Area, AreaConnection } from "~/graphql/graphql";
 import { getDistrictColor } from "~/lib/color";
 import { fixAmount } from "~/lib/helper";
 
-const DEFAULT_CENTER = [104, 46] as [number, number];
+const DEFAULT_CENTER = [94, 46] as [number, number];
 const DEFAULT_ZOOM = 4;
 
 type State = {

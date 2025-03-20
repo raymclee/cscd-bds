@@ -490,7 +490,7 @@ function TenderList() {
                   key={tender?.id}
                   to="/tenders/$id"
                   params={{ id: tender?.id ?? "" }}
-                  className="grid grid-cols-3 gap-4 rounded-lg px-6 py-4 transition-colors hover:bg-gradient-to-r hover:from-sky-800 hover:to-sky-600"
+                  className="grid grid-cols-3 gap-4 rounded-lg px-6 py-4 transition-colors hover:bg-gradient-to-br hover:from-brand/40 hover:to-brand/10"
                 >
                   <img
                     src={tender?.images?.at(0)}
