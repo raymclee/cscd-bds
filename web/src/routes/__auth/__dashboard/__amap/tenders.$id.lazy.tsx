@@ -2,7 +2,7 @@ import { createLazyFileRoute } from "@tanstack/react-router";
 import { tendersDashboardDetailPageQuery } from "__generated__/tendersDashboardDetailPageQuery.graphql";
 import { useEffect } from "react";
 import { graphql, usePreloadedQuery } from "react-relay";
-import { useMapStore } from "~/store/map";
+import { useMapV2Store } from "~/store";
 
 const tendersDetailPageQuery = graphql`
   query tendersDashboardDetailPageQuery($id: ID!) {
@@ -30,9 +30,8 @@ function RouteComponent() {
     tendersDetailPageQuery,
     preload,
   );
-  const map = useMapStore((state) => state.map);
-  const toDefaultCenter = useMapStore((state) => state.toDefaultCenter);
-  const moveToTender = useMapStore((state) => state.moveToTender);
+  const moveToTender = useMapV2Store.use.moveToTender();
+  const toDefaultCenter = useMapV2Store.use.toDefaultCenter();
 
   useEffect(() => {
     if (data.node) {

@@ -77,7 +77,7 @@
     "react-dom": "^18.3.1",
     "react-relay": "^18.2.0",
     "react-speech-recognition": "^3.10.0",
-    "recharts": "^2.13.3",
+    "recharts": "^2.15.1",
     "regenerator-runtime": "^0.14.1",
     "relay-runtime": "^18.2.0",
     "sonner": "^1.7.2",
