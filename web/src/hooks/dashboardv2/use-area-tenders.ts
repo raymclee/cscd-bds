@@ -3,15 +3,15 @@ import { v2PageQuery } from "__generated__/v2PageQuery.graphql";
 import { useMemo } from "react";
 import { usePreloadedQuery } from "react-relay";
 import { V2IndexPageQuery } from "~/routes/__auth/__dashboard/__amap/v2.lazy";
-import { useMapStore } from "~/store/map";
+import { useMapV2Store } from "~/store";
 
 export function useAreaTenders() {
   const preload = useLoaderData({
     from: "/__auth/__dashboard/__amap/v2",
   });
   const data = usePreloadedQuery<v2PageQuery>(V2IndexPageQuery, preload);
-  const selectedArea = useMapStore((s) => s.selectedArea);
-  const currentAreaNode = useMapStore((state) => state.currentAreaNode);
+  const selectedArea = useMapV2Store.use.selectedArea();
+  const currentAreaNode = useMapV2Store.use.selectedAreaNode();
 
   const nodeProps = currentAreaNode?.getProps();
 

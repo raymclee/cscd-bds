@@ -107,19 +107,19 @@ func main() {
 	}))
 
 	e.Static("/3dm", "3dm")
-	if config.IsProd || config.IsUat {
-		e.Use(middleware.Secure())
-		e.Use(
-			middleware.Gzip(),
-			middleware.StaticWithConfig(middleware.StaticConfig{
-				Skipper:    nil,
-				Index:      "index.html",
-				HTML5:      true,
-				Browse:     false,
-				IgnoreBase: false,
-				Filesystem: http.FS(web.DistDirFS),
-			}))
-	}
+	// if config.IsProd || config.IsUat {
+	e.Use(middleware.Secure())
+	e.Use(
+		middleware.Gzip(),
+		middleware.StaticWithConfig(middleware.StaticConfig{
+			Skipper:    nil,
+			Index:      "index.html",
+			HTML5:      true,
+			Browse:     false,
+			IgnoreBase: false,
+			Filesystem: http.FS(web.DistDirFS),
+		}))
+	// }
 
 	var port string
 	if config.IsProd {

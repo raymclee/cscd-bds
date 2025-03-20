@@ -1,4 +1,4 @@
-import { createLazyFileRoute, Link } from "@tanstack/react-router";
+import { createLazyFileRoute, Link, Outlet } from "@tanstack/react-router";
 import { ChevronLeft, ChevronRight, ChevronUp, Search } from "lucide-react";
 // import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
 import { Button } from "~/components/ui/button";
@@ -56,6 +56,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
+import { TenderDetailCard } from "~/components/dashboardv2/tender-detail-card";
+import { useAreaTenders } from "~/hooks/dashboardv2/use-area-tenders";
 
 export const V2IndexPageQuery = graphql`
   query v2PageQuery(
@@ -251,11 +253,16 @@ function RouteComponent() {
   const renderAreas = useMapV2Store.use.renderAreas();
 
   useEffect(() => {
-    map?.on("complete", () => {
-      //TODO: fix type
-      renderAreas(data.node?.areas as any);
+    useMapV2Store.setState({
+      areas: data.node?.areas as any,
     });
-  }, [data.node?.areas, renderAreas, map]);
+  }, [data.node?.areas]);
+
+  useEffect(() => {
+    map?.on("complete", () => {
+      renderAreas();
+    });
+  }, [map, renderAreas]);
 
   return (
     <>
@@ -263,10 +270,10 @@ function RouteComponent() {
       <div className="hidden px-6 py-4">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="relative w-72">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+            <Search className="absolute w-4 h-4 -translate-y-1/2 left-3 top-1/2 text-slate-400" />
             <Input
               placeholder="Search by ID, status, departure, arrival..."
-              className="border-slate-800 bg-slate-900 pl-10 text-white"
+              className="pl-10 text-white border-slate-800 bg-slate-900"
             />
           </div>
 
@@ -282,7 +289,7 @@ function RouteComponent() {
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="outline"
-                    className="border-slate-800 bg-slate-900 text-white"
+                    className="text-white border-slate-800 bg-slate-900"
                   >
                     {filter}
                   </Button>
@@ -298,7 +305,7 @@ function RouteComponent() {
       </div>
 
       {/* Main Content */}
-      <div className="px-6 py-4">
+      <div className="py-4 md:px-6">
         {/* <div className="flex items-center justify-between mb-6">
             <h1 className="text-2xl font-semibold text-white">
               Shipment Tracking
@@ -328,10 +335,10 @@ function RouteComponent() {
           <TenderList />
 
           {/* Stats */}
-          <div className="sticky top-20 z-[11] mb-6 w-full flex-1 self-start lg:col-span-2 xl:col-span-3">
+          <div className="sticky z-[11] mb-6 w-full flex-1 self-start md:top-[4.5rem] lg:col-span-2 xl:col-span-3">
             {/* <div className="grid gap-6 lg:grid-cols-3">
-              <div className="rounded-xl bg-black/50 p-6 backdrop-blur-lg">
-                <div className="mb-4 flex items-center justify-between">
+              <div className="p-6 rounded-xl bg-black/50 backdrop-blur-lg">
+                <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center space-x-2">
                     <MapPin className="text-green-500" />
                     <span className="text-slate-400">Total distance</span>
@@ -345,8 +352,8 @@ function RouteComponent() {
                 </div>
               </div>
 
-              <div className="rounded-xl bg-slate-900 p-6">
-                <div className="mb-4 flex items-center justify-between">
+              <div className="p-6 rounded-xl bg-slate-900">
+                <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center space-x-2">
                     <Package className="text-blue-500" />
                     <span className="text-slate-400">Total weight</span>
@@ -360,8 +367,8 @@ function RouteComponent() {
                 </div>
               </div>
 
-              <div className="rounded-xl bg-slate-900 p-6">
-                <div className="mb-4 flex items-center justify-between">
+              <div className="p-6 rounded-xl bg-slate-900">
+                <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center space-x-2">
                     <Truck className="text-purple-500" />
                     <span className="text-slate-400">Total value</span>
@@ -384,6 +391,9 @@ function RouteComponent() {
       </div>
 
       <ScrollToTopButton />
+      <TenderDetailCard />
+
+      <Outlet />
     </>
   );
 }
@@ -406,7 +416,7 @@ function ScrollToTopButton() {
     <Button
       variant="outline"
       size="icon"
-      className="fixed bottom-8 right-8 z-40 rounded-full border-none bg-black/50 hover:bg-black/70 hover:text-white"
+      className="fixed z-40 border-none rounded-full bottom-8 right-8 bg-black/50 hover:bg-black/70 hover:text-white"
       onClick={() => {
         window.scrollTo({
           top: 0,
@@ -420,77 +430,100 @@ function ScrollToTopButton() {
 }
 
 function TenderList() {
-  const preload = Route.useLoaderData();
-  const data = usePreloadedQuery<v2PageQuery>(V2IndexPageQuery, preload);
+  const tenders = useAreaTenders();
+  const { q, status, sort } = Route.useSearch();
+  const navigate = Route.useNavigate();
 
-  const tenders = data.node?.areas?.edges?.flatMap((a) =>
-    a?.node?.tenders.edges?.map((t) => t?.node),
-  );
+  const filteredTenders = tenders
+    ?.filter((t) => {
+      return q ? t?.name?.toLowerCase().includes(q.toLowerCase()) : true;
+    })
+    .filter((t) => {
+      return status ? (status === 0 ? true : t?.status === status) : true;
+    });
 
   return (
     <>
-      <div className="relative z-10 order-last min-h-screen w-full rounded-lg bg-slate-950/30 backdrop-blur-lg md:order-first">
+      <div className="relative z-10 order-last w-full min-h-screen rounded-lg bg-slate-950/30 backdrop-blur-lg md:order-first">
         <img
           src={subHeadTenderListSvg}
           alt="sub-head"
-          className="mb-6 mt-2 h-8 w-full px-4"
+          className="w-full h-8 px-4 mt-2 mb-6"
         />
         <Tabs defaultValue="general">
-          <div className="sticky top-[17rem] rounded bg-slate-900 px-6 py-2 md:top-[4rem]">
-            {/* <TabsList className="flex flex-wrap gap-2 bg-slate-900">
-        <TabsTrigger value="general" className="font-bold">
-          华北
-        </TabsTrigger>
-        <TabsTrigger value="tracking" className="font-bold">
-          华东
-        </TabsTrigger>
-        <TabsTrigger value="chat" className="font-bold">
-          华南
-        </TabsTrigger>
-        <TabsTrigger value="documents" className="font-bold">
-          西部
-        </TabsTrigger>
-      </TabsList> */}
-            <div className="flex items-center justify-center gap-2">
-              <div>
-                <Input
-                  placeholder="搜索"
-                  className="h-8 w-48 border-slate-700 bg-slate-900 focus:ring-sky-500 focus:ring-offset-0 focus-visible:ring-sky-500 focus-visible:ring-offset-0"
-                />
-              </div>
-              <Select>
-                <SelectTrigger className="h-8 w-24 border-slate-700 bg-slate-900 focus:ring-sky-500 focus:ring-offset-0">
-                  <SelectValue placeholder="华北" />
+          <div className="sticky top-12 rounded bg-sky-950 px-6 py-2 md:top-[3.5rem]">
+            <div className="grid gap-2 pt-2 md:grid-cols-4 md:pt-0.5">
+              <Input
+                type="search"
+                placeholder="搜索"
+                className="w-full h-8 col-span-2 bg-transparent border-sky-800 focus:ring-sky-500 focus:ring-offset-0 focus-visible:ring-sky-500 focus-visible:ring-offset-0"
+                onChange={(e) => {
+                  navigate({
+                    to: ".",
+                    search: (prev) => ({
+                      ...prev,
+                      q: e.target.value,
+                    }),
+                    replace: true,
+                  });
+                }}
+              />
+              <Select
+                value={String(status)}
+                onValueChange={(value) => {
+                  navigate({
+                    to: ".",
+                    search: (prev) => ({
+                      ...prev,
+                      status: value === "undefined" ? undefined : Number(value),
+                    }),
+                    replace: true,
+                  });
+                }}
+              >
+                <SelectTrigger className="w-full h-8 bg-transparent border-sky-800 focus:ring-sky-500 focus:ring-offset-0">
+                  <SelectValue placeholder="状态" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="华北">华北</SelectItem>
-                  <SelectItem value="华东">华东</SelectItem>
-                  <SelectItem value="华南">华南</SelectItem>
-                  <SelectItem value="西部">西部</SelectItem>
+                  <SelectItem value="undefined">全部</SelectItem>
+                  <SelectItem value="1">跟进中</SelectItem>
+                  <SelectItem value="2">停止跟进</SelectItem>
+                  <SelectItem value="5">估价</SelectItem>
+                  <SelectItem value="6">已交标</SelectItem>
+                  <SelectItem value="3">中标</SelectItem>
+                  <SelectItem value="4">失标</SelectItem>
                 </SelectContent>
               </Select>
 
               <Select>
-                <SelectTrigger className="h-8 w-24 border-slate-700 bg-slate-900 focus:ring-sky-500 focus:ring-offset-0">
-                  <SelectValue placeholder="时间" />
+                <SelectTrigger className="w-full h-8 bg-transparent border-sky-800 focus:ring-sky-500 focus:ring-offset-0">
+                  <SelectValue placeholder="日期" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="华北">华北</SelectItem>
-                  <SelectItem value="华东">华东</SelectItem>
-                  <SelectItem value="华南">华南</SelectItem>
-                  <SelectItem value="西部">西部</SelectItem>
+                  <SelectItem value="undefined">全部</SelectItem>
+                  <SelectItem value="1">华北</SelectItem>
+                  <SelectItem value="2">华东</SelectItem>
+                  <SelectItem value="3">华南</SelectItem>
+                  <SelectItem value="4">西部</SelectItem>
                 </SelectContent>
               </Select>
             </div>
           </div>
-          <TabsContent value="general" className="py-2">
+          <div className="flex justify-between px-6 pt-2 pb-1 text-sm text-slate-400">
+            <div>当前显示: {filteredTenders?.length || 0} 个项目</div>
+            <div>总计: {tenders?.length || 0} 个项目</div>
+          </div>
+          <TabsContent value="general" className="mt-0">
             <div className="space-y-1">
-              {tenders?.toSpliced(0, 20)?.map((tender) => (
+              {filteredTenders?.map((tender) => (
                 <Link
                   key={tender?.id}
+                  // onClick={() => {
+                  //   useMapV2Store.setState({ selectedTender: tender as any });
+                  // }}
                   to="/tenders/$id"
                   params={{ id: tender?.id ?? "" }}
-                  className="grid grid-cols-3 gap-4 rounded-lg px-6 py-4 transition-colors hover:bg-gradient-to-br hover:from-brand/40 hover:to-brand/10"
+                  className="grid grid-cols-3 gap-4 px-6 py-4 transition-colors rounded-lg hover:bg-gradient-to-br hover:from-brand/40 hover:to-brand/10"
                 >
                   <img
                     src={tender?.images?.at(0)}
@@ -498,7 +531,7 @@ function TenderList() {
                     className="aspect-[5/3] rounded"
                   />
                   <div className="col-span-2 space-y-1">
-                    <h2 className="line-clamp-1 font-semibold">
+                    <h2 className="font-semibold line-clamp-1">
                       {tender?.name}
                     </h2>
                     <div className="text-sm">
@@ -551,8 +584,8 @@ function CarouselDemo() {
           <TenderTypeCard />
         </CarouselItem>
       </CarouselContent>
-      <CarouselPrevious className="-left-0 h-full w-6 rounded border-none bg-slate-950/30 hover:bg-slate-950/50 2xl:hidden" />
-      <CarouselNext className="-right-0 h-full w-6 rounded border-none bg-slate-950/30 hover:bg-slate-950/50 2xl:hidden" />
+      <CarouselPrevious className="w-6 h-full border-none rounded -left-0 bg-slate-950/30 hover:bg-slate-950/50 2xl:hidden" />
+      <CarouselNext className="w-6 h-full border-none rounded -right-0 bg-slate-950/30 hover:bg-slate-950/50 2xl:hidden" />
     </Carousel>
   );
 }

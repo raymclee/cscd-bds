@@ -1,26 +1,26 @@
 import { Tender } from "~/graphql/graphql";
 
 export const colors = [
-  "#3366cc",
-  "#dc3912",
-  "#ff9900",
-  "#109618",
-  "#990099",
-  "#0099c6",
-  "#dd4477",
-  "#66aa00",
-  "#b82e2e",
-  "#316395",
-  "#994499",
-  "#22aa99",
-  "#aaaa11",
-  "#6633cc",
-  "#e67300",
-  "#8b0707",
-  "#651067",
-  "#329262",
-  "#5574a6",
-  "#3b3eac",
+  "#3366cc", // 0
+  "#dc3912", // 1
+  "#ff9900", // 2
+  "#109644", // 3
+  "#990077", // 4
+  "#0099c6", // 5
+  "#dd4477", // 6
+  "#66aa00", // 7
+  "#b82e2e", // 8
+  "#316395", // 9
+  "#994499", // 10
+  "#22aa99", // 11
+  "#aaaa11", // 12
+  "#6633cc", // 13
+  "#e67300", // 14
+  "#8b0707", // 15
+  "#651067", // 16
+  "#329262", // 17
+  "#5574a6", // 18
+  "#3b3eac", // 19
 ];
 
 export function getDistrictColor(code: number, i?: number): string {
@@ -63,8 +63,8 @@ export function getDistrictColor(code: number, i?: number): string {
     case 330000: //浙江
     case 410000: //河南
     case 350000: //福建
-      fillColor = colors[5];
-      strokeColor = colors[5];
+      fillColor = colors[6];
+      strokeColor = colors[6];
       break;
     //華南
     case 430000: //湖南

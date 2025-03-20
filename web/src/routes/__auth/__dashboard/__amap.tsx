@@ -10,6 +10,12 @@ export const Route = createFileRoute("/__auth/__dashboard/__amap")({
         version: "1.1",
         plugins: ["geo/DistrictExplorer", "overlay/SimpleMarker"],
       },
+      // plugins: [
+      //   "AMap.ToolBar",
+      //   "AMap.Scale",
+      //   "AMap.HawkEye",
+      //   "AMap.ControlBar",
+      // ],
       // plugins: ["ui/geo/DistrictCluster"],
       // plugins: ["AMap.PolygonEditor", "AMap.ToolBar", "AMap.Scale"],
     });

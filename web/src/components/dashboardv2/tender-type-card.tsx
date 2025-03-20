@@ -79,15 +79,15 @@ export function TenderTypeCard() {
   } satisfies PieConfig;
 
   return (
-    <Card className="h-56 border-none bg-slate-950/30 text-white backdrop-blur-lg">
+    <Card className="h-56 text-white border-none bg-slate-950/30 backdrop-blur-lg">
       <CardHeader>
         <img
           src={headerSvg}
           alt="sub-head"
-          className="h-8 w-full select-none"
+          className="w-full h-8 select-none"
         />
       </CardHeader>
-      <CardContent className="-mt-4 h-full">
+      <CardContent className="h-full px-0 -mt-5">
         <Pie {...config} />
       </CardContent>
     </Card>
