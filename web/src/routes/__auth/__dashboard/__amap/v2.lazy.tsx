@@ -2,32 +2,24 @@ import {
   createLazyFileRoute,
   Link,
   Outlet,
-  useLocation,
-  useMatch,
-  useRouter,
+  useParams,
+  useSearch,
 } from "@tanstack/react-router";
-import { ChevronLeft, ChevronRight, ChevronUp, Search } from "lucide-react";
-// import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
-import { Button } from "~/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "~/components/ui/dropdown-menu";
-import { Input } from "~/components/ui/input";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
-import {
-  MapPin,
-  Phone,
-  MessageSquare,
-  MoreVertical,
-  Truck,
-  Package,
-} from "lucide-react";
+import { ChevronUp, ChevronDown } from "lucide-react";
 import * as React from "react";
+import { Button } from "~/components/ui/button";
+import { Input } from "~/components/ui/input";
+import { Tabs, TabsContent } from "~/components/ui/tabs";
 
-import { Card, CardContent, CardHeader } from "~/components/ui/card";
+import dayjs from "dayjs";
+import { useEffect, useState } from "react";
+import { graphql } from "relay-runtime";
+import subHeadTenderListSvg from "~/assets/dashboard/svg/sub-head-tender-list.svg";
+import { AmountSummaryCard } from "~/components/dashboardv2/amount-summary-card";
+import { RankingCard } from "~/components/dashboardv2/ranking-card";
+import { TenderAddedCard } from "~/components/dashboardv2/tender-added-card";
+import { TenderDetailCard } from "~/components/dashboardv2/tender-detail-card";
+import { TenderTypeCard } from "~/components/dashboardv2/tender-type-card";
 import {
   Carousel,
   CarouselContent,
@@ -36,25 +28,6 @@ import {
   CarouselPrevious,
   type CarouselApi,
 } from "~/components/ui/carousel";
-import { graphql } from "relay-runtime";
-import { usePreloadedQuery } from "react-relay";
-import dayjs from "dayjs";
-import headSvg from "~/assets/dashboard/svg/head.svg";
-import subHeadSvg from "~/assets/dashboard/svg/sub-head.svg";
-import subHeadAmountSvg from "~/assets/dashboard/svg/sub-head-amount.svg";
-import subHeadANewTenderSvg from "~/assets/dashboard/svg/sub-head-new-tender.svg";
-import subHeadTenderListSvg from "~/assets/dashboard/svg/sub-head-tender-list.svg";
-import subHeadRankingSvg from "~/assets/dashboard/svg/sub-head-ranking.svg";
-import subHeadTenderTypeSvg from "~/assets/dashboard/svg/sub-head-tender-type.svg";
-import { fixAmount, tenderStatusText } from "~/lib/helper";
-import { ComponentPropsWithRef, useCallback, useEffect, useState } from "react";
-import { UseEmblaCarouselType } from "embla-carousel-react";
-import { useMapStore } from "~/store/map";
-import { RankingCard } from "~/components/dashboardv2/ranking-card";
-import { TenderAddedCard } from "~/components/dashboardv2/tender-added-card";
-import { AmountSummaryCard } from "~/components/dashboardv2/amount-summary-card";
-import { TenderTypeCard } from "~/components/dashboardv2/tender-type-card";
-import { useMapV2Store } from "~/store";
 import {
   Select,
   SelectContent,
@@ -62,8 +35,23 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
-import { TenderDetailCard } from "~/components/dashboardv2/tender-detail-card";
 import { useAreaTenders } from "~/hooks/dashboardv2/use-area-tenders";
+import { fixAmount, tenderStatusText } from "~/lib/helper";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "~/components/ui/tooltip";
+import { motion } from "motion/react";
+import "~/styles/tech-animations.css";
+
+const MotionCarousel = motion(Carousel);
+const MotionCarouselContent = motion(CarouselContent);
+const MotionCarouselItem = motion(CarouselItem);
+const MotionCarouselPrevious = motion(CarouselPrevious);
+const MotionCarouselNext = motion(CarouselNext);
+const MotionButton = motion(Button);
 
 export const districtsQuery = graphql`
   query v2PageDistrictQuery($adcode: Int!) {
@@ -204,19 +192,28 @@ function ScrollToTopButton() {
   if (!isVisible) return null;
 
   return (
-    <Button
-      variant="outline"
-      size="icon"
-      className="fixed bottom-8 right-8 z-40 rounded-full border-none bg-black/50 hover:bg-black/70 hover:text-white"
-      onClick={() => {
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth",
-        });
-      }}
-    >
-      <ChevronUp size={44} />
-    </Button>
+    <TooltipProvider delayDuration={100}>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            variant="outline"
+            size="icon"
+            className="fixed z-40 border-none rounded-full bottom-8 right-8 bg-slate-950/60 hover:bg-slate-950/50 hover:text-white"
+            onClick={() => {
+              window.scrollTo({
+                top: 0,
+                behavior: "smooth",
+              });
+            }}
+          >
+            <ChevronUp size={44} />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent className="dark">
+          <p>回到顶部</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 }
 
@@ -226,157 +223,417 @@ function TenderList() {
   const navigate = Route.useNavigate();
 
   const filteredTenders = tenders
-    ?.filter((t) => {
-      return q ? t?.name?.toLowerCase().includes(q.toLowerCase()) : true;
-    })
-    .filter((t) => {
-      return status ? (status === 0 ? true : t?.status === status) : true;
-    });
+    ?.filter(
+      (t) =>
+        q !== undefined && t?.name?.toLowerCase().includes(q.toLowerCase()),
+    )
+    .filter((t) =>
+      status ? (status === 0 ? true : t?.status === status) : true,
+    );
 
   return (
     <>
-      <div className="relative z-10 order-last min-h-screen w-full rounded-lg bg-slate-950/50 backdrop-blur md:order-first">
+      <div className="relative z-10 order-last min-h-[calc(100vh-6rem)] w-full rounded-lg bg-slate-950/60 backdrop-blur md:order-first">
         <img
           src={subHeadTenderListSvg}
           alt="sub-head"
-          className="mb-6 mt-2 h-8 w-full px-4"
+          className="w-full h-8 px-4 mt-2 mb-6"
         />
-        <Tabs defaultValue="general">
-          <div className="sticky top-12 rounded bg-sky-950 px-6 py-2 md:top-[3.5rem]">
-            <div className="grid gap-2 pt-2 md:grid-cols-4 md:pt-0.5">
-              <Input
-                type="search"
-                placeholder="搜索"
-                className="col-span-2 h-8 w-full border-sky-800 bg-transparent focus:ring-sky-500 focus:ring-offset-0 focus-visible:ring-sky-500 focus-visible:ring-offset-0"
-                onChange={(e) => {
-                  navigate({
-                    to: ".",
-                    search: (prev) => ({
-                      ...prev,
-                      q: e.target.value,
-                    }),
-                    replace: true,
-                  });
-                }}
-              />
-              <Select
-                value={String(status)}
-                onValueChange={(value) => {
-                  navigate({
-                    to: ".",
-                    search: (prev) => ({
-                      ...prev,
-                      status: value === "undefined" ? undefined : Number(value),
-                    }),
-                    replace: true,
-                  });
-                }}
-              >
-                <SelectTrigger className="h-8 w-full border-sky-800 bg-transparent focus:ring-sky-500 focus:ring-offset-0">
-                  <SelectValue placeholder="状态" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="undefined">全部</SelectItem>
-                  <SelectItem value="1">跟进中</SelectItem>
-                  <SelectItem value="2">停止跟进</SelectItem>
-                  <SelectItem value="5">估价</SelectItem>
-                  <SelectItem value="6">已交标</SelectItem>
-                  <SelectItem value="3">中标</SelectItem>
-                  <SelectItem value="4">失标</SelectItem>
-                </SelectContent>
-              </Select>
-
-              <Select>
-                <SelectTrigger className="h-8 w-full border-sky-800 bg-transparent focus:ring-sky-500 focus:ring-offset-0">
-                  <SelectValue placeholder="日期" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="undefined">全部</SelectItem>
-                  <SelectItem value="1">华北</SelectItem>
-                  <SelectItem value="2">华东</SelectItem>
-                  <SelectItem value="3">华南</SelectItem>
-                  <SelectItem value="4">西部</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-          <div className="flex justify-between px-6 pb-1 pt-2 text-sm text-slate-400">
-            <div>当前显示: {filteredTenders?.length || 0} 个项目</div>
-            <div>总计: {tenders?.length || 0} 个项目</div>
-          </div>
-          <TabsContent value="general" className="mt-0">
-            <div className="space-y-1">
-              {filteredTenders?.map((tender) => (
-                <Link
-                  key={tender?.id}
-                  // onClick={() => {
-                  //   useMapV2Store.setState({ selectedTender: tender as any });
-                  // }}
-                  to="/tenders/$id"
-                  params={{ id: tender?.id ?? "" }}
-                  className="grid grid-cols-3 gap-4 rounded-lg px-6 py-4 transition-colors hover:bg-gradient-to-br hover:from-brand/40 hover:to-brand/10"
+        <div className="sticky top-12 z-20 rounded bg-sky-950 px-6 py-2 md:top-[3.5rem]">
+          <div className="grid gap-2 pt-2 md:grid-cols-4 md:pt-0.5">
+            <Input
+              type="search"
+              placeholder="搜索"
+              className="w-full h-8 col-span-2 bg-transparent border-sky-800 focus:ring-sky-500 focus:ring-offset-0 focus-visible:ring-sky-500 focus-visible:ring-offset-0"
+              onChange={(e) => {
+                navigate({
+                  to: ".",
+                  search: (prev) => ({
+                    ...prev,
+                    q: e.target.value,
+                  }),
+                  replace: true,
+                });
+              }}
+            />
+            <Select
+              value={String(status)}
+              onValueChange={(value) => {
+                navigate({
+                  to: ".",
+                  search: (prev) => ({
+                    ...prev,
+                    status: value === "undefined" ? undefined : Number(value),
+                  }),
+                  replace: true,
+                });
+              }}
+            >
+              <SelectTrigger className="w-full h-8 bg-transparent border-sky-800 focus:ring-sky-500 focus:ring-offset-0">
+                <SelectValue placeholder="状态" />
+              </SelectTrigger>
+              <SelectContent className="text-white border-sky-800 bg-sky-950">
+                <SelectItem
+                  value="undefined"
+                  className="hover:bg-sky-700 focus:bg-sky-700 focus:text-white"
                 >
-                  <img
-                    src={tender?.images?.at(0)}
-                    alt={tender?.name}
-                    className="aspect-[5/3] rounded"
-                  />
-                  <div className="col-span-2 space-y-1">
-                    <h2 className="line-clamp-1 font-semibold">
-                      {tender?.name}
-                    </h2>
-                    <div className="text-sm">
-                      {tender?.tenderDate
-                        ? dayjs(tender?.tenderDate).format("LL")
+                  全部
+                </SelectItem>
+                <SelectItem
+                  value="1"
+                  className="hover:bg-sky-700 focus:bg-sky-700 focus:text-white"
+                >
+                  跟进中
+                </SelectItem>
+                <SelectItem
+                  value="2"
+                  className="hover:bg-sky-700 focus:bg-sky-700 focus:text-white"
+                >
+                  停止跟进
+                </SelectItem>
+                <SelectItem
+                  value="5"
+                  className="hover:bg-sky-700 focus:bg-sky-700 focus:text-white"
+                >
+                  估价
+                </SelectItem>
+                <SelectItem
+                  value="6"
+                  className="hover:bg-sky-700 focus:bg-sky-700 focus:text-white"
+                >
+                  已交标
+                </SelectItem>
+                <SelectItem
+                  value="3"
+                  className="hover:bg-sky-700 focus:bg-sky-700 focus:text-white"
+                >
+                  中标
+                </SelectItem>
+                <SelectItem
+                  value="4"
+                  className="hover:bg-sky-700 focus:bg-sky-700 focus:text-white"
+                >
+                  失标
+                </SelectItem>
+              </SelectContent>
+            </Select>
+
+            <Select>
+              <SelectTrigger className="w-full h-8 bg-transparent border-sky-800 focus:ring-sky-500 focus:ring-offset-0">
+                <SelectValue placeholder="日期" />
+              </SelectTrigger>
+              <SelectContent className="text-white border-sky-800 bg-sky-950">
+                <SelectItem
+                  value="undefined"
+                  className="hover:bg-sky-700 focus:bg-sky-700 focus:text-white"
+                >
+                  全部
+                </SelectItem>
+                <SelectItem
+                  value="1"
+                  className="hover:bg-sky-700 focus:bg-sky-700 focus:text-white"
+                >
+                  华北
+                </SelectItem>
+                <SelectItem
+                  value="2"
+                  className="hover:bg-sky-700 focus:bg-sky-700 focus:text-white"
+                >
+                  华东
+                </SelectItem>
+                <SelectItem
+                  value="3"
+                  className="hover:bg-sky-700 focus:bg-sky-700 focus:text-white"
+                >
+                  华南
+                </SelectItem>
+                <SelectItem
+                  value="4"
+                  className="hover:bg-sky-700 focus:bg-sky-700 focus:text-white"
+                >
+                  西部
+                </SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
+        <div className="flex justify-between px-6 pt-2 pb-1 text-sm text-slate-400">
+          <div>当前显示: {filteredTenders?.length || 0} 个项目</div>
+          <div>总计: {tenders?.length || 0} 个项目</div>
+        </div>
+
+        <div className="pb-4 mt-0 space-y-1">
+          {filteredTenders?.map((tender) => (
+            <Link
+              key={tender?.id}
+              to="/tenders/$id"
+              params={{ id: tender?.id ?? "" }}
+              className="block group"
+            >
+              <div className="relative grid grid-cols-3 gap-4 px-6 py-4 overflow-hidden transition-all duration-300 rounded-lg group-hover:scale-105 group-hover:bg-gradient-to-br group-hover:from-sky-950 group-hover:to-sky-700">
+                {/* Full card overlay effect */}
+                <div className="absolute inset-0 z-0 transition-opacity duration-300 opacity-0 pointer-events-none bg-gradient-to-br from-blue-900/30 to-cyan-900/20 group-hover:opacity-100"></div>
+
+                {/* Tech scan line */}
+                <div className="absolute inset-0 z-10 translate-y-full opacity-0 pointer-events-none group-hover:animate-scan-line bg-gradient-to-b from-transparent via-cyan-500/15 to-transparent group-hover:opacity-100"></div>
+
+                {/* Corner borders - top left */}
+                <div className="group-hover:bg-corner-border-glow absolute left-0 top-0 h-[2px] w-10 bg-transparent opacity-0 transition-all duration-300 group-hover:opacity-100"></div>
+                <div className="group-hover:bg-corner-border-glow absolute left-0 top-0 h-10 w-[2px] bg-transparent opacity-0 transition-all duration-300 group-hover:opacity-100"></div>
+
+                {/* Corner borders - top right */}
+                <div className="group-hover:bg-corner-border-glow absolute right-0 top-0 h-[2px] w-10 bg-transparent opacity-0 transition-all duration-300 group-hover:opacity-100"></div>
+                <div className="group-hover:bg-corner-border-glow absolute right-0 top-0 h-10 w-[2px] bg-transparent opacity-0 transition-all duration-300 group-hover:opacity-100"></div>
+
+                {/* Corner borders - bottom left */}
+                <div className="group-hover:bg-corner-border-glow absolute bottom-0 left-0 h-[2px] w-10 bg-transparent opacity-0 transition-all duration-300 group-hover:opacity-100"></div>
+                <div className="group-hover:bg-corner-border-glow absolute bottom-0 left-0 h-10 w-[2px] bg-transparent opacity-0 transition-all duration-300 group-hover:opacity-100"></div>
+
+                {/* Corner borders - bottom right */}
+                <div className="group-hover:bg-corner-border-glow absolute bottom-0 right-0 h-[2px] w-10 bg-transparent opacity-0 transition-all duration-300 group-hover:opacity-100"></div>
+                <div className="group-hover:bg-corner-border-glow absolute bottom-0 right-0 h-10 w-[2px] bg-transparent opacity-0 transition-all duration-300 group-hover:opacity-100"></div>
+
+                <div className="relative z-10">
+                  {/* Image effects container */}
+                  <div className="relative">
+                    {/* Image glow effect */}
+                    <div className="absolute transition-opacity duration-300 rounded opacity-0 -inset-1 bg-gradient-to-r from-blue-500/30 to-cyan-500/30 group-hover:opacity-100"></div>
+
+                    {/* Image border glow */}
+                    <div className="group-hover:animate-pulse-glow absolute -inset-0.5 rounded opacity-0 transition-all duration-300 group-hover:opacity-100"></div>
+
+                    <img
+                      src={tender?.images?.at(0)}
+                      alt={tender?.name}
+                      className="relative z-10 aspect-[5/3] rounded"
+                    />
+
+                    {/* Tech corner marker */}
+                    <div className="absolute top-0 left-0 w-6 h-6 transition-opacity duration-300 opacity-0 pointer-events-none bg-gradient-to-br from-cyan-500/50 to-transparent group-hover:opacity-100"></div>
+                  </div>
+                </div>
+
+                <div className="relative z-10 col-span-2 space-y-1">
+                  <h2 className="font-semibold transition-all duration-300 group-hover:text-shadow-glow line-clamp-1 group-hover:text-white">
+                    {tender?.name}
+                  </h2>
+
+                  <div className="text-sm transition-all duration-300 group-hover:text-shadow-sm group-hover:text-blue-200">
+                    {tender?.tenderDate
+                      ? dayjs(tender?.tenderDate).format("LL")
+                      : "-"}
+                  </div>
+
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="text-sm transition-all duration-300 group-hover:text-shadow-sm group-hover:scale-105 group-hover:text-cyan-400">
+                      {tenderStatusText(tender?.status)}
+                    </div>
+                    <div className="text-sm transition-all duration-300 group-hover:text-shadow-sm group-hover:scale-125 group-hover:text-cyan-400">
+                      {tender?.estimatedAmount
+                        ? `¥${fixAmount(tender?.estimatedAmount)}亿`
                         : "-"}
                     </div>
-                    <div className="flex items-center justify-between gap-2">
-                      <div className="text-sm">
-                        {tenderStatusText(tender?.status)}
-                      </div>
-                      <div className="text-sm">
-                        {tender?.estimatedAmount
-                          ? `¥${fixAmount(tender?.estimatedAmount)}亿`
-                          : "-"}
-                      </div>
-                    </div>
                   </div>
-                </Link>
-              ))}
-            </div>
-          </TabsContent>
-        </Tabs>
+
+                  {/* Data dot - positioned at edge */}
+                  <div className="group-hover:animate-pulse-dot absolute -right-4 bottom-2.5 h-1.5 w-1.5 scale-0 rounded-full bg-cyan-400 opacity-0"></div>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
       </div>
     </>
   );
 }
 
 function CarouselDemo() {
-  const [api, setApi] = React.useState<CarouselApi>();
+  const search = useSearch({ from: "/__auth/__dashboard/__amap" });
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
+  const toggleCollapse = () => {
+    setIsCollapsed((prev) => !prev);
+  };
+
+  const visible = Boolean(isCollapsed || !!search.d);
 
   return (
-    <Carousel
-      plugins={[]}
-      opts={{ loop: true }}
-      setApi={setApi}
-      className="px-8 2xl:px-0"
-    >
-      <CarouselContent>
-        <CarouselItem className="lg:basis-1/2 xl:basis-1/3 2xl:basis-1/4">
-          <AmountSummaryCard />
-        </CarouselItem>
-        <CarouselItem className="lg:basis-1/2 xl:basis-1/3 2xl:basis-1/4">
-          <RankingCard />
-        </CarouselItem>
-        <CarouselItem className="lg:basis-1/2 xl:basis-1/3 2xl:basis-1/4">
-          <TenderAddedCard />
-        </CarouselItem>
-        <CarouselItem className="lg:basis-1/2 xl:basis-1/3 2xl:basis-1/4">
-          <TenderTypeCard />
-        </CarouselItem>
-      </CarouselContent>
-      <CarouselPrevious className="-left-0 h-full w-6 rounded border-none bg-slate-950/30 hover:bg-slate-950/50 hover:text-white 2xl:hidden" />
-      <CarouselNext className="-right-0 h-full w-6 rounded border-none bg-slate-950/30 hover:bg-slate-950/50 hover:text-white 2xl:hidden" />
-    </Carousel>
+    <>
+      <motion.div
+        initial={{ opacity: 1 }}
+        animate={{
+          y: visible ? [0, -50, -300] : 0,
+          opacity: visible ? [1, 0.7, 0] : 1,
+        }}
+        transition={{
+          duration: 0.3,
+          ease: "easeOut",
+        }}
+        style={{
+          willChange: "transform, opacity",
+          position: "relative",
+        }}
+      >
+        {/* Glitch overlay effect */}
+        <motion.div
+          className="absolute inset-0 z-10 overflow-hidden pointer-events-none"
+          initial={{ opacity: 0 }}
+          animate={{
+            opacity: visible ? [0, 0.7, 0] : 0,
+            clipPath: visible
+              ? [
+                  "polygon(0 0, 100% 0, 100% 100%, 0 100%)",
+                  "polygon(0 5%, 100% 0, 100% 95%, 0 100%)",
+                  "polygon(0 0, 100% 0, 100% 100%, 0 100%)",
+                ]
+              : "polygon(0 0, 100% 0, 100% 100%, 0 100%)",
+          }}
+          transition={{
+            duration: visible ? 0.2 : 0,
+            times: visible ? [0, 0.5, 1] : [0, 1],
+            ease: "easeOut",
+          }}
+          style={{
+            background:
+              "linear-gradient(125deg, rgba(0,212,255,0.2) 0%, rgba(0,91,188,0.2) 100%)",
+            mixBlendMode: "color-dodge",
+          }}
+        />
+
+        <motion.div
+          animate={{
+            x: visible ? ["0%", "0.2%", "0%"] : "0%",
+            filter: visible
+              ? ["hue-rotate(0deg)", "hue-rotate(5deg)", "hue-rotate(0deg)"]
+              : "hue-rotate(0deg)",
+          }}
+          transition={{
+            duration: 0.1,
+            repeat: 0,
+          }}
+          style={{
+            willChange: "transform, filter",
+          }}
+        >
+          <Carousel
+            plugins={[]}
+            opts={{ loop: true }}
+            className="px-8 2xl:px-0"
+          >
+            <CarouselContent>
+              {[
+                <AmountSummaryCard key="amount" />,
+                <RankingCard key="ranking" />,
+                <TenderAddedCard key="tender" />,
+                <TenderTypeCard key="type" />,
+              ].map((card, index) => (
+                <MotionCarouselItem
+                  key={index}
+                  className="lg:basis-1/2 xl:basis-1/3 2xl:basis-1/4"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{
+                    opacity: 1,
+                    y: 0,
+                    filter: visible
+                      ? [
+                          "brightness(100%)",
+                          "brightness(120%)",
+                          "brightness(100%)",
+                        ]
+                      : "brightness(100%)",
+                  }}
+                  transition={{
+                    delay: index * 0.02,
+                    duration: 0.15,
+                    filter: {
+                      duration: 0.1,
+                      repeat: 0,
+                    },
+                  }}
+                >
+                  {card}
+                </MotionCarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="w-6 h-full border-none rounded -left-0 bg-slate-950/30 hover:bg-slate-950/50 hover:text-white 2xl:hidden" />
+            <CarouselNext className="w-6 h-full border-none rounded -right-0 bg-slate-950/30 hover:bg-slate-950/50 hover:text-white 2xl:hidden" />
+          </Carousel>
+        </motion.div>
+      </motion.div>
+
+      {/* Tech button container with positioning */}
+      <div className="flex justify-end mt-2">
+        <TooltipProvider delayDuration={100}>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="relative">
+                {/* Tech circle decoration around button */}
+                <motion.div
+                  className="pointer-events-none absolute -inset-1.5 rounded-full opacity-60"
+                  animate={{
+                    boxShadow: [
+                      "0 0 0 rgba(0,150,255,0.5)",
+                      "0 0 8px rgba(0,150,255,0.7)",
+                      "0 0 0 rgba(0,150,255,0.5)",
+                    ],
+                    scale: [1, 1.05, 1],
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    repeatType: "loop",
+                  }}
+                />
+
+                {/* Digital circuit lines */}
+                <motion.div
+                  className="absolute w-6 h-px origin-right bg-blue-400 pointer-events-none opacity-70"
+                  style={{ right: "100%", top: "40%" }}
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: 1, opacity: [0, 0.7, 0.4] }}
+                  transition={{ duration: 0.3, delay: 0.1 }}
+                />
+                <motion.div
+                  className="absolute w-6 h-px origin-right pointer-events-none bg-cyan-400 opacity-70"
+                  style={{ right: "100%", top: "60%" }}
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: 1, opacity: [0, 0.5, 0.7] }}
+                  transition={{ duration: 0.3, delay: 0.2 }}
+                />
+
+                <MotionButton
+                  size="icon"
+                  variant="outline"
+                  className="relative border-none rounded-full bg-slate-950/60 hover:bg-slate-950/50 hover:text-white"
+                  onClick={toggleCollapse}
+                  whileTap={{ scale: 0.95 }}
+                  whileHover={{
+                    boxShadow: "0 0 15px 2px rgba(0,180,255,0.5)",
+                    backgroundColor: "rgba(10, 20, 30, 0.8)",
+                  }}
+                >
+                  <motion.div
+                    animate={{
+                      rotate: visible ? 180 : 0,
+                    }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 260,
+                      damping: 20,
+                    }}
+                  >
+                    {<ChevronUp />}
+                  </motion.div>
+                </MotionButton>
+              </div>
+            </TooltipTrigger>
+            <TooltipContent className="dark">
+              <p>{visible ? "展开" : "收起"}</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </div>
+    </>
   );
 }

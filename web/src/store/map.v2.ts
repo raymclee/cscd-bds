@@ -157,25 +157,45 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
           iconStyle: AMapUI.SimpleMarker.getBuiltInIconStyles("default"),
           label: {
             content: `
-            <div class="flex flex-col">
-              <div class="text-base font-semibold">${area?.name}</div>
-              <div class="flex items-baseline gap-3 mt-1">
-                <div>
-                  <span style="font-size: 10px;">项目:</span>
-                  <span class="ml-1 font-semibold">${area?.tenders?.edges?.length}</span>
+            <div class="relative flex flex-col p-2 overflow-hidden border rounded-lg shadow-lg backdrop-blur-sm bg-sky-950 border-blue-500/30 group">
+              <!-- Tech scan line -->
+              <div class="absolute inset-0 translate-y-full opacity-0 pointer-events-none group-hover:animate-scan-line bg-gradient-to-b from-transparent via-cyan-500/15 to-transparent"></div>
+              
+              <!-- Corner borders - top left -->
+              <div class="group-hover:bg-corner-border-glow absolute left-0 top-0 h-[2px] w-6 bg-transparent opacity-0 transition-all duration-300 group-hover:opacity-100"></div>
+              <div class="group-hover:bg-corner-border-glow absolute left-0 top-0 h-6 w-[2px] bg-transparent opacity-0 transition-all duration-300 group-hover:opacity-100"></div>
+              
+              <!-- Corner borders - top right -->
+              <div class="group-hover:bg-corner-border-glow absolute right-0 top-0 h-[2px] w-6 bg-transparent opacity-0 transition-all duration-300 group-hover:opacity-100"></div>
+              <div class="group-hover:bg-corner-border-glow absolute right-0 top-0 h-6 w-[2px] bg-transparent opacity-0 transition-all duration-300 group-hover:opacity-100"></div>
+              
+              <!-- Corner borders - bottom left -->
+              <div class="group-hover:bg-corner-border-glow absolute bottom-0 left-0 h-[2px] w-6 bg-transparent opacity-0 transition-all duration-300 group-hover:opacity-100"></div>
+              <div class="group-hover:bg-corner-border-glow absolute bottom-0 left-0 h-6 w-[2px] bg-transparent opacity-0 transition-all duration-300 group-hover:opacity-100"></div>
+              
+              <!-- Corner borders - bottom right -->
+              <div class="group-hover:bg-corner-border-glow absolute bottom-0 right-0 h-[2px] w-6 bg-transparent opacity-0 transition-all duration-300 group-hover:opacity-100"></div>
+              <div class="group-hover:bg-corner-border-glow absolute bottom-0 right-0 h-6 w-[2px] bg-transparent opacity-0 transition-all duration-300 group-hover:opacity-100"></div>
+              
+              <div class="relative z-10">
+                <div class="text-base font-semibold transition-all duration-300 group-hover:text-shadow-glow group-hover:text-blue-200">${area?.name}</div>
+                <div class="flex items-baseline gap-3 mt-1">
+                  <div class="relative">
+                    <span style="font-size: 10px;" class="text-blue-300">项目:</span>
+                    <span class="font-semibold transition-all duration-300 group-hover:text-shadow-sm group-hover:scale-110 group-hover:text-cyan-400">${area?.tenders?.edges?.length}</span>
+                  </div>
+                  ${
+                    amount > 0
+                      ? `<div class="relative">
+                        <span style="font-size: 10px;" class="text-blue-300">金额:</span>
+                        <span class="font-semibold transition-all duration-300 group-hover:text-shadow-sm group-hover:scale-110 group-hover:text-cyan-400">
+                          ${`${amount}亿`}
+                        </span>
+                      </div>`
+                      : ""
+                  }
                 </div>
-                ${
-                  amount > 0
-                    ? `<div>
-                      <span style="font-size: 10px;">金额:</span>
-                      <span class="mx-1 font-semibold">
-                        ${`${amount}亿`}
-                      </span>
-                    </div>`
-                    : ""
-                }
               </div>
-              <div></div>
             </div>
         `,
             offset: new AMap.Pixel(20, 70),
@@ -200,6 +220,7 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
       }
     });
     map?.setZoomAndCenter(DEFAULT_ZOOM, DEFAULT_CENTER);
+    map?.setFitView();
     set({ markers });
   },
   renderArea: () => {
@@ -298,9 +319,29 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
       iconStyle: AMapUI.SimpleMarker.getBuiltInIconStyles("default"),
       label: {
         content: `
-          <div class="flex flex-col gap-1 p-0.5 text-xs shadow-2xl">
-            <div class="font-medium">${props.name}(${projectCount})</div>
-            ${typeof projectAmount === "number" && projectAmount > 0 ? `<div>${projectAmount}亿</div>` : ""}
+        <div class="relative flex flex-col p-2 overflow-hidden border rounded-lg shadow-lg backdrop-blur-sm bg-sky-950 border-blue-500/30 group">
+            <!-- Tech scan line -->
+            <div class="absolute inset-0 translate-y-full opacity-0 pointer-events-none group-hover:animate-scan-line bg-gradient-to-b from-transparent via-cyan-500/15 to-transparent"></div>
+            
+            <!-- Corner borders - top left and right -->
+            <div class="group-hover:bg-corner-border-glow absolute left-0 top-0 h-[2px] w-4 bg-transparent opacity-0 transition-all duration-300 group-hover:opacity-100"></div>
+            <div class="group-hover:bg-corner-border-glow absolute right-0 top-0 h-[2px] w-4 bg-transparent opacity-0 transition-all duration-300 group-hover:opacity-100"></div>
+            
+            <!-- Corner borders - bottom left and right -->
+            <div class="group-hover:bg-corner-border-glow absolute bottom-0 left-0 h-[2px] w-4 bg-transparent opacity-0 transition-all duration-300 group-hover:opacity-100"></div>
+            <div class="group-hover:bg-corner-border-glow absolute bottom-0 right-0 h-[2px] w-4 bg-transparent opacity-0 transition-all duration-300 group-hover:opacity-100"></div>
+            
+            <div class="relative z-10">
+              <div class="font-medium transition-all duration-300 group-hover:text-shadow-glow group-hover:text-blue-200">${props.name}<span class="transition-all duration-300 group-hover:text-shadow-sm group-hover:text-cyan-400">(${projectCount})</span></div>
+              ${
+                typeof projectAmount === "number" && projectAmount > 0
+                  ? `
+                <div class="relative flex items-center">
+                  <span class="transition-all duration-300 group-hover:text-shadow-sm group-hover:scale-110 group-hover:text-cyan-400">${projectAmount}亿</span>
+                </div>`
+                  : ""
+              }
+            </div>
           </div>
           `,
         offset: new AMap.Pixel(-50, 0),
@@ -380,15 +421,8 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
           renderMarker(props, true);
           // }
 
-          const colorIndex = i;
-          const strokeColor = getDistrictColor(
-            feature.properties.adcode,
-            colorIndex,
-          );
-          const fillColor = getDistrictColor(
-            feature.properties.adcode,
-            colorIndex,
-          );
+          const strokeColor = getDistrictColor(feature.properties.adcode, i);
+          const fillColor = getDistrictColor(feature.properties.adcode, i);
 
           return {
             cursor: "default",
@@ -431,8 +465,23 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
               iconStyle: AMapUI.SimpleMarker.getBuiltInIconStyles("default"),
               label: {
                 content: `
-                <div id="marker-${tender.id}" class="w-[10rem] rounded-lg px-1 py-0.5 line-clamp-2">
-                  <div class="text-sm font-medium text-center text-wrap">${tender.name}</div>
+                 <div id="marker-${tender.id}" class="relative flex flex-col p-2 overflow-hidden border rounded-lg shadow-lg backdrop-blur-sm bg-sky-950 border-blue-500/30 group">
+                  <!-- Tech scan line -->
+                  <div class="absolute inset-0 translate-y-full opacity-0 pointer-events-none group-hover:animate-scan-line bg-gradient-to-b from-transparent via-cyan-500/15 to-transparent"></div>
+                  
+                  <!-- Corner borders - top left and top right -->
+                  <div class="group-hover:bg-corner-border-glow absolute left-0 top-0 h-[2px] w-4 bg-transparent opacity-0 transition-all duration-300 group-hover:opacity-100"></div>
+                  <div class="group-hover:bg-corner-border-glow absolute right-0 top-0 h-[2px] w-4 bg-transparent opacity-0 transition-all duration-300 group-hover:opacity-100"></div>
+                  
+                  <!-- Corner borders - bottom left and bottom right -->
+                  <div class="group-hover:bg-corner-border-glow absolute bottom-0 left-0 h-[2px] w-4 bg-transparent opacity-0 transition-all duration-300 group-hover:opacity-100"></div>
+                  <div class="group-hover:bg-corner-border-glow absolute bottom-0 right-0 h-[2px] w-4 bg-transparent opacity-0 transition-all duration-300 group-hover:opacity-100"></div>
+                  
+                  <div class="relative z-10 text-sm font-medium text-center transition-all duration-300 text-wrap group-hover:text-shadow-glow group-hover:text-blue-200 line-clamp-2">${tender.name}</div>
+                  
+                  <!-- Data dots at corners -->
+                  <div class="absolute w-1 h-1 rounded-full opacity-0 group-hover:animate-pulse-dot right-1 bottom-1 bg-cyan-400"></div>
+                  <div class="absolute w-1 h-1 bg-blue-400 rounded-full opacity-0 group-hover:animate-pulse-dot left-1 bottom-1" style="animation-delay: 0.3s"></div>
                 </div>
                 `,
                 offset: new AMap.Pixel(-80, offsetY),
@@ -469,11 +518,22 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
               iconStyle: AMapUI.SimpleMarker.getBuiltInIconStyles("default"),
               label: {
                 content: `
-                <div id="marker-${tender.id}" class="w-[10rem] rounded-lg px-1 py-0.5 line-clamp-2">
-                  <div class="text-sm font-medium text-center text-wrap">${tender.name}</div>
+                <div id="marker-${tender.id}" class="w-[10rem] relative overflow-hidden rounded-lg backdrop-blur-sm bg-sky-950 border border-blue-500/30 shadow-lg group px-2 py-1.5">
+                  <!-- Tech scan line -->
+                  <div class="absolute inset-0 translate-y-full opacity-0 pointer-events-none group-hover:animate-scan-line bg-gradient-to-b from-transparent via-cyan-500/15 to-transparent"></div>
+                  
+                  <!-- Corner borders - top left and top right -->
+                  <div class="group-hover:bg-corner-border-glow absolute left-0 top-0 h-[2px] w-4 bg-transparent opacity-0 transition-all duration-300 group-hover:opacity-100"></div>
+                  <div class="group-hover:bg-corner-border-glow absolute right-0 top-0 h-[2px] w-4 bg-transparent opacity-0 transition-all duration-300 group-hover:opacity-100"></div>
+                  
+                  <!-- Corner borders - bottom left and bottom right -->
+                  <div class="group-hover:bg-corner-border-glow absolute bottom-0 left-0 h-[2px] w-4 bg-transparent opacity-0 transition-all duration-300 group-hover:opacity-100"></div>
+                  <div class="group-hover:bg-corner-border-glow absolute bottom-0 right-0 h-[2px] w-4 bg-transparent opacity-0 transition-all duration-300 group-hover:opacity-100"></div>
+                  
+                  <div class="relative z-10 text-sm font-medium text-center transition-all duration-300 text-wrap group-hover:text-shadow-glow group-hover:text-blue-200 line-clamp-2">${tender.name}</div>
                 </div>
                 `,
-                offset: new AMap.Pixel(-80, offsetY),
+                offset: new AMap.Pixel(-70, offsetY),
               },
               map,
               position: new AMap.LngLat(
@@ -527,6 +587,14 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
         }
 
         if (mapCircles) set({ mapCircles });
+
+        const center =
+          tenders?.length > 0 && tenders[0]?.geoCoordinate
+            ? tenders[0]?.geoCoordinate?.coordinates
+            : areaProps.center;
+        map?.setZoomAndCenter(15, center, false, 600);
+
+        return;
       }
 
       map?.setBounds(areaNode.getBounds(), false, [140, 0, 20, 20]);

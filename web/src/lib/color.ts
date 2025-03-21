@@ -84,11 +84,11 @@ export function getDistrictColor(code: number, i?: number): string {
   }
 
   if (i) {
-    fillColor = colors[i % colors.length];
+    fillColor = colors[colors.length - 1 - (i % colors.length)];
     strokeColor = colors[colors.length - 1 - (i % colors.length)];
   }
 
-  return fillColor;
+  return fillColor || colors[0];
 }
 
 export function tenderStatusBoundColor(tender: Partial<Tender>): string {

@@ -1,0 +1,149 @@
+/* 科技效果动画 */
+
+/* 扫描线动画 */
+@keyframes scan {
+  0% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: translateY(-100%);
+  }
+}
+
+.group:hover .group-hover\:animate-scan-line {
+  animation: scan 2s linear infinite;
+}
+
+/* 脉冲发光效果 */
+@keyframes pulse-glow {
+  0% {
+    box-shadow: 0 0 8px 2px rgba(0, 180, 255, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 12px 3px rgba(0, 180, 255, 0.7);
+  }
+  100% {
+    box-shadow: 0 0 8px 2px rgba(0, 180, 255, 0.5);
+  }
+}
+
+.group-hover\:animate-pulse-glow {
+  animation: pulse-glow 1.5s infinite alternate;
+}
+
+/* 图像闪光效果 */
+@keyframes flash {
+  0% {
+    background: linear-gradient(
+      90deg,
+      rgba(0, 212, 255, 0) 0%,
+      rgba(0, 91, 188, 0) 100%
+    );
+    box-shadow: inset 0 0 0 rgba(0, 180, 255, 0);
+  }
+  30% {
+    background: linear-gradient(
+      90deg,
+      rgba(0, 212, 255, 0.2) 0%,
+      rgba(0, 91, 188, 0.2) 100%
+    );
+    box-shadow: inset 0 0 15px rgba(0, 180, 255, 0.3);
+  }
+  100% {
+    background: linear-gradient(
+      90deg,
+      rgba(0, 212, 255, 0.1) 0%,
+      rgba(0, 91, 188, 0.1) 100%
+    );
+    box-shadow: inset 0 0 10px rgba(0, 180, 255, 0.2);
+  }
+}
+
+.group-hover\:animate-flash-overlay {
+  animation: flash 2s infinite alternate;
+}
+
+/* 数据点脉冲 */
+@keyframes pulse-dot {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+}
+
+.group-hover\:animate-pulse-dot {
+  animation: pulse-dot 1.2s infinite;
+}
+
+/* 文字阴影效果 */
+.group-hover\:text-shadow-glow {
+  text-shadow: 0 0 8px rgba(0, 180, 255, 0.8);
+}
+
+.group-hover\:text-shadow-sm {
+  text-shadow: 0 0 5px rgba(0, 180, 255, 0.5);
+}
+
+/* 蓝色发光阴影 */
+.shadow-glow-blue {
+  transition: box-shadow 0.3s;
+}
+
+.group:hover .shadow-glow-blue {
+  box-shadow: 0 0 4px rgba(0, 180, 255, 0.8);
+}
+
+/* 青色发光阴影 */
+.shadow-glow-cyan {
+  transition: box-shadow 0.3s;
+}
+
+.group:hover .shadow-glow-cyan {
+  box-shadow: 0 0 4px rgba(0, 200, 255, 0.8);
+}
+
+/* 圆形渐变背景 - 右上角 */
+.bg-radial-cyan {
+  background: radial-gradient(
+    circle at top right,
+    rgba(0, 200, 255, 0.3),
+    transparent 70%
+  );
+}
+
+/* 圆形渐变背景 - 右下角 */
+.bg-radial-cyan-bottom-right {
+  background: radial-gradient(
+    circle at bottom right,
+    rgba(0, 200, 255, 0.3),
+    transparent 70%
+  );
+}
+
+/* 角落直角边框发光效果 */
+@keyframes corner-border-pulse {
+  0% {
+    background: linear-gradient(90deg, #00c2ff 0%, rgba(0, 180, 255, 0) 100%);
+    box-shadow: 0 0 4px rgba(0, 180, 255, 0.6);
+  }
+  50% {
+    background: linear-gradient(90deg, #4cc9f0 0%, rgba(76, 201, 240, 0) 100%);
+    box-shadow: 0 0 8px rgba(0, 180, 255, 0.8);
+  }
+  100% {
+    background: linear-gradient(90deg, #00c2ff 0%, rgba(0, 180, 255, 0) 100%);
+    box-shadow: 0 0 4px rgba(0, 180, 255, 0.6);
+  }
+}
+
+.group-hover\:bg-corner-border-glow {
+  animation: corner-border-pulse 2s infinite;
+}

@@ -128,16 +128,16 @@ export function TenderTypeCard() {
   } satisfies ChartConfig;
 
   return (
-    <Card className="h-56 border-none bg-slate-950/50 text-white backdrop-blur-lg">
+    <Card className="h-56 text-white border-none bg-slate-950/60 backdrop-blur">
       <CardHeader>
         <img
           src={headerSvg}
           alt="sub-head"
-          className="h-8 w-full select-none"
+          className="w-full h-8 select-none"
         />
       </CardHeader>
-      <CardContent className="dark -mt-4 h-full px-0">
-        <AntdPie {...config} />
+      <CardContent className="h-full px-0 -mt-5 dark">
+        <AntdPie {...config} className="pb-2" />
         {/* <ChartContainer
           config={chartConfig}
           className="mx-auto pb-0 [&_.recharts-pie-label-text]:fill-foreground"

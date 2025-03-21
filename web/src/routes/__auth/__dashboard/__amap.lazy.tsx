@@ -162,27 +162,17 @@ export const Route = createLazyFileRoute("/__auth/__dashboard/__amap")({
   component: RouteComponent,
 });
 
-function M() {
-  // const lastMatch = useMatches({
-  //   select(matches) {
-  //     return matches.at(-1);
-  //   },
-  // });
+function useMapRouting({ enabled = true }: { enabled?: boolean }) {
   const search = useSearch({ from: "/__auth/__dashboard/__amap" });
+  const tenderId = useParams({
+    from: "/__auth/__dashboard/__amap/tenders/$id",
+    shouldThrow: false,
+  });
 
   useEffect(() => {
-    // console.log("lastMatch", lastMatch);
-    // const lastPath = lastMatch?.fullPath.replace("/v2", "");
-    // console.log("lastPath", lastPath);
-    // if (lastPath === "") {
-    //   useMapV2Store.getState().renderAreas();
-    // } else if (lastPath?.startsWith("/areas")) {
-    //   if (lastMatch?.params && "adcode" in lastMatch?.params) {
-    //     useMapV2Store.getState().renderAdcode(lastMatch?.params.adcode);
-    //   } else {
-    //     useMapV2Store.getState().renderArea();
-    //   }
-    // }
+    if (!enabled) {
+      return;
+    }
     if (search.d) {
       useMapV2Store.getState().renderAdcode(String(search.d));
     } else if (search.c) {
@@ -191,23 +181,10 @@ function M() {
       useMapV2Store.getState().renderAdcode(String(search.p));
     } else if (search.a) {
       useMapV2Store.getState().renderArea();
-    } else {
+    } else if (!tenderId) {
       useMapV2Store.getState().renderAreas();
     }
-  }, [search]);
-
-  return <></>;
-}
-
-function RouteComponent() {
-  const container = useRef<HTMLDivElement>(null);
-  const initMap = useMapV2Store.use.initMap();
-  const map = useMapV2Store.use.map();
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
-  const preload = Route.useLoaderData();
-  const data = usePreloadedQuery<AmapPageQuery>(query, preload);
-  const search = useSearch({ from: "/__auth/__dashboard/__amap" });
+  }, [enabled, search.a, search.c, search.d, search.p, tenderId]);
 
   useEffect(() => {
     if (!search.a) {
@@ -231,6 +208,18 @@ function RouteComponent() {
       unsub();
     };
   }, [search.a]);
+}
+
+function RouteComponent() {
+  const container = useRef<HTMLDivElement>(null);
+  const initMap = useMapV2Store.use.initMap();
+  const map = useMapV2Store.use.map();
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+  const preload = Route.useLoaderData();
+  const data = usePreloadedQuery<AmapPageQuery>(query, preload);
+
+  useMapRouting({ enabled: !loading });
 
   useEffect(() => {
     useMapV2Store.setState({ areas: data.node?.areas as any });
@@ -244,6 +233,9 @@ function RouteComponent() {
 
     return () => {
       map?.destroy();
+      useMapV2Store.setState({
+        areas: null,
+      });
     };
   }, []);
 
@@ -255,9 +247,8 @@ function RouteComponent() {
 
   return (
     <>
-      {!loading && <M />}
       <div className="relative">
-        <nav className="sticky top-0 z-20 h-14 bg-slate-950/50 backdrop-blur-3xl">
+        <nav className="sticky top-0 z-20 h-14 bg-slate-950/60 backdrop-blur">
           <img
             src={headSvg}
             alt="head"
