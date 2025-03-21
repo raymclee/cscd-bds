@@ -337,7 +337,7 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
                 typeof projectAmount === "number" && projectAmount > 0
                   ? `
                 <div class="relative flex items-center">
-                  <span class="transition-all duration-300 group-hover:text-shadow-sm group-hover:scale-110 group-hover:text-cyan-400">${projectAmount}亿</span>
+                  <span class="transition-all duration-300 group-hover:text-shadow-sm group-hover:text-cyan-400">${projectAmount}亿</span>
                 </div>`
                   : ""
               }

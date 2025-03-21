@@ -426,10 +426,10 @@ function TenderList() {
                   </div>
 
                   <div className="flex items-center justify-between gap-2">
-                    <div className="text-sm transition-all duration-300 group-hover:text-shadow-sm group-hover:scale-105 group-hover:text-cyan-400">
+                    <div className="text-sm transition-all duration-300 group-hover:text-shadow-sm group-hover:scale-110 group-hover:text-cyan-400">
                       {tenderStatusText(tender?.status)}
                     </div>
-                    <div className="text-sm transition-all duration-300 group-hover:text-shadow-sm group-hover:scale-125 group-hover:text-cyan-400">
+                    <div className="text-sm transition-all duration-300 group-hover:text-shadow-sm group-hover:scale-110 group-hover:text-cyan-400">
                       {tender?.estimatedAmount
                         ? `¥${fixAmount(tender?.estimatedAmount)}亿`
                         : "-"}
