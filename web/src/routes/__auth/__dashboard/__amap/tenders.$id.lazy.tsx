@@ -1,4 +1,4 @@
-import { createLazyFileRoute } from "@tanstack/react-router";
+import { createLazyFileRoute, useLocation } from "@tanstack/react-router";
 import { tendersDashboardDetailPageQuery } from "__generated__/tendersDashboardDetailPageQuery.graphql";
 import { motion } from "motion/react";
 import { useEffect } from "react";
@@ -32,7 +32,9 @@ function RouteComponent() {
     preload,
   );
   const moveToTender = useMapV2Store.use.moveToTender();
-  const resetMap = useMapV2Store.use.resetMap();
+  const renderAreas = useMapV2Store.use.renderAreas();
+
+  const location = useLocation();
 
   useEffect(() => {
     if (data.node) {
@@ -40,11 +42,13 @@ function RouteComponent() {
     }
   }, [data.node, moveToTender]);
 
-  useEffect(() => {
-    return () => {
-      resetMap();
-    };
-  }, []);
+  // useEffect(() => {
+  //   return () => {
+  //     if (location.pathname === "/v2/") {
+  //       renderAreas();
+  //     }
+  //   };
+  // }, [location.pathname]);
 
   if (!data.node) {
     return <div>No data</div>;

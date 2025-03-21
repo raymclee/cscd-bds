@@ -1,8 +1,13 @@
 import { create } from "zustand";
 import { Tender, Area, AreaConnection } from "~/graphql/graphql";
 import { getDistrictColor } from "~/lib/color";
-import { fixAmount } from "~/lib/helper";
-import { useNavigate } from "@tanstack/react-router";
+import { fixAmount, getDistrictZoomLevel } from "~/lib/helper";
+import {
+  useNavigate,
+  Match,
+  useLocation,
+  ParsedLocation,
+} from "@tanstack/react-router";
 import { getDistrictZoomLevelv2 } from "~/lib/helper.v2";
 
 const DEFAULT_CENTER = [94, 46] as [number, number];
@@ -26,11 +31,15 @@ type Action = {
     navigate: ReturnType<typeof useNavigate>,
     opts?: Partial<AMap.MapOptions>,
   ) => void;
+  clearMap: () => void;
   resetMap: () => void;
+  backToHome: () => void;
   moveToTender: (tender: Tender) => void;
-  renderAreas: () => void;
-  renderArea: (area: Area) => void;
+  renderAreas: (areas?: AreaConnection) => void;
+  renderArea: () => void;
   renderMarker: (props: any, hidable?: boolean) => void;
+  renderAreaNode: (adcode: number, areas?: AreaConnection) => void;
+  renderMap: (location: ParsedLocation) => void;
 };
 
 export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
@@ -90,29 +99,142 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
 
     set({ map, districtExplorer, satelliteLayer, navigate });
   },
-  resetMap: () => {
-    const { map, satelliteLayer, markers, districtExplorer, renderAreas } =
-      get();
+  clearMap: () => {
+    const { map, satelliteLayer, markers, districtExplorer } = get();
     districtExplorer?.clearFeaturePolygons();
     districtExplorer?.setHoverFeature(null);
     map?.removeLayer(satelliteLayer!);
     map?.remove(markers);
+  },
+  resetMap: () => {
+    const { map, renderAreas, clearMap } = get();
+    clearMap();
     map?.setZoomAndCenter(DEFAULT_ZOOM, DEFAULT_CENTER);
     set({ markers: [], selectedAreaNode: null, selectedArea: null });
+  },
+  backToHome: () => {
+    const { map, resetMap, clearMap, renderAreas } = get();
+    resetMap();
+    // map?.setZoomAndCenter(DEFAULT_ZOOM, DEFAULT_CENTER);
     renderAreas();
   },
   moveToTender: (tender: Tender) => {
-    const { map, satelliteLayer } = get();
+    const { map, satelliteLayer, markers, districtExplorer, clearMap } = get();
+    clearMap();
     if (!tender.geoCoordinate?.coordinates) {
       return;
     }
+    districtExplorer?.clearFeaturePolygons();
+    districtExplorer?.setHoverFeature(null);
+    // map?.removeLayer(satelliteLayer!);
+    map?.remove(markers);
     map?.addLayer(satelliteLayer!);
     const [lng, lat] = tender.geoCoordinate.coordinates;
     map?.setZoomAndCenter(16, [lng, lat]);
   },
+  renderAreaNode: (adcode: number, areas?: AreaConnection) => {
+    const { districtExplorer, map, markers, satelliteLayer } = get();
+
+    districtExplorer?.clearFeaturePolygons();
+    districtExplorer?.setHoverFeature(null);
+    map?.removeLayer(satelliteLayer!);
+    map?.remove(markers);
+
+    districtExplorer.loadAreaNode(adcode, (error: any, areaNode: any) => {
+      if (error) {
+        console.error("renderAreaNode error", error);
+        return;
+      }
+
+      //绘制子区域
+      districtExplorer.renderSubFeatures(areaNode, function (feature: any) {
+        const props = feature.properties;
+
+        const strokeColor = getDistrictColor(props.adcode, 0);
+        const fillColor = getDistrictColor(props.adcode, 0);
+
+        return {
+          cursor: "default",
+          bubble: true,
+          strokeColor: strokeColor, //线颜色
+          strokeOpacity: 1, //线透明度
+          strokeWeight: 1, //线宽
+          fillColor: fillColor, //填充色
+          fillOpacity: 0.5, //填充透明度
+        };
+      });
+
+      for (const edge of areas?.edges || []) {
+        if (!edge) {
+          continue;
+        }
+
+        const area = edge.node;
+        const amount = fixAmount(
+          area?.tenders?.edges
+            ?.map((e) => e?.node)
+            .reduce(
+              (acc, inc) =>
+                inc?.estimatedAmount ? acc + inc.estimatedAmount : acc,
+              0,
+            ),
+        );
+
+        //@ts-expect-error
+        const marker = new AMapUI.SimpleMarker({
+          // @ts-expect-error
+          iconStyle: AMapUI.SimpleMarker.getBuiltInIconStyles("default"),
+          label: {
+            content: `
+            <div class="flex flex-col">
+              <div class="text-base font-semibold">${area?.name}</div>
+              <div class="flex items-baseline gap-3 mt-1">
+                <div>
+                  <span style="font-size: 10px;">项目:</span>
+                  <span class="ml-1 font-semibold">${area?.tenders?.edges?.length}</span>
+                </div>
+                ${
+                  amount > 0
+                    ? `<div>
+                      <span style="font-size: 10px;">金额:</span>
+                      <span class="mx-1 font-semibold">
+                        ${`${amount}亿`}
+                      </span>
+                    </div>`
+                    : ""
+                }
+              </div>
+              <div></div>
+            </div>
+        `,
+            offset: new AMap.Pixel(20, 70),
+          },
+          map,
+          position: area?.center?.coordinates,
+        });
+
+        marker.on("click", () => {
+          set({ selectedArea: area as Area });
+          get().navigate?.({
+            to: "/v2/areas/$id",
+            params: {
+              id: area?.id!,
+            },
+          });
+        });
+
+        markers.push(marker);
+      }
+    });
+
+    set({ markers });
+  },
   renderAreas: () => {
-    const { districtExplorer, map, markers, areas, selectedArea } = get();
-    if (selectedArea) {
+    console.log("renderAreas");
+    const { districtExplorer, map, markers, clearMap, areas } = get();
+    clearMap();
+    if (!areas || !map) {
+      console.log("no areas or map");
       return;
     }
 
@@ -187,9 +309,6 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
           },
           map,
           position: area?.center?.coordinates,
-          extData: {
-            home: true,
-          },
         });
 
         marker.on("click", () => {
@@ -200,21 +319,25 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
               id: area?.id!,
             },
           });
+          // get().renderArea();
         });
 
         markers.push(marker);
       }
     });
-
+    map?.setZoomAndCenter(DEFAULT_ZOOM, DEFAULT_CENTER);
     set({ markers });
   },
-  renderArea: (area) => {
-    const { districtExplorer, map, markers, renderMarker } = get();
-    map?.remove(markers);
+  renderArea: () => {
+    console.log("renderArea");
+    const { districtExplorer, map, renderMarker, clearMap, selectedArea } =
+      get();
+    if (!selectedArea) return;
 
-    districtExplorer.clearFeaturePolygons();
+    clearMap();
+
     districtExplorer.loadMultiAreaNodes(
-      area.provinces?.edges?.map((e) => e?.node).map((p) => p?.adcode),
+      selectedArea.provinces?.edges?.map((e) => e?.node).map((p) => p?.adcode),
       (error: any, areaNodes: any) => {
         if (error) {
           console.error(error);
@@ -248,10 +371,10 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
       },
     );
 
-    const zoom = getDistrictZoomLevelv2(area.code);
+    const zoom = getDistrictZoomLevelv2(selectedArea.code);
     map?.setZoomAndCenter(
       zoom,
-      area.center?.coordinates as [number, number],
+      selectedArea.center?.coordinates as [number, number],
       false,
       600,
     );
@@ -322,6 +445,8 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
     });
 
     marker.on("click", () => {
+      const { renderMarker, districtExplorer, map, selectedArea } = get();
+      get().clearMap();
       // const area = areas?.find((d) =>
       //   d?.provinces?.edges
       //     ?.map((e) => e?.node)
@@ -333,6 +458,47 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
       // }
       // useMapStore.getState().push({ name: props.name, adcode: props.adcode });
       // onFeatureOrMarkerClick(props);
+      districtExplorer.loadAreaNode(
+        props.adcode,
+        (error: any, areaNode: any) => {
+          if (error) {
+            console.error(error);
+            return;
+          }
+          districtExplorer.renderSubFeatures(
+            areaNode,
+            function (feature: any, i: number) {
+              const props = feature.properties;
+
+              // if (!topLevel) {
+              renderMarker(props, true);
+              // }
+
+              const colorIndex = i;
+              const strokeColor = getDistrictColor(
+                feature.properties.adcode,
+                colorIndex,
+              );
+              const fillColor = getDistrictColor(
+                feature.properties.adcode,
+                colorIndex,
+              );
+
+              return {
+                cursor: "default",
+                bubble: true,
+                strokeColor: strokeColor, //线颜色
+                strokeOpacity: 1, //线透明度
+                strokeWeight: 1, //线宽
+                fillColor: fillColor, //填充色
+                fillOpacity: 0.5, //填充透明度
+              };
+            },
+          );
+
+          map?.setBounds(areaNode.getBounds(), false, [140, 0, 20, 20]);
+        },
+      );
     });
     marker.on("mouseover", () => {
       marker.setOptions({ zIndex: 13 });
@@ -341,5 +507,21 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
       marker.setOptions({ zIndex: 12 });
     });
     set((s) => ({ markers: [...s.markers, marker] }));
+  },
+  renderMap(location) {
+    const route = location.pathname.replace("/v2", "");
+    const { map, renderAreas, renderArea } = get();
+    console.log(route);
+    if (!map) return;
+    if (route == "") {
+      console.log("renderAreas");
+      renderAreas();
+      return;
+    }
+    // if (route.startsWith("/areas/")) {
+    //   console.log("renderArea");
+    //   // renderArea();
+    //   return;
+    // }
   },
 }));

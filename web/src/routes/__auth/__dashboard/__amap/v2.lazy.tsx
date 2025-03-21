@@ -1,4 +1,11 @@
-import { createLazyFileRoute, Link, Outlet } from "@tanstack/react-router";
+import {
+  createLazyFileRoute,
+  Link,
+  Outlet,
+  useLocation,
+  useMatch,
+  useRouter,
+} from "@tanstack/react-router";
 import { ChevronLeft, ChevronRight, ChevronUp, Search } from "lucide-react";
 // import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
 import { Button } from "~/components/ui/button";
@@ -31,7 +38,6 @@ import {
 } from "~/components/ui/carousel";
 import { graphql } from "relay-runtime";
 import { usePreloadedQuery } from "react-relay";
-import { v2PageQuery } from "__generated__/v2PageQuery.graphql";
 import dayjs from "dayjs";
 import headSvg from "~/assets/dashboard/svg/head.svg";
 import subHeadSvg from "~/assets/dashboard/svg/sub-head.svg";
@@ -59,168 +65,6 @@ import {
 import { TenderDetailCard } from "~/components/dashboardv2/tender-detail-card";
 import { useAreaTenders } from "~/hooks/dashboardv2/use-area-tenders";
 
-export const V2IndexPageQuery = graphql`
-  query v2PageQuery(
-    $userId: ID!
-    $orderBy: [TenderOrder!]
-    $first: Int
-    $last: Int # $visitOrderBy: [VisitRecordOrder!]
-  ) {
-    node(id: $userId) {
-      ... on User {
-        areas {
-          edges {
-            node {
-              id
-              name @required(action: NONE)
-              code
-              createdAt
-              center {
-                coordinates
-              }
-              provinces {
-                edges {
-                  node {
-                    id
-                    name
-                    adcode
-                    center {
-                      coordinates
-                    }
-                  }
-                }
-              }
-              tenders(
-                orderBy: $orderBy
-                first: $first
-                last: $last
-                where: { statusNEQ: 7, approvalStatus: 2 }
-              ) @connection(key: "MapIndexPageQuery_tenders") {
-                edges {
-                  node {
-                    id
-                    name
-                    status
-                    createdAt
-                    estimatedAmount
-                    customer {
-                      id
-                      name
-                      ownerType
-                      area {
-                        id
-                        name
-                      }
-                    }
-                    followingSales {
-                      id
-                      name
-                    }
-                    images
-                    fullAddress
-                    tenderDate
-                    discoveryDate
-                    contractor
-                    designUnit
-                    tenderForm
-                    keyProject
-                    contractForm
-                    tenderingAgency
-                    consultingFirm
-                    facadeConsultant
-                    contractForm
-                    timeLimitRating
-                    sizeAndValueRating
-                    creditAndPaymentRating
-                    customerRelationshipRating
-                    competitivePartnershipRating
-                    timeLimitRatingOverview
-                    sizeAndValueRatingOverview
-                    creditAndPaymentRatingOverview
-                    customerRelationshipRatingOverview
-                    competitivePartnershipRatingOverview
-                    tenderWinCompany
-                    tenderCode
-                    developer
-                    architect
-                    tenderClosingDate
-                    constructionArea
-                    tenderWinAmount
-                    tenderWinDate
-                    area {
-                      code
-                      name
-                    }
-                    province {
-                      adcode
-                      name
-                    }
-                    city {
-                      name
-                      adcode
-                    }
-                    district {
-                      name
-                      adcode
-                    }
-                    geoCoordinate {
-                      coordinates
-                    }
-                    geoBounds
-                    # visitRecords(orderBy: $visitOrderBy) {
-                    #   edges {
-                    #     node {
-                    #       visitType
-                    #       nextStep
-                    #       commPeople
-                    #       commContent
-                    #       date
-                    #       customer {
-                    #         name
-                    #       }
-                    #       tender {
-                    #         id
-                    #         name
-                    #       }
-                    #     }
-                    #   }
-                    # }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-
-    topCompetitors {
-      id
-      shortName
-      wonTendersCount
-    }
-
-    users {
-      edges {
-        node {
-          id
-          name
-        }
-      }
-    }
-
-    customers {
-      edges {
-        node {
-          id
-          name
-          ownerType
-        }
-      }
-    }
-  }
-`;
-
 export const districtsQuery = graphql`
   query v2PageDistrictQuery($adcode: Int!) {
     districts(where: { adcode: $adcode }) {
@@ -247,33 +91,16 @@ export const Route = createLazyFileRoute("/__auth/__dashboard/__amap/v2")({
 });
 
 function RouteComponent() {
-  const preload = Route.useLoaderData();
-  const data = usePreloadedQuery<v2PageQuery>(V2IndexPageQuery, preload);
-  const map = useMapV2Store.use.map();
-  const renderAreas = useMapV2Store.use.renderAreas();
-
-  useEffect(() => {
-    useMapV2Store.setState({
-      areas: data.node?.areas as any,
-    });
-  }, [data.node?.areas]);
-
-  useEffect(() => {
-    map?.on("complete", () => {
-      renderAreas();
-    });
-  }, [map, renderAreas]);
-
   return (
     <>
       {/* Search and Filters */}
       <div className="hidden px-6 py-4">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="relative w-72">
-            <Search className="absolute w-4 h-4 -translate-y-1/2 left-3 top-1/2 text-slate-400" />
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
             <Input
               placeholder="Search by ID, status, departure, arrival..."
-              className="pl-10 text-white border-slate-800 bg-slate-900"
+              className="border-slate-800 bg-slate-900 pl-10 text-white"
             />
           </div>
 
@@ -289,7 +116,7 @@ function RouteComponent() {
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="outline"
-                    className="text-white border-slate-800 bg-slate-900"
+                    className="border-slate-800 bg-slate-900 text-white"
                   >
                     {filter}
                   </Button>
@@ -416,7 +243,7 @@ function ScrollToTopButton() {
     <Button
       variant="outline"
       size="icon"
-      className="fixed z-40 border-none rounded-full bottom-8 right-8 bg-black/50 hover:bg-black/70 hover:text-white"
+      className="fixed bottom-8 right-8 z-40 rounded-full border-none bg-black/50 hover:bg-black/70 hover:text-white"
       onClick={() => {
         window.scrollTo({
           top: 0,
@@ -444,11 +271,11 @@ function TenderList() {
 
   return (
     <>
-      <div className="relative z-10 order-last w-full min-h-screen rounded-lg bg-slate-950/30 backdrop-blur-lg md:order-first">
+      <div className="relative z-10 order-last min-h-screen w-full rounded-lg bg-slate-950/30 backdrop-blur-lg md:order-first">
         <img
           src={subHeadTenderListSvg}
           alt="sub-head"
-          className="w-full h-8 px-4 mt-2 mb-6"
+          className="mb-6 mt-2 h-8 w-full px-4"
         />
         <Tabs defaultValue="general">
           <div className="sticky top-12 rounded bg-sky-950 px-6 py-2 md:top-[3.5rem]">
@@ -456,7 +283,7 @@ function TenderList() {
               <Input
                 type="search"
                 placeholder="搜索"
-                className="w-full h-8 col-span-2 bg-transparent border-sky-800 focus:ring-sky-500 focus:ring-offset-0 focus-visible:ring-sky-500 focus-visible:ring-offset-0"
+                className="col-span-2 h-8 w-full border-sky-800 bg-transparent focus:ring-sky-500 focus:ring-offset-0 focus-visible:ring-sky-500 focus-visible:ring-offset-0"
                 onChange={(e) => {
                   navigate({
                     to: ".",
@@ -481,7 +308,7 @@ function TenderList() {
                   });
                 }}
               >
-                <SelectTrigger className="w-full h-8 bg-transparent border-sky-800 focus:ring-sky-500 focus:ring-offset-0">
+                <SelectTrigger className="h-8 w-full border-sky-800 bg-transparent focus:ring-sky-500 focus:ring-offset-0">
                   <SelectValue placeholder="状态" />
                 </SelectTrigger>
                 <SelectContent>
@@ -496,7 +323,7 @@ function TenderList() {
               </Select>
 
               <Select>
-                <SelectTrigger className="w-full h-8 bg-transparent border-sky-800 focus:ring-sky-500 focus:ring-offset-0">
+                <SelectTrigger className="h-8 w-full border-sky-800 bg-transparent focus:ring-sky-500 focus:ring-offset-0">
                   <SelectValue placeholder="日期" />
                 </SelectTrigger>
                 <SelectContent>
@@ -509,7 +336,7 @@ function TenderList() {
               </Select>
             </div>
           </div>
-          <div className="flex justify-between px-6 pt-2 pb-1 text-sm text-slate-400">
+          <div className="flex justify-between px-6 pb-1 pt-2 text-sm text-slate-400">
             <div>当前显示: {filteredTenders?.length || 0} 个项目</div>
             <div>总计: {tenders?.length || 0} 个项目</div>
           </div>
@@ -523,7 +350,7 @@ function TenderList() {
                   // }}
                   to="/tenders/$id"
                   params={{ id: tender?.id ?? "" }}
-                  className="grid grid-cols-3 gap-4 px-6 py-4 transition-colors rounded-lg hover:bg-gradient-to-br hover:from-brand/40 hover:to-brand/10"
+                  className="grid grid-cols-3 gap-4 rounded-lg px-6 py-4 transition-colors hover:bg-gradient-to-br hover:from-brand/40 hover:to-brand/10"
                 >
                   <img
                     src={tender?.images?.at(0)}
@@ -531,7 +358,7 @@ function TenderList() {
                     className="aspect-[5/3] rounded"
                   />
                   <div className="col-span-2 space-y-1">
-                    <h2 className="font-semibold line-clamp-1">
+                    <h2 className="line-clamp-1 font-semibold">
                       {tender?.name}
                     </h2>
                     <div className="text-sm">
@@ -584,8 +411,8 @@ function CarouselDemo() {
           <TenderTypeCard />
         </CarouselItem>
       </CarouselContent>
-      <CarouselPrevious className="w-6 h-full border-none rounded -left-0 bg-slate-950/30 hover:bg-slate-950/50 2xl:hidden" />
-      <CarouselNext className="w-6 h-full border-none rounded -right-0 bg-slate-950/30 hover:bg-slate-950/50 2xl:hidden" />
+      <CarouselPrevious className="-left-0 h-full w-6 rounded border-none bg-slate-950/30 hover:bg-slate-950/50 2xl:hidden" />
+      <CarouselNext className="-right-0 h-full w-6 rounded border-none bg-slate-950/30 hover:bg-slate-950/50 2xl:hidden" />
     </Carousel>
   );
 }

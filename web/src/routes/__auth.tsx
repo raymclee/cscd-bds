@@ -28,7 +28,7 @@ export const Route = createFileRoute("/__auth")({
       {},
       { fetchPolicy: "store-or-network" },
     ).toPromise();
-    if (!data?.session) {
+    if (!data?.session?.userId) {
       throw redirect({
         to: "/login",
         params: { search: location.pathname },
