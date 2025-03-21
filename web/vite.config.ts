@@ -1,3 +1,4 @@
+import MillionLint from "@million/lint";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
@@ -6,7 +7,15 @@ import relay from "vite-plugin-relay";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
-  plugins: [relay, TanStackRouterVite({}), react(), viteTsconfigPaths()],
+  plugins: [
+    MillionLint.vite({
+      enabled: true,
+    }),
+    relay,
+    TanStackRouterVite({}),
+    react(),
+    viteTsconfigPaths(),
+  ],
   server:
     mode === "development"
       ? {
