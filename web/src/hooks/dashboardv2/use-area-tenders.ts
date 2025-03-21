@@ -1,4 +1,4 @@
-import { useLoaderData } from "@tanstack/react-router";
+import { useLoaderData, useSearch } from "@tanstack/react-router";
 import { AmapPageQuery } from "__generated__/AmapPageQuery.graphql";
 import { useMemo } from "react";
 import { usePreloadedQuery } from "react-relay";
@@ -8,14 +8,8 @@ import { useMapV2Store } from "~/store";
 export function useAreaTenders() {
   const preload = useLoaderData({ from: "/__auth/__dashboard/__amap" });
   const data = usePreloadedQuery<AmapPageQuery>(query, preload);
-  const selectedArea = useMapV2Store.use.selectedArea();
-  const currentAreaNode = useMapV2Store.use.selectedAreaNode();
 
-  const nodeProps = currentAreaNode?.getProps();
-
-  const adcodes = currentAreaNode
-    ?.getSubFeatures()
-    ?.map((f: any) => f.properties.adcode);
+  const search = useSearch({ from: "/__auth/__dashboard/__amap" });
 
   const allTenders = useMemo(() => {
     return (
@@ -25,31 +19,47 @@ export function useAreaTenders() {
     );
   }, [data.node?.areas?.edges]);
 
+  // const tenders = useMemo(() => {
+  //   if (nodeProps?.level === "province" || nodeProps?.level === "city") {
+  //     return allTenders.filter((t) => {
+  //       switch (nodeProps?.level) {
+  //         case "province":
+  //         case "city":
+  //           return (
+  //             adcodes?.includes(t?.city?.adcode) ||
+  //             adcodes?.includes(t?.district?.adcode)
+  //           );
+  //         // return t?.map(
+  //         //   (e) =>
+  //         //     adcodes?.includes(e?.node?.city?.adcode) ||
+  //         //     adcodes?.includes(e?.node?.district.adcode),
+  //         // );
+  //         // adcodes?.includes(t?.node?.city?.adcode) ||
+  //         // adcodes?.includes(t?.node?.district.adcode)
+  //       }
+  //     });
+  //   } else if (selectedArea) {
+  //     return selectedArea?.tenders?.edges?.map((e) => e?.node);
+  //   } else {
+  //     return allTenders;
+  //   }
+  // }, [allTenders, adcodes, nodeProps, selectedArea]);
+
   const tenders = useMemo(() => {
-    if (nodeProps?.level === "province" || nodeProps?.level === "city") {
-      return allTenders.filter((t) => {
-        switch (nodeProps?.level) {
-          case "province":
-          case "city":
-            return (
-              adcodes?.includes(t?.city?.adcode) ||
-              adcodes?.includes(t?.district?.adcode)
-            );
-          // return t?.map(
-          //   (e) =>
-          //     adcodes?.includes(e?.node?.city?.adcode) ||
-          //     adcodes?.includes(e?.node?.district.adcode),
-          // );
-          // adcodes?.includes(t?.node?.city?.adcode) ||
-          // adcodes?.includes(t?.node?.district.adcode)
-        }
-      });
-    } else if (selectedArea) {
-      return selectedArea?.tenders?.edges?.map((e) => e?.node);
-    } else {
-      return allTenders;
+    if (search.d) {
+      return allTenders.filter((t) => t?.district?.adcode === search.d);
     }
-  }, [allTenders, adcodes, nodeProps, selectedArea]);
+    if (search.c) {
+      return allTenders.filter((t) => t?.city?.adcode === search.c);
+    }
+    if (search.p) {
+      return allTenders.filter((t) => t?.province?.adcode === search.p);
+    }
+    if (search.a) {
+      return allTenders.filter((t) => t?.area?.code === search.a);
+    }
+    return allTenders;
+  }, [allTenders, search.a, search.p, search.d, search.c]);
 
   return tenders;
 }

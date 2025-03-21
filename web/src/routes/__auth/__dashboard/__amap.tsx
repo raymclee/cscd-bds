@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import AMapLoader from "@amap/amap-jsapi-loader";
 import { loadQuery } from "react-relay";
 import node, { AmapPageQuery } from "__generated__/AmapPageQuery.graphql";
-
+import * as v from "valibot";
 export const Route = createFileRoute("/__auth/__dashboard/__amap")({
   async beforeLoad({ context }) {
     await AMapLoader.load({
@@ -27,4 +27,25 @@ export const Route = createFileRoute("/__auth/__dashboard/__amap")({
       userId: ctx.context.session.userId,
     });
   },
+  validateSearch: v.object({
+    p: v.optional(
+      v.pipe(
+        v.number(),
+        v.transform((value) => Number(value)),
+      ),
+    ),
+    d: v.optional(
+      v.pipe(
+        v.number(),
+        v.transform((value) => Number(value)),
+      ),
+    ),
+    c: v.optional(
+      v.pipe(
+        v.number(),
+        v.transform((value) => Number(value)),
+      ),
+    ),
+    a: v.optional(v.string()),
+  }),
 });

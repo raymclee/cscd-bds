@@ -94,42 +94,6 @@ function RouteComponent() {
   return (
     <>
       {/* Search and Filters */}
-      <div className="hidden px-6 py-4">
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <div className="relative w-72">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
-            <Input
-              placeholder="Search by ID, status, departure, arrival..."
-              className="border-slate-800 bg-slate-900 pl-10 text-white"
-            />
-          </div>
-
-          <div className="flex gap-4">
-            {[
-              "Status: 3",
-              "Vehicle: 2",
-              "Total value: > $25k",
-              "Load: 5",
-              "Carrier: 5",
-            ].map((filter) => (
-              <DropdownMenu key={filter}>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className="border-slate-800 bg-slate-900 text-white"
-                  >
-                    {filter}
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuItem>Option 1</DropdownMenuItem>
-                  <DropdownMenuItem>Option 2</DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ))}
-          </div>
-        </div>
-      </div>
 
       {/* Main Content */}
       <div className="py-4 md:px-6">
@@ -271,7 +235,7 @@ function TenderList() {
 
   return (
     <>
-      <div className="relative z-10 order-last min-h-screen w-full rounded-lg bg-slate-950/30 backdrop-blur-lg md:order-first">
+      <div className="relative z-10 order-last min-h-screen w-full rounded-lg bg-slate-950/50 backdrop-blur md:order-first">
         <img
           src={subHeadTenderListSvg}
           alt="sub-head"
@@ -411,8 +375,8 @@ function CarouselDemo() {
           <TenderTypeCard />
         </CarouselItem>
       </CarouselContent>
-      <CarouselPrevious className="-left-0 h-full w-6 rounded border-none bg-slate-950/30 hover:bg-slate-950/50 2xl:hidden" />
-      <CarouselNext className="-right-0 h-full w-6 rounded border-none bg-slate-950/30 hover:bg-slate-950/50 2xl:hidden" />
+      <CarouselPrevious className="-left-0 h-full w-6 rounded border-none bg-slate-950/30 hover:bg-slate-950/50 hover:text-white 2xl:hidden" />
+      <CarouselNext className="-right-0 h-full w-6 rounded border-none bg-slate-950/30 hover:bg-slate-950/50 hover:text-white 2xl:hidden" />
     </Carousel>
   );
 }

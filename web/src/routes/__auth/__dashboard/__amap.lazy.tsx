@@ -4,6 +4,8 @@ import {
   useMatch,
   useMatches,
   useNavigate,
+  useParams,
+  useSearch,
 } from "@tanstack/react-router";
 import { AmapPageQuery } from "__generated__/AmapPageQuery.graphql";
 import { useEffect, useRef, useState } from "react";
@@ -56,16 +58,54 @@ export const query = graphql`
                     status
                     createdAt
                     estimatedAmount
-                    tenderDate
-                    images
                     customer {
+                      id
+                      name
                       ownerType
+                      area {
+                        id
+                        name
+                      }
                     }
+                    followingSales {
+                      id
+                      name
+                    }
+                    images
+                    fullAddress
+                    tenderDate
+                    discoveryDate
+                    contractor
+                    designUnit
+                    tenderForm
+                    keyProject
+                    contractForm
+                    tenderingAgency
+                    consultingFirm
+                    facadeConsultant
+                    contractForm
+                    timeLimitRating
+                    sizeAndValueRating
+                    creditAndPaymentRating
+                    customerRelationshipRating
+                    competitivePartnershipRating
+                    timeLimitRatingOverview
+                    sizeAndValueRatingOverview
+                    creditAndPaymentRatingOverview
+                    customerRelationshipRatingOverview
+                    competitivePartnershipRatingOverview
+                    tenderWinCompany
+                    tenderCode
+                    developer
+                    architect
+                    tenderClosingDate
+                    constructionArea
+                    tenderWinAmount
+                    tenderWinDate
                     area {
                       code
                       name
                     }
-
                     province {
                       adcode
                       name
@@ -78,6 +118,10 @@ export const query = graphql`
                       name
                       adcode
                     }
+                    geoCoordinate {
+                      coordinates
+                    }
+                    geoBounds
                   }
                 }
               }
@@ -119,21 +163,38 @@ export const Route = createLazyFileRoute("/__auth/__dashboard/__amap")({
 });
 
 function M() {
-  const lastPath = useMatches({
-    select(matches) {
-      console.log(matches);
-      return matches.at(-1)?.fullPath.replace("/v2", "");
-    },
-  });
+  // const lastMatch = useMatches({
+  //   select(matches) {
+  //     return matches.at(-1);
+  //   },
+  // });
+  const search = useSearch({ from: "/__auth/__dashboard/__amap" });
 
-  console.log(lastPath);
   useEffect(() => {
-    if (lastPath === "") {
-      useMapV2Store.getState().renderAreas();
-    } else if (lastPath?.startsWith("/areas")) {
+    // console.log("lastMatch", lastMatch);
+    // const lastPath = lastMatch?.fullPath.replace("/v2", "");
+    // console.log("lastPath", lastPath);
+    // if (lastPath === "") {
+    //   useMapV2Store.getState().renderAreas();
+    // } else if (lastPath?.startsWith("/areas")) {
+    //   if (lastMatch?.params && "adcode" in lastMatch?.params) {
+    //     useMapV2Store.getState().renderAdcode(lastMatch?.params.adcode);
+    //   } else {
+    //     useMapV2Store.getState().renderArea();
+    //   }
+    // }
+    if (search.d) {
+      useMapV2Store.getState().renderAdcode(String(search.d));
+    } else if (search.c) {
+      useMapV2Store.getState().renderAdcode(String(search.c));
+    } else if (search.p) {
+      useMapV2Store.getState().renderAdcode(String(search.p));
+    } else if (search.a) {
       useMapV2Store.getState().renderArea();
+    } else {
+      useMapV2Store.getState().renderAreas();
     }
-  }, [lastPath]);
+  }, [search]);
 
   return <></>;
 }
@@ -146,6 +207,30 @@ function RouteComponent() {
   const [loading, setLoading] = useState(true);
   const preload = Route.useLoaderData();
   const data = usePreloadedQuery<AmapPageQuery>(query, preload);
+  const search = useSearch({ from: "/__auth/__dashboard/__amap" });
+
+  useEffect(() => {
+    if (!search.a) {
+      return;
+    }
+    const unsub = useMapV2Store.subscribe((state, prevState) => {
+      if (
+        prevState.areas?.edges?.length !== state.areas?.edges?.length &&
+        search.a
+      ) {
+        const area = state.areas?.edges?.find(
+          (e) => e?.node?.code === search.a,
+        );
+        if (area?.node) {
+          useMapV2Store.setState({ selectedArea: area.node });
+        }
+      }
+    });
+
+    return () => {
+      unsub();
+    };
+  }, [search.a]);
 
   useEffect(() => {
     useMapV2Store.setState({ areas: data.node?.areas as any });
@@ -164,7 +249,6 @@ function RouteComponent() {
 
   useEffect(() => {
     map?.on("complete", () => {
-      console.log("onComplete");
       setLoading(false);
     });
   }, [map]);
@@ -173,7 +257,7 @@ function RouteComponent() {
     <>
       {!loading && <M />}
       <div className="relative">
-        <nav className="sticky top-0 z-20 h-14 bg-slate-950/30 backdrop-blur-3xl">
+        <nav className="sticky top-0 z-20 h-14 bg-slate-950/50 backdrop-blur-3xl">
           <img
             src={headSvg}
             alt="head"
