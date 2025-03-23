@@ -147,3 +147,65 @@
 .group-hover\:bg-corner-border-glow {
   animation: corner-border-pulse 2s infinite;
 }
+
+/* 导航器数据流动画效果 */
+@keyframes data-flow {
+  0% {
+    background-position: 0% 0%;
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    background-position: 200% 0%;
+    opacity: 0.3;
+  }
+}
+
+.animate-data-flow {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 150, 255, 0.05) 0%,
+    rgba(0, 210, 255, 0.2) 25%,
+    rgba(0, 150, 255, 0.05) 50%,
+    rgba(0, 150, 255, 0.05) 100%
+  );
+  background-size: 200% 100%;
+  animation: data-flow 3s linear infinite;
+}
+
+/* 全息扫描效果 */
+@keyframes holographic-scan {
+  0% {
+    background-position: 0% 0%;
+    opacity: 0;
+  }
+  25% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0;
+  }
+  75% {
+    opacity: 0.3;
+  }
+  100% {
+    background-position: 100% 0%;
+    opacity: 0;
+  }
+}
+
+.holographic-effect {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 220, 255, 0.2) 45%,
+    rgba(0, 180, 255, 0.2) 55%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  animation: holographic-scan 4s ease-in-out infinite;
+}

@@ -128,7 +128,7 @@ export function TenderTypeCard() {
   } satisfies ChartConfig;
 
   return (
-    <Card className="h-56 text-white border-none bg-slate-950/60 backdrop-blur">
+    <Card className="h-56 text-white border-none bg-slate-900/60 backdrop-blur">
       <CardHeader>
         <img
           src={headerSvg}

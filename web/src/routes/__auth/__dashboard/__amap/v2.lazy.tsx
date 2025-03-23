@@ -2,17 +2,19 @@ import {
   createLazyFileRoute,
   Link,
   Outlet,
+  useLocation,
   useParams,
+  useRouterState,
   useSearch,
 } from "@tanstack/react-router";
-import { ChevronUp, ChevronDown } from "lucide-react";
+import { ChevronUp, ChevronDown, ChevronRight } from "lucide-react";
 import * as React from "react";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Tabs, TabsContent } from "~/components/ui/tabs";
 
 import dayjs from "dayjs";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { graphql } from "relay-runtime";
 import subHeadTenderListSvg from "~/assets/dashboard/svg/sub-head-tender-list.svg";
 import { AmountSummaryCard } from "~/components/dashboardv2/amount-summary-card";
@@ -43,15 +45,14 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "~/components/ui/tooltip";
-import { motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import "~/styles/tech-animations.css";
+import { cn } from "~/lib/utils";
+import { useMapV2Store } from "~/store";
+import { Tender } from "~/graphql/graphql";
 
-const MotionCarousel = motion(Carousel);
-const MotionCarouselContent = motion(CarouselContent);
-const MotionCarouselItem = motion(CarouselItem);
-const MotionCarouselPrevious = motion(CarouselPrevious);
-const MotionCarouselNext = motion(CarouselNext);
-const MotionButton = motion(Button);
+const MotionCarouselItem = motion.create(CarouselItem);
+const MotionButton = motion.create(Button);
 
 export const districtsQuery = graphql`
   query v2PageDistrictQuery($adcode: Int!) {
@@ -81,99 +82,298 @@ export const Route = createLazyFileRoute("/__auth/__dashboard/__amap/v2")({
 function RouteComponent() {
   return (
     <>
-      {/* Search and Filters */}
-
       {/* Main Content */}
       <div className="py-4 md:px-6">
-        {/* <div className="flex items-center justify-between mb-6">
-            <h1 className="text-2xl font-semibold text-white">
-              Shipment Tracking
-            </h1>
-            <div className="flex space-x-4">
-              <Button
-                variant="outline"
-                className="text-white border-slate-800 bg-slate-900"
-              >
-                Map view
-              </Button>
-              <Button
-                variant="outline"
-                className="text-white border-slate-800 bg-slate-900"
-              >
-                List view
-              </Button>
-              <Button className="text-white bg-blue-600 hover:bg-blue-700">
-                Add shipping
-              </Button>
-            </div>
-          </div> */}
-
         <div className="relative grid grid-cols-1 gap-1 md:grid-cols-2 md:gap-4 lg:grid-cols-3 xl:grid-cols-4">
-          {/* Shipment Details */}
-
           <TenderList />
-
-          {/* Stats */}
-          <div className="sticky z-[11] mb-6 w-full flex-1 self-start md:top-[4.5rem] lg:col-span-2 xl:col-span-3">
-            {/* <div className="grid gap-6 lg:grid-cols-3">
-              <div className="p-6 rounded-xl bg-black/50 backdrop-blur-lg">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center space-x-2">
-                    <MapPin className="text-green-500" />
-                    <span className="text-slate-400">Total distance</span>
-                  </div>
-                </div>
-                <div className="mb-2 text-3xl font-bold text-white">
-                  400 miles
-                </div>
-                <div className="text-sm text-red-500">
-                  +50 miles due to road repairs
-                </div>
-              </div>
-
-              <div className="p-6 rounded-xl bg-slate-900">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center space-x-2">
-                    <Package className="text-blue-500" />
-                    <span className="text-slate-400">Total weight</span>
-                  </div>
-                </div>
-                <div className="mb-2 text-3xl font-bold text-white">
-                  15,000 lbs
-                </div>
-                <div className="text-sm text-green-500">
-                  +500 lbs was added in Sioux City
-                </div>
-              </div>
-
-              <div className="p-6 rounded-xl bg-slate-900">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center space-x-2">
-                    <Truck className="text-purple-500" />
-                    <span className="text-slate-400">Total value</span>
-                  </div>
-                </div>
-                <div className="mb-2 text-3xl font-bold text-white">$250k</div>
-                <div className="text-sm text-slate-400">No updates</div>
-              </div>
-            </div> */}
-            <CarouselDemo />
-          </div>
-
-          {/* <div className="p-6 rounded-xl bg-slate-900"> */}
-          {/* Map placeholder - In a real application, you would integrate with a mapping service */}
-          {/* <div className="flex h-[300px] items-center justify-center rounded-lg bg-slate-800">
-                <span className="text-slate-400">Map View</span>
-              </div> */}
-          {/* </div> */}
+          <Cards />
         </div>
       </div>
 
       <ScrollToTopButton />
-      <TenderDetailCard />
-
-      <Outlet />
+      {/* <TenderDetailCard /> */}
+      <TenderDetail />
+      <Navigator />
     </>
+  );
+}
+
+function Navigator() {
+  const areas = useMapV2Store.use.areas();
+  const { selectedArea, province, city, district } = Route.useSearch({
+    structuralSharing: false,
+    select(state) {
+      const selectedArea = areas?.edges?.find(
+        (a) => a?.node?.code === state.a,
+      )?.node;
+      const province = selectedArea?.tenders?.edges?.find(
+        (t) => t?.node?.province?.adcode === state.p,
+      )?.node?.province;
+      const city = selectedArea?.tenders?.edges?.find(
+        (t) => t?.node?.city?.adcode === state.c,
+      )?.node?.city;
+      const district = selectedArea?.tenders?.edges?.find(
+        (t) => t?.node?.district?.adcode === state.d,
+      )?.node?.district;
+      return {
+        selectedArea,
+        province,
+        city,
+        district,
+      };
+    },
+  });
+
+  if (!selectedArea) return null;
+
+  const tabs = [
+    {
+      id: 0,
+      label: selectedArea?.name,
+      search: {
+        a: selectedArea?.code,
+      } as Record<string, string | number | undefined>,
+    },
+  ];
+
+  if (province) {
+    tabs.push({
+      id: 1,
+      label: province?.name,
+      search: {
+        a: selectedArea?.code,
+        p: province?.adcode,
+      },
+    });
+  }
+
+  if (city) {
+    tabs.push({
+      id: 2,
+      label: city?.name,
+      search: {
+        a: selectedArea?.code,
+        p: province?.adcode,
+        c: city?.adcode,
+      },
+    });
+  }
+
+  if (district) {
+    tabs.push({
+      id: 3,
+      label: district?.name,
+      search: {
+        a: selectedArea?.code,
+        p: province?.adcode,
+        c: city?.adcode,
+        d: district?.adcode,
+      },
+    });
+  }
+
+  return (
+    <motion.div
+      initial={{ y: 100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{
+        type: "spring",
+        stiffness: 260,
+        damping: 20,
+        delay: 0.2,
+      }}
+      className="fixed bottom-0 z-40 transform -translate-x-1/2 left-1/2"
+    >
+      {/* Backdrop glow */}
+      <motion.div
+        className="absolute rounded-full -inset-1 opacity-60"
+        animate={{
+          boxShadow: [
+            "0 0 10px 2px rgba(0,150,255,0.4)",
+            "0 0 15px 4px rgba(0,150,255,0.6)",
+            "0 0 10px 2px rgba(0,150,255,0.4)",
+          ],
+        }}
+        transition={{
+          duration: 3,
+          repeat: Infinity,
+          repeatType: "reverse",
+        }}
+      />
+
+      {/* Container */}
+      <div className="fixed flex items-center justify-center h-10 px-4 -translate-x-1/2 border rounded-full bottom-6 left-1/2 gap-x-2 border-blue-500/30 bg-slate-900/60 backdrop-blur-md">
+        {/* Holographic scan effect */}
+        <div className="absolute inset-0 z-10 overflow-hidden rounded-full">
+          <div className="absolute inset-0 holographic-effect"></div>
+        </div>
+
+        {/* Digital circuit lines - left side */}
+        <motion.div
+          className="absolute w-10 h-px origin-right pointer-events-none bg-cyan-400"
+          style={{ right: "100%", top: "35%" }}
+          initial={{ scaleX: 0, opacity: 0 }}
+          animate={{ scaleX: 1, opacity: [0, 0.8, 0.5] }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+        />
+        <motion.div
+          className="absolute w-16 h-px origin-right bg-blue-400 pointer-events-none"
+          style={{ right: "100%", top: "65%" }}
+          initial={{ scaleX: 0, opacity: 0 }}
+          animate={{ scaleX: 1, opacity: [0, 0.5, 0.7] }}
+          transition={{ duration: 0.7, delay: 0.1 }}
+        />
+
+        {/* Digital circuit lines - right side */}
+        <motion.div
+          className="absolute w-10 h-px origin-left pointer-events-none bg-cyan-400"
+          style={{ left: "100%", top: "35%" }}
+          initial={{ scaleX: 0, opacity: 0 }}
+          animate={{ scaleX: 1, opacity: [0, 0.8, 0.5] }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+        />
+        <motion.div
+          className="absolute w-16 h-px origin-left bg-blue-400 pointer-events-none"
+          style={{ left: "100%", top: "65%" }}
+          initial={{ scaleX: 0, opacity: 0 }}
+          animate={{ scaleX: 1, opacity: [0, 0.5, 0.7] }}
+          transition={{ duration: 0.7, delay: 0.1 }}
+        />
+
+        <Link to=".">
+          <MotionButton
+            className={cn(
+              "relative z-20 overflow-hidden border-none hover:bg-transparent hover:text-white",
+              // activeTab === tab.id
+              //   ? "text-white"
+              //   : "text-slate-400 hover:text-slate-200",
+            )}
+            whileHover={{
+              scale: 1.25,
+              transition: { duration: 0.2 },
+            }}
+            whileTap={{ scale: 0.95 }}
+            variant={"ghost"}
+            size={"sm"}
+          >
+            全国
+          </MotionButton>
+        </Link>
+        <ChevronRight className="w-4 h-4" />
+
+        {tabs.map((tab, i) => (
+          <Fragment key={tab.id}>
+            {i > 0 && <ChevronRight className="w-4 h-4" />}
+            <Link to="." search={tab.search} disabled={i === tabs.length - 1}>
+              <MotionButton
+                disabled={i === tabs.length - 1}
+                variant={"ghost"}
+                size={"sm"}
+                // onClick={() => setActiveTab(tab.id)}
+                className={cn(
+                  "relative z-20 overflow-hidden border-none hover:bg-transparent hover:text-white",
+                  // activeTab === tab.id
+                  //   ? "text-white"
+                  //   : "text-slate-400 hover:text-slate-200",
+                )}
+                whileHover={{
+                  scale: 1.25,
+                  transition: { duration: 0.2 },
+                }}
+                whileTap={{ scale: 0.95 }}
+              >
+                {/* Active tab indicator with data flow animation */}
+                {/* {activeTab === tab.id && (
+                  <motion.div
+                    layoutId="activeTabIndicator"
+                    className="absolute inset-0 rounded-lg animate-data-flow -z-10"
+                    initial={{ borderRadius: 8 }}
+                    animate={{ borderRadius: 8 }}
+                    transition={{
+                      type: "spring",
+                      bounce: 0.2,
+                      duration: 0.6,
+                    }}
+                  />
+                )} */}
+
+                {/* Tab content */}
+                <span className="relative z-10">{tab.label}</span>
+
+                {/* Active tab scan line */}
+                {/* {activeTab === tab.id && (
+                  <motion.div
+                    className="absolute inset-0 -z-[5] bg-gradient-to-b from-transparent via-cyan-500/20 to-transparent"
+                    animate={{
+                      y: ["100%", "-100%"],
+                      opacity: [0, 1, 0],
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      repeatType: "loop",
+                    }}
+                  />
+                )} */}
+
+                {/* Tech corners for active tab */}
+                {/* {activeTab === tab.id && ( */}
+                {/* <> */}
+                {/* Top left corner */}
+                {/* <motion.div
+                      className="absolute left-0 top-0 h-[2px] w-[8px] bg-cyan-400"
+                      animate={{ opacity: [0.4, 1, 0.4] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    />
+                    <motion.div
+                      className="absolute left-0 top-0 h-[8px] w-[2px] bg-cyan-400"
+                      animate={{ opacity: [0.4, 1, 0.4] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    /> */}
+
+                {/* Top right corner */}
+                {/* <motion.div
+                      className="absolute right-0 top-0 h-[2px] w-[8px] bg-cyan-400"
+                      animate={{ opacity: [0.4, 1, 0.4] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    />
+                    <motion.div
+                      className="absolute right-0 top-0 h-[8px] w-[2px] bg-cyan-400"
+                      animate={{ opacity: [0.4, 1, 0.4] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    /> */}
+
+                {/* Bottom left corner */}
+                {/* <motion.div
+                      className="absolute bottom-0 left-0 h-[2px] w-[8px] bg-cyan-400"
+                      animate={{ opacity: [0.4, 1, 0.4] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    />
+                    <motion.div
+                      className="absolute bottom-0 left-0 h-[8px] w-[2px] bg-cyan-400"
+                      animate={{ opacity: [0.4, 1, 0.4] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    /> */}
+
+                {/* Bottom right corner */}
+                {/* <motion.div
+                  className="absolute bottom-0 right-0 h-[2px] w-[8px] bg-cyan-400"
+                  animate={{ opacity: [0.4, 1, 0.4] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                />
+                <motion.div
+                  className="absolute bottom-0 right-0 h-[8px] w-[2px] bg-cyan-400"
+                  animate={{ opacity: [0.4, 1, 0.4] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                /> */}
+                {/* </>
+                )} */}
+              </MotionButton>
+            </Link>
+          </Fragment>
+        ))}
+      </div>
+    </motion.div>
   );
 }
 
@@ -195,19 +395,66 @@ function ScrollToTopButton() {
     <TooltipProvider delayDuration={100}>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button
-            variant="outline"
-            size="icon"
-            className="fixed z-40 border-none rounded-full bottom-8 right-8 bg-slate-950/60 hover:bg-slate-950/50 hover:text-white"
-            onClick={() => {
-              window.scrollTo({
-                top: 0,
-                behavior: "smooth",
-              });
-            }}
-          >
-            <ChevronUp size={44} />
-          </Button>
+          <div className="fixed z-40 bottom-8 right-8">
+            <div className="relative">
+              {/* Backdrop glow */}
+              <motion.div
+                className="absolute rounded-full -inset-1 opacity-60"
+                animate={{
+                  boxShadow: [
+                    "0 0 10px 2px rgba(0,150,255,0.4)",
+                    "0 0 15px 4px rgba(0,150,255,0.6)",
+                    "0 0 10px 2px rgba(0,150,255,0.4)",
+                  ],
+                }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  repeatType: "reverse",
+                }}
+              />
+
+              {/* Digital circuit lines */}
+              <motion.div
+                className="absolute w-6 h-px origin-right bg-blue-400 pointer-events-none opacity-70"
+                style={{ right: "100%", top: "40%" }}
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1, opacity: [0, 0.7, 0.4] }}
+                transition={{ duration: 0.3, delay: 0.1 }}
+              />
+              <motion.div
+                className="absolute w-6 h-px origin-right pointer-events-none bg-cyan-400 opacity-70"
+                style={{ right: "100%", top: "60%" }}
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1, opacity: [0, 0.5, 0.7] }}
+                transition={{ duration: 0.3, delay: 0.2 }}
+              />
+
+              <MotionButton
+                variant="outline"
+                size="icon"
+                className="relative border-none rounded-full bg-slate-950/60 hover:bg-slate-950/50 hover:text-white"
+                onClick={() => {
+                  window.scrollTo({
+                    top: 0,
+                    behavior: "smooth",
+                  });
+                }}
+                whileHover={{
+                  boxShadow: "0 0 15px 2px rgba(0,180,255,0.5)",
+                  backgroundColor: "rgba(10, 20, 30, 0.8)",
+                }}
+                whileTap={{ scale: 0.95 }}
+              >
+                {/* Holographic scan effect */}
+                <div className="absolute inset-0 z-0 overflow-hidden rounded-full pointer-events-none">
+                  <div className="absolute inset-0 holographic-effect"></div>
+                </div>
+
+                <ChevronUp size={44} className="relative z-10" />
+              </MotionButton>
+            </div>
+          </div>
         </TooltipTrigger>
         <TooltipContent className="dark">
           <p>回到顶部</p>
@@ -219,13 +466,12 @@ function ScrollToTopButton() {
 
 function TenderList() {
   const tenders = useAreaTenders();
-  const { q, status, sort } = Route.useSearch();
+  const { q, status, sort, t, d } = Route.useSearch();
   const navigate = Route.useNavigate();
 
   const filteredTenders = tenders
-    ?.filter(
-      (t) =>
-        q !== undefined && t?.name?.toLowerCase().includes(q.toLowerCase()),
+    ?.filter((t) =>
+      q ? t?.name?.toLowerCase().includes(q.toLowerCase()) : true,
     )
     .filter((t) =>
       status ? (status === 0 ? true : t?.status === status) : true,
@@ -233,13 +479,13 @@ function TenderList() {
 
   return (
     <>
-      <div className="relative z-10 order-last min-h-[calc(100vh-6rem)] w-full rounded-lg bg-slate-950/60 backdrop-blur md:order-first">
+      <div className="relative z-10 order-last min-h-[calc(100vh-6rem)] w-full rounded-lg bg-slate-900/60 backdrop-blur md:order-first">
         <img
           src={subHeadTenderListSvg}
           alt="sub-head"
-          className="w-full h-8 px-4 mt-2 mb-6"
+          className="w-full h-8 px-4 mt-2 mb-4"
         />
-        <div className="sticky top-12 z-20 rounded bg-sky-950 px-6 py-2 md:top-[3.5rem]">
+        <div className="sticky z-20 rounded bg-gradient-to-br from-sky-950 to-sky-900 px-6 py-2 md:top-[3.5rem]">
           <div className="grid gap-2 pt-2 md:grid-cols-4 md:pt-0.5">
             <Input
               type="search"
@@ -250,7 +496,7 @@ function TenderList() {
                   to: ".",
                   search: (prev) => ({
                     ...prev,
-                    q: e.target.value,
+                    q: e.target.value === "" ? undefined : e.target.value,
                   }),
                   replace: true,
                 });
@@ -367,9 +613,53 @@ function TenderList() {
           {filteredTenders?.map((tender) => (
             <Link
               key={tender?.id}
-              to="/tenders/$id"
-              params={{ id: tender?.id ?? "" }}
+              to="."
+              search={(prev) => ({
+                ...prev,
+                a: tender?.area?.code,
+                p: tender?.province?.adcode,
+                d: tender?.district?.adcode,
+                c: tender?.city?.adcode,
+                t: tender?.id,
+              })}
+              replace={!!t}
               className="block group"
+              onMouseOver={(e) => {
+                if (!d || !tender?.geoCoordinate?.coordinates) return;
+                const marker = useMapV2Store.getState().getMarker(tender?.id);
+                if (marker) {
+                  marker.setOptions({
+                    zIndex: 13,
+                  });
+                }
+                const a = document.querySelector("#marker-" + tender?.id);
+                const b = a?.closest(".amap-marker-label");
+                if (b instanceof HTMLElement) {
+                  b.classList.add("scale-125");
+                }
+
+                useMapV2Store
+                  .getState()
+                  .map?.setCenter(
+                    tender?.geoCoordinate?.coordinates as [number, number],
+                    false,
+                    300,
+                  );
+              }}
+              onMouseLeave={() => {
+                if (!d || !tender?.geoCoordinate?.coordinates) return;
+                const marker = useMapV2Store.getState().getMarker(tender?.id);
+                if (marker) {
+                  marker.setOptions({
+                    zIndex: 12,
+                  });
+                }
+                const a = document.querySelector("#marker-" + tender?.id);
+                const b = a?.closest(".amap-marker-label");
+                if (b instanceof HTMLElement) {
+                  b.classList.remove("scale-125");
+                }
+              }}
             >
               <div className="relative grid grid-cols-3 gap-4 px-6 py-4 overflow-hidden transition-all duration-300 rounded-lg group-hover:scale-105 group-hover:bg-gradient-to-br group-hover:from-sky-950 group-hover:to-sky-700">
                 {/* Full card overlay effect */}
@@ -448,192 +738,179 @@ function TenderList() {
   );
 }
 
-function CarouselDemo() {
-  const search = useSearch({ from: "/__auth/__dashboard/__amap" });
+function Cards() {
+  const show = useSearch({
+    from: "/__auth/__dashboard/__amap",
+    select(state) {
+      return Boolean(state.d || state.t);
+    },
+  });
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const toggleCollapse = () => {
     setIsCollapsed((prev) => !prev);
   };
 
-  const visible = Boolean(isCollapsed || !!search.d);
+  const visible = Boolean(!isCollapsed && !show);
 
   return (
     <>
-      <motion.div
-        initial={{ opacity: 1 }}
-        animate={{
-          y: visible ? [0, -50, -300] : 0,
-          opacity: visible ? [1, 0.7, 0] : 1,
-        }}
-        transition={{
-          duration: 0.3,
-          ease: "easeOut",
-        }}
-        style={{
-          willChange: "transform, opacity",
-          position: "relative",
-        }}
+      <div
+        className={cn(
+          "sticky mb-6 w-full flex-1 self-start md:top-[4.5rem] lg:col-span-2 xl:col-span-3",
+          show ? "z-auto" : "z-[11]",
+        )}
       >
-        {/* Glitch overlay effect */}
-        <motion.div
-          className="absolute inset-0 z-10 overflow-hidden pointer-events-none"
-          initial={{ opacity: 0 }}
-          animate={{
-            opacity: visible ? [0, 0.7, 0] : 0,
-            clipPath: visible
-              ? [
-                  "polygon(0 0, 100% 0, 100% 100%, 0 100%)",
-                  "polygon(0 5%, 100% 0, 100% 95%, 0 100%)",
-                  "polygon(0 0, 100% 0, 100% 100%, 0 100%)",
-                ]
-              : "polygon(0 0, 100% 0, 100% 100%, 0 100%)",
-          }}
-          transition={{
-            duration: visible ? 0.2 : 0,
-            times: visible ? [0, 0.5, 1] : [0, 1],
-            ease: "easeOut",
-          }}
-          style={{
-            background:
-              "linear-gradient(125deg, rgba(0,212,255,0.2) 0%, rgba(0,91,188,0.2) 100%)",
-            mixBlendMode: "color-dodge",
-          }}
-        />
+        <AnimatePresence mode="wait">
+          {!show && (
+            <motion.div
+              variants={{
+                initial: { y: "-100%", opacity: 0 },
+                visible: { y: "0", opacity: 1 },
+                exit: { y: "-100%", opacity: 0 },
+              }}
+              initial="initial"
+              animate={"visible"}
+              exit="exit"
+              // className="fixed z-40 transform -translate-x-1/2 bottom-6 left-1/2"
+            >
+              <Carousel
+                plugins={[]}
+                opts={{ loop: true }}
+                className="px-8 2xl:px-0"
+              >
+                <CarouselContent>
+                  {[
+                    <AmountSummaryCard key="amount" />,
+                    <RankingCard key="ranking" />,
+                    <TenderAddedCard key="tender" />,
+                    <TenderTypeCard key="type" />,
+                  ].map((card, index) => (
+                    <CarouselItem
+                      key={index}
+                      className="lg:basis-1/2 xl:basis-1/3 2xl:basis-1/4"
+                      // initial={{ opacity: 0, y: 20 }}
+                      // animate={{
+                      //   opacity: 1,
+                      //   y: 0,
+                      //   filter: visible
+                      //     ? [
+                      //         "brightness(100%)",
+                      //         "brightness(120%)",
+                      //         "brightness(100%)",
+                      //       ]
+                      //     : "brightness(100%)",
+                      // }}
+                      // transition={{
+                      //   delay: index * 0.02,
+                      //   duration: 0.15,
+                      //   filter: {
+                      //     duration: 0.1,
+                      //     repeat: 0,
+                      //   },
+                      // }}
+                    >
+                      {card}
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <CarouselPrevious className="w-6 h-full border-none rounded -left-0 bg-slate-950/30 hover:bg-slate-950/50 hover:text-white 2xl:hidden" />
+                <CarouselNext className="w-6 h-full border-none rounded -right-0 bg-slate-950/30 hover:bg-slate-950/50 hover:text-white 2xl:hidden" />
+              </Carousel>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-        <motion.div
-          animate={{
-            x: visible ? ["0%", "0.2%", "0%"] : "0%",
-            filter: visible
-              ? ["hue-rotate(0deg)", "hue-rotate(5deg)", "hue-rotate(0deg)"]
-              : "hue-rotate(0deg)",
-          }}
-          transition={{
-            duration: 0.1,
-            repeat: 0,
-          }}
-          style={{
-            willChange: "transform, filter",
-          }}
-        >
-          <Carousel
-            plugins={[]}
-            opts={{ loop: true }}
-            className="px-8 2xl:px-0"
-          >
-            <CarouselContent>
-              {[
-                <AmountSummaryCard key="amount" />,
-                <RankingCard key="ranking" />,
-                <TenderAddedCard key="tender" />,
-                <TenderTypeCard key="type" />,
-              ].map((card, index) => (
-                <MotionCarouselItem
-                  key={index}
-                  className="lg:basis-1/2 xl:basis-1/3 2xl:basis-1/4"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{
-                    opacity: 1,
-                    y: 0,
-                    filter: visible
-                      ? [
-                          "brightness(100%)",
-                          "brightness(120%)",
-                          "brightness(100%)",
-                        ]
-                      : "brightness(100%)",
-                  }}
-                  transition={{
-                    delay: index * 0.02,
-                    duration: 0.15,
-                    filter: {
-                      duration: 0.1,
-                      repeat: 0,
-                    },
-                  }}
-                >
-                  {card}
-                </MotionCarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselPrevious className="w-6 h-full border-none rounded -left-0 bg-slate-950/30 hover:bg-slate-950/50 hover:text-white 2xl:hidden" />
-            <CarouselNext className="w-6 h-full border-none rounded -right-0 bg-slate-950/30 hover:bg-slate-950/50 hover:text-white 2xl:hidden" />
-          </Carousel>
-        </motion.div>
-      </motion.div>
-
-      {/* Tech button container with positioning */}
-      <div className="flex justify-end mt-2">
-        <TooltipProvider delayDuration={100}>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <div className="relative">
-                {/* Tech circle decoration around button */}
-                <motion.div
-                  className="pointer-events-none absolute -inset-1.5 rounded-full opacity-60"
-                  animate={{
-                    boxShadow: [
-                      "0 0 0 rgba(0,150,255,0.5)",
-                      "0 0 8px rgba(0,150,255,0.7)",
-                      "0 0 0 rgba(0,150,255,0.5)",
-                    ],
-                    scale: [1, 1.05, 1],
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    repeatType: "loop",
-                  }}
-                />
-
-                {/* Digital circuit lines */}
-                <motion.div
-                  className="absolute w-6 h-px origin-right bg-blue-400 pointer-events-none opacity-70"
-                  style={{ right: "100%", top: "40%" }}
-                  initial={{ scaleX: 0 }}
-                  animate={{ scaleX: 1, opacity: [0, 0.7, 0.4] }}
-                  transition={{ duration: 0.3, delay: 0.1 }}
-                />
-                <motion.div
-                  className="absolute w-6 h-px origin-right pointer-events-none bg-cyan-400 opacity-70"
-                  style={{ right: "100%", top: "60%" }}
-                  initial={{ scaleX: 0 }}
-                  animate={{ scaleX: 1, opacity: [0, 0.5, 0.7] }}
-                  transition={{ duration: 0.3, delay: 0.2 }}
-                />
-
-                <MotionButton
-                  size="icon"
-                  variant="outline"
-                  className="relative border-none rounded-full bg-slate-950/60 hover:bg-slate-950/50 hover:text-white"
-                  onClick={toggleCollapse}
-                  whileTap={{ scale: 0.95 }}
-                  whileHover={{
-                    boxShadow: "0 0 15px 2px rgba(0,180,255,0.5)",
-                    backgroundColor: "rgba(10, 20, 30, 0.8)",
-                  }}
-                >
-                  <motion.div
+        {/* Tech button container with positioning */}
+        {/* <div className="flex justify-end mt-2">
+          <TooltipProvider delayDuration={100}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="relative"> */}
+        {/* Tech circle decoration around button */}
+        {/* <motion.div
+                    className="pointer-events-none absolute -inset-1.5 rounded-full opacity-60"
                     animate={{
-                      rotate: visible ? 180 : 0,
+                      boxShadow: [
+                        "0 0 0 rgba(0,150,255,0.5)",
+                        "0 0 8px rgba(0,150,255,0.7)",
+                        "0 0 0 rgba(0,150,255,0.5)",
+                      ],
+                      scale: [1, 1.05, 1],
                     }}
                     transition={{
-                      type: "spring",
-                      stiffness: 260,
-                      damping: 20,
+                      duration: 2,
+                      repeat: Infinity,
+                      repeatType: "loop",
+                    }}
+                  /> */}
+
+        {/* Digital circuit lines */}
+        {/* <motion.div
+                    className="absolute w-6 h-px origin-right bg-blue-400 pointer-events-none opacity-70"
+                    style={{ right: "100%", top: "40%" }}
+                    initial={{ scaleX: 0 }}
+                    animate={{ scaleX: 1, opacity: [0, 0.7, 0.4] }}
+                    transition={{ duration: 0.3, delay: 0.1 }}
+                  />
+                  <motion.div
+                    className="absolute w-6 h-px origin-right pointer-events-none bg-cyan-400 opacity-70"
+                    style={{ right: "100%", top: "60%" }}
+                    initial={{ scaleX: 0 }}
+                    animate={{ scaleX: 1, opacity: [0, 0.5, 0.7] }}
+                    transition={{ duration: 0.3, delay: 0.2 }}
+                  />
+
+                  <MotionButton
+                    size="icon"
+                    variant="outline"
+                    className="relative border-none rounded-full bg-slate-950/60 hover:bg-slate-950/50 hover:text-white"
+                    onClick={toggleCollapse}
+                    whileTap={{ scale: 0.95 }}
+                    whileHover={{
+                      boxShadow: "0 0 15px 2px rgba(0,180,255,0.5)",
+                      backgroundColor: "rgba(10, 20, 30, 0.8)",
                     }}
                   >
-                    {<ChevronUp />}
-                  </motion.div>
-                </MotionButton>
-              </div>
-            </TooltipTrigger>
-            <TooltipContent className="dark">
-              <p>{visible ? "展开" : "收起"}</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+                    <motion.div
+                      animate={{
+                        rotate: visible ? 180 : 0,
+                      }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 260,
+                        damping: 20,
+                      }}
+                    >
+                      {<ChevronDown />}
+                    </motion.div>
+                  </MotionButton>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent className="dark">
+                <p>{visible ? "收起" : "展开"}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div> */}
       </div>
     </>
   );
+}
+
+function TenderDetail() {
+  // const tender = useLocation({ select: (location) => location.state.tender });
+  const tenderId = Route.useSearch({ select: (sp) => sp.t });
+
+  if (tenderId) {
+    const tender = useMapV2Store
+      .getState()
+      .areas?.edges?.flatMap((a) => a?.node?.tenders.edges?.map((t) => t?.node))
+      .find((t) => t?.id === tenderId);
+    return (
+      <div className="fixed top-0 right-0 z-50 text-9xl">{tender?.name}</div>
+    );
+  }
+
+  return <></>;
 }

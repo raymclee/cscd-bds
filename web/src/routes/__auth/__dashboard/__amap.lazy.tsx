@@ -1,8 +1,8 @@
 import {
   createLazyFileRoute,
+  Match,
+  MatchRoute,
   Outlet,
-  useMatch,
-  useMatches,
   useNavigate,
   useParams,
   useSearch,
@@ -146,6 +146,15 @@ export const query = graphql`
       }
     }
 
+    competitors {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+
     customers {
       edges {
         node {
@@ -162,12 +171,72 @@ export const Route = createLazyFileRoute("/__auth/__dashboard/__amap")({
   component: RouteComponent,
 });
 
+function RouteComponent() {
+  const preload = Route.useLoaderData();
+  const data = usePreloadedQuery<AmapPageQuery>(query, preload);
+
+  useEffect(() => {
+    useMapV2Store.setState({ areas: data.node?.areas as any });
+  }, [data.node?.areas?.edges?.length]);
+
+  return (
+    <div className="relative">
+      <nav className="sticky top-0 z-20 h-14 bg-slate-900/60 backdrop-blur">
+        <img
+          src={headSvg}
+          alt="head"
+          className="mx-auto h-full w-full object-cover lg:w-[70%]"
+        />
+      </nav>
+      <Outlet />
+      <Map />
+    </div>
+  );
+}
+
+function Map() {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+  const container = useRef<HTMLDivElement>(null);
+  const initMap = useMapV2Store.use.initMap();
+  const map = useMapV2Store.use.map();
+
+  useMapRouting({ enabled: !loading });
+
+  useEffect(() => {
+    if (!container.current) {
+      return;
+    }
+    initMap(container.current, navigate);
+
+    return () => {
+      map?.destroy();
+      useMapV2Store.setState({
+        areas: null,
+      });
+    };
+  }, []);
+
+  useEffect(() => {
+    map?.on("complete", () => {
+      setLoading(false);
+    });
+  }, [map]);
+
+  return (
+    // <MatchRoute to="/v2">
+    <div
+      ref={container}
+      id="map"
+      // className="inset-0 aspect-video md:fixed md:aspect-auto"
+      className="invisible fixed inset-0 md:visible"
+    ></div>
+    // </MatchRoute>
+  );
+}
+
 function useMapRouting({ enabled = true }: { enabled?: boolean }) {
   const search = useSearch({ from: "/__auth/__dashboard/__amap" });
-  const tenderId = useParams({
-    from: "/__auth/__dashboard/__amap/tenders/$id",
-    shouldThrow: false,
-  });
 
   useEffect(() => {
     if (!enabled) {
@@ -181,10 +250,10 @@ function useMapRouting({ enabled = true }: { enabled?: boolean }) {
       useMapV2Store.getState().renderAdcode(String(search.p));
     } else if (search.a) {
       useMapV2Store.getState().renderArea();
-    } else if (!tenderId) {
+    } else if (!search.t) {
       useMapV2Store.getState().renderAreas();
     }
-  }, [enabled, search.a, search.c, search.d, search.p, tenderId]);
+  }, [enabled, search.a, search.c, search.d, search.p]);
 
   useEffect(() => {
     if (!search.a) {
@@ -208,56 +277,4 @@ function useMapRouting({ enabled = true }: { enabled?: boolean }) {
       unsub();
     };
   }, [search.a]);
-}
-
-function RouteComponent() {
-  const container = useRef<HTMLDivElement>(null);
-  const initMap = useMapV2Store.use.initMap();
-  const map = useMapV2Store.use.map();
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
-  const preload = Route.useLoaderData();
-  const data = usePreloadedQuery<AmapPageQuery>(query, preload);
-
-  useMapRouting({ enabled: !loading });
-
-  useEffect(() => {
-    useMapV2Store.setState({ areas: data.node?.areas as any });
-  }, [data.node?.areas?.edges?.length]);
-
-  useEffect(() => {
-    if (!container.current) {
-      return;
-    }
-    initMap(container.current, navigate);
-
-    return () => {
-      map?.destroy();
-      useMapV2Store.setState({
-        areas: null,
-      });
-    };
-  }, []);
-
-  useEffect(() => {
-    map?.on("complete", () => {
-      setLoading(false);
-    });
-  }, [map]);
-
-  return (
-    <>
-      <div className="relative">
-        <nav className="sticky top-0 z-20 h-14 bg-slate-950/60 backdrop-blur">
-          <img
-            src={headSvg}
-            alt="head"
-            className="mx-auto h-full w-full object-cover lg:w-[70%]"
-          />
-        </nav>
-        <Outlet />
-      </div>
-      <div ref={container} id="map" className="fixed inset-0"></div>
-    </>
-  );
 }

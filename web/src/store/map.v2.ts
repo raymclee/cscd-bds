@@ -1,17 +1,8 @@
+import { useNavigate } from "@tanstack/react-router";
 import { create } from "zustand";
-import { Tender, Area, AreaConnection } from "~/graphql/graphql";
+import { Area, AreaConnection, Tender } from "~/graphql/graphql";
 import { getDistrictColor, tenderStatusBoundColor } from "~/lib/color";
-import {
-  findTenderWithLevel,
-  fixAmount,
-  getDistrictZoomLevel,
-} from "~/lib/helper";
-import {
-  useNavigate,
-  Match,
-  useLocation,
-  ParsedLocation,
-} from "@tanstack/react-router";
+import { fixAmount } from "~/lib/helper";
 import { getDistrictZoomLevelv2 } from "~/lib/helper.v2";
 
 const DEFAULT_CENTER = [94, 46] as [number, number];
@@ -42,6 +33,7 @@ type Action = {
   renderArea: () => void;
   renderMarker: (props: any, hidable?: boolean) => void;
   renderAdcode: (adcode: string) => void;
+  getMarker: (tenderId: string) => AMap.CircleMarker | undefined;
 };
 
 export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
@@ -59,7 +51,7 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
     const map = new AMap.Map(container, {
       mapStyle: "amap://styles/blue",
       center: DEFAULT_CENTER,
-      zoom: 4,
+      zoom: 2,
       // zoomEnable: false,
       scrollWheel: false,
       doubleClickZoom: false,
@@ -135,7 +127,7 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
         };
       });
 
-      for (const edge of areas?.edges || []) {
+      for (const [i, edge] of (areas?.edges || []).entries()) {
         if (!edge) {
           continue;
         }
@@ -151,6 +143,14 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
             ),
         );
 
+        const areaOfficeMap = {
+          HD: new AMap.Pixel(-90, 10),
+          HN: new AMap.Pixel(-180, 10),
+          XB: new AMap.Pixel(-100, 40),
+          HB: new AMap.Pixel(-100, 90),
+          GA: new AMap.Pixel(-80, 30),
+        };
+
         //@ts-expect-error
         const marker = new AMapUI.SimpleMarker({
           // @ts-expect-error
@@ -158,8 +158,7 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
           label: {
             content: `
             <div class="relative flex flex-col p-2 overflow-hidden border rounded-lg shadow-lg backdrop-blur-sm bg-sky-950 border-blue-500/30 group">
-              <!-- Tech scan line -->
-              <div class="absolute inset-0 translate-y-full opacity-0 pointer-events-none group-hover:animate-scan-line bg-gradient-to-b from-transparent via-cyan-500/15 to-transparent"></div>
+           
               
               <!-- Corner borders - top left -->
               <div class="group-hover:bg-corner-border-glow absolute left-0 top-0 h-[2px] w-6 bg-transparent opacity-0 transition-all duration-300 group-hover:opacity-100"></div>
@@ -177,7 +176,7 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
               <div class="group-hover:bg-corner-border-glow absolute bottom-0 right-0 h-[2px] w-6 bg-transparent opacity-0 transition-all duration-300 group-hover:opacity-100"></div>
               <div class="group-hover:bg-corner-border-glow absolute bottom-0 right-0 h-6 w-[2px] bg-transparent opacity-0 transition-all duration-300 group-hover:opacity-100"></div>
               
-              <div class="relative z-10">
+              <div class="relative z-20">
                 <div class="text-base font-semibold transition-all duration-300 group-hover:text-shadow-glow group-hover:text-blue-200">${area?.name}</div>
                 <div class="flex items-baseline gap-3 mt-1">
                   <div class="relative">
@@ -196,9 +195,10 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
                   }
                 </div>
               </div>
+              
             </div>
         `,
-            offset: new AMap.Pixel(20, 70),
+            offset: areaOfficeMap[area?.code as keyof typeof areaOfficeMap],
           },
           map,
           position: area?.center?.coordinates,
@@ -220,7 +220,7 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
       }
     });
     map?.setZoomAndCenter(DEFAULT_ZOOM, DEFAULT_CENTER);
-    map?.setFitView();
+    // map?.setFitView();
     set({ markers });
   },
   renderArea: () => {
@@ -319,7 +319,12 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
       iconStyle: AMapUI.SimpleMarker.getBuiltInIconStyles("default"),
       label: {
         content: `
-        <div class="relative flex flex-col p-2 overflow-hidden border rounded-lg shadow-lg backdrop-blur-sm bg-sky-950 border-blue-500/30 group">
+            <div class="relative flex flex-col p-2 overflow-hidden border rounded-lg shadow-lg backdrop-blur-sm bg-sky-950 border-blue-500/30 group">
+            <!-- Holographic scan effect -->
+            <div class="absolute inset-0 z-10 overflow-hidden pointer-events-none">
+              <div class="absolute inset-0 holographic-effect"></div>
+            </div>
+            
             <!-- Tech scan line -->
             <div class="absolute inset-0 translate-y-full opacity-0 pointer-events-none group-hover:animate-scan-line bg-gradient-to-b from-transparent via-cyan-500/15 to-transparent"></div>
             
@@ -344,7 +349,7 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
             </div>
           </div>
           `,
-        offset: new AMap.Pixel(-50, 0),
+        offset: new AMap.Pixel(-80, 0),
       },
       map,
       position: props.centroid || props.center,
@@ -466,6 +471,11 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
               label: {
                 content: `
                  <div id="marker-${tender.id}" class="relative flex flex-col p-2 overflow-hidden border rounded-lg shadow-lg backdrop-blur-sm bg-sky-950 border-blue-500/30 group">
+                  <!-- Holographic scan effect -->
+                  <div class="absolute inset-0 z-10 overflow-hidden pointer-events-none">
+                    <div class="absolute inset-0 holographic-effect"></div>
+                  </div>
+                  
                   <!-- Tech scan line -->
                   <div class="absolute inset-0 translate-y-full opacity-0 pointer-events-none group-hover:animate-scan-line bg-gradient-to-b from-transparent via-cyan-500/15 to-transparent"></div>
                   
@@ -478,10 +488,6 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
                   <div class="group-hover:bg-corner-border-glow absolute bottom-0 right-0 h-[2px] w-4 bg-transparent opacity-0 transition-all duration-300 group-hover:opacity-100"></div>
                   
                   <div class="relative z-10 text-sm font-medium text-center transition-all duration-300 text-wrap group-hover:text-shadow-glow group-hover:text-blue-200 line-clamp-2">${tender.name}</div>
-                  
-                  <!-- Data dots at corners -->
-                  <div class="absolute w-1 h-1 rounded-full opacity-0 group-hover:animate-pulse-dot right-1 bottom-1 bg-cyan-400"></div>
-                  <div class="absolute w-1 h-1 bg-blue-400 rounded-full opacity-0 group-hover:animate-pulse-dot left-1 bottom-1" style="animation-delay: 0.3s"></div>
                 </div>
                 `,
                 offset: new AMap.Pixel(-80, offsetY),
@@ -511,7 +517,7 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
             // mapCircles.push(polygon);
             mapCircles.push(label);
           } else if (tender?.geoCoordinate?.coordinates) {
-            const offsetY = tender.name && tender.name?.length > 10 ? -20 : -10;
+            const offsetY = tender.name && tender.name?.length > 10 ? -35 : -25;
             // @ts-expect-error
             const label = new AMapUI.SimpleMarker({
               // @ts-expect-error
@@ -519,6 +525,11 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
               label: {
                 content: `
                 <div id="marker-${tender.id}" class="w-[10rem] relative overflow-hidden rounded-lg backdrop-blur-sm bg-sky-950 border border-blue-500/30 shadow-lg group px-2 py-1.5">
+                  <!-- Holographic scan effect -->
+                  <div class="absolute inset-0 z-10 overflow-hidden pointer-events-none">
+                    <div class="absolute inset-0 holographic-effect"></div>
+                  </div>
+                  
                   <!-- Tech scan line -->
                   <div class="absolute inset-0 translate-y-full opacity-0 pointer-events-none group-hover:animate-scan-line bg-gradient-to-b from-transparent via-cyan-500/15 to-transparent"></div>
                   
@@ -533,7 +544,7 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
                   <div class="relative z-10 text-sm font-medium text-center transition-all duration-300 text-wrap group-hover:text-shadow-glow group-hover:text-blue-200 line-clamp-2">${tender.name}</div>
                 </div>
                 `,
-                offset: new AMap.Pixel(-70, offsetY),
+                offset: new AMap.Pixel(-235, offsetY),
               },
               map,
               position: new AMap.LngLat(
@@ -599,5 +610,9 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
 
       map?.setBounds(areaNode.getBounds(), false, [140, 0, 20, 20]);
     });
+  },
+  getMarker(tenderId) {
+    const { mapCircles } = get();
+    return mapCircles.find((c) => c.getExtData()?.tenderId === tenderId);
   },
 }));

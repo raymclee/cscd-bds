@@ -86,7 +86,96 @@
 }
 
 .amap-marker-label {
-  @apply cursor-pointer overflow-hidden rounded-lg border-blue-500/30 bg-slate-900/80 p-0 text-white shadow-lg backdrop-blur-sm transition-all duration-300 hover:shadow-[0_0_10px_2px_rgba(0,180,255,0.5)];
+  @apply p-0 overflow-hidden text-white transition-all duration-300 rounded-lg shadow-lg cursor-pointer select-none border-blue-500/30 bg-slate-900/80 backdrop-blur-sm;
+  box-shadow: 0 0 0 1px rgba(0, 180, 255, 0.3);
+  animation: marker-border-glow 3s infinite alternate;
+  position: relative;
+}
+
+.amap-marker-label::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  padding: 2px;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 200, 255, 0.1) 0%,
+    rgba(0, 140, 255, 0.1) 50%,
+    rgba(0, 200, 255, 0.1) 100%
+  );
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0.5;
+  animation: border-gradient-rotate 4s linear infinite;
+}
+
+@keyframes border-gradient-rotate {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 200% 200%;
+  }
+}
+
+@keyframes marker-border-glow {
+  0% {
+    box-shadow:
+      0 0 0 1px rgba(0, 180, 255, 0.2),
+      0 0 4px 0 rgba(0, 200, 255, 0.3);
+  }
+  50% {
+    box-shadow:
+      0 0 0 1px rgba(0, 180, 255, 0.4),
+      0 0 8px 1px rgba(0, 200, 255, 0.5);
+  }
+  100% {
+    box-shadow:
+      0 0 0 1px rgba(0, 180, 255, 0.2),
+      0 0 4px 0 rgba(0, 200, 255, 0.3);
+  }
+}
+
+.amap-marker-label:hover {
+  animation: marker-border-glow-hover 1.5s infinite alternate;
+}
+
+.amap-marker-label:hover::before {
+  opacity: 1;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 200, 255, 0.3) 0%,
+    rgba(0, 140, 255, 0.2) 50%,
+    rgba(0, 200, 255, 0.3) 100%
+  );
+  background-size: 200% 200%;
+  animation: border-gradient-rotate 2s linear infinite;
+}
+
+@keyframes marker-border-glow-hover {
+  0% {
+    box-shadow:
+      0 0 0 1px rgba(0, 180, 255, 0.5),
+      0 0 8px 1px rgba(0, 200, 255, 0.5);
+  }
+  50% {
+    box-shadow:
+      0 0 0 1px rgba(0, 180, 255, 0.7),
+      0 0 15px 2px rgba(0, 200, 255, 0.7);
+  }
+  100% {
+    box-shadow:
+      0 0 0 1px rgba(0, 180, 255, 0.5),
+      0 0 8px 1px rgba(0, 200, 255, 0.5);
+  }
 }
 
 .amap-marker-label:hover .group-hover\:animate-scan-line {
