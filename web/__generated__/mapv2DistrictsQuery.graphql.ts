@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<350f94cc3e1d080cfe7af2f924b05f2a>>
+ * @generated SignedSource<<5661641c6b67f2487098c5300f0799b6>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -9,10 +9,10 @@
 // @ts-nocheck
 
 import { ConcreteRequest } from 'relay-runtime';
-export type v2PageDistrictQuery$variables = {
+export type mapv2DistrictsQuery$variables = {
   adcode: number;
 };
-export type v2PageDistrictQuery$data = {
+export type mapv2DistrictsQuery$data = {
   readonly districts: {
     readonly edges: ReadonlyArray<{
       readonly node: {
@@ -30,9 +30,9 @@ export type v2PageDistrictQuery$data = {
     } | null | undefined> | null | undefined;
   };
 };
-export type v2PageDistrictQuery = {
-  response: v2PageDistrictQuery$data;
-  variables: v2PageDistrictQuery$variables;
+export type mapv2DistrictsQuery = {
+  response: mapv2DistrictsQuery$data;
+  variables: mapv2DistrictsQuery$variables;
 };
 
 const node: ConcreteRequest = (function(){
@@ -123,7 +123,7 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "v2PageDistrictQuery",
+    "name": "mapv2DistrictsQuery",
     "selections": [
       {
         "alias": null,
@@ -167,7 +167,7 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "v2PageDistrictQuery",
+    "name": "mapv2DistrictsQuery",
     "selections": [
       {
         "alias": null,
@@ -207,16 +207,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "d376a60bae454dfb3a8c93b58424e175",
+    "cacheID": "9361bddb8aafd470010a5a553d3c321a",
     "id": null,
     "metadata": {},
-    "name": "v2PageDistrictQuery",
+    "name": "mapv2DistrictsQuery",
     "operationKind": "query",
-    "text": "query v2PageDistrictQuery(\n  $adcode: Int!\n) {\n  districts(where: {adcode: $adcode}) {\n    edges {\n      node {\n        plots {\n          edges {\n            node {\n              id\n              name\n              geoBounds\n              colorHex\n            }\n          }\n        }\n        id\n      }\n    }\n  }\n}\n"
+    "text": "query mapv2DistrictsQuery(\n  $adcode: Int!\n) {\n  districts(where: {adcode: $adcode}) {\n    edges {\n      node {\n        plots {\n          edges {\n            node {\n              id\n              name\n              geoBounds\n              colorHex\n            }\n          }\n        }\n        id\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "40a3d4e87f3dd3b502e4d7dc2b2a0816";
+(node as any).hash = "60c0d34be92491001c94feba3a65571c";
 
 export default node;
