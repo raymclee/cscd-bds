@@ -78,7 +78,7 @@ export function TenderRatingChart({
             /> */}
             <PolarGrid
               // radialLines={false}
-              className="fill-brand opacity-20"
+              className="fill-[var(--brand)] opacity-20"
               // polarRadius={[50, 60, 70, 80, 90, 100]}
               polarRadius={[1, 2, 3, 4, 5].map((x) => x * 15.7)}
             />
@@ -98,7 +98,7 @@ export function TenderRatingChart({
                     {...props}
                     className="flex flex-col"
                   >
-                    <tspan className="fill-gray-300">
+                    <tspan className="fill-gray-100">
                       {data.rating / 20 || 0}
                     </tspan>
                     <tspan
@@ -113,16 +113,12 @@ export function TenderRatingChart({
                 );
               }}
             />
-            <Radar
-              dataKey="rating"
-              fill="var(--color-brand)"
-              fillOpacity={0.5}
-            />
+            <Radar dataKey="rating" fill="var(--brand)" fillOpacity={0.5} />
           </RadarChart>
         </ChartContainer>
       </CardContent>
       <CardFooter className="flex-col gap-2 text-xl">
-        <div className="flex items-center gap-2 leading-none font-bold text-white">
+        <div className="flex items-center gap-2 font-bold leading-none text-white">
           <span className="text-xl">总分:</span>{" "}
           {(sizeAndValueRating || 0) +
             (timeLimitRating || 0) +

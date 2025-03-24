@@ -61,6 +61,7 @@
     "@react-three/drei": "^9.120.5",
     "@react-three/fiber": "^8.17.10",
     "@tanstack/react-router": "^1.114.23",
+    "@tanstack/react-virtual": "^3.13.4",
     "@tanstack/router-devtools": "^1.91.3",
     "@ui5/webcomponents-react-charts": "^2.5.0",
     "antd": "^5.24.3",

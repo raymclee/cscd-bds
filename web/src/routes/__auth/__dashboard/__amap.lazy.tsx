@@ -200,6 +200,7 @@ function Map() {
   const container = useRef<HTMLDivElement>(null);
   const initMap = useMapV2Store.use.initMap();
   const map = useMapV2Store.use.map();
+  const { RelayEnvironment } = Route.useRouteContext();
 
   useMapRouting({ enabled: !loading });
 
@@ -207,7 +208,7 @@ function Map() {
     if (!container.current) {
       return;
     }
-    initMap(container.current, navigate);
+    initMap(container.current, navigate, RelayEnvironment);
 
     return () => {
       map?.destroy();

@@ -1,15 +1,15 @@
 import { useLoaderData } from "@tanstack/react-router";
-import { MapIndexPageQuery } from "__generated__/MapIndexPageQuery.graphql";
 import { useMemo } from "react";
 import { usePreloadedQuery } from "react-relay";
-import { mapIndexPageQuery } from "~/routes/__auth/__dashboard/__scaled/__map/index.lazy";
 import { useMapStore } from "~/store/map";
+import { AmapPageQuery } from "__generated__/AmapPageQuery.graphql";
+import { query } from "~/routes/__auth/__dashboard/__amap.lazy";
 
 export function useAreaTenders() {
   const preload = useLoaderData({
     from: "/__auth/__dashboard/__scaled/__map/",
   });
-  const data = usePreloadedQuery<MapIndexPageQuery>(mapIndexPageQuery, preload);
+  const data = usePreloadedQuery<AmapPageQuery>(query, preload);
   const selectedArea = useMapStore((s) => s.selectedArea);
   const currentAreaNode = useMapStore((state) => state.currentAreaNode);
 

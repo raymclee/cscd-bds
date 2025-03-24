@@ -1,4 +1,6 @@
 import { useNavigate } from "@tanstack/react-router";
+import { mapv2DistrictsQuery } from "__generated__/mapv2DistrictsQuery.graphql";
+import { Environment, fetchQuery, graphql } from "relay-runtime";
 import { create } from "zustand";
 import { Area, AreaConnection, Tender } from "~/graphql/graphql";
 import { getDistrictColor, tenderStatusBoundColor } from "~/lib/color";
@@ -10,13 +12,14 @@ const DEFAULT_ZOOM = 4;
 
 type State = {
   map: AMap.Map | null;
+  relayEnvironment: Environment | null;
   satelliteLayer: AMap.TileLayer | null;
   districtExplorer: any;
   areas: AreaConnection | null;
   selectedArea: Area | null;
   selectedTender: Tender | null;
   markers: AMap.Marker[];
-  mapCircles: AMap.CircleMarker[];
+  mapCircles: AMap.CircleMarker[] | AMap.Polygon[];
   navigate: ReturnType<typeof useNavigate> | null;
 };
 
@@ -24,20 +27,42 @@ type Action = {
   initMap: (
     container: HTMLDivElement,
     navigate: ReturnType<typeof useNavigate>,
+    relayEnvironment: Environment,
     opts?: Partial<AMap.MapOptions>,
   ) => void;
   clearMap: () => void;
-  resetMap: () => void;
   moveToTender: (tender: Tender) => void;
   renderAreas: (areas?: AreaConnection) => void;
   renderArea: () => void;
   renderMarker: (props: any, hidable?: boolean) => void;
   renderAdcode: (adcode: string) => void;
-  getMarker: (tenderId: string) => AMap.CircleMarker | undefined;
+  getMarker: (tenderId: string) => AMap.CircleMarker | AMap.Polygon | undefined;
 };
+
+export const districtsQuery = graphql`
+  query mapv2DistrictsQuery($adcode: Int!) {
+    districts(where: { adcode: $adcode }) {
+      edges {
+        node {
+          plots {
+            edges {
+              node {
+                id
+                name
+                geoBounds
+                colorHex
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
 
 export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
   map: null,
+  relayEnvironment: null,
   satelliteLayer: null,
   districtExplorer: null,
   areas: null,
@@ -47,11 +72,11 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
   markers: [],
   mapCircles: [],
   navigate: null,
-  initMap: (container, navigate, opts) => {
+  initMap: (container, navigate, relayEnvironment, opts) => {
     const map = new AMap.Map(container, {
       mapStyle: "amap://styles/blue",
       center: DEFAULT_CENTER,
-      zoom: 2,
+      zoom: DEFAULT_ZOOM,
       // zoomEnable: false,
       scrollWheel: false,
       doubleClickZoom: false,
@@ -65,7 +90,7 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
       preload: [100000],
     });
 
-    set({ map, districtExplorer, satelliteLayer, navigate });
+    set({ map, districtExplorer, satelliteLayer, navigate, relayEnvironment });
   },
   clearMap: () => {
     const { map, satelliteLayer, markers, districtExplorer, mapCircles } =
@@ -75,12 +100,6 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
     map?.removeLayer(satelliteLayer!);
     map?.remove(markers);
     map?.remove(mapCircles);
-  },
-  resetMap: () => {
-    const { map, clearMap } = get();
-    clearMap();
-    map?.setZoomAndCenter(DEFAULT_ZOOM, DEFAULT_CENTER);
-    set({ markers: [], selectedArea: null });
   },
   moveToTender: (tender: Tender) => {
     const { map, satelliteLayer, markers, districtExplorer, clearMap } = get();
@@ -220,7 +239,7 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
       }
     });
     map?.setZoomAndCenter(DEFAULT_ZOOM, DEFAULT_CENTER);
-    // map?.setFitView();
+    map?.setFitView();
     set({ markers });
   },
   renderArea: () => {
@@ -396,23 +415,14 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
       clearMap,
       satelliteLayer,
       selectedArea,
+      relayEnvironment,
     } = get();
-    if (!map) {
+    if (!map || !relayEnvironment) {
       return;
     }
     clearMap();
-    // const area = areas?.find((d) =>
-    //   d?.provinces?.edges
-    //     ?.map((e) => e?.node)
-    //     .map((p) => p?.adcode)
-    //     .includes(props.adcode),
-    // ) as Area;
-    // if (area) {
-    //   useMapStore.setState({ selectedArea: area });
-    // }
-    // useMapStore.getState().push({ name: props.name, adcode: props.adcode });
-    // onFeatureOrMarkerClick(props);
-    districtExplorer.loadAreaNode(adcode, (error: any, areaNode: any) => {
+
+    districtExplorer.loadAreaNode(adcode, async (error: any, areaNode: any) => {
       if (error) {
         console.error(error);
         return;
@@ -445,12 +455,54 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
       if (areaProps.level === "district") {
         map?.addLayer(satelliteLayer!);
 
+        const mapCircles: AMap.CircleMarker[] | any[] | AMap.Polygon[] = [];
+
+        const districts = await fetchQuery<mapv2DistrictsQuery>(
+          relayEnvironment,
+          districtsQuery,
+          {
+            adcode: areaProps.adcode,
+          },
+        ).toPromise();
+
+        for (const plot of districts?.districts.edges
+          ?.map((e) => e?.node)
+          .flatMap((d) => d?.plots.edges)
+          .map((e) => e?.node) || []) {
+          const polygon = new AMap.Polygon();
+
+          polygon.setPath(plot?.geoBounds as AMap.LngLatLike[]);
+          polygon.setOptions({
+            fillColor: plot?.colorHex,
+            fillOpacity: 0.35,
+            strokeColor: plot?.colorHex,
+            strokeWeight: 2,
+          });
+
+          // @ts-expect-error
+          const label = new AMapUI.SimpleMarker({
+            // @ts-expect-error
+            iconStyle: AMapUI.SimpleMarker.getBuiltInIconStyles("default"),
+            label: {
+              content: `
+            <div class="w-[10rem] rounded-lg px-1 py-0.5 line-clamp-2">
+              <div class="text-sm font-medium text-center text-wrap">${plot?.name}</div>
+            </div>
+            `,
+              offset: new AMap.Pixel(-100, 30),
+            },
+            map,
+            position: polygon.getBounds()?.getCenter(),
+          });
+
+          mapCircles.push(polygon);
+          mapCircles.push(label);
+        }
+
         const tenders =
           selectedArea?.tenders.edges
             ?.map((e) => e?.node)
             .filter((t) => t?.district?.adcode === areaProps.adcode) || [];
-
-        const mapCircles: AMap.CircleMarker[] = [];
 
         for (const [i, tender] of tenders.entries()) {
           if (tender?.geoBounds) {
@@ -504,6 +556,13 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
               //   selectedTender: tender,
               //   tenderListVisible: false,
               // });
+              get().navigate?.({
+                to: "/v2",
+                search: (prev) => ({
+                  ...prev,
+                  t: tender.id,
+                }),
+              });
             });
             label.on("mouseover", () => {
               label.setOptions({ zIndex: 13 });
@@ -561,6 +620,13 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
               //   selectedTender: tender,
               //   tenderListVisible: false,
               // });
+              get().navigate?.({
+                to: "/v2",
+                search: (prev) => ({
+                  ...prev,
+                  t: tender.id,
+                }),
+              });
             });
             label.on("mouseover", () => {
               label.setOptions({ zIndex: 13 });

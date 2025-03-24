@@ -29,7 +29,6 @@ import { Tender } from "./graphql/graphql";
 // Set up a Router instance
 const router = createRouter({
   routeTree,
-  defaultStructuralSharing: true,
   // routeMasks: [tenderResultModalToTenderMask],
   defaultPreload: "intent",
   context: {
@@ -38,7 +37,7 @@ const router = createRouter({
   defaultPreloadStaleTime: 0,
   // defaultPendingMs: 5000,
   defaultErrorComponent: () => (
-    <div className="flex flex-col items-center justify-center min-h-screen space-y-2">
+    <div className="flex min-h-screen flex-col items-center justify-center space-y-2">
       <div className="text-2xl font-bold">500</div>
       <div className="text-lg">服务器错误</div>
     </div>

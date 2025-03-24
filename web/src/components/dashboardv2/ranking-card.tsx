@@ -20,12 +20,21 @@ export function RankingCard() {
   const data = usePreloadedQuery<AmapPageQuery>(query, preload);
 
   return (
-    <Card className="h-56 text-white border-none bg-slate-900/60 backdrop-blur">
+    <Card className="relative h-56 border-none bg-slate-900/60 text-white backdrop-blur">
+      {/* 科技感装饰线条 */}
+      <div className="absolute left-0 top-0 h-[2px] w-full bg-gradient-to-r from-transparent via-blue-500/50 to-transparent" />
+      <div className="absolute right-0 top-0 h-full w-[2px] bg-gradient-to-b from-transparent via-cyan-500/50 to-transparent" />
+      <div className="absolute bottom-0 left-0 h-[2px] w-full bg-gradient-to-r from-transparent via-blue-500/50 to-transparent" />
+      <div className="absolute left-0 top-0 h-full w-[2px] bg-gradient-to-b from-transparent via-cyan-500/50 to-transparent" />
+
+      {/* 全息扫描效果 */}
+      <div className="holographic-effect pointer-events-none absolute inset-0" />
+
       <CardHeader>
         <img
           src={headerSvg}
           alt="sub-head"
-          className="w-full h-8 select-none"
+          className="h-8 w-full select-none"
         />
       </CardHeader>
       <CardContent className="py-2">
@@ -36,15 +45,15 @@ export function RankingCard() {
                 <img
                   src={numberMap[(index + 1) as 1 | 2 | 3]}
                   alt={`number-${index + 1}`}
-                  className="w-6 h-6"
+                  className="h-6 w-6"
                 />
               ) : (
-                <div className="w-6 text-sm text-center text-slate-400">
+                <div className="w-6 text-center text-sm text-slate-400">
                   {index + 1}
                 </div>
               )}
-              <div className="flex flex-col flex-1">
-                <span className="text-sm line-clamp-1">{e?.node?.name}</span>
+              <div className="flex flex-1 flex-col">
+                <span className="line-clamp-1 text-sm">{e?.node?.name}</span>
               </div>
               <div className="text-sm">80%</div>
             </li>

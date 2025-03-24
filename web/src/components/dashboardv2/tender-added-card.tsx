@@ -70,19 +70,28 @@ export function TenderAddedCard() {
   ];
 
   return (
-    <Card className="h-56 text-white border-none bg-slate-900/60 backdrop-blur">
+    <Card className="relative h-56 border-none bg-slate-900/60 text-white backdrop-blur">
+      {/* 科技感装饰线条 */}
+      <div className="absolute left-0 top-0 h-[2px] w-full bg-gradient-to-r from-transparent via-blue-500/50 to-transparent" />
+      <div className="absolute right-0 top-0 h-full w-[2px] bg-gradient-to-b from-transparent via-cyan-500/50 to-transparent" />
+      <div className="absolute bottom-0 left-0 h-[2px] w-full bg-gradient-to-r from-transparent via-blue-500/50 to-transparent" />
+      <div className="absolute left-0 top-0 h-full w-[2px] bg-gradient-to-b from-transparent via-cyan-500/50 to-transparent" />
+
+      {/* 全息扫描效果 */}
+      <div className="holographic-effect pointer-events-none absolute inset-0" />
+
       <CardHeader>
         <img
           src={headerSvg}
           alt="sub-head"
-          className="w-full h-8 select-none"
+          className="h-8 w-full select-none"
         />
       </CardHeader>
       <CardContent className="pt-2">
         <ChartContainer
           config={chartConfig}
           //   className="aspect-auto h-32 w-full max-w-[85%]"
-          className="w-full h-32"
+          className="h-32 w-full"
         >
           <BarChart
             accessibilityLayer

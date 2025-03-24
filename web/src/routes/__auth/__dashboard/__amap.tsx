@@ -48,5 +48,7 @@ export const Route = createFileRoute("/__auth/__dashboard/__amap")({
     ),
     a: v.optional(v.string()),
     t: v.optional(v.string()),
+    sd: v.optional(v.string()),
+    ed: v.optional(v.string()),
   }),
 });

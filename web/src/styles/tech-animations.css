@@ -129,7 +129,7 @@
 }
 
 /* 角落直角边框发光效果 */
-@keyframes corner-border-pulse {
+/* @keyframes corner-border-pulse {
   0% {
     background: linear-gradient(90deg, #00c2ff 0%, rgba(0, 180, 255, 0) 100%);
     box-shadow: 0 0 4px rgba(0, 180, 255, 0.6);
@@ -142,10 +142,12 @@
     background: linear-gradient(90deg, #00c2ff 0%, rgba(0, 180, 255, 0) 100%);
     box-shadow: 0 0 4px rgba(0, 180, 255, 0.6);
   }
-}
+} */
 
 .group-hover\:bg-corner-border-glow {
-  animation: corner-border-pulse 2s infinite;
+  /* animation: corner-border-pulse 5s infinite; */
+  background: linear-gradient(90deg, #00c2ff 0%, rgba(0, 180, 255, 0) 100%);
+  box-shadow: 0 0 4px rgba(0, 180, 255, 0.6);
 }
 
 /* 导航器数据流动画效果 */
@@ -208,4 +210,44 @@
   pointer-events: none;
   mix-blend-mode: screen;
   animation: holographic-scan 4s ease-in-out infinite;
+}
+
+/* 新增：闪烁动画效果 */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s linear infinite;
+}
+
+/* 新增：边框发光效果 */
+@keyframes border-glow {
+  0% {
+    box-shadow:
+      0 0 5px rgba(0, 180, 255, 0.5),
+      0 0 10px rgba(0, 180, 255, 0.3),
+      0 0 15px rgba(0, 180, 255, 0.2);
+  }
+  50% {
+    box-shadow:
+      0 0 10px rgba(0, 180, 255, 0.8),
+      0 0 20px rgba(0, 180, 255, 0.5),
+      0 0 30px rgba(0, 180, 255, 0.3);
+  }
+  100% {
+    box-shadow:
+      0 0 5px rgba(0, 180, 255, 0.5),
+      0 0 10px rgba(0, 180, 255, 0.3),
+      0 0 15px rgba(0, 180, 255, 0.2);
+  }
+}
+
+.animate-border-glow {
+  animation: border-glow 2s ease-in-out infinite;
 }
