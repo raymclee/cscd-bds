@@ -188,6 +188,18 @@ func (f TenderCompetitorFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.V
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.TenderCompetitorMutation", m)
 }
 
+// The TenderProfileFunc type is an adapter to allow the use of ordinary
+// function as TenderProfile mutator.
+type TenderProfileFunc func(context.Context, *ent.TenderProfileMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f TenderProfileFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.TenderProfileMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.TenderProfileMutation", m)
+}
+
 // The UserFunc type is an adapter to allow the use of ordinary
 // function as User mutator.
 type UserFunc func(context.Context, *ent.UserMutation) (ent.Value, error)

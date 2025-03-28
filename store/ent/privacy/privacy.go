@@ -471,6 +471,30 @@ func (f TenderCompetitorMutationRuleFunc) EvalMutation(ctx context.Context, m en
 	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.TenderCompetitorMutation", m)
 }
 
+// The TenderProfileQueryRuleFunc type is an adapter to allow the use of ordinary
+// functions as a query rule.
+type TenderProfileQueryRuleFunc func(context.Context, *ent.TenderProfileQuery) error
+
+// EvalQuery return f(ctx, q).
+func (f TenderProfileQueryRuleFunc) EvalQuery(ctx context.Context, q ent.Query) error {
+	if q, ok := q.(*ent.TenderProfileQuery); ok {
+		return f(ctx, q)
+	}
+	return Denyf("ent/privacy: unexpected query type %T, expect *ent.TenderProfileQuery", q)
+}
+
+// The TenderProfileMutationRuleFunc type is an adapter to allow the use of ordinary
+// functions as a mutation rule.
+type TenderProfileMutationRuleFunc func(context.Context, *ent.TenderProfileMutation) error
+
+// EvalMutation calls f(ctx, m).
+func (f TenderProfileMutationRuleFunc) EvalMutation(ctx context.Context, m ent.Mutation) error {
+	if m, ok := m.(*ent.TenderProfileMutation); ok {
+		return f(ctx, m)
+	}
+	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.TenderProfileMutation", m)
+}
+
 // The UserQueryRuleFunc type is an adapter to allow the use of ordinary
 // functions as a query rule.
 type UserQueryRuleFunc func(context.Context, *ent.UserQuery) error
@@ -584,6 +608,8 @@ func queryFilter(q ent.Query) (Filter, error) {
 		return q.Filter(), nil
 	case *ent.TenderCompetitorQuery:
 		return q.Filter(), nil
+	case *ent.TenderProfileQuery:
+		return q.Filter(), nil
 	case *ent.UserQuery:
 		return q.Filter(), nil
 	case *ent.VisitRecordQuery:
@@ -624,6 +650,8 @@ func mutationFilter(m ent.Mutation) (Filter, error) {
 	case *ent.TenderMutation:
 		return m.Filter(), nil
 	case *ent.TenderCompetitorMutation:
+		return m.Filter(), nil
+	case *ent.TenderProfileMutation:
 		return m.Filter(), nil
 	case *ent.UserMutation:
 		return m.Filter(), nil

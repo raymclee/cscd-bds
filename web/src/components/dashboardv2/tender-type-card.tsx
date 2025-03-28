@@ -145,7 +145,7 @@ export function TenderTypeCard() {
           className="h-8 w-full select-none"
         />
       </CardHeader>
-      <CardContent className="dark -mt-5 h-full px-0">
+      <CardContent className="dark -mt-3 h-full px-0">
         <AntdPie {...config} className="pb-2" />
         {/* <ChartContainer
           config={chartConfig}

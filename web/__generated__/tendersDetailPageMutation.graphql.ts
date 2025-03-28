@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<8f0a8521e0ad63098330b9835f2a4909>>
+ * @generated SignedSource<<e375aceabb2ccd5a44d788b7e0255b7b>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -12,6 +12,7 @@ import { ConcreteRequest } from 'relay-runtime';
 export type UpdateTenderInput = {
   addCompetitorIDs?: ReadonlyArray<string> | null | undefined;
   addFollowingSaleIDs?: ReadonlyArray<string> | null | undefined;
+  addProfileIDs?: ReadonlyArray<string> | null | undefined;
   addVisitRecordIDs?: ReadonlyArray<string> | null | undefined;
   address?: string | null | undefined;
   appendAttachements?: ReadonlyArray<string> | null | undefined;
@@ -66,6 +67,7 @@ export type UpdateTenderInput = {
   clearLevelInvolved?: boolean | null | undefined;
   clearManagementCompany?: boolean | null | undefined;
   clearOwnerSituations?: boolean | null | undefined;
+  clearProfiles?: boolean | null | undefined;
   clearProjectCode?: boolean | null | undefined;
   clearProjectDefinition?: boolean | null | undefined;
   clearProjectType?: boolean | null | undefined;
@@ -127,6 +129,7 @@ export type UpdateTenderInput = {
   remark?: string | null | undefined;
   removeCompetitorIDs?: ReadonlyArray<string> | null | undefined;
   removeFollowingSaleIDs?: ReadonlyArray<string> | null | undefined;
+  removeProfileIDs?: ReadonlyArray<string> | null | undefined;
   removeVisitRecordIDs?: ReadonlyArray<string> | null | undefined;
   sizeAndValueRating?: number | null | undefined;
   sizeAndValueRatingOverview?: string | null | undefined;

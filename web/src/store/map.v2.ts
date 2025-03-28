@@ -78,8 +78,8 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
       center: DEFAULT_CENTER,
       zoom: DEFAULT_ZOOM,
       // zoomEnable: false,
-      scrollWheel: false,
-      doubleClickZoom: false,
+      // scrollWheel: false,
+      // doubleClickZoom: false,
       ...opts,
     });
     const satelliteLayer = new AMap.TileLayer.Satellite();

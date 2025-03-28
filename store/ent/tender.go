@@ -174,6 +174,10 @@ type Tender struct {
 type TenderEdges struct {
 	// Area holds the value of the area edge.
 	Area *Area `json:"area,omitempty"`
+	// Profiles holds the value of the profiles edge.
+	Profiles []*TenderProfile `json:"profiles,omitempty"`
+	// Competitors holds the value of the competitors edge.
+	Competitors []*TenderCompetitor `json:"competitors,omitempty"`
 	// Customer holds the value of the customer edge.
 	Customer *Customer `json:"customer,omitempty"`
 	// Finder holds the value of the finder edge.
@@ -190,21 +194,20 @@ type TenderEdges struct {
 	District *District `json:"district,omitempty"`
 	// VisitRecords holds the value of the visit_records edge.
 	VisitRecords []*VisitRecord `json:"visit_records,omitempty"`
-	// Competitors holds the value of the competitors edge.
-	Competitors []*TenderCompetitor `json:"competitors,omitempty"`
 	// Approver holds the value of the approver edge.
 	Approver *User `json:"approver,omitempty"`
 	// UpdatedBy holds the value of the updated_by edge.
 	UpdatedBy *User `json:"updated_by,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [12]bool
+	loadedTypes [13]bool
 	// totalCount holds the count of the edges above.
-	totalCount [12]map[string]int
+	totalCount [13]map[string]int
 
+	namedProfiles       map[string][]*TenderProfile
+	namedCompetitors    map[string][]*TenderCompetitor
 	namedFollowingSales map[string][]*User
 	namedVisitRecords   map[string][]*VisitRecord
-	namedCompetitors    map[string][]*TenderCompetitor
 }
 
 // AreaOrErr returns the Area value or an error if the edge
@@ -218,12 +221,30 @@ func (e TenderEdges) AreaOrErr() (*Area, error) {
 	return nil, &NotLoadedError{edge: "area"}
 }
 
+// ProfilesOrErr returns the Profiles value or an error if the edge
+// was not loaded in eager-loading.
+func (e TenderEdges) ProfilesOrErr() ([]*TenderProfile, error) {
+	if e.loadedTypes[1] {
+		return e.Profiles, nil
+	}
+	return nil, &NotLoadedError{edge: "profiles"}
+}
+
+// CompetitorsOrErr returns the Competitors value or an error if the edge
+// was not loaded in eager-loading.
+func (e TenderEdges) CompetitorsOrErr() ([]*TenderCompetitor, error) {
+	if e.loadedTypes[2] {
+		return e.Competitors, nil
+	}
+	return nil, &NotLoadedError{edge: "competitors"}
+}
+
 // CustomerOrErr returns the Customer value or an error if the edge
 // was not loaded in eager-loading, or loaded but was not found.
 func (e TenderEdges) CustomerOrErr() (*Customer, error) {
 	if e.Customer != nil {
 		return e.Customer, nil
-	} else if e.loadedTypes[1] {
+	} else if e.loadedTypes[3] {
 		return nil, &NotFoundError{label: customer.Label}
 	}
 	return nil, &NotLoadedError{edge: "customer"}
@@ -234,7 +255,7 @@ func (e TenderEdges) CustomerOrErr() (*Customer, error) {
 func (e TenderEdges) FinderOrErr() (*User, error) {
 	if e.Finder != nil {
 		return e.Finder, nil
-	} else if e.loadedTypes[2] {
+	} else if e.loadedTypes[4] {
 		return nil, &NotFoundError{label: user.Label}
 	}
 	return nil, &NotLoadedError{edge: "finder"}
@@ -245,7 +266,7 @@ func (e TenderEdges) FinderOrErr() (*User, error) {
 func (e TenderEdges) CreatedByOrErr() (*User, error) {
 	if e.CreatedBy != nil {
 		return e.CreatedBy, nil
-	} else if e.loadedTypes[3] {
+	} else if e.loadedTypes[5] {
 		return nil, &NotFoundError{label: user.Label}
 	}
 	return nil, &NotLoadedError{edge: "created_by"}
@@ -254,7 +275,7 @@ func (e TenderEdges) CreatedByOrErr() (*User, error) {
 // FollowingSalesOrErr returns the FollowingSales value or an error if the edge
 // was not loaded in eager-loading.
 func (e TenderEdges) FollowingSalesOrErr() ([]*User, error) {
-	if e.loadedTypes[4] {
+	if e.loadedTypes[6] {
 		return e.FollowingSales, nil
 	}
 	return nil, &NotLoadedError{edge: "following_sales"}
@@ -265,7 +286,7 @@ func (e TenderEdges) FollowingSalesOrErr() ([]*User, error) {
 func (e TenderEdges) ProvinceOrErr() (*Province, error) {
 	if e.Province != nil {
 		return e.Province, nil
-	} else if e.loadedTypes[5] {
+	} else if e.loadedTypes[7] {
 		return nil, &NotFoundError{label: province.Label}
 	}
 	return nil, &NotLoadedError{edge: "province"}
@@ -276,7 +297,7 @@ func (e TenderEdges) ProvinceOrErr() (*Province, error) {
 func (e TenderEdges) CityOrErr() (*City, error) {
 	if e.City != nil {
 		return e.City, nil
-	} else if e.loadedTypes[6] {
+	} else if e.loadedTypes[8] {
 		return nil, &NotFoundError{label: city.Label}
 	}
 	return nil, &NotLoadedError{edge: "city"}
@@ -287,7 +308,7 @@ func (e TenderEdges) CityOrErr() (*City, error) {
 func (e TenderEdges) DistrictOrErr() (*District, error) {
 	if e.District != nil {
 		return e.District, nil
-	} else if e.loadedTypes[7] {
+	} else if e.loadedTypes[9] {
 		return nil, &NotFoundError{label: district.Label}
 	}
 	return nil, &NotLoadedError{edge: "district"}
@@ -296,19 +317,10 @@ func (e TenderEdges) DistrictOrErr() (*District, error) {
 // VisitRecordsOrErr returns the VisitRecords value or an error if the edge
 // was not loaded in eager-loading.
 func (e TenderEdges) VisitRecordsOrErr() ([]*VisitRecord, error) {
-	if e.loadedTypes[8] {
+	if e.loadedTypes[10] {
 		return e.VisitRecords, nil
 	}
 	return nil, &NotLoadedError{edge: "visit_records"}
-}
-
-// CompetitorsOrErr returns the Competitors value or an error if the edge
-// was not loaded in eager-loading.
-func (e TenderEdges) CompetitorsOrErr() ([]*TenderCompetitor, error) {
-	if e.loadedTypes[9] {
-		return e.Competitors, nil
-	}
-	return nil, &NotLoadedError{edge: "competitors"}
 }
 
 // ApproverOrErr returns the Approver value or an error if the edge
@@ -316,7 +328,7 @@ func (e TenderEdges) CompetitorsOrErr() ([]*TenderCompetitor, error) {
 func (e TenderEdges) ApproverOrErr() (*User, error) {
 	if e.Approver != nil {
 		return e.Approver, nil
-	} else if e.loadedTypes[10] {
+	} else if e.loadedTypes[11] {
 		return nil, &NotFoundError{label: user.Label}
 	}
 	return nil, &NotLoadedError{edge: "approver"}
@@ -327,7 +339,7 @@ func (e TenderEdges) ApproverOrErr() (*User, error) {
 func (e TenderEdges) UpdatedByOrErr() (*User, error) {
 	if e.UpdatedBy != nil {
 		return e.UpdatedBy, nil
-	} else if e.loadedTypes[11] {
+	} else if e.loadedTypes[12] {
 		return nil, &NotFoundError{label: user.Label}
 	}
 	return nil, &NotLoadedError{edge: "updated_by"}
@@ -859,6 +871,16 @@ func (t *Tender) QueryArea() *AreaQuery {
 	return NewTenderClient(t.config).QueryArea(t)
 }
 
+// QueryProfiles queries the "profiles" edge of the Tender entity.
+func (t *Tender) QueryProfiles() *TenderProfileQuery {
+	return NewTenderClient(t.config).QueryProfiles(t)
+}
+
+// QueryCompetitors queries the "competitors" edge of the Tender entity.
+func (t *Tender) QueryCompetitors() *TenderCompetitorQuery {
+	return NewTenderClient(t.config).QueryCompetitors(t)
+}
+
 // QueryCustomer queries the "customer" edge of the Tender entity.
 func (t *Tender) QueryCustomer() *CustomerQuery {
 	return NewTenderClient(t.config).QueryCustomer(t)
@@ -897,11 +919,6 @@ func (t *Tender) QueryDistrict() *DistrictQuery {
 // QueryVisitRecords queries the "visit_records" edge of the Tender entity.
 func (t *Tender) QueryVisitRecords() *VisitRecordQuery {
 	return NewTenderClient(t.config).QueryVisitRecords(t)
-}
-
-// QueryCompetitors queries the "competitors" edge of the Tender entity.
-func (t *Tender) QueryCompetitors() *TenderCompetitorQuery {
-	return NewTenderClient(t.config).QueryCompetitors(t)
 }
 
 // QueryApprover queries the "approver" edge of the Tender entity.
@@ -1237,6 +1254,54 @@ func (t *Tender) String() string {
 	return builder.String()
 }
 
+// NamedProfiles returns the Profiles named value or an error if the edge was not
+// loaded in eager-loading with this name.
+func (t *Tender) NamedProfiles(name string) ([]*TenderProfile, error) {
+	if t.Edges.namedProfiles == nil {
+		return nil, &NotLoadedError{edge: name}
+	}
+	nodes, ok := t.Edges.namedProfiles[name]
+	if !ok {
+		return nil, &NotLoadedError{edge: name}
+	}
+	return nodes, nil
+}
+
+func (t *Tender) appendNamedProfiles(name string, edges ...*TenderProfile) {
+	if t.Edges.namedProfiles == nil {
+		t.Edges.namedProfiles = make(map[string][]*TenderProfile)
+	}
+	if len(edges) == 0 {
+		t.Edges.namedProfiles[name] = []*TenderProfile{}
+	} else {
+		t.Edges.namedProfiles[name] = append(t.Edges.namedProfiles[name], edges...)
+	}
+}
+
+// NamedCompetitors returns the Competitors named value or an error if the edge was not
+// loaded in eager-loading with this name.
+func (t *Tender) NamedCompetitors(name string) ([]*TenderCompetitor, error) {
+	if t.Edges.namedCompetitors == nil {
+		return nil, &NotLoadedError{edge: name}
+	}
+	nodes, ok := t.Edges.namedCompetitors[name]
+	if !ok {
+		return nil, &NotLoadedError{edge: name}
+	}
+	return nodes, nil
+}
+
+func (t *Tender) appendNamedCompetitors(name string, edges ...*TenderCompetitor) {
+	if t.Edges.namedCompetitors == nil {
+		t.Edges.namedCompetitors = make(map[string][]*TenderCompetitor)
+	}
+	if len(edges) == 0 {
+		t.Edges.namedCompetitors[name] = []*TenderCompetitor{}
+	} else {
+		t.Edges.namedCompetitors[name] = append(t.Edges.namedCompetitors[name], edges...)
+	}
+}
+
 // NamedFollowingSales returns the FollowingSales named value or an error if the edge was not
 // loaded in eager-loading with this name.
 func (t *Tender) NamedFollowingSales(name string) ([]*User, error) {
@@ -1282,30 +1347,6 @@ func (t *Tender) appendNamedVisitRecords(name string, edges ...*VisitRecord) {
 		t.Edges.namedVisitRecords[name] = []*VisitRecord{}
 	} else {
 		t.Edges.namedVisitRecords[name] = append(t.Edges.namedVisitRecords[name], edges...)
-	}
-}
-
-// NamedCompetitors returns the Competitors named value or an error if the edge was not
-// loaded in eager-loading with this name.
-func (t *Tender) NamedCompetitors(name string) ([]*TenderCompetitor, error) {
-	if t.Edges.namedCompetitors == nil {
-		return nil, &NotLoadedError{edge: name}
-	}
-	nodes, ok := t.Edges.namedCompetitors[name]
-	if !ok {
-		return nil, &NotLoadedError{edge: name}
-	}
-	return nodes, nil
-}
-
-func (t *Tender) appendNamedCompetitors(name string, edges ...*TenderCompetitor) {
-	if t.Edges.namedCompetitors == nil {
-		t.Edges.namedCompetitors = make(map[string][]*TenderCompetitor)
-	}
-	if len(edges) == 0 {
-		t.Edges.namedCompetitors[name] = []*TenderCompetitor{}
-	} else {
-		t.Edges.namedCompetitors[name] = append(t.Edges.namedCompetitors[name], edges...)
 	}
 }
 

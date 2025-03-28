@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<f7e26f54d215768ec8b76ff34efddaef>>
+ * @generated SignedSource<<80203a81b18895d0ded52d00b06153d6>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -59,6 +59,7 @@ export type CreateTenderInput = {
   name: string;
   ownerSituations?: string | null | undefined;
   prepareToBid?: boolean | null | undefined;
+  profileIDs?: ReadonlyArray<string> | null | undefined;
   projectCode?: string | null | undefined;
   projectDefinition?: string | null | undefined;
   projectType?: string | null | undefined;

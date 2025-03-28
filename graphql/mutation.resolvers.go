@@ -60,17 +60,30 @@ func (r *mutationResolver) CreateUser(ctx context.Context, input ent.CreateUserI
 		return nil, fmt.Errorf("failed to get feishu user: %w", errors.New("feishu user en name is nil"))
 	}
 
-	err = r.store.User.Create().
+	q := r.store.User.Create().
 		SetInput(input).
 		SetOpenID(input.OpenID).
 		SetNillableAvatarURL(fu.Avatar.AvatarOrigin).
 		SetNillableEmail(fu.Email).
 		SetNillableName(fu.Name).
-		SetNillableUsername(fu.EnName).
+		SetNillableUsername(fu.EnName)
+
+	if input.ProjectIDs != nil {
+		if input.ProjectIDs[0] == "all" {
+			ids, err := r.store.Project.Query().IDs(ctx)
+			if err != nil {
+				return nil, fmt.Errorf("failed to get project ids: %w", err)
+			}
+			q.AddProjectIDs(ids...)
+		} else {
+			q.AddProjectIDs(input.ProjectIDs...)
+		}
+	}
+
+	if err := q.
 		OnConflictColumns(user.FieldOpenID).
 		UpdateNewValues().
-		Exec(ctx)
-	if err != nil {
+		Exec(ctx); err != nil {
 		return nil, fmt.Errorf("failed to create user: %w", err)
 	}
 
@@ -96,6 +109,16 @@ func (r *mutationResolver) CreateUser(ctx context.Context, input ent.CreateUserI
 
 // UpdateUser is the resolver for the updateUser field.
 func (r *mutationResolver) UpdateUser(ctx context.Context, id xid.ID, input ent.UpdateUserInput) (*ent.User, error) {
+	if input.AddProjectIDs != nil && slices.Contains(input.AddProjectIDs, "all") {
+		ids, err := r.store.Project.Query().Where().IDs(ctx)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get project ids: %w", err)
+		}
+		input.AddProjectIDs = ids
+	}
+	if input.AddProjectIDs != nil {
+		input.ClearProjects = true
+	}
 	return r.store.User.UpdateOneID(id).SetInput(input).Save(ctx)
 }
 
@@ -519,7 +542,7 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input en
 		return nil, fmt.Errorf("failed to get tender: %w", err)
 	}
 
-	if t.CreatedByID != nil && string(*t.CreatedByID) != sess.UserId && (!sess.IsAdmin && !sess.IsSuperAdmin) {
+	if t.Edges.Area != nil && t.Edges.Area.Code != "HW" && t.Edges.Area.Code != "GA" && t.CreatedByID != nil && string(*t.CreatedByID) != sess.UserId && (!sess.IsAdmin && !sess.IsSuperAdmin) {
 		return nil, fmt.Errorf("failed to update tender: %w", errors.New("permission denied"))
 	}
 
@@ -832,6 +855,16 @@ func (r *mutationResolver) LoseTender(ctx context.Context, id xid.ID, input mode
 	}
 
 	return t, nil
+}
+
+// ApproveTender is the resolver for the approveTender field.
+func (r *mutationResolver) ApproveTender(ctx context.Context, id xid.ID) (*ent.Tender, error) {
+	panic(fmt.Errorf("not implemented: ApproveTender - approveTender"))
+}
+
+// RejectTender is the resolver for the rejectTender field.
+func (r *mutationResolver) RejectTender(ctx context.Context, id xid.ID) (*ent.Tender, error) {
+	panic(fmt.Errorf("not implemented: RejectTender - rejectTender"))
 }
 
 // CreatePlot is the resolver for the createPlot field.

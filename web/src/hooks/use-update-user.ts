@@ -20,6 +20,10 @@ export function useUpdateUser() {
             }
           }
         }
+        leader {
+          id
+          name
+        }
         projects(where: { isFinishedNEQ: true }, orderBy: { field: CODE }) {
           edges {
             node {

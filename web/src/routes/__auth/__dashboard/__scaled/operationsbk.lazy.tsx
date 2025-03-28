@@ -2,10 +2,6 @@ import { Column, ColumnConfig } from "@ant-design/plots";
 import * as HoverCard from "@radix-ui/react-hover-card";
 import * as Tabs from "@radix-ui/react-tabs";
 import { createLazyFileRoute } from "@tanstack/react-router";
-import {
-  operationsPageQuery,
-  operationsPageQuery$data,
-} from "__generated__/operationsPageQuery.graphql";
 import dayjs from "dayjs";
 import { ReactNode, useEffect, useRef, useState, useTransition } from "react";
 import { graphql, usePreloadedQuery } from "react-relay";
@@ -92,9 +88,13 @@ import { Progress } from "~/components/ui/progress";
 import { ProcessManagement } from "~/components/operation/process-management";
 import { formatAmountWithCommas } from "~/lib/helper";
 import { Project } from "~/lib/project";
+import {
+  operationsbkPageQuery,
+  operationsbkPageQuery$data,
+} from "__generated__/operationsbkPageQuery.graphql";
 
 export const Route = createLazyFileRoute(
-  "/__auth/__dashboard/__scaled/operations",
+  "/__auth/__dashboard/__scaled/operationsbk",
 )({
   component: RouteComponent,
 });
@@ -102,9 +102,9 @@ export const Route = createLazyFileRoute(
 // 轉成千分位
 
 function RouteComponent() {
-  const data = usePreloadedQuery<operationsPageQuery>(
+  const data = usePreloadedQuery<operationsbkPageQuery>(
     graphql`
-      query operationsPageQuery($userId: ID!) {
+      query operationsbkPageQuery($userId: ID!) {
         node(id: $userId) {
           ... on User {
             projects(
@@ -224,7 +224,7 @@ function RouteComponent() {
   );
 }
 
-function Operation({ data }: { data: operationsPageQuery$data }) {
+function Operation({ data }: { data: operationsbkPageQuery$data }) {
   const navigate = Route.useNavigate();
 
   const defaultCode =
@@ -364,7 +364,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
 
   return (
     <>
-      <div className="absolute top-[0.4em] left-[14em]">
+      <div className="absolute left-[14em] top-[0.4em]">
         <ProjectSelect data={data} defaultCode={defaultCode} />
       </div>
 
@@ -407,7 +407,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                 </div>
                 <img src={costDivider} className="h-16 opacity-60" />
                 <div className="flex flex-1 flex-col items-center justify-center">
-                  <div className={"text-brand-project font-bold"}>
+                  <div className={"font-bold text-brand-project"}>
                     <TextScramble
                       characterSet="0123456789"
                       key={pj?.code}
@@ -458,8 +458,8 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                   src={costIncome}
                   className="absolute inset-0 h-full w-full object-cover"
                 />
-                <div className="absolute top-1/2 right-14 -translate-y-1/2">
-                  <div className="text-brand-project flex items-baseline text-lg font-bold">
+                <div className="absolute right-14 top-1/2 -translate-y-1/2">
+                  <div className="flex items-baseline text-lg font-bold text-brand-project">
                     <TextScramble characterSet="0123456789" key={pj?.code}>
                       {formatAmountWithCommas(
                         formatProjectAmount(contractBudgetRevenue),
@@ -474,7 +474,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
 
           <div>
             <SubTitle>材料预算预警</SubTitle>
-            <div className="bg-gradient-to-tr from-[#0a3256] to-transparent px-1 pt-2 pb-2 shadow-lg">
+            <div className="bg-gradient-to-tr from-[#0a3256] to-transparent px-1 pb-2 pt-2 shadow-lg">
               <div className="mt-1">
                 <div className="flex gap-8 px-1">
                   <div className="flex items-center gap-1">
@@ -499,7 +499,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                 />
 
                 <div className="relative flex h-14 grid-cols-4 justify-around">
-                  <div className="mx-auto flex items-center gap-1 pb-1 text-nowrap text-ellipsis">
+                  <div className="mx-auto flex items-center gap-1 text-ellipsis text-nowrap pb-1">
                     <MaterialStatusIcon
                       className={cn(
                         "h-3 w-3",
@@ -520,10 +520,10 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                       >
                         {`${formatAmountWithCommas(aluminumPlateBudgetPercentage)}`}
                       </TextScramble>
-                      <span className="text-xxs ml-0.5">%</span>
+                      <span className="ml-0.5 text-xxs">%</span>
                     </div>
                   </div>
-                  <div className="mx-auto flex items-center gap-1 pb-1 text-nowrap text-ellipsis">
+                  <div className="mx-auto flex items-center gap-1 text-ellipsis text-nowrap pb-1">
                     <MaterialStatusIcon
                       className={cn(
                         "h-3 w-3",
@@ -544,10 +544,10 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                       >
                         {`${formatAmountWithCommas(aluminumBudgetPercentage)}`}
                       </TextScramble>
-                      <span className="text-xxs ml-0.5">%</span>
+                      <span className="ml-0.5 text-xxs">%</span>
                     </div>
                   </div>
-                  <div className="mx-auto flex items-center gap-1 pb-1 text-nowrap text-ellipsis">
+                  <div className="mx-auto flex items-center gap-1 text-ellipsis text-nowrap pb-1">
                     <MaterialStatusIcon
                       className={cn(
                         "h-3 w-3",
@@ -568,10 +568,10 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                       >
                         {`${formatAmountWithCommas(glassBudgetPercentage)}`}
                       </TextScramble>
-                      <span className="text-xxs ml-0.5">%</span>
+                      <span className="ml-0.5 text-xxs">%</span>
                     </div>
                   </div>
-                  <div className="mx-auto flex items-center gap-1 pb-1 text-nowrap text-ellipsis">
+                  <div className="mx-auto flex items-center gap-1 text-ellipsis text-nowrap pb-1">
                     <MaterialStatusIcon
                       className={cn(
                         "h-3 w-3",
@@ -592,7 +592,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                       >
                         {`${formatAmountWithCommas(ironBudgetPercentage)}`}
                       </TextScramble>
-                      <span className="text-xxs ml-0.5">%</span>
+                      <span className="ml-0.5 text-xxs">%</span>
                     </div>
                   </div>
                 </div>
@@ -611,7 +611,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
             <div className="flex gap-6 bg-gradient-to-tr from-[#0a3256] to-transparent px-2 shadow-lg">
               <div className="relative h-[4.8rem] flex-1">
                 <img src={consumptionBg} className="absolute inset-0 my-auto" />
-                <div className="absolute top-1/2 right-0 left-1/4 grid w-36 -translate-y-1/2 grid-cols-2 items-center gap-y-0 text-xs">
+                <div className="absolute left-1/4 right-0 top-1/2 grid w-36 -translate-y-1/2 grid-cols-2 items-center gap-y-0 text-xs">
                   <div className="basis-1/3 font-bold text-[#a1cae3]">
                     单元件
                   </div>
@@ -632,7 +632,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                   src={consumptionBg2}
                   className="absolute inset-0 my-auto"
                 />
-                <div className="absolute top-1/2 right-0 left-1/4 grid w-36 -translate-y-1/2 grid-cols-2 items-center gap-y-0.5 text-xs">
+                <div className="absolute left-1/4 right-0 top-1/2 grid w-36 -translate-y-1/2 grid-cols-2 items-center gap-y-0.5 text-xs">
                   <div className="basis-1/3 font-bold text-[#a1cae3]">卡板</div>
                   <div className="basis-2/3 text-right font-bold text-yellow-500">
                     <TextScramble
@@ -664,7 +664,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
             <div className="flex h-[4.8rem] items-center gap-x-6 bg-gradient-to-tr from-[#0a3256] to-transparent px-2 shadow-lg">
               <div className="relative flex-1 overflow-hidden">
                 <img src={consumptionBg} />
-                <div className="absolute top-1/2 right-0 left-1/4 grid w-36 -translate-y-1/2 grid-cols-2 items-center gap-y-0.5 text-xs">
+                <div className="absolute left-1/4 right-0 top-1/2 grid w-36 -translate-y-1/2 grid-cols-2 items-center gap-y-0.5 text-xs">
                   <div className="basis-1/3 font-bold text-[#a1cae3]">
                     套裁损耗
                   </div>
@@ -705,7 +705,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
               </div>
               <div className="relative flex-1">
                 <img src={consumptionBg2} />
-                <div className="absolute top-1/2 right-0 left-1/4 grid w-36 -translate-y-1/2 grid-cols-2 items-center gap-y-0 text-xs">
+                <div className="absolute left-1/4 right-0 top-1/2 grid w-36 -translate-y-1/2 grid-cols-2 items-center gap-y-0 text-xs">
                   <div className="basis-1/3 font-bold text-[#a1cae3]">
                     铝型材余料
                   </div>
@@ -729,13 +729,13 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
               <img src={materialsLostIcon} className="h-14 w-auto" />
 
               <div className="flex flex-1 items-baseline justify-between px-6">
-                <span className="text-brand-project/70 text-sm">
+                <span className="text-sm text-brand-project/70">
                   损失累计金额
                 </span>
                 <TextScramble
                   characterSet="0123456789"
                   key={pj?.code}
-                  className="text-brand-project text-2xl font-bold"
+                  className="text-2xl font-bold text-brand-project"
                 >
                   {formatAmountWithCommas(materialLoss)}
                 </TextScramble>
@@ -754,7 +754,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                 className="absolute inset-0 h-full w-full object-contain"
               />
               <div className="absolute top-5 text-lg font-bold">成交额</div>
-              <div className="text-brand-project relative h-60 pt-[110%] text-xl font-bold">
+              <div className="relative h-60 pt-[110%] text-xl font-bold text-brand-project">
                 <TextScramble
                   characterSet="0123456789"
                   key={pj?.code}
@@ -786,7 +786,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
               <div className="relative h-60 w-[80%] space-y-1 pt-[105%]">
                 <div className="flex items-baseline justify-between">
                   <div className="text-xs">已完成</div>
-                  <div className="text-brand-project text-sm font-bold">
+                  <div className="text-sm font-bold text-brand-project">
                     <TextScramble
                       characterSet="0123456789"
                       key={pj?.code}
@@ -801,7 +801,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
 
                 <div className="flex items-baseline justify-between">
                   <div className="text-xs">累计完成</div>
-                  <div className="text-brand-project text-left text-sm font-bold">
+                  <div className="text-left text-sm font-bold text-brand-project">
                     <TextScramble
                       characterSet="0123456789"
                       key={pj?.code}
@@ -836,7 +836,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
               <div className="relative h-60 w-[80%] space-y-1 pt-[105%]">
                 <div className="flex items-baseline justify-between">
                   <div className="text-xs">已完成</div>
-                  <div className="text-brand-project text-sm font-bold">
+                  <div className="text-sm font-bold text-brand-project">
                     <TextScramble
                       characterSet="0123456789"
                       key={pj?.code}
@@ -851,7 +851,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
 
                 <div className="flex items-baseline justify-between">
                   <div className="text-xs">累计完成</div>
-                  <div className="text-brand-project text-left text-sm font-bold">
+                  <div className="text-left text-sm font-bold text-brand-project">
                     <TextScramble
                       characterSet="0123456789"
                       key={pj?.code}
@@ -876,7 +876,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
               <div className="relative h-60 w-[80%] space-y-1 pt-[105%]">
                 <div className="flex items-baseline justify-between">
                   <div className="text-xs">实际</div>
-                  <div className="text-brand-project text-sm font-bold">
+                  <div className="text-sm font-bold text-brand-project">
                     <TextScramble
                       characterSet="0123456789"
                       key={pj?.code}
@@ -891,7 +891,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
 
                 <div className="flex items-baseline justify-between">
                   <div className="text-xs">预算</div>
-                  <div className="text-brand-project text-left text-sm font-bold">
+                  <div className="text-left text-sm font-bold text-brand-project">
                     <TextScramble
                       characterSet="0123456789"
                       key={pj?.code}
@@ -936,7 +936,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
               <div className="relative h-60 w-[80%] space-y-1 pt-[105%]">
                 <div className="flex items-baseline justify-between">
                   <div className="text-xs">实际</div>
-                  <div className="text-brand-project text-sm font-bold">
+                  <div className="text-sm font-bold text-brand-project">
                     <TextScramble
                       characterSet="0123456789"
                       key={pj?.code}
@@ -951,7 +951,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
 
                 <div className="flex items-baseline justify-between">
                   <div className="text-xs">预算</div>
-                  <div className="text-brand-project text-left text-sm font-bold">
+                  <div className="text-left text-sm font-bold text-brand-project">
                     <TextScramble
                       characterSet="0123456789"
                       key={pj?.code}
@@ -973,7 +973,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
           <div className="relative">
             <img
               src={leftArrow}
-              className="absolute top-1/2 -left-[4rem] h-12 w-auto -translate-y-1/2 cursor-pointer"
+              className="absolute -left-[4rem] top-1/2 h-12 w-auto -translate-y-1/2 cursor-pointer"
               onClick={() => {
                 navigate({
                   to: ".",
@@ -983,7 +983,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
             />
             <img
               src={rightArrow}
-              className="absolute top-1/2 -right-[4rem] h-12 w-auto -translate-y-1/2 cursor-pointer"
+              className="absolute -right-[4rem] top-1/2 h-12 w-auto -translate-y-1/2 cursor-pointer"
               onClick={() => {
                 navigate({
                   to: ".",
@@ -998,22 +998,22 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                     src={projectManagementLeft}
                     className="absolute inset-0 h-full w-full"
                   />
-                  <div className="absolute top-2 left-20 text-sm font-bold">
+                  <div className="absolute left-20 top-2 text-sm font-bold">
                     年度里程碑指标
                   </div>
                   {/* <div className="absolute text-sm font-bold text-yellow-500 -translate-y-1/2 right-4 top-1/2">
                     6%
                   </div> */}
-                  <div className="text-xxs absolute top-2.5 right-4 text-gray-200">
+                  <div className="absolute right-4 top-2.5 text-xxs text-gray-200">
                     (节点数)
                   </div>
 
-                  <div className="relative top-4 left-14 flex h-full w-[85%] items-center justify-around gap-6 self-end px-2 shadow-lg">
+                  <div className="relative left-14 top-4 flex h-full w-[85%] items-center justify-around gap-6 self-end px-2 shadow-lg">
                     <div className="flex flex-col items-center gap-0.5">
-                      <div className="text-xxs text-brand-project/50 text-center">
+                      <div className="text-center text-xxs text-brand-project/50">
                         已完成
                       </div>
-                      <div className="text-brand-project text-sm font-bold">
+                      <div className="text-sm font-bold text-brand-project">
                         <TextScramble
                           characterSet="0123456789"
                           key={pj?.code}
@@ -1025,10 +1025,10 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                     </div>
 
                     <div className="flex flex-col items-center gap-0.5">
-                      <div className="text-xxs text-brand-project/50 text-center">
+                      <div className="text-center text-xxs text-brand-project/50">
                         已延误
                       </div>
-                      <div className="text-brand-project text-sm font-bold">
+                      <div className="text-sm font-bold text-brand-project">
                         <TextScramble
                           characterSet="0123456789"
                           key={pj?.code}
@@ -1041,10 +1041,10 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                     </div>
 
                     <div className="flex flex-col items-center gap-0.5">
-                      <div className="text-xxs text-brand-project/50 text-center">
+                      <div className="text-center text-xxs text-brand-project/50">
                         即将延误
                       </div>
-                      <div className="text-brand-project text-sm font-bold">
+                      <div className="text-sm font-bold text-brand-project">
                         <TextScramble
                           characterSet="0123456789"
                           key={pj?.code}
@@ -1056,10 +1056,10 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                     </div>
 
                     <div className="flex flex-col items-center gap-0.5">
-                      <div className="text-xxs text-brand-project/50 text-center">
+                      <div className="text-center text-xxs text-brand-project/50">
                         总数
                       </div>
-                      <div className="text-brand-project text-sm font-bold">
+                      <div className="text-sm font-bold text-brand-project">
                         <TextScramble
                           characterSet="0123456789"
                           key={pj?.code}
@@ -1079,7 +1079,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                     src={projectDelay}
                     className="absolute inset-0 h-full w-full"
                   />
-                  <div className="absolute top-2 left-20 text-sm font-bold">
+                  <div className="absolute left-20 top-2 text-sm font-bold">
                     四位一体计划
                   </div>
                   {/* <div className="text-xxs absolute top-2.5 right-14 text-white/50">
@@ -1094,15 +1094,15 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                       {`${planTotalCount}`}
                     </TextScramble>
                   </div> */}
-                  <div className="text-xxs absolute top-2.5 right-4 text-gray-200">
+                  <div className="absolute right-4 top-2.5 text-xxs text-gray-200">
                     (节点数)
                   </div>
-                  <div className="relative top-4 left-14 flex h-full w-[85%] items-center justify-around gap-6 self-end px-2 shadow-lg">
+                  <div className="relative left-14 top-4 flex h-full w-[85%] items-center justify-around gap-6 self-end px-2 shadow-lg">
                     <div className="flex flex-col items-center gap-0.5">
-                      <div className="text-xxs text-brand-project/50 text-center">
+                      <div className="text-center text-xxs text-brand-project/50">
                         已完成
                       </div>
-                      <div className="text-brand-project text-sm font-bold">
+                      <div className="text-sm font-bold text-brand-project">
                         <TextScramble
                           characterSet="0123456789"
                           key={pj?.code}
@@ -1114,10 +1114,10 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                     </div>
 
                     <div className="flex flex-col items-center gap-0.5">
-                      <div className="text-xxs text-brand-project/50 text-center">
+                      <div className="text-center text-xxs text-brand-project/50">
                         已延误
                       </div>
-                      <div className="text-brand-project text-sm font-bold">
+                      <div className="text-sm font-bold text-brand-project">
                         <TextScramble
                           characterSet="0123456789"
                           key={pj?.code}
@@ -1130,10 +1130,10 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                     </div>
 
                     <div className="flex flex-col items-center gap-0.5">
-                      <div className="text-xxs text-brand-project/50 text-center">
+                      <div className="text-center text-xxs text-brand-project/50">
                         即将延误
                       </div>
-                      <div className="text-brand-project text-sm font-bold">
+                      <div className="text-sm font-bold text-brand-project">
                         <TextScramble
                           characterSet="0123456789"
                           key={pj?.code}
@@ -1145,10 +1145,10 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                     </div>
 
                     <div className="flex flex-col items-center gap-0.5">
-                      <div className="text-xxs text-brand-project/50 text-center">
+                      <div className="text-center text-xxs text-brand-project/50">
                         总数
                       </div>
-                      <div className="text-brand-project text-sm font-bold">
+                      <div className="text-sm font-bold text-brand-project">
                         <TextScramble
                           characterSet="0123456789"
                           key={pj?.code}
@@ -1260,7 +1260,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                     <TextScramble
                       characterSet="0123456789"
                       key={pj?.code}
-                      className="text-brand-project-2 font-bold"
+                      className="font-bold text-brand-project-2"
                     >
                       {`${formatAmountWithCommas(unitComponentTotal)}`}
                     </TextScramble>
@@ -1270,7 +1270,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                     <TextScramble
                       characterSet="0123456789"
                       key={pj?.code}
-                      className="text-brand-project-2 font-bold"
+                      className="font-bold text-brand-project-2"
                     >
                       {`${formatAmountWithCommas(unitComponentProduction)}`}
                     </TextScramble>
@@ -1280,7 +1280,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                     <TextScramble
                       characterSet="0123456789"
                       key={pj?.code}
-                      className="text-brand-project-2 font-bold"
+                      className="font-bold text-brand-project-2"
                     >
                       {`${formatAmountWithCommas(unitComponentInstallation)}`}
                     </TextScramble>
@@ -1299,7 +1299,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                     <TextScramble
                       characterSet="0123456789"
                       key={pj?.code}
-                      className="text-brand-project-2 font-bold"
+                      className="font-bold text-brand-project-2"
                     >
                       {`${formatAmountWithCommas(bulkMaterialsTotalOrderQuantity)}`}
                     </TextScramble>
@@ -1309,7 +1309,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                     <TextScramble
                       characterSet="0123456789"
                       key={pj?.code}
-                      className="text-brand-project-2 font-bold"
+                      className="font-bold text-brand-project-2"
                     >
                       {`${formatAmountWithCommas(bulkMaterialsCompletedQuantity)}`}
                     </TextScramble>
@@ -1319,7 +1319,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                     <TextScramble
                       characterSet="0123456789"
                       key={pj?.code}
-                      className="text-brand-project-2 font-bold"
+                      className="font-bold text-brand-project-2"
                     >
                       {`${formatAmountWithCommas(bulkMaterialsUncompletedQuantity)}`}
                     </TextScramble>
@@ -1365,7 +1365,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                       src={markCircle}
                       className="absolute inset-0 object-contain w-full h-full"
                     /> */}
-                    <div className="text-brand-project-2 relative flex h-full flex-col items-center justify-center rounded-full border-zinc-300/40 px-4 py-3 text-sm font-bold">
+                    <div className="relative flex h-full flex-col items-center justify-center rounded-full border-zinc-300/40 px-4 py-3 text-sm font-bold text-brand-project-2">
                       <FlippingCard
                         key={pj?.code}
                         front={qualityScore}
@@ -1389,21 +1389,21 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                     </div>
                   </div>
                 </div>
-                <div className="text-xxs basis-3/4 space-y-1 gap-y-2 py-2 pr-2 text-white/70">
+                <div className="basis-3/4 gap-y-2 space-y-1 py-2 pr-2 text-xxs text-white/70">
                   {/* <img src={safty} className="object-cover w-full h-full" /> */}
                   <div className="flex items-center justify-between">
                     <div>项目主要安全问题</div>
-                    <div className="text-brand/80 mr-2 text-[9px]">48%</div>
+                    <div className="mr-2 text-[9px] text-brand/80">48%</div>
                   </div>
                   <Progress value={48} className="h-1 w-full bg-sky-950" />
                   <div className="flex items-center justify-between">
                     <div>项目近2季度工伤情况</div>
-                    <div className="text-brand/80 mr-2 text-[9px]">11%</div>
+                    <div className="mr-2 text-[9px] text-brand/80">11%</div>
                   </div>
                   <Progress value={11} className="h-1 w-full bg-sky-950" />
                   <div className="flex items-center justify-between">
                     <div>项目千人工伤意外率 </div>
-                    <div className="text-brand/80 mr-2 text-[9px]">4%</div>
+                    <div className="mr-2 text-[9px] text-brand/80">4%</div>
                   </div>
                   <Progress value={4} className="h-1 w-full bg-sky-950" />
                 </div>
@@ -1436,7 +1436,7 @@ function DrawingProgress({ pj }: { pj: Project }) {
         <div className="flex gap-1">
           <div className="relative">
             <img src={drawingLeft} />
-            <div className="text-xxs absolute top-[3.75em] left-1/2 flex flex-col gap-y-[0.5em] text-yellow-500">
+            <div className="absolute left-1/2 top-[3.75em] flex flex-col gap-y-[0.5em] text-xxs text-yellow-500">
               <TextScramble characterSet="0123456789" as="span">
                 {`${formatAmountWithCommas(diagramBdFinishCount)}`}
               </TextScramble>
@@ -1449,7 +1449,7 @@ function DrawingProgress({ pj }: { pj: Project }) {
 
           <div className="relative">
             <img src={drawingCenter} />
-            <div className="text-xxs absolute top-[3.75em] left-1/2 flex flex-col gap-y-[0.5em] text-yellow-500">
+            <div className="absolute left-1/2 top-[3.75em] flex flex-col gap-y-[0.5em] text-xxs text-yellow-500">
               <TextScramble characterSet="0123456789" as="span">
                 {`${formatAmountWithCommas(diagramConstructionFinishCount)}`}
               </TextScramble>
@@ -1462,7 +1462,7 @@ function DrawingProgress({ pj }: { pj: Project }) {
 
           <div className="relative">
             <img src={drawingRight} />
-            <div className="text-xxs absolute top-[3.75em] left-1/2 flex flex-col gap-y-[0.5em] text-yellow-500">
+            <div className="absolute left-1/2 top-[3.75em] flex flex-col gap-y-[0.5em] text-xxs text-yellow-500">
               <TextScramble characterSet="0123456789" as="span">
                 {`${formatAmountWithCommas(diagramProcessingFinishCount)}`}
               </TextScramble>
@@ -1475,7 +1475,7 @@ function DrawingProgress({ pj }: { pj: Project }) {
         </div>
         <div className="relative mt-0.5">
           <img src={drawingBottom} />
-          <div className="text-xxs absolute top-[1em] right-[7em] flex flex-col gap-y-[0.5em] text-yellow-500">
+          <div className="absolute right-[7em] top-[1em] flex flex-col gap-y-[0.5em] text-xxs text-yellow-500">
             <TextScramble characterSet="0123456789" as="span">
               {`${formatAmountWithCommas(diagramCApprovalRatioNumerator)}`}
             </TextScramble>
@@ -1505,12 +1505,12 @@ function ProductionManagement({ pj }: { pj: Project }) {
       <div className="space-y-1 bg-gradient-to-tr from-[#0a3256] to-transparent px-2 py-1.5 shadow-lg">
         <div className="relative h-11">
           <img src={productionManagement1} className="absolute inset-0" />
-          <div className="text-xxs absolute top-[0.35rem] left-1/2 text-yellow-500">
+          <div className="absolute left-1/2 top-[0.35rem] text-xxs text-yellow-500">
             <TextScramble characterSet="0123456789" key={pj?.code} as="span">
               {`${formatAmountWithCommas(pmArea)}`}
             </TextScramble>
           </div>
-          <div className="text-xxs absolute bottom-1.5 left-1/2 text-yellow-500">
+          <div className="absolute bottom-1.5 left-1/2 text-xxs text-yellow-500">
             <TextScramble characterSet="0123456789" key={pj?.code} as="span">
               {`${formatAmountWithCommas(pmTotal)}`}
             </TextScramble>
@@ -1518,12 +1518,12 @@ function ProductionManagement({ pj }: { pj: Project }) {
         </div>
         <div className="relative h-11">
           <img src={productionManagement2} />
-          <div className="text-xxs absolute top-[0.35rem] left-1/2 text-yellow-500">
+          <div className="absolute left-1/2 top-[0.35rem] text-xxs text-yellow-500">
             <TextScramble characterSet="0123456789" key={pj?.code} as="span">
               {`${formatAmountWithCommas(pmYearTarget)}`}
             </TextScramble>
           </div>
-          <div className="text-xxs absolute bottom-1.5 left-1/2 text-yellow-500">
+          <div className="absolute bottom-1.5 left-1/2 text-xxs text-yellow-500">
             <TextScramble characterSet="0123456789" key={pj?.code} as="span">
               {`${formatAmountWithCommas(pmYearActual)}`}
             </TextScramble>
@@ -1531,12 +1531,12 @@ function ProductionManagement({ pj }: { pj: Project }) {
         </div>
         <div className="relative h-11">
           <img src={productionManagement3} />
-          <div className="text-xxs absolute top-[0.35rem] left-1/2 text-yellow-500">
+          <div className="absolute left-1/2 top-[0.35rem] text-xxs text-yellow-500">
             <TextScramble characterSet="0123456789" key={pj?.code} as="span">
               {`${formatAmountWithCommas(pmMonthTarget)}`}
             </TextScramble>
           </div>
-          <div className="text-xxs absolute bottom-1.5 left-1/2 text-yellow-500">
+          <div className="absolute bottom-1.5 left-1/2 text-xxs text-yellow-500">
             <TextScramble characterSet="0123456789" key={pj?.code} as="span">
               {`${formatAmountWithCommas(pmMonthActual)}`}
             </TextScramble>
@@ -1544,7 +1544,7 @@ function ProductionManagement({ pj }: { pj: Project }) {
         </div>
         <div className="relative h-7">
           <img src={productionManagement4} />
-          <div className="text-xxs absolute top-1.5 left-1/2 text-yellow-500">
+          <div className="absolute left-1/2 top-1.5 text-xxs text-yellow-500">
             <TextScramble characterSet="0123456789" key={pj?.code} as="span">
               {`${formatAmountWithCommas(pmYesterday)}`}
             </TextScramble>
@@ -1655,8 +1655,8 @@ function BasicInfoItem({
         className="absolute inset-0 mx-auto h-full w-full"
       />
       <div className="relative left-12 flex h-[15px] w-[19rem] items-center">
-        <div className="text-xxs w-20">{title}</div>
-        <span className="text-xxs text-brand-project line-clamp-1 flex-1">
+        <div className="w-20 text-xxs">{title}</div>
+        <span className="line-clamp-1 flex-1 text-xxs text-brand-project">
           {children}
         </span>
       </div>
@@ -1732,19 +1732,19 @@ function EditableBasicInfoItem({
         className="absolute inset-0 mx-auto h-full w-full"
       />
       <div className="group relative left-12 flex h-[15px] w-[19rem] items-center">
-        <div className="text-xxs w-20">{title}</div>
+        <div className="w-20 text-xxs">{title}</div>
         <Popover open={open} onOpenChange={onEditing}>
           <PopoverTrigger asChild>
             <div className="flex flex-1 cursor-pointer items-center justify-between">
               {editing ? (
                 <>
-                  <span className="border-brand-project text-xxs text-brand-project flex-1 rounded border bg-transparent px-1">
+                  <span className="flex-1 rounded border border-brand-project bg-transparent px-1 text-xxs text-brand-project">
                     请选择日期&#44; 点击周围或ESC取消
                   </span>
                 </>
               ) : (
                 <>
-                  <span className="text-xxs text-brand-project line-clamp-1">
+                  <span className="line-clamp-1 text-xxs text-brand-project">
                     {children}
                   </span>
 
@@ -1991,7 +1991,7 @@ function ProjectImage({ code }: { code?: string }) {
               上传
             </Button>
             <Button
-              className="mt-4 ml-2 text-red-500 hover:bg-red-800/20"
+              className="ml-2 mt-4 text-red-500 hover:bg-red-800/20"
               onClick={() => setEditing(false)}
               type="button"
               variant="ghost"
@@ -2003,7 +2003,7 @@ function ProjectImage({ code }: { code?: string }) {
         </div>
       ) : (
         <Button
-          className="absolute top-0 right-0 bg-sky-900 opacity-0 group-hover:opacity-100 hover:bg-sky-700"
+          className="absolute right-0 top-0 bg-sky-900 opacity-0 hover:bg-sky-700 group-hover:opacity-100"
           onClick={() => setEditing(true)}
           size={"icon"}
         >

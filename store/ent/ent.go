@@ -19,6 +19,7 @@ import (
 	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/tendercompetitor"
+	"cscd-bds/store/ent/tenderprofile"
 	"cscd-bds/store/ent/user"
 	"cscd-bds/store/ent/visitrecord"
 	"errors"
@@ -104,6 +105,7 @@ func checkColumn(table, column string) error {
 			province.Table:         province.ValidColumn,
 			tender.Table:           tender.ValidColumn,
 			tendercompetitor.Table: tendercompetitor.ValidColumn,
+			tenderprofile.Table:    tenderprofile.ValidColumn,
 			user.Table:             user.ValidColumn,
 			visitrecord.Table:      visitrecord.ValidColumn,
 		})

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<6b11d8a4358f3ea94d82eef59c50d5d9>>
+ * @generated SignedSource<<9935a37d5448f0be01448e7b25f3e772>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -70,6 +70,10 @@ export type useUpdateUserMutation$data = {
     readonly isAdmin: boolean;
     readonly isCeo: boolean;
     readonly isSuperAdmin: boolean;
+    readonly leader: {
+      readonly id: string;
+      readonly name: string | null | undefined;
+    } | null | undefined;
     readonly name: string | null | undefined;
     readonly openID: string;
     readonly projects: {
@@ -116,6 +120,10 @@ v2 = {
   "storageKey": null
 },
 v3 = [
+  (v1/*: any*/),
+  (v2/*: any*/)
+],
+v4 = [
   {
     "alias": null,
     "args": [
@@ -195,16 +203,23 @@ v3 = [
                 "kind": "LinkedField",
                 "name": "node",
                 "plural": false,
-                "selections": [
-                  (v1/*: any*/),
-                  (v2/*: any*/)
-                ],
+                "selections": (v3/*: any*/),
                 "storageKey": null
               }
             ],
             "storageKey": null
           }
         ],
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "User",
+        "kind": "LinkedField",
+        "name": "leader",
+        "plural": false,
+        "selections": (v3/*: any*/),
         "storageKey": null
       },
       {
@@ -308,7 +323,7 @@ return {
     "kind": "Fragment",
     "metadata": null,
     "name": "useUpdateUserMutation",
-    "selections": (v3/*: any*/),
+    "selections": (v4/*: any*/),
     "type": "Mutation",
     "abstractKey": null
   },
@@ -317,19 +332,19 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "useUpdateUserMutation",
-    "selections": (v3/*: any*/)
+    "selections": (v4/*: any*/)
   },
   "params": {
-    "cacheID": "91e6ee8fefc340b6121b669a96324268",
+    "cacheID": "30bee2bf9f0c574c735e62e40c9404ff",
     "id": null,
     "metadata": {},
     "name": "useUpdateUserMutation",
     "operationKind": "mutation",
-    "text": "mutation useUpdateUserMutation(\n  $id: ID!\n  $input: UpdateUserInput!\n) {\n  updateUser(id: $id, input: $input) {\n    id\n    name\n    email\n    username\n    openID\n    avatarURL\n    disabled\n    areas {\n      edges {\n        node {\n          id\n          name\n        }\n      }\n    }\n    projects(where: {isFinishedNEQ: true}, orderBy: {field: CODE}) {\n      edges {\n        node {\n          id\n          code\n        }\n      }\n    }\n    isSuperAdmin\n    isAdmin\n    isCeo\n    hasMapAccess\n    hasEditAccess\n  }\n}\n"
+    "text": "mutation useUpdateUserMutation(\n  $id: ID!\n  $input: UpdateUserInput!\n) {\n  updateUser(id: $id, input: $input) {\n    id\n    name\n    email\n    username\n    openID\n    avatarURL\n    disabled\n    areas {\n      edges {\n        node {\n          id\n          name\n        }\n      }\n    }\n    leader {\n      id\n      name\n    }\n    projects(where: {isFinishedNEQ: true}, orderBy: {field: CODE}) {\n      edges {\n        node {\n          id\n          code\n        }\n      }\n    }\n    isSuperAdmin\n    isAdmin\n    isCeo\n    hasMapAccess\n    hasEditAccess\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "f0d641293cf2b82e4bb7783e4af79426";
+(node as any).hash = "e55f59d2a515fba2df6d46354ffa7f9b";
 
 export default node;

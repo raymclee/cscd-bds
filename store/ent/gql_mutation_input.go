@@ -1908,6 +1908,8 @@ type CreateTenderInput struct {
 	TenderWinAmount                      *float64
 	LastTenderAmount                     *float64
 	AreaID                               xid.ID
+	ProfileIDs                           []xid.ID
+	CompetitorIDs                        []xid.ID
 	CustomerID                           *xid.ID
 	FinderID                             *xid.ID
 	CreatedByID                          *xid.ID
@@ -1916,7 +1918,6 @@ type CreateTenderInput struct {
 	CityID                               *xid.ID
 	DistrictID                           *xid.ID
 	VisitRecordIDs                       []xid.ID
-	CompetitorIDs                        []xid.ID
 	ApproverID                           *xid.ID
 	UpdatedByID                          *xid.ID
 }
@@ -2092,6 +2093,12 @@ func (i *CreateTenderInput) Mutate(m *TenderMutation) {
 		m.SetLastTenderAmount(*v)
 	}
 	m.SetAreaID(i.AreaID)
+	if v := i.ProfileIDs; len(v) > 0 {
+		m.AddProfileIDs(v...)
+	}
+	if v := i.CompetitorIDs; len(v) > 0 {
+		m.AddCompetitorIDs(v...)
+	}
 	if v := i.CustomerID; v != nil {
 		m.SetCustomerID(*v)
 	}
@@ -2115,9 +2122,6 @@ func (i *CreateTenderInput) Mutate(m *TenderMutation) {
 	}
 	if v := i.VisitRecordIDs; len(v) > 0 {
 		m.AddVisitRecordIDs(v...)
-	}
-	if v := i.CompetitorIDs; len(v) > 0 {
-		m.AddCompetitorIDs(v...)
 	}
 	if v := i.ApproverID; v != nil {
 		m.SetApproverID(*v)
@@ -2244,6 +2248,12 @@ type UpdateTenderInput struct {
 	ClearLastTenderAmount                     bool
 	LastTenderAmount                          *float64
 	AreaID                                    *xid.ID
+	ClearProfiles                             bool
+	AddProfileIDs                             []xid.ID
+	RemoveProfileIDs                          []xid.ID
+	ClearCompetitors                          bool
+	AddCompetitorIDs                          []xid.ID
+	RemoveCompetitorIDs                       []xid.ID
 	ClearCustomer                             bool
 	CustomerID                                *xid.ID
 	ClearFinder                               bool
@@ -2262,9 +2272,6 @@ type UpdateTenderInput struct {
 	ClearVisitRecords                         bool
 	AddVisitRecordIDs                         []xid.ID
 	RemoveVisitRecordIDs                      []xid.ID
-	ClearCompetitors                          bool
-	AddCompetitorIDs                          []xid.ID
-	RemoveCompetitorIDs                       []xid.ID
 	ClearApprover                             bool
 	ApproverID                                *xid.ID
 	ClearUpdatedBy                            bool
@@ -2600,6 +2607,24 @@ func (i *UpdateTenderInput) Mutate(m *TenderMutation) {
 	if v := i.AreaID; v != nil {
 		m.SetAreaID(*v)
 	}
+	if i.ClearProfiles {
+		m.ClearProfiles()
+	}
+	if v := i.AddProfileIDs; len(v) > 0 {
+		m.AddProfileIDs(v...)
+	}
+	if v := i.RemoveProfileIDs; len(v) > 0 {
+		m.RemoveProfileIDs(v...)
+	}
+	if i.ClearCompetitors {
+		m.ClearCompetitors()
+	}
+	if v := i.AddCompetitorIDs; len(v) > 0 {
+		m.AddCompetitorIDs(v...)
+	}
+	if v := i.RemoveCompetitorIDs; len(v) > 0 {
+		m.RemoveCompetitorIDs(v...)
+	}
 	if i.ClearCustomer {
 		m.ClearCustomer()
 	}
@@ -2653,15 +2678,6 @@ func (i *UpdateTenderInput) Mutate(m *TenderMutation) {
 	}
 	if v := i.RemoveVisitRecordIDs; len(v) > 0 {
 		m.RemoveVisitRecordIDs(v...)
-	}
-	if i.ClearCompetitors {
-		m.ClearCompetitors()
-	}
-	if v := i.AddCompetitorIDs; len(v) > 0 {
-		m.AddCompetitorIDs(v...)
-	}
-	if v := i.RemoveCompetitorIDs; len(v) > 0 {
-		m.RemoveCompetitorIDs(v...)
 	}
 	if i.ClearApprover {
 		m.ClearApprover()

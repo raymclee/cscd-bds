@@ -1,6 +1,10 @@
 import { InfoCircleOutlined } from "@ant-design/icons";
 import { createLazyFileRoute } from "@tanstack/react-router";
-import { usersSuperAdminUsersPageQuery } from "__generated__/usersSuperAdminUsersPageQuery.graphql";
+import { usersPageQuery$data } from "__generated__/usersPageQuery.graphql";
+import {
+  usersSuperAdminUsersPageQuery,
+  usersSuperAdminUsersPageQuery$data,
+} from "__generated__/usersSuperAdminUsersPageQuery.graphql";
 import {
   App,
   Button,
@@ -17,7 +21,12 @@ import { usePreloadedQuery } from "react-relay";
 import { graphql } from "relay-runtime";
 import { ListFilter } from "~/components/portal/list-filter";
 import { UserForm } from "~/components/portal/user-form";
-import { AreaConnection, ProjectConnection, User } from "~/graphql/graphql";
+import {
+  AreaConnection,
+  ProjectConnection,
+  User,
+  UserConnection,
+} from "~/graphql/graphql";
 import { useDeleteUser } from "~/hooks/use-delete-user";
 import { useUpdateUser } from "~/hooks/use-update-user";
 
@@ -72,6 +81,14 @@ const query = graphql`
           isSuperAdmin
           hasMapAccess
           hasEditAccess
+          leader {
+            id
+            name
+          }
+          teamMembers {
+            id
+            name
+          }
           projects(where: { isFinishedNEQ: true }, orderBy: { field: CODE }) {
             edges {
               node {
@@ -145,6 +162,21 @@ function RouteComponent() {
         ),
       width: 260,
       ellipsis: true,
+    },
+    {
+      dataIndex: "leader",
+      title: "隊長",
+      render(value) {
+        return value?.name ?? "无";
+      },
+    },
+    {
+      dataIndex: "teamMembers",
+      title: "隊員",
+      ellipsis: true,
+      render(_, record) {
+        return record.teamMembers?.map((v) => v?.name).join(", ") ?? "无";
+      },
     },
     {
       dataIndex: "projects",
@@ -277,6 +309,7 @@ function RouteComponent() {
           setSelectedUser={setSelectedUser}
           avaliableAreas={data.areas as AreaConnection}
           avaliableProjects={data.projects as ProjectConnection}
+          avaliableUsers={data.users}
         />
       </ListFilter>
 
@@ -286,7 +319,7 @@ function RouteComponent() {
         // @ts-ignore
         columns={columns}
         rowKey={"id"}
-        scroll={{ x: "max-content" }}
+        scroll={{ x: 1600 }}
         pagination={{
           current: searchParams.page,
           onChange(page) {
@@ -308,9 +341,11 @@ function UserFormDrawer({
   selectedUser,
   setSelectedUser,
   avaliableProjects,
+  avaliableUsers,
 }: {
   avaliableAreas: AreaConnection;
   avaliableProjects: ProjectConnection;
+  avaliableUsers: usersSuperAdminUsersPageQuery$data["users"];
   connectionID: string;
   selectedUser: User | null;
   setSelectedUser: React.Dispatch<React.SetStateAction<User | null>>;
@@ -347,6 +382,7 @@ function UserFormDrawer({
           isSuperAdmin
           avaliableAreas={avaliableAreas}
           avaliableProjects={avaliableProjects}
+          avaliableUsers={avaliableUsers as any}
         />
       </Drawer>
     </>

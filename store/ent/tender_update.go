@@ -14,6 +14,7 @@ import (
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/tendercompetitor"
+	"cscd-bds/store/ent/tenderprofile"
 	"cscd-bds/store/ent/user"
 	"cscd-bds/store/ent/visitrecord"
 	"errors"
@@ -1412,6 +1413,36 @@ func (tu *TenderUpdate) SetArea(a *Area) *TenderUpdate {
 	return tu.SetAreaID(a.ID)
 }
 
+// AddProfileIDs adds the "profiles" edge to the TenderProfile entity by IDs.
+func (tu *TenderUpdate) AddProfileIDs(ids ...xid.ID) *TenderUpdate {
+	tu.mutation.AddProfileIDs(ids...)
+	return tu
+}
+
+// AddProfiles adds the "profiles" edges to the TenderProfile entity.
+func (tu *TenderUpdate) AddProfiles(t ...*TenderProfile) *TenderUpdate {
+	ids := make([]xid.ID, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return tu.AddProfileIDs(ids...)
+}
+
+// AddCompetitorIDs adds the "competitors" edge to the TenderCompetitor entity by IDs.
+func (tu *TenderUpdate) AddCompetitorIDs(ids ...xid.ID) *TenderUpdate {
+	tu.mutation.AddCompetitorIDs(ids...)
+	return tu
+}
+
+// AddCompetitors adds the "competitors" edges to the TenderCompetitor entity.
+func (tu *TenderUpdate) AddCompetitors(t ...*TenderCompetitor) *TenderUpdate {
+	ids := make([]xid.ID, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return tu.AddCompetitorIDs(ids...)
+}
+
 // SetCustomer sets the "customer" edge to the Customer entity.
 func (tu *TenderUpdate) SetCustomer(c *Customer) *TenderUpdate {
 	return tu.SetCustomerID(c.ID)
@@ -1472,21 +1503,6 @@ func (tu *TenderUpdate) AddVisitRecords(v ...*VisitRecord) *TenderUpdate {
 	return tu.AddVisitRecordIDs(ids...)
 }
 
-// AddCompetitorIDs adds the "competitors" edge to the TenderCompetitor entity by IDs.
-func (tu *TenderUpdate) AddCompetitorIDs(ids ...xid.ID) *TenderUpdate {
-	tu.mutation.AddCompetitorIDs(ids...)
-	return tu
-}
-
-// AddCompetitors adds the "competitors" edges to the TenderCompetitor entity.
-func (tu *TenderUpdate) AddCompetitors(t ...*TenderCompetitor) *TenderUpdate {
-	ids := make([]xid.ID, len(t))
-	for i := range t {
-		ids[i] = t[i].ID
-	}
-	return tu.AddCompetitorIDs(ids...)
-}
-
 // SetApprover sets the "approver" edge to the User entity.
 func (tu *TenderUpdate) SetApprover(u *User) *TenderUpdate {
 	return tu.SetApproverID(u.ID)
@@ -1506,6 +1522,48 @@ func (tu *TenderUpdate) Mutation() *TenderMutation {
 func (tu *TenderUpdate) ClearArea() *TenderUpdate {
 	tu.mutation.ClearArea()
 	return tu
+}
+
+// ClearProfiles clears all "profiles" edges to the TenderProfile entity.
+func (tu *TenderUpdate) ClearProfiles() *TenderUpdate {
+	tu.mutation.ClearProfiles()
+	return tu
+}
+
+// RemoveProfileIDs removes the "profiles" edge to TenderProfile entities by IDs.
+func (tu *TenderUpdate) RemoveProfileIDs(ids ...xid.ID) *TenderUpdate {
+	tu.mutation.RemoveProfileIDs(ids...)
+	return tu
+}
+
+// RemoveProfiles removes "profiles" edges to TenderProfile entities.
+func (tu *TenderUpdate) RemoveProfiles(t ...*TenderProfile) *TenderUpdate {
+	ids := make([]xid.ID, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return tu.RemoveProfileIDs(ids...)
+}
+
+// ClearCompetitors clears all "competitors" edges to the TenderCompetitor entity.
+func (tu *TenderUpdate) ClearCompetitors() *TenderUpdate {
+	tu.mutation.ClearCompetitors()
+	return tu
+}
+
+// RemoveCompetitorIDs removes the "competitors" edge to TenderCompetitor entities by IDs.
+func (tu *TenderUpdate) RemoveCompetitorIDs(ids ...xid.ID) *TenderUpdate {
+	tu.mutation.RemoveCompetitorIDs(ids...)
+	return tu
+}
+
+// RemoveCompetitors removes "competitors" edges to TenderCompetitor entities.
+func (tu *TenderUpdate) RemoveCompetitors(t ...*TenderCompetitor) *TenderUpdate {
+	ids := make([]xid.ID, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return tu.RemoveCompetitorIDs(ids...)
 }
 
 // ClearCustomer clears the "customer" edge to the Customer entity.
@@ -1584,27 +1642,6 @@ func (tu *TenderUpdate) RemoveVisitRecords(v ...*VisitRecord) *TenderUpdate {
 		ids[i] = v[i].ID
 	}
 	return tu.RemoveVisitRecordIDs(ids...)
-}
-
-// ClearCompetitors clears all "competitors" edges to the TenderCompetitor entity.
-func (tu *TenderUpdate) ClearCompetitors() *TenderUpdate {
-	tu.mutation.ClearCompetitors()
-	return tu
-}
-
-// RemoveCompetitorIDs removes the "competitors" edge to TenderCompetitor entities by IDs.
-func (tu *TenderUpdate) RemoveCompetitorIDs(ids ...xid.ID) *TenderUpdate {
-	tu.mutation.RemoveCompetitorIDs(ids...)
-	return tu
-}
-
-// RemoveCompetitors removes "competitors" edges to TenderCompetitor entities.
-func (tu *TenderUpdate) RemoveCompetitors(t ...*TenderCompetitor) *TenderUpdate {
-	ids := make([]xid.ID, len(t))
-	for i := range t {
-		ids[i] = t[i].ID
-	}
-	return tu.RemoveCompetitorIDs(ids...)
 }
 
 // ClearApprover clears the "approver" edge to the User entity.
@@ -2135,6 +2172,96 @@ func (tu *TenderUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	if tu.mutation.ProfilesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   tender.ProfilesTable,
+			Columns: []string{tender.ProfilesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tenderprofile.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tu.mutation.RemovedProfilesIDs(); len(nodes) > 0 && !tu.mutation.ProfilesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   tender.ProfilesTable,
+			Columns: []string{tender.ProfilesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tenderprofile.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tu.mutation.ProfilesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   tender.ProfilesTable,
+			Columns: []string{tender.ProfilesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tenderprofile.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if tu.mutation.CompetitorsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   tender.CompetitorsTable,
+			Columns: []string{tender.CompetitorsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tendercompetitor.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tu.mutation.RemovedCompetitorsIDs(); len(nodes) > 0 && !tu.mutation.CompetitorsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   tender.CompetitorsTable,
+			Columns: []string{tender.CompetitorsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tendercompetitor.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tu.mutation.CompetitorsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   tender.CompetitorsTable,
+			Columns: []string{tender.CompetitorsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tendercompetitor.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if tu.mutation.CustomerCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
@@ -2392,51 +2519,6 @@ func (tu *TenderUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(visitrecord.FieldID, field.TypeString),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
-	}
-	if tu.mutation.CompetitorsCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   tender.CompetitorsTable,
-			Columns: []string{tender.CompetitorsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(tendercompetitor.FieldID, field.TypeString),
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := tu.mutation.RemovedCompetitorsIDs(); len(nodes) > 0 && !tu.mutation.CompetitorsCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   tender.CompetitorsTable,
-			Columns: []string{tender.CompetitorsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(tendercompetitor.FieldID, field.TypeString),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := tu.mutation.CompetitorsIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   tender.CompetitorsTable,
-			Columns: []string{tender.CompetitorsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(tendercompetitor.FieldID, field.TypeString),
 			},
 		}
 		for _, k := range nodes {
@@ -3895,6 +3977,36 @@ func (tuo *TenderUpdateOne) SetArea(a *Area) *TenderUpdateOne {
 	return tuo.SetAreaID(a.ID)
 }
 
+// AddProfileIDs adds the "profiles" edge to the TenderProfile entity by IDs.
+func (tuo *TenderUpdateOne) AddProfileIDs(ids ...xid.ID) *TenderUpdateOne {
+	tuo.mutation.AddProfileIDs(ids...)
+	return tuo
+}
+
+// AddProfiles adds the "profiles" edges to the TenderProfile entity.
+func (tuo *TenderUpdateOne) AddProfiles(t ...*TenderProfile) *TenderUpdateOne {
+	ids := make([]xid.ID, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return tuo.AddProfileIDs(ids...)
+}
+
+// AddCompetitorIDs adds the "competitors" edge to the TenderCompetitor entity by IDs.
+func (tuo *TenderUpdateOne) AddCompetitorIDs(ids ...xid.ID) *TenderUpdateOne {
+	tuo.mutation.AddCompetitorIDs(ids...)
+	return tuo
+}
+
+// AddCompetitors adds the "competitors" edges to the TenderCompetitor entity.
+func (tuo *TenderUpdateOne) AddCompetitors(t ...*TenderCompetitor) *TenderUpdateOne {
+	ids := make([]xid.ID, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return tuo.AddCompetitorIDs(ids...)
+}
+
 // SetCustomer sets the "customer" edge to the Customer entity.
 func (tuo *TenderUpdateOne) SetCustomer(c *Customer) *TenderUpdateOne {
 	return tuo.SetCustomerID(c.ID)
@@ -3955,21 +4067,6 @@ func (tuo *TenderUpdateOne) AddVisitRecords(v ...*VisitRecord) *TenderUpdateOne 
 	return tuo.AddVisitRecordIDs(ids...)
 }
 
-// AddCompetitorIDs adds the "competitors" edge to the TenderCompetitor entity by IDs.
-func (tuo *TenderUpdateOne) AddCompetitorIDs(ids ...xid.ID) *TenderUpdateOne {
-	tuo.mutation.AddCompetitorIDs(ids...)
-	return tuo
-}
-
-// AddCompetitors adds the "competitors" edges to the TenderCompetitor entity.
-func (tuo *TenderUpdateOne) AddCompetitors(t ...*TenderCompetitor) *TenderUpdateOne {
-	ids := make([]xid.ID, len(t))
-	for i := range t {
-		ids[i] = t[i].ID
-	}
-	return tuo.AddCompetitorIDs(ids...)
-}
-
 // SetApprover sets the "approver" edge to the User entity.
 func (tuo *TenderUpdateOne) SetApprover(u *User) *TenderUpdateOne {
 	return tuo.SetApproverID(u.ID)
@@ -3989,6 +4086,48 @@ func (tuo *TenderUpdateOne) Mutation() *TenderMutation {
 func (tuo *TenderUpdateOne) ClearArea() *TenderUpdateOne {
 	tuo.mutation.ClearArea()
 	return tuo
+}
+
+// ClearProfiles clears all "profiles" edges to the TenderProfile entity.
+func (tuo *TenderUpdateOne) ClearProfiles() *TenderUpdateOne {
+	tuo.mutation.ClearProfiles()
+	return tuo
+}
+
+// RemoveProfileIDs removes the "profiles" edge to TenderProfile entities by IDs.
+func (tuo *TenderUpdateOne) RemoveProfileIDs(ids ...xid.ID) *TenderUpdateOne {
+	tuo.mutation.RemoveProfileIDs(ids...)
+	return tuo
+}
+
+// RemoveProfiles removes "profiles" edges to TenderProfile entities.
+func (tuo *TenderUpdateOne) RemoveProfiles(t ...*TenderProfile) *TenderUpdateOne {
+	ids := make([]xid.ID, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return tuo.RemoveProfileIDs(ids...)
+}
+
+// ClearCompetitors clears all "competitors" edges to the TenderCompetitor entity.
+func (tuo *TenderUpdateOne) ClearCompetitors() *TenderUpdateOne {
+	tuo.mutation.ClearCompetitors()
+	return tuo
+}
+
+// RemoveCompetitorIDs removes the "competitors" edge to TenderCompetitor entities by IDs.
+func (tuo *TenderUpdateOne) RemoveCompetitorIDs(ids ...xid.ID) *TenderUpdateOne {
+	tuo.mutation.RemoveCompetitorIDs(ids...)
+	return tuo
+}
+
+// RemoveCompetitors removes "competitors" edges to TenderCompetitor entities.
+func (tuo *TenderUpdateOne) RemoveCompetitors(t ...*TenderCompetitor) *TenderUpdateOne {
+	ids := make([]xid.ID, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return tuo.RemoveCompetitorIDs(ids...)
 }
 
 // ClearCustomer clears the "customer" edge to the Customer entity.
@@ -4067,27 +4206,6 @@ func (tuo *TenderUpdateOne) RemoveVisitRecords(v ...*VisitRecord) *TenderUpdateO
 		ids[i] = v[i].ID
 	}
 	return tuo.RemoveVisitRecordIDs(ids...)
-}
-
-// ClearCompetitors clears all "competitors" edges to the TenderCompetitor entity.
-func (tuo *TenderUpdateOne) ClearCompetitors() *TenderUpdateOne {
-	tuo.mutation.ClearCompetitors()
-	return tuo
-}
-
-// RemoveCompetitorIDs removes the "competitors" edge to TenderCompetitor entities by IDs.
-func (tuo *TenderUpdateOne) RemoveCompetitorIDs(ids ...xid.ID) *TenderUpdateOne {
-	tuo.mutation.RemoveCompetitorIDs(ids...)
-	return tuo
-}
-
-// RemoveCompetitors removes "competitors" edges to TenderCompetitor entities.
-func (tuo *TenderUpdateOne) RemoveCompetitors(t ...*TenderCompetitor) *TenderUpdateOne {
-	ids := make([]xid.ID, len(t))
-	for i := range t {
-		ids[i] = t[i].ID
-	}
-	return tuo.RemoveCompetitorIDs(ids...)
 }
 
 // ClearApprover clears the "approver" edge to the User entity.
@@ -4648,6 +4766,96 @@ func (tuo *TenderUpdateOne) sqlSave(ctx context.Context) (_node *Tender, err err
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	if tuo.mutation.ProfilesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   tender.ProfilesTable,
+			Columns: []string{tender.ProfilesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tenderprofile.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tuo.mutation.RemovedProfilesIDs(); len(nodes) > 0 && !tuo.mutation.ProfilesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   tender.ProfilesTable,
+			Columns: []string{tender.ProfilesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tenderprofile.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tuo.mutation.ProfilesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   tender.ProfilesTable,
+			Columns: []string{tender.ProfilesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tenderprofile.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if tuo.mutation.CompetitorsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   tender.CompetitorsTable,
+			Columns: []string{tender.CompetitorsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tendercompetitor.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tuo.mutation.RemovedCompetitorsIDs(); len(nodes) > 0 && !tuo.mutation.CompetitorsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   tender.CompetitorsTable,
+			Columns: []string{tender.CompetitorsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tendercompetitor.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tuo.mutation.CompetitorsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   tender.CompetitorsTable,
+			Columns: []string{tender.CompetitorsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tendercompetitor.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if tuo.mutation.CustomerCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
@@ -4905,51 +5113,6 @@ func (tuo *TenderUpdateOne) sqlSave(ctx context.Context) (_node *Tender, err err
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(visitrecord.FieldID, field.TypeString),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
-	}
-	if tuo.mutation.CompetitorsCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   tender.CompetitorsTable,
-			Columns: []string{tender.CompetitorsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(tendercompetitor.FieldID, field.TypeString),
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := tuo.mutation.RemovedCompetitorsIDs(); len(nodes) > 0 && !tuo.mutation.CompetitorsCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   tender.CompetitorsTable,
-			Columns: []string{tender.CompetitorsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(tendercompetitor.FieldID, field.TypeString),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := tuo.mutation.CompetitorsIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   tender.CompetitorsTable,
-			Columns: []string{tender.CompetitorsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(tendercompetitor.FieldID, field.TypeString),
 			},
 		}
 		for _, k := range nodes {

@@ -1,5 +1,5 @@
 import { useNavigate, useSearch } from "@tanstack/react-router";
-import { operationsPageQuery$data } from "__generated__/operationsPageQuery.graphql";
+import { operationsIndexPageQuery$data } from "__generated__/operationsIndexPageQuery.graphql";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { useEffect, useState } from "react";
 import { cn } from "~/lib/utils";
@@ -19,12 +19,15 @@ import {
 
 type ProjectSelectProps = {
   defaultCode?: string;
-  data: operationsPageQuery$data;
+  data: operationsIndexPageQuery$data;
 };
 
 export function ProjectSelect({ defaultCode, data }: ProjectSelectProps) {
   const [open, setOpen] = useState(false);
-  const search = useSearch({ from: "/__auth/__dashboard/__scaled/operations" });
+  const code = useSearch({
+    from: "/__auth/__dashboard/__scaled/operations/",
+    select: (search) => search.code || defaultCode,
+  });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -38,8 +41,6 @@ export function ProjectSelect({ defaultCode, data }: ProjectSelectProps) {
     return () => document.removeEventListener("keydown", down);
   }, []);
 
-  const code = search.code ?? defaultCode;
-
   const projectsArray = data?.node?.projects?.edges
     ?.map((item) => item?.node)
     .filter((item) => item?.code);
@@ -50,7 +51,7 @@ export function ProjectSelect({ defaultCode, data }: ProjectSelectProps) {
         <button
           role="combobox"
           aria-expanded={open}
-          className="outline-brand-project inline-flex w-[310px] cursor-pointer items-center justify-between gap-2 px-2 py-1 text-sm font-medium"
+          className="inline-flex w-[310px] cursor-pointer items-center justify-between gap-2 px-2 py-1 text-sm font-medium outline-brand-project"
         >
           <div className="line-clamp-1 flex-1 text-left">
             {code
@@ -64,7 +65,12 @@ export function ProjectSelect({ defaultCode, data }: ProjectSelectProps) {
         </button>
       </PopoverTrigger>
       <PopoverContent className="w-[310px] border-none bg-transparent p-0">
-        <Command className="bg-slate-900/90 text-white backdrop-blur-2xl">
+        <Command
+          className="bg-slate-900/90 text-white backdrop-blur-2xl"
+          filter={(value, search) => {
+            return value.toLowerCase().includes(search.toLowerCase()) ? 1 : 0;
+          }}
+        >
           <CommandInput placeholder="请选择项目..." />
           <CommandList>
             <CommandEmpty>没有相关项目</CommandEmpty>

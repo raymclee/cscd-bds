@@ -589,6 +589,140 @@ var (
 			},
 		},
 	}
+	// TenderProfilesColumns holds the columns for the "tender_profiles" table.
+	TenderProfilesColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeString, Unique: true},
+		{Name: "created_at", Type: field.TypeTime},
+		{Name: "updated_at", Type: field.TypeTime},
+		{Name: "status", Type: field.TypeInt, Default: 1},
+		{Name: "approval_status", Type: field.TypeInt, Default: 1},
+		{Name: "approval_msg_id", Type: field.TypeString, Nullable: true},
+		{Name: "name", Type: field.TypeString},
+		{Name: "estimated_amount", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"postgres": "numeric"}},
+		{Name: "tender_date", Type: field.TypeTime, Nullable: true},
+		{Name: "classify", Type: field.TypeInt, Nullable: true},
+		{Name: "discovery_date", Type: field.TypeTime},
+		{Name: "address", Type: field.TypeString, Nullable: true},
+		{Name: "full_address", Type: field.TypeString, Nullable: true},
+		{Name: "contractor", Type: field.TypeString, Nullable: true},
+		{Name: "level_involved", Type: field.TypeInt, Nullable: true},
+		{Name: "size_and_value_rating", Type: field.TypeInt, Nullable: true},
+		{Name: "size_and_value_rating_overview", Type: field.TypeString, Nullable: true},
+		{Name: "credit_and_payment_rating", Type: field.TypeInt, Nullable: true},
+		{Name: "credit_and_payment_rating_overview", Type: field.TypeString, Nullable: true},
+		{Name: "time_limit_rating", Type: field.TypeInt, Nullable: true},
+		{Name: "time_limit_rating_overview", Type: field.TypeString, Nullable: true},
+		{Name: "customer_relationship_rating", Type: field.TypeInt, Nullable: true},
+		{Name: "customer_relationship_rating_overview", Type: field.TypeString, Nullable: true},
+		{Name: "competitive_partnership_rating", Type: field.TypeInt, Nullable: true},
+		{Name: "competitive_partnership_rating_overview", Type: field.TypeString, Nullable: true},
+		{Name: "prepare_to_bid", Type: field.TypeBool, Default: false},
+		{Name: "project_code", Type: field.TypeString, Nullable: true},
+		{Name: "project_type", Type: field.TypeString, Nullable: true},
+		{Name: "project_definition", Type: field.TypeString, Nullable: true},
+		{Name: "estimated_project_start_date", Type: field.TypeTime, Nullable: true},
+		{Name: "estimated_project_end_date", Type: field.TypeTime, Nullable: true},
+		{Name: "attachments", Type: field.TypeJSON, Nullable: true},
+		{Name: "geo_coordinate", Type: field.TypeJSON, Nullable: true},
+		{Name: "geo_bounds", Type: field.TypeJSON, Nullable: true},
+		{Name: "remark", Type: field.TypeString, Nullable: true},
+		{Name: "images", Type: field.TypeJSON, Nullable: true},
+		{Name: "tender_situations", Type: field.TypeString, Nullable: true},
+		{Name: "owner_situations", Type: field.TypeString, Nullable: true},
+		{Name: "bidding_instructions", Type: field.TypeString, Nullable: true},
+		{Name: "competitor_situations", Type: field.TypeString, Nullable: true},
+		{Name: "cost_engineer", Type: field.TypeString, Nullable: true},
+		{Name: "tender_form", Type: field.TypeString, Nullable: true},
+		{Name: "contract_form", Type: field.TypeString, Nullable: true},
+		{Name: "management_company", Type: field.TypeString, Nullable: true},
+		{Name: "tendering_agency", Type: field.TypeString, Nullable: true},
+		{Name: "bidding_date", Type: field.TypeTime, Nullable: true},
+		{Name: "facade_consultant", Type: field.TypeString, Nullable: true},
+		{Name: "design_unit", Type: field.TypeString, Nullable: true},
+		{Name: "consulting_firm", Type: field.TypeString, Nullable: true},
+		{Name: "key_project", Type: field.TypeBool, Default: false},
+		{Name: "current_progress", Type: field.TypeString, Nullable: true},
+		{Name: "tender_win_company", Type: field.TypeString, Nullable: true},
+		{Name: "tender_code", Type: field.TypeString, Nullable: true},
+		{Name: "architect", Type: field.TypeString, Nullable: true},
+		{Name: "developer", Type: field.TypeString, Nullable: true},
+		{Name: "tender_closing_date", Type: field.TypeTime, Nullable: true},
+		{Name: "construction_area", Type: field.TypeString, Nullable: true},
+		{Name: "tender_win_date", Type: field.TypeTime, Nullable: true},
+		{Name: "tender_win_amount", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"postgres": "numeric"}},
+		{Name: "last_tender_amount", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"postgres": "numeric"}},
+		{Name: "tender_id", Type: field.TypeString},
+		{Name: "customer_id", Type: field.TypeString, Nullable: true},
+		{Name: "finder_id", Type: field.TypeString, Nullable: true},
+		{Name: "created_by_id", Type: field.TypeString, Nullable: true},
+		{Name: "province_id", Type: field.TypeString, Nullable: true},
+		{Name: "city_id", Type: field.TypeString, Nullable: true},
+		{Name: "district_id", Type: field.TypeString, Nullable: true},
+		{Name: "approver_id", Type: field.TypeString, Nullable: true},
+		{Name: "updated_by_id", Type: field.TypeString, Nullable: true},
+	}
+	// TenderProfilesTable holds the schema information for the "tender_profiles" table.
+	TenderProfilesTable = &schema.Table{
+		Name:       "tender_profiles",
+		Columns:    TenderProfilesColumns,
+		PrimaryKey: []*schema.Column{TenderProfilesColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "tender_profiles_tenders_profiles",
+				Columns:    []*schema.Column{TenderProfilesColumns[60]},
+				RefColumns: []*schema.Column{TendersColumns[0]},
+				OnDelete:   schema.NoAction,
+			},
+			{
+				Symbol:     "tender_profiles_customers_customer",
+				Columns:    []*schema.Column{TenderProfilesColumns[61]},
+				RefColumns: []*schema.Column{CustomersColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:     "tender_profiles_users_finder",
+				Columns:    []*schema.Column{TenderProfilesColumns[62]},
+				RefColumns: []*schema.Column{UsersColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:     "tender_profiles_users_created_by",
+				Columns:    []*schema.Column{TenderProfilesColumns[63]},
+				RefColumns: []*schema.Column{UsersColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:     "tender_profiles_provinces_province",
+				Columns:    []*schema.Column{TenderProfilesColumns[64]},
+				RefColumns: []*schema.Column{ProvincesColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:     "tender_profiles_cities_city",
+				Columns:    []*schema.Column{TenderProfilesColumns[65]},
+				RefColumns: []*schema.Column{CitiesColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:     "tender_profiles_districts_district",
+				Columns:    []*schema.Column{TenderProfilesColumns[66]},
+				RefColumns: []*schema.Column{DistrictsColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:     "tender_profiles_users_approver",
+				Columns:    []*schema.Column{TenderProfilesColumns[67]},
+				RefColumns: []*schema.Column{UsersColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:     "tender_profiles_users_updated_by",
+				Columns:    []*schema.Column{TenderProfilesColumns[68]},
+				RefColumns: []*schema.Column{UsersColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
+	}
 	// UsersColumns holds the columns for the "users" table.
 	UsersColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeString, Unique: true},
@@ -771,6 +905,7 @@ var (
 		ProvincesTable,
 		TendersTable,
 		TenderCompetitorsTable,
+		TenderProfilesTable,
 		UsersTable,
 		VisitRecordsTable,
 		AreaUsersTable,
@@ -805,6 +940,15 @@ func init() {
 	TendersTable.ForeignKeys[8].RefTable = UsersTable
 	TenderCompetitorsTable.ForeignKeys[0].RefTable = CompetitorsTable
 	TenderCompetitorsTable.ForeignKeys[1].RefTable = TendersTable
+	TenderProfilesTable.ForeignKeys[0].RefTable = TendersTable
+	TenderProfilesTable.ForeignKeys[1].RefTable = CustomersTable
+	TenderProfilesTable.ForeignKeys[2].RefTable = UsersTable
+	TenderProfilesTable.ForeignKeys[3].RefTable = UsersTable
+	TenderProfilesTable.ForeignKeys[4].RefTable = ProvincesTable
+	TenderProfilesTable.ForeignKeys[5].RefTable = CitiesTable
+	TenderProfilesTable.ForeignKeys[6].RefTable = DistrictsTable
+	TenderProfilesTable.ForeignKeys[7].RefTable = UsersTable
+	TenderProfilesTable.ForeignKeys[8].RefTable = UsersTable
 	UsersTable.ForeignKeys[0].RefTable = UsersTable
 	VisitRecordsTable.ForeignKeys[0].RefTable = CustomersTable
 	VisitRecordsTable.ForeignKeys[1].RefTable = TendersTable

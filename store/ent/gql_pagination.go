@@ -20,6 +20,7 @@ import (
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/tendercompetitor"
+	"cscd-bds/store/ent/tenderprofile"
 	"cscd-bds/store/ent/user"
 	"cscd-bds/store/ent/visitrecord"
 	"errors"
@@ -4984,6 +4985,374 @@ func (tc *TenderCompetitor) ToEdge(order *TenderCompetitorOrder) *TenderCompetit
 	return &TenderCompetitorEdge{
 		Node:   tc,
 		Cursor: order.Field.toCursor(tc),
+	}
+}
+
+// TenderProfileEdge is the edge representation of TenderProfile.
+type TenderProfileEdge struct {
+	Node   *TenderProfile `json:"node"`
+	Cursor Cursor         `json:"cursor"`
+}
+
+// TenderProfileConnection is the connection containing edges to TenderProfile.
+type TenderProfileConnection struct {
+	Edges      []*TenderProfileEdge `json:"edges"`
+	PageInfo   PageInfo             `json:"pageInfo"`
+	TotalCount int                  `json:"totalCount"`
+}
+
+func (c *TenderProfileConnection) build(nodes []*TenderProfile, pager *tenderprofilePager, after *Cursor, first *int, before *Cursor, last *int) {
+	c.PageInfo.HasNextPage = before != nil
+	c.PageInfo.HasPreviousPage = after != nil
+	if first != nil && *first+1 == len(nodes) {
+		c.PageInfo.HasNextPage = true
+		nodes = nodes[:len(nodes)-1]
+	} else if last != nil && *last+1 == len(nodes) {
+		c.PageInfo.HasPreviousPage = true
+		nodes = nodes[:len(nodes)-1]
+	}
+	var nodeAt func(int) *TenderProfile
+	if last != nil {
+		n := len(nodes) - 1
+		nodeAt = func(i int) *TenderProfile {
+			return nodes[n-i]
+		}
+	} else {
+		nodeAt = func(i int) *TenderProfile {
+			return nodes[i]
+		}
+	}
+	c.Edges = make([]*TenderProfileEdge, len(nodes))
+	for i := range nodes {
+		node := nodeAt(i)
+		c.Edges[i] = &TenderProfileEdge{
+			Node:   node,
+			Cursor: pager.toCursor(node),
+		}
+	}
+	if l := len(c.Edges); l > 0 {
+		c.PageInfo.StartCursor = &c.Edges[0].Cursor
+		c.PageInfo.EndCursor = &c.Edges[l-1].Cursor
+	}
+	if c.TotalCount == 0 {
+		c.TotalCount = len(nodes)
+	}
+}
+
+// TenderProfilePaginateOption enables pagination customization.
+type TenderProfilePaginateOption func(*tenderprofilePager) error
+
+// WithTenderProfileOrder configures pagination ordering.
+func WithTenderProfileOrder(order *TenderProfileOrder) TenderProfilePaginateOption {
+	if order == nil {
+		order = DefaultTenderProfileOrder
+	}
+	o := *order
+	return func(pager *tenderprofilePager) error {
+		if err := o.Direction.Validate(); err != nil {
+			return err
+		}
+		if o.Field == nil {
+			o.Field = DefaultTenderProfileOrder.Field
+		}
+		pager.order = &o
+		return nil
+	}
+}
+
+// WithTenderProfileFilter configures pagination filter.
+func WithTenderProfileFilter(filter func(*TenderProfileQuery) (*TenderProfileQuery, error)) TenderProfilePaginateOption {
+	return func(pager *tenderprofilePager) error {
+		if filter == nil {
+			return errors.New("TenderProfileQuery filter cannot be nil")
+		}
+		pager.filter = filter
+		return nil
+	}
+}
+
+type tenderprofilePager struct {
+	reverse bool
+	order   *TenderProfileOrder
+	filter  func(*TenderProfileQuery) (*TenderProfileQuery, error)
+}
+
+func newTenderProfilePager(opts []TenderProfilePaginateOption, reverse bool) (*tenderprofilePager, error) {
+	pager := &tenderprofilePager{reverse: reverse}
+	for _, opt := range opts {
+		if err := opt(pager); err != nil {
+			return nil, err
+		}
+	}
+	if pager.order == nil {
+		pager.order = DefaultTenderProfileOrder
+	}
+	return pager, nil
+}
+
+func (p *tenderprofilePager) applyFilter(query *TenderProfileQuery) (*TenderProfileQuery, error) {
+	if p.filter != nil {
+		return p.filter(query)
+	}
+	return query, nil
+}
+
+func (p *tenderprofilePager) toCursor(tp *TenderProfile) Cursor {
+	return p.order.Field.toCursor(tp)
+}
+
+func (p *tenderprofilePager) applyCursors(query *TenderProfileQuery, after, before *Cursor) (*TenderProfileQuery, error) {
+	direction := p.order.Direction
+	if p.reverse {
+		direction = direction.Reverse()
+	}
+	for _, predicate := range entgql.CursorsPredicate(after, before, DefaultTenderProfileOrder.Field.column, p.order.Field.column, direction) {
+		query = query.Where(predicate)
+	}
+	return query, nil
+}
+
+func (p *tenderprofilePager) applyOrder(query *TenderProfileQuery) *TenderProfileQuery {
+	direction := p.order.Direction
+	if p.reverse {
+		direction = direction.Reverse()
+	}
+	query = query.Order(p.order.Field.toTerm(direction.OrderTermOption()))
+	if p.order.Field != DefaultTenderProfileOrder.Field {
+		query = query.Order(DefaultTenderProfileOrder.Field.toTerm(direction.OrderTermOption()))
+	}
+	if len(query.ctx.Fields) > 0 {
+		query.ctx.AppendFieldOnce(p.order.Field.column)
+	}
+	return query
+}
+
+func (p *tenderprofilePager) orderExpr(query *TenderProfileQuery) sql.Querier {
+	direction := p.order.Direction
+	if p.reverse {
+		direction = direction.Reverse()
+	}
+	if len(query.ctx.Fields) > 0 {
+		query.ctx.AppendFieldOnce(p.order.Field.column)
+	}
+	return sql.ExprFunc(func(b *sql.Builder) {
+		b.Ident(p.order.Field.column).Pad().WriteString(string(direction))
+		if p.order.Field != DefaultTenderProfileOrder.Field {
+			b.Comma().Ident(DefaultTenderProfileOrder.Field.column).Pad().WriteString(string(direction))
+		}
+	})
+}
+
+// Paginate executes the query and returns a relay based cursor connection to TenderProfile.
+func (tp *TenderProfileQuery) Paginate(
+	ctx context.Context, after *Cursor, first *int,
+	before *Cursor, last *int, opts ...TenderProfilePaginateOption,
+) (*TenderProfileConnection, error) {
+	if err := validateFirstLast(first, last); err != nil {
+		return nil, err
+	}
+	pager, err := newTenderProfilePager(opts, last != nil)
+	if err != nil {
+		return nil, err
+	}
+	if tp, err = pager.applyFilter(tp); err != nil {
+		return nil, err
+	}
+	conn := &TenderProfileConnection{Edges: []*TenderProfileEdge{}}
+	ignoredEdges := !hasCollectedField(ctx, edgesField)
+	if hasCollectedField(ctx, totalCountField) || hasCollectedField(ctx, pageInfoField) {
+		hasPagination := after != nil || first != nil || before != nil || last != nil
+		if hasPagination || ignoredEdges {
+			c := tp.Clone()
+			c.ctx.Fields = nil
+			if conn.TotalCount, err = c.Count(ctx); err != nil {
+				return nil, err
+			}
+			conn.PageInfo.HasNextPage = first != nil && conn.TotalCount > 0
+			conn.PageInfo.HasPreviousPage = last != nil && conn.TotalCount > 0
+		}
+	}
+	if ignoredEdges || (first != nil && *first == 0) || (last != nil && *last == 0) {
+		return conn, nil
+	}
+	if tp, err = pager.applyCursors(tp, after, before); err != nil {
+		return nil, err
+	}
+	limit := paginateLimit(first, last)
+	if limit != 0 {
+		tp.Limit(limit)
+	}
+	if field := collectedField(ctx, edgesField, nodeField); field != nil {
+		if err := tp.collectField(ctx, limit == 1, graphql.GetOperationContext(ctx), *field, []string{edgesField, nodeField}); err != nil {
+			return nil, err
+		}
+	}
+	tp = pager.applyOrder(tp)
+	nodes, err := tp.All(ctx)
+	if err != nil {
+		return nil, err
+	}
+	conn.build(nodes, pager, after, first, before, last)
+	return conn, nil
+}
+
+var (
+	// TenderProfileOrderFieldCreatedAt orders TenderProfile by created_at.
+	TenderProfileOrderFieldCreatedAt = &TenderProfileOrderField{
+		Value: func(tp *TenderProfile) (ent.Value, error) {
+			return tp.CreatedAt, nil
+		},
+		column: tenderprofile.FieldCreatedAt,
+		toTerm: tenderprofile.ByCreatedAt,
+		toCursor: func(tp *TenderProfile) Cursor {
+			return Cursor{
+				ID:    tp.ID,
+				Value: tp.CreatedAt,
+			}
+		},
+	}
+	// TenderProfileOrderFieldApprovalStatus orders TenderProfile by approval_status.
+	TenderProfileOrderFieldApprovalStatus = &TenderProfileOrderField{
+		Value: func(tp *TenderProfile) (ent.Value, error) {
+			return tp.ApprovalStatus, nil
+		},
+		column: tenderprofile.FieldApprovalStatus,
+		toTerm: tenderprofile.ByApprovalStatus,
+		toCursor: func(tp *TenderProfile) Cursor {
+			return Cursor{
+				ID:    tp.ID,
+				Value: tp.ApprovalStatus,
+			}
+		},
+	}
+	// TenderProfileOrderFieldName orders TenderProfile by name.
+	TenderProfileOrderFieldName = &TenderProfileOrderField{
+		Value: func(tp *TenderProfile) (ent.Value, error) {
+			return tp.Name, nil
+		},
+		column: tenderprofile.FieldName,
+		toTerm: tenderprofile.ByName,
+		toCursor: func(tp *TenderProfile) Cursor {
+			return Cursor{
+				ID:    tp.ID,
+				Value: tp.Name,
+			}
+		},
+	}
+	// TenderProfileOrderFieldTenderDate orders TenderProfile by tender_date.
+	TenderProfileOrderFieldTenderDate = &TenderProfileOrderField{
+		Value: func(tp *TenderProfile) (ent.Value, error) {
+			return tp.TenderDate, nil
+		},
+		column: tenderprofile.FieldTenderDate,
+		toTerm: tenderprofile.ByTenderDate,
+		toCursor: func(tp *TenderProfile) Cursor {
+			return Cursor{
+				ID:    tp.ID,
+				Value: tp.TenderDate,
+			}
+		},
+	}
+	// TenderProfileOrderFieldTenderClosingDate orders TenderProfile by tender_closing_date.
+	TenderProfileOrderFieldTenderClosingDate = &TenderProfileOrderField{
+		Value: func(tp *TenderProfile) (ent.Value, error) {
+			return tp.TenderClosingDate, nil
+		},
+		column: tenderprofile.FieldTenderClosingDate,
+		toTerm: tenderprofile.ByTenderClosingDate,
+		toCursor: func(tp *TenderProfile) Cursor {
+			return Cursor{
+				ID:    tp.ID,
+				Value: tp.TenderClosingDate,
+			}
+		},
+	}
+)
+
+// String implement fmt.Stringer interface.
+func (f TenderProfileOrderField) String() string {
+	var str string
+	switch f.column {
+	case TenderProfileOrderFieldCreatedAt.column:
+		str = "CREATED_AT"
+	case TenderProfileOrderFieldApprovalStatus.column:
+		str = "APPROVAL_STATUS"
+	case TenderProfileOrderFieldName.column:
+		str = "NAME"
+	case TenderProfileOrderFieldTenderDate.column:
+		str = "TENDER_DATE"
+	case TenderProfileOrderFieldTenderClosingDate.column:
+		str = "CLOSING_DATE"
+	}
+	return str
+}
+
+// MarshalGQL implements graphql.Marshaler interface.
+func (f TenderProfileOrderField) MarshalGQL(w io.Writer) {
+	io.WriteString(w, strconv.Quote(f.String()))
+}
+
+// UnmarshalGQL implements graphql.Unmarshaler interface.
+func (f *TenderProfileOrderField) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("TenderProfileOrderField %T must be a string", v)
+	}
+	switch str {
+	case "CREATED_AT":
+		*f = *TenderProfileOrderFieldCreatedAt
+	case "APPROVAL_STATUS":
+		*f = *TenderProfileOrderFieldApprovalStatus
+	case "NAME":
+		*f = *TenderProfileOrderFieldName
+	case "TENDER_DATE":
+		*f = *TenderProfileOrderFieldTenderDate
+	case "CLOSING_DATE":
+		*f = *TenderProfileOrderFieldTenderClosingDate
+	default:
+		return fmt.Errorf("%s is not a valid TenderProfileOrderField", str)
+	}
+	return nil
+}
+
+// TenderProfileOrderField defines the ordering field of TenderProfile.
+type TenderProfileOrderField struct {
+	// Value extracts the ordering value from the given TenderProfile.
+	Value    func(*TenderProfile) (ent.Value, error)
+	column   string // field or computed.
+	toTerm   func(...sql.OrderTermOption) tenderprofile.OrderOption
+	toCursor func(*TenderProfile) Cursor
+}
+
+// TenderProfileOrder defines the ordering of TenderProfile.
+type TenderProfileOrder struct {
+	Direction OrderDirection           `json:"direction"`
+	Field     *TenderProfileOrderField `json:"field"`
+}
+
+// DefaultTenderProfileOrder is the default ordering of TenderProfile.
+var DefaultTenderProfileOrder = &TenderProfileOrder{
+	Direction: entgql.OrderDirectionAsc,
+	Field: &TenderProfileOrderField{
+		Value: func(tp *TenderProfile) (ent.Value, error) {
+			return tp.ID, nil
+		},
+		column: tenderprofile.FieldID,
+		toTerm: tenderprofile.ByID,
+		toCursor: func(tp *TenderProfile) Cursor {
+			return Cursor{ID: tp.ID}
+		},
+	},
+}
+
+// ToEdge converts TenderProfile into TenderProfileEdge.
+func (tp *TenderProfile) ToEdge(order *TenderProfileOrder) *TenderProfileEdge {
+	if order == nil {
+		order = DefaultTenderProfileOrder
+	}
+	return &TenderProfileEdge{
+		Node:   tp,
+		Cursor: order.Field.toCursor(tp),
 	}
 }
 

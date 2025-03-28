@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<340fbdc42b110209861f4c1b6558bd2b>>
+ * @generated SignedSource<<b38572ff251c8c9682d74924ed613911>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -54,6 +54,12 @@ export type useCreateUserMutation$data = {
         readonly hasMapAccess: boolean;
         readonly id: string;
         readonly isAdmin: boolean;
+        readonly isCeo: boolean;
+        readonly isSuperAdmin: boolean;
+        readonly leader: {
+          readonly id: string;
+          readonly name: string | null | undefined;
+        } | null | undefined;
         readonly name: string | null | undefined;
         readonly openID: string;
         readonly projects: {
@@ -106,7 +112,11 @@ v4 = {
   "name": "name",
   "storageKey": null
 },
-v5 = {
+v5 = [
+  (v3/*: any*/),
+  (v4/*: any*/)
+],
+v6 = {
   "alias": null,
   "args": null,
   "concreteType": "UserEdge",
@@ -182,16 +192,23 @@ v5 = {
                   "kind": "LinkedField",
                   "name": "node",
                   "plural": false,
-                  "selections": [
-                    (v3/*: any*/),
-                    (v4/*: any*/)
-                  ],
+                  "selections": (v5/*: any*/),
                   "storageKey": null
                 }
               ],
               "storageKey": null
             }
           ],
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "User",
+          "kind": "LinkedField",
+          "name": "leader",
+          "plural": false,
+          "selections": (v5/*: any*/),
           "storageKey": null
         },
         {
@@ -246,6 +263,20 @@ v5 = {
           "alias": null,
           "args": null,
           "kind": "ScalarField",
+          "name": "isSuperAdmin",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "isCeo",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
           "name": "hasMapAccess",
           "storageKey": null
         },
@@ -280,7 +311,7 @@ return {
         "name": "createUser",
         "plural": false,
         "selections": [
-          (v5/*: any*/)
+          (v6/*: any*/)
         ],
         "storageKey": null
       }
@@ -305,7 +336,7 @@ return {
         "name": "createUser",
         "plural": false,
         "selections": [
-          (v5/*: any*/),
+          (v6/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -328,16 +359,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "f9eb6447b30b3780c2b5da0d35b35b78",
+    "cacheID": "b019c4bf2e95841534745577cf2e0c85",
     "id": null,
     "metadata": {},
     "name": "useCreateUserMutation",
     "operationKind": "mutation",
-    "text": "mutation useCreateUserMutation(\n  $input: CreateUserInput!\n) {\n  createUser(input: $input) {\n    edges {\n      node {\n        id\n        name\n        email\n        username\n        openID\n        avatarURL\n        disabled\n        areas {\n          edges {\n            node {\n              id\n              name\n            }\n          }\n        }\n        projects {\n          edges {\n            node {\n              id\n              code\n            }\n          }\n        }\n        isAdmin\n        hasMapAccess\n        hasEditAccess\n      }\n    }\n  }\n}\n"
+    "text": "mutation useCreateUserMutation(\n  $input: CreateUserInput!\n) {\n  createUser(input: $input) {\n    edges {\n      node {\n        id\n        name\n        email\n        username\n        openID\n        avatarURL\n        disabled\n        areas {\n          edges {\n            node {\n              id\n              name\n            }\n          }\n        }\n        leader {\n          id\n          name\n        }\n        projects {\n          edges {\n            node {\n              id\n              code\n            }\n          }\n        }\n        isAdmin\n        isSuperAdmin\n        isCeo\n        hasMapAccess\n        hasEditAccess\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "81c1b08e610d05d9d263fffc562c65c1";
+(node as any).hash = "b38d59591c452a9ececb02aae88dd256";
 
 export default node;

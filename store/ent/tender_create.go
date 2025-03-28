@@ -13,6 +13,7 @@ import (
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/tendercompetitor"
+	"cscd-bds/store/ent/tenderprofile"
 	"cscd-bds/store/ent/user"
 	"cscd-bds/store/ent/visitrecord"
 	"errors"
@@ -954,6 +955,36 @@ func (tc *TenderCreate) SetArea(a *Area) *TenderCreate {
 	return tc.SetAreaID(a.ID)
 }
 
+// AddProfileIDs adds the "profiles" edge to the TenderProfile entity by IDs.
+func (tc *TenderCreate) AddProfileIDs(ids ...xid.ID) *TenderCreate {
+	tc.mutation.AddProfileIDs(ids...)
+	return tc
+}
+
+// AddProfiles adds the "profiles" edges to the TenderProfile entity.
+func (tc *TenderCreate) AddProfiles(t ...*TenderProfile) *TenderCreate {
+	ids := make([]xid.ID, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return tc.AddProfileIDs(ids...)
+}
+
+// AddCompetitorIDs adds the "competitors" edge to the TenderCompetitor entity by IDs.
+func (tc *TenderCreate) AddCompetitorIDs(ids ...xid.ID) *TenderCreate {
+	tc.mutation.AddCompetitorIDs(ids...)
+	return tc
+}
+
+// AddCompetitors adds the "competitors" edges to the TenderCompetitor entity.
+func (tc *TenderCreate) AddCompetitors(t ...*TenderCompetitor) *TenderCreate {
+	ids := make([]xid.ID, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return tc.AddCompetitorIDs(ids...)
+}
+
 // SetCustomer sets the "customer" edge to the Customer entity.
 func (tc *TenderCreate) SetCustomer(c *Customer) *TenderCreate {
 	return tc.SetCustomerID(c.ID)
@@ -1012,21 +1043,6 @@ func (tc *TenderCreate) AddVisitRecords(v ...*VisitRecord) *TenderCreate {
 		ids[i] = v[i].ID
 	}
 	return tc.AddVisitRecordIDs(ids...)
-}
-
-// AddCompetitorIDs adds the "competitors" edge to the TenderCompetitor entity by IDs.
-func (tc *TenderCreate) AddCompetitorIDs(ids ...xid.ID) *TenderCreate {
-	tc.mutation.AddCompetitorIDs(ids...)
-	return tc
-}
-
-// AddCompetitors adds the "competitors" edges to the TenderCompetitor entity.
-func (tc *TenderCreate) AddCompetitors(t ...*TenderCompetitor) *TenderCreate {
-	ids := make([]xid.ID, len(t))
-	for i := range t {
-		ids[i] = t[i].ID
-	}
-	return tc.AddCompetitorIDs(ids...)
 }
 
 // SetApprover sets the "approver" edge to the User entity.
@@ -1482,6 +1498,38 @@ func (tc *TenderCreate) createSpec() (*Tender, *sqlgraph.CreateSpec) {
 		_node.AreaID = nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
+	if nodes := tc.mutation.ProfilesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   tender.ProfilesTable,
+			Columns: []string{tender.ProfilesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tenderprofile.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := tc.mutation.CompetitorsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   tender.CompetitorsTable,
+			Columns: []string{tender.CompetitorsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tendercompetitor.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
 	if nodes := tc.mutation.CustomerIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
@@ -1609,22 +1657,6 @@ func (tc *TenderCreate) createSpec() (*Tender, *sqlgraph.CreateSpec) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(visitrecord.FieldID, field.TypeString),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges = append(_spec.Edges, edge)
-	}
-	if nodes := tc.mutation.CompetitorsIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   tender.CompetitorsTable,
-			Columns: []string{tender.CompetitorsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(tendercompetitor.FieldID, field.TypeString),
 			},
 		}
 		for _, k := range nodes {

@@ -20,6 +20,7 @@ import (
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/tendercompetitor"
+	"cscd-bds/store/ent/tenderprofile"
 	"cscd-bds/store/ent/user"
 	"cscd-bds/store/ent/visitrecord"
 	"fmt"
@@ -42,6 +43,7 @@ var prefixMap = map[xid.ID]string{
 	"PR": province.Table,
 	"TE": tender.Table,
 	"TC": tendercompetitor.Table,
+	"TP": tenderprofile.Table,
 	"US": user.Table,
 	"VR": visitrecord.Table,
 }

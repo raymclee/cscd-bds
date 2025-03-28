@@ -8,7 +8,7 @@ import { RelayEnvironment } from "~/lib/relay";
 import dayjs from "dayjs";
 import LocalizedFormat from "dayjs/plugin/localizedFormat";
 import "dayjs/locale/zh-cn";
-
+import React from "react";
 dayjs.locale("zh-cn");
 dayjs.extend(LocalizedFormat);
 
@@ -56,5 +56,9 @@ const rootElement = document.getElementById("app")!;
 
 if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
-  root.render(<RouterProvider router={router} />);
+  root.render(
+    <React.StrictMode>
+      <RouterProvider router={router} />
+    </React.StrictMode>,
+  );
 }

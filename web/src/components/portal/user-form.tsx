@@ -5,7 +5,12 @@ import {
 import { useUpdateUserMutation$variables } from "__generated__/useUpdateUserMutation.graphql";
 import { App, Button, Form, Input, Select, Space, Switch } from "antd";
 import React, { useEffect } from "react";
-import { AreaConnection, ProjectConnection, User } from "~/graphql/graphql";
+import {
+  AreaConnection,
+  ProjectConnection,
+  User,
+  UserConnection,
+} from "~/graphql/graphql";
 import { useCreateUser } from "~/hooks/use-create-user";
 import { useUpdateUser } from "~/hooks/use-update-user";
 import { SearchUserSelect } from "./search-user-select";
@@ -18,6 +23,7 @@ export type UserFormProps = {
   isSuperAdmin?: boolean;
   avaliableAreas: AreaConnection;
   avaliableProjects?: ProjectConnection;
+  avaliableUsers: UserConnection;
 };
 
 export function UserForm({
@@ -27,6 +33,7 @@ export function UserForm({
   isSuperAdmin = false,
   avaliableAreas,
   avaliableProjects,
+  avaliableUsers,
 }: UserFormProps) {
   const [form] = Form.useForm<
     (
@@ -62,6 +69,7 @@ export function UserForm({
         hasMapAccess: selectedUser.hasMapAccess,
         hasEditAccess: selectedUser.hasEditAccess,
         isCeo: selectedUser.isCeo,
+        leaderID: selectedUser.leader?.id,
         projectIDs:
           selectedUser.projects?.edges?.length ===
           avaliableProjects?.edges?.length
@@ -88,13 +96,8 @@ export function UserForm({
         // requiredMark="optional"
         onFinish={(values) => {
           if (selectedUser) {
-            const { areaIDs, projectIDs, ...rest } = values as CreateUserInput;
-
-            const _projectIDs = projectIDs?.includes("all")
-              ? avaliableProjects?.edges
-                  ?.map((p) => p?.node?.id)
-                  .filter((i): i is string => !!i)
-              : projectIDs?.filter((v) => v !== "all");
+            const { areaIDs, projectIDs, leaderID, ...rest } =
+              values as CreateUserInput;
 
             commitUpdateUser({
               variables: {
@@ -110,18 +113,9 @@ export function UserForm({
                         (i): i is string => !!i && !removedAreaIDs?.includes(i),
                       ) ?? []),
                   ],
-                  clearProjects: true,
-                  addProjectIDs: [
-                    ...(_projectIDs ?? []),
-                    ...(!removedProjectIDs.includes("all")
-                      ? (selectedUser.projects.edges
-                          ?.map((p) => p?.node?.id)
-                          .filter(
-                            (i): i is string =>
-                              !!i && !removedProjectIDs?.includes(i),
-                          ) ?? [])
-                      : []),
-                  ],
+                  clearLeader: true,
+                  leaderID: leaderID ?? undefined,
+                  addProjectIDs: projectIDs,
                 },
               },
               onCompleted(response, errors) {
@@ -135,16 +129,9 @@ export function UserForm({
               },
             });
           } else {
-            const { zhtUser, projectIDs, ...input } =
-              values as CreateUserInput & {
-                zhtUser: { label: string; value: string };
-              };
-
-            const _projectIDs = projectIDs?.includes("all")
-              ? avaliableProjects?.edges
-                  ?.map((p) => p?.node?.id)
-                  .filter((i): i is string => !!i)
-              : projectIDs?.filter((v) => v !== "all");
+            const { zhtUser, ...input } = values as CreateUserInput & {
+              zhtUser: { label: string; value: string };
+            };
 
             commitCreateUser({
               variables: {
@@ -154,7 +141,6 @@ export function UserForm({
                   username: "",
                   name: zhtUser.label,
                   openID: zhtUser.value,
-                  projectIDs: _projectIDs,
                 },
                 connections: connectionIDs,
               },
@@ -220,6 +206,17 @@ export function UserForm({
               setRemovedAreaIDs((prev) => [...prev, value]);
             }}
             showSearch
+            optionFilterProp="label"
+          />
+        </Form.Item>
+        <Form.Item name="leaderID" label="隊長">
+          <Select
+            options={avaliableUsers.edges?.map((u) => ({
+              label: u?.node?.name,
+              value: u?.node?.id,
+            }))}
+            showSearch
+            allowClear
             optionFilterProp="label"
           />
         </Form.Item>

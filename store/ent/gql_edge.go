@@ -480,6 +480,30 @@ func (t *Tender) Area(ctx context.Context) (*Area, error) {
 	return result, err
 }
 
+func (t *Tender) Profiles(ctx context.Context) (result []*TenderProfile, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = t.NamedProfiles(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = t.Edges.ProfilesOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = t.QueryProfiles().All(ctx)
+	}
+	return result, err
+}
+
+func (t *Tender) Competitors(ctx context.Context) (result []*TenderCompetitor, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = t.NamedCompetitors(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = t.Edges.CompetitorsOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = t.QueryCompetitors().All(ctx)
+	}
+	return result, err
+}
+
 func (t *Tender) Customer(ctx context.Context) (*Customer, error) {
 	result, err := t.Edges.CustomerOrErr()
 	if IsNotLoaded(err) {
@@ -548,7 +572,7 @@ func (t *Tender) VisitRecords(
 		WithVisitRecordFilter(where.Filter),
 	}
 	alias := graphql.GetFieldContext(ctx).Field.Alias
-	totalCount, hasTotalCount := t.Edges.totalCount[8][alias]
+	totalCount, hasTotalCount := t.Edges.totalCount[10][alias]
 	if nodes, err := t.NamedVisitRecords(alias); err == nil || hasTotalCount {
 		pager, err := newVisitRecordPager(opts, last != nil)
 		if err != nil {
@@ -559,18 +583,6 @@ func (t *Tender) VisitRecords(
 		return conn, nil
 	}
 	return t.QueryVisitRecords().Paginate(ctx, after, first, before, last, opts...)
-}
-
-func (t *Tender) Competitors(ctx context.Context) (result []*TenderCompetitor, err error) {
-	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
-		result, err = t.NamedCompetitors(graphql.GetFieldContext(ctx).Field.Alias)
-	} else {
-		result, err = t.Edges.CompetitorsOrErr()
-	}
-	if IsNotLoaded(err) {
-		result, err = t.QueryCompetitors().All(ctx)
-	}
-	return result, err
 }
 
 func (t *Tender) Approver(ctx context.Context) (*User, error) {
@@ -603,6 +615,78 @@ func (tc *TenderCompetitor) Competitor(ctx context.Context) (*Competitor, error)
 		result, err = tc.QueryCompetitor().Only(ctx)
 	}
 	return result, err
+}
+
+func (tp *TenderProfile) Tender(ctx context.Context) (*Tender, error) {
+	result, err := tp.Edges.TenderOrErr()
+	if IsNotLoaded(err) {
+		result, err = tp.QueryTender().Only(ctx)
+	}
+	return result, err
+}
+
+func (tp *TenderProfile) Customer(ctx context.Context) (*Customer, error) {
+	result, err := tp.Edges.CustomerOrErr()
+	if IsNotLoaded(err) {
+		result, err = tp.QueryCustomer().Only(ctx)
+	}
+	return result, MaskNotFound(err)
+}
+
+func (tp *TenderProfile) Finder(ctx context.Context) (*User, error) {
+	result, err := tp.Edges.FinderOrErr()
+	if IsNotLoaded(err) {
+		result, err = tp.QueryFinder().Only(ctx)
+	}
+	return result, MaskNotFound(err)
+}
+
+func (tp *TenderProfile) CreatedBy(ctx context.Context) (*User, error) {
+	result, err := tp.Edges.CreatedByOrErr()
+	if IsNotLoaded(err) {
+		result, err = tp.QueryCreatedBy().Only(ctx)
+	}
+	return result, MaskNotFound(err)
+}
+
+func (tp *TenderProfile) Province(ctx context.Context) (*Province, error) {
+	result, err := tp.Edges.ProvinceOrErr()
+	if IsNotLoaded(err) {
+		result, err = tp.QueryProvince().Only(ctx)
+	}
+	return result, MaskNotFound(err)
+}
+
+func (tp *TenderProfile) City(ctx context.Context) (*City, error) {
+	result, err := tp.Edges.CityOrErr()
+	if IsNotLoaded(err) {
+		result, err = tp.QueryCity().Only(ctx)
+	}
+	return result, MaskNotFound(err)
+}
+
+func (tp *TenderProfile) District(ctx context.Context) (*District, error) {
+	result, err := tp.Edges.DistrictOrErr()
+	if IsNotLoaded(err) {
+		result, err = tp.QueryDistrict().Only(ctx)
+	}
+	return result, MaskNotFound(err)
+}
+
+func (tp *TenderProfile) Approver(ctx context.Context) (*User, error) {
+	result, err := tp.Edges.ApproverOrErr()
+	if IsNotLoaded(err) {
+		result, err = tp.QueryApprover().Only(ctx)
+	}
+	return result, MaskNotFound(err)
+}
+
+func (tp *TenderProfile) UpdatedBy(ctx context.Context) (*User, error) {
+	result, err := tp.Edges.UpdatedByOrErr()
+	if IsNotLoaded(err) {
+		result, err = tp.QueryUpdatedBy().Only(ctx)
+	}
+	return result, MaskNotFound(err)
 }
 
 func (u *User) Areas(

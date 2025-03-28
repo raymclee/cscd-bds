@@ -249,6 +249,7 @@ type ComplexityRoot struct {
 
 	Mutation struct {
 		ApproveCustomerRequest func(childComplexity int, id xid.ID) int
+		ApproveTender          func(childComplexity int, id xid.ID) int
 		CreateArea             func(childComplexity int, input ent.CreateAreaInput) int
 		CreateCompetitor       func(childComplexity int, input ent.CreateCompetitorInput) int
 		CreateCustomer         func(childComplexity int, input ent.CreateCustomerInput) int
@@ -264,6 +265,7 @@ type ComplexityRoot struct {
 		DeleteVisitRecord      func(childComplexity int, id xid.ID) int
 		LoseTender             func(childComplexity int, id xid.ID, input model.LoseTenderInput) int
 		RejectCustomerRequest  func(childComplexity int, id xid.ID) int
+		RejectTender           func(childComplexity int, id xid.ID) int
 		UpdateArea             func(childComplexity int, id xid.ID, input ent.UpdateAreaInput) int
 		UpdateCompetitor       func(childComplexity int, id xid.ID, input ent.UpdateCompetitorInput) int
 		UpdateCustomer         func(childComplexity int, id xid.ID, input ent.UpdateCustomerInput) int
@@ -633,6 +635,7 @@ type ComplexityRoot struct {
 		Name                                 func(childComplexity int) int
 		OwnerSituations                      func(childComplexity int) int
 		PrepareToBid                         func(childComplexity int) int
+		Profiles                             func(childComplexity int) int
 		ProjectCode                          func(childComplexity int) int
 		ProjectDefinition                    func(childComplexity int) int
 		ProjectType                          func(childComplexity int) int
@@ -690,6 +693,86 @@ type ComplexityRoot struct {
 	TenderEdge struct {
 		Cursor func(childComplexity int) int
 		Node   func(childComplexity int) int
+	}
+
+	TenderProfile struct {
+		Address                              func(childComplexity int) int
+		ApprovalMsgID                        func(childComplexity int) int
+		ApprovalStatus                       func(childComplexity int) int
+		Approver                             func(childComplexity int) int
+		ApproverID                           func(childComplexity int) int
+		Architect                            func(childComplexity int) int
+		Attachments                          func(childComplexity int) int
+		BiddingDate                          func(childComplexity int) int
+		BiddingInstructions                  func(childComplexity int) int
+		City                                 func(childComplexity int) int
+		CityID                               func(childComplexity int) int
+		Classify                             func(childComplexity int) int
+		CompetitivePartnershipRating         func(childComplexity int) int
+		CompetitivePartnershipRatingOverview func(childComplexity int) int
+		CompetitorSituations                 func(childComplexity int) int
+		ConstructionArea                     func(childComplexity int) int
+		ConsultingFirm                       func(childComplexity int) int
+		ContractForm                         func(childComplexity int) int
+		Contractor                           func(childComplexity int) int
+		CostEngineer                         func(childComplexity int) int
+		CreatedAt                            func(childComplexity int) int
+		CreatedBy                            func(childComplexity int) int
+		CreatedByID                          func(childComplexity int) int
+		CreditAndPaymentRating               func(childComplexity int) int
+		CreditAndPaymentRatingOverview       func(childComplexity int) int
+		CurrentProgress                      func(childComplexity int) int
+		Customer                             func(childComplexity int) int
+		CustomerID                           func(childComplexity int) int
+		CustomerRelationshipRating           func(childComplexity int) int
+		CustomerRelationshipRatingOverview   func(childComplexity int) int
+		DesignUnit                           func(childComplexity int) int
+		Developer                            func(childComplexity int) int
+		DiscoveryDate                        func(childComplexity int) int
+		District                             func(childComplexity int) int
+		DistrictID                           func(childComplexity int) int
+		EstimatedAmount                      func(childComplexity int) int
+		EstimatedProjectEndDate              func(childComplexity int) int
+		EstimatedProjectStartDate            func(childComplexity int) int
+		FacadeConsultant                     func(childComplexity int) int
+		Finder                               func(childComplexity int) int
+		FinderID                             func(childComplexity int) int
+		FullAddress                          func(childComplexity int) int
+		GeoCoordinate                        func(childComplexity int) int
+		ID                                   func(childComplexity int) int
+		Images                               func(childComplexity int) int
+		KeyProject                           func(childComplexity int) int
+		LastTenderAmount                     func(childComplexity int) int
+		LevelInvolved                        func(childComplexity int) int
+		ManagementCompany                    func(childComplexity int) int
+		Name                                 func(childComplexity int) int
+		OwnerSituations                      func(childComplexity int) int
+		PrepareToBid                         func(childComplexity int) int
+		ProjectCode                          func(childComplexity int) int
+		ProjectDefinition                    func(childComplexity int) int
+		ProjectType                          func(childComplexity int) int
+		Province                             func(childComplexity int) int
+		ProvinceID                           func(childComplexity int) int
+		Remark                               func(childComplexity int) int
+		SizeAndValueRating                   func(childComplexity int) int
+		SizeAndValueRatingOverview           func(childComplexity int) int
+		Status                               func(childComplexity int) int
+		Tender                               func(childComplexity int) int
+		TenderClosingDate                    func(childComplexity int) int
+		TenderCode                           func(childComplexity int) int
+		TenderDate                           func(childComplexity int) int
+		TenderForm                           func(childComplexity int) int
+		TenderID                             func(childComplexity int) int
+		TenderSituations                     func(childComplexity int) int
+		TenderWinAmount                      func(childComplexity int) int
+		TenderWinCompany                     func(childComplexity int) int
+		TenderWinDate                        func(childComplexity int) int
+		TenderingAgency                      func(childComplexity int) int
+		TimeLimitRating                      func(childComplexity int) int
+		TimeLimitRatingOverview              func(childComplexity int) int
+		UpdatedAt                            func(childComplexity int) int
+		UpdatedBy                            func(childComplexity int) int
+		UpdatedByID                          func(childComplexity int) int
 	}
 
 	TopCompetitor struct {
@@ -1754,6 +1837,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.ApproveCustomerRequest(childComplexity, args["id"].(xid.ID)), true
 
+	case "Mutation.approveTender":
+		if e.complexity.Mutation.ApproveTender == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_approveTender_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.ApproveTender(childComplexity, args["id"].(xid.ID)), true
+
 	case "Mutation.createArea":
 		if e.complexity.Mutation.CreateArea == nil {
 			break
@@ -1933,6 +2028,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.RejectCustomerRequest(childComplexity, args["id"].(xid.ID)), true
+
+	case "Mutation.rejectTender":
+		if e.complexity.Mutation.RejectTender == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_rejectTender_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.RejectTender(childComplexity, args["id"].(xid.ID)), true
 
 	case "Mutation.updateArea":
 		if e.complexity.Mutation.UpdateArea == nil {
@@ -4203,6 +4310,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Tender.PrepareToBid(childComplexity), true
 
+	case "Tender.profiles":
+		if e.complexity.Tender.Profiles == nil {
+			break
+		}
+
+		return e.complexity.Tender.Profiles(childComplexity), true
+
 	case "Tender.projectCode":
 		if e.complexity.Tender.ProjectCode == nil {
 			break
@@ -4501,6 +4615,545 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.TenderEdge.Node(childComplexity), true
+
+	case "TenderProfile.address":
+		if e.complexity.TenderProfile.Address == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.Address(childComplexity), true
+
+	case "TenderProfile.approvalMsgID":
+		if e.complexity.TenderProfile.ApprovalMsgID == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.ApprovalMsgID(childComplexity), true
+
+	case "TenderProfile.approvalStatus":
+		if e.complexity.TenderProfile.ApprovalStatus == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.ApprovalStatus(childComplexity), true
+
+	case "TenderProfile.approver":
+		if e.complexity.TenderProfile.Approver == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.Approver(childComplexity), true
+
+	case "TenderProfile.approverID":
+		if e.complexity.TenderProfile.ApproverID == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.ApproverID(childComplexity), true
+
+	case "TenderProfile.architect":
+		if e.complexity.TenderProfile.Architect == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.Architect(childComplexity), true
+
+	case "TenderProfile.attachments":
+		if e.complexity.TenderProfile.Attachments == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.Attachments(childComplexity), true
+
+	case "TenderProfile.biddingDate":
+		if e.complexity.TenderProfile.BiddingDate == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.BiddingDate(childComplexity), true
+
+	case "TenderProfile.biddingInstructions":
+		if e.complexity.TenderProfile.BiddingInstructions == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.BiddingInstructions(childComplexity), true
+
+	case "TenderProfile.city":
+		if e.complexity.TenderProfile.City == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.City(childComplexity), true
+
+	case "TenderProfile.cityID":
+		if e.complexity.TenderProfile.CityID == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.CityID(childComplexity), true
+
+	case "TenderProfile.classify":
+		if e.complexity.TenderProfile.Classify == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.Classify(childComplexity), true
+
+	case "TenderProfile.competitivePartnershipRating":
+		if e.complexity.TenderProfile.CompetitivePartnershipRating == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.CompetitivePartnershipRating(childComplexity), true
+
+	case "TenderProfile.competitivePartnershipRatingOverview":
+		if e.complexity.TenderProfile.CompetitivePartnershipRatingOverview == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.CompetitivePartnershipRatingOverview(childComplexity), true
+
+	case "TenderProfile.competitorSituations":
+		if e.complexity.TenderProfile.CompetitorSituations == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.CompetitorSituations(childComplexity), true
+
+	case "TenderProfile.constructionArea":
+		if e.complexity.TenderProfile.ConstructionArea == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.ConstructionArea(childComplexity), true
+
+	case "TenderProfile.consultingFirm":
+		if e.complexity.TenderProfile.ConsultingFirm == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.ConsultingFirm(childComplexity), true
+
+	case "TenderProfile.contractForm":
+		if e.complexity.TenderProfile.ContractForm == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.ContractForm(childComplexity), true
+
+	case "TenderProfile.contractor":
+		if e.complexity.TenderProfile.Contractor == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.Contractor(childComplexity), true
+
+	case "TenderProfile.costEngineer":
+		if e.complexity.TenderProfile.CostEngineer == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.CostEngineer(childComplexity), true
+
+	case "TenderProfile.createdAt":
+		if e.complexity.TenderProfile.CreatedAt == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.CreatedAt(childComplexity), true
+
+	case "TenderProfile.createdBy":
+		if e.complexity.TenderProfile.CreatedBy == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.CreatedBy(childComplexity), true
+
+	case "TenderProfile.createdByID":
+		if e.complexity.TenderProfile.CreatedByID == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.CreatedByID(childComplexity), true
+
+	case "TenderProfile.creditAndPaymentRating":
+		if e.complexity.TenderProfile.CreditAndPaymentRating == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.CreditAndPaymentRating(childComplexity), true
+
+	case "TenderProfile.creditAndPaymentRatingOverview":
+		if e.complexity.TenderProfile.CreditAndPaymentRatingOverview == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.CreditAndPaymentRatingOverview(childComplexity), true
+
+	case "TenderProfile.currentProgress":
+		if e.complexity.TenderProfile.CurrentProgress == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.CurrentProgress(childComplexity), true
+
+	case "TenderProfile.customer":
+		if e.complexity.TenderProfile.Customer == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.Customer(childComplexity), true
+
+	case "TenderProfile.customerID":
+		if e.complexity.TenderProfile.CustomerID == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.CustomerID(childComplexity), true
+
+	case "TenderProfile.customerRelationshipRating":
+		if e.complexity.TenderProfile.CustomerRelationshipRating == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.CustomerRelationshipRating(childComplexity), true
+
+	case "TenderProfile.customerRelationshipRatingOverview":
+		if e.complexity.TenderProfile.CustomerRelationshipRatingOverview == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.CustomerRelationshipRatingOverview(childComplexity), true
+
+	case "TenderProfile.designUnit":
+		if e.complexity.TenderProfile.DesignUnit == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.DesignUnit(childComplexity), true
+
+	case "TenderProfile.developer":
+		if e.complexity.TenderProfile.Developer == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.Developer(childComplexity), true
+
+	case "TenderProfile.discoveryDate":
+		if e.complexity.TenderProfile.DiscoveryDate == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.DiscoveryDate(childComplexity), true
+
+	case "TenderProfile.district":
+		if e.complexity.TenderProfile.District == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.District(childComplexity), true
+
+	case "TenderProfile.districtID":
+		if e.complexity.TenderProfile.DistrictID == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.DistrictID(childComplexity), true
+
+	case "TenderProfile.estimatedAmount":
+		if e.complexity.TenderProfile.EstimatedAmount == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.EstimatedAmount(childComplexity), true
+
+	case "TenderProfile.estimatedProjectEndDate":
+		if e.complexity.TenderProfile.EstimatedProjectEndDate == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.EstimatedProjectEndDate(childComplexity), true
+
+	case "TenderProfile.estimatedProjectStartDate":
+		if e.complexity.TenderProfile.EstimatedProjectStartDate == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.EstimatedProjectStartDate(childComplexity), true
+
+	case "TenderProfile.facadeConsultant":
+		if e.complexity.TenderProfile.FacadeConsultant == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.FacadeConsultant(childComplexity), true
+
+	case "TenderProfile.finder":
+		if e.complexity.TenderProfile.Finder == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.Finder(childComplexity), true
+
+	case "TenderProfile.finderID":
+		if e.complexity.TenderProfile.FinderID == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.FinderID(childComplexity), true
+
+	case "TenderProfile.fullAddress":
+		if e.complexity.TenderProfile.FullAddress == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.FullAddress(childComplexity), true
+
+	case "TenderProfile.geoCoordinate":
+		if e.complexity.TenderProfile.GeoCoordinate == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.GeoCoordinate(childComplexity), true
+
+	case "TenderProfile.id":
+		if e.complexity.TenderProfile.ID == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.ID(childComplexity), true
+
+	case "TenderProfile.images":
+		if e.complexity.TenderProfile.Images == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.Images(childComplexity), true
+
+	case "TenderProfile.keyProject":
+		if e.complexity.TenderProfile.KeyProject == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.KeyProject(childComplexity), true
+
+	case "TenderProfile.lastTenderAmount":
+		if e.complexity.TenderProfile.LastTenderAmount == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.LastTenderAmount(childComplexity), true
+
+	case "TenderProfile.levelInvolved":
+		if e.complexity.TenderProfile.LevelInvolved == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.LevelInvolved(childComplexity), true
+
+	case "TenderProfile.managementCompany":
+		if e.complexity.TenderProfile.ManagementCompany == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.ManagementCompany(childComplexity), true
+
+	case "TenderProfile.name":
+		if e.complexity.TenderProfile.Name == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.Name(childComplexity), true
+
+	case "TenderProfile.ownerSituations":
+		if e.complexity.TenderProfile.OwnerSituations == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.OwnerSituations(childComplexity), true
+
+	case "TenderProfile.prepareToBid":
+		if e.complexity.TenderProfile.PrepareToBid == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.PrepareToBid(childComplexity), true
+
+	case "TenderProfile.projectCode":
+		if e.complexity.TenderProfile.ProjectCode == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.ProjectCode(childComplexity), true
+
+	case "TenderProfile.projectDefinition":
+		if e.complexity.TenderProfile.ProjectDefinition == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.ProjectDefinition(childComplexity), true
+
+	case "TenderProfile.projectType":
+		if e.complexity.TenderProfile.ProjectType == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.ProjectType(childComplexity), true
+
+	case "TenderProfile.province":
+		if e.complexity.TenderProfile.Province == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.Province(childComplexity), true
+
+	case "TenderProfile.provinceID":
+		if e.complexity.TenderProfile.ProvinceID == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.ProvinceID(childComplexity), true
+
+	case "TenderProfile.remark":
+		if e.complexity.TenderProfile.Remark == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.Remark(childComplexity), true
+
+	case "TenderProfile.sizeAndValueRating":
+		if e.complexity.TenderProfile.SizeAndValueRating == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.SizeAndValueRating(childComplexity), true
+
+	case "TenderProfile.sizeAndValueRatingOverview":
+		if e.complexity.TenderProfile.SizeAndValueRatingOverview == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.SizeAndValueRatingOverview(childComplexity), true
+
+	case "TenderProfile.status":
+		if e.complexity.TenderProfile.Status == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.Status(childComplexity), true
+
+	case "TenderProfile.tender":
+		if e.complexity.TenderProfile.Tender == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.Tender(childComplexity), true
+
+	case "TenderProfile.tenderClosingDate":
+		if e.complexity.TenderProfile.TenderClosingDate == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.TenderClosingDate(childComplexity), true
+
+	case "TenderProfile.tenderCode":
+		if e.complexity.TenderProfile.TenderCode == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.TenderCode(childComplexity), true
+
+	case "TenderProfile.tenderDate":
+		if e.complexity.TenderProfile.TenderDate == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.TenderDate(childComplexity), true
+
+	case "TenderProfile.tenderForm":
+		if e.complexity.TenderProfile.TenderForm == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.TenderForm(childComplexity), true
+
+	case "TenderProfile.tenderID":
+		if e.complexity.TenderProfile.TenderID == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.TenderID(childComplexity), true
+
+	case "TenderProfile.tenderSituations":
+		if e.complexity.TenderProfile.TenderSituations == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.TenderSituations(childComplexity), true
+
+	case "TenderProfile.tenderWinAmount":
+		if e.complexity.TenderProfile.TenderWinAmount == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.TenderWinAmount(childComplexity), true
+
+	case "TenderProfile.tenderWinCompany":
+		if e.complexity.TenderProfile.TenderWinCompany == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.TenderWinCompany(childComplexity), true
+
+	case "TenderProfile.tenderWinDate":
+		if e.complexity.TenderProfile.TenderWinDate == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.TenderWinDate(childComplexity), true
+
+	case "TenderProfile.tenderingAgency":
+		if e.complexity.TenderProfile.TenderingAgency == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.TenderingAgency(childComplexity), true
+
+	case "TenderProfile.timeLimitRating":
+		if e.complexity.TenderProfile.TimeLimitRating == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.TimeLimitRating(childComplexity), true
+
+	case "TenderProfile.timeLimitRatingOverview":
+		if e.complexity.TenderProfile.TimeLimitRatingOverview == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.TimeLimitRatingOverview(childComplexity), true
+
+	case "TenderProfile.updatedAt":
+		if e.complexity.TenderProfile.UpdatedAt == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.UpdatedAt(childComplexity), true
+
+	case "TenderProfile.updatedBy":
+		if e.complexity.TenderProfile.UpdatedBy == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.UpdatedBy(childComplexity), true
+
+	case "TenderProfile.updatedByID":
+		if e.complexity.TenderProfile.UpdatedByID == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.UpdatedByID(childComplexity), true
 
 	case "TopCompetitor.id":
 		if e.complexity.TopCompetitor.ID == nil {
@@ -4950,6 +5603,8 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputTenderCompetitorOrder,
 		ec.unmarshalInputTenderCompetitorWhereInput,
 		ec.unmarshalInputTenderOrder,
+		ec.unmarshalInputTenderProfileOrder,
+		ec.unmarshalInputTenderProfileWhereInput,
 		ec.unmarshalInputTenderWhereInput,
 		ec.unmarshalInputUpdateAreaInput,
 		ec.unmarshalInputUpdateCityInput,
@@ -6161,6 +6816,8 @@ input CreateTenderInput {
   """
   lastTenderAmount: Float
   areaID: ID!
+  profileIDs: [ID!]
+  competitorIDs: [ID!]
   customerID: ID
   finderID: ID
   createdByID: ID
@@ -6169,7 +6826,6 @@ input CreateTenderInput {
   cityID: ID
   districtID: ID
   visitRecordIDs: [ID!]
-  competitorIDs: [ID!]
   approverID: ID
   updatedByID: ID
 }
@@ -10583,6 +11239,8 @@ type Tender implements Node {
   approverID: ID
   updatedByID: ID
   area: Area!
+  profiles: [TenderProfile!]
+  competitors: [TenderCompetitor!]
   customer: Customer
   finder: User
   createdBy: User
@@ -10621,7 +11279,6 @@ type Tender implements Node {
     """
     where: VisitRecordWhereInput
   ): VisitRecordConnection!
-  competitors: [TenderCompetitor!]
   approver: User
   updatedBy: User
 }
@@ -10831,6 +11488,1210 @@ enum TenderOrderField {
   NAME
   TENDER_DATE
   CLOSING_DATE
+}
+type TenderProfile implements Node {
+  id: ID!
+  createdAt: Time!
+  updatedAt: Time!
+  status: Int!
+  """
+  1 待審核 2 已通過 3 已拒絕
+  """
+  approvalStatus: Int!
+  """
+  審核飛書訊息ID
+  """
+  approvalMsgID: String
+  name: String!
+  estimatedAmount: Float
+  tenderDate: Time
+  classify: Int
+  discoveryDate: Time!
+  address: String
+  fullAddress: String
+  contractor: String
+  levelInvolved: Int
+  sizeAndValueRating: Int
+  sizeAndValueRatingOverview: String
+  creditAndPaymentRating: Int
+  creditAndPaymentRatingOverview: String
+  timeLimitRating: Int
+  timeLimitRatingOverview: String
+  customerRelationshipRating: Int
+  customerRelationshipRatingOverview: String
+  competitivePartnershipRating: Int
+  competitivePartnershipRatingOverview: String
+  prepareToBid: Boolean!
+  projectCode: String
+  projectType: String
+  projectDefinition: String
+  estimatedProjectStartDate: Time
+  estimatedProjectEndDate: Time
+  attachments: [String!]
+  geoCoordinate: [Float!]
+  remark: String
+  images: [String!]
+  tenderSituations: String
+  ownerSituations: String
+  biddingInstructions: String
+  competitorSituations: String
+  costEngineer: String
+  tenderForm: String
+  contractForm: String
+  managementCompany: String
+  tenderingAgency: String
+  biddingDate: Time
+  facadeConsultant: String
+  designUnit: String
+  consultingFirm: String
+  keyProject: Boolean!
+  currentProgress: String
+  tenderWinCompany: String
+  """
+  投標編號，只限港澳
+  """
+  tenderCode: String
+  """
+  則師，只限港澳
+  """
+  architect: String
+  """
+  業主，只限港澳
+  """
+  developer: String
+  """
+  交標日期，只限港澳
+  """
+  tenderClosingDate: Time
+  """
+  施工面積，只限港澳
+  """
+  constructionArea: String
+  """
+  得標日期，只限港澳
+  """
+  tenderWinDate: Time
+  """
+  得標金額
+  """
+  tenderWinAmount: Float
+  """
+  最後一次投標金額，只限港澳
+  """
+  lastTenderAmount: Float
+  tenderID: ID!
+  provinceID: ID
+  cityID: ID
+  districtID: ID
+  customerID: ID
+  finderID: ID
+  createdByID: ID
+  approverID: ID
+  updatedByID: ID
+  tender: Tender!
+  customer: Customer
+  finder: User
+  createdBy: User
+  province: Province
+  city: City
+  district: District
+  approver: User
+  updatedBy: User
+}
+"""
+Ordering options for TenderProfile connections
+"""
+input TenderProfileOrder {
+  """
+  The ordering direction.
+  """
+  direction: OrderDirection! = ASC
+  """
+  The field by which to order TenderProfiles.
+  """
+  field: TenderProfileOrderField!
+}
+"""
+Properties by which TenderProfile connections can be ordered.
+"""
+enum TenderProfileOrderField {
+  CREATED_AT
+  APPROVAL_STATUS
+  NAME
+  TENDER_DATE
+  CLOSING_DATE
+}
+"""
+TenderProfileWhereInput is used for filtering TenderProfile objects.
+Input was generated by ent.
+"""
+input TenderProfileWhereInput {
+  not: TenderProfileWhereInput
+  and: [TenderProfileWhereInput!]
+  or: [TenderProfileWhereInput!]
+  """
+  id field predicates
+  """
+  id: ID
+  idNEQ: ID
+  idIn: [ID!]
+  idNotIn: [ID!]
+  idGT: ID
+  idGTE: ID
+  idLT: ID
+  idLTE: ID
+  """
+  created_at field predicates
+  """
+  createdAt: Time
+  createdAtNEQ: Time
+  createdAtIn: [Time!]
+  createdAtNotIn: [Time!]
+  createdAtGT: Time
+  createdAtGTE: Time
+  createdAtLT: Time
+  createdAtLTE: Time
+  """
+  updated_at field predicates
+  """
+  updatedAt: Time
+  updatedAtNEQ: Time
+  updatedAtIn: [Time!]
+  updatedAtNotIn: [Time!]
+  updatedAtGT: Time
+  updatedAtGTE: Time
+  updatedAtLT: Time
+  updatedAtLTE: Time
+  """
+  status field predicates
+  """
+  status: Int
+  statusNEQ: Int
+  statusIn: [Int!]
+  statusNotIn: [Int!]
+  statusGT: Int
+  statusGTE: Int
+  statusLT: Int
+  statusLTE: Int
+  """
+  approval_status field predicates
+  """
+  approvalStatus: Int
+  approvalStatusNEQ: Int
+  approvalStatusIn: [Int!]
+  approvalStatusNotIn: [Int!]
+  approvalStatusGT: Int
+  approvalStatusGTE: Int
+  approvalStatusLT: Int
+  approvalStatusLTE: Int
+  """
+  approval_msg_id field predicates
+  """
+  approvalMsgID: String
+  approvalMsgIDNEQ: String
+  approvalMsgIDIn: [String!]
+  approvalMsgIDNotIn: [String!]
+  approvalMsgIDGT: String
+  approvalMsgIDGTE: String
+  approvalMsgIDLT: String
+  approvalMsgIDLTE: String
+  approvalMsgIDContains: String
+  approvalMsgIDHasPrefix: String
+  approvalMsgIDHasSuffix: String
+  approvalMsgIDIsNil: Boolean
+  approvalMsgIDNotNil: Boolean
+  approvalMsgIDEqualFold: String
+  approvalMsgIDContainsFold: String
+  """
+  name field predicates
+  """
+  name: String
+  nameNEQ: String
+  nameIn: [String!]
+  nameNotIn: [String!]
+  nameGT: String
+  nameGTE: String
+  nameLT: String
+  nameLTE: String
+  nameContains: String
+  nameHasPrefix: String
+  nameHasSuffix: String
+  nameEqualFold: String
+  nameContainsFold: String
+  """
+  estimated_amount field predicates
+  """
+  estimatedAmount: Float
+  estimatedAmountNEQ: Float
+  estimatedAmountIn: [Float!]
+  estimatedAmountNotIn: [Float!]
+  estimatedAmountGT: Float
+  estimatedAmountGTE: Float
+  estimatedAmountLT: Float
+  estimatedAmountLTE: Float
+  estimatedAmountIsNil: Boolean
+  estimatedAmountNotNil: Boolean
+  """
+  tender_date field predicates
+  """
+  tenderDate: Time
+  tenderDateNEQ: Time
+  tenderDateIn: [Time!]
+  tenderDateNotIn: [Time!]
+  tenderDateGT: Time
+  tenderDateGTE: Time
+  tenderDateLT: Time
+  tenderDateLTE: Time
+  tenderDateIsNil: Boolean
+  tenderDateNotNil: Boolean
+  """
+  classify field predicates
+  """
+  classify: Int
+  classifyNEQ: Int
+  classifyIn: [Int!]
+  classifyNotIn: [Int!]
+  classifyGT: Int
+  classifyGTE: Int
+  classifyLT: Int
+  classifyLTE: Int
+  classifyIsNil: Boolean
+  classifyNotNil: Boolean
+  """
+  discovery_date field predicates
+  """
+  discoveryDate: Time
+  discoveryDateNEQ: Time
+  discoveryDateIn: [Time!]
+  discoveryDateNotIn: [Time!]
+  discoveryDateGT: Time
+  discoveryDateGTE: Time
+  discoveryDateLT: Time
+  discoveryDateLTE: Time
+  """
+  address field predicates
+  """
+  address: String
+  addressNEQ: String
+  addressIn: [String!]
+  addressNotIn: [String!]
+  addressGT: String
+  addressGTE: String
+  addressLT: String
+  addressLTE: String
+  addressContains: String
+  addressHasPrefix: String
+  addressHasSuffix: String
+  addressIsNil: Boolean
+  addressNotNil: Boolean
+  addressEqualFold: String
+  addressContainsFold: String
+  """
+  full_address field predicates
+  """
+  fullAddress: String
+  fullAddressNEQ: String
+  fullAddressIn: [String!]
+  fullAddressNotIn: [String!]
+  fullAddressGT: String
+  fullAddressGTE: String
+  fullAddressLT: String
+  fullAddressLTE: String
+  fullAddressContains: String
+  fullAddressHasPrefix: String
+  fullAddressHasSuffix: String
+  fullAddressIsNil: Boolean
+  fullAddressNotNil: Boolean
+  fullAddressEqualFold: String
+  fullAddressContainsFold: String
+  """
+  contractor field predicates
+  """
+  contractor: String
+  contractorNEQ: String
+  contractorIn: [String!]
+  contractorNotIn: [String!]
+  contractorGT: String
+  contractorGTE: String
+  contractorLT: String
+  contractorLTE: String
+  contractorContains: String
+  contractorHasPrefix: String
+  contractorHasSuffix: String
+  contractorIsNil: Boolean
+  contractorNotNil: Boolean
+  contractorEqualFold: String
+  contractorContainsFold: String
+  """
+  level_involved field predicates
+  """
+  levelInvolved: Int
+  levelInvolvedNEQ: Int
+  levelInvolvedIn: [Int!]
+  levelInvolvedNotIn: [Int!]
+  levelInvolvedGT: Int
+  levelInvolvedGTE: Int
+  levelInvolvedLT: Int
+  levelInvolvedLTE: Int
+  levelInvolvedIsNil: Boolean
+  levelInvolvedNotNil: Boolean
+  """
+  size_and_value_rating field predicates
+  """
+  sizeAndValueRating: Int
+  sizeAndValueRatingNEQ: Int
+  sizeAndValueRatingIn: [Int!]
+  sizeAndValueRatingNotIn: [Int!]
+  sizeAndValueRatingGT: Int
+  sizeAndValueRatingGTE: Int
+  sizeAndValueRatingLT: Int
+  sizeAndValueRatingLTE: Int
+  sizeAndValueRatingIsNil: Boolean
+  sizeAndValueRatingNotNil: Boolean
+  """
+  size_and_value_rating_overview field predicates
+  """
+  sizeAndValueRatingOverview: String
+  sizeAndValueRatingOverviewNEQ: String
+  sizeAndValueRatingOverviewIn: [String!]
+  sizeAndValueRatingOverviewNotIn: [String!]
+  sizeAndValueRatingOverviewGT: String
+  sizeAndValueRatingOverviewGTE: String
+  sizeAndValueRatingOverviewLT: String
+  sizeAndValueRatingOverviewLTE: String
+  sizeAndValueRatingOverviewContains: String
+  sizeAndValueRatingOverviewHasPrefix: String
+  sizeAndValueRatingOverviewHasSuffix: String
+  sizeAndValueRatingOverviewIsNil: Boolean
+  sizeAndValueRatingOverviewNotNil: Boolean
+  sizeAndValueRatingOverviewEqualFold: String
+  sizeAndValueRatingOverviewContainsFold: String
+  """
+  credit_and_payment_rating field predicates
+  """
+  creditAndPaymentRating: Int
+  creditAndPaymentRatingNEQ: Int
+  creditAndPaymentRatingIn: [Int!]
+  creditAndPaymentRatingNotIn: [Int!]
+  creditAndPaymentRatingGT: Int
+  creditAndPaymentRatingGTE: Int
+  creditAndPaymentRatingLT: Int
+  creditAndPaymentRatingLTE: Int
+  creditAndPaymentRatingIsNil: Boolean
+  creditAndPaymentRatingNotNil: Boolean
+  """
+  credit_and_payment_rating_overview field predicates
+  """
+  creditAndPaymentRatingOverview: String
+  creditAndPaymentRatingOverviewNEQ: String
+  creditAndPaymentRatingOverviewIn: [String!]
+  creditAndPaymentRatingOverviewNotIn: [String!]
+  creditAndPaymentRatingOverviewGT: String
+  creditAndPaymentRatingOverviewGTE: String
+  creditAndPaymentRatingOverviewLT: String
+  creditAndPaymentRatingOverviewLTE: String
+  creditAndPaymentRatingOverviewContains: String
+  creditAndPaymentRatingOverviewHasPrefix: String
+  creditAndPaymentRatingOverviewHasSuffix: String
+  creditAndPaymentRatingOverviewIsNil: Boolean
+  creditAndPaymentRatingOverviewNotNil: Boolean
+  creditAndPaymentRatingOverviewEqualFold: String
+  creditAndPaymentRatingOverviewContainsFold: String
+  """
+  time_limit_rating field predicates
+  """
+  timeLimitRating: Int
+  timeLimitRatingNEQ: Int
+  timeLimitRatingIn: [Int!]
+  timeLimitRatingNotIn: [Int!]
+  timeLimitRatingGT: Int
+  timeLimitRatingGTE: Int
+  timeLimitRatingLT: Int
+  timeLimitRatingLTE: Int
+  timeLimitRatingIsNil: Boolean
+  timeLimitRatingNotNil: Boolean
+  """
+  time_limit_rating_overview field predicates
+  """
+  timeLimitRatingOverview: String
+  timeLimitRatingOverviewNEQ: String
+  timeLimitRatingOverviewIn: [String!]
+  timeLimitRatingOverviewNotIn: [String!]
+  timeLimitRatingOverviewGT: String
+  timeLimitRatingOverviewGTE: String
+  timeLimitRatingOverviewLT: String
+  timeLimitRatingOverviewLTE: String
+  timeLimitRatingOverviewContains: String
+  timeLimitRatingOverviewHasPrefix: String
+  timeLimitRatingOverviewHasSuffix: String
+  timeLimitRatingOverviewIsNil: Boolean
+  timeLimitRatingOverviewNotNil: Boolean
+  timeLimitRatingOverviewEqualFold: String
+  timeLimitRatingOverviewContainsFold: String
+  """
+  customer_relationship_rating field predicates
+  """
+  customerRelationshipRating: Int
+  customerRelationshipRatingNEQ: Int
+  customerRelationshipRatingIn: [Int!]
+  customerRelationshipRatingNotIn: [Int!]
+  customerRelationshipRatingGT: Int
+  customerRelationshipRatingGTE: Int
+  customerRelationshipRatingLT: Int
+  customerRelationshipRatingLTE: Int
+  customerRelationshipRatingIsNil: Boolean
+  customerRelationshipRatingNotNil: Boolean
+  """
+  customer_relationship_rating_overview field predicates
+  """
+  customerRelationshipRatingOverview: String
+  customerRelationshipRatingOverviewNEQ: String
+  customerRelationshipRatingOverviewIn: [String!]
+  customerRelationshipRatingOverviewNotIn: [String!]
+  customerRelationshipRatingOverviewGT: String
+  customerRelationshipRatingOverviewGTE: String
+  customerRelationshipRatingOverviewLT: String
+  customerRelationshipRatingOverviewLTE: String
+  customerRelationshipRatingOverviewContains: String
+  customerRelationshipRatingOverviewHasPrefix: String
+  customerRelationshipRatingOverviewHasSuffix: String
+  customerRelationshipRatingOverviewIsNil: Boolean
+  customerRelationshipRatingOverviewNotNil: Boolean
+  customerRelationshipRatingOverviewEqualFold: String
+  customerRelationshipRatingOverviewContainsFold: String
+  """
+  competitive_partnership_rating field predicates
+  """
+  competitivePartnershipRating: Int
+  competitivePartnershipRatingNEQ: Int
+  competitivePartnershipRatingIn: [Int!]
+  competitivePartnershipRatingNotIn: [Int!]
+  competitivePartnershipRatingGT: Int
+  competitivePartnershipRatingGTE: Int
+  competitivePartnershipRatingLT: Int
+  competitivePartnershipRatingLTE: Int
+  competitivePartnershipRatingIsNil: Boolean
+  competitivePartnershipRatingNotNil: Boolean
+  """
+  competitive_partnership_rating_overview field predicates
+  """
+  competitivePartnershipRatingOverview: String
+  competitivePartnershipRatingOverviewNEQ: String
+  competitivePartnershipRatingOverviewIn: [String!]
+  competitivePartnershipRatingOverviewNotIn: [String!]
+  competitivePartnershipRatingOverviewGT: String
+  competitivePartnershipRatingOverviewGTE: String
+  competitivePartnershipRatingOverviewLT: String
+  competitivePartnershipRatingOverviewLTE: String
+  competitivePartnershipRatingOverviewContains: String
+  competitivePartnershipRatingOverviewHasPrefix: String
+  competitivePartnershipRatingOverviewHasSuffix: String
+  competitivePartnershipRatingOverviewIsNil: Boolean
+  competitivePartnershipRatingOverviewNotNil: Boolean
+  competitivePartnershipRatingOverviewEqualFold: String
+  competitivePartnershipRatingOverviewContainsFold: String
+  """
+  prepare_to_bid field predicates
+  """
+  prepareToBid: Boolean
+  prepareToBidNEQ: Boolean
+  """
+  project_code field predicates
+  """
+  projectCode: String
+  projectCodeNEQ: String
+  projectCodeIn: [String!]
+  projectCodeNotIn: [String!]
+  projectCodeGT: String
+  projectCodeGTE: String
+  projectCodeLT: String
+  projectCodeLTE: String
+  projectCodeContains: String
+  projectCodeHasPrefix: String
+  projectCodeHasSuffix: String
+  projectCodeIsNil: Boolean
+  projectCodeNotNil: Boolean
+  projectCodeEqualFold: String
+  projectCodeContainsFold: String
+  """
+  project_type field predicates
+  """
+  projectType: String
+  projectTypeNEQ: String
+  projectTypeIn: [String!]
+  projectTypeNotIn: [String!]
+  projectTypeGT: String
+  projectTypeGTE: String
+  projectTypeLT: String
+  projectTypeLTE: String
+  projectTypeContains: String
+  projectTypeHasPrefix: String
+  projectTypeHasSuffix: String
+  projectTypeIsNil: Boolean
+  projectTypeNotNil: Boolean
+  projectTypeEqualFold: String
+  projectTypeContainsFold: String
+  """
+  project_definition field predicates
+  """
+  projectDefinition: String
+  projectDefinitionNEQ: String
+  projectDefinitionIn: [String!]
+  projectDefinitionNotIn: [String!]
+  projectDefinitionGT: String
+  projectDefinitionGTE: String
+  projectDefinitionLT: String
+  projectDefinitionLTE: String
+  projectDefinitionContains: String
+  projectDefinitionHasPrefix: String
+  projectDefinitionHasSuffix: String
+  projectDefinitionIsNil: Boolean
+  projectDefinitionNotNil: Boolean
+  projectDefinitionEqualFold: String
+  projectDefinitionContainsFold: String
+  """
+  estimated_project_start_date field predicates
+  """
+  estimatedProjectStartDate: Time
+  estimatedProjectStartDateNEQ: Time
+  estimatedProjectStartDateIn: [Time!]
+  estimatedProjectStartDateNotIn: [Time!]
+  estimatedProjectStartDateGT: Time
+  estimatedProjectStartDateGTE: Time
+  estimatedProjectStartDateLT: Time
+  estimatedProjectStartDateLTE: Time
+  estimatedProjectStartDateIsNil: Boolean
+  estimatedProjectStartDateNotNil: Boolean
+  """
+  estimated_project_end_date field predicates
+  """
+  estimatedProjectEndDate: Time
+  estimatedProjectEndDateNEQ: Time
+  estimatedProjectEndDateIn: [Time!]
+  estimatedProjectEndDateNotIn: [Time!]
+  estimatedProjectEndDateGT: Time
+  estimatedProjectEndDateGTE: Time
+  estimatedProjectEndDateLT: Time
+  estimatedProjectEndDateLTE: Time
+  estimatedProjectEndDateIsNil: Boolean
+  estimatedProjectEndDateNotNil: Boolean
+  """
+  remark field predicates
+  """
+  remark: String
+  remarkNEQ: String
+  remarkIn: [String!]
+  remarkNotIn: [String!]
+  remarkGT: String
+  remarkGTE: String
+  remarkLT: String
+  remarkLTE: String
+  remarkContains: String
+  remarkHasPrefix: String
+  remarkHasSuffix: String
+  remarkIsNil: Boolean
+  remarkNotNil: Boolean
+  remarkEqualFold: String
+  remarkContainsFold: String
+  """
+  tender_situations field predicates
+  """
+  tenderSituations: String
+  tenderSituationsNEQ: String
+  tenderSituationsIn: [String!]
+  tenderSituationsNotIn: [String!]
+  tenderSituationsGT: String
+  tenderSituationsGTE: String
+  tenderSituationsLT: String
+  tenderSituationsLTE: String
+  tenderSituationsContains: String
+  tenderSituationsHasPrefix: String
+  tenderSituationsHasSuffix: String
+  tenderSituationsIsNil: Boolean
+  tenderSituationsNotNil: Boolean
+  tenderSituationsEqualFold: String
+  tenderSituationsContainsFold: String
+  """
+  owner_situations field predicates
+  """
+  ownerSituations: String
+  ownerSituationsNEQ: String
+  ownerSituationsIn: [String!]
+  ownerSituationsNotIn: [String!]
+  ownerSituationsGT: String
+  ownerSituationsGTE: String
+  ownerSituationsLT: String
+  ownerSituationsLTE: String
+  ownerSituationsContains: String
+  ownerSituationsHasPrefix: String
+  ownerSituationsHasSuffix: String
+  ownerSituationsIsNil: Boolean
+  ownerSituationsNotNil: Boolean
+  ownerSituationsEqualFold: String
+  ownerSituationsContainsFold: String
+  """
+  bidding_instructions field predicates
+  """
+  biddingInstructions: String
+  biddingInstructionsNEQ: String
+  biddingInstructionsIn: [String!]
+  biddingInstructionsNotIn: [String!]
+  biddingInstructionsGT: String
+  biddingInstructionsGTE: String
+  biddingInstructionsLT: String
+  biddingInstructionsLTE: String
+  biddingInstructionsContains: String
+  biddingInstructionsHasPrefix: String
+  biddingInstructionsHasSuffix: String
+  biddingInstructionsIsNil: Boolean
+  biddingInstructionsNotNil: Boolean
+  biddingInstructionsEqualFold: String
+  biddingInstructionsContainsFold: String
+  """
+  competitor_situations field predicates
+  """
+  competitorSituations: String
+  competitorSituationsNEQ: String
+  competitorSituationsIn: [String!]
+  competitorSituationsNotIn: [String!]
+  competitorSituationsGT: String
+  competitorSituationsGTE: String
+  competitorSituationsLT: String
+  competitorSituationsLTE: String
+  competitorSituationsContains: String
+  competitorSituationsHasPrefix: String
+  competitorSituationsHasSuffix: String
+  competitorSituationsIsNil: Boolean
+  competitorSituationsNotNil: Boolean
+  competitorSituationsEqualFold: String
+  competitorSituationsContainsFold: String
+  """
+  cost_engineer field predicates
+  """
+  costEngineer: String
+  costEngineerNEQ: String
+  costEngineerIn: [String!]
+  costEngineerNotIn: [String!]
+  costEngineerGT: String
+  costEngineerGTE: String
+  costEngineerLT: String
+  costEngineerLTE: String
+  costEngineerContains: String
+  costEngineerHasPrefix: String
+  costEngineerHasSuffix: String
+  costEngineerIsNil: Boolean
+  costEngineerNotNil: Boolean
+  costEngineerEqualFold: String
+  costEngineerContainsFold: String
+  """
+  tender_form field predicates
+  """
+  tenderForm: String
+  tenderFormNEQ: String
+  tenderFormIn: [String!]
+  tenderFormNotIn: [String!]
+  tenderFormGT: String
+  tenderFormGTE: String
+  tenderFormLT: String
+  tenderFormLTE: String
+  tenderFormContains: String
+  tenderFormHasPrefix: String
+  tenderFormHasSuffix: String
+  tenderFormIsNil: Boolean
+  tenderFormNotNil: Boolean
+  tenderFormEqualFold: String
+  tenderFormContainsFold: String
+  """
+  contract_form field predicates
+  """
+  contractForm: String
+  contractFormNEQ: String
+  contractFormIn: [String!]
+  contractFormNotIn: [String!]
+  contractFormGT: String
+  contractFormGTE: String
+  contractFormLT: String
+  contractFormLTE: String
+  contractFormContains: String
+  contractFormHasPrefix: String
+  contractFormHasSuffix: String
+  contractFormIsNil: Boolean
+  contractFormNotNil: Boolean
+  contractFormEqualFold: String
+  contractFormContainsFold: String
+  """
+  management_company field predicates
+  """
+  managementCompany: String
+  managementCompanyNEQ: String
+  managementCompanyIn: [String!]
+  managementCompanyNotIn: [String!]
+  managementCompanyGT: String
+  managementCompanyGTE: String
+  managementCompanyLT: String
+  managementCompanyLTE: String
+  managementCompanyContains: String
+  managementCompanyHasPrefix: String
+  managementCompanyHasSuffix: String
+  managementCompanyIsNil: Boolean
+  managementCompanyNotNil: Boolean
+  managementCompanyEqualFold: String
+  managementCompanyContainsFold: String
+  """
+  tendering_agency field predicates
+  """
+  tenderingAgency: String
+  tenderingAgencyNEQ: String
+  tenderingAgencyIn: [String!]
+  tenderingAgencyNotIn: [String!]
+  tenderingAgencyGT: String
+  tenderingAgencyGTE: String
+  tenderingAgencyLT: String
+  tenderingAgencyLTE: String
+  tenderingAgencyContains: String
+  tenderingAgencyHasPrefix: String
+  tenderingAgencyHasSuffix: String
+  tenderingAgencyIsNil: Boolean
+  tenderingAgencyNotNil: Boolean
+  tenderingAgencyEqualFold: String
+  tenderingAgencyContainsFold: String
+  """
+  bidding_date field predicates
+  """
+  biddingDate: Time
+  biddingDateNEQ: Time
+  biddingDateIn: [Time!]
+  biddingDateNotIn: [Time!]
+  biddingDateGT: Time
+  biddingDateGTE: Time
+  biddingDateLT: Time
+  biddingDateLTE: Time
+  biddingDateIsNil: Boolean
+  biddingDateNotNil: Boolean
+  """
+  facade_consultant field predicates
+  """
+  facadeConsultant: String
+  facadeConsultantNEQ: String
+  facadeConsultantIn: [String!]
+  facadeConsultantNotIn: [String!]
+  facadeConsultantGT: String
+  facadeConsultantGTE: String
+  facadeConsultantLT: String
+  facadeConsultantLTE: String
+  facadeConsultantContains: String
+  facadeConsultantHasPrefix: String
+  facadeConsultantHasSuffix: String
+  facadeConsultantIsNil: Boolean
+  facadeConsultantNotNil: Boolean
+  facadeConsultantEqualFold: String
+  facadeConsultantContainsFold: String
+  """
+  design_unit field predicates
+  """
+  designUnit: String
+  designUnitNEQ: String
+  designUnitIn: [String!]
+  designUnitNotIn: [String!]
+  designUnitGT: String
+  designUnitGTE: String
+  designUnitLT: String
+  designUnitLTE: String
+  designUnitContains: String
+  designUnitHasPrefix: String
+  designUnitHasSuffix: String
+  designUnitIsNil: Boolean
+  designUnitNotNil: Boolean
+  designUnitEqualFold: String
+  designUnitContainsFold: String
+  """
+  consulting_firm field predicates
+  """
+  consultingFirm: String
+  consultingFirmNEQ: String
+  consultingFirmIn: [String!]
+  consultingFirmNotIn: [String!]
+  consultingFirmGT: String
+  consultingFirmGTE: String
+  consultingFirmLT: String
+  consultingFirmLTE: String
+  consultingFirmContains: String
+  consultingFirmHasPrefix: String
+  consultingFirmHasSuffix: String
+  consultingFirmIsNil: Boolean
+  consultingFirmNotNil: Boolean
+  consultingFirmEqualFold: String
+  consultingFirmContainsFold: String
+  """
+  key_project field predicates
+  """
+  keyProject: Boolean
+  keyProjectNEQ: Boolean
+  """
+  current_progress field predicates
+  """
+  currentProgress: String
+  currentProgressNEQ: String
+  currentProgressIn: [String!]
+  currentProgressNotIn: [String!]
+  currentProgressGT: String
+  currentProgressGTE: String
+  currentProgressLT: String
+  currentProgressLTE: String
+  currentProgressContains: String
+  currentProgressHasPrefix: String
+  currentProgressHasSuffix: String
+  currentProgressIsNil: Boolean
+  currentProgressNotNil: Boolean
+  currentProgressEqualFold: String
+  currentProgressContainsFold: String
+  """
+  tender_win_company field predicates
+  """
+  tenderWinCompany: String
+  tenderWinCompanyNEQ: String
+  tenderWinCompanyIn: [String!]
+  tenderWinCompanyNotIn: [String!]
+  tenderWinCompanyGT: String
+  tenderWinCompanyGTE: String
+  tenderWinCompanyLT: String
+  tenderWinCompanyLTE: String
+  tenderWinCompanyContains: String
+  tenderWinCompanyHasPrefix: String
+  tenderWinCompanyHasSuffix: String
+  tenderWinCompanyIsNil: Boolean
+  tenderWinCompanyNotNil: Boolean
+  tenderWinCompanyEqualFold: String
+  tenderWinCompanyContainsFold: String
+  """
+  tender_code field predicates
+  """
+  tenderCode: String
+  tenderCodeNEQ: String
+  tenderCodeIn: [String!]
+  tenderCodeNotIn: [String!]
+  tenderCodeGT: String
+  tenderCodeGTE: String
+  tenderCodeLT: String
+  tenderCodeLTE: String
+  tenderCodeContains: String
+  tenderCodeHasPrefix: String
+  tenderCodeHasSuffix: String
+  tenderCodeIsNil: Boolean
+  tenderCodeNotNil: Boolean
+  tenderCodeEqualFold: String
+  tenderCodeContainsFold: String
+  """
+  architect field predicates
+  """
+  architect: String
+  architectNEQ: String
+  architectIn: [String!]
+  architectNotIn: [String!]
+  architectGT: String
+  architectGTE: String
+  architectLT: String
+  architectLTE: String
+  architectContains: String
+  architectHasPrefix: String
+  architectHasSuffix: String
+  architectIsNil: Boolean
+  architectNotNil: Boolean
+  architectEqualFold: String
+  architectContainsFold: String
+  """
+  developer field predicates
+  """
+  developer: String
+  developerNEQ: String
+  developerIn: [String!]
+  developerNotIn: [String!]
+  developerGT: String
+  developerGTE: String
+  developerLT: String
+  developerLTE: String
+  developerContains: String
+  developerHasPrefix: String
+  developerHasSuffix: String
+  developerIsNil: Boolean
+  developerNotNil: Boolean
+  developerEqualFold: String
+  developerContainsFold: String
+  """
+  tender_closing_date field predicates
+  """
+  tenderClosingDate: Time
+  tenderClosingDateNEQ: Time
+  tenderClosingDateIn: [Time!]
+  tenderClosingDateNotIn: [Time!]
+  tenderClosingDateGT: Time
+  tenderClosingDateGTE: Time
+  tenderClosingDateLT: Time
+  tenderClosingDateLTE: Time
+  tenderClosingDateIsNil: Boolean
+  tenderClosingDateNotNil: Boolean
+  """
+  construction_area field predicates
+  """
+  constructionArea: String
+  constructionAreaNEQ: String
+  constructionAreaIn: [String!]
+  constructionAreaNotIn: [String!]
+  constructionAreaGT: String
+  constructionAreaGTE: String
+  constructionAreaLT: String
+  constructionAreaLTE: String
+  constructionAreaContains: String
+  constructionAreaHasPrefix: String
+  constructionAreaHasSuffix: String
+  constructionAreaIsNil: Boolean
+  constructionAreaNotNil: Boolean
+  constructionAreaEqualFold: String
+  constructionAreaContainsFold: String
+  """
+  tender_win_date field predicates
+  """
+  tenderWinDate: Time
+  tenderWinDateNEQ: Time
+  tenderWinDateIn: [Time!]
+  tenderWinDateNotIn: [Time!]
+  tenderWinDateGT: Time
+  tenderWinDateGTE: Time
+  tenderWinDateLT: Time
+  tenderWinDateLTE: Time
+  tenderWinDateIsNil: Boolean
+  tenderWinDateNotNil: Boolean
+  """
+  tender_win_amount field predicates
+  """
+  tenderWinAmount: Float
+  tenderWinAmountNEQ: Float
+  tenderWinAmountIn: [Float!]
+  tenderWinAmountNotIn: [Float!]
+  tenderWinAmountGT: Float
+  tenderWinAmountGTE: Float
+  tenderWinAmountLT: Float
+  tenderWinAmountLTE: Float
+  tenderWinAmountIsNil: Boolean
+  tenderWinAmountNotNil: Boolean
+  """
+  last_tender_amount field predicates
+  """
+  lastTenderAmount: Float
+  lastTenderAmountNEQ: Float
+  lastTenderAmountIn: [Float!]
+  lastTenderAmountNotIn: [Float!]
+  lastTenderAmountGT: Float
+  lastTenderAmountGTE: Float
+  lastTenderAmountLT: Float
+  lastTenderAmountLTE: Float
+  lastTenderAmountIsNil: Boolean
+  lastTenderAmountNotNil: Boolean
+  """
+  tender_id field predicates
+  """
+  tenderID: ID
+  tenderIDNEQ: ID
+  tenderIDIn: [ID!]
+  tenderIDNotIn: [ID!]
+  tenderIDGT: ID
+  tenderIDGTE: ID
+  tenderIDLT: ID
+  tenderIDLTE: ID
+  tenderIDContains: ID
+  tenderIDHasPrefix: ID
+  tenderIDHasSuffix: ID
+  tenderIDEqualFold: ID
+  tenderIDContainsFold: ID
+  """
+  province_id field predicates
+  """
+  provinceID: ID
+  provinceIDNEQ: ID
+  provinceIDIn: [ID!]
+  provinceIDNotIn: [ID!]
+  provinceIDGT: ID
+  provinceIDGTE: ID
+  provinceIDLT: ID
+  provinceIDLTE: ID
+  provinceIDContains: ID
+  provinceIDHasPrefix: ID
+  provinceIDHasSuffix: ID
+  provinceIDIsNil: Boolean
+  provinceIDNotNil: Boolean
+  provinceIDEqualFold: ID
+  provinceIDContainsFold: ID
+  """
+  city_id field predicates
+  """
+  cityID: ID
+  cityIDNEQ: ID
+  cityIDIn: [ID!]
+  cityIDNotIn: [ID!]
+  cityIDGT: ID
+  cityIDGTE: ID
+  cityIDLT: ID
+  cityIDLTE: ID
+  cityIDContains: ID
+  cityIDHasPrefix: ID
+  cityIDHasSuffix: ID
+  cityIDIsNil: Boolean
+  cityIDNotNil: Boolean
+  cityIDEqualFold: ID
+  cityIDContainsFold: ID
+  """
+  district_id field predicates
+  """
+  districtID: ID
+  districtIDNEQ: ID
+  districtIDIn: [ID!]
+  districtIDNotIn: [ID!]
+  districtIDGT: ID
+  districtIDGTE: ID
+  districtIDLT: ID
+  districtIDLTE: ID
+  districtIDContains: ID
+  districtIDHasPrefix: ID
+  districtIDHasSuffix: ID
+  districtIDIsNil: Boolean
+  districtIDNotNil: Boolean
+  districtIDEqualFold: ID
+  districtIDContainsFold: ID
+  """
+  customer_id field predicates
+  """
+  customerID: ID
+  customerIDNEQ: ID
+  customerIDIn: [ID!]
+  customerIDNotIn: [ID!]
+  customerIDGT: ID
+  customerIDGTE: ID
+  customerIDLT: ID
+  customerIDLTE: ID
+  customerIDContains: ID
+  customerIDHasPrefix: ID
+  customerIDHasSuffix: ID
+  customerIDIsNil: Boolean
+  customerIDNotNil: Boolean
+  customerIDEqualFold: ID
+  customerIDContainsFold: ID
+  """
+  finder_id field predicates
+  """
+  finderID: ID
+  finderIDNEQ: ID
+  finderIDIn: [ID!]
+  finderIDNotIn: [ID!]
+  finderIDGT: ID
+  finderIDGTE: ID
+  finderIDLT: ID
+  finderIDLTE: ID
+  finderIDContains: ID
+  finderIDHasPrefix: ID
+  finderIDHasSuffix: ID
+  finderIDIsNil: Boolean
+  finderIDNotNil: Boolean
+  finderIDEqualFold: ID
+  finderIDContainsFold: ID
+  """
+  created_by_id field predicates
+  """
+  createdByID: ID
+  createdByIDNEQ: ID
+  createdByIDIn: [ID!]
+  createdByIDNotIn: [ID!]
+  createdByIDGT: ID
+  createdByIDGTE: ID
+  createdByIDLT: ID
+  createdByIDLTE: ID
+  createdByIDContains: ID
+  createdByIDHasPrefix: ID
+  createdByIDHasSuffix: ID
+  createdByIDIsNil: Boolean
+  createdByIDNotNil: Boolean
+  createdByIDEqualFold: ID
+  createdByIDContainsFold: ID
+  """
+  approver_id field predicates
+  """
+  approverID: ID
+  approverIDNEQ: ID
+  approverIDIn: [ID!]
+  approverIDNotIn: [ID!]
+  approverIDGT: ID
+  approverIDGTE: ID
+  approverIDLT: ID
+  approverIDLTE: ID
+  approverIDContains: ID
+  approverIDHasPrefix: ID
+  approverIDHasSuffix: ID
+  approverIDIsNil: Boolean
+  approverIDNotNil: Boolean
+  approverIDEqualFold: ID
+  approverIDContainsFold: ID
+  """
+  updated_by_id field predicates
+  """
+  updatedByID: ID
+  updatedByIDNEQ: ID
+  updatedByIDIn: [ID!]
+  updatedByIDNotIn: [ID!]
+  updatedByIDGT: ID
+  updatedByIDGTE: ID
+  updatedByIDLT: ID
+  updatedByIDLTE: ID
+  updatedByIDContains: ID
+  updatedByIDHasPrefix: ID
+  updatedByIDHasSuffix: ID
+  updatedByIDIsNil: Boolean
+  updatedByIDNotNil: Boolean
+  updatedByIDEqualFold: ID
+  updatedByIDContainsFold: ID
+  """
+  tender edge predicates
+  """
+  hasTender: Boolean
+  hasTenderWith: [TenderWhereInput!]
+  """
+  customer edge predicates
+  """
+  hasCustomer: Boolean
+  hasCustomerWith: [CustomerWhereInput!]
+  """
+  finder edge predicates
+  """
+  hasFinder: Boolean
+  hasFinderWith: [UserWhereInput!]
+  """
+  created_by edge predicates
+  """
+  hasCreatedBy: Boolean
+  hasCreatedByWith: [UserWhereInput!]
+  """
+  province edge predicates
+  """
+  hasProvince: Boolean
+  hasProvinceWith: [ProvinceWhereInput!]
+  """
+  city edge predicates
+  """
+  hasCity: Boolean
+  hasCityWith: [CityWhereInput!]
+  """
+  district edge predicates
+  """
+  hasDistrict: Boolean
+  hasDistrictWith: [DistrictWhereInput!]
+  """
+  approver edge predicates
+  """
+  hasApprover: Boolean
+  hasApproverWith: [UserWhereInput!]
+  """
+  updated_by edge predicates
+  """
+  hasUpdatedBy: Boolean
+  hasUpdatedByWith: [UserWhereInput!]
 }
 """
 TenderWhereInput is used for filtering Tender objects.
@@ -11880,6 +13741,16 @@ input TenderWhereInput {
   hasArea: Boolean
   hasAreaWith: [AreaWhereInput!]
   """
+  profiles edge predicates
+  """
+  hasProfiles: Boolean
+  hasProfilesWith: [TenderProfileWhereInput!]
+  """
+  competitors edge predicates
+  """
+  hasCompetitors: Boolean
+  hasCompetitorsWith: [TenderCompetitorWhereInput!]
+  """
   customer edge predicates
   """
   hasCustomer: Boolean
@@ -11919,11 +13790,6 @@ input TenderWhereInput {
   """
   hasVisitRecords: Boolean
   hasVisitRecordsWith: [VisitRecordWhereInput!]
-  """
-  competitors edge predicates
-  """
-  hasCompetitors: Boolean
-  hasCompetitorsWith: [TenderCompetitorWhereInput!]
   """
   approver edge predicates
   """
@@ -12690,6 +14556,12 @@ input UpdateTenderInput {
   lastTenderAmount: Float
   clearLastTenderAmount: Boolean
   areaID: ID
+  addProfileIDs: [ID!]
+  removeProfileIDs: [ID!]
+  clearProfiles: Boolean
+  addCompetitorIDs: [ID!]
+  removeCompetitorIDs: [ID!]
+  clearCompetitors: Boolean
   customerID: ID
   clearCustomer: Boolean
   finderID: ID
@@ -12708,9 +14580,6 @@ input UpdateTenderInput {
   addVisitRecordIDs: [ID!]
   removeVisitRecordIDs: [ID!]
   clearVisitRecords: Boolean
-  addCompetitorIDs: [ID!]
-  removeCompetitorIDs: [ID!]
-  clearCompetitors: Boolean
   approverID: ID
   clearApprover: Boolean
   updatedByID: ID
@@ -13537,6 +15406,8 @@ type GeoJson {
   deleteTender(id: ID!): Tender!
   winTender(id: ID!, input: WinTenderInput!): Tender!
   loseTender(id: ID!, input: LoseTenderInput!): Tender!
+  approveTender(id: ID!): Tender!
+  rejectTender(id: ID!): Tender!
 
   createPlot(input: CreatePlotInput!, geoBounds: [[Float!]!]): PlotConnection!
   updatePlot(id: ID!, input: UpdatePlotInput!, geoBounds: [[Float!]!]): Plot!

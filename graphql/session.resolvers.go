@@ -22,6 +22,9 @@ func (r *queryResolver) Session(ctx context.Context) (*model.Session, error) {
 	if err != nil {
 		return nil, fmt.Errorf("session not found")
 	}
+	if err := r.session.RenewToken(ctx); err != nil {
+		return nil, err
+	}
 	return &model.Session{
 		UserID:        su.UserId,
 		Name:          su.Name,

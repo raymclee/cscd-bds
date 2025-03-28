@@ -20,6 +20,7 @@ import (
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/tendercompetitor"
+	"cscd-bds/store/ent/tenderprofile"
 	"cscd-bds/store/ent/user"
 	"cscd-bds/store/ent/visitrecord"
 	"database/sql/driver"
@@ -3742,6 +3743,32 @@ func (t *TenderQuery) collectField(ctx context.Context, oneNode bool, opCtx *gra
 				fieldSeen[tender.FieldAreaID] = struct{}{}
 			}
 
+		case "profiles":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&TenderProfileClient{config: t.config}).Query()
+			)
+			if err := query.collectField(ctx, false, opCtx, field, path, mayAddCondition(satisfies, tenderprofileImplementors)...); err != nil {
+				return err
+			}
+			t.WithNamedProfiles(alias, func(wq *TenderProfileQuery) {
+				*wq = *query
+			})
+
+		case "competitors":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&TenderCompetitorClient{config: t.config}).Query()
+			)
+			if err := query.collectField(ctx, false, opCtx, field, path, mayAddCondition(satisfies, tendercompetitorImplementors)...); err != nil {
+				return err
+			}
+			t.WithNamedCompetitors(alias, func(wq *TenderCompetitorQuery) {
+				*wq = *query
+			})
+
 		case "customer":
 			var (
 				alias = field.Alias
@@ -3888,10 +3915,10 @@ func (t *TenderQuery) collectField(ctx context.Context, oneNode bool, opCtx *gra
 						}
 						for i := range nodes {
 							n := m[nodes[i].ID]
-							if nodes[i].Edges.totalCount[8] == nil {
-								nodes[i].Edges.totalCount[8] = make(map[string]int)
+							if nodes[i].Edges.totalCount[10] == nil {
+								nodes[i].Edges.totalCount[10] = make(map[string]int)
 							}
-							nodes[i].Edges.totalCount[8][alias] = n
+							nodes[i].Edges.totalCount[10][alias] = n
 						}
 						return nil
 					})
@@ -3899,10 +3926,10 @@ func (t *TenderQuery) collectField(ctx context.Context, oneNode bool, opCtx *gra
 					t.loadTotal = append(t.loadTotal, func(_ context.Context, nodes []*Tender) error {
 						for i := range nodes {
 							n := len(nodes[i].Edges.VisitRecords)
-							if nodes[i].Edges.totalCount[8] == nil {
-								nodes[i].Edges.totalCount[8] = make(map[string]int)
+							if nodes[i].Edges.totalCount[10] == nil {
+								nodes[i].Edges.totalCount[10] = make(map[string]int)
 							}
-							nodes[i].Edges.totalCount[8][alias] = n
+							nodes[i].Edges.totalCount[10][alias] = n
 						}
 						return nil
 					})
@@ -3931,19 +3958,6 @@ func (t *TenderQuery) collectField(ctx context.Context, oneNode bool, opCtx *gra
 				query = pager.applyOrder(query)
 			}
 			t.WithNamedVisitRecords(alias, func(wq *VisitRecordQuery) {
-				*wq = *query
-			})
-
-		case "competitors":
-			var (
-				alias = field.Alias
-				path  = append(path, alias)
-				query = (&TenderCompetitorClient{config: t.config}).Query()
-			)
-			if err := query.collectField(ctx, false, opCtx, field, path, mayAddCondition(satisfies, tendercompetitorImplementors)...); err != nil {
-				return err
-			}
-			t.WithNamedCompetitors(alias, func(wq *TenderCompetitorQuery) {
 				*wq = *query
 			})
 
@@ -4521,6 +4535,560 @@ func newTenderCompetitorPaginateArgs(rv map[string]any) *tendercompetitorPaginat
 	}
 	if v, ok := rv[whereField].(*TenderCompetitorWhereInput); ok {
 		args.opts = append(args.opts, WithTenderCompetitorFilter(v.Filter))
+	}
+	return args
+}
+
+// CollectFields tells the query-builder to eagerly load connected nodes by resolver context.
+func (tp *TenderProfileQuery) CollectFields(ctx context.Context, satisfies ...string) (*TenderProfileQuery, error) {
+	fc := graphql.GetFieldContext(ctx)
+	if fc == nil {
+		return tp, nil
+	}
+	if err := tp.collectField(ctx, false, graphql.GetOperationContext(ctx), fc.Field, nil, satisfies...); err != nil {
+		return nil, err
+	}
+	return tp, nil
+}
+
+func (tp *TenderProfileQuery) collectField(ctx context.Context, oneNode bool, opCtx *graphql.OperationContext, collected graphql.CollectedField, path []string, satisfies ...string) error {
+	path = append([]string(nil), path...)
+	var (
+		unknownSeen    bool
+		fieldSeen      = make(map[string]struct{}, len(tenderprofile.Columns))
+		selectedFields = []string{tenderprofile.FieldID}
+	)
+	for _, field := range graphql.CollectFields(opCtx, collected.Selections, satisfies) {
+		switch field.Name {
+
+		case "tender":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&TenderClient{config: tp.config}).Query()
+			)
+			if err := query.collectField(ctx, oneNode, opCtx, field, path, mayAddCondition(satisfies, tenderImplementors)...); err != nil {
+				return err
+			}
+			tp.withTender = query
+			if _, ok := fieldSeen[tenderprofile.FieldTenderID]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldTenderID)
+				fieldSeen[tenderprofile.FieldTenderID] = struct{}{}
+			}
+
+		case "customer":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&CustomerClient{config: tp.config}).Query()
+			)
+			if err := query.collectField(ctx, oneNode, opCtx, field, path, mayAddCondition(satisfies, customerImplementors)...); err != nil {
+				return err
+			}
+			tp.withCustomer = query
+			if _, ok := fieldSeen[tenderprofile.FieldCustomerID]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldCustomerID)
+				fieldSeen[tenderprofile.FieldCustomerID] = struct{}{}
+			}
+
+		case "finder":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&UserClient{config: tp.config}).Query()
+			)
+			if err := query.collectField(ctx, oneNode, opCtx, field, path, mayAddCondition(satisfies, userImplementors)...); err != nil {
+				return err
+			}
+			tp.withFinder = query
+			if _, ok := fieldSeen[tenderprofile.FieldFinderID]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldFinderID)
+				fieldSeen[tenderprofile.FieldFinderID] = struct{}{}
+			}
+
+		case "createdBy":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&UserClient{config: tp.config}).Query()
+			)
+			if err := query.collectField(ctx, oneNode, opCtx, field, path, mayAddCondition(satisfies, userImplementors)...); err != nil {
+				return err
+			}
+			tp.withCreatedBy = query
+			if _, ok := fieldSeen[tenderprofile.FieldCreatedByID]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldCreatedByID)
+				fieldSeen[tenderprofile.FieldCreatedByID] = struct{}{}
+			}
+
+		case "province":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&ProvinceClient{config: tp.config}).Query()
+			)
+			if err := query.collectField(ctx, oneNode, opCtx, field, path, mayAddCondition(satisfies, provinceImplementors)...); err != nil {
+				return err
+			}
+			tp.withProvince = query
+			if _, ok := fieldSeen[tenderprofile.FieldProvinceID]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldProvinceID)
+				fieldSeen[tenderprofile.FieldProvinceID] = struct{}{}
+			}
+
+		case "city":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&CityClient{config: tp.config}).Query()
+			)
+			if err := query.collectField(ctx, oneNode, opCtx, field, path, mayAddCondition(satisfies, cityImplementors)...); err != nil {
+				return err
+			}
+			tp.withCity = query
+			if _, ok := fieldSeen[tenderprofile.FieldCityID]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldCityID)
+				fieldSeen[tenderprofile.FieldCityID] = struct{}{}
+			}
+
+		case "district":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&DistrictClient{config: tp.config}).Query()
+			)
+			if err := query.collectField(ctx, oneNode, opCtx, field, path, mayAddCondition(satisfies, districtImplementors)...); err != nil {
+				return err
+			}
+			tp.withDistrict = query
+			if _, ok := fieldSeen[tenderprofile.FieldDistrictID]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldDistrictID)
+				fieldSeen[tenderprofile.FieldDistrictID] = struct{}{}
+			}
+
+		case "approver":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&UserClient{config: tp.config}).Query()
+			)
+			if err := query.collectField(ctx, oneNode, opCtx, field, path, mayAddCondition(satisfies, userImplementors)...); err != nil {
+				return err
+			}
+			tp.withApprover = query
+			if _, ok := fieldSeen[tenderprofile.FieldApproverID]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldApproverID)
+				fieldSeen[tenderprofile.FieldApproverID] = struct{}{}
+			}
+
+		case "updatedBy":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&UserClient{config: tp.config}).Query()
+			)
+			if err := query.collectField(ctx, oneNode, opCtx, field, path, mayAddCondition(satisfies, userImplementors)...); err != nil {
+				return err
+			}
+			tp.withUpdatedBy = query
+			if _, ok := fieldSeen[tenderprofile.FieldUpdatedByID]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldUpdatedByID)
+				fieldSeen[tenderprofile.FieldUpdatedByID] = struct{}{}
+			}
+		case "createdAt":
+			if _, ok := fieldSeen[tenderprofile.FieldCreatedAt]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldCreatedAt)
+				fieldSeen[tenderprofile.FieldCreatedAt] = struct{}{}
+			}
+		case "updatedAt":
+			if _, ok := fieldSeen[tenderprofile.FieldUpdatedAt]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldUpdatedAt)
+				fieldSeen[tenderprofile.FieldUpdatedAt] = struct{}{}
+			}
+		case "status":
+			if _, ok := fieldSeen[tenderprofile.FieldStatus]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldStatus)
+				fieldSeen[tenderprofile.FieldStatus] = struct{}{}
+			}
+		case "approvalStatus":
+			if _, ok := fieldSeen[tenderprofile.FieldApprovalStatus]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldApprovalStatus)
+				fieldSeen[tenderprofile.FieldApprovalStatus] = struct{}{}
+			}
+		case "approvalMsgID":
+			if _, ok := fieldSeen[tenderprofile.FieldApprovalMsgID]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldApprovalMsgID)
+				fieldSeen[tenderprofile.FieldApprovalMsgID] = struct{}{}
+			}
+		case "name":
+			if _, ok := fieldSeen[tenderprofile.FieldName]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldName)
+				fieldSeen[tenderprofile.FieldName] = struct{}{}
+			}
+		case "estimatedAmount":
+			if _, ok := fieldSeen[tenderprofile.FieldEstimatedAmount]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldEstimatedAmount)
+				fieldSeen[tenderprofile.FieldEstimatedAmount] = struct{}{}
+			}
+		case "tenderDate":
+			if _, ok := fieldSeen[tenderprofile.FieldTenderDate]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldTenderDate)
+				fieldSeen[tenderprofile.FieldTenderDate] = struct{}{}
+			}
+		case "classify":
+			if _, ok := fieldSeen[tenderprofile.FieldClassify]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldClassify)
+				fieldSeen[tenderprofile.FieldClassify] = struct{}{}
+			}
+		case "discoveryDate":
+			if _, ok := fieldSeen[tenderprofile.FieldDiscoveryDate]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldDiscoveryDate)
+				fieldSeen[tenderprofile.FieldDiscoveryDate] = struct{}{}
+			}
+		case "address":
+			if _, ok := fieldSeen[tenderprofile.FieldAddress]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldAddress)
+				fieldSeen[tenderprofile.FieldAddress] = struct{}{}
+			}
+		case "fullAddress":
+			if _, ok := fieldSeen[tenderprofile.FieldFullAddress]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldFullAddress)
+				fieldSeen[tenderprofile.FieldFullAddress] = struct{}{}
+			}
+		case "contractor":
+			if _, ok := fieldSeen[tenderprofile.FieldContractor]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldContractor)
+				fieldSeen[tenderprofile.FieldContractor] = struct{}{}
+			}
+		case "levelInvolved":
+			if _, ok := fieldSeen[tenderprofile.FieldLevelInvolved]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldLevelInvolved)
+				fieldSeen[tenderprofile.FieldLevelInvolved] = struct{}{}
+			}
+		case "sizeAndValueRating":
+			if _, ok := fieldSeen[tenderprofile.FieldSizeAndValueRating]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldSizeAndValueRating)
+				fieldSeen[tenderprofile.FieldSizeAndValueRating] = struct{}{}
+			}
+		case "sizeAndValueRatingOverview":
+			if _, ok := fieldSeen[tenderprofile.FieldSizeAndValueRatingOverview]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldSizeAndValueRatingOverview)
+				fieldSeen[tenderprofile.FieldSizeAndValueRatingOverview] = struct{}{}
+			}
+		case "creditAndPaymentRating":
+			if _, ok := fieldSeen[tenderprofile.FieldCreditAndPaymentRating]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldCreditAndPaymentRating)
+				fieldSeen[tenderprofile.FieldCreditAndPaymentRating] = struct{}{}
+			}
+		case "creditAndPaymentRatingOverview":
+			if _, ok := fieldSeen[tenderprofile.FieldCreditAndPaymentRatingOverview]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldCreditAndPaymentRatingOverview)
+				fieldSeen[tenderprofile.FieldCreditAndPaymentRatingOverview] = struct{}{}
+			}
+		case "timeLimitRating":
+			if _, ok := fieldSeen[tenderprofile.FieldTimeLimitRating]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldTimeLimitRating)
+				fieldSeen[tenderprofile.FieldTimeLimitRating] = struct{}{}
+			}
+		case "timeLimitRatingOverview":
+			if _, ok := fieldSeen[tenderprofile.FieldTimeLimitRatingOverview]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldTimeLimitRatingOverview)
+				fieldSeen[tenderprofile.FieldTimeLimitRatingOverview] = struct{}{}
+			}
+		case "customerRelationshipRating":
+			if _, ok := fieldSeen[tenderprofile.FieldCustomerRelationshipRating]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldCustomerRelationshipRating)
+				fieldSeen[tenderprofile.FieldCustomerRelationshipRating] = struct{}{}
+			}
+		case "customerRelationshipRatingOverview":
+			if _, ok := fieldSeen[tenderprofile.FieldCustomerRelationshipRatingOverview]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldCustomerRelationshipRatingOverview)
+				fieldSeen[tenderprofile.FieldCustomerRelationshipRatingOverview] = struct{}{}
+			}
+		case "competitivePartnershipRating":
+			if _, ok := fieldSeen[tenderprofile.FieldCompetitivePartnershipRating]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldCompetitivePartnershipRating)
+				fieldSeen[tenderprofile.FieldCompetitivePartnershipRating] = struct{}{}
+			}
+		case "competitivePartnershipRatingOverview":
+			if _, ok := fieldSeen[tenderprofile.FieldCompetitivePartnershipRatingOverview]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldCompetitivePartnershipRatingOverview)
+				fieldSeen[tenderprofile.FieldCompetitivePartnershipRatingOverview] = struct{}{}
+			}
+		case "prepareToBid":
+			if _, ok := fieldSeen[tenderprofile.FieldPrepareToBid]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldPrepareToBid)
+				fieldSeen[tenderprofile.FieldPrepareToBid] = struct{}{}
+			}
+		case "projectCode":
+			if _, ok := fieldSeen[tenderprofile.FieldProjectCode]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldProjectCode)
+				fieldSeen[tenderprofile.FieldProjectCode] = struct{}{}
+			}
+		case "projectType":
+			if _, ok := fieldSeen[tenderprofile.FieldProjectType]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldProjectType)
+				fieldSeen[tenderprofile.FieldProjectType] = struct{}{}
+			}
+		case "projectDefinition":
+			if _, ok := fieldSeen[tenderprofile.FieldProjectDefinition]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldProjectDefinition)
+				fieldSeen[tenderprofile.FieldProjectDefinition] = struct{}{}
+			}
+		case "estimatedProjectStartDate":
+			if _, ok := fieldSeen[tenderprofile.FieldEstimatedProjectStartDate]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldEstimatedProjectStartDate)
+				fieldSeen[tenderprofile.FieldEstimatedProjectStartDate] = struct{}{}
+			}
+		case "estimatedProjectEndDate":
+			if _, ok := fieldSeen[tenderprofile.FieldEstimatedProjectEndDate]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldEstimatedProjectEndDate)
+				fieldSeen[tenderprofile.FieldEstimatedProjectEndDate] = struct{}{}
+			}
+		case "attachments":
+			if _, ok := fieldSeen[tenderprofile.FieldAttachments]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldAttachments)
+				fieldSeen[tenderprofile.FieldAttachments] = struct{}{}
+			}
+		case "geoCoordinate":
+			if _, ok := fieldSeen[tenderprofile.FieldGeoCoordinate]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldGeoCoordinate)
+				fieldSeen[tenderprofile.FieldGeoCoordinate] = struct{}{}
+			}
+		case "remark":
+			if _, ok := fieldSeen[tenderprofile.FieldRemark]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldRemark)
+				fieldSeen[tenderprofile.FieldRemark] = struct{}{}
+			}
+		case "images":
+			if _, ok := fieldSeen[tenderprofile.FieldImages]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldImages)
+				fieldSeen[tenderprofile.FieldImages] = struct{}{}
+			}
+		case "tenderSituations":
+			if _, ok := fieldSeen[tenderprofile.FieldTenderSituations]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldTenderSituations)
+				fieldSeen[tenderprofile.FieldTenderSituations] = struct{}{}
+			}
+		case "ownerSituations":
+			if _, ok := fieldSeen[tenderprofile.FieldOwnerSituations]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldOwnerSituations)
+				fieldSeen[tenderprofile.FieldOwnerSituations] = struct{}{}
+			}
+		case "biddingInstructions":
+			if _, ok := fieldSeen[tenderprofile.FieldBiddingInstructions]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldBiddingInstructions)
+				fieldSeen[tenderprofile.FieldBiddingInstructions] = struct{}{}
+			}
+		case "competitorSituations":
+			if _, ok := fieldSeen[tenderprofile.FieldCompetitorSituations]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldCompetitorSituations)
+				fieldSeen[tenderprofile.FieldCompetitorSituations] = struct{}{}
+			}
+		case "costEngineer":
+			if _, ok := fieldSeen[tenderprofile.FieldCostEngineer]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldCostEngineer)
+				fieldSeen[tenderprofile.FieldCostEngineer] = struct{}{}
+			}
+		case "tenderForm":
+			if _, ok := fieldSeen[tenderprofile.FieldTenderForm]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldTenderForm)
+				fieldSeen[tenderprofile.FieldTenderForm] = struct{}{}
+			}
+		case "contractForm":
+			if _, ok := fieldSeen[tenderprofile.FieldContractForm]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldContractForm)
+				fieldSeen[tenderprofile.FieldContractForm] = struct{}{}
+			}
+		case "managementCompany":
+			if _, ok := fieldSeen[tenderprofile.FieldManagementCompany]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldManagementCompany)
+				fieldSeen[tenderprofile.FieldManagementCompany] = struct{}{}
+			}
+		case "tenderingAgency":
+			if _, ok := fieldSeen[tenderprofile.FieldTenderingAgency]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldTenderingAgency)
+				fieldSeen[tenderprofile.FieldTenderingAgency] = struct{}{}
+			}
+		case "biddingDate":
+			if _, ok := fieldSeen[tenderprofile.FieldBiddingDate]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldBiddingDate)
+				fieldSeen[tenderprofile.FieldBiddingDate] = struct{}{}
+			}
+		case "facadeConsultant":
+			if _, ok := fieldSeen[tenderprofile.FieldFacadeConsultant]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldFacadeConsultant)
+				fieldSeen[tenderprofile.FieldFacadeConsultant] = struct{}{}
+			}
+		case "designUnit":
+			if _, ok := fieldSeen[tenderprofile.FieldDesignUnit]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldDesignUnit)
+				fieldSeen[tenderprofile.FieldDesignUnit] = struct{}{}
+			}
+		case "consultingFirm":
+			if _, ok := fieldSeen[tenderprofile.FieldConsultingFirm]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldConsultingFirm)
+				fieldSeen[tenderprofile.FieldConsultingFirm] = struct{}{}
+			}
+		case "keyProject":
+			if _, ok := fieldSeen[tenderprofile.FieldKeyProject]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldKeyProject)
+				fieldSeen[tenderprofile.FieldKeyProject] = struct{}{}
+			}
+		case "currentProgress":
+			if _, ok := fieldSeen[tenderprofile.FieldCurrentProgress]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldCurrentProgress)
+				fieldSeen[tenderprofile.FieldCurrentProgress] = struct{}{}
+			}
+		case "tenderWinCompany":
+			if _, ok := fieldSeen[tenderprofile.FieldTenderWinCompany]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldTenderWinCompany)
+				fieldSeen[tenderprofile.FieldTenderWinCompany] = struct{}{}
+			}
+		case "tenderCode":
+			if _, ok := fieldSeen[tenderprofile.FieldTenderCode]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldTenderCode)
+				fieldSeen[tenderprofile.FieldTenderCode] = struct{}{}
+			}
+		case "architect":
+			if _, ok := fieldSeen[tenderprofile.FieldArchitect]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldArchitect)
+				fieldSeen[tenderprofile.FieldArchitect] = struct{}{}
+			}
+		case "developer":
+			if _, ok := fieldSeen[tenderprofile.FieldDeveloper]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldDeveloper)
+				fieldSeen[tenderprofile.FieldDeveloper] = struct{}{}
+			}
+		case "tenderClosingDate":
+			if _, ok := fieldSeen[tenderprofile.FieldTenderClosingDate]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldTenderClosingDate)
+				fieldSeen[tenderprofile.FieldTenderClosingDate] = struct{}{}
+			}
+		case "constructionArea":
+			if _, ok := fieldSeen[tenderprofile.FieldConstructionArea]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldConstructionArea)
+				fieldSeen[tenderprofile.FieldConstructionArea] = struct{}{}
+			}
+		case "tenderWinDate":
+			if _, ok := fieldSeen[tenderprofile.FieldTenderWinDate]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldTenderWinDate)
+				fieldSeen[tenderprofile.FieldTenderWinDate] = struct{}{}
+			}
+		case "tenderWinAmount":
+			if _, ok := fieldSeen[tenderprofile.FieldTenderWinAmount]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldTenderWinAmount)
+				fieldSeen[tenderprofile.FieldTenderWinAmount] = struct{}{}
+			}
+		case "lastTenderAmount":
+			if _, ok := fieldSeen[tenderprofile.FieldLastTenderAmount]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldLastTenderAmount)
+				fieldSeen[tenderprofile.FieldLastTenderAmount] = struct{}{}
+			}
+		case "tenderID":
+			if _, ok := fieldSeen[tenderprofile.FieldTenderID]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldTenderID)
+				fieldSeen[tenderprofile.FieldTenderID] = struct{}{}
+			}
+		case "provinceID":
+			if _, ok := fieldSeen[tenderprofile.FieldProvinceID]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldProvinceID)
+				fieldSeen[tenderprofile.FieldProvinceID] = struct{}{}
+			}
+		case "cityID":
+			if _, ok := fieldSeen[tenderprofile.FieldCityID]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldCityID)
+				fieldSeen[tenderprofile.FieldCityID] = struct{}{}
+			}
+		case "districtID":
+			if _, ok := fieldSeen[tenderprofile.FieldDistrictID]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldDistrictID)
+				fieldSeen[tenderprofile.FieldDistrictID] = struct{}{}
+			}
+		case "customerID":
+			if _, ok := fieldSeen[tenderprofile.FieldCustomerID]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldCustomerID)
+				fieldSeen[tenderprofile.FieldCustomerID] = struct{}{}
+			}
+		case "finderID":
+			if _, ok := fieldSeen[tenderprofile.FieldFinderID]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldFinderID)
+				fieldSeen[tenderprofile.FieldFinderID] = struct{}{}
+			}
+		case "createdByID":
+			if _, ok := fieldSeen[tenderprofile.FieldCreatedByID]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldCreatedByID)
+				fieldSeen[tenderprofile.FieldCreatedByID] = struct{}{}
+			}
+		case "approverID":
+			if _, ok := fieldSeen[tenderprofile.FieldApproverID]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldApproverID)
+				fieldSeen[tenderprofile.FieldApproverID] = struct{}{}
+			}
+		case "updatedByID":
+			if _, ok := fieldSeen[tenderprofile.FieldUpdatedByID]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldUpdatedByID)
+				fieldSeen[tenderprofile.FieldUpdatedByID] = struct{}{}
+			}
+		case "id":
+		case "__typename":
+		default:
+			unknownSeen = true
+		}
+	}
+	if !unknownSeen {
+		tp.Select(selectedFields...)
+	}
+	return nil
+}
+
+type tenderprofilePaginateArgs struct {
+	first, last   *int
+	after, before *Cursor
+	opts          []TenderProfilePaginateOption
+}
+
+func newTenderProfilePaginateArgs(rv map[string]any) *tenderprofilePaginateArgs {
+	args := &tenderprofilePaginateArgs{}
+	if rv == nil {
+		return args
+	}
+	if v := rv[firstField]; v != nil {
+		args.first = v.(*int)
+	}
+	if v := rv[lastField]; v != nil {
+		args.last = v.(*int)
+	}
+	if v := rv[afterField]; v != nil {
+		args.after = v.(*Cursor)
+	}
+	if v := rv[beforeField]; v != nil {
+		args.before = v.(*Cursor)
+	}
+	if v, ok := rv[orderByField]; ok {
+		switch v := v.(type) {
+		case map[string]any:
+			var (
+				err1, err2 error
+				order      = &TenderProfileOrder{Field: &TenderProfileOrderField{}, Direction: entgql.OrderDirectionAsc}
+			)
+			if d, ok := v[directionField]; ok {
+				err1 = order.Direction.UnmarshalGQL(d)
+			}
+			if f, ok := v[fieldField]; ok {
+				err2 = order.Field.UnmarshalGQL(f)
+			}
+			if err1 == nil && err2 == nil {
+				args.opts = append(args.opts, WithTenderProfileOrder(order))
+			}
+		case *TenderProfileOrder:
+			if v != nil {
+				args.opts = append(args.opts, WithTenderProfileOrder(v))
+			}
+		}
+	}
+	if v, ok := rv[whereField].(*TenderProfileWhereInput); ok {
+		args.opts = append(args.opts, WithTenderProfileFilter(v.Filter))
 	}
 	return args
 }

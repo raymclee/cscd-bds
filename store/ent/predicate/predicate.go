@@ -51,6 +51,9 @@ type Tender func(*sql.Selector)
 // TenderCompetitor is the predicate function for tendercompetitor builders.
 type TenderCompetitor func(*sql.Selector)
 
+// TenderProfile is the predicate function for tenderprofile builders.
+type TenderProfile func(*sql.Selector)
+
 // User is the predicate function for user builders.
 type User func(*sql.Selector)
 

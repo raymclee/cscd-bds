@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<a4246667702025e54e05639922135818>>
+ * @generated SignedSource<<4440e8f4acdeea401008323f88ea2371>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -53,6 +53,10 @@ export type usersSuperAdminUsersPageQuery$data = {
         readonly isAdmin: boolean;
         readonly isCeo: boolean;
         readonly isSuperAdmin: boolean;
+        readonly leader: {
+          readonly id: string;
+          readonly name: string | null | undefined;
+        } | null | undefined;
         readonly name: string | null | undefined;
         readonly openID: string;
         readonly projects: {
@@ -64,6 +68,10 @@ export type usersSuperAdminUsersPageQuery$data = {
             } | null | undefined;
           } | null | undefined> | null | undefined;
         };
+        readonly teamMembers: ReadonlyArray<{
+          readonly id: string;
+          readonly name: string | null | undefined;
+        }> | null | undefined;
         readonly username: string | null | undefined;
       } | null | undefined;
     } | null | undefined> | null | undefined;
@@ -196,6 +204,10 @@ v6 = {
   "storageKey": "projects(orderBy:{\"field\":\"CODE\"},where:{\"isFinishedNEQ\":true})"
 },
 v7 = [
+  (v1/*: any*/),
+  (v2/*: any*/)
+],
+v8 = [
   {
     "alias": null,
     "args": null,
@@ -283,6 +295,26 @@ v7 = [
             "args": null,
             "kind": "ScalarField",
             "name": "hasEditAccess",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "User",
+            "kind": "LinkedField",
+            "name": "leader",
+            "plural": false,
+            "selections": (v7/*: any*/),
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "User",
+            "kind": "LinkedField",
+            "name": "teamMembers",
+            "plural": true,
+            "selections": (v7/*: any*/),
             "storageKey": null
           },
           {
@@ -399,7 +431,7 @@ v7 = [
     ]
   }
 ],
-v8 = [
+v9 = [
   {
     "kind": "Variable",
     "name": "first",
@@ -427,7 +459,7 @@ return {
         "kind": "LinkedField",
         "name": "__usersSuperAdminUsersPageQuery_users_connection",
         "plural": false,
-        "selections": (v7/*: any*/),
+        "selections": (v8/*: any*/),
         "storageKey": null
       }
     ],
@@ -444,17 +476,17 @@ return {
       (v6/*: any*/),
       {
         "alias": null,
-        "args": (v8/*: any*/),
+        "args": (v9/*: any*/),
         "concreteType": "UserConnection",
         "kind": "LinkedField",
         "name": "users",
         "plural": false,
-        "selections": (v7/*: any*/),
+        "selections": (v8/*: any*/),
         "storageKey": null
       },
       {
         "alias": null,
-        "args": (v8/*: any*/),
+        "args": (v9/*: any*/),
         "filters": null,
         "handle": "connection",
         "key": "usersSuperAdminUsersPageQuery_users",
@@ -464,7 +496,7 @@ return {
     ]
   },
   "params": {
-    "cacheID": "93fcfdef94ad08523229211e297f4077",
+    "cacheID": "3b5d3403ebff3e2997dcda449b48bcbf",
     "id": null,
     "metadata": {
       "connection": [
@@ -480,11 +512,11 @@ return {
     },
     "name": "usersSuperAdminUsersPageQuery",
     "operationKind": "query",
-    "text": "query usersSuperAdminUsersPageQuery(\n  $first: Int\n  $last: Int\n) {\n  areas {\n    edges {\n      node {\n        id\n        name\n        code\n      }\n    }\n  }\n  projects(where: {isFinishedNEQ: true}, orderBy: {field: CODE}) {\n    edges {\n      node {\n        id\n        code\n      }\n    }\n  }\n  users(first: $first, last: $last) {\n    edges {\n      node {\n        id\n        name\n        email\n        username\n        openID\n        avatarURL\n        disabled\n        areas {\n          edges {\n            node {\n              id\n              name\n              code\n            }\n          }\n        }\n        isCeo\n        isAdmin\n        isSuperAdmin\n        hasMapAccess\n        hasEditAccess\n        projects(where: {isFinishedNEQ: true}, orderBy: {field: CODE}) {\n          edges {\n            node {\n              id\n              code\n              isFinished\n            }\n          }\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n"
+    "text": "query usersSuperAdminUsersPageQuery(\n  $first: Int\n  $last: Int\n) {\n  areas {\n    edges {\n      node {\n        id\n        name\n        code\n      }\n    }\n  }\n  projects(where: {isFinishedNEQ: true}, orderBy: {field: CODE}) {\n    edges {\n      node {\n        id\n        code\n      }\n    }\n  }\n  users(first: $first, last: $last) {\n    edges {\n      node {\n        id\n        name\n        email\n        username\n        openID\n        avatarURL\n        disabled\n        areas {\n          edges {\n            node {\n              id\n              name\n              code\n            }\n          }\n        }\n        isCeo\n        isAdmin\n        isSuperAdmin\n        hasMapAccess\n        hasEditAccess\n        leader {\n          id\n          name\n        }\n        teamMembers {\n          id\n          name\n        }\n        projects(where: {isFinishedNEQ: true}, orderBy: {field: CODE}) {\n          edges {\n            node {\n              id\n              code\n              isFinished\n            }\n          }\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "aa33cb8d8f67c3e2b90a7b64f43b86ad";
+(node as any).hash = "8eef347a2bc4919c31777f7f5b3a0483";
 
 export default node;

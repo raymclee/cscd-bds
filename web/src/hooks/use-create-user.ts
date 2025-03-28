@@ -25,6 +25,10 @@ export function useCreateUser() {
                 }
               }
             }
+            leader {
+              id
+              name
+            }
             projects {
               edges {
                 node {
@@ -34,6 +38,8 @@ export function useCreateUser() {
               }
             }
             isAdmin
+            isSuperAdmin
+            isCeo
             hasMapAccess
             hasEditAccess
           }

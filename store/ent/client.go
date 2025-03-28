@@ -27,6 +27,7 @@ import (
 	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/tendercompetitor"
+	"cscd-bds/store/ent/tenderprofile"
 	"cscd-bds/store/ent/user"
 	"cscd-bds/store/ent/visitrecord"
 
@@ -71,6 +72,8 @@ type Client struct {
 	Tender *TenderClient
 	// TenderCompetitor is the client for interacting with the TenderCompetitor builders.
 	TenderCompetitor *TenderCompetitorClient
+	// TenderProfile is the client for interacting with the TenderProfile builders.
+	TenderProfile *TenderProfileClient
 	// User is the client for interacting with the User builders.
 	User *UserClient
 	// VisitRecord is the client for interacting with the VisitRecord builders.
@@ -101,6 +104,7 @@ func (c *Client) init() {
 	c.Province = NewProvinceClient(c.config)
 	c.Tender = NewTenderClient(c.config)
 	c.TenderCompetitor = NewTenderCompetitorClient(c.config)
+	c.TenderProfile = NewTenderProfileClient(c.config)
 	c.User = NewUserClient(c.config)
 	c.VisitRecord = NewVisitRecordClient(c.config)
 }
@@ -210,6 +214,7 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		Province:         NewProvinceClient(cfg),
 		Tender:           NewTenderClient(cfg),
 		TenderCompetitor: NewTenderCompetitorClient(cfg),
+		TenderProfile:    NewTenderProfileClient(cfg),
 		User:             NewUserClient(cfg),
 		VisitRecord:      NewVisitRecordClient(cfg),
 	}, nil
@@ -246,6 +251,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		Province:         NewProvinceClient(cfg),
 		Tender:           NewTenderClient(cfg),
 		TenderCompetitor: NewTenderCompetitorClient(cfg),
+		TenderProfile:    NewTenderProfileClient(cfg),
 		User:             NewUserClient(cfg),
 		VisitRecord:      NewVisitRecordClient(cfg),
 	}, nil
@@ -279,7 +285,7 @@ func (c *Client) Use(hooks ...Hook) {
 	for _, n := range []interface{ Use(...Hook) }{
 		c.Area, c.City, c.Competitor, c.Country, c.Customer, c.District, c.Operation,
 		c.Plot, c.PotentialTender, c.Project, c.ProjectStaff, c.ProjectVO, c.Province,
-		c.Tender, c.TenderCompetitor, c.User, c.VisitRecord,
+		c.Tender, c.TenderCompetitor, c.TenderProfile, c.User, c.VisitRecord,
 	} {
 		n.Use(hooks...)
 	}
@@ -291,7 +297,7 @@ func (c *Client) Intercept(interceptors ...Interceptor) {
 	for _, n := range []interface{ Intercept(...Interceptor) }{
 		c.Area, c.City, c.Competitor, c.Country, c.Customer, c.District, c.Operation,
 		c.Plot, c.PotentialTender, c.Project, c.ProjectStaff, c.ProjectVO, c.Province,
-		c.Tender, c.TenderCompetitor, c.User, c.VisitRecord,
+		c.Tender, c.TenderCompetitor, c.TenderProfile, c.User, c.VisitRecord,
 	} {
 		n.Intercept(interceptors...)
 	}
@@ -330,6 +336,8 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 		return c.Tender.mutate(ctx, m)
 	case *TenderCompetitorMutation:
 		return c.TenderCompetitor.mutate(ctx, m)
+	case *TenderProfileMutation:
+		return c.TenderProfile.mutate(ctx, m)
 	case *UserMutation:
 		return c.User.mutate(ctx, m)
 	case *VisitRecordMutation:
@@ -2688,6 +2696,38 @@ func (c *TenderClient) QueryArea(t *Tender) *AreaQuery {
 	return query
 }
 
+// QueryProfiles queries the profiles edge of a Tender.
+func (c *TenderClient) QueryProfiles(t *Tender) *TenderProfileQuery {
+	query := (&TenderProfileClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := t.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(tender.Table, tender.FieldID, id),
+			sqlgraph.To(tenderprofile.Table, tenderprofile.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, tender.ProfilesTable, tender.ProfilesColumn),
+		)
+		fromV = sqlgraph.Neighbors(t.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryCompetitors queries the competitors edge of a Tender.
+func (c *TenderClient) QueryCompetitors(t *Tender) *TenderCompetitorQuery {
+	query := (&TenderCompetitorClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := t.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(tender.Table, tender.FieldID, id),
+			sqlgraph.To(tendercompetitor.Table, tendercompetitor.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, tender.CompetitorsTable, tender.CompetitorsColumn),
+		)
+		fromV = sqlgraph.Neighbors(t.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // QueryCustomer queries the customer edge of a Tender.
 func (c *TenderClient) QueryCustomer(t *Tender) *CustomerQuery {
 	query := (&CustomerClient{config: c.config}).Query()
@@ -2809,22 +2849,6 @@ func (c *TenderClient) QueryVisitRecords(t *Tender) *VisitRecordQuery {
 			sqlgraph.From(tender.Table, tender.FieldID, id),
 			sqlgraph.To(visitrecord.Table, visitrecord.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, tender.VisitRecordsTable, tender.VisitRecordsColumn),
-		)
-		fromV = sqlgraph.Neighbors(t.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
-// QueryCompetitors queries the competitors edge of a Tender.
-func (c *TenderClient) QueryCompetitors(t *Tender) *TenderCompetitorQuery {
-	query := (&TenderCompetitorClient{config: c.config}).Query()
-	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
-		id := t.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(tender.Table, tender.FieldID, id),
-			sqlgraph.To(tendercompetitor.Table, tendercompetitor.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, tender.CompetitorsTable, tender.CompetitorsColumn),
 		)
 		fromV = sqlgraph.Neighbors(t.driver.Dialect(), step)
 		return fromV, nil
@@ -3051,6 +3075,283 @@ func (c *TenderCompetitorClient) mutate(ctx context.Context, m *TenderCompetitor
 		return (&TenderCompetitorDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
 	default:
 		return nil, fmt.Errorf("ent: unknown TenderCompetitor mutation op: %q", m.Op())
+	}
+}
+
+// TenderProfileClient is a client for the TenderProfile schema.
+type TenderProfileClient struct {
+	config
+}
+
+// NewTenderProfileClient returns a client for the TenderProfile from the given config.
+func NewTenderProfileClient(c config) *TenderProfileClient {
+	return &TenderProfileClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `tenderprofile.Hooks(f(g(h())))`.
+func (c *TenderProfileClient) Use(hooks ...Hook) {
+	c.hooks.TenderProfile = append(c.hooks.TenderProfile, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `tenderprofile.Intercept(f(g(h())))`.
+func (c *TenderProfileClient) Intercept(interceptors ...Interceptor) {
+	c.inters.TenderProfile = append(c.inters.TenderProfile, interceptors...)
+}
+
+// Create returns a builder for creating a TenderProfile entity.
+func (c *TenderProfileClient) Create() *TenderProfileCreate {
+	mutation := newTenderProfileMutation(c.config, OpCreate)
+	return &TenderProfileCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of TenderProfile entities.
+func (c *TenderProfileClient) CreateBulk(builders ...*TenderProfileCreate) *TenderProfileCreateBulk {
+	return &TenderProfileCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *TenderProfileClient) MapCreateBulk(slice any, setFunc func(*TenderProfileCreate, int)) *TenderProfileCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &TenderProfileCreateBulk{err: fmt.Errorf("calling to TenderProfileClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*TenderProfileCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &TenderProfileCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for TenderProfile.
+func (c *TenderProfileClient) Update() *TenderProfileUpdate {
+	mutation := newTenderProfileMutation(c.config, OpUpdate)
+	return &TenderProfileUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *TenderProfileClient) UpdateOne(tp *TenderProfile) *TenderProfileUpdateOne {
+	mutation := newTenderProfileMutation(c.config, OpUpdateOne, withTenderProfile(tp))
+	return &TenderProfileUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *TenderProfileClient) UpdateOneID(id xid.ID) *TenderProfileUpdateOne {
+	mutation := newTenderProfileMutation(c.config, OpUpdateOne, withTenderProfileID(id))
+	return &TenderProfileUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for TenderProfile.
+func (c *TenderProfileClient) Delete() *TenderProfileDelete {
+	mutation := newTenderProfileMutation(c.config, OpDelete)
+	return &TenderProfileDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *TenderProfileClient) DeleteOne(tp *TenderProfile) *TenderProfileDeleteOne {
+	return c.DeleteOneID(tp.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *TenderProfileClient) DeleteOneID(id xid.ID) *TenderProfileDeleteOne {
+	builder := c.Delete().Where(tenderprofile.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &TenderProfileDeleteOne{builder}
+}
+
+// Query returns a query builder for TenderProfile.
+func (c *TenderProfileClient) Query() *TenderProfileQuery {
+	return &TenderProfileQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeTenderProfile},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a TenderProfile entity by its id.
+func (c *TenderProfileClient) Get(ctx context.Context, id xid.ID) (*TenderProfile, error) {
+	return c.Query().Where(tenderprofile.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *TenderProfileClient) GetX(ctx context.Context, id xid.ID) *TenderProfile {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryTender queries the tender edge of a TenderProfile.
+func (c *TenderProfileClient) QueryTender(tp *TenderProfile) *TenderQuery {
+	query := (&TenderClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := tp.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(tenderprofile.Table, tenderprofile.FieldID, id),
+			sqlgraph.To(tender.Table, tender.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, tenderprofile.TenderTable, tenderprofile.TenderColumn),
+		)
+		fromV = sqlgraph.Neighbors(tp.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryCustomer queries the customer edge of a TenderProfile.
+func (c *TenderProfileClient) QueryCustomer(tp *TenderProfile) *CustomerQuery {
+	query := (&CustomerClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := tp.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(tenderprofile.Table, tenderprofile.FieldID, id),
+			sqlgraph.To(customer.Table, customer.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, tenderprofile.CustomerTable, tenderprofile.CustomerColumn),
+		)
+		fromV = sqlgraph.Neighbors(tp.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryFinder queries the finder edge of a TenderProfile.
+func (c *TenderProfileClient) QueryFinder(tp *TenderProfile) *UserQuery {
+	query := (&UserClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := tp.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(tenderprofile.Table, tenderprofile.FieldID, id),
+			sqlgraph.To(user.Table, user.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, tenderprofile.FinderTable, tenderprofile.FinderColumn),
+		)
+		fromV = sqlgraph.Neighbors(tp.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryCreatedBy queries the created_by edge of a TenderProfile.
+func (c *TenderProfileClient) QueryCreatedBy(tp *TenderProfile) *UserQuery {
+	query := (&UserClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := tp.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(tenderprofile.Table, tenderprofile.FieldID, id),
+			sqlgraph.To(user.Table, user.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, tenderprofile.CreatedByTable, tenderprofile.CreatedByColumn),
+		)
+		fromV = sqlgraph.Neighbors(tp.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryProvince queries the province edge of a TenderProfile.
+func (c *TenderProfileClient) QueryProvince(tp *TenderProfile) *ProvinceQuery {
+	query := (&ProvinceClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := tp.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(tenderprofile.Table, tenderprofile.FieldID, id),
+			sqlgraph.To(province.Table, province.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, tenderprofile.ProvinceTable, tenderprofile.ProvinceColumn),
+		)
+		fromV = sqlgraph.Neighbors(tp.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryCity queries the city edge of a TenderProfile.
+func (c *TenderProfileClient) QueryCity(tp *TenderProfile) *CityQuery {
+	query := (&CityClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := tp.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(tenderprofile.Table, tenderprofile.FieldID, id),
+			sqlgraph.To(city.Table, city.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, tenderprofile.CityTable, tenderprofile.CityColumn),
+		)
+		fromV = sqlgraph.Neighbors(tp.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryDistrict queries the district edge of a TenderProfile.
+func (c *TenderProfileClient) QueryDistrict(tp *TenderProfile) *DistrictQuery {
+	query := (&DistrictClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := tp.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(tenderprofile.Table, tenderprofile.FieldID, id),
+			sqlgraph.To(district.Table, district.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, tenderprofile.DistrictTable, tenderprofile.DistrictColumn),
+		)
+		fromV = sqlgraph.Neighbors(tp.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryApprover queries the approver edge of a TenderProfile.
+func (c *TenderProfileClient) QueryApprover(tp *TenderProfile) *UserQuery {
+	query := (&UserClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := tp.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(tenderprofile.Table, tenderprofile.FieldID, id),
+			sqlgraph.To(user.Table, user.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, tenderprofile.ApproverTable, tenderprofile.ApproverColumn),
+		)
+		fromV = sqlgraph.Neighbors(tp.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryUpdatedBy queries the updated_by edge of a TenderProfile.
+func (c *TenderProfileClient) QueryUpdatedBy(tp *TenderProfile) *UserQuery {
+	query := (&UserClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := tp.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(tenderprofile.Table, tenderprofile.FieldID, id),
+			sqlgraph.To(user.Table, user.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, tenderprofile.UpdatedByTable, tenderprofile.UpdatedByColumn),
+		)
+		fromV = sqlgraph.Neighbors(tp.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *TenderProfileClient) Hooks() []Hook {
+	return c.hooks.TenderProfile
+}
+
+// Interceptors returns the client interceptors.
+func (c *TenderProfileClient) Interceptors() []Interceptor {
+	return c.inters.TenderProfile
+}
+
+func (c *TenderProfileClient) mutate(ctx context.Context, m *TenderProfileMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&TenderProfileCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&TenderProfileUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&TenderProfileUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&TenderProfileDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("ent: unknown TenderProfile mutation op: %q", m.Op())
 	}
 }
 
@@ -3485,11 +3786,11 @@ type (
 	hooks struct {
 		Area, City, Competitor, Country, Customer, District, Operation, Plot,
 		PotentialTender, Project, ProjectStaff, ProjectVO, Province, Tender,
-		TenderCompetitor, User, VisitRecord []ent.Hook
+		TenderCompetitor, TenderProfile, User, VisitRecord []ent.Hook
 	}
 	inters struct {
 		Area, City, Competitor, Country, Customer, District, Operation, Plot,
 		PotentialTender, Project, ProjectStaff, ProjectVO, Province, Tender,
-		TenderCompetitor, User, VisitRecord []ent.Interceptor
+		TenderCompetitor, TenderProfile, User, VisitRecord []ent.Interceptor
 	}
 )

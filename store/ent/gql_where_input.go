@@ -20,6 +20,7 @@ import (
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/tendercompetitor"
+	"cscd-bds/store/ent/tenderprofile"
 	"cscd-bds/store/ent/user"
 	"cscd-bds/store/ent/visitrecord"
 	"errors"
@@ -11480,6 +11481,14 @@ type TenderWhereInput struct {
 	HasArea     *bool             `json:"hasArea,omitempty"`
 	HasAreaWith []*AreaWhereInput `json:"hasAreaWith,omitempty"`
 
+	// "profiles" edge predicates.
+	HasProfiles     *bool                      `json:"hasProfiles,omitempty"`
+	HasProfilesWith []*TenderProfileWhereInput `json:"hasProfilesWith,omitempty"`
+
+	// "competitors" edge predicates.
+	HasCompetitors     *bool                         `json:"hasCompetitors,omitempty"`
+	HasCompetitorsWith []*TenderCompetitorWhereInput `json:"hasCompetitorsWith,omitempty"`
+
 	// "customer" edge predicates.
 	HasCustomer     *bool                 `json:"hasCustomer,omitempty"`
 	HasCustomerWith []*CustomerWhereInput `json:"hasCustomerWith,omitempty"`
@@ -11511,10 +11520,6 @@ type TenderWhereInput struct {
 	// "visit_records" edge predicates.
 	HasVisitRecords     *bool                    `json:"hasVisitRecords,omitempty"`
 	HasVisitRecordsWith []*VisitRecordWhereInput `json:"hasVisitRecordsWith,omitempty"`
-
-	// "competitors" edge predicates.
-	HasCompetitors     *bool                         `json:"hasCompetitors,omitempty"`
-	HasCompetitorsWith []*TenderCompetitorWhereInput `json:"hasCompetitorsWith,omitempty"`
 
 	// "approver" edge predicates.
 	HasApprover     *bool             `json:"hasApprover,omitempty"`
@@ -14123,6 +14128,42 @@ func (i *TenderWhereInput) P() (predicate.Tender, error) {
 		}
 		predicates = append(predicates, tender.HasAreaWith(with...))
 	}
+	if i.HasProfiles != nil {
+		p := tender.HasProfiles()
+		if !*i.HasProfiles {
+			p = tender.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasProfilesWith) > 0 {
+		with := make([]predicate.TenderProfile, 0, len(i.HasProfilesWith))
+		for _, w := range i.HasProfilesWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'HasProfilesWith'", err)
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, tender.HasProfilesWith(with...))
+	}
+	if i.HasCompetitors != nil {
+		p := tender.HasCompetitors()
+		if !*i.HasCompetitors {
+			p = tender.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasCompetitorsWith) > 0 {
+		with := make([]predicate.TenderCompetitor, 0, len(i.HasCompetitorsWith))
+		for _, w := range i.HasCompetitorsWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'HasCompetitorsWith'", err)
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, tender.HasCompetitorsWith(with...))
+	}
 	if i.HasCustomer != nil {
 		p := tender.HasCustomer()
 		if !*i.HasCustomer {
@@ -14266,24 +14307,6 @@ func (i *TenderWhereInput) P() (predicate.Tender, error) {
 			with = append(with, p)
 		}
 		predicates = append(predicates, tender.HasVisitRecordsWith(with...))
-	}
-	if i.HasCompetitors != nil {
-		p := tender.HasCompetitors()
-		if !*i.HasCompetitors {
-			p = tender.Not(p)
-		}
-		predicates = append(predicates, p)
-	}
-	if len(i.HasCompetitorsWith) > 0 {
-		with := make([]predicate.TenderCompetitor, 0, len(i.HasCompetitorsWith))
-		for _, w := range i.HasCompetitorsWith {
-			p, err := w.P()
-			if err != nil {
-				return nil, fmt.Errorf("%w: field 'HasCompetitorsWith'", err)
-			}
-			with = append(with, p)
-		}
-		predicates = append(predicates, tender.HasCompetitorsWith(with...))
 	}
 	if i.HasApprover != nil {
 		p := tender.HasApprover()
@@ -14706,6 +14729,3716 @@ func (i *TenderCompetitorWhereInput) P() (predicate.TenderCompetitor, error) {
 		return predicates[0], nil
 	default:
 		return tendercompetitor.And(predicates...), nil
+	}
+}
+
+// TenderProfileWhereInput represents a where input for filtering TenderProfile queries.
+type TenderProfileWhereInput struct {
+	Predicates []predicate.TenderProfile  `json:"-"`
+	Not        *TenderProfileWhereInput   `json:"not,omitempty"`
+	Or         []*TenderProfileWhereInput `json:"or,omitempty"`
+	And        []*TenderProfileWhereInput `json:"and,omitempty"`
+
+	// "id" field predicates.
+	ID      *xid.ID  `json:"id,omitempty"`
+	IDNEQ   *xid.ID  `json:"idNEQ,omitempty"`
+	IDIn    []xid.ID `json:"idIn,omitempty"`
+	IDNotIn []xid.ID `json:"idNotIn,omitempty"`
+	IDGT    *xid.ID  `json:"idGT,omitempty"`
+	IDGTE   *xid.ID  `json:"idGTE,omitempty"`
+	IDLT    *xid.ID  `json:"idLT,omitempty"`
+	IDLTE   *xid.ID  `json:"idLTE,omitempty"`
+
+	// "created_at" field predicates.
+	CreatedAt      *time.Time  `json:"createdAt,omitempty"`
+	CreatedAtNEQ   *time.Time  `json:"createdAtNEQ,omitempty"`
+	CreatedAtIn    []time.Time `json:"createdAtIn,omitempty"`
+	CreatedAtNotIn []time.Time `json:"createdAtNotIn,omitempty"`
+	CreatedAtGT    *time.Time  `json:"createdAtGT,omitempty"`
+	CreatedAtGTE   *time.Time  `json:"createdAtGTE,omitempty"`
+	CreatedAtLT    *time.Time  `json:"createdAtLT,omitempty"`
+	CreatedAtLTE   *time.Time  `json:"createdAtLTE,omitempty"`
+
+	// "updated_at" field predicates.
+	UpdatedAt      *time.Time  `json:"updatedAt,omitempty"`
+	UpdatedAtNEQ   *time.Time  `json:"updatedAtNEQ,omitempty"`
+	UpdatedAtIn    []time.Time `json:"updatedAtIn,omitempty"`
+	UpdatedAtNotIn []time.Time `json:"updatedAtNotIn,omitempty"`
+	UpdatedAtGT    *time.Time  `json:"updatedAtGT,omitempty"`
+	UpdatedAtGTE   *time.Time  `json:"updatedAtGTE,omitempty"`
+	UpdatedAtLT    *time.Time  `json:"updatedAtLT,omitempty"`
+	UpdatedAtLTE   *time.Time  `json:"updatedAtLTE,omitempty"`
+
+	// "status" field predicates.
+	Status      *int  `json:"status,omitempty"`
+	StatusNEQ   *int  `json:"statusNEQ,omitempty"`
+	StatusIn    []int `json:"statusIn,omitempty"`
+	StatusNotIn []int `json:"statusNotIn,omitempty"`
+	StatusGT    *int  `json:"statusGT,omitempty"`
+	StatusGTE   *int  `json:"statusGTE,omitempty"`
+	StatusLT    *int  `json:"statusLT,omitempty"`
+	StatusLTE   *int  `json:"statusLTE,omitempty"`
+
+	// "approval_status" field predicates.
+	ApprovalStatus      *int  `json:"approvalStatus,omitempty"`
+	ApprovalStatusNEQ   *int  `json:"approvalStatusNEQ,omitempty"`
+	ApprovalStatusIn    []int `json:"approvalStatusIn,omitempty"`
+	ApprovalStatusNotIn []int `json:"approvalStatusNotIn,omitempty"`
+	ApprovalStatusGT    *int  `json:"approvalStatusGT,omitempty"`
+	ApprovalStatusGTE   *int  `json:"approvalStatusGTE,omitempty"`
+	ApprovalStatusLT    *int  `json:"approvalStatusLT,omitempty"`
+	ApprovalStatusLTE   *int  `json:"approvalStatusLTE,omitempty"`
+
+	// "approval_msg_id" field predicates.
+	ApprovalMsgID             *string  `json:"approvalMsgID,omitempty"`
+	ApprovalMsgIDNEQ          *string  `json:"approvalMsgIDNEQ,omitempty"`
+	ApprovalMsgIDIn           []string `json:"approvalMsgIDIn,omitempty"`
+	ApprovalMsgIDNotIn        []string `json:"approvalMsgIDNotIn,omitempty"`
+	ApprovalMsgIDGT           *string  `json:"approvalMsgIDGT,omitempty"`
+	ApprovalMsgIDGTE          *string  `json:"approvalMsgIDGTE,omitempty"`
+	ApprovalMsgIDLT           *string  `json:"approvalMsgIDLT,omitempty"`
+	ApprovalMsgIDLTE          *string  `json:"approvalMsgIDLTE,omitempty"`
+	ApprovalMsgIDContains     *string  `json:"approvalMsgIDContains,omitempty"`
+	ApprovalMsgIDHasPrefix    *string  `json:"approvalMsgIDHasPrefix,omitempty"`
+	ApprovalMsgIDHasSuffix    *string  `json:"approvalMsgIDHasSuffix,omitempty"`
+	ApprovalMsgIDIsNil        bool     `json:"approvalMsgIDIsNil,omitempty"`
+	ApprovalMsgIDNotNil       bool     `json:"approvalMsgIDNotNil,omitempty"`
+	ApprovalMsgIDEqualFold    *string  `json:"approvalMsgIDEqualFold,omitempty"`
+	ApprovalMsgIDContainsFold *string  `json:"approvalMsgIDContainsFold,omitempty"`
+
+	// "name" field predicates.
+	Name             *string  `json:"name,omitempty"`
+	NameNEQ          *string  `json:"nameNEQ,omitempty"`
+	NameIn           []string `json:"nameIn,omitempty"`
+	NameNotIn        []string `json:"nameNotIn,omitempty"`
+	NameGT           *string  `json:"nameGT,omitempty"`
+	NameGTE          *string  `json:"nameGTE,omitempty"`
+	NameLT           *string  `json:"nameLT,omitempty"`
+	NameLTE          *string  `json:"nameLTE,omitempty"`
+	NameContains     *string  `json:"nameContains,omitempty"`
+	NameHasPrefix    *string  `json:"nameHasPrefix,omitempty"`
+	NameHasSuffix    *string  `json:"nameHasSuffix,omitempty"`
+	NameEqualFold    *string  `json:"nameEqualFold,omitempty"`
+	NameContainsFold *string  `json:"nameContainsFold,omitempty"`
+
+	// "estimated_amount" field predicates.
+	EstimatedAmount       *float64  `json:"estimatedAmount,omitempty"`
+	EstimatedAmountNEQ    *float64  `json:"estimatedAmountNEQ,omitempty"`
+	EstimatedAmountIn     []float64 `json:"estimatedAmountIn,omitempty"`
+	EstimatedAmountNotIn  []float64 `json:"estimatedAmountNotIn,omitempty"`
+	EstimatedAmountGT     *float64  `json:"estimatedAmountGT,omitempty"`
+	EstimatedAmountGTE    *float64  `json:"estimatedAmountGTE,omitempty"`
+	EstimatedAmountLT     *float64  `json:"estimatedAmountLT,omitempty"`
+	EstimatedAmountLTE    *float64  `json:"estimatedAmountLTE,omitempty"`
+	EstimatedAmountIsNil  bool      `json:"estimatedAmountIsNil,omitempty"`
+	EstimatedAmountNotNil bool      `json:"estimatedAmountNotNil,omitempty"`
+
+	// "tender_date" field predicates.
+	TenderDate       *time.Time  `json:"tenderDate,omitempty"`
+	TenderDateNEQ    *time.Time  `json:"tenderDateNEQ,omitempty"`
+	TenderDateIn     []time.Time `json:"tenderDateIn,omitempty"`
+	TenderDateNotIn  []time.Time `json:"tenderDateNotIn,omitempty"`
+	TenderDateGT     *time.Time  `json:"tenderDateGT,omitempty"`
+	TenderDateGTE    *time.Time  `json:"tenderDateGTE,omitempty"`
+	TenderDateLT     *time.Time  `json:"tenderDateLT,omitempty"`
+	TenderDateLTE    *time.Time  `json:"tenderDateLTE,omitempty"`
+	TenderDateIsNil  bool        `json:"tenderDateIsNil,omitempty"`
+	TenderDateNotNil bool        `json:"tenderDateNotNil,omitempty"`
+
+	// "classify" field predicates.
+	Classify       *int  `json:"classify,omitempty"`
+	ClassifyNEQ    *int  `json:"classifyNEQ,omitempty"`
+	ClassifyIn     []int `json:"classifyIn,omitempty"`
+	ClassifyNotIn  []int `json:"classifyNotIn,omitempty"`
+	ClassifyGT     *int  `json:"classifyGT,omitempty"`
+	ClassifyGTE    *int  `json:"classifyGTE,omitempty"`
+	ClassifyLT     *int  `json:"classifyLT,omitempty"`
+	ClassifyLTE    *int  `json:"classifyLTE,omitempty"`
+	ClassifyIsNil  bool  `json:"classifyIsNil,omitempty"`
+	ClassifyNotNil bool  `json:"classifyNotNil,omitempty"`
+
+	// "discovery_date" field predicates.
+	DiscoveryDate      *time.Time  `json:"discoveryDate,omitempty"`
+	DiscoveryDateNEQ   *time.Time  `json:"discoveryDateNEQ,omitempty"`
+	DiscoveryDateIn    []time.Time `json:"discoveryDateIn,omitempty"`
+	DiscoveryDateNotIn []time.Time `json:"discoveryDateNotIn,omitempty"`
+	DiscoveryDateGT    *time.Time  `json:"discoveryDateGT,omitempty"`
+	DiscoveryDateGTE   *time.Time  `json:"discoveryDateGTE,omitempty"`
+	DiscoveryDateLT    *time.Time  `json:"discoveryDateLT,omitempty"`
+	DiscoveryDateLTE   *time.Time  `json:"discoveryDateLTE,omitempty"`
+
+	// "address" field predicates.
+	Address             *string  `json:"address,omitempty"`
+	AddressNEQ          *string  `json:"addressNEQ,omitempty"`
+	AddressIn           []string `json:"addressIn,omitempty"`
+	AddressNotIn        []string `json:"addressNotIn,omitempty"`
+	AddressGT           *string  `json:"addressGT,omitempty"`
+	AddressGTE          *string  `json:"addressGTE,omitempty"`
+	AddressLT           *string  `json:"addressLT,omitempty"`
+	AddressLTE          *string  `json:"addressLTE,omitempty"`
+	AddressContains     *string  `json:"addressContains,omitempty"`
+	AddressHasPrefix    *string  `json:"addressHasPrefix,omitempty"`
+	AddressHasSuffix    *string  `json:"addressHasSuffix,omitempty"`
+	AddressIsNil        bool     `json:"addressIsNil,omitempty"`
+	AddressNotNil       bool     `json:"addressNotNil,omitempty"`
+	AddressEqualFold    *string  `json:"addressEqualFold,omitempty"`
+	AddressContainsFold *string  `json:"addressContainsFold,omitempty"`
+
+	// "full_address" field predicates.
+	FullAddress             *string  `json:"fullAddress,omitempty"`
+	FullAddressNEQ          *string  `json:"fullAddressNEQ,omitempty"`
+	FullAddressIn           []string `json:"fullAddressIn,omitempty"`
+	FullAddressNotIn        []string `json:"fullAddressNotIn,omitempty"`
+	FullAddressGT           *string  `json:"fullAddressGT,omitempty"`
+	FullAddressGTE          *string  `json:"fullAddressGTE,omitempty"`
+	FullAddressLT           *string  `json:"fullAddressLT,omitempty"`
+	FullAddressLTE          *string  `json:"fullAddressLTE,omitempty"`
+	FullAddressContains     *string  `json:"fullAddressContains,omitempty"`
+	FullAddressHasPrefix    *string  `json:"fullAddressHasPrefix,omitempty"`
+	FullAddressHasSuffix    *string  `json:"fullAddressHasSuffix,omitempty"`
+	FullAddressIsNil        bool     `json:"fullAddressIsNil,omitempty"`
+	FullAddressNotNil       bool     `json:"fullAddressNotNil,omitempty"`
+	FullAddressEqualFold    *string  `json:"fullAddressEqualFold,omitempty"`
+	FullAddressContainsFold *string  `json:"fullAddressContainsFold,omitempty"`
+
+	// "contractor" field predicates.
+	Contractor             *string  `json:"contractor,omitempty"`
+	ContractorNEQ          *string  `json:"contractorNEQ,omitempty"`
+	ContractorIn           []string `json:"contractorIn,omitempty"`
+	ContractorNotIn        []string `json:"contractorNotIn,omitempty"`
+	ContractorGT           *string  `json:"contractorGT,omitempty"`
+	ContractorGTE          *string  `json:"contractorGTE,omitempty"`
+	ContractorLT           *string  `json:"contractorLT,omitempty"`
+	ContractorLTE          *string  `json:"contractorLTE,omitempty"`
+	ContractorContains     *string  `json:"contractorContains,omitempty"`
+	ContractorHasPrefix    *string  `json:"contractorHasPrefix,omitempty"`
+	ContractorHasSuffix    *string  `json:"contractorHasSuffix,omitempty"`
+	ContractorIsNil        bool     `json:"contractorIsNil,omitempty"`
+	ContractorNotNil       bool     `json:"contractorNotNil,omitempty"`
+	ContractorEqualFold    *string  `json:"contractorEqualFold,omitempty"`
+	ContractorContainsFold *string  `json:"contractorContainsFold,omitempty"`
+
+	// "level_involved" field predicates.
+	LevelInvolved       *int  `json:"levelInvolved,omitempty"`
+	LevelInvolvedNEQ    *int  `json:"levelInvolvedNEQ,omitempty"`
+	LevelInvolvedIn     []int `json:"levelInvolvedIn,omitempty"`
+	LevelInvolvedNotIn  []int `json:"levelInvolvedNotIn,omitempty"`
+	LevelInvolvedGT     *int  `json:"levelInvolvedGT,omitempty"`
+	LevelInvolvedGTE    *int  `json:"levelInvolvedGTE,omitempty"`
+	LevelInvolvedLT     *int  `json:"levelInvolvedLT,omitempty"`
+	LevelInvolvedLTE    *int  `json:"levelInvolvedLTE,omitempty"`
+	LevelInvolvedIsNil  bool  `json:"levelInvolvedIsNil,omitempty"`
+	LevelInvolvedNotNil bool  `json:"levelInvolvedNotNil,omitempty"`
+
+	// "size_and_value_rating" field predicates.
+	SizeAndValueRating       *int  `json:"sizeAndValueRating,omitempty"`
+	SizeAndValueRatingNEQ    *int  `json:"sizeAndValueRatingNEQ,omitempty"`
+	SizeAndValueRatingIn     []int `json:"sizeAndValueRatingIn,omitempty"`
+	SizeAndValueRatingNotIn  []int `json:"sizeAndValueRatingNotIn,omitempty"`
+	SizeAndValueRatingGT     *int  `json:"sizeAndValueRatingGT,omitempty"`
+	SizeAndValueRatingGTE    *int  `json:"sizeAndValueRatingGTE,omitempty"`
+	SizeAndValueRatingLT     *int  `json:"sizeAndValueRatingLT,omitempty"`
+	SizeAndValueRatingLTE    *int  `json:"sizeAndValueRatingLTE,omitempty"`
+	SizeAndValueRatingIsNil  bool  `json:"sizeAndValueRatingIsNil,omitempty"`
+	SizeAndValueRatingNotNil bool  `json:"sizeAndValueRatingNotNil,omitempty"`
+
+	// "size_and_value_rating_overview" field predicates.
+	SizeAndValueRatingOverview             *string  `json:"sizeAndValueRatingOverview,omitempty"`
+	SizeAndValueRatingOverviewNEQ          *string  `json:"sizeAndValueRatingOverviewNEQ,omitempty"`
+	SizeAndValueRatingOverviewIn           []string `json:"sizeAndValueRatingOverviewIn,omitempty"`
+	SizeAndValueRatingOverviewNotIn        []string `json:"sizeAndValueRatingOverviewNotIn,omitempty"`
+	SizeAndValueRatingOverviewGT           *string  `json:"sizeAndValueRatingOverviewGT,omitempty"`
+	SizeAndValueRatingOverviewGTE          *string  `json:"sizeAndValueRatingOverviewGTE,omitempty"`
+	SizeAndValueRatingOverviewLT           *string  `json:"sizeAndValueRatingOverviewLT,omitempty"`
+	SizeAndValueRatingOverviewLTE          *string  `json:"sizeAndValueRatingOverviewLTE,omitempty"`
+	SizeAndValueRatingOverviewContains     *string  `json:"sizeAndValueRatingOverviewContains,omitempty"`
+	SizeAndValueRatingOverviewHasPrefix    *string  `json:"sizeAndValueRatingOverviewHasPrefix,omitempty"`
+	SizeAndValueRatingOverviewHasSuffix    *string  `json:"sizeAndValueRatingOverviewHasSuffix,omitempty"`
+	SizeAndValueRatingOverviewIsNil        bool     `json:"sizeAndValueRatingOverviewIsNil,omitempty"`
+	SizeAndValueRatingOverviewNotNil       bool     `json:"sizeAndValueRatingOverviewNotNil,omitempty"`
+	SizeAndValueRatingOverviewEqualFold    *string  `json:"sizeAndValueRatingOverviewEqualFold,omitempty"`
+	SizeAndValueRatingOverviewContainsFold *string  `json:"sizeAndValueRatingOverviewContainsFold,omitempty"`
+
+	// "credit_and_payment_rating" field predicates.
+	CreditAndPaymentRating       *int  `json:"creditAndPaymentRating,omitempty"`
+	CreditAndPaymentRatingNEQ    *int  `json:"creditAndPaymentRatingNEQ,omitempty"`
+	CreditAndPaymentRatingIn     []int `json:"creditAndPaymentRatingIn,omitempty"`
+	CreditAndPaymentRatingNotIn  []int `json:"creditAndPaymentRatingNotIn,omitempty"`
+	CreditAndPaymentRatingGT     *int  `json:"creditAndPaymentRatingGT,omitempty"`
+	CreditAndPaymentRatingGTE    *int  `json:"creditAndPaymentRatingGTE,omitempty"`
+	CreditAndPaymentRatingLT     *int  `json:"creditAndPaymentRatingLT,omitempty"`
+	CreditAndPaymentRatingLTE    *int  `json:"creditAndPaymentRatingLTE,omitempty"`
+	CreditAndPaymentRatingIsNil  bool  `json:"creditAndPaymentRatingIsNil,omitempty"`
+	CreditAndPaymentRatingNotNil bool  `json:"creditAndPaymentRatingNotNil,omitempty"`
+
+	// "credit_and_payment_rating_overview" field predicates.
+	CreditAndPaymentRatingOverview             *string  `json:"creditAndPaymentRatingOverview,omitempty"`
+	CreditAndPaymentRatingOverviewNEQ          *string  `json:"creditAndPaymentRatingOverviewNEQ,omitempty"`
+	CreditAndPaymentRatingOverviewIn           []string `json:"creditAndPaymentRatingOverviewIn,omitempty"`
+	CreditAndPaymentRatingOverviewNotIn        []string `json:"creditAndPaymentRatingOverviewNotIn,omitempty"`
+	CreditAndPaymentRatingOverviewGT           *string  `json:"creditAndPaymentRatingOverviewGT,omitempty"`
+	CreditAndPaymentRatingOverviewGTE          *string  `json:"creditAndPaymentRatingOverviewGTE,omitempty"`
+	CreditAndPaymentRatingOverviewLT           *string  `json:"creditAndPaymentRatingOverviewLT,omitempty"`
+	CreditAndPaymentRatingOverviewLTE          *string  `json:"creditAndPaymentRatingOverviewLTE,omitempty"`
+	CreditAndPaymentRatingOverviewContains     *string  `json:"creditAndPaymentRatingOverviewContains,omitempty"`
+	CreditAndPaymentRatingOverviewHasPrefix    *string  `json:"creditAndPaymentRatingOverviewHasPrefix,omitempty"`
+	CreditAndPaymentRatingOverviewHasSuffix    *string  `json:"creditAndPaymentRatingOverviewHasSuffix,omitempty"`
+	CreditAndPaymentRatingOverviewIsNil        bool     `json:"creditAndPaymentRatingOverviewIsNil,omitempty"`
+	CreditAndPaymentRatingOverviewNotNil       bool     `json:"creditAndPaymentRatingOverviewNotNil,omitempty"`
+	CreditAndPaymentRatingOverviewEqualFold    *string  `json:"creditAndPaymentRatingOverviewEqualFold,omitempty"`
+	CreditAndPaymentRatingOverviewContainsFold *string  `json:"creditAndPaymentRatingOverviewContainsFold,omitempty"`
+
+	// "time_limit_rating" field predicates.
+	TimeLimitRating       *int  `json:"timeLimitRating,omitempty"`
+	TimeLimitRatingNEQ    *int  `json:"timeLimitRatingNEQ,omitempty"`
+	TimeLimitRatingIn     []int `json:"timeLimitRatingIn,omitempty"`
+	TimeLimitRatingNotIn  []int `json:"timeLimitRatingNotIn,omitempty"`
+	TimeLimitRatingGT     *int  `json:"timeLimitRatingGT,omitempty"`
+	TimeLimitRatingGTE    *int  `json:"timeLimitRatingGTE,omitempty"`
+	TimeLimitRatingLT     *int  `json:"timeLimitRatingLT,omitempty"`
+	TimeLimitRatingLTE    *int  `json:"timeLimitRatingLTE,omitempty"`
+	TimeLimitRatingIsNil  bool  `json:"timeLimitRatingIsNil,omitempty"`
+	TimeLimitRatingNotNil bool  `json:"timeLimitRatingNotNil,omitempty"`
+
+	// "time_limit_rating_overview" field predicates.
+	TimeLimitRatingOverview             *string  `json:"timeLimitRatingOverview,omitempty"`
+	TimeLimitRatingOverviewNEQ          *string  `json:"timeLimitRatingOverviewNEQ,omitempty"`
+	TimeLimitRatingOverviewIn           []string `json:"timeLimitRatingOverviewIn,omitempty"`
+	TimeLimitRatingOverviewNotIn        []string `json:"timeLimitRatingOverviewNotIn,omitempty"`
+	TimeLimitRatingOverviewGT           *string  `json:"timeLimitRatingOverviewGT,omitempty"`
+	TimeLimitRatingOverviewGTE          *string  `json:"timeLimitRatingOverviewGTE,omitempty"`
+	TimeLimitRatingOverviewLT           *string  `json:"timeLimitRatingOverviewLT,omitempty"`
+	TimeLimitRatingOverviewLTE          *string  `json:"timeLimitRatingOverviewLTE,omitempty"`
+	TimeLimitRatingOverviewContains     *string  `json:"timeLimitRatingOverviewContains,omitempty"`
+	TimeLimitRatingOverviewHasPrefix    *string  `json:"timeLimitRatingOverviewHasPrefix,omitempty"`
+	TimeLimitRatingOverviewHasSuffix    *string  `json:"timeLimitRatingOverviewHasSuffix,omitempty"`
+	TimeLimitRatingOverviewIsNil        bool     `json:"timeLimitRatingOverviewIsNil,omitempty"`
+	TimeLimitRatingOverviewNotNil       bool     `json:"timeLimitRatingOverviewNotNil,omitempty"`
+	TimeLimitRatingOverviewEqualFold    *string  `json:"timeLimitRatingOverviewEqualFold,omitempty"`
+	TimeLimitRatingOverviewContainsFold *string  `json:"timeLimitRatingOverviewContainsFold,omitempty"`
+
+	// "customer_relationship_rating" field predicates.
+	CustomerRelationshipRating       *int  `json:"customerRelationshipRating,omitempty"`
+	CustomerRelationshipRatingNEQ    *int  `json:"customerRelationshipRatingNEQ,omitempty"`
+	CustomerRelationshipRatingIn     []int `json:"customerRelationshipRatingIn,omitempty"`
+	CustomerRelationshipRatingNotIn  []int `json:"customerRelationshipRatingNotIn,omitempty"`
+	CustomerRelationshipRatingGT     *int  `json:"customerRelationshipRatingGT,omitempty"`
+	CustomerRelationshipRatingGTE    *int  `json:"customerRelationshipRatingGTE,omitempty"`
+	CustomerRelationshipRatingLT     *int  `json:"customerRelationshipRatingLT,omitempty"`
+	CustomerRelationshipRatingLTE    *int  `json:"customerRelationshipRatingLTE,omitempty"`
+	CustomerRelationshipRatingIsNil  bool  `json:"customerRelationshipRatingIsNil,omitempty"`
+	CustomerRelationshipRatingNotNil bool  `json:"customerRelationshipRatingNotNil,omitempty"`
+
+	// "customer_relationship_rating_overview" field predicates.
+	CustomerRelationshipRatingOverview             *string  `json:"customerRelationshipRatingOverview,omitempty"`
+	CustomerRelationshipRatingOverviewNEQ          *string  `json:"customerRelationshipRatingOverviewNEQ,omitempty"`
+	CustomerRelationshipRatingOverviewIn           []string `json:"customerRelationshipRatingOverviewIn,omitempty"`
+	CustomerRelationshipRatingOverviewNotIn        []string `json:"customerRelationshipRatingOverviewNotIn,omitempty"`
+	CustomerRelationshipRatingOverviewGT           *string  `json:"customerRelationshipRatingOverviewGT,omitempty"`
+	CustomerRelationshipRatingOverviewGTE          *string  `json:"customerRelationshipRatingOverviewGTE,omitempty"`
+	CustomerRelationshipRatingOverviewLT           *string  `json:"customerRelationshipRatingOverviewLT,omitempty"`
+	CustomerRelationshipRatingOverviewLTE          *string  `json:"customerRelationshipRatingOverviewLTE,omitempty"`
+	CustomerRelationshipRatingOverviewContains     *string  `json:"customerRelationshipRatingOverviewContains,omitempty"`
+	CustomerRelationshipRatingOverviewHasPrefix    *string  `json:"customerRelationshipRatingOverviewHasPrefix,omitempty"`
+	CustomerRelationshipRatingOverviewHasSuffix    *string  `json:"customerRelationshipRatingOverviewHasSuffix,omitempty"`
+	CustomerRelationshipRatingOverviewIsNil        bool     `json:"customerRelationshipRatingOverviewIsNil,omitempty"`
+	CustomerRelationshipRatingOverviewNotNil       bool     `json:"customerRelationshipRatingOverviewNotNil,omitempty"`
+	CustomerRelationshipRatingOverviewEqualFold    *string  `json:"customerRelationshipRatingOverviewEqualFold,omitempty"`
+	CustomerRelationshipRatingOverviewContainsFold *string  `json:"customerRelationshipRatingOverviewContainsFold,omitempty"`
+
+	// "competitive_partnership_rating" field predicates.
+	CompetitivePartnershipRating       *int  `json:"competitivePartnershipRating,omitempty"`
+	CompetitivePartnershipRatingNEQ    *int  `json:"competitivePartnershipRatingNEQ,omitempty"`
+	CompetitivePartnershipRatingIn     []int `json:"competitivePartnershipRatingIn,omitempty"`
+	CompetitivePartnershipRatingNotIn  []int `json:"competitivePartnershipRatingNotIn,omitempty"`
+	CompetitivePartnershipRatingGT     *int  `json:"competitivePartnershipRatingGT,omitempty"`
+	CompetitivePartnershipRatingGTE    *int  `json:"competitivePartnershipRatingGTE,omitempty"`
+	CompetitivePartnershipRatingLT     *int  `json:"competitivePartnershipRatingLT,omitempty"`
+	CompetitivePartnershipRatingLTE    *int  `json:"competitivePartnershipRatingLTE,omitempty"`
+	CompetitivePartnershipRatingIsNil  bool  `json:"competitivePartnershipRatingIsNil,omitempty"`
+	CompetitivePartnershipRatingNotNil bool  `json:"competitivePartnershipRatingNotNil,omitempty"`
+
+	// "competitive_partnership_rating_overview" field predicates.
+	CompetitivePartnershipRatingOverview             *string  `json:"competitivePartnershipRatingOverview,omitempty"`
+	CompetitivePartnershipRatingOverviewNEQ          *string  `json:"competitivePartnershipRatingOverviewNEQ,omitempty"`
+	CompetitivePartnershipRatingOverviewIn           []string `json:"competitivePartnershipRatingOverviewIn,omitempty"`
+	CompetitivePartnershipRatingOverviewNotIn        []string `json:"competitivePartnershipRatingOverviewNotIn,omitempty"`
+	CompetitivePartnershipRatingOverviewGT           *string  `json:"competitivePartnershipRatingOverviewGT,omitempty"`
+	CompetitivePartnershipRatingOverviewGTE          *string  `json:"competitivePartnershipRatingOverviewGTE,omitempty"`
+	CompetitivePartnershipRatingOverviewLT           *string  `json:"competitivePartnershipRatingOverviewLT,omitempty"`
+	CompetitivePartnershipRatingOverviewLTE          *string  `json:"competitivePartnershipRatingOverviewLTE,omitempty"`
+	CompetitivePartnershipRatingOverviewContains     *string  `json:"competitivePartnershipRatingOverviewContains,omitempty"`
+	CompetitivePartnershipRatingOverviewHasPrefix    *string  `json:"competitivePartnershipRatingOverviewHasPrefix,omitempty"`
+	CompetitivePartnershipRatingOverviewHasSuffix    *string  `json:"competitivePartnershipRatingOverviewHasSuffix,omitempty"`
+	CompetitivePartnershipRatingOverviewIsNil        bool     `json:"competitivePartnershipRatingOverviewIsNil,omitempty"`
+	CompetitivePartnershipRatingOverviewNotNil       bool     `json:"competitivePartnershipRatingOverviewNotNil,omitempty"`
+	CompetitivePartnershipRatingOverviewEqualFold    *string  `json:"competitivePartnershipRatingOverviewEqualFold,omitempty"`
+	CompetitivePartnershipRatingOverviewContainsFold *string  `json:"competitivePartnershipRatingOverviewContainsFold,omitempty"`
+
+	// "prepare_to_bid" field predicates.
+	PrepareToBid    *bool `json:"prepareToBid,omitempty"`
+	PrepareToBidNEQ *bool `json:"prepareToBidNEQ,omitempty"`
+
+	// "project_code" field predicates.
+	ProjectCode             *string  `json:"projectCode,omitempty"`
+	ProjectCodeNEQ          *string  `json:"projectCodeNEQ,omitempty"`
+	ProjectCodeIn           []string `json:"projectCodeIn,omitempty"`
+	ProjectCodeNotIn        []string `json:"projectCodeNotIn,omitempty"`
+	ProjectCodeGT           *string  `json:"projectCodeGT,omitempty"`
+	ProjectCodeGTE          *string  `json:"projectCodeGTE,omitempty"`
+	ProjectCodeLT           *string  `json:"projectCodeLT,omitempty"`
+	ProjectCodeLTE          *string  `json:"projectCodeLTE,omitempty"`
+	ProjectCodeContains     *string  `json:"projectCodeContains,omitempty"`
+	ProjectCodeHasPrefix    *string  `json:"projectCodeHasPrefix,omitempty"`
+	ProjectCodeHasSuffix    *string  `json:"projectCodeHasSuffix,omitempty"`
+	ProjectCodeIsNil        bool     `json:"projectCodeIsNil,omitempty"`
+	ProjectCodeNotNil       bool     `json:"projectCodeNotNil,omitempty"`
+	ProjectCodeEqualFold    *string  `json:"projectCodeEqualFold,omitempty"`
+	ProjectCodeContainsFold *string  `json:"projectCodeContainsFold,omitempty"`
+
+	// "project_type" field predicates.
+	ProjectType             *string  `json:"projectType,omitempty"`
+	ProjectTypeNEQ          *string  `json:"projectTypeNEQ,omitempty"`
+	ProjectTypeIn           []string `json:"projectTypeIn,omitempty"`
+	ProjectTypeNotIn        []string `json:"projectTypeNotIn,omitempty"`
+	ProjectTypeGT           *string  `json:"projectTypeGT,omitempty"`
+	ProjectTypeGTE          *string  `json:"projectTypeGTE,omitempty"`
+	ProjectTypeLT           *string  `json:"projectTypeLT,omitempty"`
+	ProjectTypeLTE          *string  `json:"projectTypeLTE,omitempty"`
+	ProjectTypeContains     *string  `json:"projectTypeContains,omitempty"`
+	ProjectTypeHasPrefix    *string  `json:"projectTypeHasPrefix,omitempty"`
+	ProjectTypeHasSuffix    *string  `json:"projectTypeHasSuffix,omitempty"`
+	ProjectTypeIsNil        bool     `json:"projectTypeIsNil,omitempty"`
+	ProjectTypeNotNil       bool     `json:"projectTypeNotNil,omitempty"`
+	ProjectTypeEqualFold    *string  `json:"projectTypeEqualFold,omitempty"`
+	ProjectTypeContainsFold *string  `json:"projectTypeContainsFold,omitempty"`
+
+	// "project_definition" field predicates.
+	ProjectDefinition             *string  `json:"projectDefinition,omitempty"`
+	ProjectDefinitionNEQ          *string  `json:"projectDefinitionNEQ,omitempty"`
+	ProjectDefinitionIn           []string `json:"projectDefinitionIn,omitempty"`
+	ProjectDefinitionNotIn        []string `json:"projectDefinitionNotIn,omitempty"`
+	ProjectDefinitionGT           *string  `json:"projectDefinitionGT,omitempty"`
+	ProjectDefinitionGTE          *string  `json:"projectDefinitionGTE,omitempty"`
+	ProjectDefinitionLT           *string  `json:"projectDefinitionLT,omitempty"`
+	ProjectDefinitionLTE          *string  `json:"projectDefinitionLTE,omitempty"`
+	ProjectDefinitionContains     *string  `json:"projectDefinitionContains,omitempty"`
+	ProjectDefinitionHasPrefix    *string  `json:"projectDefinitionHasPrefix,omitempty"`
+	ProjectDefinitionHasSuffix    *string  `json:"projectDefinitionHasSuffix,omitempty"`
+	ProjectDefinitionIsNil        bool     `json:"projectDefinitionIsNil,omitempty"`
+	ProjectDefinitionNotNil       bool     `json:"projectDefinitionNotNil,omitempty"`
+	ProjectDefinitionEqualFold    *string  `json:"projectDefinitionEqualFold,omitempty"`
+	ProjectDefinitionContainsFold *string  `json:"projectDefinitionContainsFold,omitempty"`
+
+	// "estimated_project_start_date" field predicates.
+	EstimatedProjectStartDate       *time.Time  `json:"estimatedProjectStartDate,omitempty"`
+	EstimatedProjectStartDateNEQ    *time.Time  `json:"estimatedProjectStartDateNEQ,omitempty"`
+	EstimatedProjectStartDateIn     []time.Time `json:"estimatedProjectStartDateIn,omitempty"`
+	EstimatedProjectStartDateNotIn  []time.Time `json:"estimatedProjectStartDateNotIn,omitempty"`
+	EstimatedProjectStartDateGT     *time.Time  `json:"estimatedProjectStartDateGT,omitempty"`
+	EstimatedProjectStartDateGTE    *time.Time  `json:"estimatedProjectStartDateGTE,omitempty"`
+	EstimatedProjectStartDateLT     *time.Time  `json:"estimatedProjectStartDateLT,omitempty"`
+	EstimatedProjectStartDateLTE    *time.Time  `json:"estimatedProjectStartDateLTE,omitempty"`
+	EstimatedProjectStartDateIsNil  bool        `json:"estimatedProjectStartDateIsNil,omitempty"`
+	EstimatedProjectStartDateNotNil bool        `json:"estimatedProjectStartDateNotNil,omitempty"`
+
+	// "estimated_project_end_date" field predicates.
+	EstimatedProjectEndDate       *time.Time  `json:"estimatedProjectEndDate,omitempty"`
+	EstimatedProjectEndDateNEQ    *time.Time  `json:"estimatedProjectEndDateNEQ,omitempty"`
+	EstimatedProjectEndDateIn     []time.Time `json:"estimatedProjectEndDateIn,omitempty"`
+	EstimatedProjectEndDateNotIn  []time.Time `json:"estimatedProjectEndDateNotIn,omitempty"`
+	EstimatedProjectEndDateGT     *time.Time  `json:"estimatedProjectEndDateGT,omitempty"`
+	EstimatedProjectEndDateGTE    *time.Time  `json:"estimatedProjectEndDateGTE,omitempty"`
+	EstimatedProjectEndDateLT     *time.Time  `json:"estimatedProjectEndDateLT,omitempty"`
+	EstimatedProjectEndDateLTE    *time.Time  `json:"estimatedProjectEndDateLTE,omitempty"`
+	EstimatedProjectEndDateIsNil  bool        `json:"estimatedProjectEndDateIsNil,omitempty"`
+	EstimatedProjectEndDateNotNil bool        `json:"estimatedProjectEndDateNotNil,omitempty"`
+
+	// "remark" field predicates.
+	Remark             *string  `json:"remark,omitempty"`
+	RemarkNEQ          *string  `json:"remarkNEQ,omitempty"`
+	RemarkIn           []string `json:"remarkIn,omitempty"`
+	RemarkNotIn        []string `json:"remarkNotIn,omitempty"`
+	RemarkGT           *string  `json:"remarkGT,omitempty"`
+	RemarkGTE          *string  `json:"remarkGTE,omitempty"`
+	RemarkLT           *string  `json:"remarkLT,omitempty"`
+	RemarkLTE          *string  `json:"remarkLTE,omitempty"`
+	RemarkContains     *string  `json:"remarkContains,omitempty"`
+	RemarkHasPrefix    *string  `json:"remarkHasPrefix,omitempty"`
+	RemarkHasSuffix    *string  `json:"remarkHasSuffix,omitempty"`
+	RemarkIsNil        bool     `json:"remarkIsNil,omitempty"`
+	RemarkNotNil       bool     `json:"remarkNotNil,omitempty"`
+	RemarkEqualFold    *string  `json:"remarkEqualFold,omitempty"`
+	RemarkContainsFold *string  `json:"remarkContainsFold,omitempty"`
+
+	// "tender_situations" field predicates.
+	TenderSituations             *string  `json:"tenderSituations,omitempty"`
+	TenderSituationsNEQ          *string  `json:"tenderSituationsNEQ,omitempty"`
+	TenderSituationsIn           []string `json:"tenderSituationsIn,omitempty"`
+	TenderSituationsNotIn        []string `json:"tenderSituationsNotIn,omitempty"`
+	TenderSituationsGT           *string  `json:"tenderSituationsGT,omitempty"`
+	TenderSituationsGTE          *string  `json:"tenderSituationsGTE,omitempty"`
+	TenderSituationsLT           *string  `json:"tenderSituationsLT,omitempty"`
+	TenderSituationsLTE          *string  `json:"tenderSituationsLTE,omitempty"`
+	TenderSituationsContains     *string  `json:"tenderSituationsContains,omitempty"`
+	TenderSituationsHasPrefix    *string  `json:"tenderSituationsHasPrefix,omitempty"`
+	TenderSituationsHasSuffix    *string  `json:"tenderSituationsHasSuffix,omitempty"`
+	TenderSituationsIsNil        bool     `json:"tenderSituationsIsNil,omitempty"`
+	TenderSituationsNotNil       bool     `json:"tenderSituationsNotNil,omitempty"`
+	TenderSituationsEqualFold    *string  `json:"tenderSituationsEqualFold,omitempty"`
+	TenderSituationsContainsFold *string  `json:"tenderSituationsContainsFold,omitempty"`
+
+	// "owner_situations" field predicates.
+	OwnerSituations             *string  `json:"ownerSituations,omitempty"`
+	OwnerSituationsNEQ          *string  `json:"ownerSituationsNEQ,omitempty"`
+	OwnerSituationsIn           []string `json:"ownerSituationsIn,omitempty"`
+	OwnerSituationsNotIn        []string `json:"ownerSituationsNotIn,omitempty"`
+	OwnerSituationsGT           *string  `json:"ownerSituationsGT,omitempty"`
+	OwnerSituationsGTE          *string  `json:"ownerSituationsGTE,omitempty"`
+	OwnerSituationsLT           *string  `json:"ownerSituationsLT,omitempty"`
+	OwnerSituationsLTE          *string  `json:"ownerSituationsLTE,omitempty"`
+	OwnerSituationsContains     *string  `json:"ownerSituationsContains,omitempty"`
+	OwnerSituationsHasPrefix    *string  `json:"ownerSituationsHasPrefix,omitempty"`
+	OwnerSituationsHasSuffix    *string  `json:"ownerSituationsHasSuffix,omitempty"`
+	OwnerSituationsIsNil        bool     `json:"ownerSituationsIsNil,omitempty"`
+	OwnerSituationsNotNil       bool     `json:"ownerSituationsNotNil,omitempty"`
+	OwnerSituationsEqualFold    *string  `json:"ownerSituationsEqualFold,omitempty"`
+	OwnerSituationsContainsFold *string  `json:"ownerSituationsContainsFold,omitempty"`
+
+	// "bidding_instructions" field predicates.
+	BiddingInstructions             *string  `json:"biddingInstructions,omitempty"`
+	BiddingInstructionsNEQ          *string  `json:"biddingInstructionsNEQ,omitempty"`
+	BiddingInstructionsIn           []string `json:"biddingInstructionsIn,omitempty"`
+	BiddingInstructionsNotIn        []string `json:"biddingInstructionsNotIn,omitempty"`
+	BiddingInstructionsGT           *string  `json:"biddingInstructionsGT,omitempty"`
+	BiddingInstructionsGTE          *string  `json:"biddingInstructionsGTE,omitempty"`
+	BiddingInstructionsLT           *string  `json:"biddingInstructionsLT,omitempty"`
+	BiddingInstructionsLTE          *string  `json:"biddingInstructionsLTE,omitempty"`
+	BiddingInstructionsContains     *string  `json:"biddingInstructionsContains,omitempty"`
+	BiddingInstructionsHasPrefix    *string  `json:"biddingInstructionsHasPrefix,omitempty"`
+	BiddingInstructionsHasSuffix    *string  `json:"biddingInstructionsHasSuffix,omitempty"`
+	BiddingInstructionsIsNil        bool     `json:"biddingInstructionsIsNil,omitempty"`
+	BiddingInstructionsNotNil       bool     `json:"biddingInstructionsNotNil,omitempty"`
+	BiddingInstructionsEqualFold    *string  `json:"biddingInstructionsEqualFold,omitempty"`
+	BiddingInstructionsContainsFold *string  `json:"biddingInstructionsContainsFold,omitempty"`
+
+	// "competitor_situations" field predicates.
+	CompetitorSituations             *string  `json:"competitorSituations,omitempty"`
+	CompetitorSituationsNEQ          *string  `json:"competitorSituationsNEQ,omitempty"`
+	CompetitorSituationsIn           []string `json:"competitorSituationsIn,omitempty"`
+	CompetitorSituationsNotIn        []string `json:"competitorSituationsNotIn,omitempty"`
+	CompetitorSituationsGT           *string  `json:"competitorSituationsGT,omitempty"`
+	CompetitorSituationsGTE          *string  `json:"competitorSituationsGTE,omitempty"`
+	CompetitorSituationsLT           *string  `json:"competitorSituationsLT,omitempty"`
+	CompetitorSituationsLTE          *string  `json:"competitorSituationsLTE,omitempty"`
+	CompetitorSituationsContains     *string  `json:"competitorSituationsContains,omitempty"`
+	CompetitorSituationsHasPrefix    *string  `json:"competitorSituationsHasPrefix,omitempty"`
+	CompetitorSituationsHasSuffix    *string  `json:"competitorSituationsHasSuffix,omitempty"`
+	CompetitorSituationsIsNil        bool     `json:"competitorSituationsIsNil,omitempty"`
+	CompetitorSituationsNotNil       bool     `json:"competitorSituationsNotNil,omitempty"`
+	CompetitorSituationsEqualFold    *string  `json:"competitorSituationsEqualFold,omitempty"`
+	CompetitorSituationsContainsFold *string  `json:"competitorSituationsContainsFold,omitempty"`
+
+	// "cost_engineer" field predicates.
+	CostEngineer             *string  `json:"costEngineer,omitempty"`
+	CostEngineerNEQ          *string  `json:"costEngineerNEQ,omitempty"`
+	CostEngineerIn           []string `json:"costEngineerIn,omitempty"`
+	CostEngineerNotIn        []string `json:"costEngineerNotIn,omitempty"`
+	CostEngineerGT           *string  `json:"costEngineerGT,omitempty"`
+	CostEngineerGTE          *string  `json:"costEngineerGTE,omitempty"`
+	CostEngineerLT           *string  `json:"costEngineerLT,omitempty"`
+	CostEngineerLTE          *string  `json:"costEngineerLTE,omitempty"`
+	CostEngineerContains     *string  `json:"costEngineerContains,omitempty"`
+	CostEngineerHasPrefix    *string  `json:"costEngineerHasPrefix,omitempty"`
+	CostEngineerHasSuffix    *string  `json:"costEngineerHasSuffix,omitempty"`
+	CostEngineerIsNil        bool     `json:"costEngineerIsNil,omitempty"`
+	CostEngineerNotNil       bool     `json:"costEngineerNotNil,omitempty"`
+	CostEngineerEqualFold    *string  `json:"costEngineerEqualFold,omitempty"`
+	CostEngineerContainsFold *string  `json:"costEngineerContainsFold,omitempty"`
+
+	// "tender_form" field predicates.
+	TenderForm             *string  `json:"tenderForm,omitempty"`
+	TenderFormNEQ          *string  `json:"tenderFormNEQ,omitempty"`
+	TenderFormIn           []string `json:"tenderFormIn,omitempty"`
+	TenderFormNotIn        []string `json:"tenderFormNotIn,omitempty"`
+	TenderFormGT           *string  `json:"tenderFormGT,omitempty"`
+	TenderFormGTE          *string  `json:"tenderFormGTE,omitempty"`
+	TenderFormLT           *string  `json:"tenderFormLT,omitempty"`
+	TenderFormLTE          *string  `json:"tenderFormLTE,omitempty"`
+	TenderFormContains     *string  `json:"tenderFormContains,omitempty"`
+	TenderFormHasPrefix    *string  `json:"tenderFormHasPrefix,omitempty"`
+	TenderFormHasSuffix    *string  `json:"tenderFormHasSuffix,omitempty"`
+	TenderFormIsNil        bool     `json:"tenderFormIsNil,omitempty"`
+	TenderFormNotNil       bool     `json:"tenderFormNotNil,omitempty"`
+	TenderFormEqualFold    *string  `json:"tenderFormEqualFold,omitempty"`
+	TenderFormContainsFold *string  `json:"tenderFormContainsFold,omitempty"`
+
+	// "contract_form" field predicates.
+	ContractForm             *string  `json:"contractForm,omitempty"`
+	ContractFormNEQ          *string  `json:"contractFormNEQ,omitempty"`
+	ContractFormIn           []string `json:"contractFormIn,omitempty"`
+	ContractFormNotIn        []string `json:"contractFormNotIn,omitempty"`
+	ContractFormGT           *string  `json:"contractFormGT,omitempty"`
+	ContractFormGTE          *string  `json:"contractFormGTE,omitempty"`
+	ContractFormLT           *string  `json:"contractFormLT,omitempty"`
+	ContractFormLTE          *string  `json:"contractFormLTE,omitempty"`
+	ContractFormContains     *string  `json:"contractFormContains,omitempty"`
+	ContractFormHasPrefix    *string  `json:"contractFormHasPrefix,omitempty"`
+	ContractFormHasSuffix    *string  `json:"contractFormHasSuffix,omitempty"`
+	ContractFormIsNil        bool     `json:"contractFormIsNil,omitempty"`
+	ContractFormNotNil       bool     `json:"contractFormNotNil,omitempty"`
+	ContractFormEqualFold    *string  `json:"contractFormEqualFold,omitempty"`
+	ContractFormContainsFold *string  `json:"contractFormContainsFold,omitempty"`
+
+	// "management_company" field predicates.
+	ManagementCompany             *string  `json:"managementCompany,omitempty"`
+	ManagementCompanyNEQ          *string  `json:"managementCompanyNEQ,omitempty"`
+	ManagementCompanyIn           []string `json:"managementCompanyIn,omitempty"`
+	ManagementCompanyNotIn        []string `json:"managementCompanyNotIn,omitempty"`
+	ManagementCompanyGT           *string  `json:"managementCompanyGT,omitempty"`
+	ManagementCompanyGTE          *string  `json:"managementCompanyGTE,omitempty"`
+	ManagementCompanyLT           *string  `json:"managementCompanyLT,omitempty"`
+	ManagementCompanyLTE          *string  `json:"managementCompanyLTE,omitempty"`
+	ManagementCompanyContains     *string  `json:"managementCompanyContains,omitempty"`
+	ManagementCompanyHasPrefix    *string  `json:"managementCompanyHasPrefix,omitempty"`
+	ManagementCompanyHasSuffix    *string  `json:"managementCompanyHasSuffix,omitempty"`
+	ManagementCompanyIsNil        bool     `json:"managementCompanyIsNil,omitempty"`
+	ManagementCompanyNotNil       bool     `json:"managementCompanyNotNil,omitempty"`
+	ManagementCompanyEqualFold    *string  `json:"managementCompanyEqualFold,omitempty"`
+	ManagementCompanyContainsFold *string  `json:"managementCompanyContainsFold,omitempty"`
+
+	// "tendering_agency" field predicates.
+	TenderingAgency             *string  `json:"tenderingAgency,omitempty"`
+	TenderingAgencyNEQ          *string  `json:"tenderingAgencyNEQ,omitempty"`
+	TenderingAgencyIn           []string `json:"tenderingAgencyIn,omitempty"`
+	TenderingAgencyNotIn        []string `json:"tenderingAgencyNotIn,omitempty"`
+	TenderingAgencyGT           *string  `json:"tenderingAgencyGT,omitempty"`
+	TenderingAgencyGTE          *string  `json:"tenderingAgencyGTE,omitempty"`
+	TenderingAgencyLT           *string  `json:"tenderingAgencyLT,omitempty"`
+	TenderingAgencyLTE          *string  `json:"tenderingAgencyLTE,omitempty"`
+	TenderingAgencyContains     *string  `json:"tenderingAgencyContains,omitempty"`
+	TenderingAgencyHasPrefix    *string  `json:"tenderingAgencyHasPrefix,omitempty"`
+	TenderingAgencyHasSuffix    *string  `json:"tenderingAgencyHasSuffix,omitempty"`
+	TenderingAgencyIsNil        bool     `json:"tenderingAgencyIsNil,omitempty"`
+	TenderingAgencyNotNil       bool     `json:"tenderingAgencyNotNil,omitempty"`
+	TenderingAgencyEqualFold    *string  `json:"tenderingAgencyEqualFold,omitempty"`
+	TenderingAgencyContainsFold *string  `json:"tenderingAgencyContainsFold,omitempty"`
+
+	// "bidding_date" field predicates.
+	BiddingDate       *time.Time  `json:"biddingDate,omitempty"`
+	BiddingDateNEQ    *time.Time  `json:"biddingDateNEQ,omitempty"`
+	BiddingDateIn     []time.Time `json:"biddingDateIn,omitempty"`
+	BiddingDateNotIn  []time.Time `json:"biddingDateNotIn,omitempty"`
+	BiddingDateGT     *time.Time  `json:"biddingDateGT,omitempty"`
+	BiddingDateGTE    *time.Time  `json:"biddingDateGTE,omitempty"`
+	BiddingDateLT     *time.Time  `json:"biddingDateLT,omitempty"`
+	BiddingDateLTE    *time.Time  `json:"biddingDateLTE,omitempty"`
+	BiddingDateIsNil  bool        `json:"biddingDateIsNil,omitempty"`
+	BiddingDateNotNil bool        `json:"biddingDateNotNil,omitempty"`
+
+	// "facade_consultant" field predicates.
+	FacadeConsultant             *string  `json:"facadeConsultant,omitempty"`
+	FacadeConsultantNEQ          *string  `json:"facadeConsultantNEQ,omitempty"`
+	FacadeConsultantIn           []string `json:"facadeConsultantIn,omitempty"`
+	FacadeConsultantNotIn        []string `json:"facadeConsultantNotIn,omitempty"`
+	FacadeConsultantGT           *string  `json:"facadeConsultantGT,omitempty"`
+	FacadeConsultantGTE          *string  `json:"facadeConsultantGTE,omitempty"`
+	FacadeConsultantLT           *string  `json:"facadeConsultantLT,omitempty"`
+	FacadeConsultantLTE          *string  `json:"facadeConsultantLTE,omitempty"`
+	FacadeConsultantContains     *string  `json:"facadeConsultantContains,omitempty"`
+	FacadeConsultantHasPrefix    *string  `json:"facadeConsultantHasPrefix,omitempty"`
+	FacadeConsultantHasSuffix    *string  `json:"facadeConsultantHasSuffix,omitempty"`
+	FacadeConsultantIsNil        bool     `json:"facadeConsultantIsNil,omitempty"`
+	FacadeConsultantNotNil       bool     `json:"facadeConsultantNotNil,omitempty"`
+	FacadeConsultantEqualFold    *string  `json:"facadeConsultantEqualFold,omitempty"`
+	FacadeConsultantContainsFold *string  `json:"facadeConsultantContainsFold,omitempty"`
+
+	// "design_unit" field predicates.
+	DesignUnit             *string  `json:"designUnit,omitempty"`
+	DesignUnitNEQ          *string  `json:"designUnitNEQ,omitempty"`
+	DesignUnitIn           []string `json:"designUnitIn,omitempty"`
+	DesignUnitNotIn        []string `json:"designUnitNotIn,omitempty"`
+	DesignUnitGT           *string  `json:"designUnitGT,omitempty"`
+	DesignUnitGTE          *string  `json:"designUnitGTE,omitempty"`
+	DesignUnitLT           *string  `json:"designUnitLT,omitempty"`
+	DesignUnitLTE          *string  `json:"designUnitLTE,omitempty"`
+	DesignUnitContains     *string  `json:"designUnitContains,omitempty"`
+	DesignUnitHasPrefix    *string  `json:"designUnitHasPrefix,omitempty"`
+	DesignUnitHasSuffix    *string  `json:"designUnitHasSuffix,omitempty"`
+	DesignUnitIsNil        bool     `json:"designUnitIsNil,omitempty"`
+	DesignUnitNotNil       bool     `json:"designUnitNotNil,omitempty"`
+	DesignUnitEqualFold    *string  `json:"designUnitEqualFold,omitempty"`
+	DesignUnitContainsFold *string  `json:"designUnitContainsFold,omitempty"`
+
+	// "consulting_firm" field predicates.
+	ConsultingFirm             *string  `json:"consultingFirm,omitempty"`
+	ConsultingFirmNEQ          *string  `json:"consultingFirmNEQ,omitempty"`
+	ConsultingFirmIn           []string `json:"consultingFirmIn,omitempty"`
+	ConsultingFirmNotIn        []string `json:"consultingFirmNotIn,omitempty"`
+	ConsultingFirmGT           *string  `json:"consultingFirmGT,omitempty"`
+	ConsultingFirmGTE          *string  `json:"consultingFirmGTE,omitempty"`
+	ConsultingFirmLT           *string  `json:"consultingFirmLT,omitempty"`
+	ConsultingFirmLTE          *string  `json:"consultingFirmLTE,omitempty"`
+	ConsultingFirmContains     *string  `json:"consultingFirmContains,omitempty"`
+	ConsultingFirmHasPrefix    *string  `json:"consultingFirmHasPrefix,omitempty"`
+	ConsultingFirmHasSuffix    *string  `json:"consultingFirmHasSuffix,omitempty"`
+	ConsultingFirmIsNil        bool     `json:"consultingFirmIsNil,omitempty"`
+	ConsultingFirmNotNil       bool     `json:"consultingFirmNotNil,omitempty"`
+	ConsultingFirmEqualFold    *string  `json:"consultingFirmEqualFold,omitempty"`
+	ConsultingFirmContainsFold *string  `json:"consultingFirmContainsFold,omitempty"`
+
+	// "key_project" field predicates.
+	KeyProject    *bool `json:"keyProject,omitempty"`
+	KeyProjectNEQ *bool `json:"keyProjectNEQ,omitempty"`
+
+	// "current_progress" field predicates.
+	CurrentProgress             *string  `json:"currentProgress,omitempty"`
+	CurrentProgressNEQ          *string  `json:"currentProgressNEQ,omitempty"`
+	CurrentProgressIn           []string `json:"currentProgressIn,omitempty"`
+	CurrentProgressNotIn        []string `json:"currentProgressNotIn,omitempty"`
+	CurrentProgressGT           *string  `json:"currentProgressGT,omitempty"`
+	CurrentProgressGTE          *string  `json:"currentProgressGTE,omitempty"`
+	CurrentProgressLT           *string  `json:"currentProgressLT,omitempty"`
+	CurrentProgressLTE          *string  `json:"currentProgressLTE,omitempty"`
+	CurrentProgressContains     *string  `json:"currentProgressContains,omitempty"`
+	CurrentProgressHasPrefix    *string  `json:"currentProgressHasPrefix,omitempty"`
+	CurrentProgressHasSuffix    *string  `json:"currentProgressHasSuffix,omitempty"`
+	CurrentProgressIsNil        bool     `json:"currentProgressIsNil,omitempty"`
+	CurrentProgressNotNil       bool     `json:"currentProgressNotNil,omitempty"`
+	CurrentProgressEqualFold    *string  `json:"currentProgressEqualFold,omitempty"`
+	CurrentProgressContainsFold *string  `json:"currentProgressContainsFold,omitempty"`
+
+	// "tender_win_company" field predicates.
+	TenderWinCompany             *string  `json:"tenderWinCompany,omitempty"`
+	TenderWinCompanyNEQ          *string  `json:"tenderWinCompanyNEQ,omitempty"`
+	TenderWinCompanyIn           []string `json:"tenderWinCompanyIn,omitempty"`
+	TenderWinCompanyNotIn        []string `json:"tenderWinCompanyNotIn,omitempty"`
+	TenderWinCompanyGT           *string  `json:"tenderWinCompanyGT,omitempty"`
+	TenderWinCompanyGTE          *string  `json:"tenderWinCompanyGTE,omitempty"`
+	TenderWinCompanyLT           *string  `json:"tenderWinCompanyLT,omitempty"`
+	TenderWinCompanyLTE          *string  `json:"tenderWinCompanyLTE,omitempty"`
+	TenderWinCompanyContains     *string  `json:"tenderWinCompanyContains,omitempty"`
+	TenderWinCompanyHasPrefix    *string  `json:"tenderWinCompanyHasPrefix,omitempty"`
+	TenderWinCompanyHasSuffix    *string  `json:"tenderWinCompanyHasSuffix,omitempty"`
+	TenderWinCompanyIsNil        bool     `json:"tenderWinCompanyIsNil,omitempty"`
+	TenderWinCompanyNotNil       bool     `json:"tenderWinCompanyNotNil,omitempty"`
+	TenderWinCompanyEqualFold    *string  `json:"tenderWinCompanyEqualFold,omitempty"`
+	TenderWinCompanyContainsFold *string  `json:"tenderWinCompanyContainsFold,omitempty"`
+
+	// "tender_code" field predicates.
+	TenderCode             *string  `json:"tenderCode,omitempty"`
+	TenderCodeNEQ          *string  `json:"tenderCodeNEQ,omitempty"`
+	TenderCodeIn           []string `json:"tenderCodeIn,omitempty"`
+	TenderCodeNotIn        []string `json:"tenderCodeNotIn,omitempty"`
+	TenderCodeGT           *string  `json:"tenderCodeGT,omitempty"`
+	TenderCodeGTE          *string  `json:"tenderCodeGTE,omitempty"`
+	TenderCodeLT           *string  `json:"tenderCodeLT,omitempty"`
+	TenderCodeLTE          *string  `json:"tenderCodeLTE,omitempty"`
+	TenderCodeContains     *string  `json:"tenderCodeContains,omitempty"`
+	TenderCodeHasPrefix    *string  `json:"tenderCodeHasPrefix,omitempty"`
+	TenderCodeHasSuffix    *string  `json:"tenderCodeHasSuffix,omitempty"`
+	TenderCodeIsNil        bool     `json:"tenderCodeIsNil,omitempty"`
+	TenderCodeNotNil       bool     `json:"tenderCodeNotNil,omitempty"`
+	TenderCodeEqualFold    *string  `json:"tenderCodeEqualFold,omitempty"`
+	TenderCodeContainsFold *string  `json:"tenderCodeContainsFold,omitempty"`
+
+	// "architect" field predicates.
+	Architect             *string  `json:"architect,omitempty"`
+	ArchitectNEQ          *string  `json:"architectNEQ,omitempty"`
+	ArchitectIn           []string `json:"architectIn,omitempty"`
+	ArchitectNotIn        []string `json:"architectNotIn,omitempty"`
+	ArchitectGT           *string  `json:"architectGT,omitempty"`
+	ArchitectGTE          *string  `json:"architectGTE,omitempty"`
+	ArchitectLT           *string  `json:"architectLT,omitempty"`
+	ArchitectLTE          *string  `json:"architectLTE,omitempty"`
+	ArchitectContains     *string  `json:"architectContains,omitempty"`
+	ArchitectHasPrefix    *string  `json:"architectHasPrefix,omitempty"`
+	ArchitectHasSuffix    *string  `json:"architectHasSuffix,omitempty"`
+	ArchitectIsNil        bool     `json:"architectIsNil,omitempty"`
+	ArchitectNotNil       bool     `json:"architectNotNil,omitempty"`
+	ArchitectEqualFold    *string  `json:"architectEqualFold,omitempty"`
+	ArchitectContainsFold *string  `json:"architectContainsFold,omitempty"`
+
+	// "developer" field predicates.
+	Developer             *string  `json:"developer,omitempty"`
+	DeveloperNEQ          *string  `json:"developerNEQ,omitempty"`
+	DeveloperIn           []string `json:"developerIn,omitempty"`
+	DeveloperNotIn        []string `json:"developerNotIn,omitempty"`
+	DeveloperGT           *string  `json:"developerGT,omitempty"`
+	DeveloperGTE          *string  `json:"developerGTE,omitempty"`
+	DeveloperLT           *string  `json:"developerLT,omitempty"`
+	DeveloperLTE          *string  `json:"developerLTE,omitempty"`
+	DeveloperContains     *string  `json:"developerContains,omitempty"`
+	DeveloperHasPrefix    *string  `json:"developerHasPrefix,omitempty"`
+	DeveloperHasSuffix    *string  `json:"developerHasSuffix,omitempty"`
+	DeveloperIsNil        bool     `json:"developerIsNil,omitempty"`
+	DeveloperNotNil       bool     `json:"developerNotNil,omitempty"`
+	DeveloperEqualFold    *string  `json:"developerEqualFold,omitempty"`
+	DeveloperContainsFold *string  `json:"developerContainsFold,omitempty"`
+
+	// "tender_closing_date" field predicates.
+	TenderClosingDate       *time.Time  `json:"tenderClosingDate,omitempty"`
+	TenderClosingDateNEQ    *time.Time  `json:"tenderClosingDateNEQ,omitempty"`
+	TenderClosingDateIn     []time.Time `json:"tenderClosingDateIn,omitempty"`
+	TenderClosingDateNotIn  []time.Time `json:"tenderClosingDateNotIn,omitempty"`
+	TenderClosingDateGT     *time.Time  `json:"tenderClosingDateGT,omitempty"`
+	TenderClosingDateGTE    *time.Time  `json:"tenderClosingDateGTE,omitempty"`
+	TenderClosingDateLT     *time.Time  `json:"tenderClosingDateLT,omitempty"`
+	TenderClosingDateLTE    *time.Time  `json:"tenderClosingDateLTE,omitempty"`
+	TenderClosingDateIsNil  bool        `json:"tenderClosingDateIsNil,omitempty"`
+	TenderClosingDateNotNil bool        `json:"tenderClosingDateNotNil,omitempty"`
+
+	// "construction_area" field predicates.
+	ConstructionArea             *string  `json:"constructionArea,omitempty"`
+	ConstructionAreaNEQ          *string  `json:"constructionAreaNEQ,omitempty"`
+	ConstructionAreaIn           []string `json:"constructionAreaIn,omitempty"`
+	ConstructionAreaNotIn        []string `json:"constructionAreaNotIn,omitempty"`
+	ConstructionAreaGT           *string  `json:"constructionAreaGT,omitempty"`
+	ConstructionAreaGTE          *string  `json:"constructionAreaGTE,omitempty"`
+	ConstructionAreaLT           *string  `json:"constructionAreaLT,omitempty"`
+	ConstructionAreaLTE          *string  `json:"constructionAreaLTE,omitempty"`
+	ConstructionAreaContains     *string  `json:"constructionAreaContains,omitempty"`
+	ConstructionAreaHasPrefix    *string  `json:"constructionAreaHasPrefix,omitempty"`
+	ConstructionAreaHasSuffix    *string  `json:"constructionAreaHasSuffix,omitempty"`
+	ConstructionAreaIsNil        bool     `json:"constructionAreaIsNil,omitempty"`
+	ConstructionAreaNotNil       bool     `json:"constructionAreaNotNil,omitempty"`
+	ConstructionAreaEqualFold    *string  `json:"constructionAreaEqualFold,omitempty"`
+	ConstructionAreaContainsFold *string  `json:"constructionAreaContainsFold,omitempty"`
+
+	// "tender_win_date" field predicates.
+	TenderWinDate       *time.Time  `json:"tenderWinDate,omitempty"`
+	TenderWinDateNEQ    *time.Time  `json:"tenderWinDateNEQ,omitempty"`
+	TenderWinDateIn     []time.Time `json:"tenderWinDateIn,omitempty"`
+	TenderWinDateNotIn  []time.Time `json:"tenderWinDateNotIn,omitempty"`
+	TenderWinDateGT     *time.Time  `json:"tenderWinDateGT,omitempty"`
+	TenderWinDateGTE    *time.Time  `json:"tenderWinDateGTE,omitempty"`
+	TenderWinDateLT     *time.Time  `json:"tenderWinDateLT,omitempty"`
+	TenderWinDateLTE    *time.Time  `json:"tenderWinDateLTE,omitempty"`
+	TenderWinDateIsNil  bool        `json:"tenderWinDateIsNil,omitempty"`
+	TenderWinDateNotNil bool        `json:"tenderWinDateNotNil,omitempty"`
+
+	// "tender_win_amount" field predicates.
+	TenderWinAmount       *float64  `json:"tenderWinAmount,omitempty"`
+	TenderWinAmountNEQ    *float64  `json:"tenderWinAmountNEQ,omitempty"`
+	TenderWinAmountIn     []float64 `json:"tenderWinAmountIn,omitempty"`
+	TenderWinAmountNotIn  []float64 `json:"tenderWinAmountNotIn,omitempty"`
+	TenderWinAmountGT     *float64  `json:"tenderWinAmountGT,omitempty"`
+	TenderWinAmountGTE    *float64  `json:"tenderWinAmountGTE,omitempty"`
+	TenderWinAmountLT     *float64  `json:"tenderWinAmountLT,omitempty"`
+	TenderWinAmountLTE    *float64  `json:"tenderWinAmountLTE,omitempty"`
+	TenderWinAmountIsNil  bool      `json:"tenderWinAmountIsNil,omitempty"`
+	TenderWinAmountNotNil bool      `json:"tenderWinAmountNotNil,omitempty"`
+
+	// "last_tender_amount" field predicates.
+	LastTenderAmount       *float64  `json:"lastTenderAmount,omitempty"`
+	LastTenderAmountNEQ    *float64  `json:"lastTenderAmountNEQ,omitempty"`
+	LastTenderAmountIn     []float64 `json:"lastTenderAmountIn,omitempty"`
+	LastTenderAmountNotIn  []float64 `json:"lastTenderAmountNotIn,omitempty"`
+	LastTenderAmountGT     *float64  `json:"lastTenderAmountGT,omitempty"`
+	LastTenderAmountGTE    *float64  `json:"lastTenderAmountGTE,omitempty"`
+	LastTenderAmountLT     *float64  `json:"lastTenderAmountLT,omitempty"`
+	LastTenderAmountLTE    *float64  `json:"lastTenderAmountLTE,omitempty"`
+	LastTenderAmountIsNil  bool      `json:"lastTenderAmountIsNil,omitempty"`
+	LastTenderAmountNotNil bool      `json:"lastTenderAmountNotNil,omitempty"`
+
+	// "tender_id" field predicates.
+	TenderID             *xid.ID  `json:"tenderID,omitempty"`
+	TenderIDNEQ          *xid.ID  `json:"tenderIDNEQ,omitempty"`
+	TenderIDIn           []xid.ID `json:"tenderIDIn,omitempty"`
+	TenderIDNotIn        []xid.ID `json:"tenderIDNotIn,omitempty"`
+	TenderIDGT           *xid.ID  `json:"tenderIDGT,omitempty"`
+	TenderIDGTE          *xid.ID  `json:"tenderIDGTE,omitempty"`
+	TenderIDLT           *xid.ID  `json:"tenderIDLT,omitempty"`
+	TenderIDLTE          *xid.ID  `json:"tenderIDLTE,omitempty"`
+	TenderIDContains     *xid.ID  `json:"tenderIDContains,omitempty"`
+	TenderIDHasPrefix    *xid.ID  `json:"tenderIDHasPrefix,omitempty"`
+	TenderIDHasSuffix    *xid.ID  `json:"tenderIDHasSuffix,omitempty"`
+	TenderIDEqualFold    *xid.ID  `json:"tenderIDEqualFold,omitempty"`
+	TenderIDContainsFold *xid.ID  `json:"tenderIDContainsFold,omitempty"`
+
+	// "province_id" field predicates.
+	ProvinceID             *xid.ID  `json:"provinceID,omitempty"`
+	ProvinceIDNEQ          *xid.ID  `json:"provinceIDNEQ,omitempty"`
+	ProvinceIDIn           []xid.ID `json:"provinceIDIn,omitempty"`
+	ProvinceIDNotIn        []xid.ID `json:"provinceIDNotIn,omitempty"`
+	ProvinceIDGT           *xid.ID  `json:"provinceIDGT,omitempty"`
+	ProvinceIDGTE          *xid.ID  `json:"provinceIDGTE,omitempty"`
+	ProvinceIDLT           *xid.ID  `json:"provinceIDLT,omitempty"`
+	ProvinceIDLTE          *xid.ID  `json:"provinceIDLTE,omitempty"`
+	ProvinceIDContains     *xid.ID  `json:"provinceIDContains,omitempty"`
+	ProvinceIDHasPrefix    *xid.ID  `json:"provinceIDHasPrefix,omitempty"`
+	ProvinceIDHasSuffix    *xid.ID  `json:"provinceIDHasSuffix,omitempty"`
+	ProvinceIDIsNil        bool     `json:"provinceIDIsNil,omitempty"`
+	ProvinceIDNotNil       bool     `json:"provinceIDNotNil,omitempty"`
+	ProvinceIDEqualFold    *xid.ID  `json:"provinceIDEqualFold,omitempty"`
+	ProvinceIDContainsFold *xid.ID  `json:"provinceIDContainsFold,omitempty"`
+
+	// "city_id" field predicates.
+	CityID             *xid.ID  `json:"cityID,omitempty"`
+	CityIDNEQ          *xid.ID  `json:"cityIDNEQ,omitempty"`
+	CityIDIn           []xid.ID `json:"cityIDIn,omitempty"`
+	CityIDNotIn        []xid.ID `json:"cityIDNotIn,omitempty"`
+	CityIDGT           *xid.ID  `json:"cityIDGT,omitempty"`
+	CityIDGTE          *xid.ID  `json:"cityIDGTE,omitempty"`
+	CityIDLT           *xid.ID  `json:"cityIDLT,omitempty"`
+	CityIDLTE          *xid.ID  `json:"cityIDLTE,omitempty"`
+	CityIDContains     *xid.ID  `json:"cityIDContains,omitempty"`
+	CityIDHasPrefix    *xid.ID  `json:"cityIDHasPrefix,omitempty"`
+	CityIDHasSuffix    *xid.ID  `json:"cityIDHasSuffix,omitempty"`
+	CityIDIsNil        bool     `json:"cityIDIsNil,omitempty"`
+	CityIDNotNil       bool     `json:"cityIDNotNil,omitempty"`
+	CityIDEqualFold    *xid.ID  `json:"cityIDEqualFold,omitempty"`
+	CityIDContainsFold *xid.ID  `json:"cityIDContainsFold,omitempty"`
+
+	// "district_id" field predicates.
+	DistrictID             *xid.ID  `json:"districtID,omitempty"`
+	DistrictIDNEQ          *xid.ID  `json:"districtIDNEQ,omitempty"`
+	DistrictIDIn           []xid.ID `json:"districtIDIn,omitempty"`
+	DistrictIDNotIn        []xid.ID `json:"districtIDNotIn,omitempty"`
+	DistrictIDGT           *xid.ID  `json:"districtIDGT,omitempty"`
+	DistrictIDGTE          *xid.ID  `json:"districtIDGTE,omitempty"`
+	DistrictIDLT           *xid.ID  `json:"districtIDLT,omitempty"`
+	DistrictIDLTE          *xid.ID  `json:"districtIDLTE,omitempty"`
+	DistrictIDContains     *xid.ID  `json:"districtIDContains,omitempty"`
+	DistrictIDHasPrefix    *xid.ID  `json:"districtIDHasPrefix,omitempty"`
+	DistrictIDHasSuffix    *xid.ID  `json:"districtIDHasSuffix,omitempty"`
+	DistrictIDIsNil        bool     `json:"districtIDIsNil,omitempty"`
+	DistrictIDNotNil       bool     `json:"districtIDNotNil,omitempty"`
+	DistrictIDEqualFold    *xid.ID  `json:"districtIDEqualFold,omitempty"`
+	DistrictIDContainsFold *xid.ID  `json:"districtIDContainsFold,omitempty"`
+
+	// "customer_id" field predicates.
+	CustomerID             *xid.ID  `json:"customerID,omitempty"`
+	CustomerIDNEQ          *xid.ID  `json:"customerIDNEQ,omitempty"`
+	CustomerIDIn           []xid.ID `json:"customerIDIn,omitempty"`
+	CustomerIDNotIn        []xid.ID `json:"customerIDNotIn,omitempty"`
+	CustomerIDGT           *xid.ID  `json:"customerIDGT,omitempty"`
+	CustomerIDGTE          *xid.ID  `json:"customerIDGTE,omitempty"`
+	CustomerIDLT           *xid.ID  `json:"customerIDLT,omitempty"`
+	CustomerIDLTE          *xid.ID  `json:"customerIDLTE,omitempty"`
+	CustomerIDContains     *xid.ID  `json:"customerIDContains,omitempty"`
+	CustomerIDHasPrefix    *xid.ID  `json:"customerIDHasPrefix,omitempty"`
+	CustomerIDHasSuffix    *xid.ID  `json:"customerIDHasSuffix,omitempty"`
+	CustomerIDIsNil        bool     `json:"customerIDIsNil,omitempty"`
+	CustomerIDNotNil       bool     `json:"customerIDNotNil,omitempty"`
+	CustomerIDEqualFold    *xid.ID  `json:"customerIDEqualFold,omitempty"`
+	CustomerIDContainsFold *xid.ID  `json:"customerIDContainsFold,omitempty"`
+
+	// "finder_id" field predicates.
+	FinderID             *xid.ID  `json:"finderID,omitempty"`
+	FinderIDNEQ          *xid.ID  `json:"finderIDNEQ,omitempty"`
+	FinderIDIn           []xid.ID `json:"finderIDIn,omitempty"`
+	FinderIDNotIn        []xid.ID `json:"finderIDNotIn,omitempty"`
+	FinderIDGT           *xid.ID  `json:"finderIDGT,omitempty"`
+	FinderIDGTE          *xid.ID  `json:"finderIDGTE,omitempty"`
+	FinderIDLT           *xid.ID  `json:"finderIDLT,omitempty"`
+	FinderIDLTE          *xid.ID  `json:"finderIDLTE,omitempty"`
+	FinderIDContains     *xid.ID  `json:"finderIDContains,omitempty"`
+	FinderIDHasPrefix    *xid.ID  `json:"finderIDHasPrefix,omitempty"`
+	FinderIDHasSuffix    *xid.ID  `json:"finderIDHasSuffix,omitempty"`
+	FinderIDIsNil        bool     `json:"finderIDIsNil,omitempty"`
+	FinderIDNotNil       bool     `json:"finderIDNotNil,omitempty"`
+	FinderIDEqualFold    *xid.ID  `json:"finderIDEqualFold,omitempty"`
+	FinderIDContainsFold *xid.ID  `json:"finderIDContainsFold,omitempty"`
+
+	// "created_by_id" field predicates.
+	CreatedByID             *xid.ID  `json:"createdByID,omitempty"`
+	CreatedByIDNEQ          *xid.ID  `json:"createdByIDNEQ,omitempty"`
+	CreatedByIDIn           []xid.ID `json:"createdByIDIn,omitempty"`
+	CreatedByIDNotIn        []xid.ID `json:"createdByIDNotIn,omitempty"`
+	CreatedByIDGT           *xid.ID  `json:"createdByIDGT,omitempty"`
+	CreatedByIDGTE          *xid.ID  `json:"createdByIDGTE,omitempty"`
+	CreatedByIDLT           *xid.ID  `json:"createdByIDLT,omitempty"`
+	CreatedByIDLTE          *xid.ID  `json:"createdByIDLTE,omitempty"`
+	CreatedByIDContains     *xid.ID  `json:"createdByIDContains,omitempty"`
+	CreatedByIDHasPrefix    *xid.ID  `json:"createdByIDHasPrefix,omitempty"`
+	CreatedByIDHasSuffix    *xid.ID  `json:"createdByIDHasSuffix,omitempty"`
+	CreatedByIDIsNil        bool     `json:"createdByIDIsNil,omitempty"`
+	CreatedByIDNotNil       bool     `json:"createdByIDNotNil,omitempty"`
+	CreatedByIDEqualFold    *xid.ID  `json:"createdByIDEqualFold,omitempty"`
+	CreatedByIDContainsFold *xid.ID  `json:"createdByIDContainsFold,omitempty"`
+
+	// "approver_id" field predicates.
+	ApproverID             *xid.ID  `json:"approverID,omitempty"`
+	ApproverIDNEQ          *xid.ID  `json:"approverIDNEQ,omitempty"`
+	ApproverIDIn           []xid.ID `json:"approverIDIn,omitempty"`
+	ApproverIDNotIn        []xid.ID `json:"approverIDNotIn,omitempty"`
+	ApproverIDGT           *xid.ID  `json:"approverIDGT,omitempty"`
+	ApproverIDGTE          *xid.ID  `json:"approverIDGTE,omitempty"`
+	ApproverIDLT           *xid.ID  `json:"approverIDLT,omitempty"`
+	ApproverIDLTE          *xid.ID  `json:"approverIDLTE,omitempty"`
+	ApproverIDContains     *xid.ID  `json:"approverIDContains,omitempty"`
+	ApproverIDHasPrefix    *xid.ID  `json:"approverIDHasPrefix,omitempty"`
+	ApproverIDHasSuffix    *xid.ID  `json:"approverIDHasSuffix,omitempty"`
+	ApproverIDIsNil        bool     `json:"approverIDIsNil,omitempty"`
+	ApproverIDNotNil       bool     `json:"approverIDNotNil,omitempty"`
+	ApproverIDEqualFold    *xid.ID  `json:"approverIDEqualFold,omitempty"`
+	ApproverIDContainsFold *xid.ID  `json:"approverIDContainsFold,omitempty"`
+
+	// "updated_by_id" field predicates.
+	UpdatedByID             *xid.ID  `json:"updatedByID,omitempty"`
+	UpdatedByIDNEQ          *xid.ID  `json:"updatedByIDNEQ,omitempty"`
+	UpdatedByIDIn           []xid.ID `json:"updatedByIDIn,omitempty"`
+	UpdatedByIDNotIn        []xid.ID `json:"updatedByIDNotIn,omitempty"`
+	UpdatedByIDGT           *xid.ID  `json:"updatedByIDGT,omitempty"`
+	UpdatedByIDGTE          *xid.ID  `json:"updatedByIDGTE,omitempty"`
+	UpdatedByIDLT           *xid.ID  `json:"updatedByIDLT,omitempty"`
+	UpdatedByIDLTE          *xid.ID  `json:"updatedByIDLTE,omitempty"`
+	UpdatedByIDContains     *xid.ID  `json:"updatedByIDContains,omitempty"`
+	UpdatedByIDHasPrefix    *xid.ID  `json:"updatedByIDHasPrefix,omitempty"`
+	UpdatedByIDHasSuffix    *xid.ID  `json:"updatedByIDHasSuffix,omitempty"`
+	UpdatedByIDIsNil        bool     `json:"updatedByIDIsNil,omitempty"`
+	UpdatedByIDNotNil       bool     `json:"updatedByIDNotNil,omitempty"`
+	UpdatedByIDEqualFold    *xid.ID  `json:"updatedByIDEqualFold,omitempty"`
+	UpdatedByIDContainsFold *xid.ID  `json:"updatedByIDContainsFold,omitempty"`
+
+	// "tender" edge predicates.
+	HasTender     *bool               `json:"hasTender,omitempty"`
+	HasTenderWith []*TenderWhereInput `json:"hasTenderWith,omitempty"`
+
+	// "customer" edge predicates.
+	HasCustomer     *bool                 `json:"hasCustomer,omitempty"`
+	HasCustomerWith []*CustomerWhereInput `json:"hasCustomerWith,omitempty"`
+
+	// "finder" edge predicates.
+	HasFinder     *bool             `json:"hasFinder,omitempty"`
+	HasFinderWith []*UserWhereInput `json:"hasFinderWith,omitempty"`
+
+	// "created_by" edge predicates.
+	HasCreatedBy     *bool             `json:"hasCreatedBy,omitempty"`
+	HasCreatedByWith []*UserWhereInput `json:"hasCreatedByWith,omitempty"`
+
+	// "province" edge predicates.
+	HasProvince     *bool                 `json:"hasProvince,omitempty"`
+	HasProvinceWith []*ProvinceWhereInput `json:"hasProvinceWith,omitempty"`
+
+	// "city" edge predicates.
+	HasCity     *bool             `json:"hasCity,omitempty"`
+	HasCityWith []*CityWhereInput `json:"hasCityWith,omitempty"`
+
+	// "district" edge predicates.
+	HasDistrict     *bool                 `json:"hasDistrict,omitempty"`
+	HasDistrictWith []*DistrictWhereInput `json:"hasDistrictWith,omitempty"`
+
+	// "approver" edge predicates.
+	HasApprover     *bool             `json:"hasApprover,omitempty"`
+	HasApproverWith []*UserWhereInput `json:"hasApproverWith,omitempty"`
+
+	// "updated_by" edge predicates.
+	HasUpdatedBy     *bool             `json:"hasUpdatedBy,omitempty"`
+	HasUpdatedByWith []*UserWhereInput `json:"hasUpdatedByWith,omitempty"`
+}
+
+// AddPredicates adds custom predicates to the where input to be used during the filtering phase.
+func (i *TenderProfileWhereInput) AddPredicates(predicates ...predicate.TenderProfile) {
+	i.Predicates = append(i.Predicates, predicates...)
+}
+
+// Filter applies the TenderProfileWhereInput filter on the TenderProfileQuery builder.
+func (i *TenderProfileWhereInput) Filter(q *TenderProfileQuery) (*TenderProfileQuery, error) {
+	if i == nil {
+		return q, nil
+	}
+	p, err := i.P()
+	if err != nil {
+		if err == ErrEmptyTenderProfileWhereInput {
+			return q, nil
+		}
+		return nil, err
+	}
+	return q.Where(p), nil
+}
+
+// ErrEmptyTenderProfileWhereInput is returned in case the TenderProfileWhereInput is empty.
+var ErrEmptyTenderProfileWhereInput = errors.New("ent: empty predicate TenderProfileWhereInput")
+
+// P returns a predicate for filtering tenderprofiles.
+// An error is returned if the input is empty or invalid.
+func (i *TenderProfileWhereInput) P() (predicate.TenderProfile, error) {
+	var predicates []predicate.TenderProfile
+	if i.Not != nil {
+		p, err := i.Not.P()
+		if err != nil {
+			return nil, fmt.Errorf("%w: field 'not'", err)
+		}
+		predicates = append(predicates, tenderprofile.Not(p))
+	}
+	switch n := len(i.Or); {
+	case n == 1:
+		p, err := i.Or[0].P()
+		if err != nil {
+			return nil, fmt.Errorf("%w: field 'or'", err)
+		}
+		predicates = append(predicates, p)
+	case n > 1:
+		or := make([]predicate.TenderProfile, 0, n)
+		for _, w := range i.Or {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'or'", err)
+			}
+			or = append(or, p)
+		}
+		predicates = append(predicates, tenderprofile.Or(or...))
+	}
+	switch n := len(i.And); {
+	case n == 1:
+		p, err := i.And[0].P()
+		if err != nil {
+			return nil, fmt.Errorf("%w: field 'and'", err)
+		}
+		predicates = append(predicates, p)
+	case n > 1:
+		and := make([]predicate.TenderProfile, 0, n)
+		for _, w := range i.And {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'and'", err)
+			}
+			and = append(and, p)
+		}
+		predicates = append(predicates, tenderprofile.And(and...))
+	}
+	predicates = append(predicates, i.Predicates...)
+	if i.ID != nil {
+		predicates = append(predicates, tenderprofile.IDEQ(*i.ID))
+	}
+	if i.IDNEQ != nil {
+		predicates = append(predicates, tenderprofile.IDNEQ(*i.IDNEQ))
+	}
+	if len(i.IDIn) > 0 {
+		predicates = append(predicates, tenderprofile.IDIn(i.IDIn...))
+	}
+	if len(i.IDNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.IDNotIn(i.IDNotIn...))
+	}
+	if i.IDGT != nil {
+		predicates = append(predicates, tenderprofile.IDGT(*i.IDGT))
+	}
+	if i.IDGTE != nil {
+		predicates = append(predicates, tenderprofile.IDGTE(*i.IDGTE))
+	}
+	if i.IDLT != nil {
+		predicates = append(predicates, tenderprofile.IDLT(*i.IDLT))
+	}
+	if i.IDLTE != nil {
+		predicates = append(predicates, tenderprofile.IDLTE(*i.IDLTE))
+	}
+	if i.CreatedAt != nil {
+		predicates = append(predicates, tenderprofile.CreatedAtEQ(*i.CreatedAt))
+	}
+	if i.CreatedAtNEQ != nil {
+		predicates = append(predicates, tenderprofile.CreatedAtNEQ(*i.CreatedAtNEQ))
+	}
+	if len(i.CreatedAtIn) > 0 {
+		predicates = append(predicates, tenderprofile.CreatedAtIn(i.CreatedAtIn...))
+	}
+	if len(i.CreatedAtNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.CreatedAtNotIn(i.CreatedAtNotIn...))
+	}
+	if i.CreatedAtGT != nil {
+		predicates = append(predicates, tenderprofile.CreatedAtGT(*i.CreatedAtGT))
+	}
+	if i.CreatedAtGTE != nil {
+		predicates = append(predicates, tenderprofile.CreatedAtGTE(*i.CreatedAtGTE))
+	}
+	if i.CreatedAtLT != nil {
+		predicates = append(predicates, tenderprofile.CreatedAtLT(*i.CreatedAtLT))
+	}
+	if i.CreatedAtLTE != nil {
+		predicates = append(predicates, tenderprofile.CreatedAtLTE(*i.CreatedAtLTE))
+	}
+	if i.UpdatedAt != nil {
+		predicates = append(predicates, tenderprofile.UpdatedAtEQ(*i.UpdatedAt))
+	}
+	if i.UpdatedAtNEQ != nil {
+		predicates = append(predicates, tenderprofile.UpdatedAtNEQ(*i.UpdatedAtNEQ))
+	}
+	if len(i.UpdatedAtIn) > 0 {
+		predicates = append(predicates, tenderprofile.UpdatedAtIn(i.UpdatedAtIn...))
+	}
+	if len(i.UpdatedAtNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.UpdatedAtNotIn(i.UpdatedAtNotIn...))
+	}
+	if i.UpdatedAtGT != nil {
+		predicates = append(predicates, tenderprofile.UpdatedAtGT(*i.UpdatedAtGT))
+	}
+	if i.UpdatedAtGTE != nil {
+		predicates = append(predicates, tenderprofile.UpdatedAtGTE(*i.UpdatedAtGTE))
+	}
+	if i.UpdatedAtLT != nil {
+		predicates = append(predicates, tenderprofile.UpdatedAtLT(*i.UpdatedAtLT))
+	}
+	if i.UpdatedAtLTE != nil {
+		predicates = append(predicates, tenderprofile.UpdatedAtLTE(*i.UpdatedAtLTE))
+	}
+	if i.Status != nil {
+		predicates = append(predicates, tenderprofile.StatusEQ(*i.Status))
+	}
+	if i.StatusNEQ != nil {
+		predicates = append(predicates, tenderprofile.StatusNEQ(*i.StatusNEQ))
+	}
+	if len(i.StatusIn) > 0 {
+		predicates = append(predicates, tenderprofile.StatusIn(i.StatusIn...))
+	}
+	if len(i.StatusNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.StatusNotIn(i.StatusNotIn...))
+	}
+	if i.StatusGT != nil {
+		predicates = append(predicates, tenderprofile.StatusGT(*i.StatusGT))
+	}
+	if i.StatusGTE != nil {
+		predicates = append(predicates, tenderprofile.StatusGTE(*i.StatusGTE))
+	}
+	if i.StatusLT != nil {
+		predicates = append(predicates, tenderprofile.StatusLT(*i.StatusLT))
+	}
+	if i.StatusLTE != nil {
+		predicates = append(predicates, tenderprofile.StatusLTE(*i.StatusLTE))
+	}
+	if i.ApprovalStatus != nil {
+		predicates = append(predicates, tenderprofile.ApprovalStatusEQ(*i.ApprovalStatus))
+	}
+	if i.ApprovalStatusNEQ != nil {
+		predicates = append(predicates, tenderprofile.ApprovalStatusNEQ(*i.ApprovalStatusNEQ))
+	}
+	if len(i.ApprovalStatusIn) > 0 {
+		predicates = append(predicates, tenderprofile.ApprovalStatusIn(i.ApprovalStatusIn...))
+	}
+	if len(i.ApprovalStatusNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.ApprovalStatusNotIn(i.ApprovalStatusNotIn...))
+	}
+	if i.ApprovalStatusGT != nil {
+		predicates = append(predicates, tenderprofile.ApprovalStatusGT(*i.ApprovalStatusGT))
+	}
+	if i.ApprovalStatusGTE != nil {
+		predicates = append(predicates, tenderprofile.ApprovalStatusGTE(*i.ApprovalStatusGTE))
+	}
+	if i.ApprovalStatusLT != nil {
+		predicates = append(predicates, tenderprofile.ApprovalStatusLT(*i.ApprovalStatusLT))
+	}
+	if i.ApprovalStatusLTE != nil {
+		predicates = append(predicates, tenderprofile.ApprovalStatusLTE(*i.ApprovalStatusLTE))
+	}
+	if i.ApprovalMsgID != nil {
+		predicates = append(predicates, tenderprofile.ApprovalMsgIDEQ(*i.ApprovalMsgID))
+	}
+	if i.ApprovalMsgIDNEQ != nil {
+		predicates = append(predicates, tenderprofile.ApprovalMsgIDNEQ(*i.ApprovalMsgIDNEQ))
+	}
+	if len(i.ApprovalMsgIDIn) > 0 {
+		predicates = append(predicates, tenderprofile.ApprovalMsgIDIn(i.ApprovalMsgIDIn...))
+	}
+	if len(i.ApprovalMsgIDNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.ApprovalMsgIDNotIn(i.ApprovalMsgIDNotIn...))
+	}
+	if i.ApprovalMsgIDGT != nil {
+		predicates = append(predicates, tenderprofile.ApprovalMsgIDGT(*i.ApprovalMsgIDGT))
+	}
+	if i.ApprovalMsgIDGTE != nil {
+		predicates = append(predicates, tenderprofile.ApprovalMsgIDGTE(*i.ApprovalMsgIDGTE))
+	}
+	if i.ApprovalMsgIDLT != nil {
+		predicates = append(predicates, tenderprofile.ApprovalMsgIDLT(*i.ApprovalMsgIDLT))
+	}
+	if i.ApprovalMsgIDLTE != nil {
+		predicates = append(predicates, tenderprofile.ApprovalMsgIDLTE(*i.ApprovalMsgIDLTE))
+	}
+	if i.ApprovalMsgIDContains != nil {
+		predicates = append(predicates, tenderprofile.ApprovalMsgIDContains(*i.ApprovalMsgIDContains))
+	}
+	if i.ApprovalMsgIDHasPrefix != nil {
+		predicates = append(predicates, tenderprofile.ApprovalMsgIDHasPrefix(*i.ApprovalMsgIDHasPrefix))
+	}
+	if i.ApprovalMsgIDHasSuffix != nil {
+		predicates = append(predicates, tenderprofile.ApprovalMsgIDHasSuffix(*i.ApprovalMsgIDHasSuffix))
+	}
+	if i.ApprovalMsgIDIsNil {
+		predicates = append(predicates, tenderprofile.ApprovalMsgIDIsNil())
+	}
+	if i.ApprovalMsgIDNotNil {
+		predicates = append(predicates, tenderprofile.ApprovalMsgIDNotNil())
+	}
+	if i.ApprovalMsgIDEqualFold != nil {
+		predicates = append(predicates, tenderprofile.ApprovalMsgIDEqualFold(*i.ApprovalMsgIDEqualFold))
+	}
+	if i.ApprovalMsgIDContainsFold != nil {
+		predicates = append(predicates, tenderprofile.ApprovalMsgIDContainsFold(*i.ApprovalMsgIDContainsFold))
+	}
+	if i.Name != nil {
+		predicates = append(predicates, tenderprofile.NameEQ(*i.Name))
+	}
+	if i.NameNEQ != nil {
+		predicates = append(predicates, tenderprofile.NameNEQ(*i.NameNEQ))
+	}
+	if len(i.NameIn) > 0 {
+		predicates = append(predicates, tenderprofile.NameIn(i.NameIn...))
+	}
+	if len(i.NameNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.NameNotIn(i.NameNotIn...))
+	}
+	if i.NameGT != nil {
+		predicates = append(predicates, tenderprofile.NameGT(*i.NameGT))
+	}
+	if i.NameGTE != nil {
+		predicates = append(predicates, tenderprofile.NameGTE(*i.NameGTE))
+	}
+	if i.NameLT != nil {
+		predicates = append(predicates, tenderprofile.NameLT(*i.NameLT))
+	}
+	if i.NameLTE != nil {
+		predicates = append(predicates, tenderprofile.NameLTE(*i.NameLTE))
+	}
+	if i.NameContains != nil {
+		predicates = append(predicates, tenderprofile.NameContains(*i.NameContains))
+	}
+	if i.NameHasPrefix != nil {
+		predicates = append(predicates, tenderprofile.NameHasPrefix(*i.NameHasPrefix))
+	}
+	if i.NameHasSuffix != nil {
+		predicates = append(predicates, tenderprofile.NameHasSuffix(*i.NameHasSuffix))
+	}
+	if i.NameEqualFold != nil {
+		predicates = append(predicates, tenderprofile.NameEqualFold(*i.NameEqualFold))
+	}
+	if i.NameContainsFold != nil {
+		predicates = append(predicates, tenderprofile.NameContainsFold(*i.NameContainsFold))
+	}
+	if i.EstimatedAmount != nil {
+		predicates = append(predicates, tenderprofile.EstimatedAmountEQ(*i.EstimatedAmount))
+	}
+	if i.EstimatedAmountNEQ != nil {
+		predicates = append(predicates, tenderprofile.EstimatedAmountNEQ(*i.EstimatedAmountNEQ))
+	}
+	if len(i.EstimatedAmountIn) > 0 {
+		predicates = append(predicates, tenderprofile.EstimatedAmountIn(i.EstimatedAmountIn...))
+	}
+	if len(i.EstimatedAmountNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.EstimatedAmountNotIn(i.EstimatedAmountNotIn...))
+	}
+	if i.EstimatedAmountGT != nil {
+		predicates = append(predicates, tenderprofile.EstimatedAmountGT(*i.EstimatedAmountGT))
+	}
+	if i.EstimatedAmountGTE != nil {
+		predicates = append(predicates, tenderprofile.EstimatedAmountGTE(*i.EstimatedAmountGTE))
+	}
+	if i.EstimatedAmountLT != nil {
+		predicates = append(predicates, tenderprofile.EstimatedAmountLT(*i.EstimatedAmountLT))
+	}
+	if i.EstimatedAmountLTE != nil {
+		predicates = append(predicates, tenderprofile.EstimatedAmountLTE(*i.EstimatedAmountLTE))
+	}
+	if i.EstimatedAmountIsNil {
+		predicates = append(predicates, tenderprofile.EstimatedAmountIsNil())
+	}
+	if i.EstimatedAmountNotNil {
+		predicates = append(predicates, tenderprofile.EstimatedAmountNotNil())
+	}
+	if i.TenderDate != nil {
+		predicates = append(predicates, tenderprofile.TenderDateEQ(*i.TenderDate))
+	}
+	if i.TenderDateNEQ != nil {
+		predicates = append(predicates, tenderprofile.TenderDateNEQ(*i.TenderDateNEQ))
+	}
+	if len(i.TenderDateIn) > 0 {
+		predicates = append(predicates, tenderprofile.TenderDateIn(i.TenderDateIn...))
+	}
+	if len(i.TenderDateNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.TenderDateNotIn(i.TenderDateNotIn...))
+	}
+	if i.TenderDateGT != nil {
+		predicates = append(predicates, tenderprofile.TenderDateGT(*i.TenderDateGT))
+	}
+	if i.TenderDateGTE != nil {
+		predicates = append(predicates, tenderprofile.TenderDateGTE(*i.TenderDateGTE))
+	}
+	if i.TenderDateLT != nil {
+		predicates = append(predicates, tenderprofile.TenderDateLT(*i.TenderDateLT))
+	}
+	if i.TenderDateLTE != nil {
+		predicates = append(predicates, tenderprofile.TenderDateLTE(*i.TenderDateLTE))
+	}
+	if i.TenderDateIsNil {
+		predicates = append(predicates, tenderprofile.TenderDateIsNil())
+	}
+	if i.TenderDateNotNil {
+		predicates = append(predicates, tenderprofile.TenderDateNotNil())
+	}
+	if i.Classify != nil {
+		predicates = append(predicates, tenderprofile.ClassifyEQ(*i.Classify))
+	}
+	if i.ClassifyNEQ != nil {
+		predicates = append(predicates, tenderprofile.ClassifyNEQ(*i.ClassifyNEQ))
+	}
+	if len(i.ClassifyIn) > 0 {
+		predicates = append(predicates, tenderprofile.ClassifyIn(i.ClassifyIn...))
+	}
+	if len(i.ClassifyNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.ClassifyNotIn(i.ClassifyNotIn...))
+	}
+	if i.ClassifyGT != nil {
+		predicates = append(predicates, tenderprofile.ClassifyGT(*i.ClassifyGT))
+	}
+	if i.ClassifyGTE != nil {
+		predicates = append(predicates, tenderprofile.ClassifyGTE(*i.ClassifyGTE))
+	}
+	if i.ClassifyLT != nil {
+		predicates = append(predicates, tenderprofile.ClassifyLT(*i.ClassifyLT))
+	}
+	if i.ClassifyLTE != nil {
+		predicates = append(predicates, tenderprofile.ClassifyLTE(*i.ClassifyLTE))
+	}
+	if i.ClassifyIsNil {
+		predicates = append(predicates, tenderprofile.ClassifyIsNil())
+	}
+	if i.ClassifyNotNil {
+		predicates = append(predicates, tenderprofile.ClassifyNotNil())
+	}
+	if i.DiscoveryDate != nil {
+		predicates = append(predicates, tenderprofile.DiscoveryDateEQ(*i.DiscoveryDate))
+	}
+	if i.DiscoveryDateNEQ != nil {
+		predicates = append(predicates, tenderprofile.DiscoveryDateNEQ(*i.DiscoveryDateNEQ))
+	}
+	if len(i.DiscoveryDateIn) > 0 {
+		predicates = append(predicates, tenderprofile.DiscoveryDateIn(i.DiscoveryDateIn...))
+	}
+	if len(i.DiscoveryDateNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.DiscoveryDateNotIn(i.DiscoveryDateNotIn...))
+	}
+	if i.DiscoveryDateGT != nil {
+		predicates = append(predicates, tenderprofile.DiscoveryDateGT(*i.DiscoveryDateGT))
+	}
+	if i.DiscoveryDateGTE != nil {
+		predicates = append(predicates, tenderprofile.DiscoveryDateGTE(*i.DiscoveryDateGTE))
+	}
+	if i.DiscoveryDateLT != nil {
+		predicates = append(predicates, tenderprofile.DiscoveryDateLT(*i.DiscoveryDateLT))
+	}
+	if i.DiscoveryDateLTE != nil {
+		predicates = append(predicates, tenderprofile.DiscoveryDateLTE(*i.DiscoveryDateLTE))
+	}
+	if i.Address != nil {
+		predicates = append(predicates, tenderprofile.AddressEQ(*i.Address))
+	}
+	if i.AddressNEQ != nil {
+		predicates = append(predicates, tenderprofile.AddressNEQ(*i.AddressNEQ))
+	}
+	if len(i.AddressIn) > 0 {
+		predicates = append(predicates, tenderprofile.AddressIn(i.AddressIn...))
+	}
+	if len(i.AddressNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.AddressNotIn(i.AddressNotIn...))
+	}
+	if i.AddressGT != nil {
+		predicates = append(predicates, tenderprofile.AddressGT(*i.AddressGT))
+	}
+	if i.AddressGTE != nil {
+		predicates = append(predicates, tenderprofile.AddressGTE(*i.AddressGTE))
+	}
+	if i.AddressLT != nil {
+		predicates = append(predicates, tenderprofile.AddressLT(*i.AddressLT))
+	}
+	if i.AddressLTE != nil {
+		predicates = append(predicates, tenderprofile.AddressLTE(*i.AddressLTE))
+	}
+	if i.AddressContains != nil {
+		predicates = append(predicates, tenderprofile.AddressContains(*i.AddressContains))
+	}
+	if i.AddressHasPrefix != nil {
+		predicates = append(predicates, tenderprofile.AddressHasPrefix(*i.AddressHasPrefix))
+	}
+	if i.AddressHasSuffix != nil {
+		predicates = append(predicates, tenderprofile.AddressHasSuffix(*i.AddressHasSuffix))
+	}
+	if i.AddressIsNil {
+		predicates = append(predicates, tenderprofile.AddressIsNil())
+	}
+	if i.AddressNotNil {
+		predicates = append(predicates, tenderprofile.AddressNotNil())
+	}
+	if i.AddressEqualFold != nil {
+		predicates = append(predicates, tenderprofile.AddressEqualFold(*i.AddressEqualFold))
+	}
+	if i.AddressContainsFold != nil {
+		predicates = append(predicates, tenderprofile.AddressContainsFold(*i.AddressContainsFold))
+	}
+	if i.FullAddress != nil {
+		predicates = append(predicates, tenderprofile.FullAddressEQ(*i.FullAddress))
+	}
+	if i.FullAddressNEQ != nil {
+		predicates = append(predicates, tenderprofile.FullAddressNEQ(*i.FullAddressNEQ))
+	}
+	if len(i.FullAddressIn) > 0 {
+		predicates = append(predicates, tenderprofile.FullAddressIn(i.FullAddressIn...))
+	}
+	if len(i.FullAddressNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.FullAddressNotIn(i.FullAddressNotIn...))
+	}
+	if i.FullAddressGT != nil {
+		predicates = append(predicates, tenderprofile.FullAddressGT(*i.FullAddressGT))
+	}
+	if i.FullAddressGTE != nil {
+		predicates = append(predicates, tenderprofile.FullAddressGTE(*i.FullAddressGTE))
+	}
+	if i.FullAddressLT != nil {
+		predicates = append(predicates, tenderprofile.FullAddressLT(*i.FullAddressLT))
+	}
+	if i.FullAddressLTE != nil {
+		predicates = append(predicates, tenderprofile.FullAddressLTE(*i.FullAddressLTE))
+	}
+	if i.FullAddressContains != nil {
+		predicates = append(predicates, tenderprofile.FullAddressContains(*i.FullAddressContains))
+	}
+	if i.FullAddressHasPrefix != nil {
+		predicates = append(predicates, tenderprofile.FullAddressHasPrefix(*i.FullAddressHasPrefix))
+	}
+	if i.FullAddressHasSuffix != nil {
+		predicates = append(predicates, tenderprofile.FullAddressHasSuffix(*i.FullAddressHasSuffix))
+	}
+	if i.FullAddressIsNil {
+		predicates = append(predicates, tenderprofile.FullAddressIsNil())
+	}
+	if i.FullAddressNotNil {
+		predicates = append(predicates, tenderprofile.FullAddressNotNil())
+	}
+	if i.FullAddressEqualFold != nil {
+		predicates = append(predicates, tenderprofile.FullAddressEqualFold(*i.FullAddressEqualFold))
+	}
+	if i.FullAddressContainsFold != nil {
+		predicates = append(predicates, tenderprofile.FullAddressContainsFold(*i.FullAddressContainsFold))
+	}
+	if i.Contractor != nil {
+		predicates = append(predicates, tenderprofile.ContractorEQ(*i.Contractor))
+	}
+	if i.ContractorNEQ != nil {
+		predicates = append(predicates, tenderprofile.ContractorNEQ(*i.ContractorNEQ))
+	}
+	if len(i.ContractorIn) > 0 {
+		predicates = append(predicates, tenderprofile.ContractorIn(i.ContractorIn...))
+	}
+	if len(i.ContractorNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.ContractorNotIn(i.ContractorNotIn...))
+	}
+	if i.ContractorGT != nil {
+		predicates = append(predicates, tenderprofile.ContractorGT(*i.ContractorGT))
+	}
+	if i.ContractorGTE != nil {
+		predicates = append(predicates, tenderprofile.ContractorGTE(*i.ContractorGTE))
+	}
+	if i.ContractorLT != nil {
+		predicates = append(predicates, tenderprofile.ContractorLT(*i.ContractorLT))
+	}
+	if i.ContractorLTE != nil {
+		predicates = append(predicates, tenderprofile.ContractorLTE(*i.ContractorLTE))
+	}
+	if i.ContractorContains != nil {
+		predicates = append(predicates, tenderprofile.ContractorContains(*i.ContractorContains))
+	}
+	if i.ContractorHasPrefix != nil {
+		predicates = append(predicates, tenderprofile.ContractorHasPrefix(*i.ContractorHasPrefix))
+	}
+	if i.ContractorHasSuffix != nil {
+		predicates = append(predicates, tenderprofile.ContractorHasSuffix(*i.ContractorHasSuffix))
+	}
+	if i.ContractorIsNil {
+		predicates = append(predicates, tenderprofile.ContractorIsNil())
+	}
+	if i.ContractorNotNil {
+		predicates = append(predicates, tenderprofile.ContractorNotNil())
+	}
+	if i.ContractorEqualFold != nil {
+		predicates = append(predicates, tenderprofile.ContractorEqualFold(*i.ContractorEqualFold))
+	}
+	if i.ContractorContainsFold != nil {
+		predicates = append(predicates, tenderprofile.ContractorContainsFold(*i.ContractorContainsFold))
+	}
+	if i.LevelInvolved != nil {
+		predicates = append(predicates, tenderprofile.LevelInvolvedEQ(*i.LevelInvolved))
+	}
+	if i.LevelInvolvedNEQ != nil {
+		predicates = append(predicates, tenderprofile.LevelInvolvedNEQ(*i.LevelInvolvedNEQ))
+	}
+	if len(i.LevelInvolvedIn) > 0 {
+		predicates = append(predicates, tenderprofile.LevelInvolvedIn(i.LevelInvolvedIn...))
+	}
+	if len(i.LevelInvolvedNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.LevelInvolvedNotIn(i.LevelInvolvedNotIn...))
+	}
+	if i.LevelInvolvedGT != nil {
+		predicates = append(predicates, tenderprofile.LevelInvolvedGT(*i.LevelInvolvedGT))
+	}
+	if i.LevelInvolvedGTE != nil {
+		predicates = append(predicates, tenderprofile.LevelInvolvedGTE(*i.LevelInvolvedGTE))
+	}
+	if i.LevelInvolvedLT != nil {
+		predicates = append(predicates, tenderprofile.LevelInvolvedLT(*i.LevelInvolvedLT))
+	}
+	if i.LevelInvolvedLTE != nil {
+		predicates = append(predicates, tenderprofile.LevelInvolvedLTE(*i.LevelInvolvedLTE))
+	}
+	if i.LevelInvolvedIsNil {
+		predicates = append(predicates, tenderprofile.LevelInvolvedIsNil())
+	}
+	if i.LevelInvolvedNotNil {
+		predicates = append(predicates, tenderprofile.LevelInvolvedNotNil())
+	}
+	if i.SizeAndValueRating != nil {
+		predicates = append(predicates, tenderprofile.SizeAndValueRatingEQ(*i.SizeAndValueRating))
+	}
+	if i.SizeAndValueRatingNEQ != nil {
+		predicates = append(predicates, tenderprofile.SizeAndValueRatingNEQ(*i.SizeAndValueRatingNEQ))
+	}
+	if len(i.SizeAndValueRatingIn) > 0 {
+		predicates = append(predicates, tenderprofile.SizeAndValueRatingIn(i.SizeAndValueRatingIn...))
+	}
+	if len(i.SizeAndValueRatingNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.SizeAndValueRatingNotIn(i.SizeAndValueRatingNotIn...))
+	}
+	if i.SizeAndValueRatingGT != nil {
+		predicates = append(predicates, tenderprofile.SizeAndValueRatingGT(*i.SizeAndValueRatingGT))
+	}
+	if i.SizeAndValueRatingGTE != nil {
+		predicates = append(predicates, tenderprofile.SizeAndValueRatingGTE(*i.SizeAndValueRatingGTE))
+	}
+	if i.SizeAndValueRatingLT != nil {
+		predicates = append(predicates, tenderprofile.SizeAndValueRatingLT(*i.SizeAndValueRatingLT))
+	}
+	if i.SizeAndValueRatingLTE != nil {
+		predicates = append(predicates, tenderprofile.SizeAndValueRatingLTE(*i.SizeAndValueRatingLTE))
+	}
+	if i.SizeAndValueRatingIsNil {
+		predicates = append(predicates, tenderprofile.SizeAndValueRatingIsNil())
+	}
+	if i.SizeAndValueRatingNotNil {
+		predicates = append(predicates, tenderprofile.SizeAndValueRatingNotNil())
+	}
+	if i.SizeAndValueRatingOverview != nil {
+		predicates = append(predicates, tenderprofile.SizeAndValueRatingOverviewEQ(*i.SizeAndValueRatingOverview))
+	}
+	if i.SizeAndValueRatingOverviewNEQ != nil {
+		predicates = append(predicates, tenderprofile.SizeAndValueRatingOverviewNEQ(*i.SizeAndValueRatingOverviewNEQ))
+	}
+	if len(i.SizeAndValueRatingOverviewIn) > 0 {
+		predicates = append(predicates, tenderprofile.SizeAndValueRatingOverviewIn(i.SizeAndValueRatingOverviewIn...))
+	}
+	if len(i.SizeAndValueRatingOverviewNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.SizeAndValueRatingOverviewNotIn(i.SizeAndValueRatingOverviewNotIn...))
+	}
+	if i.SizeAndValueRatingOverviewGT != nil {
+		predicates = append(predicates, tenderprofile.SizeAndValueRatingOverviewGT(*i.SizeAndValueRatingOverviewGT))
+	}
+	if i.SizeAndValueRatingOverviewGTE != nil {
+		predicates = append(predicates, tenderprofile.SizeAndValueRatingOverviewGTE(*i.SizeAndValueRatingOverviewGTE))
+	}
+	if i.SizeAndValueRatingOverviewLT != nil {
+		predicates = append(predicates, tenderprofile.SizeAndValueRatingOverviewLT(*i.SizeAndValueRatingOverviewLT))
+	}
+	if i.SizeAndValueRatingOverviewLTE != nil {
+		predicates = append(predicates, tenderprofile.SizeAndValueRatingOverviewLTE(*i.SizeAndValueRatingOverviewLTE))
+	}
+	if i.SizeAndValueRatingOverviewContains != nil {
+		predicates = append(predicates, tenderprofile.SizeAndValueRatingOverviewContains(*i.SizeAndValueRatingOverviewContains))
+	}
+	if i.SizeAndValueRatingOverviewHasPrefix != nil {
+		predicates = append(predicates, tenderprofile.SizeAndValueRatingOverviewHasPrefix(*i.SizeAndValueRatingOverviewHasPrefix))
+	}
+	if i.SizeAndValueRatingOverviewHasSuffix != nil {
+		predicates = append(predicates, tenderprofile.SizeAndValueRatingOverviewHasSuffix(*i.SizeAndValueRatingOverviewHasSuffix))
+	}
+	if i.SizeAndValueRatingOverviewIsNil {
+		predicates = append(predicates, tenderprofile.SizeAndValueRatingOverviewIsNil())
+	}
+	if i.SizeAndValueRatingOverviewNotNil {
+		predicates = append(predicates, tenderprofile.SizeAndValueRatingOverviewNotNil())
+	}
+	if i.SizeAndValueRatingOverviewEqualFold != nil {
+		predicates = append(predicates, tenderprofile.SizeAndValueRatingOverviewEqualFold(*i.SizeAndValueRatingOverviewEqualFold))
+	}
+	if i.SizeAndValueRatingOverviewContainsFold != nil {
+		predicates = append(predicates, tenderprofile.SizeAndValueRatingOverviewContainsFold(*i.SizeAndValueRatingOverviewContainsFold))
+	}
+	if i.CreditAndPaymentRating != nil {
+		predicates = append(predicates, tenderprofile.CreditAndPaymentRatingEQ(*i.CreditAndPaymentRating))
+	}
+	if i.CreditAndPaymentRatingNEQ != nil {
+		predicates = append(predicates, tenderprofile.CreditAndPaymentRatingNEQ(*i.CreditAndPaymentRatingNEQ))
+	}
+	if len(i.CreditAndPaymentRatingIn) > 0 {
+		predicates = append(predicates, tenderprofile.CreditAndPaymentRatingIn(i.CreditAndPaymentRatingIn...))
+	}
+	if len(i.CreditAndPaymentRatingNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.CreditAndPaymentRatingNotIn(i.CreditAndPaymentRatingNotIn...))
+	}
+	if i.CreditAndPaymentRatingGT != nil {
+		predicates = append(predicates, tenderprofile.CreditAndPaymentRatingGT(*i.CreditAndPaymentRatingGT))
+	}
+	if i.CreditAndPaymentRatingGTE != nil {
+		predicates = append(predicates, tenderprofile.CreditAndPaymentRatingGTE(*i.CreditAndPaymentRatingGTE))
+	}
+	if i.CreditAndPaymentRatingLT != nil {
+		predicates = append(predicates, tenderprofile.CreditAndPaymentRatingLT(*i.CreditAndPaymentRatingLT))
+	}
+	if i.CreditAndPaymentRatingLTE != nil {
+		predicates = append(predicates, tenderprofile.CreditAndPaymentRatingLTE(*i.CreditAndPaymentRatingLTE))
+	}
+	if i.CreditAndPaymentRatingIsNil {
+		predicates = append(predicates, tenderprofile.CreditAndPaymentRatingIsNil())
+	}
+	if i.CreditAndPaymentRatingNotNil {
+		predicates = append(predicates, tenderprofile.CreditAndPaymentRatingNotNil())
+	}
+	if i.CreditAndPaymentRatingOverview != nil {
+		predicates = append(predicates, tenderprofile.CreditAndPaymentRatingOverviewEQ(*i.CreditAndPaymentRatingOverview))
+	}
+	if i.CreditAndPaymentRatingOverviewNEQ != nil {
+		predicates = append(predicates, tenderprofile.CreditAndPaymentRatingOverviewNEQ(*i.CreditAndPaymentRatingOverviewNEQ))
+	}
+	if len(i.CreditAndPaymentRatingOverviewIn) > 0 {
+		predicates = append(predicates, tenderprofile.CreditAndPaymentRatingOverviewIn(i.CreditAndPaymentRatingOverviewIn...))
+	}
+	if len(i.CreditAndPaymentRatingOverviewNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.CreditAndPaymentRatingOverviewNotIn(i.CreditAndPaymentRatingOverviewNotIn...))
+	}
+	if i.CreditAndPaymentRatingOverviewGT != nil {
+		predicates = append(predicates, tenderprofile.CreditAndPaymentRatingOverviewGT(*i.CreditAndPaymentRatingOverviewGT))
+	}
+	if i.CreditAndPaymentRatingOverviewGTE != nil {
+		predicates = append(predicates, tenderprofile.CreditAndPaymentRatingOverviewGTE(*i.CreditAndPaymentRatingOverviewGTE))
+	}
+	if i.CreditAndPaymentRatingOverviewLT != nil {
+		predicates = append(predicates, tenderprofile.CreditAndPaymentRatingOverviewLT(*i.CreditAndPaymentRatingOverviewLT))
+	}
+	if i.CreditAndPaymentRatingOverviewLTE != nil {
+		predicates = append(predicates, tenderprofile.CreditAndPaymentRatingOverviewLTE(*i.CreditAndPaymentRatingOverviewLTE))
+	}
+	if i.CreditAndPaymentRatingOverviewContains != nil {
+		predicates = append(predicates, tenderprofile.CreditAndPaymentRatingOverviewContains(*i.CreditAndPaymentRatingOverviewContains))
+	}
+	if i.CreditAndPaymentRatingOverviewHasPrefix != nil {
+		predicates = append(predicates, tenderprofile.CreditAndPaymentRatingOverviewHasPrefix(*i.CreditAndPaymentRatingOverviewHasPrefix))
+	}
+	if i.CreditAndPaymentRatingOverviewHasSuffix != nil {
+		predicates = append(predicates, tenderprofile.CreditAndPaymentRatingOverviewHasSuffix(*i.CreditAndPaymentRatingOverviewHasSuffix))
+	}
+	if i.CreditAndPaymentRatingOverviewIsNil {
+		predicates = append(predicates, tenderprofile.CreditAndPaymentRatingOverviewIsNil())
+	}
+	if i.CreditAndPaymentRatingOverviewNotNil {
+		predicates = append(predicates, tenderprofile.CreditAndPaymentRatingOverviewNotNil())
+	}
+	if i.CreditAndPaymentRatingOverviewEqualFold != nil {
+		predicates = append(predicates, tenderprofile.CreditAndPaymentRatingOverviewEqualFold(*i.CreditAndPaymentRatingOverviewEqualFold))
+	}
+	if i.CreditAndPaymentRatingOverviewContainsFold != nil {
+		predicates = append(predicates, tenderprofile.CreditAndPaymentRatingOverviewContainsFold(*i.CreditAndPaymentRatingOverviewContainsFold))
+	}
+	if i.TimeLimitRating != nil {
+		predicates = append(predicates, tenderprofile.TimeLimitRatingEQ(*i.TimeLimitRating))
+	}
+	if i.TimeLimitRatingNEQ != nil {
+		predicates = append(predicates, tenderprofile.TimeLimitRatingNEQ(*i.TimeLimitRatingNEQ))
+	}
+	if len(i.TimeLimitRatingIn) > 0 {
+		predicates = append(predicates, tenderprofile.TimeLimitRatingIn(i.TimeLimitRatingIn...))
+	}
+	if len(i.TimeLimitRatingNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.TimeLimitRatingNotIn(i.TimeLimitRatingNotIn...))
+	}
+	if i.TimeLimitRatingGT != nil {
+		predicates = append(predicates, tenderprofile.TimeLimitRatingGT(*i.TimeLimitRatingGT))
+	}
+	if i.TimeLimitRatingGTE != nil {
+		predicates = append(predicates, tenderprofile.TimeLimitRatingGTE(*i.TimeLimitRatingGTE))
+	}
+	if i.TimeLimitRatingLT != nil {
+		predicates = append(predicates, tenderprofile.TimeLimitRatingLT(*i.TimeLimitRatingLT))
+	}
+	if i.TimeLimitRatingLTE != nil {
+		predicates = append(predicates, tenderprofile.TimeLimitRatingLTE(*i.TimeLimitRatingLTE))
+	}
+	if i.TimeLimitRatingIsNil {
+		predicates = append(predicates, tenderprofile.TimeLimitRatingIsNil())
+	}
+	if i.TimeLimitRatingNotNil {
+		predicates = append(predicates, tenderprofile.TimeLimitRatingNotNil())
+	}
+	if i.TimeLimitRatingOverview != nil {
+		predicates = append(predicates, tenderprofile.TimeLimitRatingOverviewEQ(*i.TimeLimitRatingOverview))
+	}
+	if i.TimeLimitRatingOverviewNEQ != nil {
+		predicates = append(predicates, tenderprofile.TimeLimitRatingOverviewNEQ(*i.TimeLimitRatingOverviewNEQ))
+	}
+	if len(i.TimeLimitRatingOverviewIn) > 0 {
+		predicates = append(predicates, tenderprofile.TimeLimitRatingOverviewIn(i.TimeLimitRatingOverviewIn...))
+	}
+	if len(i.TimeLimitRatingOverviewNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.TimeLimitRatingOverviewNotIn(i.TimeLimitRatingOverviewNotIn...))
+	}
+	if i.TimeLimitRatingOverviewGT != nil {
+		predicates = append(predicates, tenderprofile.TimeLimitRatingOverviewGT(*i.TimeLimitRatingOverviewGT))
+	}
+	if i.TimeLimitRatingOverviewGTE != nil {
+		predicates = append(predicates, tenderprofile.TimeLimitRatingOverviewGTE(*i.TimeLimitRatingOverviewGTE))
+	}
+	if i.TimeLimitRatingOverviewLT != nil {
+		predicates = append(predicates, tenderprofile.TimeLimitRatingOverviewLT(*i.TimeLimitRatingOverviewLT))
+	}
+	if i.TimeLimitRatingOverviewLTE != nil {
+		predicates = append(predicates, tenderprofile.TimeLimitRatingOverviewLTE(*i.TimeLimitRatingOverviewLTE))
+	}
+	if i.TimeLimitRatingOverviewContains != nil {
+		predicates = append(predicates, tenderprofile.TimeLimitRatingOverviewContains(*i.TimeLimitRatingOverviewContains))
+	}
+	if i.TimeLimitRatingOverviewHasPrefix != nil {
+		predicates = append(predicates, tenderprofile.TimeLimitRatingOverviewHasPrefix(*i.TimeLimitRatingOverviewHasPrefix))
+	}
+	if i.TimeLimitRatingOverviewHasSuffix != nil {
+		predicates = append(predicates, tenderprofile.TimeLimitRatingOverviewHasSuffix(*i.TimeLimitRatingOverviewHasSuffix))
+	}
+	if i.TimeLimitRatingOverviewIsNil {
+		predicates = append(predicates, tenderprofile.TimeLimitRatingOverviewIsNil())
+	}
+	if i.TimeLimitRatingOverviewNotNil {
+		predicates = append(predicates, tenderprofile.TimeLimitRatingOverviewNotNil())
+	}
+	if i.TimeLimitRatingOverviewEqualFold != nil {
+		predicates = append(predicates, tenderprofile.TimeLimitRatingOverviewEqualFold(*i.TimeLimitRatingOverviewEqualFold))
+	}
+	if i.TimeLimitRatingOverviewContainsFold != nil {
+		predicates = append(predicates, tenderprofile.TimeLimitRatingOverviewContainsFold(*i.TimeLimitRatingOverviewContainsFold))
+	}
+	if i.CustomerRelationshipRating != nil {
+		predicates = append(predicates, tenderprofile.CustomerRelationshipRatingEQ(*i.CustomerRelationshipRating))
+	}
+	if i.CustomerRelationshipRatingNEQ != nil {
+		predicates = append(predicates, tenderprofile.CustomerRelationshipRatingNEQ(*i.CustomerRelationshipRatingNEQ))
+	}
+	if len(i.CustomerRelationshipRatingIn) > 0 {
+		predicates = append(predicates, tenderprofile.CustomerRelationshipRatingIn(i.CustomerRelationshipRatingIn...))
+	}
+	if len(i.CustomerRelationshipRatingNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.CustomerRelationshipRatingNotIn(i.CustomerRelationshipRatingNotIn...))
+	}
+	if i.CustomerRelationshipRatingGT != nil {
+		predicates = append(predicates, tenderprofile.CustomerRelationshipRatingGT(*i.CustomerRelationshipRatingGT))
+	}
+	if i.CustomerRelationshipRatingGTE != nil {
+		predicates = append(predicates, tenderprofile.CustomerRelationshipRatingGTE(*i.CustomerRelationshipRatingGTE))
+	}
+	if i.CustomerRelationshipRatingLT != nil {
+		predicates = append(predicates, tenderprofile.CustomerRelationshipRatingLT(*i.CustomerRelationshipRatingLT))
+	}
+	if i.CustomerRelationshipRatingLTE != nil {
+		predicates = append(predicates, tenderprofile.CustomerRelationshipRatingLTE(*i.CustomerRelationshipRatingLTE))
+	}
+	if i.CustomerRelationshipRatingIsNil {
+		predicates = append(predicates, tenderprofile.CustomerRelationshipRatingIsNil())
+	}
+	if i.CustomerRelationshipRatingNotNil {
+		predicates = append(predicates, tenderprofile.CustomerRelationshipRatingNotNil())
+	}
+	if i.CustomerRelationshipRatingOverview != nil {
+		predicates = append(predicates, tenderprofile.CustomerRelationshipRatingOverviewEQ(*i.CustomerRelationshipRatingOverview))
+	}
+	if i.CustomerRelationshipRatingOverviewNEQ != nil {
+		predicates = append(predicates, tenderprofile.CustomerRelationshipRatingOverviewNEQ(*i.CustomerRelationshipRatingOverviewNEQ))
+	}
+	if len(i.CustomerRelationshipRatingOverviewIn) > 0 {
+		predicates = append(predicates, tenderprofile.CustomerRelationshipRatingOverviewIn(i.CustomerRelationshipRatingOverviewIn...))
+	}
+	if len(i.CustomerRelationshipRatingOverviewNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.CustomerRelationshipRatingOverviewNotIn(i.CustomerRelationshipRatingOverviewNotIn...))
+	}
+	if i.CustomerRelationshipRatingOverviewGT != nil {
+		predicates = append(predicates, tenderprofile.CustomerRelationshipRatingOverviewGT(*i.CustomerRelationshipRatingOverviewGT))
+	}
+	if i.CustomerRelationshipRatingOverviewGTE != nil {
+		predicates = append(predicates, tenderprofile.CustomerRelationshipRatingOverviewGTE(*i.CustomerRelationshipRatingOverviewGTE))
+	}
+	if i.CustomerRelationshipRatingOverviewLT != nil {
+		predicates = append(predicates, tenderprofile.CustomerRelationshipRatingOverviewLT(*i.CustomerRelationshipRatingOverviewLT))
+	}
+	if i.CustomerRelationshipRatingOverviewLTE != nil {
+		predicates = append(predicates, tenderprofile.CustomerRelationshipRatingOverviewLTE(*i.CustomerRelationshipRatingOverviewLTE))
+	}
+	if i.CustomerRelationshipRatingOverviewContains != nil {
+		predicates = append(predicates, tenderprofile.CustomerRelationshipRatingOverviewContains(*i.CustomerRelationshipRatingOverviewContains))
+	}
+	if i.CustomerRelationshipRatingOverviewHasPrefix != nil {
+		predicates = append(predicates, tenderprofile.CustomerRelationshipRatingOverviewHasPrefix(*i.CustomerRelationshipRatingOverviewHasPrefix))
+	}
+	if i.CustomerRelationshipRatingOverviewHasSuffix != nil {
+		predicates = append(predicates, tenderprofile.CustomerRelationshipRatingOverviewHasSuffix(*i.CustomerRelationshipRatingOverviewHasSuffix))
+	}
+	if i.CustomerRelationshipRatingOverviewIsNil {
+		predicates = append(predicates, tenderprofile.CustomerRelationshipRatingOverviewIsNil())
+	}
+	if i.CustomerRelationshipRatingOverviewNotNil {
+		predicates = append(predicates, tenderprofile.CustomerRelationshipRatingOverviewNotNil())
+	}
+	if i.CustomerRelationshipRatingOverviewEqualFold != nil {
+		predicates = append(predicates, tenderprofile.CustomerRelationshipRatingOverviewEqualFold(*i.CustomerRelationshipRatingOverviewEqualFold))
+	}
+	if i.CustomerRelationshipRatingOverviewContainsFold != nil {
+		predicates = append(predicates, tenderprofile.CustomerRelationshipRatingOverviewContainsFold(*i.CustomerRelationshipRatingOverviewContainsFold))
+	}
+	if i.CompetitivePartnershipRating != nil {
+		predicates = append(predicates, tenderprofile.CompetitivePartnershipRatingEQ(*i.CompetitivePartnershipRating))
+	}
+	if i.CompetitivePartnershipRatingNEQ != nil {
+		predicates = append(predicates, tenderprofile.CompetitivePartnershipRatingNEQ(*i.CompetitivePartnershipRatingNEQ))
+	}
+	if len(i.CompetitivePartnershipRatingIn) > 0 {
+		predicates = append(predicates, tenderprofile.CompetitivePartnershipRatingIn(i.CompetitivePartnershipRatingIn...))
+	}
+	if len(i.CompetitivePartnershipRatingNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.CompetitivePartnershipRatingNotIn(i.CompetitivePartnershipRatingNotIn...))
+	}
+	if i.CompetitivePartnershipRatingGT != nil {
+		predicates = append(predicates, tenderprofile.CompetitivePartnershipRatingGT(*i.CompetitivePartnershipRatingGT))
+	}
+	if i.CompetitivePartnershipRatingGTE != nil {
+		predicates = append(predicates, tenderprofile.CompetitivePartnershipRatingGTE(*i.CompetitivePartnershipRatingGTE))
+	}
+	if i.CompetitivePartnershipRatingLT != nil {
+		predicates = append(predicates, tenderprofile.CompetitivePartnershipRatingLT(*i.CompetitivePartnershipRatingLT))
+	}
+	if i.CompetitivePartnershipRatingLTE != nil {
+		predicates = append(predicates, tenderprofile.CompetitivePartnershipRatingLTE(*i.CompetitivePartnershipRatingLTE))
+	}
+	if i.CompetitivePartnershipRatingIsNil {
+		predicates = append(predicates, tenderprofile.CompetitivePartnershipRatingIsNil())
+	}
+	if i.CompetitivePartnershipRatingNotNil {
+		predicates = append(predicates, tenderprofile.CompetitivePartnershipRatingNotNil())
+	}
+	if i.CompetitivePartnershipRatingOverview != nil {
+		predicates = append(predicates, tenderprofile.CompetitivePartnershipRatingOverviewEQ(*i.CompetitivePartnershipRatingOverview))
+	}
+	if i.CompetitivePartnershipRatingOverviewNEQ != nil {
+		predicates = append(predicates, tenderprofile.CompetitivePartnershipRatingOverviewNEQ(*i.CompetitivePartnershipRatingOverviewNEQ))
+	}
+	if len(i.CompetitivePartnershipRatingOverviewIn) > 0 {
+		predicates = append(predicates, tenderprofile.CompetitivePartnershipRatingOverviewIn(i.CompetitivePartnershipRatingOverviewIn...))
+	}
+	if len(i.CompetitivePartnershipRatingOverviewNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.CompetitivePartnershipRatingOverviewNotIn(i.CompetitivePartnershipRatingOverviewNotIn...))
+	}
+	if i.CompetitivePartnershipRatingOverviewGT != nil {
+		predicates = append(predicates, tenderprofile.CompetitivePartnershipRatingOverviewGT(*i.CompetitivePartnershipRatingOverviewGT))
+	}
+	if i.CompetitivePartnershipRatingOverviewGTE != nil {
+		predicates = append(predicates, tenderprofile.CompetitivePartnershipRatingOverviewGTE(*i.CompetitivePartnershipRatingOverviewGTE))
+	}
+	if i.CompetitivePartnershipRatingOverviewLT != nil {
+		predicates = append(predicates, tenderprofile.CompetitivePartnershipRatingOverviewLT(*i.CompetitivePartnershipRatingOverviewLT))
+	}
+	if i.CompetitivePartnershipRatingOverviewLTE != nil {
+		predicates = append(predicates, tenderprofile.CompetitivePartnershipRatingOverviewLTE(*i.CompetitivePartnershipRatingOverviewLTE))
+	}
+	if i.CompetitivePartnershipRatingOverviewContains != nil {
+		predicates = append(predicates, tenderprofile.CompetitivePartnershipRatingOverviewContains(*i.CompetitivePartnershipRatingOverviewContains))
+	}
+	if i.CompetitivePartnershipRatingOverviewHasPrefix != nil {
+		predicates = append(predicates, tenderprofile.CompetitivePartnershipRatingOverviewHasPrefix(*i.CompetitivePartnershipRatingOverviewHasPrefix))
+	}
+	if i.CompetitivePartnershipRatingOverviewHasSuffix != nil {
+		predicates = append(predicates, tenderprofile.CompetitivePartnershipRatingOverviewHasSuffix(*i.CompetitivePartnershipRatingOverviewHasSuffix))
+	}
+	if i.CompetitivePartnershipRatingOverviewIsNil {
+		predicates = append(predicates, tenderprofile.CompetitivePartnershipRatingOverviewIsNil())
+	}
+	if i.CompetitivePartnershipRatingOverviewNotNil {
+		predicates = append(predicates, tenderprofile.CompetitivePartnershipRatingOverviewNotNil())
+	}
+	if i.CompetitivePartnershipRatingOverviewEqualFold != nil {
+		predicates = append(predicates, tenderprofile.CompetitivePartnershipRatingOverviewEqualFold(*i.CompetitivePartnershipRatingOverviewEqualFold))
+	}
+	if i.CompetitivePartnershipRatingOverviewContainsFold != nil {
+		predicates = append(predicates, tenderprofile.CompetitivePartnershipRatingOverviewContainsFold(*i.CompetitivePartnershipRatingOverviewContainsFold))
+	}
+	if i.PrepareToBid != nil {
+		predicates = append(predicates, tenderprofile.PrepareToBidEQ(*i.PrepareToBid))
+	}
+	if i.PrepareToBidNEQ != nil {
+		predicates = append(predicates, tenderprofile.PrepareToBidNEQ(*i.PrepareToBidNEQ))
+	}
+	if i.ProjectCode != nil {
+		predicates = append(predicates, tenderprofile.ProjectCodeEQ(*i.ProjectCode))
+	}
+	if i.ProjectCodeNEQ != nil {
+		predicates = append(predicates, tenderprofile.ProjectCodeNEQ(*i.ProjectCodeNEQ))
+	}
+	if len(i.ProjectCodeIn) > 0 {
+		predicates = append(predicates, tenderprofile.ProjectCodeIn(i.ProjectCodeIn...))
+	}
+	if len(i.ProjectCodeNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.ProjectCodeNotIn(i.ProjectCodeNotIn...))
+	}
+	if i.ProjectCodeGT != nil {
+		predicates = append(predicates, tenderprofile.ProjectCodeGT(*i.ProjectCodeGT))
+	}
+	if i.ProjectCodeGTE != nil {
+		predicates = append(predicates, tenderprofile.ProjectCodeGTE(*i.ProjectCodeGTE))
+	}
+	if i.ProjectCodeLT != nil {
+		predicates = append(predicates, tenderprofile.ProjectCodeLT(*i.ProjectCodeLT))
+	}
+	if i.ProjectCodeLTE != nil {
+		predicates = append(predicates, tenderprofile.ProjectCodeLTE(*i.ProjectCodeLTE))
+	}
+	if i.ProjectCodeContains != nil {
+		predicates = append(predicates, tenderprofile.ProjectCodeContains(*i.ProjectCodeContains))
+	}
+	if i.ProjectCodeHasPrefix != nil {
+		predicates = append(predicates, tenderprofile.ProjectCodeHasPrefix(*i.ProjectCodeHasPrefix))
+	}
+	if i.ProjectCodeHasSuffix != nil {
+		predicates = append(predicates, tenderprofile.ProjectCodeHasSuffix(*i.ProjectCodeHasSuffix))
+	}
+	if i.ProjectCodeIsNil {
+		predicates = append(predicates, tenderprofile.ProjectCodeIsNil())
+	}
+	if i.ProjectCodeNotNil {
+		predicates = append(predicates, tenderprofile.ProjectCodeNotNil())
+	}
+	if i.ProjectCodeEqualFold != nil {
+		predicates = append(predicates, tenderprofile.ProjectCodeEqualFold(*i.ProjectCodeEqualFold))
+	}
+	if i.ProjectCodeContainsFold != nil {
+		predicates = append(predicates, tenderprofile.ProjectCodeContainsFold(*i.ProjectCodeContainsFold))
+	}
+	if i.ProjectType != nil {
+		predicates = append(predicates, tenderprofile.ProjectTypeEQ(*i.ProjectType))
+	}
+	if i.ProjectTypeNEQ != nil {
+		predicates = append(predicates, tenderprofile.ProjectTypeNEQ(*i.ProjectTypeNEQ))
+	}
+	if len(i.ProjectTypeIn) > 0 {
+		predicates = append(predicates, tenderprofile.ProjectTypeIn(i.ProjectTypeIn...))
+	}
+	if len(i.ProjectTypeNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.ProjectTypeNotIn(i.ProjectTypeNotIn...))
+	}
+	if i.ProjectTypeGT != nil {
+		predicates = append(predicates, tenderprofile.ProjectTypeGT(*i.ProjectTypeGT))
+	}
+	if i.ProjectTypeGTE != nil {
+		predicates = append(predicates, tenderprofile.ProjectTypeGTE(*i.ProjectTypeGTE))
+	}
+	if i.ProjectTypeLT != nil {
+		predicates = append(predicates, tenderprofile.ProjectTypeLT(*i.ProjectTypeLT))
+	}
+	if i.ProjectTypeLTE != nil {
+		predicates = append(predicates, tenderprofile.ProjectTypeLTE(*i.ProjectTypeLTE))
+	}
+	if i.ProjectTypeContains != nil {
+		predicates = append(predicates, tenderprofile.ProjectTypeContains(*i.ProjectTypeContains))
+	}
+	if i.ProjectTypeHasPrefix != nil {
+		predicates = append(predicates, tenderprofile.ProjectTypeHasPrefix(*i.ProjectTypeHasPrefix))
+	}
+	if i.ProjectTypeHasSuffix != nil {
+		predicates = append(predicates, tenderprofile.ProjectTypeHasSuffix(*i.ProjectTypeHasSuffix))
+	}
+	if i.ProjectTypeIsNil {
+		predicates = append(predicates, tenderprofile.ProjectTypeIsNil())
+	}
+	if i.ProjectTypeNotNil {
+		predicates = append(predicates, tenderprofile.ProjectTypeNotNil())
+	}
+	if i.ProjectTypeEqualFold != nil {
+		predicates = append(predicates, tenderprofile.ProjectTypeEqualFold(*i.ProjectTypeEqualFold))
+	}
+	if i.ProjectTypeContainsFold != nil {
+		predicates = append(predicates, tenderprofile.ProjectTypeContainsFold(*i.ProjectTypeContainsFold))
+	}
+	if i.ProjectDefinition != nil {
+		predicates = append(predicates, tenderprofile.ProjectDefinitionEQ(*i.ProjectDefinition))
+	}
+	if i.ProjectDefinitionNEQ != nil {
+		predicates = append(predicates, tenderprofile.ProjectDefinitionNEQ(*i.ProjectDefinitionNEQ))
+	}
+	if len(i.ProjectDefinitionIn) > 0 {
+		predicates = append(predicates, tenderprofile.ProjectDefinitionIn(i.ProjectDefinitionIn...))
+	}
+	if len(i.ProjectDefinitionNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.ProjectDefinitionNotIn(i.ProjectDefinitionNotIn...))
+	}
+	if i.ProjectDefinitionGT != nil {
+		predicates = append(predicates, tenderprofile.ProjectDefinitionGT(*i.ProjectDefinitionGT))
+	}
+	if i.ProjectDefinitionGTE != nil {
+		predicates = append(predicates, tenderprofile.ProjectDefinitionGTE(*i.ProjectDefinitionGTE))
+	}
+	if i.ProjectDefinitionLT != nil {
+		predicates = append(predicates, tenderprofile.ProjectDefinitionLT(*i.ProjectDefinitionLT))
+	}
+	if i.ProjectDefinitionLTE != nil {
+		predicates = append(predicates, tenderprofile.ProjectDefinitionLTE(*i.ProjectDefinitionLTE))
+	}
+	if i.ProjectDefinitionContains != nil {
+		predicates = append(predicates, tenderprofile.ProjectDefinitionContains(*i.ProjectDefinitionContains))
+	}
+	if i.ProjectDefinitionHasPrefix != nil {
+		predicates = append(predicates, tenderprofile.ProjectDefinitionHasPrefix(*i.ProjectDefinitionHasPrefix))
+	}
+	if i.ProjectDefinitionHasSuffix != nil {
+		predicates = append(predicates, tenderprofile.ProjectDefinitionHasSuffix(*i.ProjectDefinitionHasSuffix))
+	}
+	if i.ProjectDefinitionIsNil {
+		predicates = append(predicates, tenderprofile.ProjectDefinitionIsNil())
+	}
+	if i.ProjectDefinitionNotNil {
+		predicates = append(predicates, tenderprofile.ProjectDefinitionNotNil())
+	}
+	if i.ProjectDefinitionEqualFold != nil {
+		predicates = append(predicates, tenderprofile.ProjectDefinitionEqualFold(*i.ProjectDefinitionEqualFold))
+	}
+	if i.ProjectDefinitionContainsFold != nil {
+		predicates = append(predicates, tenderprofile.ProjectDefinitionContainsFold(*i.ProjectDefinitionContainsFold))
+	}
+	if i.EstimatedProjectStartDate != nil {
+		predicates = append(predicates, tenderprofile.EstimatedProjectStartDateEQ(*i.EstimatedProjectStartDate))
+	}
+	if i.EstimatedProjectStartDateNEQ != nil {
+		predicates = append(predicates, tenderprofile.EstimatedProjectStartDateNEQ(*i.EstimatedProjectStartDateNEQ))
+	}
+	if len(i.EstimatedProjectStartDateIn) > 0 {
+		predicates = append(predicates, tenderprofile.EstimatedProjectStartDateIn(i.EstimatedProjectStartDateIn...))
+	}
+	if len(i.EstimatedProjectStartDateNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.EstimatedProjectStartDateNotIn(i.EstimatedProjectStartDateNotIn...))
+	}
+	if i.EstimatedProjectStartDateGT != nil {
+		predicates = append(predicates, tenderprofile.EstimatedProjectStartDateGT(*i.EstimatedProjectStartDateGT))
+	}
+	if i.EstimatedProjectStartDateGTE != nil {
+		predicates = append(predicates, tenderprofile.EstimatedProjectStartDateGTE(*i.EstimatedProjectStartDateGTE))
+	}
+	if i.EstimatedProjectStartDateLT != nil {
+		predicates = append(predicates, tenderprofile.EstimatedProjectStartDateLT(*i.EstimatedProjectStartDateLT))
+	}
+	if i.EstimatedProjectStartDateLTE != nil {
+		predicates = append(predicates, tenderprofile.EstimatedProjectStartDateLTE(*i.EstimatedProjectStartDateLTE))
+	}
+	if i.EstimatedProjectStartDateIsNil {
+		predicates = append(predicates, tenderprofile.EstimatedProjectStartDateIsNil())
+	}
+	if i.EstimatedProjectStartDateNotNil {
+		predicates = append(predicates, tenderprofile.EstimatedProjectStartDateNotNil())
+	}
+	if i.EstimatedProjectEndDate != nil {
+		predicates = append(predicates, tenderprofile.EstimatedProjectEndDateEQ(*i.EstimatedProjectEndDate))
+	}
+	if i.EstimatedProjectEndDateNEQ != nil {
+		predicates = append(predicates, tenderprofile.EstimatedProjectEndDateNEQ(*i.EstimatedProjectEndDateNEQ))
+	}
+	if len(i.EstimatedProjectEndDateIn) > 0 {
+		predicates = append(predicates, tenderprofile.EstimatedProjectEndDateIn(i.EstimatedProjectEndDateIn...))
+	}
+	if len(i.EstimatedProjectEndDateNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.EstimatedProjectEndDateNotIn(i.EstimatedProjectEndDateNotIn...))
+	}
+	if i.EstimatedProjectEndDateGT != nil {
+		predicates = append(predicates, tenderprofile.EstimatedProjectEndDateGT(*i.EstimatedProjectEndDateGT))
+	}
+	if i.EstimatedProjectEndDateGTE != nil {
+		predicates = append(predicates, tenderprofile.EstimatedProjectEndDateGTE(*i.EstimatedProjectEndDateGTE))
+	}
+	if i.EstimatedProjectEndDateLT != nil {
+		predicates = append(predicates, tenderprofile.EstimatedProjectEndDateLT(*i.EstimatedProjectEndDateLT))
+	}
+	if i.EstimatedProjectEndDateLTE != nil {
+		predicates = append(predicates, tenderprofile.EstimatedProjectEndDateLTE(*i.EstimatedProjectEndDateLTE))
+	}
+	if i.EstimatedProjectEndDateIsNil {
+		predicates = append(predicates, tenderprofile.EstimatedProjectEndDateIsNil())
+	}
+	if i.EstimatedProjectEndDateNotNil {
+		predicates = append(predicates, tenderprofile.EstimatedProjectEndDateNotNil())
+	}
+	if i.Remark != nil {
+		predicates = append(predicates, tenderprofile.RemarkEQ(*i.Remark))
+	}
+	if i.RemarkNEQ != nil {
+		predicates = append(predicates, tenderprofile.RemarkNEQ(*i.RemarkNEQ))
+	}
+	if len(i.RemarkIn) > 0 {
+		predicates = append(predicates, tenderprofile.RemarkIn(i.RemarkIn...))
+	}
+	if len(i.RemarkNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.RemarkNotIn(i.RemarkNotIn...))
+	}
+	if i.RemarkGT != nil {
+		predicates = append(predicates, tenderprofile.RemarkGT(*i.RemarkGT))
+	}
+	if i.RemarkGTE != nil {
+		predicates = append(predicates, tenderprofile.RemarkGTE(*i.RemarkGTE))
+	}
+	if i.RemarkLT != nil {
+		predicates = append(predicates, tenderprofile.RemarkLT(*i.RemarkLT))
+	}
+	if i.RemarkLTE != nil {
+		predicates = append(predicates, tenderprofile.RemarkLTE(*i.RemarkLTE))
+	}
+	if i.RemarkContains != nil {
+		predicates = append(predicates, tenderprofile.RemarkContains(*i.RemarkContains))
+	}
+	if i.RemarkHasPrefix != nil {
+		predicates = append(predicates, tenderprofile.RemarkHasPrefix(*i.RemarkHasPrefix))
+	}
+	if i.RemarkHasSuffix != nil {
+		predicates = append(predicates, tenderprofile.RemarkHasSuffix(*i.RemarkHasSuffix))
+	}
+	if i.RemarkIsNil {
+		predicates = append(predicates, tenderprofile.RemarkIsNil())
+	}
+	if i.RemarkNotNil {
+		predicates = append(predicates, tenderprofile.RemarkNotNil())
+	}
+	if i.RemarkEqualFold != nil {
+		predicates = append(predicates, tenderprofile.RemarkEqualFold(*i.RemarkEqualFold))
+	}
+	if i.RemarkContainsFold != nil {
+		predicates = append(predicates, tenderprofile.RemarkContainsFold(*i.RemarkContainsFold))
+	}
+	if i.TenderSituations != nil {
+		predicates = append(predicates, tenderprofile.TenderSituationsEQ(*i.TenderSituations))
+	}
+	if i.TenderSituationsNEQ != nil {
+		predicates = append(predicates, tenderprofile.TenderSituationsNEQ(*i.TenderSituationsNEQ))
+	}
+	if len(i.TenderSituationsIn) > 0 {
+		predicates = append(predicates, tenderprofile.TenderSituationsIn(i.TenderSituationsIn...))
+	}
+	if len(i.TenderSituationsNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.TenderSituationsNotIn(i.TenderSituationsNotIn...))
+	}
+	if i.TenderSituationsGT != nil {
+		predicates = append(predicates, tenderprofile.TenderSituationsGT(*i.TenderSituationsGT))
+	}
+	if i.TenderSituationsGTE != nil {
+		predicates = append(predicates, tenderprofile.TenderSituationsGTE(*i.TenderSituationsGTE))
+	}
+	if i.TenderSituationsLT != nil {
+		predicates = append(predicates, tenderprofile.TenderSituationsLT(*i.TenderSituationsLT))
+	}
+	if i.TenderSituationsLTE != nil {
+		predicates = append(predicates, tenderprofile.TenderSituationsLTE(*i.TenderSituationsLTE))
+	}
+	if i.TenderSituationsContains != nil {
+		predicates = append(predicates, tenderprofile.TenderSituationsContains(*i.TenderSituationsContains))
+	}
+	if i.TenderSituationsHasPrefix != nil {
+		predicates = append(predicates, tenderprofile.TenderSituationsHasPrefix(*i.TenderSituationsHasPrefix))
+	}
+	if i.TenderSituationsHasSuffix != nil {
+		predicates = append(predicates, tenderprofile.TenderSituationsHasSuffix(*i.TenderSituationsHasSuffix))
+	}
+	if i.TenderSituationsIsNil {
+		predicates = append(predicates, tenderprofile.TenderSituationsIsNil())
+	}
+	if i.TenderSituationsNotNil {
+		predicates = append(predicates, tenderprofile.TenderSituationsNotNil())
+	}
+	if i.TenderSituationsEqualFold != nil {
+		predicates = append(predicates, tenderprofile.TenderSituationsEqualFold(*i.TenderSituationsEqualFold))
+	}
+	if i.TenderSituationsContainsFold != nil {
+		predicates = append(predicates, tenderprofile.TenderSituationsContainsFold(*i.TenderSituationsContainsFold))
+	}
+	if i.OwnerSituations != nil {
+		predicates = append(predicates, tenderprofile.OwnerSituationsEQ(*i.OwnerSituations))
+	}
+	if i.OwnerSituationsNEQ != nil {
+		predicates = append(predicates, tenderprofile.OwnerSituationsNEQ(*i.OwnerSituationsNEQ))
+	}
+	if len(i.OwnerSituationsIn) > 0 {
+		predicates = append(predicates, tenderprofile.OwnerSituationsIn(i.OwnerSituationsIn...))
+	}
+	if len(i.OwnerSituationsNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.OwnerSituationsNotIn(i.OwnerSituationsNotIn...))
+	}
+	if i.OwnerSituationsGT != nil {
+		predicates = append(predicates, tenderprofile.OwnerSituationsGT(*i.OwnerSituationsGT))
+	}
+	if i.OwnerSituationsGTE != nil {
+		predicates = append(predicates, tenderprofile.OwnerSituationsGTE(*i.OwnerSituationsGTE))
+	}
+	if i.OwnerSituationsLT != nil {
+		predicates = append(predicates, tenderprofile.OwnerSituationsLT(*i.OwnerSituationsLT))
+	}
+	if i.OwnerSituationsLTE != nil {
+		predicates = append(predicates, tenderprofile.OwnerSituationsLTE(*i.OwnerSituationsLTE))
+	}
+	if i.OwnerSituationsContains != nil {
+		predicates = append(predicates, tenderprofile.OwnerSituationsContains(*i.OwnerSituationsContains))
+	}
+	if i.OwnerSituationsHasPrefix != nil {
+		predicates = append(predicates, tenderprofile.OwnerSituationsHasPrefix(*i.OwnerSituationsHasPrefix))
+	}
+	if i.OwnerSituationsHasSuffix != nil {
+		predicates = append(predicates, tenderprofile.OwnerSituationsHasSuffix(*i.OwnerSituationsHasSuffix))
+	}
+	if i.OwnerSituationsIsNil {
+		predicates = append(predicates, tenderprofile.OwnerSituationsIsNil())
+	}
+	if i.OwnerSituationsNotNil {
+		predicates = append(predicates, tenderprofile.OwnerSituationsNotNil())
+	}
+	if i.OwnerSituationsEqualFold != nil {
+		predicates = append(predicates, tenderprofile.OwnerSituationsEqualFold(*i.OwnerSituationsEqualFold))
+	}
+	if i.OwnerSituationsContainsFold != nil {
+		predicates = append(predicates, tenderprofile.OwnerSituationsContainsFold(*i.OwnerSituationsContainsFold))
+	}
+	if i.BiddingInstructions != nil {
+		predicates = append(predicates, tenderprofile.BiddingInstructionsEQ(*i.BiddingInstructions))
+	}
+	if i.BiddingInstructionsNEQ != nil {
+		predicates = append(predicates, tenderprofile.BiddingInstructionsNEQ(*i.BiddingInstructionsNEQ))
+	}
+	if len(i.BiddingInstructionsIn) > 0 {
+		predicates = append(predicates, tenderprofile.BiddingInstructionsIn(i.BiddingInstructionsIn...))
+	}
+	if len(i.BiddingInstructionsNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.BiddingInstructionsNotIn(i.BiddingInstructionsNotIn...))
+	}
+	if i.BiddingInstructionsGT != nil {
+		predicates = append(predicates, tenderprofile.BiddingInstructionsGT(*i.BiddingInstructionsGT))
+	}
+	if i.BiddingInstructionsGTE != nil {
+		predicates = append(predicates, tenderprofile.BiddingInstructionsGTE(*i.BiddingInstructionsGTE))
+	}
+	if i.BiddingInstructionsLT != nil {
+		predicates = append(predicates, tenderprofile.BiddingInstructionsLT(*i.BiddingInstructionsLT))
+	}
+	if i.BiddingInstructionsLTE != nil {
+		predicates = append(predicates, tenderprofile.BiddingInstructionsLTE(*i.BiddingInstructionsLTE))
+	}
+	if i.BiddingInstructionsContains != nil {
+		predicates = append(predicates, tenderprofile.BiddingInstructionsContains(*i.BiddingInstructionsContains))
+	}
+	if i.BiddingInstructionsHasPrefix != nil {
+		predicates = append(predicates, tenderprofile.BiddingInstructionsHasPrefix(*i.BiddingInstructionsHasPrefix))
+	}
+	if i.BiddingInstructionsHasSuffix != nil {
+		predicates = append(predicates, tenderprofile.BiddingInstructionsHasSuffix(*i.BiddingInstructionsHasSuffix))
+	}
+	if i.BiddingInstructionsIsNil {
+		predicates = append(predicates, tenderprofile.BiddingInstructionsIsNil())
+	}
+	if i.BiddingInstructionsNotNil {
+		predicates = append(predicates, tenderprofile.BiddingInstructionsNotNil())
+	}
+	if i.BiddingInstructionsEqualFold != nil {
+		predicates = append(predicates, tenderprofile.BiddingInstructionsEqualFold(*i.BiddingInstructionsEqualFold))
+	}
+	if i.BiddingInstructionsContainsFold != nil {
+		predicates = append(predicates, tenderprofile.BiddingInstructionsContainsFold(*i.BiddingInstructionsContainsFold))
+	}
+	if i.CompetitorSituations != nil {
+		predicates = append(predicates, tenderprofile.CompetitorSituationsEQ(*i.CompetitorSituations))
+	}
+	if i.CompetitorSituationsNEQ != nil {
+		predicates = append(predicates, tenderprofile.CompetitorSituationsNEQ(*i.CompetitorSituationsNEQ))
+	}
+	if len(i.CompetitorSituationsIn) > 0 {
+		predicates = append(predicates, tenderprofile.CompetitorSituationsIn(i.CompetitorSituationsIn...))
+	}
+	if len(i.CompetitorSituationsNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.CompetitorSituationsNotIn(i.CompetitorSituationsNotIn...))
+	}
+	if i.CompetitorSituationsGT != nil {
+		predicates = append(predicates, tenderprofile.CompetitorSituationsGT(*i.CompetitorSituationsGT))
+	}
+	if i.CompetitorSituationsGTE != nil {
+		predicates = append(predicates, tenderprofile.CompetitorSituationsGTE(*i.CompetitorSituationsGTE))
+	}
+	if i.CompetitorSituationsLT != nil {
+		predicates = append(predicates, tenderprofile.CompetitorSituationsLT(*i.CompetitorSituationsLT))
+	}
+	if i.CompetitorSituationsLTE != nil {
+		predicates = append(predicates, tenderprofile.CompetitorSituationsLTE(*i.CompetitorSituationsLTE))
+	}
+	if i.CompetitorSituationsContains != nil {
+		predicates = append(predicates, tenderprofile.CompetitorSituationsContains(*i.CompetitorSituationsContains))
+	}
+	if i.CompetitorSituationsHasPrefix != nil {
+		predicates = append(predicates, tenderprofile.CompetitorSituationsHasPrefix(*i.CompetitorSituationsHasPrefix))
+	}
+	if i.CompetitorSituationsHasSuffix != nil {
+		predicates = append(predicates, tenderprofile.CompetitorSituationsHasSuffix(*i.CompetitorSituationsHasSuffix))
+	}
+	if i.CompetitorSituationsIsNil {
+		predicates = append(predicates, tenderprofile.CompetitorSituationsIsNil())
+	}
+	if i.CompetitorSituationsNotNil {
+		predicates = append(predicates, tenderprofile.CompetitorSituationsNotNil())
+	}
+	if i.CompetitorSituationsEqualFold != nil {
+		predicates = append(predicates, tenderprofile.CompetitorSituationsEqualFold(*i.CompetitorSituationsEqualFold))
+	}
+	if i.CompetitorSituationsContainsFold != nil {
+		predicates = append(predicates, tenderprofile.CompetitorSituationsContainsFold(*i.CompetitorSituationsContainsFold))
+	}
+	if i.CostEngineer != nil {
+		predicates = append(predicates, tenderprofile.CostEngineerEQ(*i.CostEngineer))
+	}
+	if i.CostEngineerNEQ != nil {
+		predicates = append(predicates, tenderprofile.CostEngineerNEQ(*i.CostEngineerNEQ))
+	}
+	if len(i.CostEngineerIn) > 0 {
+		predicates = append(predicates, tenderprofile.CostEngineerIn(i.CostEngineerIn...))
+	}
+	if len(i.CostEngineerNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.CostEngineerNotIn(i.CostEngineerNotIn...))
+	}
+	if i.CostEngineerGT != nil {
+		predicates = append(predicates, tenderprofile.CostEngineerGT(*i.CostEngineerGT))
+	}
+	if i.CostEngineerGTE != nil {
+		predicates = append(predicates, tenderprofile.CostEngineerGTE(*i.CostEngineerGTE))
+	}
+	if i.CostEngineerLT != nil {
+		predicates = append(predicates, tenderprofile.CostEngineerLT(*i.CostEngineerLT))
+	}
+	if i.CostEngineerLTE != nil {
+		predicates = append(predicates, tenderprofile.CostEngineerLTE(*i.CostEngineerLTE))
+	}
+	if i.CostEngineerContains != nil {
+		predicates = append(predicates, tenderprofile.CostEngineerContains(*i.CostEngineerContains))
+	}
+	if i.CostEngineerHasPrefix != nil {
+		predicates = append(predicates, tenderprofile.CostEngineerHasPrefix(*i.CostEngineerHasPrefix))
+	}
+	if i.CostEngineerHasSuffix != nil {
+		predicates = append(predicates, tenderprofile.CostEngineerHasSuffix(*i.CostEngineerHasSuffix))
+	}
+	if i.CostEngineerIsNil {
+		predicates = append(predicates, tenderprofile.CostEngineerIsNil())
+	}
+	if i.CostEngineerNotNil {
+		predicates = append(predicates, tenderprofile.CostEngineerNotNil())
+	}
+	if i.CostEngineerEqualFold != nil {
+		predicates = append(predicates, tenderprofile.CostEngineerEqualFold(*i.CostEngineerEqualFold))
+	}
+	if i.CostEngineerContainsFold != nil {
+		predicates = append(predicates, tenderprofile.CostEngineerContainsFold(*i.CostEngineerContainsFold))
+	}
+	if i.TenderForm != nil {
+		predicates = append(predicates, tenderprofile.TenderFormEQ(*i.TenderForm))
+	}
+	if i.TenderFormNEQ != nil {
+		predicates = append(predicates, tenderprofile.TenderFormNEQ(*i.TenderFormNEQ))
+	}
+	if len(i.TenderFormIn) > 0 {
+		predicates = append(predicates, tenderprofile.TenderFormIn(i.TenderFormIn...))
+	}
+	if len(i.TenderFormNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.TenderFormNotIn(i.TenderFormNotIn...))
+	}
+	if i.TenderFormGT != nil {
+		predicates = append(predicates, tenderprofile.TenderFormGT(*i.TenderFormGT))
+	}
+	if i.TenderFormGTE != nil {
+		predicates = append(predicates, tenderprofile.TenderFormGTE(*i.TenderFormGTE))
+	}
+	if i.TenderFormLT != nil {
+		predicates = append(predicates, tenderprofile.TenderFormLT(*i.TenderFormLT))
+	}
+	if i.TenderFormLTE != nil {
+		predicates = append(predicates, tenderprofile.TenderFormLTE(*i.TenderFormLTE))
+	}
+	if i.TenderFormContains != nil {
+		predicates = append(predicates, tenderprofile.TenderFormContains(*i.TenderFormContains))
+	}
+	if i.TenderFormHasPrefix != nil {
+		predicates = append(predicates, tenderprofile.TenderFormHasPrefix(*i.TenderFormHasPrefix))
+	}
+	if i.TenderFormHasSuffix != nil {
+		predicates = append(predicates, tenderprofile.TenderFormHasSuffix(*i.TenderFormHasSuffix))
+	}
+	if i.TenderFormIsNil {
+		predicates = append(predicates, tenderprofile.TenderFormIsNil())
+	}
+	if i.TenderFormNotNil {
+		predicates = append(predicates, tenderprofile.TenderFormNotNil())
+	}
+	if i.TenderFormEqualFold != nil {
+		predicates = append(predicates, tenderprofile.TenderFormEqualFold(*i.TenderFormEqualFold))
+	}
+	if i.TenderFormContainsFold != nil {
+		predicates = append(predicates, tenderprofile.TenderFormContainsFold(*i.TenderFormContainsFold))
+	}
+	if i.ContractForm != nil {
+		predicates = append(predicates, tenderprofile.ContractFormEQ(*i.ContractForm))
+	}
+	if i.ContractFormNEQ != nil {
+		predicates = append(predicates, tenderprofile.ContractFormNEQ(*i.ContractFormNEQ))
+	}
+	if len(i.ContractFormIn) > 0 {
+		predicates = append(predicates, tenderprofile.ContractFormIn(i.ContractFormIn...))
+	}
+	if len(i.ContractFormNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.ContractFormNotIn(i.ContractFormNotIn...))
+	}
+	if i.ContractFormGT != nil {
+		predicates = append(predicates, tenderprofile.ContractFormGT(*i.ContractFormGT))
+	}
+	if i.ContractFormGTE != nil {
+		predicates = append(predicates, tenderprofile.ContractFormGTE(*i.ContractFormGTE))
+	}
+	if i.ContractFormLT != nil {
+		predicates = append(predicates, tenderprofile.ContractFormLT(*i.ContractFormLT))
+	}
+	if i.ContractFormLTE != nil {
+		predicates = append(predicates, tenderprofile.ContractFormLTE(*i.ContractFormLTE))
+	}
+	if i.ContractFormContains != nil {
+		predicates = append(predicates, tenderprofile.ContractFormContains(*i.ContractFormContains))
+	}
+	if i.ContractFormHasPrefix != nil {
+		predicates = append(predicates, tenderprofile.ContractFormHasPrefix(*i.ContractFormHasPrefix))
+	}
+	if i.ContractFormHasSuffix != nil {
+		predicates = append(predicates, tenderprofile.ContractFormHasSuffix(*i.ContractFormHasSuffix))
+	}
+	if i.ContractFormIsNil {
+		predicates = append(predicates, tenderprofile.ContractFormIsNil())
+	}
+	if i.ContractFormNotNil {
+		predicates = append(predicates, tenderprofile.ContractFormNotNil())
+	}
+	if i.ContractFormEqualFold != nil {
+		predicates = append(predicates, tenderprofile.ContractFormEqualFold(*i.ContractFormEqualFold))
+	}
+	if i.ContractFormContainsFold != nil {
+		predicates = append(predicates, tenderprofile.ContractFormContainsFold(*i.ContractFormContainsFold))
+	}
+	if i.ManagementCompany != nil {
+		predicates = append(predicates, tenderprofile.ManagementCompanyEQ(*i.ManagementCompany))
+	}
+	if i.ManagementCompanyNEQ != nil {
+		predicates = append(predicates, tenderprofile.ManagementCompanyNEQ(*i.ManagementCompanyNEQ))
+	}
+	if len(i.ManagementCompanyIn) > 0 {
+		predicates = append(predicates, tenderprofile.ManagementCompanyIn(i.ManagementCompanyIn...))
+	}
+	if len(i.ManagementCompanyNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.ManagementCompanyNotIn(i.ManagementCompanyNotIn...))
+	}
+	if i.ManagementCompanyGT != nil {
+		predicates = append(predicates, tenderprofile.ManagementCompanyGT(*i.ManagementCompanyGT))
+	}
+	if i.ManagementCompanyGTE != nil {
+		predicates = append(predicates, tenderprofile.ManagementCompanyGTE(*i.ManagementCompanyGTE))
+	}
+	if i.ManagementCompanyLT != nil {
+		predicates = append(predicates, tenderprofile.ManagementCompanyLT(*i.ManagementCompanyLT))
+	}
+	if i.ManagementCompanyLTE != nil {
+		predicates = append(predicates, tenderprofile.ManagementCompanyLTE(*i.ManagementCompanyLTE))
+	}
+	if i.ManagementCompanyContains != nil {
+		predicates = append(predicates, tenderprofile.ManagementCompanyContains(*i.ManagementCompanyContains))
+	}
+	if i.ManagementCompanyHasPrefix != nil {
+		predicates = append(predicates, tenderprofile.ManagementCompanyHasPrefix(*i.ManagementCompanyHasPrefix))
+	}
+	if i.ManagementCompanyHasSuffix != nil {
+		predicates = append(predicates, tenderprofile.ManagementCompanyHasSuffix(*i.ManagementCompanyHasSuffix))
+	}
+	if i.ManagementCompanyIsNil {
+		predicates = append(predicates, tenderprofile.ManagementCompanyIsNil())
+	}
+	if i.ManagementCompanyNotNil {
+		predicates = append(predicates, tenderprofile.ManagementCompanyNotNil())
+	}
+	if i.ManagementCompanyEqualFold != nil {
+		predicates = append(predicates, tenderprofile.ManagementCompanyEqualFold(*i.ManagementCompanyEqualFold))
+	}
+	if i.ManagementCompanyContainsFold != nil {
+		predicates = append(predicates, tenderprofile.ManagementCompanyContainsFold(*i.ManagementCompanyContainsFold))
+	}
+	if i.TenderingAgency != nil {
+		predicates = append(predicates, tenderprofile.TenderingAgencyEQ(*i.TenderingAgency))
+	}
+	if i.TenderingAgencyNEQ != nil {
+		predicates = append(predicates, tenderprofile.TenderingAgencyNEQ(*i.TenderingAgencyNEQ))
+	}
+	if len(i.TenderingAgencyIn) > 0 {
+		predicates = append(predicates, tenderprofile.TenderingAgencyIn(i.TenderingAgencyIn...))
+	}
+	if len(i.TenderingAgencyNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.TenderingAgencyNotIn(i.TenderingAgencyNotIn...))
+	}
+	if i.TenderingAgencyGT != nil {
+		predicates = append(predicates, tenderprofile.TenderingAgencyGT(*i.TenderingAgencyGT))
+	}
+	if i.TenderingAgencyGTE != nil {
+		predicates = append(predicates, tenderprofile.TenderingAgencyGTE(*i.TenderingAgencyGTE))
+	}
+	if i.TenderingAgencyLT != nil {
+		predicates = append(predicates, tenderprofile.TenderingAgencyLT(*i.TenderingAgencyLT))
+	}
+	if i.TenderingAgencyLTE != nil {
+		predicates = append(predicates, tenderprofile.TenderingAgencyLTE(*i.TenderingAgencyLTE))
+	}
+	if i.TenderingAgencyContains != nil {
+		predicates = append(predicates, tenderprofile.TenderingAgencyContains(*i.TenderingAgencyContains))
+	}
+	if i.TenderingAgencyHasPrefix != nil {
+		predicates = append(predicates, tenderprofile.TenderingAgencyHasPrefix(*i.TenderingAgencyHasPrefix))
+	}
+	if i.TenderingAgencyHasSuffix != nil {
+		predicates = append(predicates, tenderprofile.TenderingAgencyHasSuffix(*i.TenderingAgencyHasSuffix))
+	}
+	if i.TenderingAgencyIsNil {
+		predicates = append(predicates, tenderprofile.TenderingAgencyIsNil())
+	}
+	if i.TenderingAgencyNotNil {
+		predicates = append(predicates, tenderprofile.TenderingAgencyNotNil())
+	}
+	if i.TenderingAgencyEqualFold != nil {
+		predicates = append(predicates, tenderprofile.TenderingAgencyEqualFold(*i.TenderingAgencyEqualFold))
+	}
+	if i.TenderingAgencyContainsFold != nil {
+		predicates = append(predicates, tenderprofile.TenderingAgencyContainsFold(*i.TenderingAgencyContainsFold))
+	}
+	if i.BiddingDate != nil {
+		predicates = append(predicates, tenderprofile.BiddingDateEQ(*i.BiddingDate))
+	}
+	if i.BiddingDateNEQ != nil {
+		predicates = append(predicates, tenderprofile.BiddingDateNEQ(*i.BiddingDateNEQ))
+	}
+	if len(i.BiddingDateIn) > 0 {
+		predicates = append(predicates, tenderprofile.BiddingDateIn(i.BiddingDateIn...))
+	}
+	if len(i.BiddingDateNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.BiddingDateNotIn(i.BiddingDateNotIn...))
+	}
+	if i.BiddingDateGT != nil {
+		predicates = append(predicates, tenderprofile.BiddingDateGT(*i.BiddingDateGT))
+	}
+	if i.BiddingDateGTE != nil {
+		predicates = append(predicates, tenderprofile.BiddingDateGTE(*i.BiddingDateGTE))
+	}
+	if i.BiddingDateLT != nil {
+		predicates = append(predicates, tenderprofile.BiddingDateLT(*i.BiddingDateLT))
+	}
+	if i.BiddingDateLTE != nil {
+		predicates = append(predicates, tenderprofile.BiddingDateLTE(*i.BiddingDateLTE))
+	}
+	if i.BiddingDateIsNil {
+		predicates = append(predicates, tenderprofile.BiddingDateIsNil())
+	}
+	if i.BiddingDateNotNil {
+		predicates = append(predicates, tenderprofile.BiddingDateNotNil())
+	}
+	if i.FacadeConsultant != nil {
+		predicates = append(predicates, tenderprofile.FacadeConsultantEQ(*i.FacadeConsultant))
+	}
+	if i.FacadeConsultantNEQ != nil {
+		predicates = append(predicates, tenderprofile.FacadeConsultantNEQ(*i.FacadeConsultantNEQ))
+	}
+	if len(i.FacadeConsultantIn) > 0 {
+		predicates = append(predicates, tenderprofile.FacadeConsultantIn(i.FacadeConsultantIn...))
+	}
+	if len(i.FacadeConsultantNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.FacadeConsultantNotIn(i.FacadeConsultantNotIn...))
+	}
+	if i.FacadeConsultantGT != nil {
+		predicates = append(predicates, tenderprofile.FacadeConsultantGT(*i.FacadeConsultantGT))
+	}
+	if i.FacadeConsultantGTE != nil {
+		predicates = append(predicates, tenderprofile.FacadeConsultantGTE(*i.FacadeConsultantGTE))
+	}
+	if i.FacadeConsultantLT != nil {
+		predicates = append(predicates, tenderprofile.FacadeConsultantLT(*i.FacadeConsultantLT))
+	}
+	if i.FacadeConsultantLTE != nil {
+		predicates = append(predicates, tenderprofile.FacadeConsultantLTE(*i.FacadeConsultantLTE))
+	}
+	if i.FacadeConsultantContains != nil {
+		predicates = append(predicates, tenderprofile.FacadeConsultantContains(*i.FacadeConsultantContains))
+	}
+	if i.FacadeConsultantHasPrefix != nil {
+		predicates = append(predicates, tenderprofile.FacadeConsultantHasPrefix(*i.FacadeConsultantHasPrefix))
+	}
+	if i.FacadeConsultantHasSuffix != nil {
+		predicates = append(predicates, tenderprofile.FacadeConsultantHasSuffix(*i.FacadeConsultantHasSuffix))
+	}
+	if i.FacadeConsultantIsNil {
+		predicates = append(predicates, tenderprofile.FacadeConsultantIsNil())
+	}
+	if i.FacadeConsultantNotNil {
+		predicates = append(predicates, tenderprofile.FacadeConsultantNotNil())
+	}
+	if i.FacadeConsultantEqualFold != nil {
+		predicates = append(predicates, tenderprofile.FacadeConsultantEqualFold(*i.FacadeConsultantEqualFold))
+	}
+	if i.FacadeConsultantContainsFold != nil {
+		predicates = append(predicates, tenderprofile.FacadeConsultantContainsFold(*i.FacadeConsultantContainsFold))
+	}
+	if i.DesignUnit != nil {
+		predicates = append(predicates, tenderprofile.DesignUnitEQ(*i.DesignUnit))
+	}
+	if i.DesignUnitNEQ != nil {
+		predicates = append(predicates, tenderprofile.DesignUnitNEQ(*i.DesignUnitNEQ))
+	}
+	if len(i.DesignUnitIn) > 0 {
+		predicates = append(predicates, tenderprofile.DesignUnitIn(i.DesignUnitIn...))
+	}
+	if len(i.DesignUnitNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.DesignUnitNotIn(i.DesignUnitNotIn...))
+	}
+	if i.DesignUnitGT != nil {
+		predicates = append(predicates, tenderprofile.DesignUnitGT(*i.DesignUnitGT))
+	}
+	if i.DesignUnitGTE != nil {
+		predicates = append(predicates, tenderprofile.DesignUnitGTE(*i.DesignUnitGTE))
+	}
+	if i.DesignUnitLT != nil {
+		predicates = append(predicates, tenderprofile.DesignUnitLT(*i.DesignUnitLT))
+	}
+	if i.DesignUnitLTE != nil {
+		predicates = append(predicates, tenderprofile.DesignUnitLTE(*i.DesignUnitLTE))
+	}
+	if i.DesignUnitContains != nil {
+		predicates = append(predicates, tenderprofile.DesignUnitContains(*i.DesignUnitContains))
+	}
+	if i.DesignUnitHasPrefix != nil {
+		predicates = append(predicates, tenderprofile.DesignUnitHasPrefix(*i.DesignUnitHasPrefix))
+	}
+	if i.DesignUnitHasSuffix != nil {
+		predicates = append(predicates, tenderprofile.DesignUnitHasSuffix(*i.DesignUnitHasSuffix))
+	}
+	if i.DesignUnitIsNil {
+		predicates = append(predicates, tenderprofile.DesignUnitIsNil())
+	}
+	if i.DesignUnitNotNil {
+		predicates = append(predicates, tenderprofile.DesignUnitNotNil())
+	}
+	if i.DesignUnitEqualFold != nil {
+		predicates = append(predicates, tenderprofile.DesignUnitEqualFold(*i.DesignUnitEqualFold))
+	}
+	if i.DesignUnitContainsFold != nil {
+		predicates = append(predicates, tenderprofile.DesignUnitContainsFold(*i.DesignUnitContainsFold))
+	}
+	if i.ConsultingFirm != nil {
+		predicates = append(predicates, tenderprofile.ConsultingFirmEQ(*i.ConsultingFirm))
+	}
+	if i.ConsultingFirmNEQ != nil {
+		predicates = append(predicates, tenderprofile.ConsultingFirmNEQ(*i.ConsultingFirmNEQ))
+	}
+	if len(i.ConsultingFirmIn) > 0 {
+		predicates = append(predicates, tenderprofile.ConsultingFirmIn(i.ConsultingFirmIn...))
+	}
+	if len(i.ConsultingFirmNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.ConsultingFirmNotIn(i.ConsultingFirmNotIn...))
+	}
+	if i.ConsultingFirmGT != nil {
+		predicates = append(predicates, tenderprofile.ConsultingFirmGT(*i.ConsultingFirmGT))
+	}
+	if i.ConsultingFirmGTE != nil {
+		predicates = append(predicates, tenderprofile.ConsultingFirmGTE(*i.ConsultingFirmGTE))
+	}
+	if i.ConsultingFirmLT != nil {
+		predicates = append(predicates, tenderprofile.ConsultingFirmLT(*i.ConsultingFirmLT))
+	}
+	if i.ConsultingFirmLTE != nil {
+		predicates = append(predicates, tenderprofile.ConsultingFirmLTE(*i.ConsultingFirmLTE))
+	}
+	if i.ConsultingFirmContains != nil {
+		predicates = append(predicates, tenderprofile.ConsultingFirmContains(*i.ConsultingFirmContains))
+	}
+	if i.ConsultingFirmHasPrefix != nil {
+		predicates = append(predicates, tenderprofile.ConsultingFirmHasPrefix(*i.ConsultingFirmHasPrefix))
+	}
+	if i.ConsultingFirmHasSuffix != nil {
+		predicates = append(predicates, tenderprofile.ConsultingFirmHasSuffix(*i.ConsultingFirmHasSuffix))
+	}
+	if i.ConsultingFirmIsNil {
+		predicates = append(predicates, tenderprofile.ConsultingFirmIsNil())
+	}
+	if i.ConsultingFirmNotNil {
+		predicates = append(predicates, tenderprofile.ConsultingFirmNotNil())
+	}
+	if i.ConsultingFirmEqualFold != nil {
+		predicates = append(predicates, tenderprofile.ConsultingFirmEqualFold(*i.ConsultingFirmEqualFold))
+	}
+	if i.ConsultingFirmContainsFold != nil {
+		predicates = append(predicates, tenderprofile.ConsultingFirmContainsFold(*i.ConsultingFirmContainsFold))
+	}
+	if i.KeyProject != nil {
+		predicates = append(predicates, tenderprofile.KeyProjectEQ(*i.KeyProject))
+	}
+	if i.KeyProjectNEQ != nil {
+		predicates = append(predicates, tenderprofile.KeyProjectNEQ(*i.KeyProjectNEQ))
+	}
+	if i.CurrentProgress != nil {
+		predicates = append(predicates, tenderprofile.CurrentProgressEQ(*i.CurrentProgress))
+	}
+	if i.CurrentProgressNEQ != nil {
+		predicates = append(predicates, tenderprofile.CurrentProgressNEQ(*i.CurrentProgressNEQ))
+	}
+	if len(i.CurrentProgressIn) > 0 {
+		predicates = append(predicates, tenderprofile.CurrentProgressIn(i.CurrentProgressIn...))
+	}
+	if len(i.CurrentProgressNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.CurrentProgressNotIn(i.CurrentProgressNotIn...))
+	}
+	if i.CurrentProgressGT != nil {
+		predicates = append(predicates, tenderprofile.CurrentProgressGT(*i.CurrentProgressGT))
+	}
+	if i.CurrentProgressGTE != nil {
+		predicates = append(predicates, tenderprofile.CurrentProgressGTE(*i.CurrentProgressGTE))
+	}
+	if i.CurrentProgressLT != nil {
+		predicates = append(predicates, tenderprofile.CurrentProgressLT(*i.CurrentProgressLT))
+	}
+	if i.CurrentProgressLTE != nil {
+		predicates = append(predicates, tenderprofile.CurrentProgressLTE(*i.CurrentProgressLTE))
+	}
+	if i.CurrentProgressContains != nil {
+		predicates = append(predicates, tenderprofile.CurrentProgressContains(*i.CurrentProgressContains))
+	}
+	if i.CurrentProgressHasPrefix != nil {
+		predicates = append(predicates, tenderprofile.CurrentProgressHasPrefix(*i.CurrentProgressHasPrefix))
+	}
+	if i.CurrentProgressHasSuffix != nil {
+		predicates = append(predicates, tenderprofile.CurrentProgressHasSuffix(*i.CurrentProgressHasSuffix))
+	}
+	if i.CurrentProgressIsNil {
+		predicates = append(predicates, tenderprofile.CurrentProgressIsNil())
+	}
+	if i.CurrentProgressNotNil {
+		predicates = append(predicates, tenderprofile.CurrentProgressNotNil())
+	}
+	if i.CurrentProgressEqualFold != nil {
+		predicates = append(predicates, tenderprofile.CurrentProgressEqualFold(*i.CurrentProgressEqualFold))
+	}
+	if i.CurrentProgressContainsFold != nil {
+		predicates = append(predicates, tenderprofile.CurrentProgressContainsFold(*i.CurrentProgressContainsFold))
+	}
+	if i.TenderWinCompany != nil {
+		predicates = append(predicates, tenderprofile.TenderWinCompanyEQ(*i.TenderWinCompany))
+	}
+	if i.TenderWinCompanyNEQ != nil {
+		predicates = append(predicates, tenderprofile.TenderWinCompanyNEQ(*i.TenderWinCompanyNEQ))
+	}
+	if len(i.TenderWinCompanyIn) > 0 {
+		predicates = append(predicates, tenderprofile.TenderWinCompanyIn(i.TenderWinCompanyIn...))
+	}
+	if len(i.TenderWinCompanyNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.TenderWinCompanyNotIn(i.TenderWinCompanyNotIn...))
+	}
+	if i.TenderWinCompanyGT != nil {
+		predicates = append(predicates, tenderprofile.TenderWinCompanyGT(*i.TenderWinCompanyGT))
+	}
+	if i.TenderWinCompanyGTE != nil {
+		predicates = append(predicates, tenderprofile.TenderWinCompanyGTE(*i.TenderWinCompanyGTE))
+	}
+	if i.TenderWinCompanyLT != nil {
+		predicates = append(predicates, tenderprofile.TenderWinCompanyLT(*i.TenderWinCompanyLT))
+	}
+	if i.TenderWinCompanyLTE != nil {
+		predicates = append(predicates, tenderprofile.TenderWinCompanyLTE(*i.TenderWinCompanyLTE))
+	}
+	if i.TenderWinCompanyContains != nil {
+		predicates = append(predicates, tenderprofile.TenderWinCompanyContains(*i.TenderWinCompanyContains))
+	}
+	if i.TenderWinCompanyHasPrefix != nil {
+		predicates = append(predicates, tenderprofile.TenderWinCompanyHasPrefix(*i.TenderWinCompanyHasPrefix))
+	}
+	if i.TenderWinCompanyHasSuffix != nil {
+		predicates = append(predicates, tenderprofile.TenderWinCompanyHasSuffix(*i.TenderWinCompanyHasSuffix))
+	}
+	if i.TenderWinCompanyIsNil {
+		predicates = append(predicates, tenderprofile.TenderWinCompanyIsNil())
+	}
+	if i.TenderWinCompanyNotNil {
+		predicates = append(predicates, tenderprofile.TenderWinCompanyNotNil())
+	}
+	if i.TenderWinCompanyEqualFold != nil {
+		predicates = append(predicates, tenderprofile.TenderWinCompanyEqualFold(*i.TenderWinCompanyEqualFold))
+	}
+	if i.TenderWinCompanyContainsFold != nil {
+		predicates = append(predicates, tenderprofile.TenderWinCompanyContainsFold(*i.TenderWinCompanyContainsFold))
+	}
+	if i.TenderCode != nil {
+		predicates = append(predicates, tenderprofile.TenderCodeEQ(*i.TenderCode))
+	}
+	if i.TenderCodeNEQ != nil {
+		predicates = append(predicates, tenderprofile.TenderCodeNEQ(*i.TenderCodeNEQ))
+	}
+	if len(i.TenderCodeIn) > 0 {
+		predicates = append(predicates, tenderprofile.TenderCodeIn(i.TenderCodeIn...))
+	}
+	if len(i.TenderCodeNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.TenderCodeNotIn(i.TenderCodeNotIn...))
+	}
+	if i.TenderCodeGT != nil {
+		predicates = append(predicates, tenderprofile.TenderCodeGT(*i.TenderCodeGT))
+	}
+	if i.TenderCodeGTE != nil {
+		predicates = append(predicates, tenderprofile.TenderCodeGTE(*i.TenderCodeGTE))
+	}
+	if i.TenderCodeLT != nil {
+		predicates = append(predicates, tenderprofile.TenderCodeLT(*i.TenderCodeLT))
+	}
+	if i.TenderCodeLTE != nil {
+		predicates = append(predicates, tenderprofile.TenderCodeLTE(*i.TenderCodeLTE))
+	}
+	if i.TenderCodeContains != nil {
+		predicates = append(predicates, tenderprofile.TenderCodeContains(*i.TenderCodeContains))
+	}
+	if i.TenderCodeHasPrefix != nil {
+		predicates = append(predicates, tenderprofile.TenderCodeHasPrefix(*i.TenderCodeHasPrefix))
+	}
+	if i.TenderCodeHasSuffix != nil {
+		predicates = append(predicates, tenderprofile.TenderCodeHasSuffix(*i.TenderCodeHasSuffix))
+	}
+	if i.TenderCodeIsNil {
+		predicates = append(predicates, tenderprofile.TenderCodeIsNil())
+	}
+	if i.TenderCodeNotNil {
+		predicates = append(predicates, tenderprofile.TenderCodeNotNil())
+	}
+	if i.TenderCodeEqualFold != nil {
+		predicates = append(predicates, tenderprofile.TenderCodeEqualFold(*i.TenderCodeEqualFold))
+	}
+	if i.TenderCodeContainsFold != nil {
+		predicates = append(predicates, tenderprofile.TenderCodeContainsFold(*i.TenderCodeContainsFold))
+	}
+	if i.Architect != nil {
+		predicates = append(predicates, tenderprofile.ArchitectEQ(*i.Architect))
+	}
+	if i.ArchitectNEQ != nil {
+		predicates = append(predicates, tenderprofile.ArchitectNEQ(*i.ArchitectNEQ))
+	}
+	if len(i.ArchitectIn) > 0 {
+		predicates = append(predicates, tenderprofile.ArchitectIn(i.ArchitectIn...))
+	}
+	if len(i.ArchitectNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.ArchitectNotIn(i.ArchitectNotIn...))
+	}
+	if i.ArchitectGT != nil {
+		predicates = append(predicates, tenderprofile.ArchitectGT(*i.ArchitectGT))
+	}
+	if i.ArchitectGTE != nil {
+		predicates = append(predicates, tenderprofile.ArchitectGTE(*i.ArchitectGTE))
+	}
+	if i.ArchitectLT != nil {
+		predicates = append(predicates, tenderprofile.ArchitectLT(*i.ArchitectLT))
+	}
+	if i.ArchitectLTE != nil {
+		predicates = append(predicates, tenderprofile.ArchitectLTE(*i.ArchitectLTE))
+	}
+	if i.ArchitectContains != nil {
+		predicates = append(predicates, tenderprofile.ArchitectContains(*i.ArchitectContains))
+	}
+	if i.ArchitectHasPrefix != nil {
+		predicates = append(predicates, tenderprofile.ArchitectHasPrefix(*i.ArchitectHasPrefix))
+	}
+	if i.ArchitectHasSuffix != nil {
+		predicates = append(predicates, tenderprofile.ArchitectHasSuffix(*i.ArchitectHasSuffix))
+	}
+	if i.ArchitectIsNil {
+		predicates = append(predicates, tenderprofile.ArchitectIsNil())
+	}
+	if i.ArchitectNotNil {
+		predicates = append(predicates, tenderprofile.ArchitectNotNil())
+	}
+	if i.ArchitectEqualFold != nil {
+		predicates = append(predicates, tenderprofile.ArchitectEqualFold(*i.ArchitectEqualFold))
+	}
+	if i.ArchitectContainsFold != nil {
+		predicates = append(predicates, tenderprofile.ArchitectContainsFold(*i.ArchitectContainsFold))
+	}
+	if i.Developer != nil {
+		predicates = append(predicates, tenderprofile.DeveloperEQ(*i.Developer))
+	}
+	if i.DeveloperNEQ != nil {
+		predicates = append(predicates, tenderprofile.DeveloperNEQ(*i.DeveloperNEQ))
+	}
+	if len(i.DeveloperIn) > 0 {
+		predicates = append(predicates, tenderprofile.DeveloperIn(i.DeveloperIn...))
+	}
+	if len(i.DeveloperNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.DeveloperNotIn(i.DeveloperNotIn...))
+	}
+	if i.DeveloperGT != nil {
+		predicates = append(predicates, tenderprofile.DeveloperGT(*i.DeveloperGT))
+	}
+	if i.DeveloperGTE != nil {
+		predicates = append(predicates, tenderprofile.DeveloperGTE(*i.DeveloperGTE))
+	}
+	if i.DeveloperLT != nil {
+		predicates = append(predicates, tenderprofile.DeveloperLT(*i.DeveloperLT))
+	}
+	if i.DeveloperLTE != nil {
+		predicates = append(predicates, tenderprofile.DeveloperLTE(*i.DeveloperLTE))
+	}
+	if i.DeveloperContains != nil {
+		predicates = append(predicates, tenderprofile.DeveloperContains(*i.DeveloperContains))
+	}
+	if i.DeveloperHasPrefix != nil {
+		predicates = append(predicates, tenderprofile.DeveloperHasPrefix(*i.DeveloperHasPrefix))
+	}
+	if i.DeveloperHasSuffix != nil {
+		predicates = append(predicates, tenderprofile.DeveloperHasSuffix(*i.DeveloperHasSuffix))
+	}
+	if i.DeveloperIsNil {
+		predicates = append(predicates, tenderprofile.DeveloperIsNil())
+	}
+	if i.DeveloperNotNil {
+		predicates = append(predicates, tenderprofile.DeveloperNotNil())
+	}
+	if i.DeveloperEqualFold != nil {
+		predicates = append(predicates, tenderprofile.DeveloperEqualFold(*i.DeveloperEqualFold))
+	}
+	if i.DeveloperContainsFold != nil {
+		predicates = append(predicates, tenderprofile.DeveloperContainsFold(*i.DeveloperContainsFold))
+	}
+	if i.TenderClosingDate != nil {
+		predicates = append(predicates, tenderprofile.TenderClosingDateEQ(*i.TenderClosingDate))
+	}
+	if i.TenderClosingDateNEQ != nil {
+		predicates = append(predicates, tenderprofile.TenderClosingDateNEQ(*i.TenderClosingDateNEQ))
+	}
+	if len(i.TenderClosingDateIn) > 0 {
+		predicates = append(predicates, tenderprofile.TenderClosingDateIn(i.TenderClosingDateIn...))
+	}
+	if len(i.TenderClosingDateNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.TenderClosingDateNotIn(i.TenderClosingDateNotIn...))
+	}
+	if i.TenderClosingDateGT != nil {
+		predicates = append(predicates, tenderprofile.TenderClosingDateGT(*i.TenderClosingDateGT))
+	}
+	if i.TenderClosingDateGTE != nil {
+		predicates = append(predicates, tenderprofile.TenderClosingDateGTE(*i.TenderClosingDateGTE))
+	}
+	if i.TenderClosingDateLT != nil {
+		predicates = append(predicates, tenderprofile.TenderClosingDateLT(*i.TenderClosingDateLT))
+	}
+	if i.TenderClosingDateLTE != nil {
+		predicates = append(predicates, tenderprofile.TenderClosingDateLTE(*i.TenderClosingDateLTE))
+	}
+	if i.TenderClosingDateIsNil {
+		predicates = append(predicates, tenderprofile.TenderClosingDateIsNil())
+	}
+	if i.TenderClosingDateNotNil {
+		predicates = append(predicates, tenderprofile.TenderClosingDateNotNil())
+	}
+	if i.ConstructionArea != nil {
+		predicates = append(predicates, tenderprofile.ConstructionAreaEQ(*i.ConstructionArea))
+	}
+	if i.ConstructionAreaNEQ != nil {
+		predicates = append(predicates, tenderprofile.ConstructionAreaNEQ(*i.ConstructionAreaNEQ))
+	}
+	if len(i.ConstructionAreaIn) > 0 {
+		predicates = append(predicates, tenderprofile.ConstructionAreaIn(i.ConstructionAreaIn...))
+	}
+	if len(i.ConstructionAreaNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.ConstructionAreaNotIn(i.ConstructionAreaNotIn...))
+	}
+	if i.ConstructionAreaGT != nil {
+		predicates = append(predicates, tenderprofile.ConstructionAreaGT(*i.ConstructionAreaGT))
+	}
+	if i.ConstructionAreaGTE != nil {
+		predicates = append(predicates, tenderprofile.ConstructionAreaGTE(*i.ConstructionAreaGTE))
+	}
+	if i.ConstructionAreaLT != nil {
+		predicates = append(predicates, tenderprofile.ConstructionAreaLT(*i.ConstructionAreaLT))
+	}
+	if i.ConstructionAreaLTE != nil {
+		predicates = append(predicates, tenderprofile.ConstructionAreaLTE(*i.ConstructionAreaLTE))
+	}
+	if i.ConstructionAreaContains != nil {
+		predicates = append(predicates, tenderprofile.ConstructionAreaContains(*i.ConstructionAreaContains))
+	}
+	if i.ConstructionAreaHasPrefix != nil {
+		predicates = append(predicates, tenderprofile.ConstructionAreaHasPrefix(*i.ConstructionAreaHasPrefix))
+	}
+	if i.ConstructionAreaHasSuffix != nil {
+		predicates = append(predicates, tenderprofile.ConstructionAreaHasSuffix(*i.ConstructionAreaHasSuffix))
+	}
+	if i.ConstructionAreaIsNil {
+		predicates = append(predicates, tenderprofile.ConstructionAreaIsNil())
+	}
+	if i.ConstructionAreaNotNil {
+		predicates = append(predicates, tenderprofile.ConstructionAreaNotNil())
+	}
+	if i.ConstructionAreaEqualFold != nil {
+		predicates = append(predicates, tenderprofile.ConstructionAreaEqualFold(*i.ConstructionAreaEqualFold))
+	}
+	if i.ConstructionAreaContainsFold != nil {
+		predicates = append(predicates, tenderprofile.ConstructionAreaContainsFold(*i.ConstructionAreaContainsFold))
+	}
+	if i.TenderWinDate != nil {
+		predicates = append(predicates, tenderprofile.TenderWinDateEQ(*i.TenderWinDate))
+	}
+	if i.TenderWinDateNEQ != nil {
+		predicates = append(predicates, tenderprofile.TenderWinDateNEQ(*i.TenderWinDateNEQ))
+	}
+	if len(i.TenderWinDateIn) > 0 {
+		predicates = append(predicates, tenderprofile.TenderWinDateIn(i.TenderWinDateIn...))
+	}
+	if len(i.TenderWinDateNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.TenderWinDateNotIn(i.TenderWinDateNotIn...))
+	}
+	if i.TenderWinDateGT != nil {
+		predicates = append(predicates, tenderprofile.TenderWinDateGT(*i.TenderWinDateGT))
+	}
+	if i.TenderWinDateGTE != nil {
+		predicates = append(predicates, tenderprofile.TenderWinDateGTE(*i.TenderWinDateGTE))
+	}
+	if i.TenderWinDateLT != nil {
+		predicates = append(predicates, tenderprofile.TenderWinDateLT(*i.TenderWinDateLT))
+	}
+	if i.TenderWinDateLTE != nil {
+		predicates = append(predicates, tenderprofile.TenderWinDateLTE(*i.TenderWinDateLTE))
+	}
+	if i.TenderWinDateIsNil {
+		predicates = append(predicates, tenderprofile.TenderWinDateIsNil())
+	}
+	if i.TenderWinDateNotNil {
+		predicates = append(predicates, tenderprofile.TenderWinDateNotNil())
+	}
+	if i.TenderWinAmount != nil {
+		predicates = append(predicates, tenderprofile.TenderWinAmountEQ(*i.TenderWinAmount))
+	}
+	if i.TenderWinAmountNEQ != nil {
+		predicates = append(predicates, tenderprofile.TenderWinAmountNEQ(*i.TenderWinAmountNEQ))
+	}
+	if len(i.TenderWinAmountIn) > 0 {
+		predicates = append(predicates, tenderprofile.TenderWinAmountIn(i.TenderWinAmountIn...))
+	}
+	if len(i.TenderWinAmountNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.TenderWinAmountNotIn(i.TenderWinAmountNotIn...))
+	}
+	if i.TenderWinAmountGT != nil {
+		predicates = append(predicates, tenderprofile.TenderWinAmountGT(*i.TenderWinAmountGT))
+	}
+	if i.TenderWinAmountGTE != nil {
+		predicates = append(predicates, tenderprofile.TenderWinAmountGTE(*i.TenderWinAmountGTE))
+	}
+	if i.TenderWinAmountLT != nil {
+		predicates = append(predicates, tenderprofile.TenderWinAmountLT(*i.TenderWinAmountLT))
+	}
+	if i.TenderWinAmountLTE != nil {
+		predicates = append(predicates, tenderprofile.TenderWinAmountLTE(*i.TenderWinAmountLTE))
+	}
+	if i.TenderWinAmountIsNil {
+		predicates = append(predicates, tenderprofile.TenderWinAmountIsNil())
+	}
+	if i.TenderWinAmountNotNil {
+		predicates = append(predicates, tenderprofile.TenderWinAmountNotNil())
+	}
+	if i.LastTenderAmount != nil {
+		predicates = append(predicates, tenderprofile.LastTenderAmountEQ(*i.LastTenderAmount))
+	}
+	if i.LastTenderAmountNEQ != nil {
+		predicates = append(predicates, tenderprofile.LastTenderAmountNEQ(*i.LastTenderAmountNEQ))
+	}
+	if len(i.LastTenderAmountIn) > 0 {
+		predicates = append(predicates, tenderprofile.LastTenderAmountIn(i.LastTenderAmountIn...))
+	}
+	if len(i.LastTenderAmountNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.LastTenderAmountNotIn(i.LastTenderAmountNotIn...))
+	}
+	if i.LastTenderAmountGT != nil {
+		predicates = append(predicates, tenderprofile.LastTenderAmountGT(*i.LastTenderAmountGT))
+	}
+	if i.LastTenderAmountGTE != nil {
+		predicates = append(predicates, tenderprofile.LastTenderAmountGTE(*i.LastTenderAmountGTE))
+	}
+	if i.LastTenderAmountLT != nil {
+		predicates = append(predicates, tenderprofile.LastTenderAmountLT(*i.LastTenderAmountLT))
+	}
+	if i.LastTenderAmountLTE != nil {
+		predicates = append(predicates, tenderprofile.LastTenderAmountLTE(*i.LastTenderAmountLTE))
+	}
+	if i.LastTenderAmountIsNil {
+		predicates = append(predicates, tenderprofile.LastTenderAmountIsNil())
+	}
+	if i.LastTenderAmountNotNil {
+		predicates = append(predicates, tenderprofile.LastTenderAmountNotNil())
+	}
+	if i.TenderID != nil {
+		predicates = append(predicates, tenderprofile.TenderIDEQ(*i.TenderID))
+	}
+	if i.TenderIDNEQ != nil {
+		predicates = append(predicates, tenderprofile.TenderIDNEQ(*i.TenderIDNEQ))
+	}
+	if len(i.TenderIDIn) > 0 {
+		predicates = append(predicates, tenderprofile.TenderIDIn(i.TenderIDIn...))
+	}
+	if len(i.TenderIDNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.TenderIDNotIn(i.TenderIDNotIn...))
+	}
+	if i.TenderIDGT != nil {
+		predicates = append(predicates, tenderprofile.TenderIDGT(*i.TenderIDGT))
+	}
+	if i.TenderIDGTE != nil {
+		predicates = append(predicates, tenderprofile.TenderIDGTE(*i.TenderIDGTE))
+	}
+	if i.TenderIDLT != nil {
+		predicates = append(predicates, tenderprofile.TenderIDLT(*i.TenderIDLT))
+	}
+	if i.TenderIDLTE != nil {
+		predicates = append(predicates, tenderprofile.TenderIDLTE(*i.TenderIDLTE))
+	}
+	if i.TenderIDContains != nil {
+		predicates = append(predicates, tenderprofile.TenderIDContains(*i.TenderIDContains))
+	}
+	if i.TenderIDHasPrefix != nil {
+		predicates = append(predicates, tenderprofile.TenderIDHasPrefix(*i.TenderIDHasPrefix))
+	}
+	if i.TenderIDHasSuffix != nil {
+		predicates = append(predicates, tenderprofile.TenderIDHasSuffix(*i.TenderIDHasSuffix))
+	}
+	if i.TenderIDEqualFold != nil {
+		predicates = append(predicates, tenderprofile.TenderIDEqualFold(*i.TenderIDEqualFold))
+	}
+	if i.TenderIDContainsFold != nil {
+		predicates = append(predicates, tenderprofile.TenderIDContainsFold(*i.TenderIDContainsFold))
+	}
+	if i.ProvinceID != nil {
+		predicates = append(predicates, tenderprofile.ProvinceIDEQ(*i.ProvinceID))
+	}
+	if i.ProvinceIDNEQ != nil {
+		predicates = append(predicates, tenderprofile.ProvinceIDNEQ(*i.ProvinceIDNEQ))
+	}
+	if len(i.ProvinceIDIn) > 0 {
+		predicates = append(predicates, tenderprofile.ProvinceIDIn(i.ProvinceIDIn...))
+	}
+	if len(i.ProvinceIDNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.ProvinceIDNotIn(i.ProvinceIDNotIn...))
+	}
+	if i.ProvinceIDGT != nil {
+		predicates = append(predicates, tenderprofile.ProvinceIDGT(*i.ProvinceIDGT))
+	}
+	if i.ProvinceIDGTE != nil {
+		predicates = append(predicates, tenderprofile.ProvinceIDGTE(*i.ProvinceIDGTE))
+	}
+	if i.ProvinceIDLT != nil {
+		predicates = append(predicates, tenderprofile.ProvinceIDLT(*i.ProvinceIDLT))
+	}
+	if i.ProvinceIDLTE != nil {
+		predicates = append(predicates, tenderprofile.ProvinceIDLTE(*i.ProvinceIDLTE))
+	}
+	if i.ProvinceIDContains != nil {
+		predicates = append(predicates, tenderprofile.ProvinceIDContains(*i.ProvinceIDContains))
+	}
+	if i.ProvinceIDHasPrefix != nil {
+		predicates = append(predicates, tenderprofile.ProvinceIDHasPrefix(*i.ProvinceIDHasPrefix))
+	}
+	if i.ProvinceIDHasSuffix != nil {
+		predicates = append(predicates, tenderprofile.ProvinceIDHasSuffix(*i.ProvinceIDHasSuffix))
+	}
+	if i.ProvinceIDIsNil {
+		predicates = append(predicates, tenderprofile.ProvinceIDIsNil())
+	}
+	if i.ProvinceIDNotNil {
+		predicates = append(predicates, tenderprofile.ProvinceIDNotNil())
+	}
+	if i.ProvinceIDEqualFold != nil {
+		predicates = append(predicates, tenderprofile.ProvinceIDEqualFold(*i.ProvinceIDEqualFold))
+	}
+	if i.ProvinceIDContainsFold != nil {
+		predicates = append(predicates, tenderprofile.ProvinceIDContainsFold(*i.ProvinceIDContainsFold))
+	}
+	if i.CityID != nil {
+		predicates = append(predicates, tenderprofile.CityIDEQ(*i.CityID))
+	}
+	if i.CityIDNEQ != nil {
+		predicates = append(predicates, tenderprofile.CityIDNEQ(*i.CityIDNEQ))
+	}
+	if len(i.CityIDIn) > 0 {
+		predicates = append(predicates, tenderprofile.CityIDIn(i.CityIDIn...))
+	}
+	if len(i.CityIDNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.CityIDNotIn(i.CityIDNotIn...))
+	}
+	if i.CityIDGT != nil {
+		predicates = append(predicates, tenderprofile.CityIDGT(*i.CityIDGT))
+	}
+	if i.CityIDGTE != nil {
+		predicates = append(predicates, tenderprofile.CityIDGTE(*i.CityIDGTE))
+	}
+	if i.CityIDLT != nil {
+		predicates = append(predicates, tenderprofile.CityIDLT(*i.CityIDLT))
+	}
+	if i.CityIDLTE != nil {
+		predicates = append(predicates, tenderprofile.CityIDLTE(*i.CityIDLTE))
+	}
+	if i.CityIDContains != nil {
+		predicates = append(predicates, tenderprofile.CityIDContains(*i.CityIDContains))
+	}
+	if i.CityIDHasPrefix != nil {
+		predicates = append(predicates, tenderprofile.CityIDHasPrefix(*i.CityIDHasPrefix))
+	}
+	if i.CityIDHasSuffix != nil {
+		predicates = append(predicates, tenderprofile.CityIDHasSuffix(*i.CityIDHasSuffix))
+	}
+	if i.CityIDIsNil {
+		predicates = append(predicates, tenderprofile.CityIDIsNil())
+	}
+	if i.CityIDNotNil {
+		predicates = append(predicates, tenderprofile.CityIDNotNil())
+	}
+	if i.CityIDEqualFold != nil {
+		predicates = append(predicates, tenderprofile.CityIDEqualFold(*i.CityIDEqualFold))
+	}
+	if i.CityIDContainsFold != nil {
+		predicates = append(predicates, tenderprofile.CityIDContainsFold(*i.CityIDContainsFold))
+	}
+	if i.DistrictID != nil {
+		predicates = append(predicates, tenderprofile.DistrictIDEQ(*i.DistrictID))
+	}
+	if i.DistrictIDNEQ != nil {
+		predicates = append(predicates, tenderprofile.DistrictIDNEQ(*i.DistrictIDNEQ))
+	}
+	if len(i.DistrictIDIn) > 0 {
+		predicates = append(predicates, tenderprofile.DistrictIDIn(i.DistrictIDIn...))
+	}
+	if len(i.DistrictIDNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.DistrictIDNotIn(i.DistrictIDNotIn...))
+	}
+	if i.DistrictIDGT != nil {
+		predicates = append(predicates, tenderprofile.DistrictIDGT(*i.DistrictIDGT))
+	}
+	if i.DistrictIDGTE != nil {
+		predicates = append(predicates, tenderprofile.DistrictIDGTE(*i.DistrictIDGTE))
+	}
+	if i.DistrictIDLT != nil {
+		predicates = append(predicates, tenderprofile.DistrictIDLT(*i.DistrictIDLT))
+	}
+	if i.DistrictIDLTE != nil {
+		predicates = append(predicates, tenderprofile.DistrictIDLTE(*i.DistrictIDLTE))
+	}
+	if i.DistrictIDContains != nil {
+		predicates = append(predicates, tenderprofile.DistrictIDContains(*i.DistrictIDContains))
+	}
+	if i.DistrictIDHasPrefix != nil {
+		predicates = append(predicates, tenderprofile.DistrictIDHasPrefix(*i.DistrictIDHasPrefix))
+	}
+	if i.DistrictIDHasSuffix != nil {
+		predicates = append(predicates, tenderprofile.DistrictIDHasSuffix(*i.DistrictIDHasSuffix))
+	}
+	if i.DistrictIDIsNil {
+		predicates = append(predicates, tenderprofile.DistrictIDIsNil())
+	}
+	if i.DistrictIDNotNil {
+		predicates = append(predicates, tenderprofile.DistrictIDNotNil())
+	}
+	if i.DistrictIDEqualFold != nil {
+		predicates = append(predicates, tenderprofile.DistrictIDEqualFold(*i.DistrictIDEqualFold))
+	}
+	if i.DistrictIDContainsFold != nil {
+		predicates = append(predicates, tenderprofile.DistrictIDContainsFold(*i.DistrictIDContainsFold))
+	}
+	if i.CustomerID != nil {
+		predicates = append(predicates, tenderprofile.CustomerIDEQ(*i.CustomerID))
+	}
+	if i.CustomerIDNEQ != nil {
+		predicates = append(predicates, tenderprofile.CustomerIDNEQ(*i.CustomerIDNEQ))
+	}
+	if len(i.CustomerIDIn) > 0 {
+		predicates = append(predicates, tenderprofile.CustomerIDIn(i.CustomerIDIn...))
+	}
+	if len(i.CustomerIDNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.CustomerIDNotIn(i.CustomerIDNotIn...))
+	}
+	if i.CustomerIDGT != nil {
+		predicates = append(predicates, tenderprofile.CustomerIDGT(*i.CustomerIDGT))
+	}
+	if i.CustomerIDGTE != nil {
+		predicates = append(predicates, tenderprofile.CustomerIDGTE(*i.CustomerIDGTE))
+	}
+	if i.CustomerIDLT != nil {
+		predicates = append(predicates, tenderprofile.CustomerIDLT(*i.CustomerIDLT))
+	}
+	if i.CustomerIDLTE != nil {
+		predicates = append(predicates, tenderprofile.CustomerIDLTE(*i.CustomerIDLTE))
+	}
+	if i.CustomerIDContains != nil {
+		predicates = append(predicates, tenderprofile.CustomerIDContains(*i.CustomerIDContains))
+	}
+	if i.CustomerIDHasPrefix != nil {
+		predicates = append(predicates, tenderprofile.CustomerIDHasPrefix(*i.CustomerIDHasPrefix))
+	}
+	if i.CustomerIDHasSuffix != nil {
+		predicates = append(predicates, tenderprofile.CustomerIDHasSuffix(*i.CustomerIDHasSuffix))
+	}
+	if i.CustomerIDIsNil {
+		predicates = append(predicates, tenderprofile.CustomerIDIsNil())
+	}
+	if i.CustomerIDNotNil {
+		predicates = append(predicates, tenderprofile.CustomerIDNotNil())
+	}
+	if i.CustomerIDEqualFold != nil {
+		predicates = append(predicates, tenderprofile.CustomerIDEqualFold(*i.CustomerIDEqualFold))
+	}
+	if i.CustomerIDContainsFold != nil {
+		predicates = append(predicates, tenderprofile.CustomerIDContainsFold(*i.CustomerIDContainsFold))
+	}
+	if i.FinderID != nil {
+		predicates = append(predicates, tenderprofile.FinderIDEQ(*i.FinderID))
+	}
+	if i.FinderIDNEQ != nil {
+		predicates = append(predicates, tenderprofile.FinderIDNEQ(*i.FinderIDNEQ))
+	}
+	if len(i.FinderIDIn) > 0 {
+		predicates = append(predicates, tenderprofile.FinderIDIn(i.FinderIDIn...))
+	}
+	if len(i.FinderIDNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.FinderIDNotIn(i.FinderIDNotIn...))
+	}
+	if i.FinderIDGT != nil {
+		predicates = append(predicates, tenderprofile.FinderIDGT(*i.FinderIDGT))
+	}
+	if i.FinderIDGTE != nil {
+		predicates = append(predicates, tenderprofile.FinderIDGTE(*i.FinderIDGTE))
+	}
+	if i.FinderIDLT != nil {
+		predicates = append(predicates, tenderprofile.FinderIDLT(*i.FinderIDLT))
+	}
+	if i.FinderIDLTE != nil {
+		predicates = append(predicates, tenderprofile.FinderIDLTE(*i.FinderIDLTE))
+	}
+	if i.FinderIDContains != nil {
+		predicates = append(predicates, tenderprofile.FinderIDContains(*i.FinderIDContains))
+	}
+	if i.FinderIDHasPrefix != nil {
+		predicates = append(predicates, tenderprofile.FinderIDHasPrefix(*i.FinderIDHasPrefix))
+	}
+	if i.FinderIDHasSuffix != nil {
+		predicates = append(predicates, tenderprofile.FinderIDHasSuffix(*i.FinderIDHasSuffix))
+	}
+	if i.FinderIDIsNil {
+		predicates = append(predicates, tenderprofile.FinderIDIsNil())
+	}
+	if i.FinderIDNotNil {
+		predicates = append(predicates, tenderprofile.FinderIDNotNil())
+	}
+	if i.FinderIDEqualFold != nil {
+		predicates = append(predicates, tenderprofile.FinderIDEqualFold(*i.FinderIDEqualFold))
+	}
+	if i.FinderIDContainsFold != nil {
+		predicates = append(predicates, tenderprofile.FinderIDContainsFold(*i.FinderIDContainsFold))
+	}
+	if i.CreatedByID != nil {
+		predicates = append(predicates, tenderprofile.CreatedByIDEQ(*i.CreatedByID))
+	}
+	if i.CreatedByIDNEQ != nil {
+		predicates = append(predicates, tenderprofile.CreatedByIDNEQ(*i.CreatedByIDNEQ))
+	}
+	if len(i.CreatedByIDIn) > 0 {
+		predicates = append(predicates, tenderprofile.CreatedByIDIn(i.CreatedByIDIn...))
+	}
+	if len(i.CreatedByIDNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.CreatedByIDNotIn(i.CreatedByIDNotIn...))
+	}
+	if i.CreatedByIDGT != nil {
+		predicates = append(predicates, tenderprofile.CreatedByIDGT(*i.CreatedByIDGT))
+	}
+	if i.CreatedByIDGTE != nil {
+		predicates = append(predicates, tenderprofile.CreatedByIDGTE(*i.CreatedByIDGTE))
+	}
+	if i.CreatedByIDLT != nil {
+		predicates = append(predicates, tenderprofile.CreatedByIDLT(*i.CreatedByIDLT))
+	}
+	if i.CreatedByIDLTE != nil {
+		predicates = append(predicates, tenderprofile.CreatedByIDLTE(*i.CreatedByIDLTE))
+	}
+	if i.CreatedByIDContains != nil {
+		predicates = append(predicates, tenderprofile.CreatedByIDContains(*i.CreatedByIDContains))
+	}
+	if i.CreatedByIDHasPrefix != nil {
+		predicates = append(predicates, tenderprofile.CreatedByIDHasPrefix(*i.CreatedByIDHasPrefix))
+	}
+	if i.CreatedByIDHasSuffix != nil {
+		predicates = append(predicates, tenderprofile.CreatedByIDHasSuffix(*i.CreatedByIDHasSuffix))
+	}
+	if i.CreatedByIDIsNil {
+		predicates = append(predicates, tenderprofile.CreatedByIDIsNil())
+	}
+	if i.CreatedByIDNotNil {
+		predicates = append(predicates, tenderprofile.CreatedByIDNotNil())
+	}
+	if i.CreatedByIDEqualFold != nil {
+		predicates = append(predicates, tenderprofile.CreatedByIDEqualFold(*i.CreatedByIDEqualFold))
+	}
+	if i.CreatedByIDContainsFold != nil {
+		predicates = append(predicates, tenderprofile.CreatedByIDContainsFold(*i.CreatedByIDContainsFold))
+	}
+	if i.ApproverID != nil {
+		predicates = append(predicates, tenderprofile.ApproverIDEQ(*i.ApproverID))
+	}
+	if i.ApproverIDNEQ != nil {
+		predicates = append(predicates, tenderprofile.ApproverIDNEQ(*i.ApproverIDNEQ))
+	}
+	if len(i.ApproverIDIn) > 0 {
+		predicates = append(predicates, tenderprofile.ApproverIDIn(i.ApproverIDIn...))
+	}
+	if len(i.ApproverIDNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.ApproverIDNotIn(i.ApproverIDNotIn...))
+	}
+	if i.ApproverIDGT != nil {
+		predicates = append(predicates, tenderprofile.ApproverIDGT(*i.ApproverIDGT))
+	}
+	if i.ApproverIDGTE != nil {
+		predicates = append(predicates, tenderprofile.ApproverIDGTE(*i.ApproverIDGTE))
+	}
+	if i.ApproverIDLT != nil {
+		predicates = append(predicates, tenderprofile.ApproverIDLT(*i.ApproverIDLT))
+	}
+	if i.ApproverIDLTE != nil {
+		predicates = append(predicates, tenderprofile.ApproverIDLTE(*i.ApproverIDLTE))
+	}
+	if i.ApproverIDContains != nil {
+		predicates = append(predicates, tenderprofile.ApproverIDContains(*i.ApproverIDContains))
+	}
+	if i.ApproverIDHasPrefix != nil {
+		predicates = append(predicates, tenderprofile.ApproverIDHasPrefix(*i.ApproverIDHasPrefix))
+	}
+	if i.ApproverIDHasSuffix != nil {
+		predicates = append(predicates, tenderprofile.ApproverIDHasSuffix(*i.ApproverIDHasSuffix))
+	}
+	if i.ApproverIDIsNil {
+		predicates = append(predicates, tenderprofile.ApproverIDIsNil())
+	}
+	if i.ApproverIDNotNil {
+		predicates = append(predicates, tenderprofile.ApproverIDNotNil())
+	}
+	if i.ApproverIDEqualFold != nil {
+		predicates = append(predicates, tenderprofile.ApproverIDEqualFold(*i.ApproverIDEqualFold))
+	}
+	if i.ApproverIDContainsFold != nil {
+		predicates = append(predicates, tenderprofile.ApproverIDContainsFold(*i.ApproverIDContainsFold))
+	}
+	if i.UpdatedByID != nil {
+		predicates = append(predicates, tenderprofile.UpdatedByIDEQ(*i.UpdatedByID))
+	}
+	if i.UpdatedByIDNEQ != nil {
+		predicates = append(predicates, tenderprofile.UpdatedByIDNEQ(*i.UpdatedByIDNEQ))
+	}
+	if len(i.UpdatedByIDIn) > 0 {
+		predicates = append(predicates, tenderprofile.UpdatedByIDIn(i.UpdatedByIDIn...))
+	}
+	if len(i.UpdatedByIDNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.UpdatedByIDNotIn(i.UpdatedByIDNotIn...))
+	}
+	if i.UpdatedByIDGT != nil {
+		predicates = append(predicates, tenderprofile.UpdatedByIDGT(*i.UpdatedByIDGT))
+	}
+	if i.UpdatedByIDGTE != nil {
+		predicates = append(predicates, tenderprofile.UpdatedByIDGTE(*i.UpdatedByIDGTE))
+	}
+	if i.UpdatedByIDLT != nil {
+		predicates = append(predicates, tenderprofile.UpdatedByIDLT(*i.UpdatedByIDLT))
+	}
+	if i.UpdatedByIDLTE != nil {
+		predicates = append(predicates, tenderprofile.UpdatedByIDLTE(*i.UpdatedByIDLTE))
+	}
+	if i.UpdatedByIDContains != nil {
+		predicates = append(predicates, tenderprofile.UpdatedByIDContains(*i.UpdatedByIDContains))
+	}
+	if i.UpdatedByIDHasPrefix != nil {
+		predicates = append(predicates, tenderprofile.UpdatedByIDHasPrefix(*i.UpdatedByIDHasPrefix))
+	}
+	if i.UpdatedByIDHasSuffix != nil {
+		predicates = append(predicates, tenderprofile.UpdatedByIDHasSuffix(*i.UpdatedByIDHasSuffix))
+	}
+	if i.UpdatedByIDIsNil {
+		predicates = append(predicates, tenderprofile.UpdatedByIDIsNil())
+	}
+	if i.UpdatedByIDNotNil {
+		predicates = append(predicates, tenderprofile.UpdatedByIDNotNil())
+	}
+	if i.UpdatedByIDEqualFold != nil {
+		predicates = append(predicates, tenderprofile.UpdatedByIDEqualFold(*i.UpdatedByIDEqualFold))
+	}
+	if i.UpdatedByIDContainsFold != nil {
+		predicates = append(predicates, tenderprofile.UpdatedByIDContainsFold(*i.UpdatedByIDContainsFold))
+	}
+
+	if i.HasTender != nil {
+		p := tenderprofile.HasTender()
+		if !*i.HasTender {
+			p = tenderprofile.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasTenderWith) > 0 {
+		with := make([]predicate.Tender, 0, len(i.HasTenderWith))
+		for _, w := range i.HasTenderWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'HasTenderWith'", err)
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, tenderprofile.HasTenderWith(with...))
+	}
+	if i.HasCustomer != nil {
+		p := tenderprofile.HasCustomer()
+		if !*i.HasCustomer {
+			p = tenderprofile.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasCustomerWith) > 0 {
+		with := make([]predicate.Customer, 0, len(i.HasCustomerWith))
+		for _, w := range i.HasCustomerWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'HasCustomerWith'", err)
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, tenderprofile.HasCustomerWith(with...))
+	}
+	if i.HasFinder != nil {
+		p := tenderprofile.HasFinder()
+		if !*i.HasFinder {
+			p = tenderprofile.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasFinderWith) > 0 {
+		with := make([]predicate.User, 0, len(i.HasFinderWith))
+		for _, w := range i.HasFinderWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'HasFinderWith'", err)
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, tenderprofile.HasFinderWith(with...))
+	}
+	if i.HasCreatedBy != nil {
+		p := tenderprofile.HasCreatedBy()
+		if !*i.HasCreatedBy {
+			p = tenderprofile.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasCreatedByWith) > 0 {
+		with := make([]predicate.User, 0, len(i.HasCreatedByWith))
+		for _, w := range i.HasCreatedByWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'HasCreatedByWith'", err)
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, tenderprofile.HasCreatedByWith(with...))
+	}
+	if i.HasProvince != nil {
+		p := tenderprofile.HasProvince()
+		if !*i.HasProvince {
+			p = tenderprofile.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasProvinceWith) > 0 {
+		with := make([]predicate.Province, 0, len(i.HasProvinceWith))
+		for _, w := range i.HasProvinceWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'HasProvinceWith'", err)
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, tenderprofile.HasProvinceWith(with...))
+	}
+	if i.HasCity != nil {
+		p := tenderprofile.HasCity()
+		if !*i.HasCity {
+			p = tenderprofile.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasCityWith) > 0 {
+		with := make([]predicate.City, 0, len(i.HasCityWith))
+		for _, w := range i.HasCityWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'HasCityWith'", err)
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, tenderprofile.HasCityWith(with...))
+	}
+	if i.HasDistrict != nil {
+		p := tenderprofile.HasDistrict()
+		if !*i.HasDistrict {
+			p = tenderprofile.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasDistrictWith) > 0 {
+		with := make([]predicate.District, 0, len(i.HasDistrictWith))
+		for _, w := range i.HasDistrictWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'HasDistrictWith'", err)
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, tenderprofile.HasDistrictWith(with...))
+	}
+	if i.HasApprover != nil {
+		p := tenderprofile.HasApprover()
+		if !*i.HasApprover {
+			p = tenderprofile.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasApproverWith) > 0 {
+		with := make([]predicate.User, 0, len(i.HasApproverWith))
+		for _, w := range i.HasApproverWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'HasApproverWith'", err)
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, tenderprofile.HasApproverWith(with...))
+	}
+	if i.HasUpdatedBy != nil {
+		p := tenderprofile.HasUpdatedBy()
+		if !*i.HasUpdatedBy {
+			p = tenderprofile.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasUpdatedByWith) > 0 {
+		with := make([]predicate.User, 0, len(i.HasUpdatedByWith))
+		for _, w := range i.HasUpdatedByWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'HasUpdatedByWith'", err)
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, tenderprofile.HasUpdatedByWith(with...))
+	}
+	switch len(predicates) {
+	case 0:
+		return nil, ErrEmptyTenderProfileWhereInput
+	case 1:
+		return predicates[0], nil
+	default:
+		return tenderprofile.And(predicates...), nil
 	}
 }
 

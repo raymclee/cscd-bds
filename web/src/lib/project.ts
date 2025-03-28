@@ -1,10 +1,10 @@
-import { operationsPageQuery$data } from "__generated__/operationsPageQuery.graphql";
+import { operationsIndexPageQuery$data } from "__generated__/operationsIndexPageQuery.graphql";
 
 export type Project = NonNullable<
   NonNullable<
     NonNullable<
       NonNullable<
-        NonNullable<operationsPageQuery$data["node"]>["projects"]
+        NonNullable<operationsIndexPageQuery$data["node"]>["projects"]
       >["edges"]
     >
   >[0]

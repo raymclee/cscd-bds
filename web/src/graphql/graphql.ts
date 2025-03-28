@@ -831,6 +831,7 @@ export type CreateTenderInput = {
   name: Scalars['String']['input'];
   ownerSituations?: InputMaybe<Scalars['String']['input']>;
   prepareToBid?: InputMaybe<Scalars['Boolean']['input']>;
+  profileIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   projectCode?: InputMaybe<Scalars['String']['input']>;
   projectDefinition?: InputMaybe<Scalars['String']['input']>;
   projectType?: InputMaybe<Scalars['String']['input']>;
@@ -1483,6 +1484,7 @@ export type LoseTenderInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   approveCustomerRequest: Customer;
+  approveTender: Tender;
   createArea: AreaConnection;
   createCompetitor: Competitor;
   createCustomer: CustomerConnection;
@@ -1498,6 +1500,7 @@ export type Mutation = {
   deleteVisitRecord: VisitRecord;
   loseTender: Tender;
   rejectCustomerRequest: Customer;
+  rejectTender: Tender;
   updateArea: Area;
   updateCompetitor: Competitor;
   updateCustomer: Customer;
@@ -1512,6 +1515,11 @@ export type Mutation = {
 
 
 export type MutationApproveCustomerRequestArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type MutationApproveTenderArgs = {
   id: Scalars['ID']['input'];
 };
 
@@ -1593,6 +1601,11 @@ export type MutationLoseTenderArgs = {
 
 
 export type MutationRejectCustomerRequestArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type MutationRejectTenderArgs = {
   id: Scalars['ID']['input'];
 };
 
@@ -4322,6 +4335,7 @@ export type Tender = Node & {
   name: Scalars['String']['output'];
   ownerSituations?: Maybe<Scalars['String']['output']>;
   prepareToBid: Scalars['Boolean']['output'];
+  profiles?: Maybe<Array<TenderProfile>>;
   projectCode?: Maybe<Scalars['String']['output']>;
   projectDefinition?: Maybe<Scalars['String']['output']>;
   projectType?: Maybe<Scalars['String']['output']>;
@@ -4523,6 +4537,1039 @@ export enum TenderOrderField {
   Name = 'NAME',
   TenderDate = 'TENDER_DATE'
 }
+
+export type TenderProfile = Node & {
+  __typename?: 'TenderProfile';
+  address?: Maybe<Scalars['String']['output']>;
+  /** 審核飛書訊息ID */
+  approvalMsgID?: Maybe<Scalars['String']['output']>;
+  /** 1 待審核 2 已通過 3 已拒絕 */
+  approvalStatus: Scalars['Int']['output'];
+  approver?: Maybe<User>;
+  approverID?: Maybe<Scalars['ID']['output']>;
+  /** 則師，只限港澳 */
+  architect?: Maybe<Scalars['String']['output']>;
+  attachments?: Maybe<Array<Scalars['String']['output']>>;
+  biddingDate?: Maybe<Scalars['Time']['output']>;
+  biddingInstructions?: Maybe<Scalars['String']['output']>;
+  city?: Maybe<City>;
+  cityID?: Maybe<Scalars['ID']['output']>;
+  classify?: Maybe<Scalars['Int']['output']>;
+  competitivePartnershipRating?: Maybe<Scalars['Int']['output']>;
+  competitivePartnershipRatingOverview?: Maybe<Scalars['String']['output']>;
+  competitorSituations?: Maybe<Scalars['String']['output']>;
+  /** 施工面積，只限港澳 */
+  constructionArea?: Maybe<Scalars['String']['output']>;
+  consultingFirm?: Maybe<Scalars['String']['output']>;
+  contractForm?: Maybe<Scalars['String']['output']>;
+  contractor?: Maybe<Scalars['String']['output']>;
+  costEngineer?: Maybe<Scalars['String']['output']>;
+  createdAt: Scalars['Time']['output'];
+  createdBy?: Maybe<User>;
+  createdByID?: Maybe<Scalars['ID']['output']>;
+  creditAndPaymentRating?: Maybe<Scalars['Int']['output']>;
+  creditAndPaymentRatingOverview?: Maybe<Scalars['String']['output']>;
+  currentProgress?: Maybe<Scalars['String']['output']>;
+  customer?: Maybe<Customer>;
+  customerID?: Maybe<Scalars['ID']['output']>;
+  customerRelationshipRating?: Maybe<Scalars['Int']['output']>;
+  customerRelationshipRatingOverview?: Maybe<Scalars['String']['output']>;
+  designUnit?: Maybe<Scalars['String']['output']>;
+  /** 業主，只限港澳 */
+  developer?: Maybe<Scalars['String']['output']>;
+  discoveryDate: Scalars['Time']['output'];
+  district?: Maybe<District>;
+  districtID?: Maybe<Scalars['ID']['output']>;
+  estimatedAmount?: Maybe<Scalars['Float']['output']>;
+  estimatedProjectEndDate?: Maybe<Scalars['Time']['output']>;
+  estimatedProjectStartDate?: Maybe<Scalars['Time']['output']>;
+  facadeConsultant?: Maybe<Scalars['String']['output']>;
+  finder?: Maybe<User>;
+  finderID?: Maybe<Scalars['ID']['output']>;
+  fullAddress?: Maybe<Scalars['String']['output']>;
+  geoCoordinate?: Maybe<Array<Scalars['Float']['output']>>;
+  id: Scalars['ID']['output'];
+  images?: Maybe<Array<Scalars['String']['output']>>;
+  keyProject: Scalars['Boolean']['output'];
+  /** 最後一次投標金額，只限港澳 */
+  lastTenderAmount?: Maybe<Scalars['Float']['output']>;
+  levelInvolved?: Maybe<Scalars['Int']['output']>;
+  managementCompany?: Maybe<Scalars['String']['output']>;
+  name: Scalars['String']['output'];
+  ownerSituations?: Maybe<Scalars['String']['output']>;
+  prepareToBid: Scalars['Boolean']['output'];
+  projectCode?: Maybe<Scalars['String']['output']>;
+  projectDefinition?: Maybe<Scalars['String']['output']>;
+  projectType?: Maybe<Scalars['String']['output']>;
+  province?: Maybe<Province>;
+  provinceID?: Maybe<Scalars['ID']['output']>;
+  remark?: Maybe<Scalars['String']['output']>;
+  sizeAndValueRating?: Maybe<Scalars['Int']['output']>;
+  sizeAndValueRatingOverview?: Maybe<Scalars['String']['output']>;
+  status: Scalars['Int']['output'];
+  tender: Tender;
+  /** 交標日期，只限港澳 */
+  tenderClosingDate?: Maybe<Scalars['Time']['output']>;
+  /** 投標編號，只限港澳 */
+  tenderCode?: Maybe<Scalars['String']['output']>;
+  tenderDate?: Maybe<Scalars['Time']['output']>;
+  tenderForm?: Maybe<Scalars['String']['output']>;
+  tenderID: Scalars['ID']['output'];
+  tenderSituations?: Maybe<Scalars['String']['output']>;
+  /** 得標金額 */
+  tenderWinAmount?: Maybe<Scalars['Float']['output']>;
+  tenderWinCompany?: Maybe<Scalars['String']['output']>;
+  /** 得標日期，只限港澳 */
+  tenderWinDate?: Maybe<Scalars['Time']['output']>;
+  tenderingAgency?: Maybe<Scalars['String']['output']>;
+  timeLimitRating?: Maybe<Scalars['Int']['output']>;
+  timeLimitRatingOverview?: Maybe<Scalars['String']['output']>;
+  updatedAt: Scalars['Time']['output'];
+  updatedBy?: Maybe<User>;
+  updatedByID?: Maybe<Scalars['ID']['output']>;
+};
+
+/** Ordering options for TenderProfile connections */
+export type TenderProfileOrder = {
+  /** The ordering direction. */
+  direction?: OrderDirection;
+  /** The field by which to order TenderProfiles. */
+  field: TenderProfileOrderField;
+};
+
+/** Properties by which TenderProfile connections can be ordered. */
+export enum TenderProfileOrderField {
+  ApprovalStatus = 'APPROVAL_STATUS',
+  ClosingDate = 'CLOSING_DATE',
+  CreatedAt = 'CREATED_AT',
+  Name = 'NAME',
+  TenderDate = 'TENDER_DATE'
+}
+
+/**
+ * TenderProfileWhereInput is used for filtering TenderProfile objects.
+ * Input was generated by ent.
+ */
+export type TenderProfileWhereInput = {
+  /** address field predicates */
+  address?: InputMaybe<Scalars['String']['input']>;
+  addressContains?: InputMaybe<Scalars['String']['input']>;
+  addressContainsFold?: InputMaybe<Scalars['String']['input']>;
+  addressEqualFold?: InputMaybe<Scalars['String']['input']>;
+  addressGT?: InputMaybe<Scalars['String']['input']>;
+  addressGTE?: InputMaybe<Scalars['String']['input']>;
+  addressHasPrefix?: InputMaybe<Scalars['String']['input']>;
+  addressHasSuffix?: InputMaybe<Scalars['String']['input']>;
+  addressIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  addressIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  addressLT?: InputMaybe<Scalars['String']['input']>;
+  addressLTE?: InputMaybe<Scalars['String']['input']>;
+  addressNEQ?: InputMaybe<Scalars['String']['input']>;
+  addressNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  addressNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  and?: InputMaybe<Array<TenderProfileWhereInput>>;
+  /** approval_msg_id field predicates */
+  approvalMsgID?: InputMaybe<Scalars['String']['input']>;
+  approvalMsgIDContains?: InputMaybe<Scalars['String']['input']>;
+  approvalMsgIDContainsFold?: InputMaybe<Scalars['String']['input']>;
+  approvalMsgIDEqualFold?: InputMaybe<Scalars['String']['input']>;
+  approvalMsgIDGT?: InputMaybe<Scalars['String']['input']>;
+  approvalMsgIDGTE?: InputMaybe<Scalars['String']['input']>;
+  approvalMsgIDHasPrefix?: InputMaybe<Scalars['String']['input']>;
+  approvalMsgIDHasSuffix?: InputMaybe<Scalars['String']['input']>;
+  approvalMsgIDIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  approvalMsgIDIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  approvalMsgIDLT?: InputMaybe<Scalars['String']['input']>;
+  approvalMsgIDLTE?: InputMaybe<Scalars['String']['input']>;
+  approvalMsgIDNEQ?: InputMaybe<Scalars['String']['input']>;
+  approvalMsgIDNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  approvalMsgIDNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** approval_status field predicates */
+  approvalStatus?: InputMaybe<Scalars['Int']['input']>;
+  approvalStatusGT?: InputMaybe<Scalars['Int']['input']>;
+  approvalStatusGTE?: InputMaybe<Scalars['Int']['input']>;
+  approvalStatusIn?: InputMaybe<Array<Scalars['Int']['input']>>;
+  approvalStatusLT?: InputMaybe<Scalars['Int']['input']>;
+  approvalStatusLTE?: InputMaybe<Scalars['Int']['input']>;
+  approvalStatusNEQ?: InputMaybe<Scalars['Int']['input']>;
+  approvalStatusNotIn?: InputMaybe<Array<Scalars['Int']['input']>>;
+  /** approver_id field predicates */
+  approverID?: InputMaybe<Scalars['ID']['input']>;
+  approverIDContains?: InputMaybe<Scalars['ID']['input']>;
+  approverIDContainsFold?: InputMaybe<Scalars['ID']['input']>;
+  approverIDEqualFold?: InputMaybe<Scalars['ID']['input']>;
+  approverIDGT?: InputMaybe<Scalars['ID']['input']>;
+  approverIDGTE?: InputMaybe<Scalars['ID']['input']>;
+  approverIDHasPrefix?: InputMaybe<Scalars['ID']['input']>;
+  approverIDHasSuffix?: InputMaybe<Scalars['ID']['input']>;
+  approverIDIn?: InputMaybe<Array<Scalars['ID']['input']>>;
+  approverIDIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  approverIDLT?: InputMaybe<Scalars['ID']['input']>;
+  approverIDLTE?: InputMaybe<Scalars['ID']['input']>;
+  approverIDNEQ?: InputMaybe<Scalars['ID']['input']>;
+  approverIDNotIn?: InputMaybe<Array<Scalars['ID']['input']>>;
+  approverIDNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** architect field predicates */
+  architect?: InputMaybe<Scalars['String']['input']>;
+  architectContains?: InputMaybe<Scalars['String']['input']>;
+  architectContainsFold?: InputMaybe<Scalars['String']['input']>;
+  architectEqualFold?: InputMaybe<Scalars['String']['input']>;
+  architectGT?: InputMaybe<Scalars['String']['input']>;
+  architectGTE?: InputMaybe<Scalars['String']['input']>;
+  architectHasPrefix?: InputMaybe<Scalars['String']['input']>;
+  architectHasSuffix?: InputMaybe<Scalars['String']['input']>;
+  architectIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  architectIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  architectLT?: InputMaybe<Scalars['String']['input']>;
+  architectLTE?: InputMaybe<Scalars['String']['input']>;
+  architectNEQ?: InputMaybe<Scalars['String']['input']>;
+  architectNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  architectNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** bidding_date field predicates */
+  biddingDate?: InputMaybe<Scalars['Time']['input']>;
+  biddingDateGT?: InputMaybe<Scalars['Time']['input']>;
+  biddingDateGTE?: InputMaybe<Scalars['Time']['input']>;
+  biddingDateIn?: InputMaybe<Array<Scalars['Time']['input']>>;
+  biddingDateIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  biddingDateLT?: InputMaybe<Scalars['Time']['input']>;
+  biddingDateLTE?: InputMaybe<Scalars['Time']['input']>;
+  biddingDateNEQ?: InputMaybe<Scalars['Time']['input']>;
+  biddingDateNotIn?: InputMaybe<Array<Scalars['Time']['input']>>;
+  biddingDateNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** bidding_instructions field predicates */
+  biddingInstructions?: InputMaybe<Scalars['String']['input']>;
+  biddingInstructionsContains?: InputMaybe<Scalars['String']['input']>;
+  biddingInstructionsContainsFold?: InputMaybe<Scalars['String']['input']>;
+  biddingInstructionsEqualFold?: InputMaybe<Scalars['String']['input']>;
+  biddingInstructionsGT?: InputMaybe<Scalars['String']['input']>;
+  biddingInstructionsGTE?: InputMaybe<Scalars['String']['input']>;
+  biddingInstructionsHasPrefix?: InputMaybe<Scalars['String']['input']>;
+  biddingInstructionsHasSuffix?: InputMaybe<Scalars['String']['input']>;
+  biddingInstructionsIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  biddingInstructionsIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  biddingInstructionsLT?: InputMaybe<Scalars['String']['input']>;
+  biddingInstructionsLTE?: InputMaybe<Scalars['String']['input']>;
+  biddingInstructionsNEQ?: InputMaybe<Scalars['String']['input']>;
+  biddingInstructionsNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  biddingInstructionsNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** city_id field predicates */
+  cityID?: InputMaybe<Scalars['ID']['input']>;
+  cityIDContains?: InputMaybe<Scalars['ID']['input']>;
+  cityIDContainsFold?: InputMaybe<Scalars['ID']['input']>;
+  cityIDEqualFold?: InputMaybe<Scalars['ID']['input']>;
+  cityIDGT?: InputMaybe<Scalars['ID']['input']>;
+  cityIDGTE?: InputMaybe<Scalars['ID']['input']>;
+  cityIDHasPrefix?: InputMaybe<Scalars['ID']['input']>;
+  cityIDHasSuffix?: InputMaybe<Scalars['ID']['input']>;
+  cityIDIn?: InputMaybe<Array<Scalars['ID']['input']>>;
+  cityIDIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  cityIDLT?: InputMaybe<Scalars['ID']['input']>;
+  cityIDLTE?: InputMaybe<Scalars['ID']['input']>;
+  cityIDNEQ?: InputMaybe<Scalars['ID']['input']>;
+  cityIDNotIn?: InputMaybe<Array<Scalars['ID']['input']>>;
+  cityIDNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** classify field predicates */
+  classify?: InputMaybe<Scalars['Int']['input']>;
+  classifyGT?: InputMaybe<Scalars['Int']['input']>;
+  classifyGTE?: InputMaybe<Scalars['Int']['input']>;
+  classifyIn?: InputMaybe<Array<Scalars['Int']['input']>>;
+  classifyIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  classifyLT?: InputMaybe<Scalars['Int']['input']>;
+  classifyLTE?: InputMaybe<Scalars['Int']['input']>;
+  classifyNEQ?: InputMaybe<Scalars['Int']['input']>;
+  classifyNotIn?: InputMaybe<Array<Scalars['Int']['input']>>;
+  classifyNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** competitive_partnership_rating field predicates */
+  competitivePartnershipRating?: InputMaybe<Scalars['Int']['input']>;
+  competitivePartnershipRatingGT?: InputMaybe<Scalars['Int']['input']>;
+  competitivePartnershipRatingGTE?: InputMaybe<Scalars['Int']['input']>;
+  competitivePartnershipRatingIn?: InputMaybe<Array<Scalars['Int']['input']>>;
+  competitivePartnershipRatingIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  competitivePartnershipRatingLT?: InputMaybe<Scalars['Int']['input']>;
+  competitivePartnershipRatingLTE?: InputMaybe<Scalars['Int']['input']>;
+  competitivePartnershipRatingNEQ?: InputMaybe<Scalars['Int']['input']>;
+  competitivePartnershipRatingNotIn?: InputMaybe<Array<Scalars['Int']['input']>>;
+  competitivePartnershipRatingNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** competitive_partnership_rating_overview field predicates */
+  competitivePartnershipRatingOverview?: InputMaybe<Scalars['String']['input']>;
+  competitivePartnershipRatingOverviewContains?: InputMaybe<Scalars['String']['input']>;
+  competitivePartnershipRatingOverviewContainsFold?: InputMaybe<Scalars['String']['input']>;
+  competitivePartnershipRatingOverviewEqualFold?: InputMaybe<Scalars['String']['input']>;
+  competitivePartnershipRatingOverviewGT?: InputMaybe<Scalars['String']['input']>;
+  competitivePartnershipRatingOverviewGTE?: InputMaybe<Scalars['String']['input']>;
+  competitivePartnershipRatingOverviewHasPrefix?: InputMaybe<Scalars['String']['input']>;
+  competitivePartnershipRatingOverviewHasSuffix?: InputMaybe<Scalars['String']['input']>;
+  competitivePartnershipRatingOverviewIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  competitivePartnershipRatingOverviewIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  competitivePartnershipRatingOverviewLT?: InputMaybe<Scalars['String']['input']>;
+  competitivePartnershipRatingOverviewLTE?: InputMaybe<Scalars['String']['input']>;
+  competitivePartnershipRatingOverviewNEQ?: InputMaybe<Scalars['String']['input']>;
+  competitivePartnershipRatingOverviewNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  competitivePartnershipRatingOverviewNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** competitor_situations field predicates */
+  competitorSituations?: InputMaybe<Scalars['String']['input']>;
+  competitorSituationsContains?: InputMaybe<Scalars['String']['input']>;
+  competitorSituationsContainsFold?: InputMaybe<Scalars['String']['input']>;
+  competitorSituationsEqualFold?: InputMaybe<Scalars['String']['input']>;
+  competitorSituationsGT?: InputMaybe<Scalars['String']['input']>;
+  competitorSituationsGTE?: InputMaybe<Scalars['String']['input']>;
+  competitorSituationsHasPrefix?: InputMaybe<Scalars['String']['input']>;
+  competitorSituationsHasSuffix?: InputMaybe<Scalars['String']['input']>;
+  competitorSituationsIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  competitorSituationsIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  competitorSituationsLT?: InputMaybe<Scalars['String']['input']>;
+  competitorSituationsLTE?: InputMaybe<Scalars['String']['input']>;
+  competitorSituationsNEQ?: InputMaybe<Scalars['String']['input']>;
+  competitorSituationsNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  competitorSituationsNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** construction_area field predicates */
+  constructionArea?: InputMaybe<Scalars['String']['input']>;
+  constructionAreaContains?: InputMaybe<Scalars['String']['input']>;
+  constructionAreaContainsFold?: InputMaybe<Scalars['String']['input']>;
+  constructionAreaEqualFold?: InputMaybe<Scalars['String']['input']>;
+  constructionAreaGT?: InputMaybe<Scalars['String']['input']>;
+  constructionAreaGTE?: InputMaybe<Scalars['String']['input']>;
+  constructionAreaHasPrefix?: InputMaybe<Scalars['String']['input']>;
+  constructionAreaHasSuffix?: InputMaybe<Scalars['String']['input']>;
+  constructionAreaIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  constructionAreaIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  constructionAreaLT?: InputMaybe<Scalars['String']['input']>;
+  constructionAreaLTE?: InputMaybe<Scalars['String']['input']>;
+  constructionAreaNEQ?: InputMaybe<Scalars['String']['input']>;
+  constructionAreaNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  constructionAreaNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** consulting_firm field predicates */
+  consultingFirm?: InputMaybe<Scalars['String']['input']>;
+  consultingFirmContains?: InputMaybe<Scalars['String']['input']>;
+  consultingFirmContainsFold?: InputMaybe<Scalars['String']['input']>;
+  consultingFirmEqualFold?: InputMaybe<Scalars['String']['input']>;
+  consultingFirmGT?: InputMaybe<Scalars['String']['input']>;
+  consultingFirmGTE?: InputMaybe<Scalars['String']['input']>;
+  consultingFirmHasPrefix?: InputMaybe<Scalars['String']['input']>;
+  consultingFirmHasSuffix?: InputMaybe<Scalars['String']['input']>;
+  consultingFirmIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  consultingFirmIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  consultingFirmLT?: InputMaybe<Scalars['String']['input']>;
+  consultingFirmLTE?: InputMaybe<Scalars['String']['input']>;
+  consultingFirmNEQ?: InputMaybe<Scalars['String']['input']>;
+  consultingFirmNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  consultingFirmNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** contract_form field predicates */
+  contractForm?: InputMaybe<Scalars['String']['input']>;
+  contractFormContains?: InputMaybe<Scalars['String']['input']>;
+  contractFormContainsFold?: InputMaybe<Scalars['String']['input']>;
+  contractFormEqualFold?: InputMaybe<Scalars['String']['input']>;
+  contractFormGT?: InputMaybe<Scalars['String']['input']>;
+  contractFormGTE?: InputMaybe<Scalars['String']['input']>;
+  contractFormHasPrefix?: InputMaybe<Scalars['String']['input']>;
+  contractFormHasSuffix?: InputMaybe<Scalars['String']['input']>;
+  contractFormIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  contractFormIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  contractFormLT?: InputMaybe<Scalars['String']['input']>;
+  contractFormLTE?: InputMaybe<Scalars['String']['input']>;
+  contractFormNEQ?: InputMaybe<Scalars['String']['input']>;
+  contractFormNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  contractFormNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** contractor field predicates */
+  contractor?: InputMaybe<Scalars['String']['input']>;
+  contractorContains?: InputMaybe<Scalars['String']['input']>;
+  contractorContainsFold?: InputMaybe<Scalars['String']['input']>;
+  contractorEqualFold?: InputMaybe<Scalars['String']['input']>;
+  contractorGT?: InputMaybe<Scalars['String']['input']>;
+  contractorGTE?: InputMaybe<Scalars['String']['input']>;
+  contractorHasPrefix?: InputMaybe<Scalars['String']['input']>;
+  contractorHasSuffix?: InputMaybe<Scalars['String']['input']>;
+  contractorIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  contractorIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  contractorLT?: InputMaybe<Scalars['String']['input']>;
+  contractorLTE?: InputMaybe<Scalars['String']['input']>;
+  contractorNEQ?: InputMaybe<Scalars['String']['input']>;
+  contractorNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  contractorNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** cost_engineer field predicates */
+  costEngineer?: InputMaybe<Scalars['String']['input']>;
+  costEngineerContains?: InputMaybe<Scalars['String']['input']>;
+  costEngineerContainsFold?: InputMaybe<Scalars['String']['input']>;
+  costEngineerEqualFold?: InputMaybe<Scalars['String']['input']>;
+  costEngineerGT?: InputMaybe<Scalars['String']['input']>;
+  costEngineerGTE?: InputMaybe<Scalars['String']['input']>;
+  costEngineerHasPrefix?: InputMaybe<Scalars['String']['input']>;
+  costEngineerHasSuffix?: InputMaybe<Scalars['String']['input']>;
+  costEngineerIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  costEngineerIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  costEngineerLT?: InputMaybe<Scalars['String']['input']>;
+  costEngineerLTE?: InputMaybe<Scalars['String']['input']>;
+  costEngineerNEQ?: InputMaybe<Scalars['String']['input']>;
+  costEngineerNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  costEngineerNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** created_at field predicates */
+  createdAt?: InputMaybe<Scalars['Time']['input']>;
+  createdAtGT?: InputMaybe<Scalars['Time']['input']>;
+  createdAtGTE?: InputMaybe<Scalars['Time']['input']>;
+  createdAtIn?: InputMaybe<Array<Scalars['Time']['input']>>;
+  createdAtLT?: InputMaybe<Scalars['Time']['input']>;
+  createdAtLTE?: InputMaybe<Scalars['Time']['input']>;
+  createdAtNEQ?: InputMaybe<Scalars['Time']['input']>;
+  createdAtNotIn?: InputMaybe<Array<Scalars['Time']['input']>>;
+  /** created_by_id field predicates */
+  createdByID?: InputMaybe<Scalars['ID']['input']>;
+  createdByIDContains?: InputMaybe<Scalars['ID']['input']>;
+  createdByIDContainsFold?: InputMaybe<Scalars['ID']['input']>;
+  createdByIDEqualFold?: InputMaybe<Scalars['ID']['input']>;
+  createdByIDGT?: InputMaybe<Scalars['ID']['input']>;
+  createdByIDGTE?: InputMaybe<Scalars['ID']['input']>;
+  createdByIDHasPrefix?: InputMaybe<Scalars['ID']['input']>;
+  createdByIDHasSuffix?: InputMaybe<Scalars['ID']['input']>;
+  createdByIDIn?: InputMaybe<Array<Scalars['ID']['input']>>;
+  createdByIDIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  createdByIDLT?: InputMaybe<Scalars['ID']['input']>;
+  createdByIDLTE?: InputMaybe<Scalars['ID']['input']>;
+  createdByIDNEQ?: InputMaybe<Scalars['ID']['input']>;
+  createdByIDNotIn?: InputMaybe<Array<Scalars['ID']['input']>>;
+  createdByIDNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** credit_and_payment_rating field predicates */
+  creditAndPaymentRating?: InputMaybe<Scalars['Int']['input']>;
+  creditAndPaymentRatingGT?: InputMaybe<Scalars['Int']['input']>;
+  creditAndPaymentRatingGTE?: InputMaybe<Scalars['Int']['input']>;
+  creditAndPaymentRatingIn?: InputMaybe<Array<Scalars['Int']['input']>>;
+  creditAndPaymentRatingIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  creditAndPaymentRatingLT?: InputMaybe<Scalars['Int']['input']>;
+  creditAndPaymentRatingLTE?: InputMaybe<Scalars['Int']['input']>;
+  creditAndPaymentRatingNEQ?: InputMaybe<Scalars['Int']['input']>;
+  creditAndPaymentRatingNotIn?: InputMaybe<Array<Scalars['Int']['input']>>;
+  creditAndPaymentRatingNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** credit_and_payment_rating_overview field predicates */
+  creditAndPaymentRatingOverview?: InputMaybe<Scalars['String']['input']>;
+  creditAndPaymentRatingOverviewContains?: InputMaybe<Scalars['String']['input']>;
+  creditAndPaymentRatingOverviewContainsFold?: InputMaybe<Scalars['String']['input']>;
+  creditAndPaymentRatingOverviewEqualFold?: InputMaybe<Scalars['String']['input']>;
+  creditAndPaymentRatingOverviewGT?: InputMaybe<Scalars['String']['input']>;
+  creditAndPaymentRatingOverviewGTE?: InputMaybe<Scalars['String']['input']>;
+  creditAndPaymentRatingOverviewHasPrefix?: InputMaybe<Scalars['String']['input']>;
+  creditAndPaymentRatingOverviewHasSuffix?: InputMaybe<Scalars['String']['input']>;
+  creditAndPaymentRatingOverviewIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  creditAndPaymentRatingOverviewIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  creditAndPaymentRatingOverviewLT?: InputMaybe<Scalars['String']['input']>;
+  creditAndPaymentRatingOverviewLTE?: InputMaybe<Scalars['String']['input']>;
+  creditAndPaymentRatingOverviewNEQ?: InputMaybe<Scalars['String']['input']>;
+  creditAndPaymentRatingOverviewNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  creditAndPaymentRatingOverviewNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** current_progress field predicates */
+  currentProgress?: InputMaybe<Scalars['String']['input']>;
+  currentProgressContains?: InputMaybe<Scalars['String']['input']>;
+  currentProgressContainsFold?: InputMaybe<Scalars['String']['input']>;
+  currentProgressEqualFold?: InputMaybe<Scalars['String']['input']>;
+  currentProgressGT?: InputMaybe<Scalars['String']['input']>;
+  currentProgressGTE?: InputMaybe<Scalars['String']['input']>;
+  currentProgressHasPrefix?: InputMaybe<Scalars['String']['input']>;
+  currentProgressHasSuffix?: InputMaybe<Scalars['String']['input']>;
+  currentProgressIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  currentProgressIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  currentProgressLT?: InputMaybe<Scalars['String']['input']>;
+  currentProgressLTE?: InputMaybe<Scalars['String']['input']>;
+  currentProgressNEQ?: InputMaybe<Scalars['String']['input']>;
+  currentProgressNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  currentProgressNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** customer_id field predicates */
+  customerID?: InputMaybe<Scalars['ID']['input']>;
+  customerIDContains?: InputMaybe<Scalars['ID']['input']>;
+  customerIDContainsFold?: InputMaybe<Scalars['ID']['input']>;
+  customerIDEqualFold?: InputMaybe<Scalars['ID']['input']>;
+  customerIDGT?: InputMaybe<Scalars['ID']['input']>;
+  customerIDGTE?: InputMaybe<Scalars['ID']['input']>;
+  customerIDHasPrefix?: InputMaybe<Scalars['ID']['input']>;
+  customerIDHasSuffix?: InputMaybe<Scalars['ID']['input']>;
+  customerIDIn?: InputMaybe<Array<Scalars['ID']['input']>>;
+  customerIDIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  customerIDLT?: InputMaybe<Scalars['ID']['input']>;
+  customerIDLTE?: InputMaybe<Scalars['ID']['input']>;
+  customerIDNEQ?: InputMaybe<Scalars['ID']['input']>;
+  customerIDNotIn?: InputMaybe<Array<Scalars['ID']['input']>>;
+  customerIDNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** customer_relationship_rating field predicates */
+  customerRelationshipRating?: InputMaybe<Scalars['Int']['input']>;
+  customerRelationshipRatingGT?: InputMaybe<Scalars['Int']['input']>;
+  customerRelationshipRatingGTE?: InputMaybe<Scalars['Int']['input']>;
+  customerRelationshipRatingIn?: InputMaybe<Array<Scalars['Int']['input']>>;
+  customerRelationshipRatingIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  customerRelationshipRatingLT?: InputMaybe<Scalars['Int']['input']>;
+  customerRelationshipRatingLTE?: InputMaybe<Scalars['Int']['input']>;
+  customerRelationshipRatingNEQ?: InputMaybe<Scalars['Int']['input']>;
+  customerRelationshipRatingNotIn?: InputMaybe<Array<Scalars['Int']['input']>>;
+  customerRelationshipRatingNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** customer_relationship_rating_overview field predicates */
+  customerRelationshipRatingOverview?: InputMaybe<Scalars['String']['input']>;
+  customerRelationshipRatingOverviewContains?: InputMaybe<Scalars['String']['input']>;
+  customerRelationshipRatingOverviewContainsFold?: InputMaybe<Scalars['String']['input']>;
+  customerRelationshipRatingOverviewEqualFold?: InputMaybe<Scalars['String']['input']>;
+  customerRelationshipRatingOverviewGT?: InputMaybe<Scalars['String']['input']>;
+  customerRelationshipRatingOverviewGTE?: InputMaybe<Scalars['String']['input']>;
+  customerRelationshipRatingOverviewHasPrefix?: InputMaybe<Scalars['String']['input']>;
+  customerRelationshipRatingOverviewHasSuffix?: InputMaybe<Scalars['String']['input']>;
+  customerRelationshipRatingOverviewIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  customerRelationshipRatingOverviewIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  customerRelationshipRatingOverviewLT?: InputMaybe<Scalars['String']['input']>;
+  customerRelationshipRatingOverviewLTE?: InputMaybe<Scalars['String']['input']>;
+  customerRelationshipRatingOverviewNEQ?: InputMaybe<Scalars['String']['input']>;
+  customerRelationshipRatingOverviewNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  customerRelationshipRatingOverviewNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** design_unit field predicates */
+  designUnit?: InputMaybe<Scalars['String']['input']>;
+  designUnitContains?: InputMaybe<Scalars['String']['input']>;
+  designUnitContainsFold?: InputMaybe<Scalars['String']['input']>;
+  designUnitEqualFold?: InputMaybe<Scalars['String']['input']>;
+  designUnitGT?: InputMaybe<Scalars['String']['input']>;
+  designUnitGTE?: InputMaybe<Scalars['String']['input']>;
+  designUnitHasPrefix?: InputMaybe<Scalars['String']['input']>;
+  designUnitHasSuffix?: InputMaybe<Scalars['String']['input']>;
+  designUnitIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  designUnitIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  designUnitLT?: InputMaybe<Scalars['String']['input']>;
+  designUnitLTE?: InputMaybe<Scalars['String']['input']>;
+  designUnitNEQ?: InputMaybe<Scalars['String']['input']>;
+  designUnitNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  designUnitNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** developer field predicates */
+  developer?: InputMaybe<Scalars['String']['input']>;
+  developerContains?: InputMaybe<Scalars['String']['input']>;
+  developerContainsFold?: InputMaybe<Scalars['String']['input']>;
+  developerEqualFold?: InputMaybe<Scalars['String']['input']>;
+  developerGT?: InputMaybe<Scalars['String']['input']>;
+  developerGTE?: InputMaybe<Scalars['String']['input']>;
+  developerHasPrefix?: InputMaybe<Scalars['String']['input']>;
+  developerHasSuffix?: InputMaybe<Scalars['String']['input']>;
+  developerIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  developerIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  developerLT?: InputMaybe<Scalars['String']['input']>;
+  developerLTE?: InputMaybe<Scalars['String']['input']>;
+  developerNEQ?: InputMaybe<Scalars['String']['input']>;
+  developerNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  developerNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** discovery_date field predicates */
+  discoveryDate?: InputMaybe<Scalars['Time']['input']>;
+  discoveryDateGT?: InputMaybe<Scalars['Time']['input']>;
+  discoveryDateGTE?: InputMaybe<Scalars['Time']['input']>;
+  discoveryDateIn?: InputMaybe<Array<Scalars['Time']['input']>>;
+  discoveryDateLT?: InputMaybe<Scalars['Time']['input']>;
+  discoveryDateLTE?: InputMaybe<Scalars['Time']['input']>;
+  discoveryDateNEQ?: InputMaybe<Scalars['Time']['input']>;
+  discoveryDateNotIn?: InputMaybe<Array<Scalars['Time']['input']>>;
+  /** district_id field predicates */
+  districtID?: InputMaybe<Scalars['ID']['input']>;
+  districtIDContains?: InputMaybe<Scalars['ID']['input']>;
+  districtIDContainsFold?: InputMaybe<Scalars['ID']['input']>;
+  districtIDEqualFold?: InputMaybe<Scalars['ID']['input']>;
+  districtIDGT?: InputMaybe<Scalars['ID']['input']>;
+  districtIDGTE?: InputMaybe<Scalars['ID']['input']>;
+  districtIDHasPrefix?: InputMaybe<Scalars['ID']['input']>;
+  districtIDHasSuffix?: InputMaybe<Scalars['ID']['input']>;
+  districtIDIn?: InputMaybe<Array<Scalars['ID']['input']>>;
+  districtIDIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  districtIDLT?: InputMaybe<Scalars['ID']['input']>;
+  districtIDLTE?: InputMaybe<Scalars['ID']['input']>;
+  districtIDNEQ?: InputMaybe<Scalars['ID']['input']>;
+  districtIDNotIn?: InputMaybe<Array<Scalars['ID']['input']>>;
+  districtIDNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** estimated_amount field predicates */
+  estimatedAmount?: InputMaybe<Scalars['Float']['input']>;
+  estimatedAmountGT?: InputMaybe<Scalars['Float']['input']>;
+  estimatedAmountGTE?: InputMaybe<Scalars['Float']['input']>;
+  estimatedAmountIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  estimatedAmountIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  estimatedAmountLT?: InputMaybe<Scalars['Float']['input']>;
+  estimatedAmountLTE?: InputMaybe<Scalars['Float']['input']>;
+  estimatedAmountNEQ?: InputMaybe<Scalars['Float']['input']>;
+  estimatedAmountNotIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  estimatedAmountNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** estimated_project_end_date field predicates */
+  estimatedProjectEndDate?: InputMaybe<Scalars['Time']['input']>;
+  estimatedProjectEndDateGT?: InputMaybe<Scalars['Time']['input']>;
+  estimatedProjectEndDateGTE?: InputMaybe<Scalars['Time']['input']>;
+  estimatedProjectEndDateIn?: InputMaybe<Array<Scalars['Time']['input']>>;
+  estimatedProjectEndDateIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  estimatedProjectEndDateLT?: InputMaybe<Scalars['Time']['input']>;
+  estimatedProjectEndDateLTE?: InputMaybe<Scalars['Time']['input']>;
+  estimatedProjectEndDateNEQ?: InputMaybe<Scalars['Time']['input']>;
+  estimatedProjectEndDateNotIn?: InputMaybe<Array<Scalars['Time']['input']>>;
+  estimatedProjectEndDateNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** estimated_project_start_date field predicates */
+  estimatedProjectStartDate?: InputMaybe<Scalars['Time']['input']>;
+  estimatedProjectStartDateGT?: InputMaybe<Scalars['Time']['input']>;
+  estimatedProjectStartDateGTE?: InputMaybe<Scalars['Time']['input']>;
+  estimatedProjectStartDateIn?: InputMaybe<Array<Scalars['Time']['input']>>;
+  estimatedProjectStartDateIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  estimatedProjectStartDateLT?: InputMaybe<Scalars['Time']['input']>;
+  estimatedProjectStartDateLTE?: InputMaybe<Scalars['Time']['input']>;
+  estimatedProjectStartDateNEQ?: InputMaybe<Scalars['Time']['input']>;
+  estimatedProjectStartDateNotIn?: InputMaybe<Array<Scalars['Time']['input']>>;
+  estimatedProjectStartDateNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** facade_consultant field predicates */
+  facadeConsultant?: InputMaybe<Scalars['String']['input']>;
+  facadeConsultantContains?: InputMaybe<Scalars['String']['input']>;
+  facadeConsultantContainsFold?: InputMaybe<Scalars['String']['input']>;
+  facadeConsultantEqualFold?: InputMaybe<Scalars['String']['input']>;
+  facadeConsultantGT?: InputMaybe<Scalars['String']['input']>;
+  facadeConsultantGTE?: InputMaybe<Scalars['String']['input']>;
+  facadeConsultantHasPrefix?: InputMaybe<Scalars['String']['input']>;
+  facadeConsultantHasSuffix?: InputMaybe<Scalars['String']['input']>;
+  facadeConsultantIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  facadeConsultantIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  facadeConsultantLT?: InputMaybe<Scalars['String']['input']>;
+  facadeConsultantLTE?: InputMaybe<Scalars['String']['input']>;
+  facadeConsultantNEQ?: InputMaybe<Scalars['String']['input']>;
+  facadeConsultantNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  facadeConsultantNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** finder_id field predicates */
+  finderID?: InputMaybe<Scalars['ID']['input']>;
+  finderIDContains?: InputMaybe<Scalars['ID']['input']>;
+  finderIDContainsFold?: InputMaybe<Scalars['ID']['input']>;
+  finderIDEqualFold?: InputMaybe<Scalars['ID']['input']>;
+  finderIDGT?: InputMaybe<Scalars['ID']['input']>;
+  finderIDGTE?: InputMaybe<Scalars['ID']['input']>;
+  finderIDHasPrefix?: InputMaybe<Scalars['ID']['input']>;
+  finderIDHasSuffix?: InputMaybe<Scalars['ID']['input']>;
+  finderIDIn?: InputMaybe<Array<Scalars['ID']['input']>>;
+  finderIDIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  finderIDLT?: InputMaybe<Scalars['ID']['input']>;
+  finderIDLTE?: InputMaybe<Scalars['ID']['input']>;
+  finderIDNEQ?: InputMaybe<Scalars['ID']['input']>;
+  finderIDNotIn?: InputMaybe<Array<Scalars['ID']['input']>>;
+  finderIDNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** full_address field predicates */
+  fullAddress?: InputMaybe<Scalars['String']['input']>;
+  fullAddressContains?: InputMaybe<Scalars['String']['input']>;
+  fullAddressContainsFold?: InputMaybe<Scalars['String']['input']>;
+  fullAddressEqualFold?: InputMaybe<Scalars['String']['input']>;
+  fullAddressGT?: InputMaybe<Scalars['String']['input']>;
+  fullAddressGTE?: InputMaybe<Scalars['String']['input']>;
+  fullAddressHasPrefix?: InputMaybe<Scalars['String']['input']>;
+  fullAddressHasSuffix?: InputMaybe<Scalars['String']['input']>;
+  fullAddressIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  fullAddressIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  fullAddressLT?: InputMaybe<Scalars['String']['input']>;
+  fullAddressLTE?: InputMaybe<Scalars['String']['input']>;
+  fullAddressNEQ?: InputMaybe<Scalars['String']['input']>;
+  fullAddressNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  fullAddressNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** approver edge predicates */
+  hasApprover?: InputMaybe<Scalars['Boolean']['input']>;
+  hasApproverWith?: InputMaybe<Array<UserWhereInput>>;
+  /** city edge predicates */
+  hasCity?: InputMaybe<Scalars['Boolean']['input']>;
+  hasCityWith?: InputMaybe<Array<CityWhereInput>>;
+  /** created_by edge predicates */
+  hasCreatedBy?: InputMaybe<Scalars['Boolean']['input']>;
+  hasCreatedByWith?: InputMaybe<Array<UserWhereInput>>;
+  /** customer edge predicates */
+  hasCustomer?: InputMaybe<Scalars['Boolean']['input']>;
+  hasCustomerWith?: InputMaybe<Array<CustomerWhereInput>>;
+  /** district edge predicates */
+  hasDistrict?: InputMaybe<Scalars['Boolean']['input']>;
+  hasDistrictWith?: InputMaybe<Array<DistrictWhereInput>>;
+  /** finder edge predicates */
+  hasFinder?: InputMaybe<Scalars['Boolean']['input']>;
+  hasFinderWith?: InputMaybe<Array<UserWhereInput>>;
+  /** province edge predicates */
+  hasProvince?: InputMaybe<Scalars['Boolean']['input']>;
+  hasProvinceWith?: InputMaybe<Array<ProvinceWhereInput>>;
+  /** tender edge predicates */
+  hasTender?: InputMaybe<Scalars['Boolean']['input']>;
+  hasTenderWith?: InputMaybe<Array<TenderWhereInput>>;
+  /** updated_by edge predicates */
+  hasUpdatedBy?: InputMaybe<Scalars['Boolean']['input']>;
+  hasUpdatedByWith?: InputMaybe<Array<UserWhereInput>>;
+  /** id field predicates */
+  id?: InputMaybe<Scalars['ID']['input']>;
+  idGT?: InputMaybe<Scalars['ID']['input']>;
+  idGTE?: InputMaybe<Scalars['ID']['input']>;
+  idIn?: InputMaybe<Array<Scalars['ID']['input']>>;
+  idLT?: InputMaybe<Scalars['ID']['input']>;
+  idLTE?: InputMaybe<Scalars['ID']['input']>;
+  idNEQ?: InputMaybe<Scalars['ID']['input']>;
+  idNotIn?: InputMaybe<Array<Scalars['ID']['input']>>;
+  /** key_project field predicates */
+  keyProject?: InputMaybe<Scalars['Boolean']['input']>;
+  keyProjectNEQ?: InputMaybe<Scalars['Boolean']['input']>;
+  /** last_tender_amount field predicates */
+  lastTenderAmount?: InputMaybe<Scalars['Float']['input']>;
+  lastTenderAmountGT?: InputMaybe<Scalars['Float']['input']>;
+  lastTenderAmountGTE?: InputMaybe<Scalars['Float']['input']>;
+  lastTenderAmountIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  lastTenderAmountIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  lastTenderAmountLT?: InputMaybe<Scalars['Float']['input']>;
+  lastTenderAmountLTE?: InputMaybe<Scalars['Float']['input']>;
+  lastTenderAmountNEQ?: InputMaybe<Scalars['Float']['input']>;
+  lastTenderAmountNotIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  lastTenderAmountNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** level_involved field predicates */
+  levelInvolved?: InputMaybe<Scalars['Int']['input']>;
+  levelInvolvedGT?: InputMaybe<Scalars['Int']['input']>;
+  levelInvolvedGTE?: InputMaybe<Scalars['Int']['input']>;
+  levelInvolvedIn?: InputMaybe<Array<Scalars['Int']['input']>>;
+  levelInvolvedIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  levelInvolvedLT?: InputMaybe<Scalars['Int']['input']>;
+  levelInvolvedLTE?: InputMaybe<Scalars['Int']['input']>;
+  levelInvolvedNEQ?: InputMaybe<Scalars['Int']['input']>;
+  levelInvolvedNotIn?: InputMaybe<Array<Scalars['Int']['input']>>;
+  levelInvolvedNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** management_company field predicates */
+  managementCompany?: InputMaybe<Scalars['String']['input']>;
+  managementCompanyContains?: InputMaybe<Scalars['String']['input']>;
+  managementCompanyContainsFold?: InputMaybe<Scalars['String']['input']>;
+  managementCompanyEqualFold?: InputMaybe<Scalars['String']['input']>;
+  managementCompanyGT?: InputMaybe<Scalars['String']['input']>;
+  managementCompanyGTE?: InputMaybe<Scalars['String']['input']>;
+  managementCompanyHasPrefix?: InputMaybe<Scalars['String']['input']>;
+  managementCompanyHasSuffix?: InputMaybe<Scalars['String']['input']>;
+  managementCompanyIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  managementCompanyIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  managementCompanyLT?: InputMaybe<Scalars['String']['input']>;
+  managementCompanyLTE?: InputMaybe<Scalars['String']['input']>;
+  managementCompanyNEQ?: InputMaybe<Scalars['String']['input']>;
+  managementCompanyNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  managementCompanyNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** name field predicates */
+  name?: InputMaybe<Scalars['String']['input']>;
+  nameContains?: InputMaybe<Scalars['String']['input']>;
+  nameContainsFold?: InputMaybe<Scalars['String']['input']>;
+  nameEqualFold?: InputMaybe<Scalars['String']['input']>;
+  nameGT?: InputMaybe<Scalars['String']['input']>;
+  nameGTE?: InputMaybe<Scalars['String']['input']>;
+  nameHasPrefix?: InputMaybe<Scalars['String']['input']>;
+  nameHasSuffix?: InputMaybe<Scalars['String']['input']>;
+  nameIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  nameLT?: InputMaybe<Scalars['String']['input']>;
+  nameLTE?: InputMaybe<Scalars['String']['input']>;
+  nameNEQ?: InputMaybe<Scalars['String']['input']>;
+  nameNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  not?: InputMaybe<TenderProfileWhereInput>;
+  or?: InputMaybe<Array<TenderProfileWhereInput>>;
+  /** owner_situations field predicates */
+  ownerSituations?: InputMaybe<Scalars['String']['input']>;
+  ownerSituationsContains?: InputMaybe<Scalars['String']['input']>;
+  ownerSituationsContainsFold?: InputMaybe<Scalars['String']['input']>;
+  ownerSituationsEqualFold?: InputMaybe<Scalars['String']['input']>;
+  ownerSituationsGT?: InputMaybe<Scalars['String']['input']>;
+  ownerSituationsGTE?: InputMaybe<Scalars['String']['input']>;
+  ownerSituationsHasPrefix?: InputMaybe<Scalars['String']['input']>;
+  ownerSituationsHasSuffix?: InputMaybe<Scalars['String']['input']>;
+  ownerSituationsIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  ownerSituationsIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  ownerSituationsLT?: InputMaybe<Scalars['String']['input']>;
+  ownerSituationsLTE?: InputMaybe<Scalars['String']['input']>;
+  ownerSituationsNEQ?: InputMaybe<Scalars['String']['input']>;
+  ownerSituationsNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  ownerSituationsNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** prepare_to_bid field predicates */
+  prepareToBid?: InputMaybe<Scalars['Boolean']['input']>;
+  prepareToBidNEQ?: InputMaybe<Scalars['Boolean']['input']>;
+  /** project_code field predicates */
+  projectCode?: InputMaybe<Scalars['String']['input']>;
+  projectCodeContains?: InputMaybe<Scalars['String']['input']>;
+  projectCodeContainsFold?: InputMaybe<Scalars['String']['input']>;
+  projectCodeEqualFold?: InputMaybe<Scalars['String']['input']>;
+  projectCodeGT?: InputMaybe<Scalars['String']['input']>;
+  projectCodeGTE?: InputMaybe<Scalars['String']['input']>;
+  projectCodeHasPrefix?: InputMaybe<Scalars['String']['input']>;
+  projectCodeHasSuffix?: InputMaybe<Scalars['String']['input']>;
+  projectCodeIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  projectCodeIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  projectCodeLT?: InputMaybe<Scalars['String']['input']>;
+  projectCodeLTE?: InputMaybe<Scalars['String']['input']>;
+  projectCodeNEQ?: InputMaybe<Scalars['String']['input']>;
+  projectCodeNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  projectCodeNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** project_definition field predicates */
+  projectDefinition?: InputMaybe<Scalars['String']['input']>;
+  projectDefinitionContains?: InputMaybe<Scalars['String']['input']>;
+  projectDefinitionContainsFold?: InputMaybe<Scalars['String']['input']>;
+  projectDefinitionEqualFold?: InputMaybe<Scalars['String']['input']>;
+  projectDefinitionGT?: InputMaybe<Scalars['String']['input']>;
+  projectDefinitionGTE?: InputMaybe<Scalars['String']['input']>;
+  projectDefinitionHasPrefix?: InputMaybe<Scalars['String']['input']>;
+  projectDefinitionHasSuffix?: InputMaybe<Scalars['String']['input']>;
+  projectDefinitionIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  projectDefinitionIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  projectDefinitionLT?: InputMaybe<Scalars['String']['input']>;
+  projectDefinitionLTE?: InputMaybe<Scalars['String']['input']>;
+  projectDefinitionNEQ?: InputMaybe<Scalars['String']['input']>;
+  projectDefinitionNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  projectDefinitionNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** project_type field predicates */
+  projectType?: InputMaybe<Scalars['String']['input']>;
+  projectTypeContains?: InputMaybe<Scalars['String']['input']>;
+  projectTypeContainsFold?: InputMaybe<Scalars['String']['input']>;
+  projectTypeEqualFold?: InputMaybe<Scalars['String']['input']>;
+  projectTypeGT?: InputMaybe<Scalars['String']['input']>;
+  projectTypeGTE?: InputMaybe<Scalars['String']['input']>;
+  projectTypeHasPrefix?: InputMaybe<Scalars['String']['input']>;
+  projectTypeHasSuffix?: InputMaybe<Scalars['String']['input']>;
+  projectTypeIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  projectTypeIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  projectTypeLT?: InputMaybe<Scalars['String']['input']>;
+  projectTypeLTE?: InputMaybe<Scalars['String']['input']>;
+  projectTypeNEQ?: InputMaybe<Scalars['String']['input']>;
+  projectTypeNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  projectTypeNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** province_id field predicates */
+  provinceID?: InputMaybe<Scalars['ID']['input']>;
+  provinceIDContains?: InputMaybe<Scalars['ID']['input']>;
+  provinceIDContainsFold?: InputMaybe<Scalars['ID']['input']>;
+  provinceIDEqualFold?: InputMaybe<Scalars['ID']['input']>;
+  provinceIDGT?: InputMaybe<Scalars['ID']['input']>;
+  provinceIDGTE?: InputMaybe<Scalars['ID']['input']>;
+  provinceIDHasPrefix?: InputMaybe<Scalars['ID']['input']>;
+  provinceIDHasSuffix?: InputMaybe<Scalars['ID']['input']>;
+  provinceIDIn?: InputMaybe<Array<Scalars['ID']['input']>>;
+  provinceIDIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  provinceIDLT?: InputMaybe<Scalars['ID']['input']>;
+  provinceIDLTE?: InputMaybe<Scalars['ID']['input']>;
+  provinceIDNEQ?: InputMaybe<Scalars['ID']['input']>;
+  provinceIDNotIn?: InputMaybe<Array<Scalars['ID']['input']>>;
+  provinceIDNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** remark field predicates */
+  remark?: InputMaybe<Scalars['String']['input']>;
+  remarkContains?: InputMaybe<Scalars['String']['input']>;
+  remarkContainsFold?: InputMaybe<Scalars['String']['input']>;
+  remarkEqualFold?: InputMaybe<Scalars['String']['input']>;
+  remarkGT?: InputMaybe<Scalars['String']['input']>;
+  remarkGTE?: InputMaybe<Scalars['String']['input']>;
+  remarkHasPrefix?: InputMaybe<Scalars['String']['input']>;
+  remarkHasSuffix?: InputMaybe<Scalars['String']['input']>;
+  remarkIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  remarkIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  remarkLT?: InputMaybe<Scalars['String']['input']>;
+  remarkLTE?: InputMaybe<Scalars['String']['input']>;
+  remarkNEQ?: InputMaybe<Scalars['String']['input']>;
+  remarkNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  remarkNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** size_and_value_rating field predicates */
+  sizeAndValueRating?: InputMaybe<Scalars['Int']['input']>;
+  sizeAndValueRatingGT?: InputMaybe<Scalars['Int']['input']>;
+  sizeAndValueRatingGTE?: InputMaybe<Scalars['Int']['input']>;
+  sizeAndValueRatingIn?: InputMaybe<Array<Scalars['Int']['input']>>;
+  sizeAndValueRatingIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  sizeAndValueRatingLT?: InputMaybe<Scalars['Int']['input']>;
+  sizeAndValueRatingLTE?: InputMaybe<Scalars['Int']['input']>;
+  sizeAndValueRatingNEQ?: InputMaybe<Scalars['Int']['input']>;
+  sizeAndValueRatingNotIn?: InputMaybe<Array<Scalars['Int']['input']>>;
+  sizeAndValueRatingNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** size_and_value_rating_overview field predicates */
+  sizeAndValueRatingOverview?: InputMaybe<Scalars['String']['input']>;
+  sizeAndValueRatingOverviewContains?: InputMaybe<Scalars['String']['input']>;
+  sizeAndValueRatingOverviewContainsFold?: InputMaybe<Scalars['String']['input']>;
+  sizeAndValueRatingOverviewEqualFold?: InputMaybe<Scalars['String']['input']>;
+  sizeAndValueRatingOverviewGT?: InputMaybe<Scalars['String']['input']>;
+  sizeAndValueRatingOverviewGTE?: InputMaybe<Scalars['String']['input']>;
+  sizeAndValueRatingOverviewHasPrefix?: InputMaybe<Scalars['String']['input']>;
+  sizeAndValueRatingOverviewHasSuffix?: InputMaybe<Scalars['String']['input']>;
+  sizeAndValueRatingOverviewIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  sizeAndValueRatingOverviewIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  sizeAndValueRatingOverviewLT?: InputMaybe<Scalars['String']['input']>;
+  sizeAndValueRatingOverviewLTE?: InputMaybe<Scalars['String']['input']>;
+  sizeAndValueRatingOverviewNEQ?: InputMaybe<Scalars['String']['input']>;
+  sizeAndValueRatingOverviewNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  sizeAndValueRatingOverviewNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** status field predicates */
+  status?: InputMaybe<Scalars['Int']['input']>;
+  statusGT?: InputMaybe<Scalars['Int']['input']>;
+  statusGTE?: InputMaybe<Scalars['Int']['input']>;
+  statusIn?: InputMaybe<Array<Scalars['Int']['input']>>;
+  statusLT?: InputMaybe<Scalars['Int']['input']>;
+  statusLTE?: InputMaybe<Scalars['Int']['input']>;
+  statusNEQ?: InputMaybe<Scalars['Int']['input']>;
+  statusNotIn?: InputMaybe<Array<Scalars['Int']['input']>>;
+  /** tender_closing_date field predicates */
+  tenderClosingDate?: InputMaybe<Scalars['Time']['input']>;
+  tenderClosingDateGT?: InputMaybe<Scalars['Time']['input']>;
+  tenderClosingDateGTE?: InputMaybe<Scalars['Time']['input']>;
+  tenderClosingDateIn?: InputMaybe<Array<Scalars['Time']['input']>>;
+  tenderClosingDateIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  tenderClosingDateLT?: InputMaybe<Scalars['Time']['input']>;
+  tenderClosingDateLTE?: InputMaybe<Scalars['Time']['input']>;
+  tenderClosingDateNEQ?: InputMaybe<Scalars['Time']['input']>;
+  tenderClosingDateNotIn?: InputMaybe<Array<Scalars['Time']['input']>>;
+  tenderClosingDateNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** tender_code field predicates */
+  tenderCode?: InputMaybe<Scalars['String']['input']>;
+  tenderCodeContains?: InputMaybe<Scalars['String']['input']>;
+  tenderCodeContainsFold?: InputMaybe<Scalars['String']['input']>;
+  tenderCodeEqualFold?: InputMaybe<Scalars['String']['input']>;
+  tenderCodeGT?: InputMaybe<Scalars['String']['input']>;
+  tenderCodeGTE?: InputMaybe<Scalars['String']['input']>;
+  tenderCodeHasPrefix?: InputMaybe<Scalars['String']['input']>;
+  tenderCodeHasSuffix?: InputMaybe<Scalars['String']['input']>;
+  tenderCodeIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  tenderCodeIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  tenderCodeLT?: InputMaybe<Scalars['String']['input']>;
+  tenderCodeLTE?: InputMaybe<Scalars['String']['input']>;
+  tenderCodeNEQ?: InputMaybe<Scalars['String']['input']>;
+  tenderCodeNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  tenderCodeNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** tender_date field predicates */
+  tenderDate?: InputMaybe<Scalars['Time']['input']>;
+  tenderDateGT?: InputMaybe<Scalars['Time']['input']>;
+  tenderDateGTE?: InputMaybe<Scalars['Time']['input']>;
+  tenderDateIn?: InputMaybe<Array<Scalars['Time']['input']>>;
+  tenderDateIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  tenderDateLT?: InputMaybe<Scalars['Time']['input']>;
+  tenderDateLTE?: InputMaybe<Scalars['Time']['input']>;
+  tenderDateNEQ?: InputMaybe<Scalars['Time']['input']>;
+  tenderDateNotIn?: InputMaybe<Array<Scalars['Time']['input']>>;
+  tenderDateNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** tender_form field predicates */
+  tenderForm?: InputMaybe<Scalars['String']['input']>;
+  tenderFormContains?: InputMaybe<Scalars['String']['input']>;
+  tenderFormContainsFold?: InputMaybe<Scalars['String']['input']>;
+  tenderFormEqualFold?: InputMaybe<Scalars['String']['input']>;
+  tenderFormGT?: InputMaybe<Scalars['String']['input']>;
+  tenderFormGTE?: InputMaybe<Scalars['String']['input']>;
+  tenderFormHasPrefix?: InputMaybe<Scalars['String']['input']>;
+  tenderFormHasSuffix?: InputMaybe<Scalars['String']['input']>;
+  tenderFormIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  tenderFormIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  tenderFormLT?: InputMaybe<Scalars['String']['input']>;
+  tenderFormLTE?: InputMaybe<Scalars['String']['input']>;
+  tenderFormNEQ?: InputMaybe<Scalars['String']['input']>;
+  tenderFormNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  tenderFormNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** tender_id field predicates */
+  tenderID?: InputMaybe<Scalars['ID']['input']>;
+  tenderIDContains?: InputMaybe<Scalars['ID']['input']>;
+  tenderIDContainsFold?: InputMaybe<Scalars['ID']['input']>;
+  tenderIDEqualFold?: InputMaybe<Scalars['ID']['input']>;
+  tenderIDGT?: InputMaybe<Scalars['ID']['input']>;
+  tenderIDGTE?: InputMaybe<Scalars['ID']['input']>;
+  tenderIDHasPrefix?: InputMaybe<Scalars['ID']['input']>;
+  tenderIDHasSuffix?: InputMaybe<Scalars['ID']['input']>;
+  tenderIDIn?: InputMaybe<Array<Scalars['ID']['input']>>;
+  tenderIDLT?: InputMaybe<Scalars['ID']['input']>;
+  tenderIDLTE?: InputMaybe<Scalars['ID']['input']>;
+  tenderIDNEQ?: InputMaybe<Scalars['ID']['input']>;
+  tenderIDNotIn?: InputMaybe<Array<Scalars['ID']['input']>>;
+  /** tender_situations field predicates */
+  tenderSituations?: InputMaybe<Scalars['String']['input']>;
+  tenderSituationsContains?: InputMaybe<Scalars['String']['input']>;
+  tenderSituationsContainsFold?: InputMaybe<Scalars['String']['input']>;
+  tenderSituationsEqualFold?: InputMaybe<Scalars['String']['input']>;
+  tenderSituationsGT?: InputMaybe<Scalars['String']['input']>;
+  tenderSituationsGTE?: InputMaybe<Scalars['String']['input']>;
+  tenderSituationsHasPrefix?: InputMaybe<Scalars['String']['input']>;
+  tenderSituationsHasSuffix?: InputMaybe<Scalars['String']['input']>;
+  tenderSituationsIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  tenderSituationsIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  tenderSituationsLT?: InputMaybe<Scalars['String']['input']>;
+  tenderSituationsLTE?: InputMaybe<Scalars['String']['input']>;
+  tenderSituationsNEQ?: InputMaybe<Scalars['String']['input']>;
+  tenderSituationsNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  tenderSituationsNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** tender_win_amount field predicates */
+  tenderWinAmount?: InputMaybe<Scalars['Float']['input']>;
+  tenderWinAmountGT?: InputMaybe<Scalars['Float']['input']>;
+  tenderWinAmountGTE?: InputMaybe<Scalars['Float']['input']>;
+  tenderWinAmountIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  tenderWinAmountIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  tenderWinAmountLT?: InputMaybe<Scalars['Float']['input']>;
+  tenderWinAmountLTE?: InputMaybe<Scalars['Float']['input']>;
+  tenderWinAmountNEQ?: InputMaybe<Scalars['Float']['input']>;
+  tenderWinAmountNotIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  tenderWinAmountNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** tender_win_company field predicates */
+  tenderWinCompany?: InputMaybe<Scalars['String']['input']>;
+  tenderWinCompanyContains?: InputMaybe<Scalars['String']['input']>;
+  tenderWinCompanyContainsFold?: InputMaybe<Scalars['String']['input']>;
+  tenderWinCompanyEqualFold?: InputMaybe<Scalars['String']['input']>;
+  tenderWinCompanyGT?: InputMaybe<Scalars['String']['input']>;
+  tenderWinCompanyGTE?: InputMaybe<Scalars['String']['input']>;
+  tenderWinCompanyHasPrefix?: InputMaybe<Scalars['String']['input']>;
+  tenderWinCompanyHasSuffix?: InputMaybe<Scalars['String']['input']>;
+  tenderWinCompanyIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  tenderWinCompanyIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  tenderWinCompanyLT?: InputMaybe<Scalars['String']['input']>;
+  tenderWinCompanyLTE?: InputMaybe<Scalars['String']['input']>;
+  tenderWinCompanyNEQ?: InputMaybe<Scalars['String']['input']>;
+  tenderWinCompanyNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  tenderWinCompanyNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** tender_win_date field predicates */
+  tenderWinDate?: InputMaybe<Scalars['Time']['input']>;
+  tenderWinDateGT?: InputMaybe<Scalars['Time']['input']>;
+  tenderWinDateGTE?: InputMaybe<Scalars['Time']['input']>;
+  tenderWinDateIn?: InputMaybe<Array<Scalars['Time']['input']>>;
+  tenderWinDateIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  tenderWinDateLT?: InputMaybe<Scalars['Time']['input']>;
+  tenderWinDateLTE?: InputMaybe<Scalars['Time']['input']>;
+  tenderWinDateNEQ?: InputMaybe<Scalars['Time']['input']>;
+  tenderWinDateNotIn?: InputMaybe<Array<Scalars['Time']['input']>>;
+  tenderWinDateNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** tendering_agency field predicates */
+  tenderingAgency?: InputMaybe<Scalars['String']['input']>;
+  tenderingAgencyContains?: InputMaybe<Scalars['String']['input']>;
+  tenderingAgencyContainsFold?: InputMaybe<Scalars['String']['input']>;
+  tenderingAgencyEqualFold?: InputMaybe<Scalars['String']['input']>;
+  tenderingAgencyGT?: InputMaybe<Scalars['String']['input']>;
+  tenderingAgencyGTE?: InputMaybe<Scalars['String']['input']>;
+  tenderingAgencyHasPrefix?: InputMaybe<Scalars['String']['input']>;
+  tenderingAgencyHasSuffix?: InputMaybe<Scalars['String']['input']>;
+  tenderingAgencyIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  tenderingAgencyIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  tenderingAgencyLT?: InputMaybe<Scalars['String']['input']>;
+  tenderingAgencyLTE?: InputMaybe<Scalars['String']['input']>;
+  tenderingAgencyNEQ?: InputMaybe<Scalars['String']['input']>;
+  tenderingAgencyNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  tenderingAgencyNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** time_limit_rating field predicates */
+  timeLimitRating?: InputMaybe<Scalars['Int']['input']>;
+  timeLimitRatingGT?: InputMaybe<Scalars['Int']['input']>;
+  timeLimitRatingGTE?: InputMaybe<Scalars['Int']['input']>;
+  timeLimitRatingIn?: InputMaybe<Array<Scalars['Int']['input']>>;
+  timeLimitRatingIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  timeLimitRatingLT?: InputMaybe<Scalars['Int']['input']>;
+  timeLimitRatingLTE?: InputMaybe<Scalars['Int']['input']>;
+  timeLimitRatingNEQ?: InputMaybe<Scalars['Int']['input']>;
+  timeLimitRatingNotIn?: InputMaybe<Array<Scalars['Int']['input']>>;
+  timeLimitRatingNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** time_limit_rating_overview field predicates */
+  timeLimitRatingOverview?: InputMaybe<Scalars['String']['input']>;
+  timeLimitRatingOverviewContains?: InputMaybe<Scalars['String']['input']>;
+  timeLimitRatingOverviewContainsFold?: InputMaybe<Scalars['String']['input']>;
+  timeLimitRatingOverviewEqualFold?: InputMaybe<Scalars['String']['input']>;
+  timeLimitRatingOverviewGT?: InputMaybe<Scalars['String']['input']>;
+  timeLimitRatingOverviewGTE?: InputMaybe<Scalars['String']['input']>;
+  timeLimitRatingOverviewHasPrefix?: InputMaybe<Scalars['String']['input']>;
+  timeLimitRatingOverviewHasSuffix?: InputMaybe<Scalars['String']['input']>;
+  timeLimitRatingOverviewIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  timeLimitRatingOverviewIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  timeLimitRatingOverviewLT?: InputMaybe<Scalars['String']['input']>;
+  timeLimitRatingOverviewLTE?: InputMaybe<Scalars['String']['input']>;
+  timeLimitRatingOverviewNEQ?: InputMaybe<Scalars['String']['input']>;
+  timeLimitRatingOverviewNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  timeLimitRatingOverviewNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** updated_at field predicates */
+  updatedAt?: InputMaybe<Scalars['Time']['input']>;
+  updatedAtGT?: InputMaybe<Scalars['Time']['input']>;
+  updatedAtGTE?: InputMaybe<Scalars['Time']['input']>;
+  updatedAtIn?: InputMaybe<Array<Scalars['Time']['input']>>;
+  updatedAtLT?: InputMaybe<Scalars['Time']['input']>;
+  updatedAtLTE?: InputMaybe<Scalars['Time']['input']>;
+  updatedAtNEQ?: InputMaybe<Scalars['Time']['input']>;
+  updatedAtNotIn?: InputMaybe<Array<Scalars['Time']['input']>>;
+  /** updated_by_id field predicates */
+  updatedByID?: InputMaybe<Scalars['ID']['input']>;
+  updatedByIDContains?: InputMaybe<Scalars['ID']['input']>;
+  updatedByIDContainsFold?: InputMaybe<Scalars['ID']['input']>;
+  updatedByIDEqualFold?: InputMaybe<Scalars['ID']['input']>;
+  updatedByIDGT?: InputMaybe<Scalars['ID']['input']>;
+  updatedByIDGTE?: InputMaybe<Scalars['ID']['input']>;
+  updatedByIDHasPrefix?: InputMaybe<Scalars['ID']['input']>;
+  updatedByIDHasSuffix?: InputMaybe<Scalars['ID']['input']>;
+  updatedByIDIn?: InputMaybe<Array<Scalars['ID']['input']>>;
+  updatedByIDIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  updatedByIDLT?: InputMaybe<Scalars['ID']['input']>;
+  updatedByIDLTE?: InputMaybe<Scalars['ID']['input']>;
+  updatedByIDNEQ?: InputMaybe<Scalars['ID']['input']>;
+  updatedByIDNotIn?: InputMaybe<Array<Scalars['ID']['input']>>;
+  updatedByIDNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+};
 
 /**
  * TenderWhereInput is used for filtering Tender objects.
@@ -5084,6 +6131,9 @@ export type TenderWhereInput = {
   /** following_sales edge predicates */
   hasFollowingSales?: InputMaybe<Scalars['Boolean']['input']>;
   hasFollowingSalesWith?: InputMaybe<Array<UserWhereInput>>;
+  /** profiles edge predicates */
+  hasProfiles?: InputMaybe<Scalars['Boolean']['input']>;
+  hasProfilesWith?: InputMaybe<Array<TenderProfileWhereInput>>;
   /** province edge predicates */
   hasProvince?: InputMaybe<Scalars['Boolean']['input']>;
   hasProvinceWith?: InputMaybe<Array<ProvinceWhereInput>>;
@@ -5951,6 +7001,7 @@ export type UpdateTenderCompetitorInput = {
 export type UpdateTenderInput = {
   addCompetitorIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   addFollowingSaleIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
+  addProfileIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   addVisitRecordIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   address?: InputMaybe<Scalars['String']['input']>;
   appendAttachements?: InputMaybe<Array<Scalars['String']['input']>>;
@@ -6008,6 +7059,7 @@ export type UpdateTenderInput = {
   clearLevelInvolved?: InputMaybe<Scalars['Boolean']['input']>;
   clearManagementCompany?: InputMaybe<Scalars['Boolean']['input']>;
   clearOwnerSituations?: InputMaybe<Scalars['Boolean']['input']>;
+  clearProfiles?: InputMaybe<Scalars['Boolean']['input']>;
   clearProjectCode?: InputMaybe<Scalars['Boolean']['input']>;
   clearProjectDefinition?: InputMaybe<Scalars['Boolean']['input']>;
   clearProjectType?: InputMaybe<Scalars['Boolean']['input']>;
@@ -6072,6 +7124,7 @@ export type UpdateTenderInput = {
   remark?: InputMaybe<Scalars['String']['input']>;
   removeCompetitorIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   removeFollowingSaleIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
+  removeProfileIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   removeVisitRecordIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   sizeAndValueRating?: InputMaybe<Scalars['Int']['input']>;
   sizeAndValueRatingOverview?: InputMaybe<Scalars['String']['input']>;
@@ -6685,7 +7738,7 @@ export type UseCreateUserMutationMutationVariables = Exact<{
 }>;
 
 
-export type UseCreateUserMutationMutation = { __typename?: 'Mutation', createUser: { __typename?: 'UserConnection', edges?: Array<{ __typename?: 'UserEdge', node?: { __typename?: 'User', id: string, name?: string | null, email?: string | null, username?: string | null, openID: string, avatarURL?: string | null, disabled: boolean, isAdmin: boolean, hasMapAccess: boolean, hasEditAccess: boolean, areas: { __typename?: 'AreaConnection', edges?: Array<{ __typename?: 'AreaEdge', node?: { __typename?: 'Area', id: string, name: string } | null } | null> | null }, projects: { __typename?: 'ProjectConnection', edges?: Array<{ __typename?: 'ProjectEdge', node?: { __typename?: 'Project', id: string, code: string } | null } | null> | null } } | null } | null> | null } };
+export type UseCreateUserMutationMutation = { __typename?: 'Mutation', createUser: { __typename?: 'UserConnection', edges?: Array<{ __typename?: 'UserEdge', node?: { __typename?: 'User', id: string, name?: string | null, email?: string | null, username?: string | null, openID: string, avatarURL?: string | null, disabled: boolean, isAdmin: boolean, isSuperAdmin: boolean, isCeo: boolean, hasMapAccess: boolean, hasEditAccess: boolean, areas: { __typename?: 'AreaConnection', edges?: Array<{ __typename?: 'AreaEdge', node?: { __typename?: 'Area', id: string, name: string } | null } | null> | null }, leader?: { __typename?: 'User', id: string, name?: string | null } | null, projects: { __typename?: 'ProjectConnection', edges?: Array<{ __typename?: 'ProjectEdge', node?: { __typename?: 'Project', id: string, code: string } | null } | null> | null } } | null } | null> | null } };
 
 export type UseDeleteUserMutationMutationVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -6717,7 +7770,14 @@ export type UseUpdateUserMutationMutationVariables = Exact<{
 }>;
 
 
-export type UseUpdateUserMutationMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'User', id: string, name?: string | null, email?: string | null, username?: string | null, openID: string, avatarURL?: string | null, disabled: boolean, isSuperAdmin: boolean, isAdmin: boolean, isCeo: boolean, hasMapAccess: boolean, hasEditAccess: boolean, areas: { __typename?: 'AreaConnection', edges?: Array<{ __typename?: 'AreaEdge', node?: { __typename?: 'Area', id: string, name: string } | null } | null> | null }, projects: { __typename?: 'ProjectConnection', edges?: Array<{ __typename?: 'ProjectEdge', node?: { __typename?: 'Project', id: string, code: string } | null } | null> | null } } };
+export type UseUpdateUserMutationMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'User', id: string, name?: string | null, email?: string | null, username?: string | null, openID: string, avatarURL?: string | null, disabled: boolean, isSuperAdmin: boolean, isAdmin: boolean, isCeo: boolean, hasMapAccess: boolean, hasEditAccess: boolean, areas: { __typename?: 'AreaConnection', edges?: Array<{ __typename?: 'AreaEdge', node?: { __typename?: 'Area', id: string, name: string } | null } | null> | null }, leader?: { __typename?: 'User', id: string, name?: string | null } | null, projects: { __typename?: 'ProjectConnection', edges?: Array<{ __typename?: 'ProjectEdge', node?: { __typename?: 'Project', id: string, code: string } | null } | null> | null } } };
+
+export type Mapv2DistrictsQueryQueryVariables = Exact<{
+  adcode: Scalars['Int']['input'];
+}>;
+
+
+export type Mapv2DistrictsQueryQuery = { __typename?: 'Query', districts: { __typename?: 'DistrictConnection', edges?: Array<{ __typename?: 'DistrictEdge', node?: { __typename?: 'District', plots: { __typename?: 'PlotConnection', edges?: Array<{ __typename?: 'PlotEdge', node?: { __typename?: 'Plot', id: string, name: string, geoBounds?: Array<Array<number>> | null, colorHex: string } | null } | null> | null } } | null } | null> | null } };
 
 export class TypedDocumentString<TResult, TVariables>
   extends String
@@ -6768,6 +7828,10 @@ export const UseCreateUserMutationDocument = new TypedDocumentString(`
             }
           }
         }
+        leader {
+          id
+          name
+        }
         projects {
           edges {
             node {
@@ -6777,6 +7841,8 @@ export const UseCreateUserMutationDocument = new TypedDocumentString(`
           }
         }
         isAdmin
+        isSuperAdmin
+        isCeo
         hasMapAccess
         hasEditAccess
       }
@@ -6826,6 +7892,10 @@ export const UseUpdateUserMutationDocument = new TypedDocumentString(`
         }
       }
     }
+    leader {
+      id
+      name
+    }
     projects(where: {isFinishedNEQ: true}, orderBy: {field: CODE}) {
       edges {
         node {
@@ -6842,3 +7912,23 @@ export const UseUpdateUserMutationDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<UseUpdateUserMutationMutation, UseUpdateUserMutationMutationVariables>;
+export const Mapv2DistrictsQueryDocument = new TypedDocumentString(`
+    query mapv2DistrictsQuery($adcode: Int!) {
+  districts(where: {adcode: $adcode}) {
+    edges {
+      node {
+        plots {
+          edges {
+            node {
+              id
+              name
+              geoBounds
+              colorHex
+            }
+          }
+        }
+      }
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<Mapv2DistrictsQueryQuery, Mapv2DistrictsQueryQueryVariables>;
