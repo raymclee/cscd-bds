@@ -173,7 +173,10 @@ func (Tender) Edges() []ent.Edge {
 			Field("area_id").
 			Required().
 			Unique(),
-		edge.To("profiles", TenderProfile.Type),
+		edge.To("profiles", TenderProfile.Type).
+			Annotations(
+				entgql.RelayConnection(),
+			),
 		edge.To("competitors", TenderCompetitor.Type),
 		edge.From("customer", Customer.Type).
 			Ref("tenders").

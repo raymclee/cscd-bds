@@ -30,7 +30,7 @@ func Open(databaseUrl string) *ent.Client {
 		ent.Driver(drv),
 	}
 	if !config.IsProd && !config.IsUat {
-		// o = append(o, ent.Debug())
+		o = append(o, ent.Debug())
 	}
 	return ent.NewClient(o...)
 }
@@ -43,7 +43,7 @@ func New(shouldMigrate bool) *Store {
 		if err := client.Schema.Create(
 			context.Background(),
 			migrate.WithGlobalUniqueID(true),
-			migrate.WithDropColumn(true),
+			// migrate.WithDropColumn(true),
 			migrate.WithDropIndex(true),
 			migrate.WithForeignKeys(true),
 		); err != nil {

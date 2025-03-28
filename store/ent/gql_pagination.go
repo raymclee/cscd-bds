@@ -5043,19 +5043,14 @@ func (c *TenderProfileConnection) build(nodes []*TenderProfile, pager *tenderpro
 type TenderProfilePaginateOption func(*tenderprofilePager) error
 
 // WithTenderProfileOrder configures pagination ordering.
-func WithTenderProfileOrder(order *TenderProfileOrder) TenderProfilePaginateOption {
-	if order == nil {
-		order = DefaultTenderProfileOrder
-	}
-	o := *order
+func WithTenderProfileOrder(order []*TenderProfileOrder) TenderProfilePaginateOption {
 	return func(pager *tenderprofilePager) error {
-		if err := o.Direction.Validate(); err != nil {
-			return err
+		for _, o := range order {
+			if err := o.Direction.Validate(); err != nil {
+				return err
+			}
 		}
-		if o.Field == nil {
-			o.Field = DefaultTenderProfileOrder.Field
-		}
-		pager.order = &o
+		pager.order = append(pager.order, order...)
 		return nil
 	}
 }
@@ -5073,7 +5068,7 @@ func WithTenderProfileFilter(filter func(*TenderProfileQuery) (*TenderProfileQue
 
 type tenderprofilePager struct {
 	reverse bool
-	order   *TenderProfileOrder
+	order   []*TenderProfileOrder
 	filter  func(*TenderProfileQuery) (*TenderProfileQuery, error)
 }
 
@@ -5084,8 +5079,10 @@ func newTenderProfilePager(opts []TenderProfilePaginateOption, reverse bool) (*t
 			return nil, err
 		}
 	}
-	if pager.order == nil {
-		pager.order = DefaultTenderProfileOrder
+	for i, o := range pager.order {
+		if i > 0 && o.Field == pager.order[i-1].Field {
+			return nil, fmt.Errorf("duplicate order direction %q", o.Direction)
+		}
 	}
 	return pager, nil
 }
@@ -5098,48 +5095,87 @@ func (p *tenderprofilePager) applyFilter(query *TenderProfileQuery) (*TenderProf
 }
 
 func (p *tenderprofilePager) toCursor(tp *TenderProfile) Cursor {
-	return p.order.Field.toCursor(tp)
+	cs_ := make([]any, 0, len(p.order))
+	for _, o_ := range p.order {
+		cs_ = append(cs_, o_.Field.toCursor(tp).Value)
+	}
+	return Cursor{ID: tp.ID, Value: cs_}
 }
 
 func (p *tenderprofilePager) applyCursors(query *TenderProfileQuery, after, before *Cursor) (*TenderProfileQuery, error) {
-	direction := p.order.Direction
+	idDirection := entgql.OrderDirectionAsc
 	if p.reverse {
-		direction = direction.Reverse()
+		idDirection = entgql.OrderDirectionDesc
 	}
-	for _, predicate := range entgql.CursorsPredicate(after, before, DefaultTenderProfileOrder.Field.column, p.order.Field.column, direction) {
+	fields, directions := make([]string, 0, len(p.order)), make([]OrderDirection, 0, len(p.order))
+	for _, o := range p.order {
+		fields = append(fields, o.Field.column)
+		direction := o.Direction
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		directions = append(directions, direction)
+	}
+	predicates, err := entgql.MultiCursorsPredicate(after, before, &entgql.MultiCursorsOptions{
+		FieldID:     DefaultTenderProfileOrder.Field.column,
+		DirectionID: idDirection,
+		Fields:      fields,
+		Directions:  directions,
+	})
+	if err != nil {
+		return nil, err
+	}
+	for _, predicate := range predicates {
 		query = query.Where(predicate)
 	}
 	return query, nil
 }
 
 func (p *tenderprofilePager) applyOrder(query *TenderProfileQuery) *TenderProfileQuery {
-	direction := p.order.Direction
-	if p.reverse {
-		direction = direction.Reverse()
+	var defaultOrdered bool
+	for _, o := range p.order {
+		direction := o.Direction
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		query = query.Order(o.Field.toTerm(direction.OrderTermOption()))
+		if o.Field.column == DefaultTenderProfileOrder.Field.column {
+			defaultOrdered = true
+		}
+		if len(query.ctx.Fields) > 0 {
+			query.ctx.AppendFieldOnce(o.Field.column)
+		}
 	}
-	query = query.Order(p.order.Field.toTerm(direction.OrderTermOption()))
-	if p.order.Field != DefaultTenderProfileOrder.Field {
+	if !defaultOrdered {
+		direction := entgql.OrderDirectionAsc
+		if p.reverse {
+			direction = direction.Reverse()
+		}
 		query = query.Order(DefaultTenderProfileOrder.Field.toTerm(direction.OrderTermOption()))
-	}
-	if len(query.ctx.Fields) > 0 {
-		query.ctx.AppendFieldOnce(p.order.Field.column)
 	}
 	return query
 }
 
 func (p *tenderprofilePager) orderExpr(query *TenderProfileQuery) sql.Querier {
-	direction := p.order.Direction
-	if p.reverse {
-		direction = direction.Reverse()
-	}
 	if len(query.ctx.Fields) > 0 {
-		query.ctx.AppendFieldOnce(p.order.Field.column)
+		for _, o := range p.order {
+			query.ctx.AppendFieldOnce(o.Field.column)
+		}
 	}
 	return sql.ExprFunc(func(b *sql.Builder) {
-		b.Ident(p.order.Field.column).Pad().WriteString(string(direction))
-		if p.order.Field != DefaultTenderProfileOrder.Field {
-			b.Comma().Ident(DefaultTenderProfileOrder.Field.column).Pad().WriteString(string(direction))
+		for _, o := range p.order {
+			direction := o.Direction
+			if p.reverse {
+				direction = direction.Reverse()
+			}
+			b.Ident(o.Field.column).Pad().WriteString(string(direction))
+			b.Comma()
 		}
+		direction := entgql.OrderDirectionAsc
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		b.Ident(DefaultTenderProfileOrder.Field.column).Pad().WriteString(string(direction))
 	})
 }
 

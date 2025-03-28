@@ -23,7 +23,9 @@ export type UserFormProps = {
   isSuperAdmin?: boolean;
   avaliableAreas: AreaConnection;
   avaliableProjects?: ProjectConnection;
-  avaliableUsers: UserConnection;
+  avaliableUsers: Array<
+    NonNullable<NonNullable<UserConnection["edges"]>[number]>["node"]
+  >;
 };
 
 export function UserForm({
@@ -45,10 +47,9 @@ export function UserForm({
   const [commitUpdateUser, isUpdateUserInFlight] = useUpdateUser();
   const { message } = App.useApp();
   const [removedAreaIDs, setRemovedAreaIDs] = React.useState<string[]>([]);
-  const [removedProjectIDs, setRemovedProjectIDs] = React.useState<string[]>(
-    [],
-  );
   const { session } = useRouteContext({ from: "/__auth" });
+
+  const selectedProjectIds = Form.useWatch("projectIDs", form);
 
   useEffect(() => {
     if (selectedUser) {
@@ -171,19 +172,25 @@ export function UserForm({
             <Form.Item name="email" label="邮箱" rules={[{ required: true }]}>
               <Input type="email" disabled={!session.isSuperAdmin} />
             </Form.Item>
-            <Form.Item
-              name="username"
-              label="用户名"
-              rules={[{ required: true }]}
-            >
-              <Input disabled={!session.isSuperAdmin} />
-            </Form.Item>
-            <Form.Item name="openID" label="中海通ID">
-              <Input disabled={!session.isSuperAdmin} />
-            </Form.Item>
-            <Form.Item name="avatarURL" label="头像URL">
-              <Input disabled={!session.isSuperAdmin} />
-            </Form.Item>
+            {isSuperAdmin && (
+              <Form.Item
+                name="username"
+                label="用户名"
+                rules={[{ required: true }]}
+              >
+                <Input disabled={!session.isSuperAdmin} />
+              </Form.Item>
+            )}
+            {isSuperAdmin && (
+              <Form.Item name="openID" label="中海通ID">
+                <Input disabled={!session.isSuperAdmin} />
+              </Form.Item>
+            )}
+            {isSuperAdmin && (
+              <Form.Item name="avatarURL" label="头像URL">
+                <Input disabled={!session.isSuperAdmin} />
+              </Form.Item>
+            )}
           </>
         )}
         <Form.Item
@@ -197,7 +204,7 @@ export function UserForm({
             //   label: a?.node?.name,
             //   value: a?.node?.id,
             // }))}
-            disabled={!session.isSuperAdmin}
+            // disabled={!session.isSuperAdmin}
             options={avaliableAreas.edges?.map((a) => ({
               label: a?.node?.name,
               value: a?.node?.id,
@@ -211,9 +218,9 @@ export function UserForm({
         </Form.Item>
         <Form.Item name="leaderID" label="隊長">
           <Select
-            options={avaliableUsers.edges?.map((u) => ({
-              label: u?.node?.name,
-              value: u?.node?.id,
+            options={avaliableUsers?.map((u) => ({
+              label: u?.name,
+              value: u?.id,
             }))}
             showSearch
             allowClear
@@ -227,6 +234,13 @@ export function UserForm({
               showSearch
               optionFilterProp="label"
               mode="multiple"
+              onSelect={(value) => {
+                if (value.includes("all")) {
+                  form.setFieldsValue({
+                    projectIDs: ["all"],
+                  });
+                }
+              }}
               options={
                 avaliableProjects?.edges && avaliableProjects?.edges?.length > 0
                   ? [
@@ -237,19 +251,11 @@ export function UserForm({
                       ...avaliableProjects?.edges?.map((p) => ({
                         label: p?.node?.code,
                         value: p?.node?.id,
+                        disabled: selectedProjectIds?.includes("all"),
                       })),
                     ]
                   : []
               }
-              onSelect={(value) => {
-                setRemovedProjectIDs((prev) => prev.filter((v) => v !== value));
-              }}
-              onDeselect={(value) => {
-                setRemovedProjectIDs((prev) => [...prev, value]);
-              }}
-              onClear={() => {
-                setRemovedProjectIDs(["all"]);
-              }}
             />
           </Form.Item>
         )}

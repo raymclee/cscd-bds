@@ -557,6 +557,7 @@ type ComplexityRoot struct {
 		SearchLocation    func(childComplexity int, keyword string) int
 		Session           func(childComplexity int) int
 		TenderCompetitors func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.TenderCompetitorOrder, where *ent.TenderCompetitorWhereInput) int
+		TenderProfiles    func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.TenderProfileOrder, where *ent.TenderProfileWhereInput) int
 		Tenders           func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.TenderOrder, where *ent.TenderWhereInput) int
 		TopCompetitors    func(childComplexity int, first *int) int
 		Users             func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.UserOrder, where *ent.UserWhereInput) int
@@ -635,7 +636,7 @@ type ComplexityRoot struct {
 		Name                                 func(childComplexity int) int
 		OwnerSituations                      func(childComplexity int) int
 		PrepareToBid                         func(childComplexity int) int
-		Profiles                             func(childComplexity int) int
+		Profiles                             func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.TenderProfileOrder, where *ent.TenderProfileWhereInput) int
 		ProjectCode                          func(childComplexity int) int
 		ProjectDefinition                    func(childComplexity int) int
 		ProjectType                          func(childComplexity int) int
@@ -773,6 +774,17 @@ type ComplexityRoot struct {
 		UpdatedAt                            func(childComplexity int) int
 		UpdatedBy                            func(childComplexity int) int
 		UpdatedByID                          func(childComplexity int) int
+	}
+
+	TenderProfileConnection struct {
+		Edges      func(childComplexity int) int
+		PageInfo   func(childComplexity int) int
+		TotalCount func(childComplexity int) int
+	}
+
+	TenderProfileEdge struct {
+		Cursor func(childComplexity int) int
+		Node   func(childComplexity int) int
 	}
 
 	TopCompetitor struct {
@@ -3786,6 +3798,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Query.TenderCompetitors(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].([]*ent.TenderCompetitorOrder), args["where"].(*ent.TenderCompetitorWhereInput)), true
 
+	case "Query.tenderProfiles":
+		if e.complexity.Query.TenderProfiles == nil {
+			break
+		}
+
+		args, err := ec.field_Query_tenderProfiles_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.TenderProfiles(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].([]*ent.TenderProfileOrder), args["where"].(*ent.TenderProfileWhereInput)), true
+
 	case "Query.tenders":
 		if e.complexity.Query.Tenders == nil {
 			break
@@ -4315,7 +4339,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		return e.complexity.Tender.Profiles(childComplexity), true
+		args, err := ec.field_Tender_profiles_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Tender.Profiles(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].([]*ent.TenderProfileOrder), args["where"].(*ent.TenderProfileWhereInput)), true
 
 	case "Tender.projectCode":
 		if e.complexity.Tender.ProjectCode == nil {
@@ -5154,6 +5183,41 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.TenderProfile.UpdatedByID(childComplexity), true
+
+	case "TenderProfileConnection.edges":
+		if e.complexity.TenderProfileConnection.Edges == nil {
+			break
+		}
+
+		return e.complexity.TenderProfileConnection.Edges(childComplexity), true
+
+	case "TenderProfileConnection.pageInfo":
+		if e.complexity.TenderProfileConnection.PageInfo == nil {
+			break
+		}
+
+		return e.complexity.TenderProfileConnection.PageInfo(childComplexity), true
+
+	case "TenderProfileConnection.totalCount":
+		if e.complexity.TenderProfileConnection.TotalCount == nil {
+			break
+		}
+
+		return e.complexity.TenderProfileConnection.TotalCount(childComplexity), true
+
+	case "TenderProfileEdge.cursor":
+		if e.complexity.TenderProfileEdge.Cursor == nil {
+			break
+		}
+
+		return e.complexity.TenderProfileEdge.Cursor(childComplexity), true
+
+	case "TenderProfileEdge.node":
+		if e.complexity.TenderProfileEdge.Node == nil {
+			break
+		}
+
+		return e.complexity.TenderProfileEdge.Node(childComplexity), true
 
 	case "TopCompetitor.id":
 		if e.complexity.TopCompetitor.ID == nil {
@@ -11076,6 +11140,37 @@ type Query {
     """
     where: TenderCompetitorWhereInput
   ): TenderCompetitorConnection!
+  tenderProfiles(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for TenderProfiles returned from the connection.
+    """
+    orderBy: [TenderProfileOrder!]
+
+    """
+    Filtering options for TenderProfiles returned from the connection.
+    """
+    where: TenderProfileWhereInput
+  ): TenderProfileConnection!
   users(
     """
     Returns the elements in the list that come after the specified cursor.
@@ -11239,7 +11334,37 @@ type Tender implements Node {
   approverID: ID
   updatedByID: ID
   area: Area!
-  profiles: [TenderProfile!]
+  profiles(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for TenderProfiles returned from the connection.
+    """
+    orderBy: [TenderProfileOrder!]
+
+    """
+    Filtering options for TenderProfiles returned from the connection.
+    """
+    where: TenderProfileWhereInput
+  ): TenderProfileConnection!
   competitors: [TenderCompetitor!]
   customer: Customer
   finder: User
@@ -11597,6 +11722,36 @@ type TenderProfile implements Node {
   district: District
   approver: User
   updatedBy: User
+}
+"""
+A connection to a list of items.
+"""
+type TenderProfileConnection {
+  """
+  A list of edges.
+  """
+  edges: [TenderProfileEdge]
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+  """
+  Identifies the total count of items in the connection.
+  """
+  totalCount: Int!
+}
+"""
+An edge in a connection.
+"""
+type TenderProfileEdge {
+  """
+  The item at the end of the edge.
+  """
+  node: TenderProfile
+  """
+  A cursor for use in pagination.
+  """
+  cursor: Cursor!
 }
 """
 Ordering options for TenderProfile connections

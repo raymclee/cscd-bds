@@ -57,6 +57,7 @@ type QueryResolver interface {
 	Provinces(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.ProvinceOrder, where *ent.ProvinceWhereInput) (*ent.ProvinceConnection, error)
 	Tenders(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.TenderOrder, where *ent.TenderWhereInput) (*ent.TenderConnection, error)
 	TenderCompetitors(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.TenderCompetitorOrder, where *ent.TenderCompetitorWhereInput) (*ent.TenderCompetitorConnection, error)
+	TenderProfiles(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.TenderProfileOrder, where *ent.TenderProfileWhereInput) (*ent.TenderProfileConnection, error)
 	Users(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.UserOrder, where *ent.UserWhereInput) (*ent.UserConnection, error)
 	VisitRecords(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.VisitRecordOrder, where *ent.VisitRecordWhereInput) (*ent.VisitRecordConnection, error)
 	SearchFeishuUser(ctx context.Context, keyword string) ([]*model.FeishuUser, error)
@@ -5200,6 +5201,173 @@ func (ec *executionContext) field_Query_tenderCompetitors_argsWhere(
 	return zeroVal, nil
 }
 
+func (ec *executionContext) field_Query_tenderProfiles_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_Query_tenderProfiles_argsAfter(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["after"] = arg0
+	arg1, err := ec.field_Query_tenderProfiles_argsFirst(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["first"] = arg1
+	arg2, err := ec.field_Query_tenderProfiles_argsBefore(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["before"] = arg2
+	arg3, err := ec.field_Query_tenderProfiles_argsLast(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["last"] = arg3
+	arg4, err := ec.field_Query_tenderProfiles_argsOrderBy(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["orderBy"] = arg4
+	arg5, err := ec.field_Query_tenderProfiles_argsWhere(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["where"] = arg5
+	return args, nil
+}
+func (ec *executionContext) field_Query_tenderProfiles_argsAfter(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[xid.ID], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["after"]
+	if !ok {
+		var zeroVal *entgql.Cursor[xid.ID]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("after"))
+	if tmp, ok := rawArgs["after"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[xid.ID]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Query_tenderProfiles_argsFirst(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["first"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("first"))
+	if tmp, ok := rawArgs["first"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Query_tenderProfiles_argsBefore(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[xid.ID], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["before"]
+	if !ok {
+		var zeroVal *entgql.Cursor[xid.ID]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("before"))
+	if tmp, ok := rawArgs["before"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[xid.ID]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Query_tenderProfiles_argsLast(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["last"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("last"))
+	if tmp, ok := rawArgs["last"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Query_tenderProfiles_argsOrderBy(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) ([]*ent.TenderProfileOrder, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["orderBy"]
+	if !ok {
+		var zeroVal []*ent.TenderProfileOrder
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
+	if tmp, ok := rawArgs["orderBy"]; ok {
+		return ec.unmarshalOTenderProfileOrder2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐTenderProfileOrderᚄ(ctx, tmp)
+	}
+
+	var zeroVal []*ent.TenderProfileOrder
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Query_tenderProfiles_argsWhere(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.TenderProfileWhereInput, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["where"]
+	if !ok {
+		var zeroVal *ent.TenderProfileWhereInput
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
+	if tmp, ok := rawArgs["where"]; ok {
+		return ec.unmarshalOTenderProfileWhereInput2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderProfileWhereInput(ctx, tmp)
+	}
+
+	var zeroVal *ent.TenderProfileWhereInput
+	return zeroVal, nil
+}
+
 func (ec *executionContext) field_Query_tenders_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
@@ -5730,6 +5898,173 @@ func (ec *executionContext) field_Query_visitRecords_argsWhere(
 	}
 
 	var zeroVal *ent.VisitRecordWhereInput
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Tender_profiles_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_Tender_profiles_argsAfter(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["after"] = arg0
+	arg1, err := ec.field_Tender_profiles_argsFirst(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["first"] = arg1
+	arg2, err := ec.field_Tender_profiles_argsBefore(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["before"] = arg2
+	arg3, err := ec.field_Tender_profiles_argsLast(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["last"] = arg3
+	arg4, err := ec.field_Tender_profiles_argsOrderBy(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["orderBy"] = arg4
+	arg5, err := ec.field_Tender_profiles_argsWhere(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["where"] = arg5
+	return args, nil
+}
+func (ec *executionContext) field_Tender_profiles_argsAfter(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[xid.ID], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["after"]
+	if !ok {
+		var zeroVal *entgql.Cursor[xid.ID]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("after"))
+	if tmp, ok := rawArgs["after"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[xid.ID]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Tender_profiles_argsFirst(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["first"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("first"))
+	if tmp, ok := rawArgs["first"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Tender_profiles_argsBefore(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[xid.ID], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["before"]
+	if !ok {
+		var zeroVal *entgql.Cursor[xid.ID]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("before"))
+	if tmp, ok := rawArgs["before"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[xid.ID]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Tender_profiles_argsLast(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["last"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("last"))
+	if tmp, ok := rawArgs["last"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Tender_profiles_argsOrderBy(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) ([]*ent.TenderProfileOrder, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["orderBy"]
+	if !ok {
+		var zeroVal []*ent.TenderProfileOrder
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
+	if tmp, ok := rawArgs["orderBy"]; ok {
+		return ec.unmarshalOTenderProfileOrder2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐTenderProfileOrderᚄ(ctx, tmp)
+	}
+
+	var zeroVal []*ent.TenderProfileOrder
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Tender_profiles_argsWhere(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.TenderProfileWhereInput, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["where"]
+	if !ok {
+		var zeroVal *ent.TenderProfileWhereInput
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
+	if tmp, ok := rawArgs["where"]; ok {
+		return ec.unmarshalOTenderProfileWhereInput2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderProfileWhereInput(ctx, tmp)
+	}
+
+	var zeroVal *ent.TenderProfileWhereInput
 	return zeroVal, nil
 }
 
@@ -22507,6 +22842,69 @@ func (ec *executionContext) fieldContext_Query_tenderCompetitors(ctx context.Con
 	return fc, nil
 }
 
+func (ec *executionContext) _Query_tenderProfiles(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_tenderProfiles(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().TenderProfiles(rctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].([]*ent.TenderProfileOrder), fc.Args["where"].(*ent.TenderProfileWhereInput))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*ent.TenderProfileConnection)
+	fc.Result = res
+	return ec.marshalNTenderProfileConnection2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderProfileConnection(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Query_tenderProfiles(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "edges":
+				return ec.fieldContext_TenderProfileConnection_edges(ctx, field)
+			case "pageInfo":
+				return ec.fieldContext_TenderProfileConnection_pageInfo(ctx, field)
+			case "totalCount":
+				return ec.fieldContext_TenderProfileConnection_totalCount(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type TenderProfileConnection", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Query_tenderProfiles_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _Query_users(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Query_users(ctx, field)
 	if err != nil {
@@ -26126,21 +26524,24 @@ func (ec *executionContext) _Tender_profiles(ctx context.Context, field graphql.
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Profiles(ctx)
+		return obj.Profiles(ctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].([]*ent.TenderProfileOrder), fc.Args["where"].(*ent.TenderProfileWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.TenderProfile)
+	res := resTmp.(*ent.TenderProfileConnection)
 	fc.Result = res
-	return ec.marshalOTenderProfile2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐTenderProfileᚄ(ctx, field.Selections, res)
+	return ec.marshalNTenderProfileConnection2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderProfileConnection(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Tender_profiles(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Tender_profiles(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Tender",
 		Field:      field,
@@ -26148,163 +26549,26 @@ func (ec *executionContext) fieldContext_Tender_profiles(_ context.Context, fiel
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
-			case "id":
-				return ec.fieldContext_TenderProfile_id(ctx, field)
-			case "createdAt":
-				return ec.fieldContext_TenderProfile_createdAt(ctx, field)
-			case "updatedAt":
-				return ec.fieldContext_TenderProfile_updatedAt(ctx, field)
-			case "status":
-				return ec.fieldContext_TenderProfile_status(ctx, field)
-			case "approvalStatus":
-				return ec.fieldContext_TenderProfile_approvalStatus(ctx, field)
-			case "approvalMsgID":
-				return ec.fieldContext_TenderProfile_approvalMsgID(ctx, field)
-			case "name":
-				return ec.fieldContext_TenderProfile_name(ctx, field)
-			case "estimatedAmount":
-				return ec.fieldContext_TenderProfile_estimatedAmount(ctx, field)
-			case "tenderDate":
-				return ec.fieldContext_TenderProfile_tenderDate(ctx, field)
-			case "classify":
-				return ec.fieldContext_TenderProfile_classify(ctx, field)
-			case "discoveryDate":
-				return ec.fieldContext_TenderProfile_discoveryDate(ctx, field)
-			case "address":
-				return ec.fieldContext_TenderProfile_address(ctx, field)
-			case "fullAddress":
-				return ec.fieldContext_TenderProfile_fullAddress(ctx, field)
-			case "contractor":
-				return ec.fieldContext_TenderProfile_contractor(ctx, field)
-			case "levelInvolved":
-				return ec.fieldContext_TenderProfile_levelInvolved(ctx, field)
-			case "sizeAndValueRating":
-				return ec.fieldContext_TenderProfile_sizeAndValueRating(ctx, field)
-			case "sizeAndValueRatingOverview":
-				return ec.fieldContext_TenderProfile_sizeAndValueRatingOverview(ctx, field)
-			case "creditAndPaymentRating":
-				return ec.fieldContext_TenderProfile_creditAndPaymentRating(ctx, field)
-			case "creditAndPaymentRatingOverview":
-				return ec.fieldContext_TenderProfile_creditAndPaymentRatingOverview(ctx, field)
-			case "timeLimitRating":
-				return ec.fieldContext_TenderProfile_timeLimitRating(ctx, field)
-			case "timeLimitRatingOverview":
-				return ec.fieldContext_TenderProfile_timeLimitRatingOverview(ctx, field)
-			case "customerRelationshipRating":
-				return ec.fieldContext_TenderProfile_customerRelationshipRating(ctx, field)
-			case "customerRelationshipRatingOverview":
-				return ec.fieldContext_TenderProfile_customerRelationshipRatingOverview(ctx, field)
-			case "competitivePartnershipRating":
-				return ec.fieldContext_TenderProfile_competitivePartnershipRating(ctx, field)
-			case "competitivePartnershipRatingOverview":
-				return ec.fieldContext_TenderProfile_competitivePartnershipRatingOverview(ctx, field)
-			case "prepareToBid":
-				return ec.fieldContext_TenderProfile_prepareToBid(ctx, field)
-			case "projectCode":
-				return ec.fieldContext_TenderProfile_projectCode(ctx, field)
-			case "projectType":
-				return ec.fieldContext_TenderProfile_projectType(ctx, field)
-			case "projectDefinition":
-				return ec.fieldContext_TenderProfile_projectDefinition(ctx, field)
-			case "estimatedProjectStartDate":
-				return ec.fieldContext_TenderProfile_estimatedProjectStartDate(ctx, field)
-			case "estimatedProjectEndDate":
-				return ec.fieldContext_TenderProfile_estimatedProjectEndDate(ctx, field)
-			case "attachments":
-				return ec.fieldContext_TenderProfile_attachments(ctx, field)
-			case "geoCoordinate":
-				return ec.fieldContext_TenderProfile_geoCoordinate(ctx, field)
-			case "remark":
-				return ec.fieldContext_TenderProfile_remark(ctx, field)
-			case "images":
-				return ec.fieldContext_TenderProfile_images(ctx, field)
-			case "tenderSituations":
-				return ec.fieldContext_TenderProfile_tenderSituations(ctx, field)
-			case "ownerSituations":
-				return ec.fieldContext_TenderProfile_ownerSituations(ctx, field)
-			case "biddingInstructions":
-				return ec.fieldContext_TenderProfile_biddingInstructions(ctx, field)
-			case "competitorSituations":
-				return ec.fieldContext_TenderProfile_competitorSituations(ctx, field)
-			case "costEngineer":
-				return ec.fieldContext_TenderProfile_costEngineer(ctx, field)
-			case "tenderForm":
-				return ec.fieldContext_TenderProfile_tenderForm(ctx, field)
-			case "contractForm":
-				return ec.fieldContext_TenderProfile_contractForm(ctx, field)
-			case "managementCompany":
-				return ec.fieldContext_TenderProfile_managementCompany(ctx, field)
-			case "tenderingAgency":
-				return ec.fieldContext_TenderProfile_tenderingAgency(ctx, field)
-			case "biddingDate":
-				return ec.fieldContext_TenderProfile_biddingDate(ctx, field)
-			case "facadeConsultant":
-				return ec.fieldContext_TenderProfile_facadeConsultant(ctx, field)
-			case "designUnit":
-				return ec.fieldContext_TenderProfile_designUnit(ctx, field)
-			case "consultingFirm":
-				return ec.fieldContext_TenderProfile_consultingFirm(ctx, field)
-			case "keyProject":
-				return ec.fieldContext_TenderProfile_keyProject(ctx, field)
-			case "currentProgress":
-				return ec.fieldContext_TenderProfile_currentProgress(ctx, field)
-			case "tenderWinCompany":
-				return ec.fieldContext_TenderProfile_tenderWinCompany(ctx, field)
-			case "tenderCode":
-				return ec.fieldContext_TenderProfile_tenderCode(ctx, field)
-			case "architect":
-				return ec.fieldContext_TenderProfile_architect(ctx, field)
-			case "developer":
-				return ec.fieldContext_TenderProfile_developer(ctx, field)
-			case "tenderClosingDate":
-				return ec.fieldContext_TenderProfile_tenderClosingDate(ctx, field)
-			case "constructionArea":
-				return ec.fieldContext_TenderProfile_constructionArea(ctx, field)
-			case "tenderWinDate":
-				return ec.fieldContext_TenderProfile_tenderWinDate(ctx, field)
-			case "tenderWinAmount":
-				return ec.fieldContext_TenderProfile_tenderWinAmount(ctx, field)
-			case "lastTenderAmount":
-				return ec.fieldContext_TenderProfile_lastTenderAmount(ctx, field)
-			case "tenderID":
-				return ec.fieldContext_TenderProfile_tenderID(ctx, field)
-			case "provinceID":
-				return ec.fieldContext_TenderProfile_provinceID(ctx, field)
-			case "cityID":
-				return ec.fieldContext_TenderProfile_cityID(ctx, field)
-			case "districtID":
-				return ec.fieldContext_TenderProfile_districtID(ctx, field)
-			case "customerID":
-				return ec.fieldContext_TenderProfile_customerID(ctx, field)
-			case "finderID":
-				return ec.fieldContext_TenderProfile_finderID(ctx, field)
-			case "createdByID":
-				return ec.fieldContext_TenderProfile_createdByID(ctx, field)
-			case "approverID":
-				return ec.fieldContext_TenderProfile_approverID(ctx, field)
-			case "updatedByID":
-				return ec.fieldContext_TenderProfile_updatedByID(ctx, field)
-			case "tender":
-				return ec.fieldContext_TenderProfile_tender(ctx, field)
-			case "customer":
-				return ec.fieldContext_TenderProfile_customer(ctx, field)
-			case "finder":
-				return ec.fieldContext_TenderProfile_finder(ctx, field)
-			case "createdBy":
-				return ec.fieldContext_TenderProfile_createdBy(ctx, field)
-			case "province":
-				return ec.fieldContext_TenderProfile_province(ctx, field)
-			case "city":
-				return ec.fieldContext_TenderProfile_city(ctx, field)
-			case "district":
-				return ec.fieldContext_TenderProfile_district(ctx, field)
-			case "approver":
-				return ec.fieldContext_TenderProfile_approver(ctx, field)
-			case "updatedBy":
-				return ec.fieldContext_TenderProfile_updatedBy(ctx, field)
+			case "edges":
+				return ec.fieldContext_TenderProfileConnection_edges(ctx, field)
+			case "pageInfo":
+				return ec.fieldContext_TenderProfileConnection_pageInfo(ctx, field)
+			case "totalCount":
+				return ec.fieldContext_TenderProfileConnection_totalCount(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type TenderProfile", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type TenderProfileConnection", field.Name)
 		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Tender_profiles_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
 	}
 	return fc, nil
 }
@@ -32139,6 +32403,392 @@ func (ec *executionContext) fieldContext_TenderProfile_updatedBy(_ context.Conte
 				return ec.fieldContext_User_myVisitRecords(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TenderProfileConnection_edges(ctx context.Context, field graphql.CollectedField, obj *ent.TenderProfileConnection) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TenderProfileConnection_edges(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Edges, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*ent.TenderProfileEdge)
+	fc.Result = res
+	return ec.marshalOTenderProfileEdge2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐTenderProfileEdge(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TenderProfileConnection_edges(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TenderProfileConnection",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "node":
+				return ec.fieldContext_TenderProfileEdge_node(ctx, field)
+			case "cursor":
+				return ec.fieldContext_TenderProfileEdge_cursor(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type TenderProfileEdge", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TenderProfileConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *ent.TenderProfileConnection) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TenderProfileConnection_pageInfo(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.PageInfo, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(entgql.PageInfo[xid.ID])
+	fc.Result = res
+	return ec.marshalNPageInfo2entgoᚗioᚋcontribᚋentgqlᚐPageInfo(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TenderProfileConnection_pageInfo(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TenderProfileConnection",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "hasNextPage":
+				return ec.fieldContext_PageInfo_hasNextPage(ctx, field)
+			case "hasPreviousPage":
+				return ec.fieldContext_PageInfo_hasPreviousPage(ctx, field)
+			case "startCursor":
+				return ec.fieldContext_PageInfo_startCursor(ctx, field)
+			case "endCursor":
+				return ec.fieldContext_PageInfo_endCursor(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type PageInfo", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TenderProfileConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *ent.TenderProfileConnection) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TenderProfileConnection_totalCount(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TotalCount, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TenderProfileConnection_totalCount(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TenderProfileConnection",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TenderProfileEdge_node(ctx context.Context, field graphql.CollectedField, obj *ent.TenderProfileEdge) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TenderProfileEdge_node(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Node, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*ent.TenderProfile)
+	fc.Result = res
+	return ec.marshalOTenderProfile2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderProfile(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TenderProfileEdge_node(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TenderProfileEdge",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_TenderProfile_id(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_TenderProfile_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_TenderProfile_updatedAt(ctx, field)
+			case "status":
+				return ec.fieldContext_TenderProfile_status(ctx, field)
+			case "approvalStatus":
+				return ec.fieldContext_TenderProfile_approvalStatus(ctx, field)
+			case "approvalMsgID":
+				return ec.fieldContext_TenderProfile_approvalMsgID(ctx, field)
+			case "name":
+				return ec.fieldContext_TenderProfile_name(ctx, field)
+			case "estimatedAmount":
+				return ec.fieldContext_TenderProfile_estimatedAmount(ctx, field)
+			case "tenderDate":
+				return ec.fieldContext_TenderProfile_tenderDate(ctx, field)
+			case "classify":
+				return ec.fieldContext_TenderProfile_classify(ctx, field)
+			case "discoveryDate":
+				return ec.fieldContext_TenderProfile_discoveryDate(ctx, field)
+			case "address":
+				return ec.fieldContext_TenderProfile_address(ctx, field)
+			case "fullAddress":
+				return ec.fieldContext_TenderProfile_fullAddress(ctx, field)
+			case "contractor":
+				return ec.fieldContext_TenderProfile_contractor(ctx, field)
+			case "levelInvolved":
+				return ec.fieldContext_TenderProfile_levelInvolved(ctx, field)
+			case "sizeAndValueRating":
+				return ec.fieldContext_TenderProfile_sizeAndValueRating(ctx, field)
+			case "sizeAndValueRatingOverview":
+				return ec.fieldContext_TenderProfile_sizeAndValueRatingOverview(ctx, field)
+			case "creditAndPaymentRating":
+				return ec.fieldContext_TenderProfile_creditAndPaymentRating(ctx, field)
+			case "creditAndPaymentRatingOverview":
+				return ec.fieldContext_TenderProfile_creditAndPaymentRatingOverview(ctx, field)
+			case "timeLimitRating":
+				return ec.fieldContext_TenderProfile_timeLimitRating(ctx, field)
+			case "timeLimitRatingOverview":
+				return ec.fieldContext_TenderProfile_timeLimitRatingOverview(ctx, field)
+			case "customerRelationshipRating":
+				return ec.fieldContext_TenderProfile_customerRelationshipRating(ctx, field)
+			case "customerRelationshipRatingOverview":
+				return ec.fieldContext_TenderProfile_customerRelationshipRatingOverview(ctx, field)
+			case "competitivePartnershipRating":
+				return ec.fieldContext_TenderProfile_competitivePartnershipRating(ctx, field)
+			case "competitivePartnershipRatingOverview":
+				return ec.fieldContext_TenderProfile_competitivePartnershipRatingOverview(ctx, field)
+			case "prepareToBid":
+				return ec.fieldContext_TenderProfile_prepareToBid(ctx, field)
+			case "projectCode":
+				return ec.fieldContext_TenderProfile_projectCode(ctx, field)
+			case "projectType":
+				return ec.fieldContext_TenderProfile_projectType(ctx, field)
+			case "projectDefinition":
+				return ec.fieldContext_TenderProfile_projectDefinition(ctx, field)
+			case "estimatedProjectStartDate":
+				return ec.fieldContext_TenderProfile_estimatedProjectStartDate(ctx, field)
+			case "estimatedProjectEndDate":
+				return ec.fieldContext_TenderProfile_estimatedProjectEndDate(ctx, field)
+			case "attachments":
+				return ec.fieldContext_TenderProfile_attachments(ctx, field)
+			case "geoCoordinate":
+				return ec.fieldContext_TenderProfile_geoCoordinate(ctx, field)
+			case "remark":
+				return ec.fieldContext_TenderProfile_remark(ctx, field)
+			case "images":
+				return ec.fieldContext_TenderProfile_images(ctx, field)
+			case "tenderSituations":
+				return ec.fieldContext_TenderProfile_tenderSituations(ctx, field)
+			case "ownerSituations":
+				return ec.fieldContext_TenderProfile_ownerSituations(ctx, field)
+			case "biddingInstructions":
+				return ec.fieldContext_TenderProfile_biddingInstructions(ctx, field)
+			case "competitorSituations":
+				return ec.fieldContext_TenderProfile_competitorSituations(ctx, field)
+			case "costEngineer":
+				return ec.fieldContext_TenderProfile_costEngineer(ctx, field)
+			case "tenderForm":
+				return ec.fieldContext_TenderProfile_tenderForm(ctx, field)
+			case "contractForm":
+				return ec.fieldContext_TenderProfile_contractForm(ctx, field)
+			case "managementCompany":
+				return ec.fieldContext_TenderProfile_managementCompany(ctx, field)
+			case "tenderingAgency":
+				return ec.fieldContext_TenderProfile_tenderingAgency(ctx, field)
+			case "biddingDate":
+				return ec.fieldContext_TenderProfile_biddingDate(ctx, field)
+			case "facadeConsultant":
+				return ec.fieldContext_TenderProfile_facadeConsultant(ctx, field)
+			case "designUnit":
+				return ec.fieldContext_TenderProfile_designUnit(ctx, field)
+			case "consultingFirm":
+				return ec.fieldContext_TenderProfile_consultingFirm(ctx, field)
+			case "keyProject":
+				return ec.fieldContext_TenderProfile_keyProject(ctx, field)
+			case "currentProgress":
+				return ec.fieldContext_TenderProfile_currentProgress(ctx, field)
+			case "tenderWinCompany":
+				return ec.fieldContext_TenderProfile_tenderWinCompany(ctx, field)
+			case "tenderCode":
+				return ec.fieldContext_TenderProfile_tenderCode(ctx, field)
+			case "architect":
+				return ec.fieldContext_TenderProfile_architect(ctx, field)
+			case "developer":
+				return ec.fieldContext_TenderProfile_developer(ctx, field)
+			case "tenderClosingDate":
+				return ec.fieldContext_TenderProfile_tenderClosingDate(ctx, field)
+			case "constructionArea":
+				return ec.fieldContext_TenderProfile_constructionArea(ctx, field)
+			case "tenderWinDate":
+				return ec.fieldContext_TenderProfile_tenderWinDate(ctx, field)
+			case "tenderWinAmount":
+				return ec.fieldContext_TenderProfile_tenderWinAmount(ctx, field)
+			case "lastTenderAmount":
+				return ec.fieldContext_TenderProfile_lastTenderAmount(ctx, field)
+			case "tenderID":
+				return ec.fieldContext_TenderProfile_tenderID(ctx, field)
+			case "provinceID":
+				return ec.fieldContext_TenderProfile_provinceID(ctx, field)
+			case "cityID":
+				return ec.fieldContext_TenderProfile_cityID(ctx, field)
+			case "districtID":
+				return ec.fieldContext_TenderProfile_districtID(ctx, field)
+			case "customerID":
+				return ec.fieldContext_TenderProfile_customerID(ctx, field)
+			case "finderID":
+				return ec.fieldContext_TenderProfile_finderID(ctx, field)
+			case "createdByID":
+				return ec.fieldContext_TenderProfile_createdByID(ctx, field)
+			case "approverID":
+				return ec.fieldContext_TenderProfile_approverID(ctx, field)
+			case "updatedByID":
+				return ec.fieldContext_TenderProfile_updatedByID(ctx, field)
+			case "tender":
+				return ec.fieldContext_TenderProfile_tender(ctx, field)
+			case "customer":
+				return ec.fieldContext_TenderProfile_customer(ctx, field)
+			case "finder":
+				return ec.fieldContext_TenderProfile_finder(ctx, field)
+			case "createdBy":
+				return ec.fieldContext_TenderProfile_createdBy(ctx, field)
+			case "province":
+				return ec.fieldContext_TenderProfile_province(ctx, field)
+			case "city":
+				return ec.fieldContext_TenderProfile_city(ctx, field)
+			case "district":
+				return ec.fieldContext_TenderProfile_district(ctx, field)
+			case "approver":
+				return ec.fieldContext_TenderProfile_approver(ctx, field)
+			case "updatedBy":
+				return ec.fieldContext_TenderProfile_updatedBy(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type TenderProfile", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TenderProfileEdge_cursor(ctx context.Context, field graphql.CollectedField, obj *ent.TenderProfileEdge) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TenderProfileEdge_cursor(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Cursor, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(entgql.Cursor[xid.ID])
+	fc.Result = res
+	return ec.marshalNCursor2entgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TenderProfileEdge_cursor(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TenderProfileEdge",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Cursor does not have child fields")
 		},
 	}
 	return fc, nil
@@ -74403,6 +75053,28 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 			}
 
 			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
+		case "tenderProfiles":
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_tenderProfiles(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
+			}
+
+			rrm := func(ctx context.Context) graphql.Marshaler {
+				return ec.OperationContext.RootResolverMiddleware(ctx,
+					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
 		case "users":
 			field := field
 
@@ -74851,13 +75523,16 @@ func (ec *executionContext) _Tender(ctx context.Context, sel ast.SelectionSet, o
 		case "profiles":
 			field := field
 
-			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
 				defer func() {
 					if r := recover(); r != nil {
 						ec.Error(ctx, ec.Recover(ctx, r))
 					}
 				}()
 				res = ec._Tender_profiles(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
 				return res
 			}
 
@@ -76092,6 +76767,93 @@ func (ec *executionContext) _TenderProfile(ctx context.Context, sel ast.Selectio
 			}
 
 			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
+var tenderProfileConnectionImplementors = []string{"TenderProfileConnection"}
+
+func (ec *executionContext) _TenderProfileConnection(ctx context.Context, sel ast.SelectionSet, obj *ent.TenderProfileConnection) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, tenderProfileConnectionImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("TenderProfileConnection")
+		case "edges":
+			out.Values[i] = ec._TenderProfileConnection_edges(ctx, field, obj)
+		case "pageInfo":
+			out.Values[i] = ec._TenderProfileConnection_pageInfo(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "totalCount":
+			out.Values[i] = ec._TenderProfileConnection_totalCount(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
+var tenderProfileEdgeImplementors = []string{"TenderProfileEdge"}
+
+func (ec *executionContext) _TenderProfileEdge(ctx context.Context, sel ast.SelectionSet, obj *ent.TenderProfileEdge) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, tenderProfileEdgeImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("TenderProfileEdge")
+		case "node":
+			out.Values[i] = ec._TenderProfileEdge_node(ctx, field, obj)
+		case "cursor":
+			out.Values[i] = ec._TenderProfileEdge_cursor(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -77660,14 +78422,23 @@ func (ec *executionContext) marshalNTenderOrderField2ᚖcscdᚑbdsᚋstoreᚋent
 	return v
 }
 
-func (ec *executionContext) marshalNTenderProfile2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderProfile(ctx context.Context, sel ast.SelectionSet, v *ent.TenderProfile) graphql.Marshaler {
+func (ec *executionContext) marshalNTenderProfileConnection2cscdᚑbdsᚋstoreᚋentᚐTenderProfileConnection(ctx context.Context, sel ast.SelectionSet, v ent.TenderProfileConnection) graphql.Marshaler {
+	return ec._TenderProfileConnection(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNTenderProfileConnection2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderProfileConnection(ctx context.Context, sel ast.SelectionSet, v *ent.TenderProfileConnection) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
 		}
 		return graphql.Null
 	}
-	return ec._TenderProfile(ctx, sel, v)
+	return ec._TenderProfileConnection(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalNTenderProfileOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderProfileOrder(ctx context.Context, v interface{}) (*ent.TenderProfileOrder, error) {
+	res, err := ec.unmarshalInputTenderProfileOrder(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
 func (ec *executionContext) unmarshalNTenderProfileOrderField2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderProfileOrderField(ctx context.Context, v interface{}) (*ent.TenderProfileOrderField, error) {
@@ -79314,7 +80085,14 @@ func (ec *executionContext) unmarshalOTenderOrder2ᚕᚖcscdᚑbdsᚋstoreᚋent
 	return res, nil
 }
 
-func (ec *executionContext) marshalOTenderProfile2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐTenderProfileᚄ(ctx context.Context, sel ast.SelectionSet, v []*ent.TenderProfile) graphql.Marshaler {
+func (ec *executionContext) marshalOTenderProfile2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderProfile(ctx context.Context, sel ast.SelectionSet, v *ent.TenderProfile) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._TenderProfile(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalOTenderProfileEdge2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐTenderProfileEdge(ctx context.Context, sel ast.SelectionSet, v []*ent.TenderProfileEdge) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -79341,7 +80119,7 @@ func (ec *executionContext) marshalOTenderProfile2ᚕᚖcscdᚑbdsᚋstoreᚋent
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNTenderProfile2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderProfile(ctx, sel, v[i])
+			ret[i] = ec.marshalOTenderProfileEdge2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderProfileEdge(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -79352,13 +80130,34 @@ func (ec *executionContext) marshalOTenderProfile2ᚕᚖcscdᚑbdsᚋstoreᚋent
 	}
 	wg.Wait()
 
-	for _, e := range ret {
-		if e == graphql.Null {
-			return graphql.Null
+	return ret
+}
+
+func (ec *executionContext) marshalOTenderProfileEdge2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderProfileEdge(ctx context.Context, sel ast.SelectionSet, v *ent.TenderProfileEdge) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._TenderProfileEdge(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalOTenderProfileOrder2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐTenderProfileOrderᚄ(ctx context.Context, v interface{}) ([]*ent.TenderProfileOrder, error) {
+	if v == nil {
+		return nil, nil
+	}
+	var vSlice []interface{}
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
+	}
+	var err error
+	res := make([]*ent.TenderProfileOrder, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalNTenderProfileOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderProfileOrder(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
 		}
 	}
-
-	return ret
+	return res, nil
 }
 
 func (ec *executionContext) unmarshalOTenderProfileWhereInput2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐTenderProfileWhereInputᚄ(ctx context.Context, v interface{}) ([]*ent.TenderProfileWhereInput, error) {

@@ -13,6 +13,7 @@ import { usePreloadedQuery } from "react-relay";
 import { graphql } from "relay-runtime";
 import headSvg from "~/assets/dashboard/svg/head.svg";
 import { useMapV2Store } from "~/store";
+import { DistrictPlots } from "./__amap/-components/district-plots";
 
 export const query = graphql`
   query AmapPageQuery(

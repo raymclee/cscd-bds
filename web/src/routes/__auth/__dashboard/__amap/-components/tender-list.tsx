@@ -25,7 +25,8 @@ import { cn } from "~/lib/utils";
 import { useCallback } from "react";
 import { DateRange } from "react-day-picker";
 import { zhCN } from "date-fns/locale";
-import { useWindowSize } from "usehooks-ts";
+import { useDebounceCallback, useWindowSize } from "usehooks-ts";
+import { flushSync } from "react-dom";
 
 export function TenderList() {
   const tenders = useAreaTenders();
@@ -211,7 +212,7 @@ function TenderListFilter() {
         <PopoverTrigger asChild>
           <Button
             variant={"outline"}
-            // className="h-8 w-full border-sky-800 bg-transparent focus:ring-sky-500 focus:ring-offset-0"
+            // className="w-full h-8 bg-transparent border-sky-800 focus:ring-sky-500 focus:ring-offset-0"
             className="h-8 w-56 border-sky-800 bg-transparent hover:bg-transparent hover:text-white focus:ring-sky-500 focus:ring-offset-0 focus-visible:ring-sky-500 focus-visible:ring-offset-0"
           >
             <span>投标日期</span>
@@ -312,6 +313,61 @@ function TenderListItem({ tender }: { tender: Tender }) {
   const navigate = useNavigate();
   const { width } = useWindowSize();
   const isMobile = width && width < 768;
+  const onMouseEnter = useDebounceCallback(() => {
+    if (!d || !tender?.geoCoordinate?.coordinates) return;
+    const marker = useMapV2Store.getState().getMarker(tender?.id);
+    if (marker) {
+      marker.setOptions({
+        zIndex: 13,
+      });
+    }
+    const a = document.querySelector("#marker-" + tender?.id);
+    const b = a?.closest(".amap-marker-label");
+    if (b instanceof HTMLElement) {
+      b.classList.add("scale-110");
+    }
+
+    if (tender?.id) {
+      navigate({
+        to: ".",
+        search: (prev) => ({
+          ...prev,
+          t: undefined,
+        }),
+        replace: true,
+      });
+
+      setTimeout(() => {
+        navigate({
+          to: ".",
+          search: (prev) => ({
+            ...prev,
+            t: tender?.id,
+          }),
+          replace: true,
+        });
+      }, 50);
+    }
+
+    useMapV2Store
+      .getState()
+      .map?.setCenter(tender?.geoCoordinate?.coordinates as [number, number]);
+  }, 100);
+
+  const onMouseLeave = useDebounceCallback(() => {
+    if (!d || !tender?.geoCoordinate?.coordinates) return;
+    const marker = useMapV2Store.getState().getMarker(tender?.id);
+    if (marker) {
+      marker.setOptions({
+        zIndex: 12,
+      });
+    }
+    const a = document.querySelector("#marker-" + tender?.id);
+    const b = a?.closest(".amap-marker-label");
+    if (b instanceof HTMLElement) {
+      b.classList.remove("scale-110");
+    }
+  }, 100);
 
   return (
     <Link
@@ -333,61 +389,8 @@ function TenderListItem({ tender }: { tender: Tender }) {
       to={isMobile ? "/tenders/$id" : "."}
       params={{ id: tender?.id }}
       className="group block"
-      onMouseOver={(e) => {
-        if (!d || !tender?.geoCoordinate?.coordinates) return;
-        const marker = useMapV2Store.getState().getMarker(tender?.id);
-        if (marker) {
-          marker.setOptions({
-            zIndex: 13,
-          });
-        }
-        const a = document.querySelector("#marker-" + tender?.id);
-        const b = a?.closest(".amap-marker-label");
-        if (b instanceof HTMLElement) {
-          b.classList.add("scale-110");
-        }
-
-        if (tender?.id) {
-          navigate({
-            to: ".",
-            search: (prev) => ({
-              ...prev,
-              t: tender?.id,
-            }),
-            replace: true,
-          });
-        }
-
-        useMapV2Store
-          .getState()
-          .map?.setCenter(
-            tender?.geoCoordinate?.coordinates as [number, number],
-          );
-      }}
-      onMouseLeave={() => {
-        if (!d || !tender?.geoCoordinate?.coordinates) return;
-        const marker = useMapV2Store.getState().getMarker(tender?.id);
-        if (marker) {
-          marker.setOptions({
-            zIndex: 12,
-          });
-        }
-        const a = document.querySelector("#marker-" + tender?.id);
-        const b = a?.closest(".amap-marker-label");
-        if (b instanceof HTMLElement) {
-          b.classList.remove("scale-110");
-        }
-
-        // if (t) {
-        //   navigate({
-        //     to: ".",
-        //     search: (prev) => ({
-        //       ...prev,
-        //       t: undefined,
-        //     }),
-        //   });
-        // }
-      }}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
     >
       <div className="relative grid grid-cols-3 gap-4 overflow-hidden rounded-lg px-6 py-4 transition-all duration-300 group-hover:scale-105 group-hover:bg-gradient-to-br group-hover:from-sky-950 group-hover:to-sky-700">
         {/* Full card overlay effect */}
@@ -445,15 +448,15 @@ function TenderListItem({ tender }: { tender: Tender }) {
             <div className="group-hover:text-shadow-sm text-sm transition-all duration-300 group-hover:scale-110 group-hover:text-cyan-400">
               {tenderStatusText(tender?.status)}
             </div>
-            <div className="group-hover:text-shadow-sm text-sm transition-all duration-300 group-hover:scale-110 group-hover:text-cyan-400">
+            <div className="group-hover:text-shadow-sm flex items-center text-sm transition-all duration-300 group-hover:scale-110 group-hover:text-cyan-400">
+              {/* Data dot - positioned at edge */}
+              <div className="group-hover:animate-pulse-dot mr-2 h-1.5 w-1.5 scale-0 rounded-full bg-cyan-400 opacity-0"></div>
+
               {tender?.estimatedAmount
                 ? `¥${fixAmount(tender?.estimatedAmount)}亿`
                 : "-"}
             </div>
           </div>
-
-          {/* Data dot - positioned at edge */}
-          <div className="group-hover:animate-pulse-dot absolute -right-4 bottom-2.5 h-1.5 w-1.5 scale-0 rounded-full bg-cyan-400 opacity-0"></div>
         </div>
       </div>
     </Link>

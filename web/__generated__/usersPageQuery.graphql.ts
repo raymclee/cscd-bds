@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<3d9d21057085510cc639c12c46a1d982>>
+ * @generated SignedSource<<8330c5d9f4f544f726da0437f625e6c1>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -42,8 +42,16 @@ export type usersPageQuery$data = {
                 readonly hasMapAccess: boolean;
                 readonly id: string;
                 readonly isAdmin: boolean;
+                readonly leader: {
+                  readonly id: string;
+                  readonly name: string | null | undefined;
+                } | null | undefined;
                 readonly name: string | null | undefined;
                 readonly openID: string;
+                readonly teamMembers: ReadonlyArray<{
+                  readonly id: string;
+                  readonly name: string | null | undefined;
+                }> | null | undefined;
                 readonly username: string | null | undefined;
               } | null | undefined;
             } | null | undefined> | null | undefined;
@@ -110,14 +118,18 @@ v7 = {
     "isSuperAdmin": false
   }
 },
-v8 = {
+v8 = [
+  (v4/*: any*/),
+  (v5/*: any*/)
+],
+v9 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "__typename",
   "storageKey": null
 },
-v9 = [
+v10 = [
   {
     "alias": null,
     "args": null,
@@ -228,7 +240,27 @@ v9 = [
             "name": "hasEditAccess",
             "storageKey": null
           },
-          (v8/*: any*/)
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "User",
+            "kind": "LinkedField",
+            "name": "leader",
+            "plural": false,
+            "selections": (v8/*: any*/),
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "User",
+            "kind": "LinkedField",
+            "name": "teamMembers",
+            "plural": true,
+            "selections": (v8/*: any*/),
+            "storageKey": null
+          },
+          (v9/*: any*/)
         ],
         "storageKey": null
       },
@@ -294,7 +326,7 @@ v9 = [
     ]
   }
 ],
-v10 = [
+v11 = [
   {
     "kind": "Variable",
     "name": "first",
@@ -365,7 +397,7 @@ return {
                             "kind": "LinkedField",
                             "name": "__usersPageQuery_users_connection",
                             "plural": false,
-                            "selections": (v9/*: any*/),
+                            "selections": (v10/*: any*/),
                             "storageKey": "__usersPageQuery_users_connection(where:{\"isCeo\":false,\"isSuperAdmin\":false})"
                           }
                         ],
@@ -406,7 +438,7 @@ return {
         "name": "node",
         "plural": false,
         "selections": [
-          (v8/*: any*/),
+          (v9/*: any*/),
           {
             "kind": "InlineFragment",
             "selections": [
@@ -439,17 +471,17 @@ return {
                           (v6/*: any*/),
                           {
                             "alias": null,
-                            "args": (v10/*: any*/),
+                            "args": (v11/*: any*/),
                             "concreteType": "UserConnection",
                             "kind": "LinkedField",
                             "name": "users",
                             "plural": false,
-                            "selections": (v9/*: any*/),
+                            "selections": (v10/*: any*/),
                             "storageKey": null
                           },
                           {
                             "alias": null,
-                            "args": (v10/*: any*/),
+                            "args": (v11/*: any*/),
                             "filters": [
                               "where"
                             ],
@@ -478,7 +510,7 @@ return {
     ]
   },
   "params": {
-    "cacheID": "27e9016b57b48cc61aa9985122fc28a6",
+    "cacheID": "bbb9eee48abc9e3d2d63dba57671521d",
     "id": null,
     "metadata": {
       "connection": [
@@ -492,11 +524,11 @@ return {
     },
     "name": "usersPageQuery",
     "operationKind": "query",
-    "text": "query usersPageQuery(\n  $userId: ID!\n  $first: Int\n  $last: Int\n) {\n  node(id: $userId) {\n    __typename\n    ... on User {\n      areas {\n        edges {\n          node {\n            id\n            name\n            code\n            users(first: $first, last: $last, where: {isCeo: false, isSuperAdmin: false}) {\n              edges {\n                node {\n                  id\n                  name\n                  email\n                  username\n                  openID\n                  avatarURL\n                  disabled\n                  areas {\n                    edges {\n                      node {\n                        id\n                        name\n                        code\n                      }\n                    }\n                  }\n                  isAdmin\n                  hasMapAccess\n                  hasEditAccess\n                  __typename\n                }\n                cursor\n              }\n              pageInfo {\n                endCursor\n                hasNextPage\n                hasPreviousPage\n                startCursor\n              }\n            }\n          }\n        }\n      }\n    }\n    id\n  }\n}\n"
+    "text": "query usersPageQuery(\n  $userId: ID!\n  $first: Int\n  $last: Int\n) {\n  node(id: $userId) {\n    __typename\n    ... on User {\n      areas {\n        edges {\n          node {\n            id\n            name\n            code\n            users(first: $first, last: $last, where: {isCeo: false, isSuperAdmin: false}) {\n              edges {\n                node {\n                  id\n                  name\n                  email\n                  username\n                  openID\n                  avatarURL\n                  disabled\n                  areas {\n                    edges {\n                      node {\n                        id\n                        name\n                        code\n                      }\n                    }\n                  }\n                  isAdmin\n                  hasMapAccess\n                  hasEditAccess\n                  leader {\n                    id\n                    name\n                  }\n                  teamMembers {\n                    id\n                    name\n                  }\n                  __typename\n                }\n                cursor\n              }\n              pageInfo {\n                endCursor\n                hasNextPage\n                hasPreviousPage\n                startCursor\n              }\n            }\n          }\n        }\n      }\n    }\n    id\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "0f874ef42768ed69e5901c62a00a5e7a";
+(node as any).hash = "406284418096780dcc8504d0b39e08c7";
 
 export default node;

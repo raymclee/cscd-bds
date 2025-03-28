@@ -94,6 +94,11 @@ func (r *queryResolver) TenderCompetitors(ctx context.Context, after *entgql.Cur
 	panic(fmt.Errorf("not implemented: TenderCompetitors - tenderCompetitors"))
 }
 
+// TenderProfiles is the resolver for the tenderProfiles field.
+func (r *queryResolver) TenderProfiles(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.TenderProfileOrder, where *ent.TenderProfileWhereInput) (*ent.TenderProfileConnection, error) {
+	panic(fmt.Errorf("not implemented: TenderProfiles - tenderProfiles"))
+}
+
 // Users is the resolver for the users field.
 func (r *queryResolver) Users(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.UserOrder, where *ent.UserWhereInput) (*ent.UserConnection, error) {
 	return r.store.User.Query().Paginate(ctx, after, first, before, last, ent.WithUserFilter(where.Filter), ent.WithUserOrder(orderBy))

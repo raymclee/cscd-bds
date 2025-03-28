@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader } from "../ui/card";
 import headerSvg from "~/assets/dashboard/svg/sub-head-ranking.svg";
+import * as React from "react";
 
 import numberOneSvg from "~/assets/dashboard/svg/ranking-number-one.svg";
 import numberTwoSvg from "~/assets/dashboard/svg/ranking-number-two.svg";
@@ -15,7 +16,7 @@ const numberMap = {
   3: numberThreeSvg,
 };
 
-export function RankingCard() {
+export const RankingCard = React.memo(function RankingCard() {
   const preload = useLoaderData({ from: "/__auth/__dashboard/__amap" });
   const data = usePreloadedQuery<AmapPageQuery>(query, preload);
 
@@ -55,54 +56,11 @@ export function RankingCard() {
               <div className="flex flex-1 flex-col">
                 <span className="line-clamp-1 text-sm">{e?.node?.name}</span>
               </div>
-              <div className="text-sm">80%</div>
+              <div className="text-sm">0%</div>
             </li>
           ))}
-          {/* <li className="flex items-center gap-4">
-            <img src={numberOneSvg} alt="number-one" className="w-6 h-6" />
-            <div className="flex flex-col flex-1">
-              <span className="text-sm line-clamp-1">
-                中铁十一局集团有限公司
-              </span>
-            </div>
-            <div className="text-sm">80%</div>
-          </li>
-
-          <li className="flex items-center gap-4">
-            <img src={numberTwoSvg} alt="number-two" className="w-6 h-6" />
-            <div className="flex flex-col flex-1">
-              <span className="text-sm line-clamp-1">中铁建设集团有限公司</span>
-            </div>
-            <div className="text-sm">70%</div>
-          </li>
-
-          <li className="flex items-center gap-4">
-            <img src={numberThreeSvg} alt="number-three" className="w-6 h-6" />
-            <div className="flex flex-col flex-1">
-              <span className="text-sm line-clamp-1">
-                中国建筑第八工程局有限公司
-              </span>
-            </div>
-            <div className="text-sm">60%</div>
-          </li>
-
-          <li className="flex items-center gap-4">
-            <div className="w-6 text-sm text-center text-slate-400">4</div>
-            <div className="flex flex-col flex-1">
-              <span className="text-sm line-clamp-1">中国铁建股份有限公司</span>
-            </div>
-            <div className="text-sm">50%</div>
-          </li>
-
-          <li className="flex items-center gap-4">
-            <div className="w-6 text-sm text-center text-slate-400">5</div>
-            <div className="flex flex-col flex-1">
-              <span className="text-sm line-clamp-1">中国建筑集团有限公司</span>
-            </div>
-            <div className="text-sm">40%</div>
-          </li> */}
         </ul>
       </CardContent>
     </Card>
   );
-}
+});

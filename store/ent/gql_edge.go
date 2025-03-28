@@ -480,16 +480,25 @@ func (t *Tender) Area(ctx context.Context) (*Area, error) {
 	return result, err
 }
 
-func (t *Tender) Profiles(ctx context.Context) (result []*TenderProfile, err error) {
-	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
-		result, err = t.NamedProfiles(graphql.GetFieldContext(ctx).Field.Alias)
-	} else {
-		result, err = t.Edges.ProfilesOrErr()
+func (t *Tender) Profiles(
+	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy []*TenderProfileOrder, where *TenderProfileWhereInput,
+) (*TenderProfileConnection, error) {
+	opts := []TenderProfilePaginateOption{
+		WithTenderProfileOrder(orderBy),
+		WithTenderProfileFilter(where.Filter),
 	}
-	if IsNotLoaded(err) {
-		result, err = t.QueryProfiles().All(ctx)
+	alias := graphql.GetFieldContext(ctx).Field.Alias
+	totalCount, hasTotalCount := t.Edges.totalCount[1][alias]
+	if nodes, err := t.NamedProfiles(alias); err == nil || hasTotalCount {
+		pager, err := newTenderProfilePager(opts, last != nil)
+		if err != nil {
+			return nil, err
+		}
+		conn := &TenderProfileConnection{Edges: []*TenderProfileEdge{}, TotalCount: totalCount}
+		conn.build(nodes, pager, after, first, before, last)
+		return conn, nil
 	}
-	return result, err
+	return t.QueryProfiles().Paginate(ctx, after, first, before, last, opts...)
 }
 
 func (t *Tender) Competitors(ctx context.Context) (result []*TenderCompetitor, err error) {

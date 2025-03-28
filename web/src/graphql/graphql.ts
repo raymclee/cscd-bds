@@ -4052,6 +4052,7 @@ export type Query = {
   searchLocation: Array<Location>;
   session: Session;
   tenderCompetitors: TenderCompetitorConnection;
+  tenderProfiles: TenderProfileConnection;
   tenders: TenderConnection;
   topCompetitors: Array<TopCompetitor>;
   users: UserConnection;
@@ -4221,6 +4222,16 @@ export type QueryTenderCompetitorsArgs = {
 };
 
 
+export type QueryTenderProfilesArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<TenderProfileOrder>>;
+  where?: InputMaybe<TenderProfileWhereInput>;
+};
+
+
 export type QueryTendersArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -4335,7 +4346,7 @@ export type Tender = Node & {
   name: Scalars['String']['output'];
   ownerSituations?: Maybe<Scalars['String']['output']>;
   prepareToBid: Scalars['Boolean']['output'];
-  profiles?: Maybe<Array<TenderProfile>>;
+  profiles: TenderProfileConnection;
   projectCode?: Maybe<Scalars['String']['output']>;
   projectDefinition?: Maybe<Scalars['String']['output']>;
   projectType?: Maybe<Scalars['String']['output']>;
@@ -4364,6 +4375,16 @@ export type Tender = Node & {
   updatedBy?: Maybe<User>;
   updatedByID?: Maybe<Scalars['ID']['output']>;
   visitRecords: VisitRecordConnection;
+};
+
+
+export type TenderProfilesArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<TenderProfileOrder>>;
+  where?: InputMaybe<TenderProfileWhereInput>;
 };
 
 
@@ -4627,6 +4648,26 @@ export type TenderProfile = Node & {
   updatedAt: Scalars['Time']['output'];
   updatedBy?: Maybe<User>;
   updatedByID?: Maybe<Scalars['ID']['output']>;
+};
+
+/** A connection to a list of items. */
+export type TenderProfileConnection = {
+  __typename?: 'TenderProfileConnection';
+  /** A list of edges. */
+  edges?: Maybe<Array<Maybe<TenderProfileEdge>>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** Identifies the total count of items in the connection. */
+  totalCount: Scalars['Int']['output'];
+};
+
+/** An edge in a connection. */
+export type TenderProfileEdge = {
+  __typename?: 'TenderProfileEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['Cursor']['output'];
+  /** The item at the end of the edge. */
+  node?: Maybe<TenderProfile>;
 };
 
 /** Ordering options for TenderProfile connections */

@@ -16,6 +16,8 @@ import { fixAmount, isGA, ownerTypeText } from "~/lib/helper";
 import { cn } from "~/lib/utils";
 import { Button } from "~/components/ui/button";
 import { Tender } from "~/graphql/graphql";
+import { useOnClickOutside } from "usehooks-ts";
+import { useRef } from "react";
 
 export function TenderDetailFrame() {
   // const tender = useLocation({ select: (location) => location.state.tender });
@@ -23,6 +25,7 @@ export function TenderDetailFrame() {
     from: "/__auth/__dashboard/__amap/v2",
     select: (sp) => sp.t,
   });
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const tender = useMapV2Store
     .getState()
@@ -31,10 +34,18 @@ export function TenderDetailFrame() {
 
   const navigate = useNavigate();
 
+  useOnClickOutside(containerRef, () => {
+    navigate({
+      to: ".",
+      search: (prev) => ({ ...prev, t: undefined }),
+    });
+  });
+
   return (
-    <AnimatePresence mode="wait">
+    <AnimatePresence>
       {tender && (
         <motion.div
+          ref={containerRef}
           initial={{ opacity: 0, x: 100 }}
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: 100 }}
@@ -377,7 +388,7 @@ export function TenderDetail({ tender }: { tender: Tender }) {
               {/* <TabsContent value="follow-up" className="">
     {tender?.visitRecords?.edges &&
     tender?.visitRecords?.edges?.length < 1 ? (
-      <div className="mt-8 flex items-center justify-center">
+      <div className="flex items-center justify-center mt-8">
         没有拜访记录
       </div>
     ) : (

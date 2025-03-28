@@ -15,7 +15,7 @@ import { usePreloadedQuery } from "react-relay";
 import { graphql } from "relay-runtime";
 import { ListFilter } from "~/components/portal/list-filter";
 import { UserForm } from "~/components/portal/user-form";
-import { AreaConnection, User } from "~/graphql/graphql";
+import { AreaConnection, User, UserConnection } from "~/graphql/graphql";
 import { useUpdateUser } from "~/hooks/use-update-user";
 
 export const Route = createLazyFileRoute(
@@ -61,6 +61,14 @@ const query = graphql`
                     isAdmin
                     hasMapAccess
                     hasEditAccess
+                    leader {
+                      id
+                      name
+                    }
+                    teamMembers {
+                      id
+                      name
+                    }
                   }
                 }
               }
@@ -143,6 +151,21 @@ function RouteComponent() {
               .map((a) => a?.node?.name)
               .join(", ")
           : "无",
+    },
+    {
+      dataIndex: "leader",
+      title: "隊長",
+      render(value) {
+        return value?.name ?? "无";
+      },
+    },
+    {
+      dataIndex: "teamMembers",
+      title: "隊員",
+      ellipsis: true,
+      render(_, record) {
+        return record.teamMembers?.map((v) => v?.name).join(", ") ?? "无";
+      },
     },
     {
       dataIndex: "hasMapAccess",
@@ -263,6 +286,7 @@ function RouteComponent() {
           selectedUser={selectedUser}
           setSelectedUser={setSelectedUser}
           avaliableAreas={data.node?.areas as AreaConnection}
+          avaliableUsers={users}
         />
       </ListFilter>
 
@@ -271,7 +295,7 @@ function RouteComponent() {
         dataSource={dataSource}
         columns={columns}
         rowKey={"id"}
-        scroll={{ x: "max-content" }}
+        scroll={{ x: 1200 }}
         pagination={{
           current: searchParams.page,
           onChange(page) {
@@ -292,11 +316,15 @@ function UserFormDrawer({
   selectedUser,
   setSelectedUser,
   avaliableAreas,
+  avaliableUsers,
 }: {
   connectionIDs: string[];
   selectedUser: User | null;
   setSelectedUser: React.Dispatch<React.SetStateAction<User | null>>;
   avaliableAreas: AreaConnection;
+  avaliableUsers: Array<
+    NonNullable<NonNullable<UserConnection["edges"]>[number]>["node"]
+  >;
 }) {
   const [open, setOpen] = React.useState(false);
 
@@ -328,6 +356,7 @@ function UserFormDrawer({
           connectionIDs={connectionIDs}
           selectedUser={selectedUser}
           avaliableAreas={avaliableAreas}
+          avaliableUsers={avaliableUsers}
         />
       </Drawer>
     </>

@@ -309,7 +309,7 @@ function RouteComponent() {
           setSelectedUser={setSelectedUser}
           avaliableAreas={data.areas as AreaConnection}
           avaliableProjects={data.projects as ProjectConnection}
-          avaliableUsers={data.users}
+          avaliableUsers={data.users.edges?.map((e) => e?.node) as User[]}
         />
       </ListFilter>
 
@@ -345,28 +345,28 @@ function UserFormDrawer({
 }: {
   avaliableAreas: AreaConnection;
   avaliableProjects: ProjectConnection;
-  avaliableUsers: usersSuperAdminUsersPageQuery$data["users"];
+  avaliableUsers: User[];
   connectionID: string;
   selectedUser: User | null;
   setSelectedUser: React.Dispatch<React.SetStateAction<User | null>>;
 }) {
   const [open, setOpen] = React.useState(false);
 
-  const onClose = () => {
+  const onClose = React.useCallback(() => {
     setOpen(false);
     setSelectedUser(null);
-  };
+  }, [setSelectedUser]);
 
-  return (
-    <>
-      <Button
-        type="primary"
-        icon={<Plus size={16} />}
-        onClick={() => setOpen(true)}
-        className="w-full md:w-auto"
-      >
-        添加用户
-      </Button>
+  const connectionIDs = [connectionID];
+
+  const plusIcon = React.useMemo(() => <Plus size={16} />, []);
+
+  const handleClick = React.useCallback(() => {
+    setOpen(true);
+  }, [setOpen]);
+
+  const memoizedDrawer = React.useMemo(
+    () => (
       <Drawer
         title={selectedUser ? "编辑用户" : "添加用户"}
         open={open || !!selectedUser}
@@ -377,14 +377,42 @@ function UserFormDrawer({
       >
         <UserForm
           onClose={onClose}
-          connectionIDs={[connectionID]}
+          connectionIDs={connectionIDs}
           selectedUser={selectedUser}
           isSuperAdmin
           avaliableAreas={avaliableAreas}
           avaliableProjects={avaliableProjects}
-          avaliableUsers={avaliableUsers as any}
+          avaliableUsers={avaliableUsers}
         />
       </Drawer>
+    ),
+    [
+      open,
+      selectedUser,
+      onClose,
+      connectionIDs,
+      avaliableAreas,
+      avaliableProjects,
+      avaliableUsers,
+    ],
+  );
+
+  return (
+    <>
+      {React.useMemo(
+        () => (
+          <Button
+            type="primary"
+            icon={plusIcon}
+            onClick={handleClick}
+            className="w-full md:w-auto"
+          >
+            添加用户
+          </Button>
+        ),
+        [plusIcon, handleClick],
+      )}
+      {memoizedDrawer}
     </>
   );
 }

@@ -31,7 +31,6 @@ type Action = {
     opts?: Partial<AMap.MapOptions>,
   ) => void;
   clearMap: () => void;
-  moveToTender: (tender: Tender) => void;
   renderAreas: (areas?: AreaConnection) => void;
   renderArea: () => void;
   renderMarker: (props: any, hidable?: boolean) => void;
@@ -100,20 +99,7 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
     map?.removeLayer(satelliteLayer!);
     map?.remove(markers);
     map?.remove(mapCircles);
-  },
-  moveToTender: (tender: Tender) => {
-    const { map, satelliteLayer, markers, districtExplorer, clearMap } = get();
-    clearMap();
-    if (!tender.geoCoordinate?.coordinates) {
-      return;
-    }
-    districtExplorer?.clearFeaturePolygons();
-    districtExplorer?.setHoverFeature(null);
-    // map?.removeLayer(satelliteLayer!);
-    map?.remove(markers);
-    map?.addLayer(satelliteLayer!);
-    const [lng, lat] = tender.geoCoordinate.coordinates;
-    map?.setZoomAndCenter(16, [lng, lat]);
+    set({ markers: [], mapCircles: [] });
   },
   renderAreas: () => {
     const { districtExplorer, map, markers, clearMap, areas } = get();
@@ -456,48 +442,6 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
         map?.addLayer(satelliteLayer!);
 
         const mapCircles: AMap.CircleMarker[] | any[] | AMap.Polygon[] = [];
-
-        const districts = await fetchQuery<mapv2DistrictsQuery>(
-          relayEnvironment,
-          districtsQuery,
-          {
-            adcode: areaProps.adcode,
-          },
-        ).toPromise();
-
-        for (const plot of districts?.districts.edges
-          ?.map((e) => e?.node)
-          .flatMap((d) => d?.plots.edges)
-          .map((e) => e?.node) || []) {
-          const polygon = new AMap.Polygon();
-
-          polygon.setPath(plot?.geoBounds as AMap.LngLatLike[]);
-          polygon.setOptions({
-            fillColor: plot?.colorHex,
-            fillOpacity: 0.35,
-            strokeColor: plot?.colorHex,
-            strokeWeight: 2,
-          });
-
-          // @ts-expect-error
-          const label = new AMapUI.SimpleMarker({
-            // @ts-expect-error
-            iconStyle: AMapUI.SimpleMarker.getBuiltInIconStyles("default"),
-            label: {
-              content: `
-            <div class="w-[10rem] rounded-lg px-1 py-0.5 line-clamp-2">
-              <div class="text-sm font-medium text-center text-wrap">${plot?.name}</div>
-            </div>
-            `,
-              offset: new AMap.Pixel(-100, 30),
-            },
-            map,
-            position: polygon.getBounds()?.getCenter(),
-          });
-
-          mapCircles.push(polygon);
-          mapCircles.push(label);
-        }
 
         const tenders =
           selectedArea?.tenders.edges

@@ -21,13 +21,13 @@ export function Cards() {
       return Boolean(state.d || state.t);
     },
   });
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  // const [isCollapsed, setIsCollapsed] = useState(false);
 
-  const toggleCollapse = () => {
-    setIsCollapsed((prev) => !prev);
-  };
+  // const toggleCollapse = () => {
+  //   setIsCollapsed((prev) => !prev);
+  // };
 
-  const visible = Boolean(!isCollapsed && !show);
+  // const visible = Boolean(!isCollapsed && !show);
 
   return (
     <>
@@ -57,10 +57,10 @@ export function Cards() {
               >
                 <CarouselContent>
                   {[
-                    <AmountSummaryCard key="amount" />,
-                    <RankingCard key="ranking" />,
-                    <TenderAddedCard key="tender" />,
-                    <TenderTypeCard key="type" />,
+                    <AmountSummaryCard />,
+                    <RankingCard />,
+                    <TenderAddedCard />,
+                    <TenderTypeCard />,
                   ].map((card, index) => (
                     <CarouselItem
                       key={index}
