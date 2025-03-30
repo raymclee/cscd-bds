@@ -25,8 +25,8 @@ type ProjectStaffQuery struct {
 	inters      []Interceptor
 	predicates  []predicate.ProjectStaff
 	withProject *ProjectQuery
-	modifiers   []func(*sql.Selector)
 	loadTotal   []func(context.Context, []*ProjectStaff) error
+	modifiers   []func(*sql.Selector)
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -279,8 +279,9 @@ func (psq *ProjectStaffQuery) Clone() *ProjectStaffQuery {
 		predicates:  append([]predicate.ProjectStaff{}, psq.predicates...),
 		withProject: psq.withProject.Clone(),
 		// clone intermediate query.
-		sql:  psq.sql.Clone(),
-		path: psq.path,
+		sql:       psq.sql.Clone(),
+		path:      psq.path,
+		modifiers: append([]func(*sql.Selector){}, psq.modifiers...),
 	}
 }
 
@@ -512,6 +513,9 @@ func (psq *ProjectStaffQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if psq.ctx.Unique != nil && *psq.ctx.Unique {
 		selector.Distinct()
 	}
+	for _, m := range psq.modifiers {
+		m(selector)
+	}
 	for _, p := range psq.predicates {
 		p(selector)
 	}
@@ -527,6 +531,12 @@ func (psq *ProjectStaffQuery) sqlQuery(ctx context.Context) *sql.Selector {
 		selector.Limit(*limit)
 	}
 	return selector
+}
+
+// Modify adds a query modifier for attaching custom logic to queries.
+func (psq *ProjectStaffQuery) Modify(modifiers ...func(s *sql.Selector)) *ProjectStaffSelect {
+	psq.modifiers = append(psq.modifiers, modifiers...)
+	return psq.Select()
 }
 
 // ProjectStaffGroupBy is the group-by builder for ProjectStaff entities.
@@ -617,4 +627,10 @@ func (pss *ProjectStaffSelect) sqlScan(ctx context.Context, root *ProjectStaffQu
 	}
 	defer rows.Close()
 	return sql.ScanSlice(rows, v)
+}
+
+// Modify adds a query modifier for attaching custom logic to queries.
+func (pss *ProjectStaffSelect) Modify(modifiers ...func(s *sql.Selector)) *ProjectStaffSelect {
+	pss.modifiers = append(pss.modifiers, modifiers...)
+	return pss
 }

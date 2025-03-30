@@ -46,8 +46,8 @@ type TenderQuery struct {
 	withVisitRecords        *VisitRecordQuery
 	withApprover            *UserQuery
 	withUpdatedBy           *UserQuery
-	modifiers               []func(*sql.Selector)
 	loadTotal               []func(context.Context, []*Tender) error
+	modifiers               []func(*sql.Selector)
 	withNamedProfiles       map[string]*TenderProfileQuery
 	withNamedCompetitors    map[string]*TenderCompetitorQuery
 	withNamedFollowingSales map[string]*UserQuery
@@ -580,8 +580,9 @@ func (tq *TenderQuery) Clone() *TenderQuery {
 		withApprover:       tq.withApprover.Clone(),
 		withUpdatedBy:      tq.withUpdatedBy.Clone(),
 		// clone intermediate query.
-		sql:  tq.sql.Clone(),
-		path: tq.path,
+		sql:       tq.sql.Clone(),
+		path:      tq.path,
+		modifiers: append([]func(*sql.Selector){}, tq.modifiers...),
 	}
 }
 
@@ -1495,6 +1496,9 @@ func (tq *TenderQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if tq.ctx.Unique != nil && *tq.ctx.Unique {
 		selector.Distinct()
 	}
+	for _, m := range tq.modifiers {
+		m(selector)
+	}
 	for _, p := range tq.predicates {
 		p(selector)
 	}
@@ -1510,6 +1514,12 @@ func (tq *TenderQuery) sqlQuery(ctx context.Context) *sql.Selector {
 		selector.Limit(*limit)
 	}
 	return selector
+}
+
+// Modify adds a query modifier for attaching custom logic to queries.
+func (tq *TenderQuery) Modify(modifiers ...func(s *sql.Selector)) *TenderSelect {
+	tq.modifiers = append(tq.modifiers, modifiers...)
+	return tq.Select()
 }
 
 // WithNamedProfiles tells the query-builder to eager-load the nodes that are connected to the "profiles"
@@ -1656,4 +1666,10 @@ func (ts *TenderSelect) sqlScan(ctx context.Context, root *TenderQuery, v any) e
 	}
 	defer rows.Close()
 	return sql.ScanSlice(rows, v)
+}
+
+// Modify adds a query modifier for attaching custom logic to queries.
+func (ts *TenderSelect) Modify(modifiers ...func(s *sql.Selector)) *TenderSelect {
+	ts.modifiers = append(ts.modifiers, modifiers...)
+	return ts
 }

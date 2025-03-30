@@ -37,9 +37,8 @@ type TenderProfileQuery struct {
 	withCity      *CityQuery
 	withDistrict  *DistrictQuery
 	withApprover  *UserQuery
-	withUpdatedBy *UserQuery
-	modifiers     []func(*sql.Selector)
 	loadTotal     []func(context.Context, []*TenderProfile) error
+	modifiers     []func(*sql.Selector)
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -252,28 +251,6 @@ func (tpq *TenderProfileQuery) QueryApprover() *UserQuery {
 	return query
 }
 
-// QueryUpdatedBy chains the current query on the "updated_by" edge.
-func (tpq *TenderProfileQuery) QueryUpdatedBy() *UserQuery {
-	query := (&UserClient{config: tpq.config}).Query()
-	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
-		if err := tpq.prepareQuery(ctx); err != nil {
-			return nil, err
-		}
-		selector := tpq.sqlQuery(ctx)
-		if err := selector.Err(); err != nil {
-			return nil, err
-		}
-		step := sqlgraph.NewStep(
-			sqlgraph.From(tenderprofile.Table, tenderprofile.FieldID, selector),
-			sqlgraph.To(user.Table, user.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, false, tenderprofile.UpdatedByTable, tenderprofile.UpdatedByColumn),
-		)
-		fromU = sqlgraph.SetNeighbors(tpq.driver.Dialect(), step)
-		return fromU, nil
-	}
-	return query
-}
-
 // First returns the first TenderProfile entity from the query.
 // Returns a *NotFoundError when no TenderProfile was found.
 func (tpq *TenderProfileQuery) First(ctx context.Context) (*TenderProfile, error) {
@@ -474,10 +451,10 @@ func (tpq *TenderProfileQuery) Clone() *TenderProfileQuery {
 		withCity:      tpq.withCity.Clone(),
 		withDistrict:  tpq.withDistrict.Clone(),
 		withApprover:  tpq.withApprover.Clone(),
-		withUpdatedBy: tpq.withUpdatedBy.Clone(),
 		// clone intermediate query.
-		sql:  tpq.sql.Clone(),
-		path: tpq.path,
+		sql:       tpq.sql.Clone(),
+		path:      tpq.path,
+		modifiers: append([]func(*sql.Selector){}, tpq.modifiers...),
 	}
 }
 
@@ -569,17 +546,6 @@ func (tpq *TenderProfileQuery) WithApprover(opts ...func(*UserQuery)) *TenderPro
 	return tpq
 }
 
-// WithUpdatedBy tells the query-builder to eager-load the nodes that are connected to
-// the "updated_by" edge. The optional arguments are used to configure the query builder of the edge.
-func (tpq *TenderProfileQuery) WithUpdatedBy(opts ...func(*UserQuery)) *TenderProfileQuery {
-	query := (&UserClient{config: tpq.config}).Query()
-	for _, opt := range opts {
-		opt(query)
-	}
-	tpq.withUpdatedBy = query
-	return tpq
-}
-
 // GroupBy is used to group vertices by one or more fields/columns.
 // It is often used with aggregate functions, like: count, max, mean, min, sum.
 //
@@ -658,7 +624,7 @@ func (tpq *TenderProfileQuery) sqlAll(ctx context.Context, hooks ...queryHook) (
 	var (
 		nodes       = []*TenderProfile{}
 		_spec       = tpq.querySpec()
-		loadedTypes = [9]bool{
+		loadedTypes = [8]bool{
 			tpq.withTender != nil,
 			tpq.withCustomer != nil,
 			tpq.withFinder != nil,
@@ -667,7 +633,6 @@ func (tpq *TenderProfileQuery) sqlAll(ctx context.Context, hooks ...queryHook) (
 			tpq.withCity != nil,
 			tpq.withDistrict != nil,
 			tpq.withApprover != nil,
-			tpq.withUpdatedBy != nil,
 		}
 	)
 	_spec.ScanValues = func(columns []string) ([]any, error) {
@@ -736,12 +701,6 @@ func (tpq *TenderProfileQuery) sqlAll(ctx context.Context, hooks ...queryHook) (
 	if query := tpq.withApprover; query != nil {
 		if err := tpq.loadApprover(ctx, query, nodes, nil,
 			func(n *TenderProfile, e *User) { n.Edges.Approver = e }); err != nil {
-			return nil, err
-		}
-	}
-	if query := tpq.withUpdatedBy; query != nil {
-		if err := tpq.loadUpdatedBy(ctx, query, nodes, nil,
-			func(n *TenderProfile, e *User) { n.Edges.UpdatedBy = e }); err != nil {
 			return nil, err
 		}
 	}
@@ -1006,38 +965,6 @@ func (tpq *TenderProfileQuery) loadApprover(ctx context.Context, query *UserQuer
 	}
 	return nil
 }
-func (tpq *TenderProfileQuery) loadUpdatedBy(ctx context.Context, query *UserQuery, nodes []*TenderProfile, init func(*TenderProfile), assign func(*TenderProfile, *User)) error {
-	ids := make([]xid.ID, 0, len(nodes))
-	nodeids := make(map[xid.ID][]*TenderProfile)
-	for i := range nodes {
-		if nodes[i].UpdatedByID == nil {
-			continue
-		}
-		fk := *nodes[i].UpdatedByID
-		if _, ok := nodeids[fk]; !ok {
-			ids = append(ids, fk)
-		}
-		nodeids[fk] = append(nodeids[fk], nodes[i])
-	}
-	if len(ids) == 0 {
-		return nil
-	}
-	query.Where(user.IDIn(ids...))
-	neighbors, err := query.All(ctx)
-	if err != nil {
-		return err
-	}
-	for _, n := range neighbors {
-		nodes, ok := nodeids[n.ID]
-		if !ok {
-			return fmt.Errorf(`unexpected foreign-key "updated_by_id" returned %v`, n.ID)
-		}
-		for i := range nodes {
-			assign(nodes[i], n)
-		}
-	}
-	return nil
-}
 
 func (tpq *TenderProfileQuery) sqlCount(ctx context.Context) (int, error) {
 	_spec := tpq.querySpec()
@@ -1091,9 +1018,6 @@ func (tpq *TenderProfileQuery) querySpec() *sqlgraph.QuerySpec {
 		if tpq.withApprover != nil {
 			_spec.Node.AddColumnOnce(tenderprofile.FieldApproverID)
 		}
-		if tpq.withUpdatedBy != nil {
-			_spec.Node.AddColumnOnce(tenderprofile.FieldUpdatedByID)
-		}
 	}
 	if ps := tpq.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
@@ -1133,6 +1057,9 @@ func (tpq *TenderProfileQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if tpq.ctx.Unique != nil && *tpq.ctx.Unique {
 		selector.Distinct()
 	}
+	for _, m := range tpq.modifiers {
+		m(selector)
+	}
 	for _, p := range tpq.predicates {
 		p(selector)
 	}
@@ -1148,6 +1075,12 @@ func (tpq *TenderProfileQuery) sqlQuery(ctx context.Context) *sql.Selector {
 		selector.Limit(*limit)
 	}
 	return selector
+}
+
+// Modify adds a query modifier for attaching custom logic to queries.
+func (tpq *TenderProfileQuery) Modify(modifiers ...func(s *sql.Selector)) *TenderProfileSelect {
+	tpq.modifiers = append(tpq.modifiers, modifiers...)
+	return tpq.Select()
 }
 
 // TenderProfileGroupBy is the group-by builder for TenderProfile entities.
@@ -1238,4 +1171,10 @@ func (tps *TenderProfileSelect) sqlScan(ctx context.Context, root *TenderProfile
 	}
 	defer rows.Close()
 	return sql.ScanSlice(rows, v)
+}
+
+// Modify adds a query modifier for attaching custom logic to queries.
+func (tps *TenderProfileSelect) Modify(modifiers ...func(s *sql.Selector)) *TenderProfileSelect {
+	tps.modifiers = append(tps.modifiers, modifiers...)
+	return tps
 }

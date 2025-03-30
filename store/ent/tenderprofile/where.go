@@ -371,11 +371,6 @@ func ApproverID(v xid.ID) predicate.TenderProfile {
 	return predicate.TenderProfile(sql.FieldEQ(FieldApproverID, v))
 }
 
-// UpdatedByID applies equality check predicate on the "updated_by_id" field. It's identical to UpdatedByIDEQ.
-func UpdatedByID(v xid.ID) predicate.TenderProfile {
-	return predicate.TenderProfile(sql.FieldEQ(FieldUpdatedByID, v))
-}
-
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
 func CreatedAtEQ(v time.Time) predicate.TenderProfile {
 	return predicate.TenderProfile(sql.FieldEQ(FieldCreatedAt, v))
@@ -4456,86 +4451,6 @@ func ApproverIDContainsFold(v xid.ID) predicate.TenderProfile {
 	return predicate.TenderProfile(sql.FieldContainsFold(FieldApproverID, vc))
 }
 
-// UpdatedByIDEQ applies the EQ predicate on the "updated_by_id" field.
-func UpdatedByIDEQ(v xid.ID) predicate.TenderProfile {
-	return predicate.TenderProfile(sql.FieldEQ(FieldUpdatedByID, v))
-}
-
-// UpdatedByIDNEQ applies the NEQ predicate on the "updated_by_id" field.
-func UpdatedByIDNEQ(v xid.ID) predicate.TenderProfile {
-	return predicate.TenderProfile(sql.FieldNEQ(FieldUpdatedByID, v))
-}
-
-// UpdatedByIDIn applies the In predicate on the "updated_by_id" field.
-func UpdatedByIDIn(vs ...xid.ID) predicate.TenderProfile {
-	return predicate.TenderProfile(sql.FieldIn(FieldUpdatedByID, vs...))
-}
-
-// UpdatedByIDNotIn applies the NotIn predicate on the "updated_by_id" field.
-func UpdatedByIDNotIn(vs ...xid.ID) predicate.TenderProfile {
-	return predicate.TenderProfile(sql.FieldNotIn(FieldUpdatedByID, vs...))
-}
-
-// UpdatedByIDGT applies the GT predicate on the "updated_by_id" field.
-func UpdatedByIDGT(v xid.ID) predicate.TenderProfile {
-	return predicate.TenderProfile(sql.FieldGT(FieldUpdatedByID, v))
-}
-
-// UpdatedByIDGTE applies the GTE predicate on the "updated_by_id" field.
-func UpdatedByIDGTE(v xid.ID) predicate.TenderProfile {
-	return predicate.TenderProfile(sql.FieldGTE(FieldUpdatedByID, v))
-}
-
-// UpdatedByIDLT applies the LT predicate on the "updated_by_id" field.
-func UpdatedByIDLT(v xid.ID) predicate.TenderProfile {
-	return predicate.TenderProfile(sql.FieldLT(FieldUpdatedByID, v))
-}
-
-// UpdatedByIDLTE applies the LTE predicate on the "updated_by_id" field.
-func UpdatedByIDLTE(v xid.ID) predicate.TenderProfile {
-	return predicate.TenderProfile(sql.FieldLTE(FieldUpdatedByID, v))
-}
-
-// UpdatedByIDContains applies the Contains predicate on the "updated_by_id" field.
-func UpdatedByIDContains(v xid.ID) predicate.TenderProfile {
-	vc := string(v)
-	return predicate.TenderProfile(sql.FieldContains(FieldUpdatedByID, vc))
-}
-
-// UpdatedByIDHasPrefix applies the HasPrefix predicate on the "updated_by_id" field.
-func UpdatedByIDHasPrefix(v xid.ID) predicate.TenderProfile {
-	vc := string(v)
-	return predicate.TenderProfile(sql.FieldHasPrefix(FieldUpdatedByID, vc))
-}
-
-// UpdatedByIDHasSuffix applies the HasSuffix predicate on the "updated_by_id" field.
-func UpdatedByIDHasSuffix(v xid.ID) predicate.TenderProfile {
-	vc := string(v)
-	return predicate.TenderProfile(sql.FieldHasSuffix(FieldUpdatedByID, vc))
-}
-
-// UpdatedByIDIsNil applies the IsNil predicate on the "updated_by_id" field.
-func UpdatedByIDIsNil() predicate.TenderProfile {
-	return predicate.TenderProfile(sql.FieldIsNull(FieldUpdatedByID))
-}
-
-// UpdatedByIDNotNil applies the NotNil predicate on the "updated_by_id" field.
-func UpdatedByIDNotNil() predicate.TenderProfile {
-	return predicate.TenderProfile(sql.FieldNotNull(FieldUpdatedByID))
-}
-
-// UpdatedByIDEqualFold applies the EqualFold predicate on the "updated_by_id" field.
-func UpdatedByIDEqualFold(v xid.ID) predicate.TenderProfile {
-	vc := string(v)
-	return predicate.TenderProfile(sql.FieldEqualFold(FieldUpdatedByID, vc))
-}
-
-// UpdatedByIDContainsFold applies the ContainsFold predicate on the "updated_by_id" field.
-func UpdatedByIDContainsFold(v xid.ID) predicate.TenderProfile {
-	vc := string(v)
-	return predicate.TenderProfile(sql.FieldContainsFold(FieldUpdatedByID, vc))
-}
-
 // HasTender applies the HasEdge predicate on the "tender" edge.
 func HasTender() predicate.TenderProfile {
 	return predicate.TenderProfile(func(s *sql.Selector) {
@@ -4712,29 +4627,6 @@ func HasApprover() predicate.TenderProfile {
 func HasApproverWith(preds ...predicate.User) predicate.TenderProfile {
 	return predicate.TenderProfile(func(s *sql.Selector) {
 		step := newApproverStep()
-		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
-			for _, p := range preds {
-				p(s)
-			}
-		})
-	})
-}
-
-// HasUpdatedBy applies the HasEdge predicate on the "updated_by" edge.
-func HasUpdatedBy() predicate.TenderProfile {
-	return predicate.TenderProfile(func(s *sql.Selector) {
-		step := sqlgraph.NewStep(
-			sqlgraph.From(Table, FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, false, UpdatedByTable, UpdatedByColumn),
-		)
-		sqlgraph.HasNeighbors(s, step)
-	})
-}
-
-// HasUpdatedByWith applies the HasEdge predicate on the "updated_by" edge with a given conditions (other predicates).
-func HasUpdatedByWith(preds ...predicate.User) predicate.TenderProfile {
-	return predicate.TenderProfile(func(s *sql.Selector) {
-		step := newUpdatedByStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

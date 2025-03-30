@@ -4756,21 +4756,6 @@ func (tp *TenderProfileQuery) collectField(ctx context.Context, oneNode bool, op
 				selectedFields = append(selectedFields, tenderprofile.FieldApproverID)
 				fieldSeen[tenderprofile.FieldApproverID] = struct{}{}
 			}
-
-		case "updatedBy":
-			var (
-				alias = field.Alias
-				path  = append(path, alias)
-				query = (&UserClient{config: tp.config}).Query()
-			)
-			if err := query.collectField(ctx, oneNode, opCtx, field, path, mayAddCondition(satisfies, userImplementors)...); err != nil {
-				return err
-			}
-			tp.withUpdatedBy = query
-			if _, ok := fieldSeen[tenderprofile.FieldUpdatedByID]; !ok {
-				selectedFields = append(selectedFields, tenderprofile.FieldUpdatedByID)
-				fieldSeen[tenderprofile.FieldUpdatedByID] = struct{}{}
-			}
 		case "createdAt":
 			if _, ok := fieldSeen[tenderprofile.FieldCreatedAt]; !ok {
 				selectedFields = append(selectedFields, tenderprofile.FieldCreatedAt)
@@ -5100,11 +5085,6 @@ func (tp *TenderProfileQuery) collectField(ctx context.Context, oneNode bool, op
 			if _, ok := fieldSeen[tenderprofile.FieldApproverID]; !ok {
 				selectedFields = append(selectedFields, tenderprofile.FieldApproverID)
 				fieldSeen[tenderprofile.FieldApproverID] = struct{}{}
-			}
-		case "updatedByID":
-			if _, ok := fieldSeen[tenderprofile.FieldUpdatedByID]; !ok {
-				selectedFields = append(selectedFields, tenderprofile.FieldUpdatedByID)
-				fieldSeen[tenderprofile.FieldUpdatedByID] = struct{}{}
 			}
 		case "id":
 		case "__typename":

@@ -24,11 +24,13 @@ func main() {
 		// }
 
 		q := s.TenderProfile.Create().
+			SetApprovalStatus(t.ApprovalStatus).
+			SetStatus(t.Status).
 			SetTenderID(t.ID).
+			SetCreatedAt(t.CreatedAt).
 			SetNillableCustomerID(t.CustomerID).
 			SetNillableFinderID(t.FinderID).
 			SetNillableCreatedByID(t.CreatedByID).
-			SetNillableUpdatedByID(t.UpdatedByID).
 			SetNillableApproverID(t.ApproverID).
 			SetName(t.Name).
 			SetTenderDate(t.TenderDate).

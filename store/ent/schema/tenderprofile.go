@@ -44,7 +44,6 @@ func (TenderProfile) Fields() []ent.Field {
 			),
 		field.Float("estimated_amount").
 			Optional().
-			Positive().
 			Nillable().
 			SchemaType(map[string]string{
 				dialect.Postgres: "numeric",
@@ -156,10 +155,6 @@ func (TenderProfile) Fields() []ent.Field {
 			GoType(xid.ID("")).
 			Optional().
 			Nillable(),
-		field.String("updated_by_id").
-			GoType(xid.ID("")).
-			Optional().
-			Nillable(),
 	}
 }
 
@@ -192,9 +187,6 @@ func (TenderProfile) Edges() []ent.Edge {
 		edge.To("approver", User.Type).
 			Field("approver_id").
 			Unique(),
-		edge.To("updated_by", User.Type).
-			Field("updated_by_id").
-			Unique(),
 	}
 }
 
@@ -203,5 +195,8 @@ func (TenderProfile) Annotations() []schema.Annotation {
 		entgql.RelayConnection(),
 		entgql.QueryField(),
 		entgql.MultiOrder(),
+		entgql.Mutations(
+			entgql.MutationCreate(),
+		),
 	}
 }

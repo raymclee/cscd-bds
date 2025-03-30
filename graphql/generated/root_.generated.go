@@ -249,12 +249,14 @@ type ComplexityRoot struct {
 
 	Mutation struct {
 		ApproveCustomerRequest func(childComplexity int, id xid.ID) int
-		ApproveTender          func(childComplexity int, id xid.ID) int
+		ApproveTender          func(childComplexity int, id xid.ID, profileID xid.ID) int
 		CreateArea             func(childComplexity int, input ent.CreateAreaInput) int
 		CreateCompetitor       func(childComplexity int, input ent.CreateCompetitorInput) int
 		CreateCustomer         func(childComplexity int, input ent.CreateCustomerInput) int
 		CreatePlot             func(childComplexity int, input ent.CreatePlotInput, geoBounds [][]float64) int
 		CreateTender           func(childComplexity int, input ent.CreateTenderInput, geoBounds [][]float64, imageFileNames []string, attachmentFileNames []string, geoCoordinate []float64) int
+		CreateTenderProfile    func(childComplexity int, id xid.ID, input ent.CreateTenderProfileInput, imageFileNames []string, attachmentFileNames []string) int
+		CreateTenderV2         func(childComplexity int, tenderInput ent.CreateTenderInput, profileInput ent.CreateTenderProfileInput, imageFileNames []string, attachmentFileNames []string) int
 		CreateUser             func(childComplexity int, input ent.CreateUserInput) int
 		CreateVisitRecord      func(childComplexity int, input ent.CreateVisitRecordInput) int
 		DeleteCompetitor       func(childComplexity int, id xid.ID) int
@@ -265,7 +267,7 @@ type ComplexityRoot struct {
 		DeleteVisitRecord      func(childComplexity int, id xid.ID) int
 		LoseTender             func(childComplexity int, id xid.ID, input model.LoseTenderInput) int
 		RejectCustomerRequest  func(childComplexity int, id xid.ID) int
-		RejectTender           func(childComplexity int, id xid.ID) int
+		RejectTender           func(childComplexity int, id xid.ID, profileID xid.ID) int
 		UpdateArea             func(childComplexity int, id xid.ID, input ent.UpdateAreaInput) int
 		UpdateCompetitor       func(childComplexity int, id xid.ID, input ent.UpdateCompetitorInput) int
 		UpdateCustomer         func(childComplexity int, id xid.ID, input ent.UpdateCustomerInput) int
@@ -273,6 +275,7 @@ type ComplexityRoot struct {
 		UpdatePlot             func(childComplexity int, id xid.ID, input ent.UpdatePlotInput, geoBounds [][]float64) int
 		UpdateProject          func(childComplexity int, id xid.ID, input ent.UpdateProjectInput) int
 		UpdateTender           func(childComplexity int, id xid.ID, input ent.UpdateTenderInput, geoBounds [][]float64, imageFileNames []string, removeImageFileNames []string, attachmentFileNames []string, removeAttachmentFileNames []string, geoCoordinate []float64) int
+		UpdateTenderV2         func(childComplexity int, id xid.ID, tenderInput ent.UpdateTenderInput, profileInput ent.CreateTenderProfileInput, imageFileNames []string, attachmentFileNames []string) int
 		UpdateUser             func(childComplexity int, id xid.ID, input ent.UpdateUserInput) int
 		UpdateVisitRecord      func(childComplexity int, id xid.ID, input ent.UpdateVisitRecordInput) int
 		WinTender              func(childComplexity int, id xid.ID, input model.WinTenderInput) int
@@ -772,8 +775,6 @@ type ComplexityRoot struct {
 		TimeLimitRating                      func(childComplexity int) int
 		TimeLimitRatingOverview              func(childComplexity int) int
 		UpdatedAt                            func(childComplexity int) int
-		UpdatedBy                            func(childComplexity int) int
-		UpdatedByID                          func(childComplexity int) int
 	}
 
 	TenderProfileConnection struct {
@@ -1859,7 +1860,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.ApproveTender(childComplexity, args["id"].(xid.ID)), true
+		return e.complexity.Mutation.ApproveTender(childComplexity, args["id"].(xid.ID), args["profileId"].(xid.ID)), true
 
 	case "Mutation.createArea":
 		if e.complexity.Mutation.CreateArea == nil {
@@ -1920,6 +1921,30 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.CreateTender(childComplexity, args["input"].(ent.CreateTenderInput), args["geoBounds"].([][]float64), args["imageFileNames"].([]string), args["attachmentFileNames"].([]string), args["geoCoordinate"].([]float64)), true
+
+	case "Mutation.createTenderProfile":
+		if e.complexity.Mutation.CreateTenderProfile == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_createTenderProfile_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.CreateTenderProfile(childComplexity, args["id"].(xid.ID), args["input"].(ent.CreateTenderProfileInput), args["imageFileNames"].([]string), args["attachmentFileNames"].([]string)), true
+
+	case "Mutation.createTenderV2":
+		if e.complexity.Mutation.CreateTenderV2 == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_createTenderV2_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.CreateTenderV2(childComplexity, args["tenderInput"].(ent.CreateTenderInput), args["profileInput"].(ent.CreateTenderProfileInput), args["imageFileNames"].([]string), args["attachmentFileNames"].([]string)), true
 
 	case "Mutation.createUser":
 		if e.complexity.Mutation.CreateUser == nil {
@@ -2051,7 +2076,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.RejectTender(childComplexity, args["id"].(xid.ID)), true
+		return e.complexity.Mutation.RejectTender(childComplexity, args["id"].(xid.ID), args["profileId"].(xid.ID)), true
 
 	case "Mutation.updateArea":
 		if e.complexity.Mutation.UpdateArea == nil {
@@ -2136,6 +2161,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.UpdateTender(childComplexity, args["id"].(xid.ID), args["input"].(ent.UpdateTenderInput), args["geoBounds"].([][]float64), args["imageFileNames"].([]string), args["removeImageFileNames"].([]string), args["attachmentFileNames"].([]string), args["removeAttachmentFileNames"].([]string), args["geoCoordinate"].([]float64)), true
+
+	case "Mutation.updateTenderV2":
+		if e.complexity.Mutation.UpdateTenderV2 == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_updateTenderV2_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.UpdateTenderV2(childComplexity, args["id"].(xid.ID), args["tenderInput"].(ent.UpdateTenderInput), args["profileInput"].(ent.CreateTenderProfileInput), args["imageFileNames"].([]string), args["attachmentFileNames"].([]string)), true
 
 	case "Mutation.updateUser":
 		if e.complexity.Mutation.UpdateUser == nil {
@@ -5170,20 +5207,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.TenderProfile.UpdatedAt(childComplexity), true
 
-	case "TenderProfile.updatedBy":
-		if e.complexity.TenderProfile.UpdatedBy == nil {
-			break
-		}
-
-		return e.complexity.TenderProfile.UpdatedBy(childComplexity), true
-
-	case "TenderProfile.updatedByID":
-		if e.complexity.TenderProfile.UpdatedByID == nil {
-			break
-		}
-
-		return e.complexity.TenderProfile.UpdatedByID(childComplexity), true
-
 	case "TenderProfileConnection.edges":
 		if e.complexity.TenderProfileConnection.Edges == nil {
 			break
@@ -5643,6 +5666,7 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputCreateProvinceInput,
 		ec.unmarshalInputCreateTenderCompetitorInput,
 		ec.unmarshalInputCreateTenderInput,
+		ec.unmarshalInputCreateTenderProfileInput,
 		ec.unmarshalInputCreateUserInput,
 		ec.unmarshalInputCreateVisitRecordInput,
 		ec.unmarshalInputCustomerOrder,
@@ -6892,6 +6916,108 @@ input CreateTenderInput {
   visitRecordIDs: [ID!]
   approverID: ID
   updatedByID: ID
+}
+"""
+CreateTenderProfileInput is used for create TenderProfile object.
+Input was generated by ent.
+"""
+input CreateTenderProfileInput {
+  createdAt: Time
+  updatedAt: Time
+  status: Int
+  """
+  1 待審核 2 已通過 3 已拒絕
+  """
+  approvalStatus: Int
+  """
+  審核飛書訊息ID
+  """
+  approvalMsgID: String
+  name: String!
+  estimatedAmount: Float
+  tenderDate: Time
+  classify: Int
+  discoveryDate: Time!
+  address: String
+  fullAddress: String
+  contractor: String
+  levelInvolved: Int
+  sizeAndValueRating: Int
+  sizeAndValueRatingOverview: String
+  creditAndPaymentRating: Int
+  creditAndPaymentRatingOverview: String
+  timeLimitRating: Int
+  timeLimitRatingOverview: String
+  customerRelationshipRating: Int
+  customerRelationshipRatingOverview: String
+  competitivePartnershipRating: Int
+  competitivePartnershipRatingOverview: String
+  prepareToBid: Boolean
+  projectCode: String
+  projectType: String
+  projectDefinition: String
+  estimatedProjectStartDate: Time
+  estimatedProjectEndDate: Time
+  attachments: [String!]
+  geoCoordinate: [Float!]
+  remark: String
+  images: [String!]
+  tenderSituations: String
+  ownerSituations: String
+  biddingInstructions: String
+  competitorSituations: String
+  costEngineer: String
+  tenderForm: String
+  contractForm: String
+  managementCompany: String
+  tenderingAgency: String
+  biddingDate: Time
+  facadeConsultant: String
+  designUnit: String
+  consultingFirm: String
+  keyProject: Boolean
+  currentProgress: String
+  tenderWinCompany: String
+  """
+  投標編號，只限港澳
+  """
+  tenderCode: String
+  """
+  則師，只限港澳
+  """
+  architect: String
+  """
+  業主，只限港澳
+  """
+  developer: String
+  """
+  交標日期，只限港澳
+  """
+  tenderClosingDate: Time
+  """
+  施工面積，只限港澳
+  """
+  constructionArea: String
+  """
+  得標日期，只限港澳
+  """
+  tenderWinDate: Time
+  """
+  得標金額
+  """
+  tenderWinAmount: Float
+  """
+  最後一次投標金額，只限港澳
+  """
+  lastTenderAmount: Float
+  tenderID: ID!
+  customerID: ID
+  finderID: ID
+  createdByID: ID
+  provinceID: ID
+  cityID: ID
+  districtID: ID
+  approverID: ID
 }
 """
 CreateUserInput is used for create User object.
@@ -11712,7 +11838,6 @@ type TenderProfile implements Node {
   finderID: ID
   createdByID: ID
   approverID: ID
-  updatedByID: ID
   tender: Tender!
   customer: Customer
   finder: User
@@ -11721,7 +11846,6 @@ type TenderProfile implements Node {
   city: City
   district: District
   approver: User
-  updatedBy: User
 }
 """
 A connection to a list of items.
@@ -12785,24 +12909,6 @@ input TenderProfileWhereInput {
   approverIDEqualFold: ID
   approverIDContainsFold: ID
   """
-  updated_by_id field predicates
-  """
-  updatedByID: ID
-  updatedByIDNEQ: ID
-  updatedByIDIn: [ID!]
-  updatedByIDNotIn: [ID!]
-  updatedByIDGT: ID
-  updatedByIDGTE: ID
-  updatedByIDLT: ID
-  updatedByIDLTE: ID
-  updatedByIDContains: ID
-  updatedByIDHasPrefix: ID
-  updatedByIDHasSuffix: ID
-  updatedByIDIsNil: Boolean
-  updatedByIDNotNil: Boolean
-  updatedByIDEqualFold: ID
-  updatedByIDContainsFold: ID
-  """
   tender edge predicates
   """
   hasTender: Boolean
@@ -12842,11 +12948,6 @@ input TenderProfileWhereInput {
   """
   hasApprover: Boolean
   hasApproverWith: [UserWhereInput!]
-  """
-  updated_by edge predicates
-  """
-  hasUpdatedBy: Boolean
-  hasUpdatedByWith: [UserWhereInput!]
 }
 """
 TenderWhereInput is used for filtering Tender objects.
@@ -15558,11 +15659,30 @@ type GeoJson {
     removeAttachmentFileNames: [String!]
     geoCoordinate: [Float!]
   ): Tender!
+  createTenderV2(
+    tenderInput: CreateTenderInput!
+    profileInput: CreateTenderProfileInput!
+    imageFileNames: [String!]!
+    attachmentFileNames: [String!]!
+  ): Tender!
+  updateTenderV2(
+    id: ID!
+    tenderInput: UpdateTenderInput!
+    profileInput: CreateTenderProfileInput!
+    imageFileNames: [String!]!
+    attachmentFileNames: [String!]!
+  ): Tender!
+  createTenderProfile(
+    id: ID!
+    input: CreateTenderProfileInput!
+    imageFileNames: [String!]!
+    attachmentFileNames: [String!]!
+  ): Tender!
   deleteTender(id: ID!): Tender!
   winTender(id: ID!, input: WinTenderInput!): Tender!
   loseTender(id: ID!, input: LoseTenderInput!): Tender!
-  approveTender(id: ID!): Tender!
-  rejectTender(id: ID!): Tender!
+  approveTender(id: ID!, profileId: ID!): Tender!
+  rejectTender(id: ID!, profileId: ID!): Tender!
 
   createPlot(input: CreatePlotInput!, geoBounds: [[Float!]!]): PlotConnection!
   updatePlot(id: ID!, input: UpdatePlotInput!, geoBounds: [[Float!]!]): Plot!

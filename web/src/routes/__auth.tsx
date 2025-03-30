@@ -26,6 +26,7 @@ export const Route = createFileRoute("/__auth")({
       RelayEnvironment,
       node,
       {},
+      { fetchPolicy: "store-or-network" },
     ).toPromise();
     if (!data?.session?.userId) {
       throw redirect({

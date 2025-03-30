@@ -690,14 +690,6 @@ func (tp *TenderProfile) Approver(ctx context.Context) (*User, error) {
 	return result, MaskNotFound(err)
 }
 
-func (tp *TenderProfile) UpdatedBy(ctx context.Context) (*User, error) {
-	result, err := tp.Edges.UpdatedByOrErr()
-	if IsNotLoaded(err) {
-		result, err = tp.QueryUpdatedBy().Only(ctx)
-	}
-	return result, MaskNotFound(err)
-}
-
 func (u *User) Areas(
 	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy *AreaOrder, where *AreaWhereInput,
 ) (*AreaConnection, error) {

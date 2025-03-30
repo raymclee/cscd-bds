@@ -567,7 +567,6 @@ var schemaGraph = func() *sqlgraph.Schema {
 			tenderprofile.FieldFinderID:                             {Type: field.TypeString, Column: tenderprofile.FieldFinderID},
 			tenderprofile.FieldCreatedByID:                          {Type: field.TypeString, Column: tenderprofile.FieldCreatedByID},
 			tenderprofile.FieldApproverID:                           {Type: field.TypeString, Column: tenderprofile.FieldApproverID},
-			tenderprofile.FieldUpdatedByID:                          {Type: field.TypeString, Column: tenderprofile.FieldUpdatedByID},
 		},
 	}
 	graph.Nodes[16] = &sqlgraph.Node{
@@ -1262,18 +1261,6 @@ var schemaGraph = func() *sqlgraph.Schema {
 			Inverse: false,
 			Table:   tenderprofile.ApproverTable,
 			Columns: []string{tenderprofile.ApproverColumn},
-			Bidi:    false,
-		},
-		"TenderProfile",
-		"User",
-	)
-	graph.MustAddE(
-		"updated_by",
-		&sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: false,
-			Table:   tenderprofile.UpdatedByTable,
-			Columns: []string{tenderprofile.UpdatedByColumn},
 			Bidi:    false,
 		},
 		"TenderProfile",
@@ -4337,11 +4324,6 @@ func (f *TenderProfileFilter) WhereApproverID(p entql.StringP) {
 	f.Where(p.Field(tenderprofile.FieldApproverID))
 }
 
-// WhereUpdatedByID applies the entql string predicate on the updated_by_id field.
-func (f *TenderProfileFilter) WhereUpdatedByID(p entql.StringP) {
-	f.Where(p.Field(tenderprofile.FieldUpdatedByID))
-}
-
 // WhereHasTender applies a predicate to check if query has an edge tender.
 func (f *TenderProfileFilter) WhereHasTender() {
 	f.Where(entql.HasEdge("tender"))
@@ -4448,20 +4430,6 @@ func (f *TenderProfileFilter) WhereHasApprover() {
 // WhereHasApproverWith applies a predicate to check if query has an edge approver with a given conditions (other predicates).
 func (f *TenderProfileFilter) WhereHasApproverWith(preds ...predicate.User) {
 	f.Where(entql.HasEdgeWith("approver", sqlgraph.WrapFunc(func(s *sql.Selector) {
-		for _, p := range preds {
-			p(s)
-		}
-	})))
-}
-
-// WhereHasUpdatedBy applies a predicate to check if query has an edge updated_by.
-func (f *TenderProfileFilter) WhereHasUpdatedBy() {
-	f.Where(entql.HasEdge("updated_by"))
-}
-
-// WhereHasUpdatedByWith applies a predicate to check if query has an edge updated_by with a given conditions (other predicates).
-func (f *TenderProfileFilter) WhereHasUpdatedByWith(preds ...predicate.User) {
-	f.Where(entql.HasEdgeWith("updated_by", sqlgraph.WrapFunc(func(s *sql.Selector) {
 		for _, p := range preds {
 			p(s)
 		}

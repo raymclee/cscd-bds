@@ -158,7 +158,7 @@ function RouteComponent() {
         <App>
           <Layout hasSider className="relative">
             <Sider
-              className="!fixed start-0 top-0 bottom-8"
+              className="!fixed bottom-8 start-0 top-0"
               breakpoint="lg"
               collapsedWidth={70}
               collapsible
@@ -225,7 +225,6 @@ function RouteComponent() {
               <Content className="relative m-4 !min-h-[calc(100vh-96px)]">
                 {/* <Breadcrumb className="my-4" items={[]} /> */}
                 {/* <div className="p-6 my-4 bg-white rounded-lg min-h-80"> */}
-                <ScrollRestoration />
                 <Outlet />
                 {/* <TenderResultModal /> */}
                 <CustomerFormDrawer />

@@ -7,7 +7,7 @@ import { query } from "~/routes/__auth/__dashboard/__amap.lazy";
 
 export function useAreaTenders() {
   const preload = useLoaderData({
-    from: "/__auth/__dashboard/__scaled/__map/",
+    from: "/__auth/__dashboard/__amap",
   });
   const data = usePreloadedQuery<AmapPageQuery>(query, preload);
   const selectedArea = useMapStore((s) => s.selectedArea);

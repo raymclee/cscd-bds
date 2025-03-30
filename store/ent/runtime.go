@@ -596,10 +596,6 @@ func init() {
 	tenderprofileDescName := tenderprofileFields[3].Descriptor()
 	// tenderprofile.NameValidator is a validator for the "name" field. It is called by the builders before save.
 	tenderprofile.NameValidator = tenderprofileDescName.Validators[0].(func(string) error)
-	// tenderprofileDescEstimatedAmount is the schema descriptor for estimated_amount field.
-	tenderprofileDescEstimatedAmount := tenderprofileFields[4].Descriptor()
-	// tenderprofile.EstimatedAmountValidator is a validator for the "estimated_amount" field. It is called by the builders before save.
-	tenderprofile.EstimatedAmountValidator = tenderprofileDescEstimatedAmount.Validators[0].(func(float64) error)
 	// tenderprofileDescClassify is the schema descriptor for classify field.
 	tenderprofileDescClassify := tenderprofileFields[6].Descriptor()
 	// tenderprofile.ClassifyValidator is a validator for the "classify" field. It is called by the builders before save.

@@ -47,6 +47,7 @@ func main() {
 			gen.FeaturePrivacy,
 			gen.FeatureSnapshot,
 			gen.FeatureEntQL,
+			gen.FeatureModifier,
 		},
 	}, opts...); err != nil {
 		log.Fatal("running ent codegen:", err)

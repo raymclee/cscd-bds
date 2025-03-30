@@ -3314,22 +3314,6 @@ func (c *TenderProfileClient) QueryApprover(tp *TenderProfile) *UserQuery {
 	return query
 }
 
-// QueryUpdatedBy queries the updated_by edge of a TenderProfile.
-func (c *TenderProfileClient) QueryUpdatedBy(tp *TenderProfile) *UserQuery {
-	query := (&UserClient{config: c.config}).Query()
-	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
-		id := tp.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(tenderprofile.Table, tenderprofile.FieldID, id),
-			sqlgraph.To(user.Table, user.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, false, tenderprofile.UpdatedByTable, tenderprofile.UpdatedByColumn),
-		)
-		fromV = sqlgraph.Neighbors(tp.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
 // Hooks returns the client hooks.
 func (c *TenderProfileClient) Hooks() []Hook {
 	return c.hooks.TenderProfile

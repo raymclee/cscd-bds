@@ -23,8 +23,9 @@ import (
 // CityUpdate is the builder for updating City entities.
 type CityUpdate struct {
 	config
-	hooks    []Hook
-	mutation *CityMutation
+	hooks     []Hook
+	mutation  *CityMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // Where appends a list predicates to the CityUpdate builder.
@@ -247,6 +248,12 @@ func (cu *CityUpdate) check() error {
 	return nil
 }
 
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (cu *CityUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *CityUpdate {
+	cu.modifiers = append(cu.modifiers, modifiers...)
+	return cu
+}
+
 func (cu *CityUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if err := cu.check(); err != nil {
 		return n, err
@@ -399,6 +406,7 @@ func (cu *CityUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	_spec.AddModifiers(cu.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, cu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{city.Label}
@@ -414,9 +422,10 @@ func (cu *CityUpdate) sqlSave(ctx context.Context) (n int, err error) {
 // CityUpdateOne is the builder for updating a single City entity.
 type CityUpdateOne struct {
 	config
-	fields   []string
-	hooks    []Hook
-	mutation *CityMutation
+	fields    []string
+	hooks     []Hook
+	mutation  *CityMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // SetUpdatedAt sets the "updated_at" field.
@@ -646,6 +655,12 @@ func (cuo *CityUpdateOne) check() error {
 	return nil
 }
 
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (cuo *CityUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *CityUpdateOne {
+	cuo.modifiers = append(cuo.modifiers, modifiers...)
+	return cuo
+}
+
 func (cuo *CityUpdateOne) sqlSave(ctx context.Context) (_node *City, err error) {
 	if err := cuo.check(); err != nil {
 		return _node, err
@@ -815,6 +830,7 @@ func (cuo *CityUpdateOne) sqlSave(ctx context.Context) (_node *City, err error) 
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	_spec.AddModifiers(cuo.modifiers...)
 	_node = &City{config: cuo.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues

@@ -2,7 +2,7 @@ import { useMapV2Store } from "~/store";
 
 import { useNavigate, useSearch } from "@tanstack/react-router";
 import dayjs from "dayjs";
-import { ImageOff, ChevronLeft, ChevronRight } from "lucide-react";
+import { ImageOff, ChevronRight } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { TenderRatingChart } from "~/components/dashboard/tender-rating-chart";
 import {
@@ -20,9 +20,8 @@ import { useOnClickOutside } from "usehooks-ts";
 import { useRef } from "react";
 
 export function TenderDetailFrame() {
-  // const tender = useLocation({ select: (location) => location.state.tender });
   const tenderId = useSearch({
-    from: "/__auth/__dashboard/__amap/v2",
+    from: "/__auth/__dashboard/__amap/",
     select: (sp) => sp.t,
   });
   const containerRef = useRef<HTMLDivElement>(null);
@@ -38,6 +37,7 @@ export function TenderDetailFrame() {
     navigate({
       to: ".",
       search: (prev) => ({ ...prev, t: undefined }),
+      replace: true,
     });
   });
 
@@ -115,27 +115,14 @@ export function TenderDetail({ tender }: { tender: Tender }) {
   return (
     <>
       <div className="relative">
-        <div className="flex items-center justify-between px-6 py-3">
+        <div className="mt-4 flex items-center justify-between px-6 py-4 md:mt-0">
           <div className="line-clamp-1 font-semibold">{tender?.name}</div>
-          {/* {!tenderViewTender && (
-                <button
-                    className="cursor-pointer"
-                    onClick={() => {
-                    useMapStore.setState({
-                        tender: null,
-                        tenderListVisible: true,
-                    });
-                    }}
-                >
-                    <Undo2 />
-                </button>
-                )} */}
         </div>
       </div>
-      <div className="relative h-full px-6 py-4">
+      <div className="relative h-full px-6">
         {tender?.images && tender?.images?.length > 0 ? (
           <Carousel>
-            <CarouselContent className="min-h-[220px]">
+            <CarouselContent className="md:min-h-[220px]">
               {tender?.images?.map((image, i) => (
                 <CarouselItem key={i}>
                   <div className="group relative">
@@ -158,282 +145,272 @@ export function TenderDetail({ tender }: { tender: Tender }) {
           </div>
         )}
 
-        {isGATender ? (
-          <div className="mt-4 space-y-3">
-            <div className="grid grid-cols-3">
-              <div className="text-gray-400">项目名称</div>
-              <div className="col-span-2">{tender?.name}</div>
-            </div>
-            <div className="grid grid-cols-3">
-              <div className="text-gray-400">项目地址</div>
-              <div className="col-span-2">{tender?.fullAddress || "-"}</div>
-            </div>
-            <div className="grid grid-cols-3">
-              <div className="text-gray-400">项目编号</div>
-              <div className="col-span-2">{tender?.tenderCode || "-"}</div>
-            </div>
-            <div className="grid grid-cols-3">
-              <div className="text-gray-400">业主</div>
-              <div className="col-span-2">{tender?.developer || "-"}</div>
-            </div>
-            <div className="grid grid-cols-3">
-              <div className="text-gray-400">总包单位</div>
-              <div className="col-span-2">{tender?.contractor || "-"}</div>
-            </div>
-            <div className="grid grid-cols-3">
-              <div className="text-gray-400">則師</div>
-              <div className="col-span-2">{tender?.architect || "-"}</div>
-            </div>
-            <div className="grid grid-cols-3">
-              <div className="text-gray-400">幕牆顧問</div>
-              <div className="col-span-2">
-                {tender?.facadeConsultant || "-"}
-              </div>
-            </div>
-            <div className="grid grid-cols-3">
-              <div className="text-gray-400">交標日期</div>
-              <div className="col-span-2">
-                {tender?.tenderClosingDate
-                  ? dayjs(tender.tenderClosingDate).format("LL")
-                  : "-"}
-              </div>
-            </div>
-            <div className="grid grid-cols-3">
-              <div className="text-gray-400">負責同事</div>
-              <div className="col-span-2">
-                {tender?.followingSales && tender?.followingSales?.length > 0
-                  ? tender?.followingSales?.map((s) => s.name).join(", ")
-                  : "-"}
-              </div>
-            </div>
-            <div className="grid grid-cols-3">
-              <div className="text-gray-400">面積</div>
-              <div className="col-span-2">
-                {tender?.constructionArea || "-"}
-              </div>
-            </div>
-            <div className="grid grid-cols-3">
-              <div className="text-gray-400">中標日期</div>
-              <div className="col-span-2">
-                {tender?.tenderWinDate
-                  ? dayjs(tender.tenderWinDate).format("LL")
-                  : "-"}
-              </div>
-            </div>
-            <div className="grid grid-cols-3">
-              <div className="text-gray-400">中標金額</div>
-              <div className="col-span-2">
-                {tender?.tenderWinAmount
-                  ? `${fixAmount(tender?.tenderWinAmount)} 亿`
-                  : "-"}
-              </div>
-            </div>
-            <div className="grid grid-cols-3">
-              <div className="text-gray-400">最後出標金額</div>
-              <div className="col-span-2">
-                {tender?.lastTenderAmount
-                  ? `${fixAmount(tender.lastTenderAmount)} 亿`
-                  : "-"}
-              </div>
-            </div>
-            <div className="grid grid-cols-3">
-              <div className="text-gray-400">中標對手</div>
-              <div className="col-span-2">
-                {tender?.tenderWinCompany || "-"}
-              </div>
-            </div>
-          </div>
-        ) : (
-          <Tabs key={tender?.id} defaultValue="detail" className="mt-4 w-full">
-            <TabsList className="grid w-full grid-cols-2 bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 text-white">
-              <TabsTrigger
-                value="detail"
-                className="cursor-pointer data-[state=active]:bg-brand/70 data-[state=active]:text-white"
-              >
-                基本信息
-              </TabsTrigger>
-              <TabsTrigger
-                value="rating"
-                className="cursor-pointer data-[state=active]:bg-brand/70 data-[state=active]:text-white"
-              >
-                项目评分
-              </TabsTrigger>
-              {/* <TabsTrigger
-    value="follow-up"
-    className="data-[state=active]:bg-brand/70 data-[state=active]:text-white"
-  >
-    跟进情况
-  </TabsTrigger> */}
-            </TabsList>
-            <ScrollArea className="-mx-4 h-[60vh] px-4 pb-6">
-              <TabsContent value="detail" className="mt-4 space-y-3">
-                <div className="grid grid-cols-3">
-                  <div className="text-gray-400">项目名称</div>
-                  <div className="col-span-2">{tender?.name}</div>
-                </div>
-                <div className="grid grid-cols-3">
-                  <div className="text-gray-400">项目地址</div>
-                  <div className="col-span-2">{tender?.fullAddress}</div>
-                </div>
-                <div className="grid grid-cols-3">
-                  <div className="text-gray-400">业主</div>
-                  <div className="col-span-2">
-                    {tender?.customer?.name || "-"}
-                  </div>
-                </div>
-                <div className="grid grid-cols-3">
-                  <div className="text-gray-400">总包单位</div>
-                  <div className="col-span-2">{tender?.contractor || "-"}</div>
-                </div>
-                <div className="grid grid-cols-3">
-                  <div className="text-gray-400">业主类型</div>
-                  <div className="col-span-2">
-                    {ownerTypeText(tender?.customer?.ownerType) || "-"}
-                  </div>
-                </div>
-                <div className="grid grid-cols-3">
-                  <div className="text-gray-400">设计单位</div>
-                  <div className="col-span-2">{tender?.designUnit || "-"}</div>
-                </div>
-                <div className="grid grid-cols-3">
-                  <div className="text-gray-400">预计金额</div>
-                  <div className="col-span-2">
-                    {tender?.estimatedAmount
-                      ? `${fixAmount(tender?.estimatedAmount)} 亿`
-                      : "-"}
-                  </div>
-                </div>
-                <div className="grid grid-cols-3">
-                  <div className="text-gray-400">幕墙顾问</div>
-                  <div className="col-span-2">
-                    {tender?.facadeConsultant || "-"}
-                  </div>
-                </div>
-                <div className="grid grid-cols-3">
-                  <div className="text-gray-400">咨询公司</div>
-                  <div className="col-span-2">
-                    {tender?.consultingFirm || "-"}
-                  </div>
-                </div>
-                <div className="grid grid-cols-3">
-                  <div className="text-gray-400">招标代理</div>
-                  <div className="col-span-2">
-                    {tender?.tenderingAgency || "-"}
-                  </div>
-                </div>
-                <div className="grid grid-cols-3">
-                  <div className="text-gray-400">招标形式</div>
-                  <div className="col-span-2">{tender?.tenderForm || "-"}</div>
-                </div>
-                <div className="grid grid-cols-3">
-                  <div className="text-gray-400">预计招标日期</div>
-                  <div className="col-span-2">
-                    {tender?.tenderDate
-                      ? dayjs(tender.tenderDate).format("LL")
-                      : "-"}
-                  </div>
-                </div>
-                <div className="grid grid-cols-3">
-                  <div className="text-gray-400">合同形式</div>
-                  <div className="col-span-2">
-                    {tender?.contractForm || "-"}
-                  </div>
-                </div>
-              </TabsContent>
-              <TabsContent value="rating" className="mt-4">
-                <div className="space-y-3">
-                  <div className="grid grid-cols-3">
-                    <div className="text-gray-400">规模及价值</div>
-                    <div className="col-span-2">
-                      {tender?.sizeAndValueRatingOverview || "-"}
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-3">
-                    <div className="text-gray-400">资信及付款</div>
-                    <div className="col-span-2">
-                      {tender?.creditAndPaymentRatingOverview || "-"}
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-3">
-                    <div className="text-gray-400">中标原则及时限</div>
-                    <div className="col-span-2">
-                      {tender?.timeLimitRatingOverview || "-"}
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-3">
-                    <div className="text-gray-400">客情关系</div>
-                    <div className="col-span-2">
-                      {tender?.customerRelationshipRatingOverview || "-"}
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-3">
-                    <div className="text-gray-400">竞争合作关系</div>
-                    <div className="col-span-2">
-                      {tender?.competitivePartnershipRatingOverview || "-"}
-                    </div>
-                  </div>
-                </div>
-                <TenderRatingChart
-                  sizeAndValueRating={tender?.sizeAndValueRating}
-                  creditAndPaymentRating={tender?.creditAndPaymentRating}
-                  timeLimitRating={tender?.timeLimitRating}
-                  customerRelationshipRating={
-                    tender?.customerRelationshipRating
-                  }
-                  competitivePartnershipRating={
-                    tender?.competitivePartnershipRating
-                  }
-                />
-              </TabsContent>
-              {/* <TabsContent value="follow-up" className="">
-    {tender?.visitRecords?.edges &&
-    tender?.visitRecords?.edges?.length < 1 ? (
-      <div className="flex items-center justify-center mt-8">
-        没有拜访记录
-      </div>
-    ) : (
-      tender?.visitRecords?.edges
-        ?.map((e) => e?.node)
-        .map((record) => (
-          <div className="mt-4 space-y-2">
-            <div className="grid grid-cols-3">
-              <div className="text-gray-400">日期</div>
-              <div className="col-span-2">
-                {dayjs(record?.date).format("LL")}
-              </div>
-            </div>
-            <div className="grid grid-cols-3">
-              <div className="text-gray-400">沟通对象</div>
-              <div className="col-span-2">
-                {record?.commPeople}
-              </div>
-            </div>
-            <div className="grid grid-cols-3">
-              <div className="text-gray-400">沟通形式</div>
-              <div className="col-span-2">
-                {visitTypeText(record?.visitType)}
-              </div>
-            </div>
-            <div className="grid grid-cols-3">
-              <div className="text-gray-400">沟通内容</div>
-              <div className="col-span-2">
-                {record?.commContent}
-              </div>
-            </div>
-            <div className="grid grid-cols-3">
-              <div className="text-gray-400">下一步计划</div>
-              <div className="col-span-2">
-                {record?.nextStep || "-"}
-              </div>
-            </div>
-          </div>
-        ))
-    )}
-  </TabsContent> */}
-            </ScrollArea>
-          </Tabs>
-        )}
+        {isGATender ? <GAInfo tender={tender} /> : <SHInfo tender={tender} />}
       </div>
     </>
+  );
+}
+
+function SHInfo({ tender }: { tender: Tender }) {
+  return (
+    <Tabs
+      key={tender?.id}
+      defaultValue="detail"
+      className="mt-4 flex w-full flex-col overflow-hidden"
+    >
+      <TabsList className="grid w-full grid-cols-2 bg-gradient-to-br from-sky-950 to-sky-900 text-white">
+        <TabsTrigger
+          value="detail"
+          className="cursor-pointer data-[state=active]:bg-slate-800/70 data-[state=active]:text-white"
+        >
+          基本信息
+        </TabsTrigger>
+        <TabsTrigger
+          value="rating"
+          className="cursor-pointer data-[state=active]:bg-slate-800/70 data-[state=active]:text-white"
+        >
+          项目评分
+        </TabsTrigger>
+        {/* <TabsTrigger
+value="follow-up"
+className="data-[state=active]:bg-brand/70 data-[state=active]:text-white"
+>
+跟进情况
+</TabsTrigger> */}
+      </TabsList>
+      <ScrollArea className="-mx-4 px-4 pb-6 md:h-[58vh]">
+        <TabsContent value="detail" className="mt-4 space-y-2">
+          <div className="grid grid-cols-3">
+            <div className="text-gray-400">项目名称</div>
+            <div className="col-span-2">{tender?.name}</div>
+          </div>
+          <div className="grid grid-cols-3">
+            <div className="text-gray-400">项目地址</div>
+            <div className="col-span-2">{tender?.fullAddress}</div>
+          </div>
+          <div className="grid grid-cols-3">
+            <div className="text-gray-400">业主</div>
+            <div className="col-span-2">{tender?.customer?.name || "-"}</div>
+          </div>
+          <div className="grid grid-cols-3">
+            <div className="text-gray-400">总包单位</div>
+            <div className="col-span-2">{tender?.contractor || "-"}</div>
+          </div>
+          <div className="grid grid-cols-3">
+            <div className="text-gray-400">业主类型</div>
+            <div className="col-span-2">
+              {ownerTypeText(tender?.customer?.ownerType) || "-"}
+            </div>
+          </div>
+          <div className="grid grid-cols-3">
+            <div className="text-gray-400">设计单位</div>
+            <div className="col-span-2">{tender?.designUnit || "-"}</div>
+          </div>
+          <div className="grid grid-cols-3">
+            <div className="text-gray-400">预计金额</div>
+            <div className="col-span-2">
+              {tender?.estimatedAmount
+                ? `${fixAmount(tender?.estimatedAmount)} 亿`
+                : "-"}
+            </div>
+          </div>
+          <div className="grid grid-cols-3">
+            <div className="text-gray-400">幕墙顾问</div>
+            <div className="col-span-2">{tender?.facadeConsultant || "-"}</div>
+          </div>
+          <div className="grid grid-cols-3">
+            <div className="text-gray-400">咨询公司</div>
+            <div className="col-span-2">{tender?.consultingFirm || "-"}</div>
+          </div>
+          <div className="grid grid-cols-3">
+            <div className="text-gray-400">招标代理</div>
+            <div className="col-span-2">{tender?.tenderingAgency || "-"}</div>
+          </div>
+          <div className="grid grid-cols-3">
+            <div className="text-gray-400">招标形式</div>
+            <div className="col-span-2">{tender?.tenderForm || "-"}</div>
+          </div>
+          <div className="grid grid-cols-3">
+            <div className="text-gray-400">预计招标日期</div>
+            <div className="col-span-2">
+              {tender?.tenderDate ? dayjs(tender.tenderDate).format("LL") : "-"}
+            </div>
+          </div>
+          <div className="grid grid-cols-3">
+            <div className="text-gray-400">合同形式</div>
+            <div className="col-span-2">{tender?.contractForm || "-"}</div>
+          </div>
+        </TabsContent>
+        <TabsContent value="rating" className="mt-4">
+          <div className="space-y-3">
+            <div className="grid grid-cols-3">
+              <div className="text-gray-400">规模及价值</div>
+              <div className="col-span-2">
+                {tender?.sizeAndValueRatingOverview || "-"}
+              </div>
+            </div>
+            <div className="grid grid-cols-3">
+              <div className="text-gray-400">资信及付款</div>
+              <div className="col-span-2">
+                {tender?.creditAndPaymentRatingOverview || "-"}
+              </div>
+            </div>
+            <div className="grid grid-cols-3">
+              <div className="text-gray-400">中标原则及时限</div>
+              <div className="col-span-2">
+                {tender?.timeLimitRatingOverview || "-"}
+              </div>
+            </div>
+            <div className="grid grid-cols-3">
+              <div className="text-gray-400">客情关系</div>
+              <div className="col-span-2">
+                {tender?.customerRelationshipRatingOverview || "-"}
+              </div>
+            </div>
+            <div className="grid grid-cols-3">
+              <div className="text-gray-400">竞争合作关系</div>
+              <div className="col-span-2">
+                {tender?.competitivePartnershipRatingOverview || "-"}
+              </div>
+            </div>
+          </div>
+          <TenderRatingChart
+            sizeAndValueRating={tender?.sizeAndValueRating}
+            creditAndPaymentRating={tender?.creditAndPaymentRating}
+            timeLimitRating={tender?.timeLimitRating}
+            customerRelationshipRating={tender?.customerRelationshipRating}
+            competitivePartnershipRating={tender?.competitivePartnershipRating}
+          />
+        </TabsContent>
+        {/* <TabsContent value="follow-up" className="">
+{tender?.visitRecords?.edges &&
+tender?.visitRecords?.edges?.length < 1 ? (
+<div className="flex items-center justify-center mt-8">
+没有拜访记录
+</div>
+) : (
+tender?.visitRecords?.edges
+?.map((e) => e?.node)
+.map((record) => (
+<div className="mt-4 space-y-2">
+<div className="grid grid-cols-3">
+  <div className="text-gray-400">日期</div>
+  <div className="col-span-2">
+    {dayjs(record?.date).format("LL")}
+  </div>
+</div>
+<div className="grid grid-cols-3">
+  <div className="text-gray-400">沟通对象</div>
+  <div className="col-span-2">
+    {record?.commPeople}
+  </div>
+</div>
+<div className="grid grid-cols-3">
+  <div className="text-gray-400">沟通形式</div>
+  <div className="col-span-2">
+    {visitTypeText(record?.visitType)}
+  </div>
+</div>
+<div className="grid grid-cols-3">
+  <div className="text-gray-400">沟通内容</div>
+  <div className="col-span-2">
+    {record?.commContent}
+  </div>
+</div>
+<div className="grid grid-cols-3">
+  <div className="text-gray-400">下一步计划</div>
+  <div className="col-span-2">
+    {record?.nextStep || "-"}
+  </div>
+</div>
+</div>
+))
+)}
+</TabsContent> */}
+      </ScrollArea>
+    </Tabs>
+  );
+}
+
+function GAInfo({ tender }: { tender: Tender }) {
+  return (
+    <div className="mt-4 space-y-3">
+      <div className="grid grid-cols-3">
+        <div className="text-gray-400">项目名称</div>
+        <div className="col-span-2">{tender?.name}</div>
+      </div>
+      <div className="grid grid-cols-3">
+        <div className="text-gray-400">项目地址</div>
+        <div className="col-span-2">{tender?.fullAddress || "-"}</div>
+      </div>
+      <div className="grid grid-cols-3">
+        <div className="text-gray-400">项目编号</div>
+        <div className="col-span-2">{tender?.tenderCode || "-"}</div>
+      </div>
+      <div className="grid grid-cols-3">
+        <div className="text-gray-400">业主</div>
+        <div className="col-span-2">{tender?.developer || "-"}</div>
+      </div>
+      <div className="grid grid-cols-3">
+        <div className="text-gray-400">总包单位</div>
+        <div className="col-span-2">{tender?.contractor || "-"}</div>
+      </div>
+      <div className="grid grid-cols-3">
+        <div className="text-gray-400">則師</div>
+        <div className="col-span-2">{tender?.architect || "-"}</div>
+      </div>
+      <div className="grid grid-cols-3">
+        <div className="text-gray-400">幕牆顧問</div>
+        <div className="col-span-2">{tender?.facadeConsultant || "-"}</div>
+      </div>
+      <div className="grid grid-cols-3">
+        <div className="text-gray-400">交標日期</div>
+        <div className="col-span-2">
+          {tender?.tenderClosingDate
+            ? dayjs(tender.tenderClosingDate).format("LL")
+            : "-"}
+        </div>
+      </div>
+      <div className="grid grid-cols-3">
+        <div className="text-gray-400">負責同事</div>
+        <div className="col-span-2">
+          {tender?.followingSales && tender?.followingSales?.length > 0
+            ? tender?.followingSales?.map((s) => s.name).join(", ")
+            : "-"}
+        </div>
+      </div>
+      <div className="grid grid-cols-3">
+        <div className="text-gray-400">面積</div>
+        <div className="col-span-2">{tender?.constructionArea || "-"}</div>
+      </div>
+      <div className="grid grid-cols-3">
+        <div className="text-gray-400">中標日期</div>
+        <div className="col-span-2">
+          {tender?.tenderWinDate
+            ? dayjs(tender.tenderWinDate).format("LL")
+            : "-"}
+        </div>
+      </div>
+      <div className="grid grid-cols-3">
+        <div className="text-gray-400">中標金額</div>
+        <div className="col-span-2">
+          {tender?.tenderWinAmount
+            ? `${fixAmount(tender?.tenderWinAmount)} 亿`
+            : "-"}
+        </div>
+      </div>
+      <div className="grid grid-cols-3">
+        <div className="text-gray-400">最後出標金額</div>
+        <div className="col-span-2">
+          {tender?.lastTenderAmount
+            ? `${fixAmount(tender.lastTenderAmount)} 亿`
+            : "-"}
+        </div>
+      </div>
+      <div className="grid grid-cols-3">
+        <div className="text-gray-400">中標對手</div>
+        <div className="col-span-2">{tender?.tenderWinCompany || "-"}</div>
+      </div>
+    </div>
   );
 }

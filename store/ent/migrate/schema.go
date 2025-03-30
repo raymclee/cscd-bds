@@ -659,7 +659,6 @@ var (
 		{Name: "city_id", Type: field.TypeString, Nullable: true},
 		{Name: "district_id", Type: field.TypeString, Nullable: true},
 		{Name: "approver_id", Type: field.TypeString, Nullable: true},
-		{Name: "updated_by_id", Type: field.TypeString, Nullable: true},
 	}
 	// TenderProfilesTable holds the schema information for the "tender_profiles" table.
 	TenderProfilesTable = &schema.Table{
@@ -712,12 +711,6 @@ var (
 			{
 				Symbol:     "tender_profiles_users_approver",
 				Columns:    []*schema.Column{TenderProfilesColumns[67]},
-				RefColumns: []*schema.Column{UsersColumns[0]},
-				OnDelete:   schema.SetNull,
-			},
-			{
-				Symbol:     "tender_profiles_users_updated_by",
-				Columns:    []*schema.Column{TenderProfilesColumns[68]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -948,7 +941,6 @@ func init() {
 	TenderProfilesTable.ForeignKeys[5].RefTable = CitiesTable
 	TenderProfilesTable.ForeignKeys[6].RefTable = DistrictsTable
 	TenderProfilesTable.ForeignKeys[7].RefTable = UsersTable
-	TenderProfilesTable.ForeignKeys[8].RefTable = UsersTable
 	UsersTable.ForeignKeys[0].RefTable = UsersTable
 	VisitRecordsTable.ForeignKeys[0].RefTable = CustomersTable
 	VisitRecordsTable.ForeignKeys[1].RefTable = TendersTable

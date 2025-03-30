@@ -30,11 +30,30 @@ type Mutation {
     removeAttachmentFileNames: [String!]
     geoCoordinate: [Float!]
   ): Tender!
+  createTenderV2(
+    tenderInput: CreateTenderInput!
+    profileInput: CreateTenderProfileInput!
+    imageFileNames: [String!]!
+    attachmentFileNames: [String!]!
+  ): Tender!
+  updateTenderV2(
+    id: ID!
+    tenderInput: UpdateTenderInput!
+    profileInput: CreateTenderProfileInput!
+    imageFileNames: [String!]!
+    attachmentFileNames: [String!]!
+  ): Tender!
+  createTenderProfile(
+    id: ID!
+    input: CreateTenderProfileInput!
+    imageFileNames: [String!]!
+    attachmentFileNames: [String!]!
+  ): Tender!
   deleteTender(id: ID!): Tender!
   winTender(id: ID!, input: WinTenderInput!): Tender!
   loseTender(id: ID!, input: LoseTenderInput!): Tender!
-  approveTender(id: ID!): Tender!
-  rejectTender(id: ID!): Tender!
+  approveTender(id: ID!, profileId: ID!): Tender!
+  rejectTender(id: ID!, profileId: ID!): Tender!
 
   createPlot(input: CreatePlotInput!, geoBounds: [[Float!]!]): PlotConnection!
   updatePlot(id: ID!, input: UpdatePlotInput!, geoBounds: [[Float!]!]): Plot!

@@ -714,6 +714,298 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input en
 	return st, nil
 }
 
+// CreateTenderV2 is the resolver for the createTenderV2 field.
+func (r *mutationResolver) CreateTenderV2(ctx context.Context, tenderInput ent.CreateTenderInput, profileInput ent.CreateTenderProfileInput, imageFileNames []string, attachmentFileNames []string) (*ent.Tender, error) {
+	sess, err := r.session.GetSession(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get session: %w", err)
+	}
+
+	createById := xid.ID(sess.UserId)
+	tenderInput.CreatedByID = &createById
+	profileInput.CreatedByID = &createById
+
+	date := time.Now()
+	stdate := time.Date(date.Year(), date.Month(), date.Day(), 0, 0, 0, 0, time.Local)
+	enddate := stdate.AddDate(0, 0, 1)
+	a, err := r.store.Area.Query().
+		Where(area.ID(tenderInput.AreaID)).
+		WithTenders(func(tq *ent.TenderQuery) {
+			tq.Where(
+				tender.And(
+					tender.CreatedAtGTE(stdate),
+					tender.CreatedAtLTE(enddate),
+				),
+			)
+		}).
+		Only(ctx)
+	if err != nil {
+		return nil, err
+	}
+	tenderInput.Code = util.NewTenderCode(len(a.Edges.Tenders), a.Code)
+	t, err := r.store.Tender.Create().SetInput(tenderInput).Save(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create tender: %w", err)
+	}
+
+	isSHTender := util.IsSHTender(a.Code)
+
+	if !isSHTender && profileInput.Address != nil {
+		adcode, lng, lat, address, err := r.amap.GeoCode(*profileInput.Address)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get geo code: %w", err)
+		}
+		d, err := r.store.District.Query().Where(district.Adcode(adcode)).WithCity().WithProvince().Only(ctx)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get district: %w", err)
+		}
+		if d.Edges.City != nil {
+			profileInput.CityID = &d.Edges.City.ID
+		}
+		if d.Edges.Province != nil {
+			profileInput.ProvinceID = &d.Edges.Province.ID
+		}
+		profileInput.DistrictID = &d.ID
+		profileInput.FullAddress = &address
+		profileInput.GeoCoordinate = []float64{lat, lng}
+	}
+
+	var images []string
+	{
+		for _, fn := range imageFileNames {
+			filename, err := util.SaveStaticFile(string(t.ID), fn, true)
+			if err != nil {
+				return nil, fmt.Errorf("failed to save image file: %w", err)
+			}
+			images = append(images, fmt.Sprintf("/static/%s", filename))
+		}
+		if len(images) > 0 {
+			profileInput.Images = images
+		}
+	}
+
+	var attachments []string
+	{
+		for _, fn := range attachmentFileNames {
+			filename, err := util.SaveStaticFile(string(t.ID), fn, false)
+			if err != nil {
+				return nil, fmt.Errorf("failed to save attachment file: %w", err)
+			}
+			attachments = append(attachments, fmt.Sprintf("/static/%s", filename))
+		}
+		if len(attachments) > 0 {
+			profileInput.Attachments = attachments
+		}
+	}
+
+	if err := r.store.TenderProfile.Create().SetInput(profileInput).SetTender(t).Exec(ctx); err != nil {
+		return nil, fmt.Errorf("failed to create tender profile: %w", err)
+	}
+
+	return t, nil
+}
+
+// UpdateTenderV2 is the resolver for the updateTenderV2 field.
+func (r *mutationResolver) UpdateTenderV2(ctx context.Context, id xid.ID, tenderInput ent.UpdateTenderInput, profileInput ent.CreateTenderProfileInput, imageFileNames []string, attachmentFileNames []string) (*ent.Tender, error) {
+	sess, err := r.session.GetSession(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get session: %w", err)
+	}
+	t, err := r.store.Tender.Query().Where(tender.ID(id)).WithArea().WithProfiles().Only(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get tender: %w", err)
+	}
+
+	if t.Edges.Area != nil && t.Edges.Area.Code != "HW" && t.Edges.Area.Code != "GA" && t.CreatedByID != nil && string(*t.CreatedByID) != sess.UserId && (!sess.IsAdmin && !sess.IsSuperAdmin) {
+		return nil, fmt.Errorf("failed to update tender: %w", errors.New("permission denied"))
+	}
+
+	_, err = t.Update().SetInput(tenderInput).Save(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to update tender: %w", err)
+	}
+
+	var images []string
+	{
+		for _, fn := range imageFileNames {
+			if strings.HasPrefix(fn, "/static/") {
+				continue
+			}
+			filename, err := util.SaveStaticFile(string(t.ID), fn, true)
+			if err != nil {
+				return nil, fmt.Errorf("failed to save image file: %w", err)
+			}
+			images = append(images, fmt.Sprintf("/static/%s", filename))
+		}
+		if len(images) > 0 {
+			profileInput.Images = images
+		}
+	}
+
+	var attachments []string
+	{
+		for _, fn := range attachmentFileNames {
+			filename, err := util.SaveStaticFile(string(t.ID), fn, false)
+			if err != nil {
+				return nil, fmt.Errorf("failed to save attachment file: %w", err)
+			}
+			attachments = append(attachments, fmt.Sprintf("/static/%s", filename))
+		}
+		if len(attachments) > 0 {
+			profileInput.Attachments = attachments
+		}
+	}
+
+	if (t.Code == "HW" || t.Code == "GA") && profileInput.Address != nil && t.Address != nil && *profileInput.Address != *t.Address {
+		adcode, lng, lat, address, err := r.amap.GeoCode(*profileInput.Address)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get geo code: %w", err)
+		}
+		d, err := r.store.District.Query().Where(district.Adcode(adcode)).WithCity().WithProvince().Only(ctx)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get district: %w", err)
+		}
+		if d.Edges.City != nil {
+			profileInput.CityID = &d.Edges.City.ID
+		}
+		if d.Edges.Province != nil {
+			profileInput.ProvinceID = &d.Edges.Province.ID
+		}
+		profileInput.DistrictID = &d.ID
+		profileInput.FullAddress = &address
+		profileInput.GeoCoordinate = []float64{lat, lng}
+	}
+
+	if profileInput.ApprovalStatus != nil && *profileInput.ApprovalStatus == 2 {
+		createdById := xid.ID(sess.UserId)
+		profileInput.CreatedByID = &createdById
+	}
+
+	if t.ApprovalStatus == 3 && profileInput.ApprovalStatus == nil {
+		profileInput.ApprovalStatus = &[]int{1}[0]
+	}
+
+	st, err := r.store.TenderProfile.Create().SetInput(profileInput).SetTender(t).SetCreatedByID(xid.ID(sess.UserId)).Save(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to update tender: %w", err)
+	}
+
+	isSHTender := util.IsSHTender(t.Edges.Area.Code)
+
+	if isSHTender && st.ApprovalStatus == 2 && profileInput.ApprovalStatus == nil {
+		go func() {
+			ctxx := context.Background()
+			ten, err := r.store.Tender.Query().
+				Where(tender.ID(t.ID)).
+				WithCreatedBy().
+				WithUpdatedBy().
+				WithArea().
+				WithCustomer().
+				WithApprover().
+				WithFinder().
+				Only(ctxx)
+			if err != nil {
+				fmt.Printf("failed to get tender: %v\n", err)
+				return
+			}
+			if st.ApprovalMsgID != nil {
+				if err := r.feishu.UpdateGroupMessage(ctxx, *st.ApprovalMsgID, ten); err != nil {
+					fmt.Printf("failed to update group message: %v\n", err)
+				}
+			}
+
+			chatId := r.feishu.GetSalesChatId(ten.Edges.Area)
+			if chatId == nil {
+				fmt.Printf("failed to get sales chat id: %v\n", errors.New("sales chat id is nil"))
+				return
+			}
+			var templateId string
+			if profileInput.ApprovalStatus != nil && *profileInput.ApprovalStatus == 2 {
+				templateId = feishu.TemplateIdTenderApproved
+			} else {
+				templateId = feishu.TemplateIdTenderUpdated
+			}
+			if _, err = r.feishu.SendGroupMessage(ctxx, templateId, &feishu.GroupMessageParams{
+				Tender: ten,
+				ChatId: *chatId,
+			}); err != nil {
+				fmt.Printf("failed to send group message: %v\n", err)
+			}
+		}()
+	}
+
+	return t, nil
+}
+
+// CreateTenderProfile is the resolver for the createTenderProfile field.
+func (r *mutationResolver) CreateTenderProfile(ctx context.Context, id xid.ID, input ent.CreateTenderProfileInput, imageFileNames []string, attachmentFileNames []string) (*ent.Tender, error) {
+	sess, err := r.session.GetSession(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get session: %w", err)
+	}
+
+	t, err := r.store.Tender.Query().Where(tender.ID(id)).WithArea().Only(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get tender: %w", err)
+	}
+
+	isSHTender := util.IsSHTender(t.Edges.Area.Code)
+
+	if !isSHTender && input.Address != nil {
+		adcode, lng, lat, address, err := r.amap.GeoCode(*input.Address)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get geo code: %w", err)
+		}
+		d, err := r.store.District.Query().Where(district.Adcode(adcode)).WithCity().WithProvince().Only(ctx)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get district: %w", err)
+		}
+		if d.Edges.City != nil {
+			input.CityID = &d.Edges.City.ID
+		}
+		if d.Edges.Province != nil {
+			input.ProvinceID = &d.Edges.Province.ID
+		}
+		input.DistrictID = &d.ID
+		input.FullAddress = &address
+		input.GeoCoordinate = []float64{lat, lng}
+	}
+
+	var images []string
+	{
+		for _, fn := range imageFileNames {
+			filename, err := util.SaveStaticFile(string(t.ID), fn, true)
+			if err != nil {
+				return nil, fmt.Errorf("failed to save image file: %w", err)
+			}
+			images = append(images, fmt.Sprintf("/static/%s", filename))
+		}
+		if len(images) > 0 {
+			input.Images = images
+		}
+	}
+
+	var attachments []string
+	{
+		for _, fn := range attachmentFileNames {
+			filename, err := util.SaveStaticFile(string(t.ID), fn, false)
+			if err != nil {
+				return nil, fmt.Errorf("failed to save attachment file: %w", err)
+			}
+			attachments = append(attachments, fmt.Sprintf("/static/%s", filename))
+		}
+		if len(attachments) > 0 {
+			input.Attachments = attachments
+		}
+	}
+
+	if err := r.store.TenderProfile.Create().SetInput(input).SetCreatedByID(xid.ID(sess.UserId)).SetTender(t).Exec(ctx); err != nil {
+		return nil, fmt.Errorf("failed to create tender profile: %w", err)
+	}
+
+	return t, nil
+}
+
 // DeleteTender is the resolver for the deleteTender field.
 func (r *mutationResolver) DeleteTender(ctx context.Context, id xid.ID) (*ent.Tender, error) {
 	t, err := r.store.Tender.Query().Where(tender.ID(id)).Only(ctx)
@@ -858,13 +1150,33 @@ func (r *mutationResolver) LoseTender(ctx context.Context, id xid.ID, input mode
 }
 
 // ApproveTender is the resolver for the approveTender field.
-func (r *mutationResolver) ApproveTender(ctx context.Context, id xid.ID) (*ent.Tender, error) {
-	panic(fmt.Errorf("not implemented: ApproveTender - approveTender"))
+func (r *mutationResolver) ApproveTender(ctx context.Context, id xid.ID, profileID xid.ID) (*ent.Tender, error) {
+	sess, err := r.session.GetSession(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get session: %w", err)
+	}
+	if err := r.store.TenderProfile.UpdateOneID(profileID).
+		SetApprovalStatus(2).
+		SetApproverID(xid.ID(sess.UserId)).
+		Exec(ctx); err != nil {
+		return nil, fmt.Errorf("failed to approve tender profile: %w", err)
+	}
+	return r.store.Tender.Get(ctx, id)
 }
 
 // RejectTender is the resolver for the rejectTender field.
-func (r *mutationResolver) RejectTender(ctx context.Context, id xid.ID) (*ent.Tender, error) {
-	panic(fmt.Errorf("not implemented: RejectTender - rejectTender"))
+func (r *mutationResolver) RejectTender(ctx context.Context, id xid.ID, profileID xid.ID) (*ent.Tender, error) {
+	sess, err := r.session.GetSession(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get session: %w", err)
+	}
+	if err := r.store.TenderProfile.UpdateOneID(profileID).
+		SetApprovalStatus(3).
+		SetApproverID(xid.ID(sess.UserId)).
+		Exec(ctx); err != nil {
+		return nil, fmt.Errorf("failed to reject tender profile: %w", err)
+	}
+	return r.store.Tender.Get(ctx, id)
 }
 
 // CreatePlot is the resolver for the createPlot field.

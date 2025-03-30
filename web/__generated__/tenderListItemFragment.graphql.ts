@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<bc8bc3d38e40700a711a1dac89d88dd1>>
+ * @generated SignedSource<<200312b06e27d7fea1038f25fd5ad0c1>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -11,33 +11,40 @@
 import { ReaderFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type tenderListItemFragment$data = {
-  readonly approvalStatus: number;
   readonly area: {
     readonly code: string;
     readonly id: string;
     readonly name: string;
   };
-  readonly classify: number | null | undefined;
-  readonly createdAt: any;
-  readonly createdBy: {
-    readonly id: string;
-  } | null | undefined;
-  readonly customer: {
-    readonly id: string;
-    readonly name: string;
-  } | null | undefined;
-  readonly discoveryDate: any;
-  readonly estimatedAmount: number | null | undefined;
   readonly followingSales: ReadonlyArray<{
     readonly id: string;
   }> | null | undefined;
-  readonly fullAddress: string | null | undefined;
   readonly id: string;
-  readonly images: ReadonlyArray<string> | null | undefined;
-  readonly name: string;
-  readonly status: number;
-  readonly tenderClosingDate: any | null | undefined;
-  readonly tenderDate: any | null | undefined;
+  readonly profiles: {
+    readonly edges: ReadonlyArray<{
+      readonly node: {
+        readonly approvalStatus: number;
+        readonly classify: number | null | undefined;
+        readonly createdAt: any;
+        readonly createdBy: {
+          readonly id: string;
+        } | null | undefined;
+        readonly customer: {
+          readonly id: string;
+          readonly name: string;
+        } | null | undefined;
+        readonly discoveryDate: any;
+        readonly estimatedAmount: number | null | undefined;
+        readonly fullAddress: string | null | undefined;
+        readonly id: string;
+        readonly images: ReadonlyArray<string> | null | undefined;
+        readonly name: string;
+        readonly status: number;
+        readonly tenderClosingDate: any | null | undefined;
+        readonly tenderDate: any | null | undefined;
+      } | null | undefined;
+    } | null | undefined> | null | undefined;
+  };
   readonly " $fragmentType": "tenderListItemFragment";
 };
 export type tenderListItemFragment$key = {
@@ -73,90 +80,6 @@ return {
     {
       "alias": null,
       "args": null,
-      "kind": "ScalarField",
-      "name": "approvalStatus",
-      "storageKey": null
-    },
-    (v1/*: any*/),
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "status",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "createdAt",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "estimatedAmount",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "classify",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "concreteType": "Customer",
-      "kind": "LinkedField",
-      "name": "customer",
-      "plural": false,
-      "selections": [
-        (v0/*: any*/),
-        (v1/*: any*/)
-      ],
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "images",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "fullAddress",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "tenderDate",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "discoveryDate",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "tenderClosingDate",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
       "concreteType": "Area",
       "kind": "LinkedField",
       "name": "area",
@@ -186,13 +109,142 @@ return {
     },
     {
       "alias": null,
-      "args": null,
-      "concreteType": "User",
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "orderBy",
+          "value": [
+            {
+              "direction": "DESC",
+              "field": "CREATED_AT"
+            }
+          ]
+        }
+      ],
+      "concreteType": "TenderProfileConnection",
       "kind": "LinkedField",
-      "name": "createdBy",
+      "name": "profiles",
       "plural": false,
-      "selections": (v2/*: any*/),
-      "storageKey": null
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "TenderProfileEdge",
+          "kind": "LinkedField",
+          "name": "edges",
+          "plural": true,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "concreteType": "TenderProfile",
+              "kind": "LinkedField",
+              "name": "node",
+              "plural": false,
+              "selections": [
+                (v0/*: any*/),
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "approvalStatus",
+                  "storageKey": null
+                },
+                (v1/*: any*/),
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "status",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "createdAt",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "estimatedAmount",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "classify",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "concreteType": "Customer",
+                  "kind": "LinkedField",
+                  "name": "customer",
+                  "plural": false,
+                  "selections": [
+                    (v0/*: any*/),
+                    (v1/*: any*/)
+                  ],
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "images",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "fullAddress",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "tenderDate",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "discoveryDate",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "tenderClosingDate",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "concreteType": "User",
+                  "kind": "LinkedField",
+                  "name": "createdBy",
+                  "plural": false,
+                  "selections": (v2/*: any*/),
+                  "storageKey": null
+                }
+              ],
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        }
+      ],
+      "storageKey": "profiles(orderBy:[{\"direction\":\"DESC\",\"field\":\"CREATED_AT\"}])"
     }
   ],
   "type": "Tender",
@@ -200,6 +252,6 @@ return {
 };
 })();
 
-(node as any).hash = "0ddaba898b6feba012946c21ae00a5ab";
+(node as any).hash = "217d60ba3292ca008209c5c9a4f6cd7c";
 
 export default node;

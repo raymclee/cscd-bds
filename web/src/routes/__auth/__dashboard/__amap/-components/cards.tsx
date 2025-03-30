@@ -16,7 +16,7 @@ import { cn } from "~/lib/utils";
 
 export function Cards() {
   const show = useSearch({
-    from: "/__auth/__dashboard/__amap",
+    from: "/__auth/__dashboard/__amap/",
     select(state) {
       return Boolean(state.d || state.t);
     },

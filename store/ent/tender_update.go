@@ -30,8 +30,9 @@ import (
 // TenderUpdate is the builder for updating Tender entities.
 type TenderUpdate struct {
 	config
-	hooks    []Hook
-	mutation *TenderMutation
+	hooks     []Hook
+	mutation  *TenderMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // Where appends a list predicates to the TenderUpdate builder.
@@ -1750,6 +1751,12 @@ func (tu *TenderUpdate) check() error {
 	return nil
 }
 
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (tu *TenderUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *TenderUpdate {
+	tu.modifiers = append(tu.modifiers, modifiers...)
+	return tu
+}
+
 func (tu *TenderUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if err := tu.check(); err != nil {
 		return n, err
@@ -2584,6 +2591,7 @@ func (tu *TenderUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	_spec.AddModifiers(tu.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, tu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{tender.Label}
@@ -2599,9 +2607,10 @@ func (tu *TenderUpdate) sqlSave(ctx context.Context) (n int, err error) {
 // TenderUpdateOne is the builder for updating a single Tender entity.
 type TenderUpdateOne struct {
 	config
-	fields   []string
-	hooks    []Hook
-	mutation *TenderMutation
+	fields    []string
+	hooks     []Hook
+	mutation  *TenderMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // SetUpdatedAt sets the "updated_at" field.
@@ -4327,6 +4336,12 @@ func (tuo *TenderUpdateOne) check() error {
 	return nil
 }
 
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (tuo *TenderUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *TenderUpdateOne {
+	tuo.modifiers = append(tuo.modifiers, modifiers...)
+	return tuo
+}
+
 func (tuo *TenderUpdateOne) sqlSave(ctx context.Context) (_node *Tender, err error) {
 	if err := tuo.check(); err != nil {
 		return _node, err
@@ -5178,6 +5193,7 @@ func (tuo *TenderUpdateOne) sqlSave(ctx context.Context) (_node *Tender, err err
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	_spec.AddModifiers(tuo.modifiers...)
 	_node = &Tender{config: tuo.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues

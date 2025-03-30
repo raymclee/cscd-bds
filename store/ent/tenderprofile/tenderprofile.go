@@ -149,8 +149,6 @@ const (
 	FieldCreatedByID = "created_by_id"
 	// FieldApproverID holds the string denoting the approver_id field in the database.
 	FieldApproverID = "approver_id"
-	// FieldUpdatedByID holds the string denoting the updated_by_id field in the database.
-	FieldUpdatedByID = "updated_by_id"
 	// EdgeTender holds the string denoting the tender edge name in mutations.
 	EdgeTender = "tender"
 	// EdgeCustomer holds the string denoting the customer edge name in mutations.
@@ -167,8 +165,6 @@ const (
 	EdgeDistrict = "district"
 	// EdgeApprover holds the string denoting the approver edge name in mutations.
 	EdgeApprover = "approver"
-	// EdgeUpdatedBy holds the string denoting the updated_by edge name in mutations.
-	EdgeUpdatedBy = "updated_by"
 	// Table holds the table name of the tenderprofile in the database.
 	Table = "tender_profiles"
 	// TenderTable is the table that holds the tender relation/edge.
@@ -227,13 +223,6 @@ const (
 	ApproverInverseTable = "users"
 	// ApproverColumn is the table column denoting the approver relation/edge.
 	ApproverColumn = "approver_id"
-	// UpdatedByTable is the table that holds the updated_by relation/edge.
-	UpdatedByTable = "tender_profiles"
-	// UpdatedByInverseTable is the table name for the User entity.
-	// It exists in this package in order to avoid circular dependency with the "user" package.
-	UpdatedByInverseTable = "users"
-	// UpdatedByColumn is the table column denoting the updated_by relation/edge.
-	UpdatedByColumn = "updated_by_id"
 )
 
 // Columns holds all SQL columns for tenderprofile fields.
@@ -306,7 +295,6 @@ var Columns = []string{
 	FieldFinderID,
 	FieldCreatedByID,
 	FieldApproverID,
-	FieldUpdatedByID,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -334,8 +322,6 @@ var (
 	ApprovalStatusValidator func(int) error
 	// NameValidator is a validator for the "name" field. It is called by the builders before save.
 	NameValidator func(string) error
-	// EstimatedAmountValidator is a validator for the "estimated_amount" field. It is called by the builders before save.
-	EstimatedAmountValidator func(float64) error
 	// ClassifyValidator is a validator for the "classify" field. It is called by the builders before save.
 	ClassifyValidator func(int) error
 	// LevelInvolvedValidator is a validator for the "level_involved" field. It is called by the builders before save.
@@ -685,11 +671,6 @@ func ByApproverID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldApproverID, opts...).ToFunc()
 }
 
-// ByUpdatedByID orders the results by the updated_by_id field.
-func ByUpdatedByID(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldUpdatedByID, opts...).ToFunc()
-}
-
 // ByTenderField orders the results by tender field.
 func ByTenderField(field string, opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
@@ -743,13 +724,6 @@ func ByDistrictField(field string, opts ...sql.OrderTermOption) OrderOption {
 func ByApproverField(field string, opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborTerms(s, newApproverStep(), sql.OrderByField(field, opts...))
-	}
-}
-
-// ByUpdatedByField orders the results by updated_by field.
-func ByUpdatedByField(field string, opts ...sql.OrderTermOption) OrderOption {
-	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newUpdatedByStep(), sql.OrderByField(field, opts...))
 	}
 }
 func newTenderStep() *sqlgraph.Step {
@@ -806,12 +780,5 @@ func newApproverStep() *sqlgraph.Step {
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(ApproverInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.M2O, false, ApproverTable, ApproverColumn),
-	)
-}
-func newUpdatedByStep() *sqlgraph.Step {
-	return sqlgraph.NewStep(
-		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(UpdatedByInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.M2O, false, UpdatedByTable, UpdatedByColumn),
 	)
 }

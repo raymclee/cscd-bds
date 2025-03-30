@@ -1,10 +1,16 @@
-import { CheckOutlined, EditOutlined } from "@ant-design/icons";
-import { Link, useRouteContext } from "@tanstack/react-router";
+import {
+  CheckOutlined,
+  ClockCircleOutlined,
+  EditOutlined,
+  HistoryOutlined,
+} from "@ant-design/icons";
+import { Link, useRouteContext, useSearch } from "@tanstack/react-router";
 import {
   tenderDetailFragment$data,
   tenderDetailFragment$key,
 } from "__generated__/tenderDetailFragment.graphql";
 import {
+  Affix,
   App,
   Button,
   Card,
@@ -12,8 +18,10 @@ import {
   Empty,
   Image,
   List,
+  Modal,
   Space,
   Tag,
+  Timeline,
 } from "antd";
 import dayjs from "dayjs";
 import { graphql, useFragment } from "react-relay";
@@ -33,7 +41,12 @@ import { TenderWinModal } from "./tender-win-modal";
 import { TenderLoseModal } from "./tender-lose-modal";
 import { tenderWinModalFragment$key } from "__generated__/tenderWinModalFragment.graphql";
 import { tenderLoseModalFragment$key } from "__generated__/tenderLoseModalFragment.graphql";
-
+import { Check, History } from "lucide-react";
+import { useState } from "react";
+import { cn } from "~/lib/utils";
+import { ScrollArea } from "../ui/scroll-area";
+import { useApproveTender } from "~/hooks/use-approve-tender";
+import { useRejectTender } from "~/hooks/use-reject-tender";
 type TenderDetailProps = {
   queryRef: tenderDetailFragment$key;
   competitorRef: tenderWinModalFragment$key;
@@ -43,70 +56,7 @@ type TenderDetailProps = {
 export const TenderDetailFragment = graphql`
   fragment tenderDetailFragment on Tender {
     id
-    approvalStatus
     code
-    name
-    status
-    estimatedAmount
-    tenderDate
-    discoveryDate
-    address
-    fullAddress
-    contractor
-    prepareToBid
-    projectCode
-    projectType
-    estimatedProjectStartDate
-    estimatedProjectEndDate
-    levelInvolved
-    costEngineer
-    sizeAndValueRating
-    sizeAndValueRatingOverview
-    creditAndPaymentRating
-    creditAndPaymentRatingOverview
-    timeLimitRating
-    timeLimitRatingOverview
-    customerRelationshipRating
-    customerRelationshipRatingOverview
-    competitivePartnershipRating
-    competitivePartnershipRatingOverview
-    tenderSituations
-    ownerSituations
-    biddingInstructions
-    competitorSituations
-    tenderForm
-    contractForm
-    managementCompany
-    tenderingAgency
-    biddingDate
-    facadeConsultant
-    designUnit
-    consultingFirm
-    keyProject
-    currentProgress
-    tenderWinCompany
-    tenderWinDate
-    tenderWinAmount
-    lastTenderAmount
-    attachements
-    tenderCode
-    developer
-    architect
-    facadeConsultant
-    tenderClosingDate
-    constructionArea
-    remark
-    images
-    geoCoordinate {
-      coordinates
-    }
-    createdBy {
-      id
-    }
-    finder {
-      id
-      name
-    }
     area {
       id
       code
@@ -116,27 +66,102 @@ export const TenderDetailFragment = graphql`
       id
       name
     }
-    customer {
-      id
-      ownerType
-      name
+    profiles(orderBy: [{ field: CREATED_AT, direction: DESC }]) {
+      edges {
+        node {
+          id
+          createdAt
+          approvalStatus
+          approver {
+            id
+            name
+          }
+          name
+          status
+          estimatedAmount
+          tenderDate
+          discoveryDate
+          address
+          fullAddress
+          contractor
+          prepareToBid
+          projectCode
+          projectType
+          estimatedProjectStartDate
+          estimatedProjectEndDate
+          levelInvolved
+          costEngineer
+          sizeAndValueRating
+          sizeAndValueRatingOverview
+          creditAndPaymentRating
+          creditAndPaymentRatingOverview
+          timeLimitRating
+          timeLimitRatingOverview
+          customerRelationshipRating
+          customerRelationshipRatingOverview
+          competitivePartnershipRating
+          competitivePartnershipRatingOverview
+          tenderSituations
+          ownerSituations
+          biddingInstructions
+          competitorSituations
+          tenderForm
+          contractForm
+          managementCompany
+          tenderingAgency
+          biddingDate
+          facadeConsultant
+          designUnit
+          consultingFirm
+          keyProject
+          currentProgress
+          tenderWinCompany
+          tenderWinDate
+          tenderWinAmount
+          lastTenderAmount
+          attachments
+          tenderCode
+          developer
+          architect
+          facadeConsultant
+          tenderClosingDate
+          constructionArea
+          remark
+          images
+          geoCoordinate
+          createdBy {
+            id
+            name
+          }
+          finder {
+            id
+            name
+          }
+
+          customer {
+            id
+            ownerType
+            name
+          }
+          province {
+            id
+            adcode
+            name
+          }
+          city {
+            id
+            adcode
+            name
+          }
+          district {
+            id
+            adcode
+            name
+          }
+          classify
+        }
+      }
     }
-    province {
-      id
-      adcode
-      name
-    }
-    city {
-      id
-      adcode
-      name
-    }
-    district {
-      id
-      adcode
-      name
-    }
-    classify
   }
 `;
 
@@ -145,15 +170,99 @@ export function TenderDetail({
   competitorRef,
   lostCompetitorRef,
 }: TenderDetailProps) {
+  const [historyOpen, setHistoryOpen] = useState(false);
   const data = useFragment(TenderDetailFragment, queryRef);
-  return data.area.code === "GA" || data.area.code === "HW" ? (
-    <GAAndHWTender tender={data} />
-  ) : (
-    <SHTender
-      tender={data}
-      competitorRef={competitorRef}
-      lostCompetitorRef={lostCompetitorRef}
-    />
+  const { profiles } = data;
+  const selectedProfileId = useSearch({
+    from: "/__auth/__portal/portal/tenders_/$id",
+    select: (state) => state.p,
+  });
+
+  return (
+    <div className="flex flex-wrap">
+      {data.area.code === "GA" || data.area.code === "HW" ? (
+        <GAAndHWTender
+          tender={data}
+          toggleHistory={() => setHistoryOpen(!historyOpen)}
+        />
+      ) : (
+        <SHTender
+          tender={data}
+          competitorRef={competitorRef}
+          lostCompetitorRef={lostCompetitorRef}
+          toggleHistory={() => setHistoryOpen(!historyOpen)}
+        />
+      )}
+
+      <div
+        className={cn(
+          "sticky top-28 mt-8 self-start",
+          historyOpen ? "w-34" : "w-0",
+        )}
+      >
+        <ScrollArea
+          className={cn(
+            "h-[calc(100vh-128px)] transition-all",
+            historyOpen ? "w-34" : "w-0",
+          )}
+        >
+          <Timeline
+            className="px-4 py-1"
+            items={[
+              {
+                color: "green",
+                children: (
+                  <Link
+                    to="."
+                    search={(prev) => ({ ...prev, p: undefined })}
+                    className="text-sm text-gray-500"
+                  >
+                    现时状态
+                  </Link>
+                ),
+              },
+              ...(profiles?.edges?.map((e, i) => {
+                const isFirst =
+                  profiles?.edges && i == profiles?.edges?.length - 1;
+                const isLast = profiles?.edges && i == 0;
+                const isApproved = e?.node?.approvalStatus == 2;
+                const isRejected = e?.node?.approvalStatus == 3;
+                const action = isFirst ? "创建了" : "更新了";
+                return {
+                  color: selectedProfileId === e?.node?.id ? undefined : "gray",
+                  children: (
+                    <Link
+                      to="."
+                      search={(prev) => ({ ...prev, p: e?.node?.id })}
+                      preload={false}
+                      className="flex flex-col gap-1"
+                      replace
+                    >
+                      <div className="text-sm text-gray-500">
+                        {dayjs(e?.node?.createdAt).format("LLL")}
+                      </div>
+                      <div className="text-sm text-gray-500">
+                        {`${e?.node?.createdBy?.name} ${action}商机`}
+                      </div>
+                      {isApproved && (
+                        <div className="text-sm text-gray-500">
+                          {e?.node?.approver?.name} 批核了
+                        </div>
+                      )}
+                      {isRejected && (
+                        <div className="text-sm text-gray-500">
+                          {e?.node?.approver?.name} 拒绝了
+                        </div>
+                      )}
+                    </Link>
+                  ),
+                };
+              }) || []),
+            ]}
+          />
+        </ScrollArea>
+      </div>
+    </div>
   );
 }
 
@@ -161,14 +270,20 @@ function SHTender({
   tender,
   competitorRef,
   lostCompetitorRef,
+  toggleHistory,
 }: {
   tender: tenderDetailFragment$data;
   competitorRef: tenderWinModalFragment$key;
   lostCompetitorRef: tenderLoseModalFragment$key;
+  toggleHistory: () => void;
 }) {
+  const selectedProfile = useSearch({
+    from: "/__auth/__portal/portal/tenders_/$id",
+    select: (state) => state.p,
+  });
   const { session } = useRouteContext({ from: "/__auth" });
+  const { id, followingSales, area, profiles } = tender;
   const {
-    id,
     name,
     status,
     tenderSituations,
@@ -208,100 +323,77 @@ function SHTender({
     customerRelationshipRatingOverview,
     competitivePartnershipRating,
     competitivePartnershipRatingOverview,
-    attachements,
+    attachments,
     finder,
-    followingSales,
     approvalStatus,
     classify,
-    area,
-  } = tender;
+  } = selectedProfile
+    ? (profiles?.edges?.find((e) => e?.node?.id === selectedProfile)?.node ??
+      {})
+    : (profiles?.edges?.find((e) => e?.node?.approvalStatus == 2)?.node ?? {});
   const { message, modal } = App.useApp();
   const [updateTender, inFlight] = useUpdateTender();
+  const [approveTender, inApproveFlight] = useApproveTender();
+  const current = profiles.edges?.at(0)?.node;
+  const isEditable = (current?.approvalStatus || 0) > 1;
+  const isApprovable =
+    current?.approvalStatus != 2 && current?.approvalStatus != 3;
 
   return (
-    <div className="!space-y-4">
+    <div className="flex-1 !space-y-4">
       <Descriptions
         className="rounded-lg bg-white !p-6"
         title={
-          <div className="flex items-center gap-2">
-            <span>{name}</span>
-            {isSH(area.code) && (
-              <Tag color={approvalStatusTagColor(approvalStatus)}>
-                {approvalStatusText(approvalStatus)}
-              </Tag>
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <span>{name}</span>
+              <div className="flex items-center">
+                <Tag>{area.name}</Tag>
+                <Tag color={approvalStatusTagColor(approvalStatus)}>
+                  {approvalStatusText(approvalStatus)}
+                </Tag>
+              </div>
+            </div>
+            {canEdit(session, { tender }) && (
+              <div className="flex flex-wrap gap-2">
+                <Link
+                  to="/portal/tenders/$id/edit"
+                  params={{ id }}
+                  disabled={!isEditable}
+                >
+                  <Button
+                    type="primary"
+                    icon={<EditOutlined />}
+                    disabled={!isEditable}
+                    // size="small"
+                  >
+                    编辑
+                  </Button>
+                </Link>
+                <TenderWinModal
+                  id={id}
+                  disabled={approvalStatus != 2}
+                  competitorRef={competitorRef}
+                />
+                <TenderLoseModal
+                  id={id}
+                  disabled={approvalStatus != 2}
+                  competitorRef={lostCompetitorRef}
+                />
+                {(session.isAdmin || session.isSuperAdmin) && (
+                  <ApprovalModal tender={tender} />
+                )}
+                <Button icon={<HistoryOutlined />} onClick={toggleHistory} />
+              </div>
             )}
           </div>
         }
-        extra={
-          canEdit(session, { tender }) && (
-            <Space>
-              <Link
-                to="/portal/tenders/$id/edit"
-                params={{ id }}
-                disabled={approvalStatus == 1}
-              >
-                <Button
-                  type="primary"
-                  icon={<EditOutlined />}
-                  disabled={approvalStatus == 1}
-                >
-                  编辑
-                </Button>
-              </Link>
-              <TenderWinModal
-                id={id}
-                disabled={approvalStatus == 1}
-                competitorRef={competitorRef}
-              />
-              <TenderLoseModal
-                id={id}
-                disabled={approvalStatus == 1}
-                competitorRef={lostCompetitorRef}
-              />
-              {(session.isAdmin || session.isSuperAdmin) && (
-                <Button
-                  type="primary"
-                  disabled={approvalStatus > 1}
-                  icon={<CheckOutlined />}
-                  onClick={async () => {
-                    const confirmed = await modal.confirm({
-                      title: "批核",
-                      content: "确定批核该商机吗？",
-                      okText: "同意",
-                      cancelText: "拒绝",
-                      cancelButtonProps: {
-                        danger: true,
-                      },
-                    });
-                    if (confirmed) {
-                      updateTender({
-                        variables: {
-                          id,
-                          input: { approvalStatus: 2 },
-                          attachmentFileNames: [],
-                          imageFileNames: [],
-                        },
-                        onCompleted() {
-                          message.destroy();
-                          message.success("批核成功");
-                        },
-                        onError(error) {
-                          console.error(error);
-                          message.destroy();
-                          message.error("批核失败");
-                        },
-                      });
-                    }
-                  }}
-                >
-                  批核
-                </Button>
-              )}
-            </Space>
-          )
-        }
         items={[
-          { key: "status", label: "状态", children: tenderStatusText(status) },
+          {
+            key: "status",
+            label: "状态",
+            children: tenderStatusText(status),
+          },
           {
             key: "customer",
             label: "业主",
@@ -562,7 +654,7 @@ function SHTender({
 
         <Card title="附件">
           <List
-            dataSource={attachements?.filter(Boolean)}
+            dataSource={attachments?.filter(Boolean)}
             renderItem={(item) => (
               <List.Item>
                 <a
@@ -580,10 +672,16 @@ function SHTender({
   );
 }
 
-function GAAndHWTender({ tender }: { tender: tenderDetailFragment$data }) {
+function GAAndHWTender({
+  tender,
+  toggleHistory,
+}: {
+  tender: tenderDetailFragment$data;
+  toggleHistory: () => void;
+}) {
   const { session } = useRouteContext({ from: "/__auth" });
+  const { id, followingSales, profiles } = tender;
   const {
-    id,
     name,
     status,
     tenderCode,
@@ -598,25 +696,27 @@ function GAAndHWTender({ tender }: { tender: tenderDetailFragment$data }) {
     tenderWinDate,
     tenderWinCompany,
     lastTenderAmount,
-    followingSales,
     finder,
-  } = tender;
+  } = profiles?.edges?.[0]?.node ?? {};
   return (
-    <div className="!space-y-4">
+    <div className="flex-1 !space-y-4">
       <Descriptions
         className="rounded-lg bg-white !p-6"
-        extra={
-          canEdit(session, { tender }) && (
-            <Space>
-              <Link to="/portal/tenders/$id/edit" params={{ id }}>
-                <Button type="primary" icon={<EditOutlined />}>
-                  编辑
-                </Button>
-              </Link>
-            </Space>
-          )
+        title={
+          <div className="flex items-center justify-between">
+            <span>{name}</span>
+            {canEdit(session, { tender }) && (
+              <Space>
+                <Link to="/portal/tenders/$id/edit" params={{ id }}>
+                  <Button type="primary" icon={<EditOutlined />}>
+                    编辑
+                  </Button>
+                </Link>
+                <Button icon={<HistoryOutlined />} onClick={toggleHistory} />
+              </Space>
+            )}
+          </div>
         }
-        title={name}
         items={[
           { key: "tenderCode", label: "投標編號", children: tenderCode },
           {
@@ -731,5 +831,121 @@ function GAAndHWTender({ tender }: { tender: tenderDetailFragment$data }) {
         </Carousel>
       </div> */}
     </div>
+  );
+}
+
+function ApprovalModal({ tender }: { tender: tenderDetailFragment$data }) {
+  const [open, setOpen] = useState(false);
+  const [commitApproveTenderRequest, inApproveTenderRequestFlight] =
+    useApproveTender();
+  const [commitRejectTenderRequest, inRejectTenderRequestFlight] =
+    useRejectTender();
+  const { message } = App.useApp();
+  const profileId = useSearch({
+    from: "/__auth/__portal/portal/tenders_/$id",
+    select: (state) => state.p,
+  });
+
+  const handleCancel = () => {
+    setOpen(false);
+  };
+
+  const handleReject = () => {
+    if (!profileId) {
+      message.error("请选择一个商机");
+      return;
+    }
+    commitRejectTenderRequest({
+      variables: {
+        id: tender.id,
+        profileId,
+      },
+      onCompleted: () => {
+        message.destroy();
+        message.success("拒绝成功");
+        setOpen(false);
+      },
+      onError: (error) => {
+        console.error(error);
+        message.destroy();
+        message.error("拒绝失败");
+      },
+    });
+  };
+
+  const handleApprove = () => {
+    if (!profileId) {
+      message.error("请选择一个商机");
+      return;
+    }
+    commitApproveTenderRequest({
+      variables: {
+        id: tender.id,
+        profileId,
+      },
+      onCompleted: () => {
+        message.destroy();
+        message.success("批核成功");
+        setOpen(false);
+      },
+      onError: (error) => {
+        console.error(error);
+        message.destroy();
+        message.error("批核失败");
+      },
+    });
+  };
+
+  const isApprovable =
+    (tender.profiles.edges?.find((e) => e?.node?.id === profileId)?.node
+      ?.approvalStatus || 0) < 2;
+
+  if (!open) {
+    return (
+      <Button
+        disabled={!isApprovable}
+        type="primary"
+        icon={<Check size={16} />}
+        onClick={() => {
+          setOpen(true);
+        }}
+      >
+        审批
+      </Button>
+    );
+  }
+
+  const isLoading = inApproveTenderRequestFlight || inRejectTenderRequestFlight;
+
+  return (
+    <Modal
+      open={open}
+      title="审批"
+      onCancel={handleCancel}
+      footer={[
+        <Button key="back" onClick={handleCancel}>
+          取消
+        </Button>,
+        <Button
+          key="reject"
+          // type="primary"
+          loading={isLoading}
+          onClick={handleReject}
+          danger
+        >
+          拒绝
+        </Button>,
+        <Button
+          key="approve"
+          type="primary"
+          loading={isLoading}
+          onClick={handleApprove}
+        >
+          同意
+        </Button>,
+      ]}
+    >
+      <p>确定批核该客户更新吗？</p>
+    </Modal>
   );
 }

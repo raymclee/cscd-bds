@@ -1,12 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import node, {
-  MapIndexPageQuery,
-} from "__generated__/MapIndexPageQuery.graphql";
+  v1MapIndexPageQuery,
+} from "__generated__/v1MapIndexPageQuery.graphql";
 import { loadQuery } from "react-relay";
 
-export const Route = createFileRoute("/__auth/__dashboard/__scaled/__map/")({
+export const Route = createFileRoute("/__auth/__dashboard/__scaled/__map/v1")({
   loader: async ({ context: { RelayEnvironment, session } }) => {
-    return loadQuery<MapIndexPageQuery>(RelayEnvironment, node, {
+    return loadQuery<v1MapIndexPageQuery>(RelayEnvironment, node, {
       userId: session.userId,
       orderBy: [
         { field: "TENDER_DATE", direction: "ASC" },

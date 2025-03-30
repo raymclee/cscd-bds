@@ -28687,8 +28687,6 @@ type TenderProfileMutation struct {
 	cleareddistrict                         bool
 	approver                                *xid.ID
 	clearedapprover                         bool
-	updated_by                              *xid.ID
-	clearedupdated_by                       bool
 	done                                    bool
 	oldValue                                func(context.Context) (*TenderProfile, error)
 	predicates                              []predicate.TenderProfile
@@ -32278,55 +32276,6 @@ func (m *TenderProfileMutation) ResetApproverID() {
 	delete(m.clearedFields, tenderprofile.FieldApproverID)
 }
 
-// SetUpdatedByID sets the "updated_by_id" field.
-func (m *TenderProfileMutation) SetUpdatedByID(x xid.ID) {
-	m.updated_by = &x
-}
-
-// UpdatedByID returns the value of the "updated_by_id" field in the mutation.
-func (m *TenderProfileMutation) UpdatedByID() (r xid.ID, exists bool) {
-	v := m.updated_by
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldUpdatedByID returns the old "updated_by_id" field's value of the TenderProfile entity.
-// If the TenderProfile object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *TenderProfileMutation) OldUpdatedByID(ctx context.Context) (v *xid.ID, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldUpdatedByID is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldUpdatedByID requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldUpdatedByID: %w", err)
-	}
-	return oldValue.UpdatedByID, nil
-}
-
-// ClearUpdatedByID clears the value of the "updated_by_id" field.
-func (m *TenderProfileMutation) ClearUpdatedByID() {
-	m.updated_by = nil
-	m.clearedFields[tenderprofile.FieldUpdatedByID] = struct{}{}
-}
-
-// UpdatedByIDCleared returns if the "updated_by_id" field was cleared in this mutation.
-func (m *TenderProfileMutation) UpdatedByIDCleared() bool {
-	_, ok := m.clearedFields[tenderprofile.FieldUpdatedByID]
-	return ok
-}
-
-// ResetUpdatedByID resets all changes to the "updated_by_id" field.
-func (m *TenderProfileMutation) ResetUpdatedByID() {
-	m.updated_by = nil
-	delete(m.clearedFields, tenderprofile.FieldUpdatedByID)
-}
-
 // ClearTender clears the "tender" edge to the Tender entity.
 func (m *TenderProfileMutation) ClearTender() {
 	m.clearedtender = true
@@ -32543,33 +32492,6 @@ func (m *TenderProfileMutation) ResetApprover() {
 	m.clearedapprover = false
 }
 
-// ClearUpdatedBy clears the "updated_by" edge to the User entity.
-func (m *TenderProfileMutation) ClearUpdatedBy() {
-	m.clearedupdated_by = true
-	m.clearedFields[tenderprofile.FieldUpdatedByID] = struct{}{}
-}
-
-// UpdatedByCleared reports if the "updated_by" edge to the User entity was cleared.
-func (m *TenderProfileMutation) UpdatedByCleared() bool {
-	return m.UpdatedByIDCleared() || m.clearedupdated_by
-}
-
-// UpdatedByIDs returns the "updated_by" edge IDs in the mutation.
-// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
-// UpdatedByID instead. It exists only for internal usage by the builders.
-func (m *TenderProfileMutation) UpdatedByIDs() (ids []xid.ID) {
-	if id := m.updated_by; id != nil {
-		ids = append(ids, *id)
-	}
-	return
-}
-
-// ResetUpdatedBy resets all changes to the "updated_by" edge.
-func (m *TenderProfileMutation) ResetUpdatedBy() {
-	m.updated_by = nil
-	m.clearedupdated_by = false
-}
-
 // Where appends a list predicates to the TenderProfileMutation builder.
 func (m *TenderProfileMutation) Where(ps ...predicate.TenderProfile) {
 	m.predicates = append(m.predicates, ps...)
@@ -32604,7 +32526,7 @@ func (m *TenderProfileMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *TenderProfileMutation) Fields() []string {
-	fields := make([]string, 0, 68)
+	fields := make([]string, 0, 67)
 	if m.created_at != nil {
 		fields = append(fields, tenderprofile.FieldCreatedAt)
 	}
@@ -32806,9 +32728,6 @@ func (m *TenderProfileMutation) Fields() []string {
 	if m.approver != nil {
 		fields = append(fields, tenderprofile.FieldApproverID)
 	}
-	if m.updated_by != nil {
-		fields = append(fields, tenderprofile.FieldUpdatedByID)
-	}
 	return fields
 }
 
@@ -32951,8 +32870,6 @@ func (m *TenderProfileMutation) Field(name string) (ent.Value, bool) {
 		return m.CreatedByID()
 	case tenderprofile.FieldApproverID:
 		return m.ApproverID()
-	case tenderprofile.FieldUpdatedByID:
-		return m.UpdatedByID()
 	}
 	return nil, false
 }
@@ -33096,8 +33013,6 @@ func (m *TenderProfileMutation) OldField(ctx context.Context, name string) (ent.
 		return m.OldCreatedByID(ctx)
 	case tenderprofile.FieldApproverID:
 		return m.OldApproverID(ctx)
-	case tenderprofile.FieldUpdatedByID:
-		return m.OldUpdatedByID(ctx)
 	}
 	return nil, fmt.Errorf("unknown TenderProfile field %s", name)
 }
@@ -33576,13 +33491,6 @@ func (m *TenderProfileMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetApproverID(v)
 		return nil
-	case tenderprofile.FieldUpdatedByID:
-		v, ok := value.(xid.ID)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetUpdatedByID(v)
-		return nil
 	}
 	return fmt.Errorf("unknown TenderProfile field %s", name)
 }
@@ -33934,9 +33842,6 @@ func (m *TenderProfileMutation) ClearedFields() []string {
 	if m.FieldCleared(tenderprofile.FieldApproverID) {
 		fields = append(fields, tenderprofile.FieldApproverID)
 	}
-	if m.FieldCleared(tenderprofile.FieldUpdatedByID) {
-		fields = append(fields, tenderprofile.FieldUpdatedByID)
-	}
 	return fields
 }
 
@@ -34124,9 +34029,6 @@ func (m *TenderProfileMutation) ClearField(name string) error {
 		return nil
 	case tenderprofile.FieldApproverID:
 		m.ClearApproverID()
-		return nil
-	case tenderprofile.FieldUpdatedByID:
-		m.ClearUpdatedByID()
 		return nil
 	}
 	return fmt.Errorf("unknown TenderProfile nullable field %s", name)
@@ -34337,16 +34239,13 @@ func (m *TenderProfileMutation) ResetField(name string) error {
 	case tenderprofile.FieldApproverID:
 		m.ResetApproverID()
 		return nil
-	case tenderprofile.FieldUpdatedByID:
-		m.ResetUpdatedByID()
-		return nil
 	}
 	return fmt.Errorf("unknown TenderProfile field %s", name)
 }
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *TenderProfileMutation) AddedEdges() []string {
-	edges := make([]string, 0, 9)
+	edges := make([]string, 0, 8)
 	if m.tender != nil {
 		edges = append(edges, tenderprofile.EdgeTender)
 	}
@@ -34370,9 +34269,6 @@ func (m *TenderProfileMutation) AddedEdges() []string {
 	}
 	if m.approver != nil {
 		edges = append(edges, tenderprofile.EdgeApprover)
-	}
-	if m.updated_by != nil {
-		edges = append(edges, tenderprofile.EdgeUpdatedBy)
 	}
 	return edges
 }
@@ -34413,17 +34309,13 @@ func (m *TenderProfileMutation) AddedIDs(name string) []ent.Value {
 		if id := m.approver; id != nil {
 			return []ent.Value{*id}
 		}
-	case tenderprofile.EdgeUpdatedBy:
-		if id := m.updated_by; id != nil {
-			return []ent.Value{*id}
-		}
 	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *TenderProfileMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 9)
+	edges := make([]string, 0, 8)
 	return edges
 }
 
@@ -34435,7 +34327,7 @@ func (m *TenderProfileMutation) RemovedIDs(name string) []ent.Value {
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *TenderProfileMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 9)
+	edges := make([]string, 0, 8)
 	if m.clearedtender {
 		edges = append(edges, tenderprofile.EdgeTender)
 	}
@@ -34460,9 +34352,6 @@ func (m *TenderProfileMutation) ClearedEdges() []string {
 	if m.clearedapprover {
 		edges = append(edges, tenderprofile.EdgeApprover)
 	}
-	if m.clearedupdated_by {
-		edges = append(edges, tenderprofile.EdgeUpdatedBy)
-	}
 	return edges
 }
 
@@ -34486,8 +34375,6 @@ func (m *TenderProfileMutation) EdgeCleared(name string) bool {
 		return m.cleareddistrict
 	case tenderprofile.EdgeApprover:
 		return m.clearedapprover
-	case tenderprofile.EdgeUpdatedBy:
-		return m.clearedupdated_by
 	}
 	return false
 }
@@ -34520,9 +34407,6 @@ func (m *TenderProfileMutation) ClearEdge(name string) error {
 	case tenderprofile.EdgeApprover:
 		m.ClearApprover()
 		return nil
-	case tenderprofile.EdgeUpdatedBy:
-		m.ClearUpdatedBy()
-		return nil
 	}
 	return fmt.Errorf("unknown TenderProfile unique edge %s", name)
 }
@@ -34554,9 +34438,6 @@ func (m *TenderProfileMutation) ResetEdge(name string) error {
 		return nil
 	case tenderprofile.EdgeApprover:
 		m.ResetApprover()
-		return nil
-	case tenderprofile.EdgeUpdatedBy:
-		m.ResetUpdatedBy()
 		return nil
 	}
 	return fmt.Errorf("unknown TenderProfile edge %s", name)

@@ -21,8 +21,9 @@ import (
 // CountryUpdate is the builder for updating Country entities.
 type CountryUpdate struct {
 	config
-	hooks    []Hook
-	mutation *CountryMutation
+	hooks     []Hook
+	mutation  *CountryMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // Where appends a list predicates to the CountryUpdate builder.
@@ -155,6 +156,12 @@ func (cu *CountryUpdate) defaults() {
 	}
 }
 
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (cu *CountryUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *CountryUpdate {
+	cu.modifiers = append(cu.modifiers, modifiers...)
+	return cu
+}
+
 func (cu *CountryUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	_spec := sqlgraph.NewUpdateSpec(country.Table, country.Columns, sqlgraph.NewFieldSpec(country.FieldID, field.TypeString))
 	if ps := cu.mutation.predicates; len(ps) > 0 {
@@ -224,6 +231,7 @@ func (cu *CountryUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	_spec.AddModifiers(cu.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, cu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{country.Label}
@@ -239,9 +247,10 @@ func (cu *CountryUpdate) sqlSave(ctx context.Context) (n int, err error) {
 // CountryUpdateOne is the builder for updating a single Country entity.
 type CountryUpdateOne struct {
 	config
-	fields   []string
-	hooks    []Hook
-	mutation *CountryMutation
+	fields    []string
+	hooks     []Hook
+	mutation  *CountryMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // SetUpdatedAt sets the "updated_at" field.
@@ -381,6 +390,12 @@ func (cuo *CountryUpdateOne) defaults() {
 	}
 }
 
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (cuo *CountryUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *CountryUpdateOne {
+	cuo.modifiers = append(cuo.modifiers, modifiers...)
+	return cuo
+}
+
 func (cuo *CountryUpdateOne) sqlSave(ctx context.Context) (_node *Country, err error) {
 	_spec := sqlgraph.NewUpdateSpec(country.Table, country.Columns, sqlgraph.NewFieldSpec(country.FieldID, field.TypeString))
 	id, ok := cuo.mutation.ID()
@@ -467,6 +482,7 @@ func (cuo *CountryUpdateOne) sqlSave(ctx context.Context) (_node *Country, err e
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	_spec.AddModifiers(cuo.modifiers...)
 	_node = &Country{config: cuo.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues

@@ -25,8 +25,8 @@ type ProjectVOQuery struct {
 	inters      []Interceptor
 	predicates  []predicate.ProjectVO
 	withProject *ProjectQuery
-	modifiers   []func(*sql.Selector)
 	loadTotal   []func(context.Context, []*ProjectVO) error
+	modifiers   []func(*sql.Selector)
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -279,8 +279,9 @@ func (pvq *ProjectVOQuery) Clone() *ProjectVOQuery {
 		predicates:  append([]predicate.ProjectVO{}, pvq.predicates...),
 		withProject: pvq.withProject.Clone(),
 		// clone intermediate query.
-		sql:  pvq.sql.Clone(),
-		path: pvq.path,
+		sql:       pvq.sql.Clone(),
+		path:      pvq.path,
+		modifiers: append([]func(*sql.Selector){}, pvq.modifiers...),
 	}
 }
 
@@ -512,6 +513,9 @@ func (pvq *ProjectVOQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if pvq.ctx.Unique != nil && *pvq.ctx.Unique {
 		selector.Distinct()
 	}
+	for _, m := range pvq.modifiers {
+		m(selector)
+	}
 	for _, p := range pvq.predicates {
 		p(selector)
 	}
@@ -527,6 +531,12 @@ func (pvq *ProjectVOQuery) sqlQuery(ctx context.Context) *sql.Selector {
 		selector.Limit(*limit)
 	}
 	return selector
+}
+
+// Modify adds a query modifier for attaching custom logic to queries.
+func (pvq *ProjectVOQuery) Modify(modifiers ...func(s *sql.Selector)) *ProjectVOSelect {
+	pvq.modifiers = append(pvq.modifiers, modifiers...)
+	return pvq.Select()
 }
 
 // ProjectVOGroupBy is the group-by builder for ProjectVO entities.
@@ -617,4 +627,10 @@ func (pvs *ProjectVOSelect) sqlScan(ctx context.Context, root *ProjectVOQuery, v
 	}
 	defer rows.Close()
 	return sql.ScanSlice(rows, v)
+}
+
+// Modify adds a query modifier for attaching custom logic to queries.
+func (pvs *ProjectVOSelect) Modify(modifiers ...func(s *sql.Selector)) *ProjectVOSelect {
+	pvs.modifiers = append(pvs.modifiers, modifiers...)
+	return pvs
 }

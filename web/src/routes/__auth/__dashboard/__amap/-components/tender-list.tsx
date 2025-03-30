@@ -32,7 +32,7 @@ export function TenderList() {
   const tenders = useAreaTenders();
 
   const filteredTenders = useSearch({
-    from: "/__auth/__dashboard/__amap/v2",
+    from: "/__auth/__dashboard/__amap/",
     select: (state) =>
       tenders
         ?.filter((t) =>
@@ -91,11 +91,11 @@ export function TenderList() {
 
 function TenderListFilter() {
   const status = useSearch({
-    from: "/__auth/__dashboard/__amap/v2",
+    from: "/__auth/__dashboard/__amap/",
     select: (state) => state.status,
   });
   const [startDate, endDate] = useSearch({
-    from: "/__auth/__dashboard/__amap/v2",
+    from: "/__auth/__dashboard/__amap/",
     select: (state) => [state.sd, state.ed],
     structuralSharing: true,
   });
@@ -292,6 +292,13 @@ function TenderListFilter() {
         onClick={() => {
           navigate({
             to: ".",
+            search: (prev) => ({
+              ...prev,
+              q: undefined,
+              status: undefined,
+              sd: undefined,
+              ed: undefined,
+            }),
           });
         }}
       >
@@ -303,11 +310,11 @@ function TenderListFilter() {
 
 function TenderListItem({ tender }: { tender: Tender }) {
   const d = useSearch({
-    from: "/__auth/__dashboard/__amap/v2",
+    from: "/__auth/__dashboard/__amap/",
     select: (state) => state.d,
   });
   const t = useSearch({
-    from: "/__auth/__dashboard/__amap/v2",
+    from: "/__auth/__dashboard/__amap/",
     select: (state) => state.t,
   });
   const navigate = useNavigate();

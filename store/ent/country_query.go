@@ -26,8 +26,8 @@ type CountryQuery struct {
 	inters             []Interceptor
 	predicates         []predicate.Country
 	withProvinces      *ProvinceQuery
-	modifiers          []func(*sql.Selector)
 	loadTotal          []func(context.Context, []*Country) error
+	modifiers          []func(*sql.Selector)
 	withNamedProvinces map[string]*ProvinceQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
@@ -281,8 +281,9 @@ func (cq *CountryQuery) Clone() *CountryQuery {
 		predicates:    append([]predicate.Country{}, cq.predicates...),
 		withProvinces: cq.withProvinces.Clone(),
 		// clone intermediate query.
-		sql:  cq.sql.Clone(),
-		path: cq.path,
+		sql:       cq.sql.Clone(),
+		path:      cq.path,
+		modifiers: append([]func(*sql.Selector){}, cq.modifiers...),
 	}
 }
 
@@ -520,6 +521,9 @@ func (cq *CountryQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if cq.ctx.Unique != nil && *cq.ctx.Unique {
 		selector.Distinct()
 	}
+	for _, m := range cq.modifiers {
+		m(selector)
+	}
 	for _, p := range cq.predicates {
 		p(selector)
 	}
@@ -535,6 +539,12 @@ func (cq *CountryQuery) sqlQuery(ctx context.Context) *sql.Selector {
 		selector.Limit(*limit)
 	}
 	return selector
+}
+
+// Modify adds a query modifier for attaching custom logic to queries.
+func (cq *CountryQuery) Modify(modifiers ...func(s *sql.Selector)) *CountrySelect {
+	cq.modifiers = append(cq.modifiers, modifiers...)
+	return cq.Select()
 }
 
 // WithNamedProvinces tells the query-builder to eager-load the nodes that are connected to the "provinces"
@@ -639,4 +649,10 @@ func (cs *CountrySelect) sqlScan(ctx context.Context, root *CountryQuery, v any)
 	}
 	defer rows.Close()
 	return sql.ScanSlice(rows, v)
+}
+
+// Modify adds a query modifier for attaching custom logic to queries.
+func (cs *CountrySelect) Modify(modifiers ...func(s *sql.Selector)) *CountrySelect {
+	cs.modifiers = append(cs.modifiers, modifiers...)
+	return cs
 }

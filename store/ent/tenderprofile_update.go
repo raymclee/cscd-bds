@@ -26,8 +26,9 @@ import (
 // TenderProfileUpdate is the builder for updating TenderProfile entities.
 type TenderProfileUpdate struct {
 	config
-	hooks    []Hook
-	mutation *TenderProfileMutation
+	hooks     []Hook
+	mutation  *TenderProfileMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // Where appends a list predicates to the TenderProfileUpdate builder.
@@ -1376,26 +1377,6 @@ func (tpu *TenderProfileUpdate) ClearApproverID() *TenderProfileUpdate {
 	return tpu
 }
 
-// SetUpdatedByID sets the "updated_by_id" field.
-func (tpu *TenderProfileUpdate) SetUpdatedByID(x xid.ID) *TenderProfileUpdate {
-	tpu.mutation.SetUpdatedByID(x)
-	return tpu
-}
-
-// SetNillableUpdatedByID sets the "updated_by_id" field if the given value is not nil.
-func (tpu *TenderProfileUpdate) SetNillableUpdatedByID(x *xid.ID) *TenderProfileUpdate {
-	if x != nil {
-		tpu.SetUpdatedByID(*x)
-	}
-	return tpu
-}
-
-// ClearUpdatedByID clears the value of the "updated_by_id" field.
-func (tpu *TenderProfileUpdate) ClearUpdatedByID() *TenderProfileUpdate {
-	tpu.mutation.ClearUpdatedByID()
-	return tpu
-}
-
 // SetTender sets the "tender" edge to the Tender entity.
 func (tpu *TenderProfileUpdate) SetTender(t *Tender) *TenderProfileUpdate {
 	return tpu.SetTenderID(t.ID)
@@ -1434,11 +1415,6 @@ func (tpu *TenderProfileUpdate) SetDistrict(d *District) *TenderProfileUpdate {
 // SetApprover sets the "approver" edge to the User entity.
 func (tpu *TenderProfileUpdate) SetApprover(u *User) *TenderProfileUpdate {
 	return tpu.SetApproverID(u.ID)
-}
-
-// SetUpdatedBy sets the "updated_by" edge to the User entity.
-func (tpu *TenderProfileUpdate) SetUpdatedBy(u *User) *TenderProfileUpdate {
-	return tpu.SetUpdatedByID(u.ID)
 }
 
 // Mutation returns the TenderProfileMutation object of the builder.
@@ -1494,12 +1470,6 @@ func (tpu *TenderProfileUpdate) ClearApprover() *TenderProfileUpdate {
 	return tpu
 }
 
-// ClearUpdatedBy clears the "updated_by" edge to the User entity.
-func (tpu *TenderProfileUpdate) ClearUpdatedBy() *TenderProfileUpdate {
-	tpu.mutation.ClearUpdatedBy()
-	return tpu
-}
-
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (tpu *TenderProfileUpdate) Save(ctx context.Context) (int, error) {
 	tpu.defaults()
@@ -1546,11 +1516,6 @@ func (tpu *TenderProfileUpdate) check() error {
 	if v, ok := tpu.mutation.Name(); ok {
 		if err := tenderprofile.NameValidator(v); err != nil {
 			return &ValidationError{Name: "name", err: fmt.Errorf(`ent: validator failed for field "TenderProfile.name": %w`, err)}
-		}
-	}
-	if v, ok := tpu.mutation.EstimatedAmount(); ok {
-		if err := tenderprofile.EstimatedAmountValidator(v); err != nil {
-			return &ValidationError{Name: "estimated_amount", err: fmt.Errorf(`ent: validator failed for field "TenderProfile.estimated_amount": %w`, err)}
 		}
 	}
 	if v, ok := tpu.mutation.Classify(); ok {
@@ -1602,6 +1567,12 @@ func (tpu *TenderProfileUpdate) check() error {
 		return errors.New(`ent: clearing a required unique edge "TenderProfile.tender"`)
 	}
 	return nil
+}
+
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (tpu *TenderProfileUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *TenderProfileUpdate {
+	tpu.modifiers = append(tpu.modifiers, modifiers...)
+	return tpu
 }
 
 func (tpu *TenderProfileUpdate) sqlSave(ctx context.Context) (n int, err error) {
@@ -2231,35 +2202,7 @@ func (tpu *TenderProfileUpdate) sqlSave(ctx context.Context) (n int, err error) 
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if tpu.mutation.UpdatedByCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: false,
-			Table:   tenderprofile.UpdatedByTable,
-			Columns: []string{tenderprofile.UpdatedByColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := tpu.mutation.UpdatedByIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: false,
-			Table:   tenderprofile.UpdatedByTable,
-			Columns: []string{tenderprofile.UpdatedByColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
-	}
+	_spec.AddModifiers(tpu.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, tpu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{tenderprofile.Label}
@@ -2275,9 +2218,10 @@ func (tpu *TenderProfileUpdate) sqlSave(ctx context.Context) (n int, err error) 
 // TenderProfileUpdateOne is the builder for updating a single TenderProfile entity.
 type TenderProfileUpdateOne struct {
 	config
-	fields   []string
-	hooks    []Hook
-	mutation *TenderProfileMutation
+	fields    []string
+	hooks     []Hook
+	mutation  *TenderProfileMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // SetUpdatedAt sets the "updated_at" field.
@@ -3620,26 +3564,6 @@ func (tpuo *TenderProfileUpdateOne) ClearApproverID() *TenderProfileUpdateOne {
 	return tpuo
 }
 
-// SetUpdatedByID sets the "updated_by_id" field.
-func (tpuo *TenderProfileUpdateOne) SetUpdatedByID(x xid.ID) *TenderProfileUpdateOne {
-	tpuo.mutation.SetUpdatedByID(x)
-	return tpuo
-}
-
-// SetNillableUpdatedByID sets the "updated_by_id" field if the given value is not nil.
-func (tpuo *TenderProfileUpdateOne) SetNillableUpdatedByID(x *xid.ID) *TenderProfileUpdateOne {
-	if x != nil {
-		tpuo.SetUpdatedByID(*x)
-	}
-	return tpuo
-}
-
-// ClearUpdatedByID clears the value of the "updated_by_id" field.
-func (tpuo *TenderProfileUpdateOne) ClearUpdatedByID() *TenderProfileUpdateOne {
-	tpuo.mutation.ClearUpdatedByID()
-	return tpuo
-}
-
 // SetTender sets the "tender" edge to the Tender entity.
 func (tpuo *TenderProfileUpdateOne) SetTender(t *Tender) *TenderProfileUpdateOne {
 	return tpuo.SetTenderID(t.ID)
@@ -3678,11 +3602,6 @@ func (tpuo *TenderProfileUpdateOne) SetDistrict(d *District) *TenderProfileUpdat
 // SetApprover sets the "approver" edge to the User entity.
 func (tpuo *TenderProfileUpdateOne) SetApprover(u *User) *TenderProfileUpdateOne {
 	return tpuo.SetApproverID(u.ID)
-}
-
-// SetUpdatedBy sets the "updated_by" edge to the User entity.
-func (tpuo *TenderProfileUpdateOne) SetUpdatedBy(u *User) *TenderProfileUpdateOne {
-	return tpuo.SetUpdatedByID(u.ID)
 }
 
 // Mutation returns the TenderProfileMutation object of the builder.
@@ -3735,12 +3654,6 @@ func (tpuo *TenderProfileUpdateOne) ClearDistrict() *TenderProfileUpdateOne {
 // ClearApprover clears the "approver" edge to the User entity.
 func (tpuo *TenderProfileUpdateOne) ClearApprover() *TenderProfileUpdateOne {
 	tpuo.mutation.ClearApprover()
-	return tpuo
-}
-
-// ClearUpdatedBy clears the "updated_by" edge to the User entity.
-func (tpuo *TenderProfileUpdateOne) ClearUpdatedBy() *TenderProfileUpdateOne {
-	tpuo.mutation.ClearUpdatedBy()
 	return tpuo
 }
 
@@ -3805,11 +3718,6 @@ func (tpuo *TenderProfileUpdateOne) check() error {
 			return &ValidationError{Name: "name", err: fmt.Errorf(`ent: validator failed for field "TenderProfile.name": %w`, err)}
 		}
 	}
-	if v, ok := tpuo.mutation.EstimatedAmount(); ok {
-		if err := tenderprofile.EstimatedAmountValidator(v); err != nil {
-			return &ValidationError{Name: "estimated_amount", err: fmt.Errorf(`ent: validator failed for field "TenderProfile.estimated_amount": %w`, err)}
-		}
-	}
 	if v, ok := tpuo.mutation.Classify(); ok {
 		if err := tenderprofile.ClassifyValidator(v); err != nil {
 			return &ValidationError{Name: "classify", err: fmt.Errorf(`ent: validator failed for field "TenderProfile.classify": %w`, err)}
@@ -3859,6 +3767,12 @@ func (tpuo *TenderProfileUpdateOne) check() error {
 		return errors.New(`ent: clearing a required unique edge "TenderProfile.tender"`)
 	}
 	return nil
+}
+
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (tpuo *TenderProfileUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *TenderProfileUpdateOne {
+	tpuo.modifiers = append(tpuo.modifiers, modifiers...)
+	return tpuo
 }
 
 func (tpuo *TenderProfileUpdateOne) sqlSave(ctx context.Context) (_node *TenderProfile, err error) {
@@ -4505,35 +4419,7 @@ func (tpuo *TenderProfileUpdateOne) sqlSave(ctx context.Context) (_node *TenderP
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if tpuo.mutation.UpdatedByCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: false,
-			Table:   tenderprofile.UpdatedByTable,
-			Columns: []string{tenderprofile.UpdatedByColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := tpuo.mutation.UpdatedByIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: false,
-			Table:   tenderprofile.UpdatedByTable,
-			Columns: []string{tenderprofile.UpdatedByColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
-	}
+	_spec.AddModifiers(tpuo.modifiers...)
 	_node = &TenderProfile{config: tpuo.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues

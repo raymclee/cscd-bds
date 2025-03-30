@@ -24,8 +24,9 @@ import (
 // AreaUpdate is the builder for updating Area entities.
 type AreaUpdate struct {
 	config
-	hooks    []Hook
-	mutation *AreaMutation
+	hooks     []Hook
+	mutation  *AreaMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // Where appends a list predicates to the AreaUpdate builder.
@@ -320,6 +321,12 @@ func (au *AreaUpdate) check() error {
 	return nil
 }
 
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (au *AreaUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *AreaUpdate {
+	au.modifiers = append(au.modifiers, modifiers...)
+	return au
+}
+
 func (au *AreaUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if err := au.check(); err != nil {
 		return n, err
@@ -539,6 +546,7 @@ func (au *AreaUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	_spec.AddModifiers(au.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, au.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{area.Label}
@@ -554,9 +562,10 @@ func (au *AreaUpdate) sqlSave(ctx context.Context) (n int, err error) {
 // AreaUpdateOne is the builder for updating a single Area entity.
 type AreaUpdateOne struct {
 	config
-	fields   []string
-	hooks    []Hook
-	mutation *AreaMutation
+	fields    []string
+	hooks     []Hook
+	mutation  *AreaMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // SetUpdatedAt sets the "updated_at" field.
@@ -858,6 +867,12 @@ func (auo *AreaUpdateOne) check() error {
 	return nil
 }
 
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (auo *AreaUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *AreaUpdateOne {
+	auo.modifiers = append(auo.modifiers, modifiers...)
+	return auo
+}
+
 func (auo *AreaUpdateOne) sqlSave(ctx context.Context) (_node *Area, err error) {
 	if err := auo.check(); err != nil {
 		return _node, err
@@ -1094,6 +1109,7 @@ func (auo *AreaUpdateOne) sqlSave(ctx context.Context) (_node *Area, err error) 
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	_spec.AddModifiers(auo.modifiers...)
 	_node = &Area{config: auo.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues

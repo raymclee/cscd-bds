@@ -34,21 +34,6 @@ export function TenderListItem({
     graphql`
       fragment tenderListItemFragment on Tender {
         id
-        approvalStatus
-        name
-        status
-        createdAt
-        estimatedAmount
-        classify
-        customer {
-          id
-          name
-        }
-        images
-        fullAddress
-        tenderDate
-        discoveryDate
-        tenderClosingDate
         area {
           id
           name
@@ -57,8 +42,30 @@ export function TenderListItem({
         followingSales {
           id
         }
-        createdBy {
-          id
+        profiles(orderBy: [{ field: CREATED_AT, direction: DESC }]) {
+          edges {
+            node {
+              id
+              approvalStatus
+              name
+              status
+              createdAt
+              estimatedAmount
+              classify
+              customer {
+                id
+                name
+              }
+              images
+              fullAddress
+              tenderDate
+              discoveryDate
+              tenderClosingDate
+              createdBy {
+                id
+              }
+            }
+          }
         }
       }
     `,
@@ -67,6 +74,7 @@ export function TenderListItem({
   const { session } = useRouteContext({ from: "/__auth" });
 
   const isGAOrHW = item.area.code === "GA" || item.area.code === "HW";
+  const profile = item.profiles?.edges?.[0]?.node;
 
   return (
     <List.Item
@@ -86,12 +94,12 @@ export function TenderListItem({
                 key="edit-link"
                 to="/portal/tenders/$id/edit"
                 params={{ id: item.id }}
-                disabled={item.approvalStatus == 1}
+                disabled={profile?.approvalStatus == 1}
               >
                 <Button
                   type="link"
                   size="small"
-                  disabled={item.approvalStatus == 1}
+                  disabled={profile?.approvalStatus == 1}
                 >
                   修改
                 </Button>
@@ -134,15 +142,15 @@ export function TenderListItem({
       }
       extra={
         <div className="aspect-[16/9] md:max-w-[280px]">
-          {item?.images && item?.images?.length > 0 ? (
+          {profile?.images && profile?.images?.length > 0 ? (
             <Carousel>
               <CarouselContent>
-                {item?.images?.map((image, i) => (
+                {profile?.images?.map((image, i) => (
                   <CarouselItem key={[item.id, "image", i].join("-")}>
                     <img
                       src={image}
                       className="aspect-[16/9] rounded-lg object-cover"
-                      alt={item?.name}
+                      alt={profile?.name}
                     />
                   </CarouselItem>
                 ))}
@@ -159,33 +167,33 @@ export function TenderListItem({
     >
       <List.Item.Meta
         title={
-          <Link to="/portal/tenders/$id" params={{ id: item.id }}>
-            {item?.name}
+          <Link to="/portal/tenders/$id" params={{ id: item.id }} resetScroll>
+            {profile?.name}
           </Link>
         }
-        description={item?.fullAddress}
+        description={profile?.fullAddress}
       />
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div>
-          {!isGAOrHW && item.classify && (
-            <Tag color={classifyTagColor(item.classify)}>
-              {classifyText(item.classify)}
+          {!isGAOrHW && profile?.classify && (
+            <Tag color={classifyTagColor(profile?.classify)}>
+              {classifyText(profile?.classify)}
             </Tag>
           )}
           <Tag>{item?.area.name}</Tag>
-          <Tag color={tenderStatusTagColor(item.status)}>
-            {tenderStatusText(item?.status)}
+          <Tag color={tenderStatusTagColor(profile?.status)}>
+            {tenderStatusText(profile?.status)}
           </Tag>
           {!isGAOrHW && (
-            <Tag color={approvalStatusTagColor(item.approvalStatus)}>
-              {approvalStatusText(item.approvalStatus)}
+            <Tag color={approvalStatusTagColor(profile?.approvalStatus)}>
+              {approvalStatusText(profile?.approvalStatus)}
             </Tag>
           )}
         </div>
 
         <div>
-          {isGAOrHW && item.tenderClosingDate && (
-            <div>交标日期：{dayjs(item.tenderClosingDate).format("L")}</div>
+          {isGAOrHW && profile?.tenderClosingDate && (
+            <div>交标日期：{dayjs(profile.tenderClosingDate).format("L")}</div>
           )}
         </div>
         {/* {(isGA(item as Partial<Tender>) || isHW(item as Partial<Tender>)) &&
@@ -211,6 +219,7 @@ export function TenderListItem({
 function DeleteButton({ tender }: { tender?: tenderListItemFragment$data }) {
   const { message } = App.useApp();
   const [commit, inFlight] = useUpdateTender();
+  const profile = tender?.profiles?.edges?.[0]?.node;
   return (
     <Popconfirm
       title="确定要作废吗？"
@@ -256,7 +265,7 @@ function DeleteButton({ tender }: { tender?: tenderListItemFragment$data }) {
       }}
     >
       <Button
-        disabled={inFlight || tender?.status === 7}
+        disabled={inFlight || profile?.status === 7}
         danger
         type="link"
         size="small"

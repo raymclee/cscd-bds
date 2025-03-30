@@ -5,9 +5,8 @@ import { Navigator } from "./-components/navigator";
 import { ScrollToTopButton } from "./-components/scroll-to-top-button";
 import { TenderDetailFrame } from "./-components/tender-detail";
 import { TenderList } from "./-components/tender-list";
-import { DistrictPlots } from "./-components/district-plots";
 
-export const Route = createLazyFileRoute("/__auth/__dashboard/__amap/v2")({
+export const Route = createLazyFileRoute("/__auth/__dashboard/__amap/")({
   component: RouteComponent,
 });
 

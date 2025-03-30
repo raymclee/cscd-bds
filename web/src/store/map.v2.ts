@@ -212,7 +212,7 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
         marker.on("click", () => {
           set({ selectedArea: area as Area });
           get().navigate?.({
-            to: "/v2",
+            to: ".",
             search: (prev) => ({
               ...prev,
               a: area?.code,
@@ -378,7 +378,7 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
           break;
       }
       get().navigate?.({
-        to: "/v2",
+        to: ".",
         search: (prev) => ({
           ...prev,
           ...s,
@@ -501,7 +501,7 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
               //   tenderListVisible: false,
               // });
               get().navigate?.({
-                to: "/v2",
+                to: ".",
                 search: (prev) => ({
                   ...prev,
                   t: tender.id,
@@ -565,7 +565,7 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
               //   tenderListVisible: false,
               // });
               get().navigate?.({
-                to: "/v2",
+                to: ".",
                 search: (prev) => ({
                   ...prev,
                   t: tender.id,

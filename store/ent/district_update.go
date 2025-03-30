@@ -24,8 +24,9 @@ import (
 // DistrictUpdate is the builder for updating District entities.
 type DistrictUpdate struct {
 	config
-	hooks    []Hook
-	mutation *DistrictMutation
+	hooks     []Hook
+	mutation  *DistrictMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // Where appends a list predicates to the DistrictUpdate builder.
@@ -300,6 +301,12 @@ func (du *DistrictUpdate) check() error {
 	return nil
 }
 
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (du *DistrictUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *DistrictUpdate {
+	du.modifiers = append(du.modifiers, modifiers...)
+	return du
+}
+
 func (du *DistrictUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if err := du.check(); err != nil {
 		return n, err
@@ -487,6 +494,7 @@ func (du *DistrictUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	_spec.AddModifiers(du.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, du.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{district.Label}
@@ -502,9 +510,10 @@ func (du *DistrictUpdate) sqlSave(ctx context.Context) (n int, err error) {
 // DistrictUpdateOne is the builder for updating a single District entity.
 type DistrictUpdateOne struct {
 	config
-	fields   []string
-	hooks    []Hook
-	mutation *DistrictMutation
+	fields    []string
+	hooks     []Hook
+	mutation  *DistrictMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // SetUpdatedAt sets the "updated_at" field.
@@ -786,6 +795,12 @@ func (duo *DistrictUpdateOne) check() error {
 	return nil
 }
 
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (duo *DistrictUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *DistrictUpdateOne {
+	duo.modifiers = append(duo.modifiers, modifiers...)
+	return duo
+}
+
 func (duo *DistrictUpdateOne) sqlSave(ctx context.Context) (_node *District, err error) {
 	if err := duo.check(); err != nil {
 		return _node, err
@@ -990,6 +1005,7 @@ func (duo *DistrictUpdateOne) sqlSave(ctx context.Context) (_node *District, err
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	_spec.AddModifiers(duo.modifiers...)
 	_node = &District{config: duo.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues

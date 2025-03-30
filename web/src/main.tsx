@@ -34,6 +34,7 @@ const router = createRouter({
   context: {
     RelayEnvironment,
   },
+  scrollRestoration: true,
   defaultPreloadStaleTime: 0,
   // defaultPendingMs: 5000,
   defaultErrorComponent: () => (

@@ -912,20 +912,6 @@ func (tpc *TenderProfileCreate) SetNillableApproverID(x *xid.ID) *TenderProfileC
 	return tpc
 }
 
-// SetUpdatedByID sets the "updated_by_id" field.
-func (tpc *TenderProfileCreate) SetUpdatedByID(x xid.ID) *TenderProfileCreate {
-	tpc.mutation.SetUpdatedByID(x)
-	return tpc
-}
-
-// SetNillableUpdatedByID sets the "updated_by_id" field if the given value is not nil.
-func (tpc *TenderProfileCreate) SetNillableUpdatedByID(x *xid.ID) *TenderProfileCreate {
-	if x != nil {
-		tpc.SetUpdatedByID(*x)
-	}
-	return tpc
-}
-
 // SetID sets the "id" field.
 func (tpc *TenderProfileCreate) SetID(x xid.ID) *TenderProfileCreate {
 	tpc.mutation.SetID(x)
@@ -978,11 +964,6 @@ func (tpc *TenderProfileCreate) SetDistrict(d *District) *TenderProfileCreate {
 // SetApprover sets the "approver" edge to the User entity.
 func (tpc *TenderProfileCreate) SetApprover(u *User) *TenderProfileCreate {
 	return tpc.SetApproverID(u.ID)
-}
-
-// SetUpdatedBy sets the "updated_by" edge to the User entity.
-func (tpc *TenderProfileCreate) SetUpdatedBy(u *User) *TenderProfileCreate {
-	return tpc.SetUpdatedByID(u.ID)
 }
 
 // Mutation returns the TenderProfileMutation object of the builder.
@@ -1075,11 +1056,6 @@ func (tpc *TenderProfileCreate) check() error {
 	if v, ok := tpc.mutation.Name(); ok {
 		if err := tenderprofile.NameValidator(v); err != nil {
 			return &ValidationError{Name: "name", err: fmt.Errorf(`ent: validator failed for field "TenderProfile.name": %w`, err)}
-		}
-	}
-	if v, ok := tpc.mutation.EstimatedAmount(); ok {
-		if err := tenderprofile.EstimatedAmountValidator(v); err != nil {
-			return &ValidationError{Name: "estimated_amount", err: fmt.Errorf(`ent: validator failed for field "TenderProfile.estimated_amount": %w`, err)}
 		}
 	}
 	if v, ok := tpc.mutation.Classify(); ok {
@@ -1548,23 +1524,6 @@ func (tpc *TenderProfileCreate) createSpec() (*TenderProfile, *sqlgraph.CreateSp
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
 		_node.ApproverID = &nodes[0]
-		_spec.Edges = append(_spec.Edges, edge)
-	}
-	if nodes := tpc.mutation.UpdatedByIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: false,
-			Table:   tenderprofile.UpdatedByTable,
-			Columns: []string{tenderprofile.UpdatedByColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_node.UpdatedByID = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec
@@ -2828,24 +2787,6 @@ func (u *TenderProfileUpsert) UpdateApproverID() *TenderProfileUpsert {
 // ClearApproverID clears the value of the "approver_id" field.
 func (u *TenderProfileUpsert) ClearApproverID() *TenderProfileUpsert {
 	u.SetNull(tenderprofile.FieldApproverID)
-	return u
-}
-
-// SetUpdatedByID sets the "updated_by_id" field.
-func (u *TenderProfileUpsert) SetUpdatedByID(v xid.ID) *TenderProfileUpsert {
-	u.Set(tenderprofile.FieldUpdatedByID, v)
-	return u
-}
-
-// UpdateUpdatedByID sets the "updated_by_id" field to the value that was provided on create.
-func (u *TenderProfileUpsert) UpdateUpdatedByID() *TenderProfileUpsert {
-	u.SetExcluded(tenderprofile.FieldUpdatedByID)
-	return u
-}
-
-// ClearUpdatedByID clears the value of the "updated_by_id" field.
-func (u *TenderProfileUpsert) ClearUpdatedByID() *TenderProfileUpsert {
-	u.SetNull(tenderprofile.FieldUpdatedByID)
 	return u
 }
 
@@ -4311,27 +4252,6 @@ func (u *TenderProfileUpsertOne) UpdateApproverID() *TenderProfileUpsertOne {
 func (u *TenderProfileUpsertOne) ClearApproverID() *TenderProfileUpsertOne {
 	return u.Update(func(s *TenderProfileUpsert) {
 		s.ClearApproverID()
-	})
-}
-
-// SetUpdatedByID sets the "updated_by_id" field.
-func (u *TenderProfileUpsertOne) SetUpdatedByID(v xid.ID) *TenderProfileUpsertOne {
-	return u.Update(func(s *TenderProfileUpsert) {
-		s.SetUpdatedByID(v)
-	})
-}
-
-// UpdateUpdatedByID sets the "updated_by_id" field to the value that was provided on create.
-func (u *TenderProfileUpsertOne) UpdateUpdatedByID() *TenderProfileUpsertOne {
-	return u.Update(func(s *TenderProfileUpsert) {
-		s.UpdateUpdatedByID()
-	})
-}
-
-// ClearUpdatedByID clears the value of the "updated_by_id" field.
-func (u *TenderProfileUpsertOne) ClearUpdatedByID() *TenderProfileUpsertOne {
-	return u.Update(func(s *TenderProfileUpsert) {
-		s.ClearUpdatedByID()
 	})
 }
 
@@ -5964,27 +5884,6 @@ func (u *TenderProfileUpsertBulk) UpdateApproverID() *TenderProfileUpsertBulk {
 func (u *TenderProfileUpsertBulk) ClearApproverID() *TenderProfileUpsertBulk {
 	return u.Update(func(s *TenderProfileUpsert) {
 		s.ClearApproverID()
-	})
-}
-
-// SetUpdatedByID sets the "updated_by_id" field.
-func (u *TenderProfileUpsertBulk) SetUpdatedByID(v xid.ID) *TenderProfileUpsertBulk {
-	return u.Update(func(s *TenderProfileUpsert) {
-		s.SetUpdatedByID(v)
-	})
-}
-
-// UpdateUpdatedByID sets the "updated_by_id" field to the value that was provided on create.
-func (u *TenderProfileUpsertBulk) UpdateUpdatedByID() *TenderProfileUpsertBulk {
-	return u.Update(func(s *TenderProfileUpsert) {
-		s.UpdateUpdatedByID()
-	})
-}
-
-// ClearUpdatedByID clears the value of the "updated_by_id" field.
-func (u *TenderProfileUpsertBulk) ClearUpdatedByID() *TenderProfileUpsertBulk {
-	return u.Update(func(s *TenderProfileUpsert) {
-		s.ClearUpdatedByID()
 	})
 }
 

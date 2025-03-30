@@ -159,8 +159,6 @@ type TenderProfile struct {
 	CreatedByID *xid.ID `json:"created_by_id,omitempty"`
 	// ApproverID holds the value of the "approver_id" field.
 	ApproverID *xid.ID `json:"approver_id,omitempty"`
-	// UpdatedByID holds the value of the "updated_by_id" field.
-	UpdatedByID *xid.ID `json:"updated_by_id,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the TenderProfileQuery when eager-loading is set.
 	Edges        TenderProfileEdges `json:"edges"`
@@ -185,13 +183,11 @@ type TenderProfileEdges struct {
 	District *District `json:"district,omitempty"`
 	// Approver holds the value of the approver edge.
 	Approver *User `json:"approver,omitempty"`
-	// UpdatedBy holds the value of the updated_by edge.
-	UpdatedBy *User `json:"updated_by,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [9]bool
+	loadedTypes [8]bool
 	// totalCount holds the count of the edges above.
-	totalCount [9]map[string]int
+	totalCount [8]map[string]int
 }
 
 // TenderOrErr returns the Tender value or an error if the edge
@@ -282,23 +278,12 @@ func (e TenderProfileEdges) ApproverOrErr() (*User, error) {
 	return nil, &NotLoadedError{edge: "approver"}
 }
 
-// UpdatedByOrErr returns the UpdatedBy value or an error if the edge
-// was not loaded in eager-loading, or loaded but was not found.
-func (e TenderProfileEdges) UpdatedByOrErr() (*User, error) {
-	if e.UpdatedBy != nil {
-		return e.UpdatedBy, nil
-	} else if e.loadedTypes[8] {
-		return nil, &NotFoundError{label: user.Label}
-	}
-	return nil, &NotLoadedError{edge: "updated_by"}
-}
-
 // scanValues returns the types for scanning values from sql.Rows.
 func (*TenderProfile) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case tenderprofile.FieldProvinceID, tenderprofile.FieldCityID, tenderprofile.FieldDistrictID, tenderprofile.FieldCustomerID, tenderprofile.FieldFinderID, tenderprofile.FieldCreatedByID, tenderprofile.FieldApproverID, tenderprofile.FieldUpdatedByID:
+		case tenderprofile.FieldProvinceID, tenderprofile.FieldCityID, tenderprofile.FieldDistrictID, tenderprofile.FieldCustomerID, tenderprofile.FieldFinderID, tenderprofile.FieldCreatedByID, tenderprofile.FieldApproverID:
 			values[i] = &sql.NullScanner{S: new(xid.ID)}
 		case tenderprofile.FieldAttachments, tenderprofile.FieldGeoCoordinate, tenderprofile.FieldGeoBounds, tenderprofile.FieldImages:
 			values[i] = new([]byte)
@@ -799,13 +784,6 @@ func (tp *TenderProfile) assignValues(columns []string, values []any) error {
 				tp.ApproverID = new(xid.ID)
 				*tp.ApproverID = *value.S.(*xid.ID)
 			}
-		case tenderprofile.FieldUpdatedByID:
-			if value, ok := values[i].(*sql.NullScanner); !ok {
-				return fmt.Errorf("unexpected type %T for field updated_by_id", values[i])
-			} else if value.Valid {
-				tp.UpdatedByID = new(xid.ID)
-				*tp.UpdatedByID = *value.S.(*xid.ID)
-			}
 		default:
 			tp.selectValues.Set(columns[i], values[i])
 		}
@@ -857,11 +835,6 @@ func (tp *TenderProfile) QueryDistrict() *DistrictQuery {
 // QueryApprover queries the "approver" edge of the TenderProfile entity.
 func (tp *TenderProfile) QueryApprover() *UserQuery {
 	return NewTenderProfileClient(tp.config).QueryApprover(tp)
-}
-
-// QueryUpdatedBy queries the "updated_by" edge of the TenderProfile entity.
-func (tp *TenderProfile) QueryUpdatedBy() *UserQuery {
-	return NewTenderProfileClient(tp.config).QueryUpdatedBy(tp)
 }
 
 // Update returns a builder for updating this TenderProfile.
@@ -1193,11 +1166,6 @@ func (tp *TenderProfile) String() string {
 	builder.WriteString(", ")
 	if v := tp.ApproverID; v != nil {
 		builder.WriteString("approver_id=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
-	}
-	builder.WriteString(", ")
-	if v := tp.UpdatedByID; v != nil {
-		builder.WriteString("updated_by_id=")
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteByte(')')

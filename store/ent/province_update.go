@@ -25,8 +25,9 @@ import (
 // ProvinceUpdate is the builder for updating Province entities.
 type ProvinceUpdate struct {
 	config
-	hooks    []Hook
-	mutation *ProvinceMutation
+	hooks     []Hook
+	mutation  *ProvinceMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // Where appends a list predicates to the ProvinceUpdate builder.
@@ -295,6 +296,12 @@ func (pu *ProvinceUpdate) check() error {
 	return nil
 }
 
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (pu *ProvinceUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *ProvinceUpdate {
+	pu.modifiers = append(pu.modifiers, modifiers...)
+	return pu
+}
+
 func (pu *ProvinceUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if err := pu.check(); err != nil {
 		return n, err
@@ -515,6 +522,7 @@ func (pu *ProvinceUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	_spec.AddModifiers(pu.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, pu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{province.Label}
@@ -530,9 +538,10 @@ func (pu *ProvinceUpdate) sqlSave(ctx context.Context) (n int, err error) {
 // ProvinceUpdateOne is the builder for updating a single Province entity.
 type ProvinceUpdateOne struct {
 	config
-	fields   []string
-	hooks    []Hook
-	mutation *ProvinceMutation
+	fields    []string
+	hooks     []Hook
+	mutation  *ProvinceMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // SetUpdatedAt sets the "updated_at" field.
@@ -808,6 +817,12 @@ func (puo *ProvinceUpdateOne) check() error {
 	return nil
 }
 
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (puo *ProvinceUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *ProvinceUpdateOne {
+	puo.modifiers = append(puo.modifiers, modifiers...)
+	return puo
+}
+
 func (puo *ProvinceUpdateOne) sqlSave(ctx context.Context) (_node *Province, err error) {
 	if err := puo.check(); err != nil {
 		return _node, err
@@ -1045,6 +1060,7 @@ func (puo *ProvinceUpdateOne) sqlSave(ctx context.Context) (_node *Province, err
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	_spec.AddModifiers(puo.modifiers...)
 	_node = &Province{config: puo.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues

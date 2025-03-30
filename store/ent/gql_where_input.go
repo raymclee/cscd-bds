@@ -15675,23 +15675,6 @@ type TenderProfileWhereInput struct {
 	ApproverIDEqualFold    *xid.ID  `json:"approverIDEqualFold,omitempty"`
 	ApproverIDContainsFold *xid.ID  `json:"approverIDContainsFold,omitempty"`
 
-	// "updated_by_id" field predicates.
-	UpdatedByID             *xid.ID  `json:"updatedByID,omitempty"`
-	UpdatedByIDNEQ          *xid.ID  `json:"updatedByIDNEQ,omitempty"`
-	UpdatedByIDIn           []xid.ID `json:"updatedByIDIn,omitempty"`
-	UpdatedByIDNotIn        []xid.ID `json:"updatedByIDNotIn,omitempty"`
-	UpdatedByIDGT           *xid.ID  `json:"updatedByIDGT,omitempty"`
-	UpdatedByIDGTE          *xid.ID  `json:"updatedByIDGTE,omitempty"`
-	UpdatedByIDLT           *xid.ID  `json:"updatedByIDLT,omitempty"`
-	UpdatedByIDLTE          *xid.ID  `json:"updatedByIDLTE,omitempty"`
-	UpdatedByIDContains     *xid.ID  `json:"updatedByIDContains,omitempty"`
-	UpdatedByIDHasPrefix    *xid.ID  `json:"updatedByIDHasPrefix,omitempty"`
-	UpdatedByIDHasSuffix    *xid.ID  `json:"updatedByIDHasSuffix,omitempty"`
-	UpdatedByIDIsNil        bool     `json:"updatedByIDIsNil,omitempty"`
-	UpdatedByIDNotNil       bool     `json:"updatedByIDNotNil,omitempty"`
-	UpdatedByIDEqualFold    *xid.ID  `json:"updatedByIDEqualFold,omitempty"`
-	UpdatedByIDContainsFold *xid.ID  `json:"updatedByIDContainsFold,omitempty"`
-
 	// "tender" edge predicates.
 	HasTender     *bool               `json:"hasTender,omitempty"`
 	HasTenderWith []*TenderWhereInput `json:"hasTenderWith,omitempty"`
@@ -15723,10 +15706,6 @@ type TenderProfileWhereInput struct {
 	// "approver" edge predicates.
 	HasApprover     *bool             `json:"hasApprover,omitempty"`
 	HasApproverWith []*UserWhereInput `json:"hasApproverWith,omitempty"`
-
-	// "updated_by" edge predicates.
-	HasUpdatedBy     *bool             `json:"hasUpdatedBy,omitempty"`
-	HasUpdatedByWith []*UserWhereInput `json:"hasUpdatedByWith,omitempty"`
 }
 
 // AddPredicates adds custom predicates to the where input to be used during the filtering phase.
@@ -18224,51 +18203,6 @@ func (i *TenderProfileWhereInput) P() (predicate.TenderProfile, error) {
 	if i.ApproverIDContainsFold != nil {
 		predicates = append(predicates, tenderprofile.ApproverIDContainsFold(*i.ApproverIDContainsFold))
 	}
-	if i.UpdatedByID != nil {
-		predicates = append(predicates, tenderprofile.UpdatedByIDEQ(*i.UpdatedByID))
-	}
-	if i.UpdatedByIDNEQ != nil {
-		predicates = append(predicates, tenderprofile.UpdatedByIDNEQ(*i.UpdatedByIDNEQ))
-	}
-	if len(i.UpdatedByIDIn) > 0 {
-		predicates = append(predicates, tenderprofile.UpdatedByIDIn(i.UpdatedByIDIn...))
-	}
-	if len(i.UpdatedByIDNotIn) > 0 {
-		predicates = append(predicates, tenderprofile.UpdatedByIDNotIn(i.UpdatedByIDNotIn...))
-	}
-	if i.UpdatedByIDGT != nil {
-		predicates = append(predicates, tenderprofile.UpdatedByIDGT(*i.UpdatedByIDGT))
-	}
-	if i.UpdatedByIDGTE != nil {
-		predicates = append(predicates, tenderprofile.UpdatedByIDGTE(*i.UpdatedByIDGTE))
-	}
-	if i.UpdatedByIDLT != nil {
-		predicates = append(predicates, tenderprofile.UpdatedByIDLT(*i.UpdatedByIDLT))
-	}
-	if i.UpdatedByIDLTE != nil {
-		predicates = append(predicates, tenderprofile.UpdatedByIDLTE(*i.UpdatedByIDLTE))
-	}
-	if i.UpdatedByIDContains != nil {
-		predicates = append(predicates, tenderprofile.UpdatedByIDContains(*i.UpdatedByIDContains))
-	}
-	if i.UpdatedByIDHasPrefix != nil {
-		predicates = append(predicates, tenderprofile.UpdatedByIDHasPrefix(*i.UpdatedByIDHasPrefix))
-	}
-	if i.UpdatedByIDHasSuffix != nil {
-		predicates = append(predicates, tenderprofile.UpdatedByIDHasSuffix(*i.UpdatedByIDHasSuffix))
-	}
-	if i.UpdatedByIDIsNil {
-		predicates = append(predicates, tenderprofile.UpdatedByIDIsNil())
-	}
-	if i.UpdatedByIDNotNil {
-		predicates = append(predicates, tenderprofile.UpdatedByIDNotNil())
-	}
-	if i.UpdatedByIDEqualFold != nil {
-		predicates = append(predicates, tenderprofile.UpdatedByIDEqualFold(*i.UpdatedByIDEqualFold))
-	}
-	if i.UpdatedByIDContainsFold != nil {
-		predicates = append(predicates, tenderprofile.UpdatedByIDContainsFold(*i.UpdatedByIDContainsFold))
-	}
 
 	if i.HasTender != nil {
 		p := tenderprofile.HasTender()
@@ -18413,24 +18347,6 @@ func (i *TenderProfileWhereInput) P() (predicate.TenderProfile, error) {
 			with = append(with, p)
 		}
 		predicates = append(predicates, tenderprofile.HasApproverWith(with...))
-	}
-	if i.HasUpdatedBy != nil {
-		p := tenderprofile.HasUpdatedBy()
-		if !*i.HasUpdatedBy {
-			p = tenderprofile.Not(p)
-		}
-		predicates = append(predicates, p)
-	}
-	if len(i.HasUpdatedByWith) > 0 {
-		with := make([]predicate.User, 0, len(i.HasUpdatedByWith))
-		for _, w := range i.HasUpdatedByWith {
-			p, err := w.P()
-			if err != nil {
-				return nil, fmt.Errorf("%w: field 'HasUpdatedByWith'", err)
-			}
-			with = append(with, p)
-		}
-		predicates = append(predicates, tenderprofile.HasUpdatedByWith(with...))
 	}
 	switch len(predicates) {
 	case 0:

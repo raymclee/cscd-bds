@@ -1,6 +1,4 @@
 import { createLazyFileRoute, useLayoutEffect } from "@tanstack/react-router";
-import { MapIndexPageDistrictQuery } from "__generated__/MapIndexPageDistrictQuery.graphql";
-import { MapIndexPageQuery } from "__generated__/MapIndexPageQuery.graphql";
 import { AnimatePresence } from "motion/react";
 import * as React from "react";
 import { usePreloadedQuery } from "react-relay";
@@ -43,15 +41,17 @@ import { useCopilotAction, useCopilotReadable } from "@copilotkit/react-core";
 import { useCreateVisitRecordAction } from "~/hooks/use-create-visit-record";
 import { AgentChart } from "~/components/demo";
 import { SkeletonCard } from "~/components/demo";
+import { v1MapIndexPageQuery } from "__generated__/v1MapIndexPageQuery.graphql";
+import { v1MapIndexPageDistrictQuery } from "__generated__/v1MapIndexPageDistrictQuery.graphql";
 
-export const Route = createLazyFileRoute("/__auth/__dashboard/__scaled/__map/")(
-  {
-    component: RouteComponent,
-  },
-);
+export const Route = createLazyFileRoute(
+  "/__auth/__dashboard/__scaled/__map/v1",
+)({
+  component: RouteComponent,
+});
 
 export const mapIndexPageQuery = graphql`
-  query MapIndexPageQuery(
+  query v1MapIndexPageQuery(
     $userId: ID!
     $orderBy: [TenderOrder!]
     $first: Int
@@ -213,7 +213,7 @@ export const mapIndexPageQuery = graphql`
 `;
 
 export const districtsQuery = graphql`
-  query MapIndexPageDistrictQuery($adcode: Int!) {
+  query v1MapIndexPageDistrictQuery($adcode: Int!) {
     districts(where: { adcode: $adcode }) {
       edges {
         node {
@@ -263,7 +263,7 @@ function RouteComponent() {
   const tenderViewTender = useMapStore((state) => state.tenderViewTender);
   const environment = Route.useRouteContext().RelayEnvironment;
 
-  const data = usePreloadedQuery<MapIndexPageQuery>(
+  const data = usePreloadedQuery<v1MapIndexPageQuery>(
     mapIndexPageQuery,
     Route.useLoaderData(),
   );
@@ -318,7 +318,7 @@ function RouteComponent() {
       switch2AreaNode(props.adcode, props.childrenNum > 0);
 
       if (props.childrenNum == 0) {
-        const districts = await fetchQuery<MapIndexPageDistrictQuery>(
+        const districts = await fetchQuery<v1MapIndexPageDistrictQuery>(
           environment,
           districtsQuery,
           {

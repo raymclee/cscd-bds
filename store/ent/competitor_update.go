@@ -20,8 +20,9 @@ import (
 // CompetitorUpdate is the builder for updating Competitor entities.
 type CompetitorUpdate struct {
 	config
-	hooks    []Hook
-	mutation *CompetitorMutation
+	hooks     []Hook
+	mutation  *CompetitorMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // Where appends a list predicates to the CompetitorUpdate builder.
@@ -141,6 +142,12 @@ func (cu *CompetitorUpdate) defaults() {
 	}
 }
 
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (cu *CompetitorUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *CompetitorUpdate {
+	cu.modifiers = append(cu.modifiers, modifiers...)
+	return cu
+}
+
 func (cu *CompetitorUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	_spec := sqlgraph.NewUpdateSpec(competitor.Table, competitor.Columns, sqlgraph.NewFieldSpec(competitor.FieldID, field.TypeString))
 	if ps := cu.mutation.predicates; len(ps) > 0 {
@@ -204,6 +211,7 @@ func (cu *CompetitorUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	_spec.AddModifiers(cu.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, cu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{competitor.Label}
@@ -219,9 +227,10 @@ func (cu *CompetitorUpdate) sqlSave(ctx context.Context) (n int, err error) {
 // CompetitorUpdateOne is the builder for updating a single Competitor entity.
 type CompetitorUpdateOne struct {
 	config
-	fields   []string
-	hooks    []Hook
-	mutation *CompetitorMutation
+	fields    []string
+	hooks     []Hook
+	mutation  *CompetitorMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // SetUpdatedAt sets the "updated_at" field.
@@ -348,6 +357,12 @@ func (cuo *CompetitorUpdateOne) defaults() {
 	}
 }
 
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (cuo *CompetitorUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *CompetitorUpdateOne {
+	cuo.modifiers = append(cuo.modifiers, modifiers...)
+	return cuo
+}
+
 func (cuo *CompetitorUpdateOne) sqlSave(ctx context.Context) (_node *Competitor, err error) {
 	_spec := sqlgraph.NewUpdateSpec(competitor.Table, competitor.Columns, sqlgraph.NewFieldSpec(competitor.FieldID, field.TypeString))
 	id, ok := cuo.mutation.ID()
@@ -428,6 +443,7 @@ func (cuo *CompetitorUpdateOne) sqlSave(ctx context.Context) (_node *Competitor,
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	_spec.AddModifiers(cuo.modifiers...)
 	_node = &Competitor{config: cuo.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues

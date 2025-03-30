@@ -2,7 +2,7 @@ import { MapIndexPageDistrictQuery } from "__generated__/MapIndexPageDistrictQue
 import { fetchQuery, useRelayEnvironment } from "react-relay";
 import { useAreaTenders } from "~/hooks/use-area-tenders";
 import { fixAmount } from "~/lib/helper";
-import { districtsQuery } from "~/routes/__auth/__dashboard/__scaled/__map/index.lazy";
+import { districtsQuery } from "~/routes/__auth/__dashboard/__scaled/__map/v1.lazy";
 import { useMapStore } from "~/store/map";
 import {
   Table,
@@ -24,7 +24,7 @@ export function TenderListTable({
   const tenders = useAreaTenders();
 
   return (
-    <Table className="h-full my-4">
+    <Table className="my-4 h-full">
       {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
       <TableHeader className="sticky top-0 bg-gray-900">
         <TableRow className="items-center">

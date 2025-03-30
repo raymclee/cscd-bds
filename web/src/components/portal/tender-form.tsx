@@ -34,7 +34,7 @@ import {
   usePreloadedQuery,
   useQueryLoader,
 } from "react-relay";
-import { CreateTenderInput } from "~/graphql/graphql";
+import { CreateTenderInput, CreateTenderProfileInput } from "~/graphql/graphql";
 import { useCreateTender } from "~/hooks/use-create-tender";
 import { useUpdateTender } from "~/hooks/use-update-tender";
 import {
@@ -57,6 +57,9 @@ import { cn } from "~/lib/utils";
 import { useFormLocalStorage } from "~/hooks/use-form-localstorage";
 import { useBlocker } from "@tanstack/react-router";
 import { useLocalStorage } from "usehooks-ts";
+import { useCreateTenderV2 } from "~/hooks/use-create-tender-v2";
+import { useCreateTenderProfile } from "~/hooks/use-create-tender-profile";
+import { useUpdateTenderV2 } from "~/hooks/use-update-tender-v2";
 const { Dragger } = Upload;
 
 const fragment = graphql`
@@ -99,7 +102,8 @@ export type TenderFormProps = {
 export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
   const { message } = App.useApp();
   const [form] = Form.useForm<
-    CreateTenderInput & { geoCoordinate: number[] }
+    Pick<CreateTenderInput, "areaID" | "code" | "followingSaleIDs"> &
+      CreateTenderProfileInput
   >();
   const data = useFragment(fragment, queryRef);
   const tender = useFragment(TenderDetailFragment, tenderRef);
@@ -107,6 +111,12 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
 
   const [commitCreateMutation, isCreateInFlight] = useCreateTender();
   const [commitUpdateMutation, isUpdateInFlight] = useUpdateTender();
+  const [commitCreateTenderV2Mutation, isCreateTenderV2InFlight] =
+    useCreateTenderV2();
+  const [commitCreateTenderProfileMutation, isCreateTenderProfileInFlight] =
+    useCreateTenderProfile();
+  const [commitUpdateTenderV2Mutation, isUpdateTenderV2InFlight] =
+    useUpdateTenderV2();
   const navigate = useNavigate();
 
   const { state, update, clear } = useFormLocalStorage({
@@ -173,84 +183,85 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
     [area, areaID],
   );
 
-  useEffect(() => {
-    if (tender) {
-      form.setFieldsValue({
-        name: tender.name,
-        code: tender.code,
-        status: tender.status,
-        areaID: tender.area?.id,
-        customerID: tender.customer?.id,
-        discoveryDate: tender.discoveryDate && dayjs(tender.discoveryDate),
-        createdByID: tender.createdBy?.id,
-        finderID: tender.finder?.id,
-        followingSaleIDs: tender.followingSales?.map((e) => e?.id),
-        provinceID: tender.province?.id,
-        cityID: tender.city?.id,
-        districtID: tender.district?.id,
-        estimatedAmount: fixAmount(tender.estimatedAmount),
-        tenderDate: tender.tenderDate && dayjs(tender.tenderDate),
-        contractor: tender.contractor,
-        prepareToBid: tender.prepareToBid,
-        projectCode: tender.projectCode,
-        biddingDate: tender.biddingDate && dayjs(tender.biddingDate),
-        estimatedProjectStartDate:
-          tender.estimatedProjectStartDate &&
-          dayjs(tender.estimatedProjectStartDate),
-        estimatedProjectEndDate:
-          tender.estimatedProjectEndDate &&
-          dayjs(tender.estimatedProjectEndDate),
-        projectType: tender.projectType,
-        address: tender.fullAddress || tender.address,
-        fullAddress: tender.fullAddress,
-        images: tender.images?.map((image) => image),
-        attachements: tender.attachements?.map((attachement) => attachement),
-        architect: tender.architect,
-        facadeConsultant: tender.facadeConsultant,
-        designUnit: tender.designUnit,
-        consultingFirm: tender.consultingFirm,
-        keyProject: tender.keyProject,
-        currentProgress: tender.currentProgress,
-        managementCompany: tender.managementCompany,
-        tenderingAgency: tender.tenderingAgency,
-        tenderWinCompany: tender.tenderWinCompany,
-        tenderCode: tender.tenderCode,
-        developer: tender.developer,
-        tenderClosingDate:
-          tender.tenderClosingDate && dayjs(tender.tenderClosingDate),
-        constructionArea: tender.constructionArea,
-        tenderWinDate: tender.tenderWinDate && dayjs(tender.tenderWinDate),
-        tenderWinAmount: tender.tenderWinAmount,
-        lastTenderAmount: tender.lastTenderAmount,
-        remark: tender.remark,
-        tenderForm: tender.tenderForm,
-        contractForm: tender.contractForm,
-        biddingInstructions: tender.biddingInstructions,
-        tenderSituations: tender.tenderSituations,
-        ownerSituations: tender.ownerSituations,
-        competitorSituations: tender.competitorSituations,
-        costEngineer: tender.costEngineer,
-        sizeAndValueRating: tender.sizeAndValueRating,
-        sizeAndValueRatingOverview: tender.sizeAndValueRatingOverview,
-        creditAndPaymentRating: tender.creditAndPaymentRating,
-        creditAndPaymentRatingOverview: tender.creditAndPaymentRatingOverview,
-        timeLimitRating: tender.timeLimitRating,
-        timeLimitRatingOverview: tender.timeLimitRatingOverview,
-        customerRelationshipRating: tender.customerRelationshipRating,
-        customerRelationshipRatingOverview:
-          tender.customerRelationshipRatingOverview,
-        competitivePartnershipRating: tender.competitivePartnershipRating,
-        competitivePartnershipRatingOverview:
-          tender.competitivePartnershipRatingOverview,
-        levelInvolved: tender.levelInvolved,
-        approvalStatus: tender.approvalStatus,
-        classify: tender.classify,
-      });
-    }
-  }, [tender]);
+  const profile = useMemo(() => tender?.profiles?.edges?.[0]?.node, [tender]);
 
   useEffect(() => {
-    if (!tender && state) {
+    if (profile) {
+      form.setFieldsValue({
+        name: profile.name,
+        status: profile.status,
+        areaID: tender?.area?.id,
+        customerID: profile.customer?.id,
+        discoveryDate: profile.discoveryDate && dayjs(profile.discoveryDate),
+        createdByID: profile.createdBy?.id,
+        finderID: profile.finder?.id,
+        followingSaleIDs: tender?.followingSales?.map((e) => e?.id),
+        provinceID: profile.province?.id,
+        cityID: profile.city?.id,
+        districtID: profile.district?.id,
+        estimatedAmount: fixAmount(profile.estimatedAmount),
+        tenderDate: profile.tenderDate && dayjs(profile.tenderDate),
+        contractor: profile.contractor,
+        prepareToBid: profile.prepareToBid,
+        projectCode: profile.projectCode,
+        biddingDate: profile.biddingDate && dayjs(profile.biddingDate),
+        estimatedProjectStartDate:
+          profile.estimatedProjectStartDate &&
+          dayjs(profile.estimatedProjectStartDate),
+        estimatedProjectEndDate:
+          profile.estimatedProjectEndDate &&
+          dayjs(profile.estimatedProjectEndDate),
+        projectType: profile.projectType,
+        address: profile.fullAddress || profile.address,
+        fullAddress: profile.fullAddress,
+        images: profile.images?.map((image) => image),
+        attachments: profile.attachments?.map((attachment) => attachment),
+        architect: profile.architect,
+        facadeConsultant: profile.facadeConsultant,
+        designUnit: profile.designUnit,
+        consultingFirm: profile.consultingFirm,
+        keyProject: profile.keyProject,
+        currentProgress: profile.currentProgress,
+        managementCompany: profile.managementCompany,
+        tenderingAgency: profile.tenderingAgency,
+        tenderWinCompany: profile.tenderWinCompany,
+        tenderCode: profile.tenderCode,
+        developer: profile.developer,
+        tenderClosingDate:
+          profile.tenderClosingDate && dayjs(profile.tenderClosingDate),
+        constructionArea: profile.constructionArea,
+        tenderWinDate: profile.tenderWinDate && dayjs(profile.tenderWinDate),
+        tenderWinAmount: profile.tenderWinAmount,
+        lastTenderAmount: profile.lastTenderAmount,
+        remark: profile.remark,
+        tenderForm: profile.tenderForm,
+        contractForm: profile.contractForm,
+        biddingInstructions: profile.biddingInstructions,
+        tenderSituations: profile.tenderSituations,
+        ownerSituations: profile.ownerSituations,
+        competitorSituations: profile.competitorSituations,
+        costEngineer: profile.costEngineer,
+        sizeAndValueRating: profile.sizeAndValueRating,
+        sizeAndValueRatingOverview: profile.sizeAndValueRatingOverview,
+        creditAndPaymentRating: profile.creditAndPaymentRating,
+        creditAndPaymentRatingOverview: profile.creditAndPaymentRatingOverview,
+        timeLimitRating: profile.timeLimitRating,
+        timeLimitRatingOverview: profile.timeLimitRatingOverview,
+        customerRelationshipRating: profile.customerRelationshipRating,
+        customerRelationshipRatingOverview:
+          profile.customerRelationshipRatingOverview,
+        competitivePartnershipRating: profile.competitivePartnershipRating,
+        competitivePartnershipRatingOverview:
+          profile.competitivePartnershipRatingOverview,
+        levelInvolved: profile.levelInvolved,
+        approvalStatus: profile.approvalStatus,
+        classify: profile.classify,
+      });
+    }
+  }, [profile]);
+
+  useEffect(() => {
+    if (!profile && state) {
       form.setFieldsValue({
         ...state,
         discoveryDate: state?.discoveryDate
@@ -272,15 +283,18 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
           : undefined,
       } as any);
     }
-  }, [state, tender]);
+  }, [state, profile]);
 
   return (
-    <Form<CreateTenderInput & { geoCoordinate: number[] }>
+    <Form<
+      Pick<CreateTenderInput, "areaID" | "code" | "followingSaleIDs"> &
+        CreateTenderProfileInput
+    >
       form={form}
       className="relative !pb-24"
       // requiredMark="optional"
       disabled={
-        isCreateInFlight || isUpdateInFlight || tender?.approvalStatus == 1
+        isCreateInFlight || isUpdateInFlight || profile?.approvalStatus == 1
       }
       scrollToFirstError={{
         behavior: "smooth",
@@ -293,20 +307,23 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
         if (tender?.id) {
           const {
             images,
-            attachements,
+            attachments,
             followingSaleIDs,
             estimatedAmount,
             geoCoordinate,
             tenderWinAmount,
+            areaID,
             ...input
           } = values;
-          commitUpdateMutation({
+          commitUpdateTenderV2Mutation({
             variables: {
               id: tender.id,
-              input: {
+              tenderInput: {
                 ...input,
-                clearFollowingSales: true,
-                addFollowingSaleIDs: followingSaleIDs,
+              },
+              profileInput: {
+                ...input,
+                tenderID: tender.id,
                 estimatedAmount: toActualAmount(estimatedAmount),
                 tenderWinAmount: tenderWinAmount
                   ? toActualAmount(tenderWinAmount)
@@ -314,12 +331,12 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
               },
               imageFileNames,
               attachmentFileNames,
-              removeImageFileNames,
-              removeAttachmentFileNames,
-              geoCoordinate,
             },
             onCompleted() {
-              navigate({ to: "/portal/tenders" });
+              navigate({
+                to: "/portal/tenders/$id",
+                params: { id: tender.id },
+              });
               message.destroy();
               message.success("更新成功");
             },
@@ -337,8 +354,9 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
           });
         } else {
           const {
+            areaID,
             images,
-            attachements,
+            attachments,
             estimatedAmount,
             geoCoordinate,
             tenderWinAmount,
@@ -364,13 +382,18 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
             );
           }
 
-          commitCreateMutation({
+          commitCreateTenderV2Mutation({
             variables: {
-              input: {
-                ...input,
+              tenderInput: {
+                areaID,
+                discoveryDate: dayjs(),
                 code: "",
+                name: "",
+              },
+              profileInput: {
+                ...input,
+                tenderID: "",
                 estimatedAmount: toActualAmount(estimatedAmount),
-                createdByID: session.userId,
                 tenderWinAmount: tenderWinAmount
                   ? toActualAmount(tenderWinAmount)
                   : undefined,
@@ -378,7 +401,6 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
               connections,
               imageFileNames,
               attachmentFileNames,
-              geoCoordinate,
             },
             onCompleted() {
               clear();
@@ -403,7 +425,7 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
         }
       }}
     >
-      {!tender && state && (
+      {!profile && state && (
         <Alert
           className="!mb-4"
           message="请注意，数据从缓存中恢复"
@@ -449,7 +471,7 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
             rules={[{ required: true }]}
           >
             <Select
-              disabled={!!tender}
+              disabled={!!profile}
               options={data.areas?.edges
                 ?.map((e) => e?.node)
                 .map((a) => ({ label: a?.name, value: a?.id }))}
@@ -481,7 +503,7 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
             hidden
           ></Form.Item>
 
-          {(areaID || tender) && !showSHFields && (
+          {(areaID || profile) && !showSHFields && (
             <>
               <Form.Item
                 name={"name"}
@@ -612,7 +634,7 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
             </>
           )}
 
-          {(areaID || tender) && showSHFields && (
+          {(areaID || profile) && showSHFields && (
             <>
               <Form.Item
                 name={"name"}
@@ -811,12 +833,12 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
 
               {prepareToBid && (
                 <Form.Item
-                  name="attachements"
+                  name="attachments"
                   label="附件"
                   className="sm:col-span-2 md:col-span-3 lg:col-span-4"
                 >
                   <Dragger
-                    defaultFileList={tender?.attachements?.map((url, i) => ({
+                    defaultFileList={profile?.attachments?.map((url, i) => ({
                       uid: i.toString(),
                       name: url.split("/").pop() ?? "",
                       url,
@@ -926,7 +948,7 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
             </>
           )}
 
-          {(areaID || tender) && (
+          {(areaID || profile) && (
             <Form.Item
               name="images"
               label="效果图"
@@ -934,7 +956,7 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
             >
               <Dragger
                 multiple
-                defaultFileList={tender?.images?.map((url, i) => ({
+                defaultFileList={profile?.images?.map((url, i) => ({
                   uid: i.toString(),
                   name: url.split("/").pop() ?? "",
                   url,
@@ -987,7 +1009,7 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
           <Input />
         </Form.Item> */}
 
-      {(areaID || tender) && showSHFields && (
+      {(areaID || profile) && showSHFields && (
         <>
           <Card className="!mt-4" title="情况">
             <Row>

@@ -11,7 +11,7 @@ const MotionButton = motion.create(Button);
 export function Navigator() {
   const areas = useMapV2Store.use.areas();
   const { selectedArea, province, city, district } = useSearch({
-    from: "/__auth/__dashboard/__amap/v2",
+    from: "/__auth/__dashboard/__amap/",
     structuralSharing: false,
     select(state) {
       const selectedArea = areas?.edges?.find(

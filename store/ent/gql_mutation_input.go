@@ -2769,6 +2769,278 @@ func (c *TenderCompetitorUpdateOne) SetInput(i UpdateTenderCompetitorInput) *Ten
 	return c
 }
 
+// CreateTenderProfileInput represents a mutation input for creating tenderprofiles.
+type CreateTenderProfileInput struct {
+	CreatedAt                            *time.Time
+	UpdatedAt                            *time.Time
+	Status                               *int
+	ApprovalStatus                       *int
+	ApprovalMsgID                        *string
+	Name                                 string
+	EstimatedAmount                      *float64
+	TenderDate                           *time.Time
+	Classify                             *int
+	DiscoveryDate                        time.Time
+	Address                              *string
+	FullAddress                          *string
+	Contractor                           *string
+	LevelInvolved                        *int
+	SizeAndValueRating                   *int
+	SizeAndValueRatingOverview           *string
+	CreditAndPaymentRating               *int
+	CreditAndPaymentRatingOverview       *string
+	TimeLimitRating                      *int
+	TimeLimitRatingOverview              *string
+	CustomerRelationshipRating           *int
+	CustomerRelationshipRatingOverview   *string
+	CompetitivePartnershipRating         *int
+	CompetitivePartnershipRatingOverview *string
+	PrepareToBid                         *bool
+	ProjectCode                          *string
+	ProjectType                          *string
+	ProjectDefinition                    *string
+	EstimatedProjectStartDate            *time.Time
+	EstimatedProjectEndDate              *time.Time
+	Attachments                          []string
+	GeoCoordinate                        []float64
+	Remark                               *string
+	Images                               []string
+	TenderSituations                     *string
+	OwnerSituations                      *string
+	BiddingInstructions                  *string
+	CompetitorSituations                 *string
+	CostEngineer                         *string
+	TenderForm                           *string
+	ContractForm                         *string
+	ManagementCompany                    *string
+	TenderingAgency                      *string
+	BiddingDate                          *time.Time
+	FacadeConsultant                     *string
+	DesignUnit                           *string
+	ConsultingFirm                       *string
+	KeyProject                           *bool
+	CurrentProgress                      *string
+	TenderWinCompany                     *string
+	TenderCode                           *string
+	Architect                            *string
+	Developer                            *string
+	TenderClosingDate                    *time.Time
+	ConstructionArea                     *string
+	TenderWinDate                        *time.Time
+	TenderWinAmount                      *float64
+	LastTenderAmount                     *float64
+	TenderID                             xid.ID
+	CustomerID                           *xid.ID
+	FinderID                             *xid.ID
+	CreatedByID                          *xid.ID
+	ProvinceID                           *xid.ID
+	CityID                               *xid.ID
+	DistrictID                           *xid.ID
+	ApproverID                           *xid.ID
+}
+
+// Mutate applies the CreateTenderProfileInput on the TenderProfileMutation builder.
+func (i *CreateTenderProfileInput) Mutate(m *TenderProfileMutation) {
+	if v := i.CreatedAt; v != nil {
+		m.SetCreatedAt(*v)
+	}
+	if v := i.UpdatedAt; v != nil {
+		m.SetUpdatedAt(*v)
+	}
+	if v := i.Status; v != nil {
+		m.SetStatus(*v)
+	}
+	if v := i.ApprovalStatus; v != nil {
+		m.SetApprovalStatus(*v)
+	}
+	if v := i.ApprovalMsgID; v != nil {
+		m.SetApprovalMsgID(*v)
+	}
+	m.SetName(i.Name)
+	if v := i.EstimatedAmount; v != nil {
+		m.SetEstimatedAmount(*v)
+	}
+	if v := i.TenderDate; v != nil {
+		m.SetTenderDate(*v)
+	}
+	if v := i.Classify; v != nil {
+		m.SetClassify(*v)
+	}
+	m.SetDiscoveryDate(i.DiscoveryDate)
+	if v := i.Address; v != nil {
+		m.SetAddress(*v)
+	}
+	if v := i.FullAddress; v != nil {
+		m.SetFullAddress(*v)
+	}
+	if v := i.Contractor; v != nil {
+		m.SetContractor(*v)
+	}
+	if v := i.LevelInvolved; v != nil {
+		m.SetLevelInvolved(*v)
+	}
+	if v := i.SizeAndValueRating; v != nil {
+		m.SetSizeAndValueRating(*v)
+	}
+	if v := i.SizeAndValueRatingOverview; v != nil {
+		m.SetSizeAndValueRatingOverview(*v)
+	}
+	if v := i.CreditAndPaymentRating; v != nil {
+		m.SetCreditAndPaymentRating(*v)
+	}
+	if v := i.CreditAndPaymentRatingOverview; v != nil {
+		m.SetCreditAndPaymentRatingOverview(*v)
+	}
+	if v := i.TimeLimitRating; v != nil {
+		m.SetTimeLimitRating(*v)
+	}
+	if v := i.TimeLimitRatingOverview; v != nil {
+		m.SetTimeLimitRatingOverview(*v)
+	}
+	if v := i.CustomerRelationshipRating; v != nil {
+		m.SetCustomerRelationshipRating(*v)
+	}
+	if v := i.CustomerRelationshipRatingOverview; v != nil {
+		m.SetCustomerRelationshipRatingOverview(*v)
+	}
+	if v := i.CompetitivePartnershipRating; v != nil {
+		m.SetCompetitivePartnershipRating(*v)
+	}
+	if v := i.CompetitivePartnershipRatingOverview; v != nil {
+		m.SetCompetitivePartnershipRatingOverview(*v)
+	}
+	if v := i.PrepareToBid; v != nil {
+		m.SetPrepareToBid(*v)
+	}
+	if v := i.ProjectCode; v != nil {
+		m.SetProjectCode(*v)
+	}
+	if v := i.ProjectType; v != nil {
+		m.SetProjectType(*v)
+	}
+	if v := i.ProjectDefinition; v != nil {
+		m.SetProjectDefinition(*v)
+	}
+	if v := i.EstimatedProjectStartDate; v != nil {
+		m.SetEstimatedProjectStartDate(*v)
+	}
+	if v := i.EstimatedProjectEndDate; v != nil {
+		m.SetEstimatedProjectEndDate(*v)
+	}
+	if v := i.Attachments; v != nil {
+		m.SetAttachments(v)
+	}
+	if v := i.GeoCoordinate; v != nil {
+		m.SetGeoCoordinate(v)
+	}
+	if v := i.Remark; v != nil {
+		m.SetRemark(*v)
+	}
+	if v := i.Images; v != nil {
+		m.SetImages(v)
+	}
+	if v := i.TenderSituations; v != nil {
+		m.SetTenderSituations(*v)
+	}
+	if v := i.OwnerSituations; v != nil {
+		m.SetOwnerSituations(*v)
+	}
+	if v := i.BiddingInstructions; v != nil {
+		m.SetBiddingInstructions(*v)
+	}
+	if v := i.CompetitorSituations; v != nil {
+		m.SetCompetitorSituations(*v)
+	}
+	if v := i.CostEngineer; v != nil {
+		m.SetCostEngineer(*v)
+	}
+	if v := i.TenderForm; v != nil {
+		m.SetTenderForm(*v)
+	}
+	if v := i.ContractForm; v != nil {
+		m.SetContractForm(*v)
+	}
+	if v := i.ManagementCompany; v != nil {
+		m.SetManagementCompany(*v)
+	}
+	if v := i.TenderingAgency; v != nil {
+		m.SetTenderingAgency(*v)
+	}
+	if v := i.BiddingDate; v != nil {
+		m.SetBiddingDate(*v)
+	}
+	if v := i.FacadeConsultant; v != nil {
+		m.SetFacadeConsultant(*v)
+	}
+	if v := i.DesignUnit; v != nil {
+		m.SetDesignUnit(*v)
+	}
+	if v := i.ConsultingFirm; v != nil {
+		m.SetConsultingFirm(*v)
+	}
+	if v := i.KeyProject; v != nil {
+		m.SetKeyProject(*v)
+	}
+	if v := i.CurrentProgress; v != nil {
+		m.SetCurrentProgress(*v)
+	}
+	if v := i.TenderWinCompany; v != nil {
+		m.SetTenderWinCompany(*v)
+	}
+	if v := i.TenderCode; v != nil {
+		m.SetTenderCode(*v)
+	}
+	if v := i.Architect; v != nil {
+		m.SetArchitect(*v)
+	}
+	if v := i.Developer; v != nil {
+		m.SetDeveloper(*v)
+	}
+	if v := i.TenderClosingDate; v != nil {
+		m.SetTenderClosingDate(*v)
+	}
+	if v := i.ConstructionArea; v != nil {
+		m.SetConstructionArea(*v)
+	}
+	if v := i.TenderWinDate; v != nil {
+		m.SetTenderWinDate(*v)
+	}
+	if v := i.TenderWinAmount; v != nil {
+		m.SetTenderWinAmount(*v)
+	}
+	if v := i.LastTenderAmount; v != nil {
+		m.SetLastTenderAmount(*v)
+	}
+	m.SetTenderID(i.TenderID)
+	if v := i.CustomerID; v != nil {
+		m.SetCustomerID(*v)
+	}
+	if v := i.FinderID; v != nil {
+		m.SetFinderID(*v)
+	}
+	if v := i.CreatedByID; v != nil {
+		m.SetCreatedByID(*v)
+	}
+	if v := i.ProvinceID; v != nil {
+		m.SetProvinceID(*v)
+	}
+	if v := i.CityID; v != nil {
+		m.SetCityID(*v)
+	}
+	if v := i.DistrictID; v != nil {
+		m.SetDistrictID(*v)
+	}
+	if v := i.ApproverID; v != nil {
+		m.SetApproverID(*v)
+	}
+}
+
+// SetInput applies the change-set in the CreateTenderProfileInput on the TenderProfileCreate builder.
+func (c *TenderProfileCreate) SetInput(i CreateTenderProfileInput) *TenderProfileCreate {
+	i.Mutate(c.Mutation())
+	return c
+}
+
 // CreateUserInput represents a mutation input for creating users.
 type CreateUserInput struct {
 	CreatedAt      *time.Time

@@ -14,6 +14,14 @@ import { graphql } from "relay-runtime";
 import headSvg from "~/assets/dashboard/svg/head.svg";
 import { useMapV2Store } from "~/store";
 import { DistrictPlots } from "./__amap/-components/district-plots";
+import { Button } from "~/components/ui/button";
+import { LayoutDashboard } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "~/components/ui/tooltip";
 
 export const query = graphql`
   query AmapPageQuery(
@@ -175,6 +183,8 @@ export const Route = createLazyFileRoute("/__auth/__dashboard/__amap")({
 function RouteComponent() {
   const preload = Route.useLoaderData();
   const data = usePreloadedQuery<AmapPageQuery>(query, preload);
+  const navigate = useNavigate();
+  const { session } = Route.useRouteContext();
 
   useEffect(() => {
     useMapV2Store.setState({ areas: data.node?.areas as any });
@@ -188,6 +198,40 @@ function RouteComponent() {
           alt="head"
           className="mx-auto h-full w-full object-cover lg:w-[70%]"
         />
+
+        {(session.isAdmin || session.isSuperAdmin) && (
+          <TooltipProvider delayDuration={100}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="absolute right-4 top-2.5 h-10 w-10 rounded-full border border-brand/30 bg-slate-900/60 text-white backdrop-blur hover:bg-slate-800/60"
+                  onClick={() => {
+                    navigate({
+                      to: "/portal",
+                    });
+                  }}
+                >
+                  {/* 科技感装饰 */}
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-500/10 to-cyan-500/10 opacity-0 transition-opacity duration-300 hover:opacity-100" />
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-500/0 via-blue-500/0 to-cyan-500/0 opacity-0 transition-opacity duration-300 hover:opacity-100" />
+
+                  {/* 扫描线效果 */}
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-b from-transparent via-cyan-500/20 to-transparent opacity-0 transition-opacity duration-300 hover:opacity-100" />
+
+                  {/* 边框发光效果 */}
+                  <div className="absolute -inset-0.5 rounded-full bg-gradient-to-r from-blue-500/30 to-cyan-500/30 opacity-0 transition-opacity duration-300 hover:opacity-100" />
+
+                  <LayoutDashboard className="relative h-5 w-5" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent className="dark">
+                <p>进入后台</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        )}
       </nav>
       <Outlet />
       <Map />
