@@ -360,26 +360,22 @@ export function TenderDetail({
   lostCompetitorRef,
 }: TenderDetailProps) {
   const data = useFragment(TenderDetailFragment, queryRef);
-  const { profiles } = data;
-  const selectedProfileId = useSearch({
-    from: "/__auth/__portal/portal/tenders_/$id",
-    select: (state) => state.p,
-  });
+  const { profiles, pendingProfile } = data;
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (profiles.edges?.at(0)?.node?.approvalStatus == 1) {
+    if (pendingProfile) {
       navigate({
         to: ".",
         search: {
-          p: profiles.edges?.at(0)?.node?.id,
+          p: pendingProfile?.id,
         },
       });
     }
-  }, [profiles]);
+  }, [pendingProfile]);
 
   return (
-    <div className="flex flex-wrap">
+    <div className="grid grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4">
       {data.area.code === "GA" || data.area.code === "HW" ? (
         <GAAndHWTender tender={data} />
       ) : (
@@ -390,84 +386,65 @@ export function TenderDetail({
         />
       )}
 
-      <div className={cn("w-34 sticky top-28 mt-8 self-start")}>
-        <ScrollArea className={cn("h-[calc(100vh-128px)] transition-all")}>
+      <div className={cn("top-28 mt-8 self-start lg:sticky")}>
+        <ScrollArea className={cn("h-[calc(100vh-128px)]")}>
           <Timeline
-            className="px-4 py-1"
+            className="py-2 pr-4 lg:-ml-28"
+            mode="left"
             items={[
-              ...(data.pendingProfile
-                ? [
-                    {
-                      color: "blue",
-                      children: (
-                        <Link
-                          to="."
-                          search={(prev) => ({
-                            ...prev,
-                            p: data.pendingProfile?.id,
-                          })}
-                          className="text-sm text-gray-500"
-                          replace
-                        >
-                          待审批
-                        </Link>
-                      ),
-                    },
-                  ]
-                : []),
-
-              {
-                color: "green",
-                children: (
-                  <Link
-                    to="."
-                    search={(prev) => ({ ...prev, p: undefined })}
-                    className="text-sm text-gray-500"
-                  >
-                    现时状态
-                  </Link>
-                ),
-              },
-              ...(profiles?.edges
-                ?.filter((e) => e?.node?.id !== data.pendingProfile?.id)
-                .map((e, i) => {
-                  const isFirst =
-                    profiles?.edges && i == profiles?.edges?.length - 1;
-                  const isLast = profiles?.edges && i == 0;
-                  const isApproved = e?.node?.approvalStatus == 2;
-                  const isRejected = e?.node?.approvalStatus == 3;
-                  const action = isFirst ? "创建了" : "更新了";
-                  return {
-                    color:
-                      selectedProfileId === e?.node?.id ? undefined : "gray",
-                    children: (
-                      <Link
-                        to="."
-                        search={(prev) => ({ ...prev, p: e?.node?.id })}
-                        preload={false}
-                        className="flex flex-col gap-1"
-                        replace
-                      >
+              ...(profiles?.edges?.map((e, i) => {
+                const isFirst =
+                  profiles?.edges && i == profiles?.edges?.length - 1;
+                const action = isFirst ? "创建了" : "更新了";
+                const isApproved = e?.node?.approvalStatus == 2;
+                const isRejected = e?.node?.approvalStatus == 3;
+                const isActive = data.activeProfile?.id === e?.node?.id;
+                const isPending = data.pendingProfile?.id === e?.node?.id;
+                return {
+                  color: isActive ? undefined : "gray",
+                  label: isActive ? (
+                    <Tag color="blue">当前</Tag>
+                  ) : isPending ? (
+                    <Tag color="green">待审批</Tag>
+                  ) : (
+                    <Tag
+                      color={approvalStatusTagColor(e?.node?.approvalStatus)}
+                    >
+                      {approvalStatusText(e?.node?.approvalStatus)}
+                    </Tag>
+                  ),
+                  children: (
+                    <Link
+                      to="."
+                      search={(prev) => ({ ...prev, p: e?.node?.id })}
+                      preload={false}
+                      className="flex flex-col gap-1"
+                      activeOptions={{
+                        includeSearch: true,
+                      }}
+                      activeProps={{ className: "font-bold" }}
+                      replace
+                    >
+                      <div className="flex gap-1 py-0.5 text-sm text-gray-500">
+                        <span>{dayjs(e?.node?.createdAt).format("LLL")}</span>
+                      </div>
+                      <div className="text-sm text-gray-500">
+                        {`${e?.node?.createdBy?.name} ${action}商机`}
+                      </div>
+                      {isApproved && (
                         <div className="text-sm text-gray-500">
-                          {dayjs(e?.node?.createdAt).format("LLL")}
+                          {e?.node?.approver?.name || "系统"} 批核了
                         </div>
+                      )}
+                      {isRejected && (
                         <div className="text-sm text-gray-500">
-                          {`${e?.node?.createdBy?.name} ${action}商机`}
+                          {e?.node?.approver?.name || "系统"} 拒绝了
                         </div>
-                        {isApproved && (
-                          <div className="text-sm text-gray-500">
-                            {e?.node?.approver?.name} 批核了
-                          </div>
-                        )}
-                        {isRejected && (
-                          <div className="text-sm text-gray-500">
-                            {e?.node?.approver?.name} 拒绝了
-                          </div>
-                        )}
-                      </Link>
-                    ),
-                  };
-                }) || []),
+                      )}
+                    </Link>
+                  ),
+                };
+              }) || []),
             ]}
           />
         </ScrollArea>
@@ -539,17 +516,9 @@ function SHTender({
     ? (profiles?.edges?.find((e) => e?.node?.id === selectedProfileId)?.node ??
       {})
     : activeProfile || {};
-  const { message, modal } = App.useApp();
-  const [updateTender, inFlight] = useUpdateTender();
-  const [approveTender, inApproveFlight] = useApproveTender();
-  const selectedProfile = profiles.edges?.find(
-    (e) => e?.node?.id === selectedProfileId,
-  )?.node;
-  const isEditable = activeProfile?.approvalStatus != 1;
-  const isPendingApproval = Boolean(tender.pendingProfile);
 
   return (
-    <div className="flex-1 !space-y-4">
+    <div className="!space-y-4 lg:col-span-2 xl:col-span-3">
       <Descriptions
         className="rounded-lg bg-white !p-6"
         title={
@@ -568,12 +537,12 @@ function SHTender({
                 <Link
                   to="/portal/tenders/$id/edit"
                   params={{ id }}
-                  disabled={!isEditable}
+                  // disabled={!isEditable}
                 >
                   <Button
                     type="primary"
                     icon={<EditOutlined />}
-                    disabled={!isEditable}
+                    // disabled={!isEditable}
                     // size="small"
                   >
                     编辑
@@ -901,7 +870,7 @@ function GAAndHWTender({ tender }: { tender: tenderDetailFragment$data }) {
     finder,
   } = profiles?.edges?.[0]?.node ?? {};
   return (
-    <div className="flex-1 !space-y-4">
+    <div className="!space-y-4 lg:col-span-4">
       <Descriptions
         className="rounded-lg bg-white !p-6"
         title={
@@ -1042,6 +1011,7 @@ function ApprovalModal({ tender }: { tender: tenderDetailFragment$data }) {
   const [commitRejectTenderRequest, inRejectTenderRequestFlight] =
     useRejectTender();
   const { message } = App.useApp();
+  const navigate = useNavigate();
 
   const handleCancel = () => {
     setOpen(false);
@@ -1056,6 +1026,12 @@ function ApprovalModal({ tender }: { tender: tenderDetailFragment$data }) {
         message.destroy();
         message.success("拒绝成功");
         setOpen(false);
+        navigate({
+          to: ".",
+          search: {
+            p: undefined,
+          },
+        });
       },
       onError: (error) => {
         console.error(error);
@@ -1074,6 +1050,12 @@ function ApprovalModal({ tender }: { tender: tenderDetailFragment$data }) {
         message.destroy();
         message.success("批核成功");
         setOpen(false);
+        navigate({
+          to: ".",
+          search: {
+            p: undefined,
+          },
+        });
       },
       onError: (error) => {
         console.error(error);
@@ -1103,34 +1085,46 @@ function ApprovalModal({ tender }: { tender: tenderDetailFragment$data }) {
   const isLoading = inApproveTenderRequestFlight || inRejectTenderRequestFlight;
 
   return (
-    <Modal
-      open={open}
-      title="审批"
-      onCancel={handleCancel}
-      footer={[
-        <Button key="back" onClick={handleCancel}>
-          取消
-        </Button>,
-        <Button
-          key="reject"
-          // type="primary"
-          loading={isLoading}
-          onClick={handleReject}
-          danger
-        >
-          拒绝
-        </Button>,
-        <Button
-          key="approve"
-          type="primary"
-          loading={isLoading}
-          onClick={handleApprove}
-        >
-          同意
-        </Button>,
-      ]}
-    >
-      <p>确定批核该客户更新吗？</p>
-    </Modal>
+    <>
+      <Button
+        disabled={!isPendingApproval}
+        type="primary"
+        icon={<Check size={16} />}
+        onClick={() => {
+          setOpen(true);
+        }}
+      >
+        审批
+      </Button>
+      <Modal
+        open={open}
+        title="审批"
+        onCancel={handleCancel}
+        footer={[
+          <Button key="back" onClick={handleCancel}>
+            取消
+          </Button>,
+          <Button
+            key="reject"
+            // type="primary"
+            loading={isLoading}
+            onClick={handleReject}
+            danger
+          >
+            拒绝
+          </Button>,
+          <Button
+            key="approve"
+            type="primary"
+            loading={isLoading}
+            onClick={handleApprove}
+          >
+            同意
+          </Button>,
+        ]}
+      >
+        <p>确定批核该客户更新吗？</p>
+      </Modal>
+    </>
   );
 }

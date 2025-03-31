@@ -9,6 +9,7 @@ import (
 	"cscd-bds/store/ent/competitor"
 	"cscd-bds/store/ent/country"
 	"cscd-bds/store/ent/customer"
+	"cscd-bds/store/ent/customerprofile"
 	"cscd-bds/store/ent/district"
 	"cscd-bds/store/ent/operation"
 	"cscd-bds/store/ent/plot"
@@ -50,6 +51,7 @@ const (
 	TypeCompetitor       = "Competitor"
 	TypeCountry          = "Country"
 	TypeCustomer         = "Customer"
+	TypeCustomerProfile  = "CustomerProfile"
 	TypeDistrict         = "District"
 	TypeOperation        = "Operation"
 	TypePlot             = "Plot"
@@ -3374,6 +3376,13 @@ type CustomerMutation struct {
 	visit_records           map[xid.ID]struct{}
 	removedvisit_records    map[xid.ID]struct{}
 	clearedvisit_records    bool
+	profiles                map[xid.ID]struct{}
+	removedprofiles         map[xid.ID]struct{}
+	clearedprofiles         bool
+	active_profile          *xid.ID
+	clearedactive_profile   bool
+	pending_profile         *xid.ID
+	clearedpending_profile  bool
 	done                    bool
 	oldValue                func(context.Context) (*Customer, error)
 	predicates              []predicate.Customer
@@ -4383,6 +4392,104 @@ func (m *CustomerMutation) ResetApproverID() {
 	delete(m.clearedFields, customer.FieldApproverID)
 }
 
+// SetActiveProfileID sets the "active_profile_id" field.
+func (m *CustomerMutation) SetActiveProfileID(x xid.ID) {
+	m.active_profile = &x
+}
+
+// ActiveProfileID returns the value of the "active_profile_id" field in the mutation.
+func (m *CustomerMutation) ActiveProfileID() (r xid.ID, exists bool) {
+	v := m.active_profile
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldActiveProfileID returns the old "active_profile_id" field's value of the Customer entity.
+// If the Customer object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CustomerMutation) OldActiveProfileID(ctx context.Context) (v *xid.ID, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldActiveProfileID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldActiveProfileID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldActiveProfileID: %w", err)
+	}
+	return oldValue.ActiveProfileID, nil
+}
+
+// ClearActiveProfileID clears the value of the "active_profile_id" field.
+func (m *CustomerMutation) ClearActiveProfileID() {
+	m.active_profile = nil
+	m.clearedFields[customer.FieldActiveProfileID] = struct{}{}
+}
+
+// ActiveProfileIDCleared returns if the "active_profile_id" field was cleared in this mutation.
+func (m *CustomerMutation) ActiveProfileIDCleared() bool {
+	_, ok := m.clearedFields[customer.FieldActiveProfileID]
+	return ok
+}
+
+// ResetActiveProfileID resets all changes to the "active_profile_id" field.
+func (m *CustomerMutation) ResetActiveProfileID() {
+	m.active_profile = nil
+	delete(m.clearedFields, customer.FieldActiveProfileID)
+}
+
+// SetPendingProfileID sets the "pending_profile_id" field.
+func (m *CustomerMutation) SetPendingProfileID(x xid.ID) {
+	m.pending_profile = &x
+}
+
+// PendingProfileID returns the value of the "pending_profile_id" field in the mutation.
+func (m *CustomerMutation) PendingProfileID() (r xid.ID, exists bool) {
+	v := m.pending_profile
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPendingProfileID returns the old "pending_profile_id" field's value of the Customer entity.
+// If the Customer object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CustomerMutation) OldPendingProfileID(ctx context.Context) (v *xid.ID, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPendingProfileID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPendingProfileID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPendingProfileID: %w", err)
+	}
+	return oldValue.PendingProfileID, nil
+}
+
+// ClearPendingProfileID clears the value of the "pending_profile_id" field.
+func (m *CustomerMutation) ClearPendingProfileID() {
+	m.pending_profile = nil
+	m.clearedFields[customer.FieldPendingProfileID] = struct{}{}
+}
+
+// PendingProfileIDCleared returns if the "pending_profile_id" field was cleared in this mutation.
+func (m *CustomerMutation) PendingProfileIDCleared() bool {
+	_, ok := m.clearedFields[customer.FieldPendingProfileID]
+	return ok
+}
+
+// ResetPendingProfileID resets all changes to the "pending_profile_id" field.
+func (m *CustomerMutation) ResetPendingProfileID() {
+	m.pending_profile = nil
+	delete(m.clearedFields, customer.FieldPendingProfileID)
+}
+
 // ClearArea clears the "area" edge to the Area entity.
 func (m *CustomerMutation) ClearArea() {
 	m.clearedarea = true
@@ -4626,6 +4733,114 @@ func (m *CustomerMutation) ResetVisitRecords() {
 	m.removedvisit_records = nil
 }
 
+// AddProfileIDs adds the "profiles" edge to the CustomerProfile entity by ids.
+func (m *CustomerMutation) AddProfileIDs(ids ...xid.ID) {
+	if m.profiles == nil {
+		m.profiles = make(map[xid.ID]struct{})
+	}
+	for i := range ids {
+		m.profiles[ids[i]] = struct{}{}
+	}
+}
+
+// ClearProfiles clears the "profiles" edge to the CustomerProfile entity.
+func (m *CustomerMutation) ClearProfiles() {
+	m.clearedprofiles = true
+}
+
+// ProfilesCleared reports if the "profiles" edge to the CustomerProfile entity was cleared.
+func (m *CustomerMutation) ProfilesCleared() bool {
+	return m.clearedprofiles
+}
+
+// RemoveProfileIDs removes the "profiles" edge to the CustomerProfile entity by IDs.
+func (m *CustomerMutation) RemoveProfileIDs(ids ...xid.ID) {
+	if m.removedprofiles == nil {
+		m.removedprofiles = make(map[xid.ID]struct{})
+	}
+	for i := range ids {
+		delete(m.profiles, ids[i])
+		m.removedprofiles[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedProfiles returns the removed IDs of the "profiles" edge to the CustomerProfile entity.
+func (m *CustomerMutation) RemovedProfilesIDs() (ids []xid.ID) {
+	for id := range m.removedprofiles {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ProfilesIDs returns the "profiles" edge IDs in the mutation.
+func (m *CustomerMutation) ProfilesIDs() (ids []xid.ID) {
+	for id := range m.profiles {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetProfiles resets all changes to the "profiles" edge.
+func (m *CustomerMutation) ResetProfiles() {
+	m.profiles = nil
+	m.clearedprofiles = false
+	m.removedprofiles = nil
+}
+
+// ClearActiveProfile clears the "active_profile" edge to the CustomerProfile entity.
+func (m *CustomerMutation) ClearActiveProfile() {
+	m.clearedactive_profile = true
+	m.clearedFields[customer.FieldActiveProfileID] = struct{}{}
+}
+
+// ActiveProfileCleared reports if the "active_profile" edge to the CustomerProfile entity was cleared.
+func (m *CustomerMutation) ActiveProfileCleared() bool {
+	return m.ActiveProfileIDCleared() || m.clearedactive_profile
+}
+
+// ActiveProfileIDs returns the "active_profile" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// ActiveProfileID instead. It exists only for internal usage by the builders.
+func (m *CustomerMutation) ActiveProfileIDs() (ids []xid.ID) {
+	if id := m.active_profile; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetActiveProfile resets all changes to the "active_profile" edge.
+func (m *CustomerMutation) ResetActiveProfile() {
+	m.active_profile = nil
+	m.clearedactive_profile = false
+}
+
+// ClearPendingProfile clears the "pending_profile" edge to the CustomerProfile entity.
+func (m *CustomerMutation) ClearPendingProfile() {
+	m.clearedpending_profile = true
+	m.clearedFields[customer.FieldPendingProfileID] = struct{}{}
+}
+
+// PendingProfileCleared reports if the "pending_profile" edge to the CustomerProfile entity was cleared.
+func (m *CustomerMutation) PendingProfileCleared() bool {
+	return m.PendingProfileIDCleared() || m.clearedpending_profile
+}
+
+// PendingProfileIDs returns the "pending_profile" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// PendingProfileID instead. It exists only for internal usage by the builders.
+func (m *CustomerMutation) PendingProfileIDs() (ids []xid.ID) {
+	if id := m.pending_profile; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetPendingProfile resets all changes to the "pending_profile" edge.
+func (m *CustomerMutation) ResetPendingProfile() {
+	m.pending_profile = nil
+	m.clearedpending_profile = false
+}
+
 // Where appends a list predicates to the CustomerMutation builder.
 func (m *CustomerMutation) Where(ps ...predicate.Customer) {
 	m.predicates = append(m.predicates, ps...)
@@ -4660,7 +4875,7 @@ func (m *CustomerMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *CustomerMutation) Fields() []string {
-	fields := make([]string, 0, 18)
+	fields := make([]string, 0, 20)
 	if m.created_at != nil {
 		fields = append(fields, customer.FieldCreatedAt)
 	}
@@ -4715,6 +4930,12 @@ func (m *CustomerMutation) Fields() []string {
 	if m.approver != nil {
 		fields = append(fields, customer.FieldApproverID)
 	}
+	if m.active_profile != nil {
+		fields = append(fields, customer.FieldActiveProfileID)
+	}
+	if m.pending_profile != nil {
+		fields = append(fields, customer.FieldPendingProfileID)
+	}
 	return fields
 }
 
@@ -4759,6 +4980,10 @@ func (m *CustomerMutation) Field(name string) (ent.Value, bool) {
 		return m.UpdatedByID()
 	case customer.FieldApproverID:
 		return m.ApproverID()
+	case customer.FieldActiveProfileID:
+		return m.ActiveProfileID()
+	case customer.FieldPendingProfileID:
+		return m.PendingProfileID()
 	}
 	return nil, false
 }
@@ -4804,6 +5029,10 @@ func (m *CustomerMutation) OldField(ctx context.Context, name string) (ent.Value
 		return m.OldUpdatedByID(ctx)
 	case customer.FieldApproverID:
 		return m.OldApproverID(ctx)
+	case customer.FieldActiveProfileID:
+		return m.OldActiveProfileID(ctx)
+	case customer.FieldPendingProfileID:
+		return m.OldPendingProfileID(ctx)
 	}
 	return nil, fmt.Errorf("unknown Customer field %s", name)
 }
@@ -4939,6 +5168,20 @@ func (m *CustomerMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetApproverID(v)
 		return nil
+	case customer.FieldActiveProfileID:
+		v, ok := value.(xid.ID)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetActiveProfileID(v)
+		return nil
+	case customer.FieldPendingProfileID:
+		v, ok := value.(xid.ID)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPendingProfileID(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Customer field %s", name)
 }
@@ -5059,6 +5302,12 @@ func (m *CustomerMutation) ClearedFields() []string {
 	if m.FieldCleared(customer.FieldApproverID) {
 		fields = append(fields, customer.FieldApproverID)
 	}
+	if m.FieldCleared(customer.FieldActiveProfileID) {
+		fields = append(fields, customer.FieldActiveProfileID)
+	}
+	if m.FieldCleared(customer.FieldPendingProfileID) {
+		fields = append(fields, customer.FieldPendingProfileID)
+	}
 	return fields
 }
 
@@ -5111,6 +5360,12 @@ func (m *CustomerMutation) ClearField(name string) error {
 		return nil
 	case customer.FieldApproverID:
 		m.ClearApproverID()
+		return nil
+	case customer.FieldActiveProfileID:
+		m.ClearActiveProfileID()
+		return nil
+	case customer.FieldPendingProfileID:
+		m.ClearPendingProfileID()
 		return nil
 	}
 	return fmt.Errorf("unknown Customer nullable field %s", name)
@@ -5174,13 +5429,19 @@ func (m *CustomerMutation) ResetField(name string) error {
 	case customer.FieldApproverID:
 		m.ResetApproverID()
 		return nil
+	case customer.FieldActiveProfileID:
+		m.ResetActiveProfileID()
+		return nil
+	case customer.FieldPendingProfileID:
+		m.ResetPendingProfileID()
+		return nil
 	}
 	return fmt.Errorf("unknown Customer field %s", name)
 }
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *CustomerMutation) AddedEdges() []string {
-	edges := make([]string, 0, 7)
+	edges := make([]string, 0, 10)
 	if m.area != nil {
 		edges = append(edges, customer.EdgeArea)
 	}
@@ -5201,6 +5462,15 @@ func (m *CustomerMutation) AddedEdges() []string {
 	}
 	if m.visit_records != nil {
 		edges = append(edges, customer.EdgeVisitRecords)
+	}
+	if m.profiles != nil {
+		edges = append(edges, customer.EdgeProfiles)
+	}
+	if m.active_profile != nil {
+		edges = append(edges, customer.EdgeActiveProfile)
+	}
+	if m.pending_profile != nil {
+		edges = append(edges, customer.EdgePendingProfile)
 	}
 	return edges
 }
@@ -5241,18 +5511,35 @@ func (m *CustomerMutation) AddedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case customer.EdgeProfiles:
+		ids := make([]ent.Value, 0, len(m.profiles))
+		for id := range m.profiles {
+			ids = append(ids, id)
+		}
+		return ids
+	case customer.EdgeActiveProfile:
+		if id := m.active_profile; id != nil {
+			return []ent.Value{*id}
+		}
+	case customer.EdgePendingProfile:
+		if id := m.pending_profile; id != nil {
+			return []ent.Value{*id}
+		}
 	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *CustomerMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 7)
+	edges := make([]string, 0, 10)
 	if m.removedtenders != nil {
 		edges = append(edges, customer.EdgeTenders)
 	}
 	if m.removedvisit_records != nil {
 		edges = append(edges, customer.EdgeVisitRecords)
+	}
+	if m.removedprofiles != nil {
+		edges = append(edges, customer.EdgeProfiles)
 	}
 	return edges
 }
@@ -5273,13 +5560,19 @@ func (m *CustomerMutation) RemovedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case customer.EdgeProfiles:
+		ids := make([]ent.Value, 0, len(m.removedprofiles))
+		for id := range m.removedprofiles {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *CustomerMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 7)
+	edges := make([]string, 0, 10)
 	if m.clearedarea {
 		edges = append(edges, customer.EdgeArea)
 	}
@@ -5300,6 +5593,15 @@ func (m *CustomerMutation) ClearedEdges() []string {
 	}
 	if m.clearedvisit_records {
 		edges = append(edges, customer.EdgeVisitRecords)
+	}
+	if m.clearedprofiles {
+		edges = append(edges, customer.EdgeProfiles)
+	}
+	if m.clearedactive_profile {
+		edges = append(edges, customer.EdgeActiveProfile)
+	}
+	if m.clearedpending_profile {
+		edges = append(edges, customer.EdgePendingProfile)
 	}
 	return edges
 }
@@ -5322,6 +5624,12 @@ func (m *CustomerMutation) EdgeCleared(name string) bool {
 		return m.clearedapprover
 	case customer.EdgeVisitRecords:
 		return m.clearedvisit_records
+	case customer.EdgeProfiles:
+		return m.clearedprofiles
+	case customer.EdgeActiveProfile:
+		return m.clearedactive_profile
+	case customer.EdgePendingProfile:
+		return m.clearedpending_profile
 	}
 	return false
 }
@@ -5344,6 +5652,12 @@ func (m *CustomerMutation) ClearEdge(name string) error {
 		return nil
 	case customer.EdgeApprover:
 		m.ClearApprover()
+		return nil
+	case customer.EdgeActiveProfile:
+		m.ClearActiveProfile()
+		return nil
+	case customer.EdgePendingProfile:
+		m.ClearPendingProfile()
 		return nil
 	}
 	return fmt.Errorf("unknown Customer unique edge %s", name)
@@ -5374,8 +5688,1628 @@ func (m *CustomerMutation) ResetEdge(name string) error {
 	case customer.EdgeVisitRecords:
 		m.ResetVisitRecords()
 		return nil
+	case customer.EdgeProfiles:
+		m.ResetProfiles()
+		return nil
+	case customer.EdgeActiveProfile:
+		m.ResetActiveProfile()
+		return nil
+	case customer.EdgePendingProfile:
+		m.ResetPendingProfile()
+		return nil
 	}
 	return fmt.Errorf("unknown Customer edge %s", name)
+}
+
+// CustomerProfileMutation represents an operation that mutates the CustomerProfile nodes in the graph.
+type CustomerProfileMutation struct {
+	config
+	op                      Op
+	typ                     string
+	id                      *xid.ID
+	created_at              *time.Time
+	updated_at              *time.Time
+	name                    *string
+	approval_status         *int
+	addapproval_status      *int
+	owner_type              *int
+	addowner_type           *int
+	industry                *int
+	addindustry             *int
+	size                    *int
+	addsize                 *int
+	contact_person          *string
+	contact_person_position *string
+	contact_person_phone    *string
+	contact_person_email    *string
+	clearedFields           map[string]struct{}
+	customer                *xid.ID
+	clearedcustomer         bool
+	created_by              *xid.ID
+	clearedcreated_by       bool
+	approver                *xid.ID
+	clearedapprover         bool
+	sales                   *xid.ID
+	clearedsales            bool
+	done                    bool
+	oldValue                func(context.Context) (*CustomerProfile, error)
+	predicates              []predicate.CustomerProfile
+}
+
+var _ ent.Mutation = (*CustomerProfileMutation)(nil)
+
+// customerprofileOption allows management of the mutation configuration using functional options.
+type customerprofileOption func(*CustomerProfileMutation)
+
+// newCustomerProfileMutation creates new mutation for the CustomerProfile entity.
+func newCustomerProfileMutation(c config, op Op, opts ...customerprofileOption) *CustomerProfileMutation {
+	m := &CustomerProfileMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeCustomerProfile,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withCustomerProfileID sets the ID field of the mutation.
+func withCustomerProfileID(id xid.ID) customerprofileOption {
+	return func(m *CustomerProfileMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *CustomerProfile
+		)
+		m.oldValue = func(ctx context.Context) (*CustomerProfile, error) {
+			once.Do(func() {
+				if m.done {
+					err = errors.New("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().CustomerProfile.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withCustomerProfile sets the old CustomerProfile of the mutation.
+func withCustomerProfile(node *CustomerProfile) customerprofileOption {
+	return func(m *CustomerProfileMutation) {
+		m.oldValue = func(context.Context) (*CustomerProfile, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m CustomerProfileMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m CustomerProfileMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, errors.New("ent: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of CustomerProfile entities.
+func (m *CustomerProfileMutation) SetID(id xid.ID) {
+	m.id = &id
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *CustomerProfileMutation) ID() (id xid.ID, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// IDs queries the database and returns the entity ids that match the mutation's predicate.
+// That means, if the mutation is applied within a transaction with an isolation level such
+// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
+// or updated by the mutation.
+func (m *CustomerProfileMutation) IDs(ctx context.Context) ([]xid.ID, error) {
+	switch {
+	case m.op.Is(OpUpdateOne | OpDeleteOne):
+		id, exists := m.ID()
+		if exists {
+			return []xid.ID{id}, nil
+		}
+		fallthrough
+	case m.op.Is(OpUpdate | OpDelete):
+		return m.Client().CustomerProfile.Query().Where(m.predicates...).IDs(ctx)
+	default:
+		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
+	}
+}
+
+// SetCreatedAt sets the "created_at" field.
+func (m *CustomerProfileMutation) SetCreatedAt(t time.Time) {
+	m.created_at = &t
+}
+
+// CreatedAt returns the value of the "created_at" field in the mutation.
+func (m *CustomerProfileMutation) CreatedAt() (r time.Time, exists bool) {
+	v := m.created_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreatedAt returns the old "created_at" field's value of the CustomerProfile entity.
+// If the CustomerProfile object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CustomerProfileMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreatedAt: %w", err)
+	}
+	return oldValue.CreatedAt, nil
+}
+
+// ResetCreatedAt resets all changes to the "created_at" field.
+func (m *CustomerProfileMutation) ResetCreatedAt() {
+	m.created_at = nil
+}
+
+// SetUpdatedAt sets the "updated_at" field.
+func (m *CustomerProfileMutation) SetUpdatedAt(t time.Time) {
+	m.updated_at = &t
+}
+
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
+func (m *CustomerProfileMutation) UpdatedAt() (r time.Time, exists bool) {
+	v := m.updated_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdatedAt returns the old "updated_at" field's value of the CustomerProfile entity.
+// If the CustomerProfile object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CustomerProfileMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdatedAt: %w", err)
+	}
+	return oldValue.UpdatedAt, nil
+}
+
+// ResetUpdatedAt resets all changes to the "updated_at" field.
+func (m *CustomerProfileMutation) ResetUpdatedAt() {
+	m.updated_at = nil
+}
+
+// SetName sets the "name" field.
+func (m *CustomerProfileMutation) SetName(s string) {
+	m.name = &s
+}
+
+// Name returns the value of the "name" field in the mutation.
+func (m *CustomerProfileMutation) Name() (r string, exists bool) {
+	v := m.name
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldName returns the old "name" field's value of the CustomerProfile entity.
+// If the CustomerProfile object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CustomerProfileMutation) OldName(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldName is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldName: %w", err)
+	}
+	return oldValue.Name, nil
+}
+
+// ResetName resets all changes to the "name" field.
+func (m *CustomerProfileMutation) ResetName() {
+	m.name = nil
+}
+
+// SetApprovalStatus sets the "approval_status" field.
+func (m *CustomerProfileMutation) SetApprovalStatus(i int) {
+	m.approval_status = &i
+	m.addapproval_status = nil
+}
+
+// ApprovalStatus returns the value of the "approval_status" field in the mutation.
+func (m *CustomerProfileMutation) ApprovalStatus() (r int, exists bool) {
+	v := m.approval_status
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldApprovalStatus returns the old "approval_status" field's value of the CustomerProfile entity.
+// If the CustomerProfile object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CustomerProfileMutation) OldApprovalStatus(ctx context.Context) (v int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldApprovalStatus is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldApprovalStatus requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldApprovalStatus: %w", err)
+	}
+	return oldValue.ApprovalStatus, nil
+}
+
+// AddApprovalStatus adds i to the "approval_status" field.
+func (m *CustomerProfileMutation) AddApprovalStatus(i int) {
+	if m.addapproval_status != nil {
+		*m.addapproval_status += i
+	} else {
+		m.addapproval_status = &i
+	}
+}
+
+// AddedApprovalStatus returns the value that was added to the "approval_status" field in this mutation.
+func (m *CustomerProfileMutation) AddedApprovalStatus() (r int, exists bool) {
+	v := m.addapproval_status
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetApprovalStatus resets all changes to the "approval_status" field.
+func (m *CustomerProfileMutation) ResetApprovalStatus() {
+	m.approval_status = nil
+	m.addapproval_status = nil
+}
+
+// SetOwnerType sets the "owner_type" field.
+func (m *CustomerProfileMutation) SetOwnerType(i int) {
+	m.owner_type = &i
+	m.addowner_type = nil
+}
+
+// OwnerType returns the value of the "owner_type" field in the mutation.
+func (m *CustomerProfileMutation) OwnerType() (r int, exists bool) {
+	v := m.owner_type
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldOwnerType returns the old "owner_type" field's value of the CustomerProfile entity.
+// If the CustomerProfile object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CustomerProfileMutation) OldOwnerType(ctx context.Context) (v *int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldOwnerType is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldOwnerType requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldOwnerType: %w", err)
+	}
+	return oldValue.OwnerType, nil
+}
+
+// AddOwnerType adds i to the "owner_type" field.
+func (m *CustomerProfileMutation) AddOwnerType(i int) {
+	if m.addowner_type != nil {
+		*m.addowner_type += i
+	} else {
+		m.addowner_type = &i
+	}
+}
+
+// AddedOwnerType returns the value that was added to the "owner_type" field in this mutation.
+func (m *CustomerProfileMutation) AddedOwnerType() (r int, exists bool) {
+	v := m.addowner_type
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearOwnerType clears the value of the "owner_type" field.
+func (m *CustomerProfileMutation) ClearOwnerType() {
+	m.owner_type = nil
+	m.addowner_type = nil
+	m.clearedFields[customerprofile.FieldOwnerType] = struct{}{}
+}
+
+// OwnerTypeCleared returns if the "owner_type" field was cleared in this mutation.
+func (m *CustomerProfileMutation) OwnerTypeCleared() bool {
+	_, ok := m.clearedFields[customerprofile.FieldOwnerType]
+	return ok
+}
+
+// ResetOwnerType resets all changes to the "owner_type" field.
+func (m *CustomerProfileMutation) ResetOwnerType() {
+	m.owner_type = nil
+	m.addowner_type = nil
+	delete(m.clearedFields, customerprofile.FieldOwnerType)
+}
+
+// SetIndustry sets the "industry" field.
+func (m *CustomerProfileMutation) SetIndustry(i int) {
+	m.industry = &i
+	m.addindustry = nil
+}
+
+// Industry returns the value of the "industry" field in the mutation.
+func (m *CustomerProfileMutation) Industry() (r int, exists bool) {
+	v := m.industry
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIndustry returns the old "industry" field's value of the CustomerProfile entity.
+// If the CustomerProfile object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CustomerProfileMutation) OldIndustry(ctx context.Context) (v *int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldIndustry is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldIndustry requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIndustry: %w", err)
+	}
+	return oldValue.Industry, nil
+}
+
+// AddIndustry adds i to the "industry" field.
+func (m *CustomerProfileMutation) AddIndustry(i int) {
+	if m.addindustry != nil {
+		*m.addindustry += i
+	} else {
+		m.addindustry = &i
+	}
+}
+
+// AddedIndustry returns the value that was added to the "industry" field in this mutation.
+func (m *CustomerProfileMutation) AddedIndustry() (r int, exists bool) {
+	v := m.addindustry
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearIndustry clears the value of the "industry" field.
+func (m *CustomerProfileMutation) ClearIndustry() {
+	m.industry = nil
+	m.addindustry = nil
+	m.clearedFields[customerprofile.FieldIndustry] = struct{}{}
+}
+
+// IndustryCleared returns if the "industry" field was cleared in this mutation.
+func (m *CustomerProfileMutation) IndustryCleared() bool {
+	_, ok := m.clearedFields[customerprofile.FieldIndustry]
+	return ok
+}
+
+// ResetIndustry resets all changes to the "industry" field.
+func (m *CustomerProfileMutation) ResetIndustry() {
+	m.industry = nil
+	m.addindustry = nil
+	delete(m.clearedFields, customerprofile.FieldIndustry)
+}
+
+// SetSize sets the "size" field.
+func (m *CustomerProfileMutation) SetSize(i int) {
+	m.size = &i
+	m.addsize = nil
+}
+
+// Size returns the value of the "size" field in the mutation.
+func (m *CustomerProfileMutation) Size() (r int, exists bool) {
+	v := m.size
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSize returns the old "size" field's value of the CustomerProfile entity.
+// If the CustomerProfile object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CustomerProfileMutation) OldSize(ctx context.Context) (v *int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSize is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSize requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSize: %w", err)
+	}
+	return oldValue.Size, nil
+}
+
+// AddSize adds i to the "size" field.
+func (m *CustomerProfileMutation) AddSize(i int) {
+	if m.addsize != nil {
+		*m.addsize += i
+	} else {
+		m.addsize = &i
+	}
+}
+
+// AddedSize returns the value that was added to the "size" field in this mutation.
+func (m *CustomerProfileMutation) AddedSize() (r int, exists bool) {
+	v := m.addsize
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearSize clears the value of the "size" field.
+func (m *CustomerProfileMutation) ClearSize() {
+	m.size = nil
+	m.addsize = nil
+	m.clearedFields[customerprofile.FieldSize] = struct{}{}
+}
+
+// SizeCleared returns if the "size" field was cleared in this mutation.
+func (m *CustomerProfileMutation) SizeCleared() bool {
+	_, ok := m.clearedFields[customerprofile.FieldSize]
+	return ok
+}
+
+// ResetSize resets all changes to the "size" field.
+func (m *CustomerProfileMutation) ResetSize() {
+	m.size = nil
+	m.addsize = nil
+	delete(m.clearedFields, customerprofile.FieldSize)
+}
+
+// SetContactPerson sets the "contact_person" field.
+func (m *CustomerProfileMutation) SetContactPerson(s string) {
+	m.contact_person = &s
+}
+
+// ContactPerson returns the value of the "contact_person" field in the mutation.
+func (m *CustomerProfileMutation) ContactPerson() (r string, exists bool) {
+	v := m.contact_person
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldContactPerson returns the old "contact_person" field's value of the CustomerProfile entity.
+// If the CustomerProfile object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CustomerProfileMutation) OldContactPerson(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldContactPerson is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldContactPerson requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldContactPerson: %w", err)
+	}
+	return oldValue.ContactPerson, nil
+}
+
+// ClearContactPerson clears the value of the "contact_person" field.
+func (m *CustomerProfileMutation) ClearContactPerson() {
+	m.contact_person = nil
+	m.clearedFields[customerprofile.FieldContactPerson] = struct{}{}
+}
+
+// ContactPersonCleared returns if the "contact_person" field was cleared in this mutation.
+func (m *CustomerProfileMutation) ContactPersonCleared() bool {
+	_, ok := m.clearedFields[customerprofile.FieldContactPerson]
+	return ok
+}
+
+// ResetContactPerson resets all changes to the "contact_person" field.
+func (m *CustomerProfileMutation) ResetContactPerson() {
+	m.contact_person = nil
+	delete(m.clearedFields, customerprofile.FieldContactPerson)
+}
+
+// SetContactPersonPosition sets the "contact_person_position" field.
+func (m *CustomerProfileMutation) SetContactPersonPosition(s string) {
+	m.contact_person_position = &s
+}
+
+// ContactPersonPosition returns the value of the "contact_person_position" field in the mutation.
+func (m *CustomerProfileMutation) ContactPersonPosition() (r string, exists bool) {
+	v := m.contact_person_position
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldContactPersonPosition returns the old "contact_person_position" field's value of the CustomerProfile entity.
+// If the CustomerProfile object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CustomerProfileMutation) OldContactPersonPosition(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldContactPersonPosition is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldContactPersonPosition requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldContactPersonPosition: %w", err)
+	}
+	return oldValue.ContactPersonPosition, nil
+}
+
+// ClearContactPersonPosition clears the value of the "contact_person_position" field.
+func (m *CustomerProfileMutation) ClearContactPersonPosition() {
+	m.contact_person_position = nil
+	m.clearedFields[customerprofile.FieldContactPersonPosition] = struct{}{}
+}
+
+// ContactPersonPositionCleared returns if the "contact_person_position" field was cleared in this mutation.
+func (m *CustomerProfileMutation) ContactPersonPositionCleared() bool {
+	_, ok := m.clearedFields[customerprofile.FieldContactPersonPosition]
+	return ok
+}
+
+// ResetContactPersonPosition resets all changes to the "contact_person_position" field.
+func (m *CustomerProfileMutation) ResetContactPersonPosition() {
+	m.contact_person_position = nil
+	delete(m.clearedFields, customerprofile.FieldContactPersonPosition)
+}
+
+// SetContactPersonPhone sets the "contact_person_phone" field.
+func (m *CustomerProfileMutation) SetContactPersonPhone(s string) {
+	m.contact_person_phone = &s
+}
+
+// ContactPersonPhone returns the value of the "contact_person_phone" field in the mutation.
+func (m *CustomerProfileMutation) ContactPersonPhone() (r string, exists bool) {
+	v := m.contact_person_phone
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldContactPersonPhone returns the old "contact_person_phone" field's value of the CustomerProfile entity.
+// If the CustomerProfile object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CustomerProfileMutation) OldContactPersonPhone(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldContactPersonPhone is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldContactPersonPhone requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldContactPersonPhone: %w", err)
+	}
+	return oldValue.ContactPersonPhone, nil
+}
+
+// ClearContactPersonPhone clears the value of the "contact_person_phone" field.
+func (m *CustomerProfileMutation) ClearContactPersonPhone() {
+	m.contact_person_phone = nil
+	m.clearedFields[customerprofile.FieldContactPersonPhone] = struct{}{}
+}
+
+// ContactPersonPhoneCleared returns if the "contact_person_phone" field was cleared in this mutation.
+func (m *CustomerProfileMutation) ContactPersonPhoneCleared() bool {
+	_, ok := m.clearedFields[customerprofile.FieldContactPersonPhone]
+	return ok
+}
+
+// ResetContactPersonPhone resets all changes to the "contact_person_phone" field.
+func (m *CustomerProfileMutation) ResetContactPersonPhone() {
+	m.contact_person_phone = nil
+	delete(m.clearedFields, customerprofile.FieldContactPersonPhone)
+}
+
+// SetContactPersonEmail sets the "contact_person_email" field.
+func (m *CustomerProfileMutation) SetContactPersonEmail(s string) {
+	m.contact_person_email = &s
+}
+
+// ContactPersonEmail returns the value of the "contact_person_email" field in the mutation.
+func (m *CustomerProfileMutation) ContactPersonEmail() (r string, exists bool) {
+	v := m.contact_person_email
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldContactPersonEmail returns the old "contact_person_email" field's value of the CustomerProfile entity.
+// If the CustomerProfile object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CustomerProfileMutation) OldContactPersonEmail(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldContactPersonEmail is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldContactPersonEmail requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldContactPersonEmail: %w", err)
+	}
+	return oldValue.ContactPersonEmail, nil
+}
+
+// ClearContactPersonEmail clears the value of the "contact_person_email" field.
+func (m *CustomerProfileMutation) ClearContactPersonEmail() {
+	m.contact_person_email = nil
+	m.clearedFields[customerprofile.FieldContactPersonEmail] = struct{}{}
+}
+
+// ContactPersonEmailCleared returns if the "contact_person_email" field was cleared in this mutation.
+func (m *CustomerProfileMutation) ContactPersonEmailCleared() bool {
+	_, ok := m.clearedFields[customerprofile.FieldContactPersonEmail]
+	return ok
+}
+
+// ResetContactPersonEmail resets all changes to the "contact_person_email" field.
+func (m *CustomerProfileMutation) ResetContactPersonEmail() {
+	m.contact_person_email = nil
+	delete(m.clearedFields, customerprofile.FieldContactPersonEmail)
+}
+
+// SetSalesID sets the "sales_id" field.
+func (m *CustomerProfileMutation) SetSalesID(x xid.ID) {
+	m.sales = &x
+}
+
+// SalesID returns the value of the "sales_id" field in the mutation.
+func (m *CustomerProfileMutation) SalesID() (r xid.ID, exists bool) {
+	v := m.sales
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSalesID returns the old "sales_id" field's value of the CustomerProfile entity.
+// If the CustomerProfile object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CustomerProfileMutation) OldSalesID(ctx context.Context) (v *xid.ID, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSalesID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSalesID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSalesID: %w", err)
+	}
+	return oldValue.SalesID, nil
+}
+
+// ClearSalesID clears the value of the "sales_id" field.
+func (m *CustomerProfileMutation) ClearSalesID() {
+	m.sales = nil
+	m.clearedFields[customerprofile.FieldSalesID] = struct{}{}
+}
+
+// SalesIDCleared returns if the "sales_id" field was cleared in this mutation.
+func (m *CustomerProfileMutation) SalesIDCleared() bool {
+	_, ok := m.clearedFields[customerprofile.FieldSalesID]
+	return ok
+}
+
+// ResetSalesID resets all changes to the "sales_id" field.
+func (m *CustomerProfileMutation) ResetSalesID() {
+	m.sales = nil
+	delete(m.clearedFields, customerprofile.FieldSalesID)
+}
+
+// SetCustomerID sets the "customer_id" field.
+func (m *CustomerProfileMutation) SetCustomerID(x xid.ID) {
+	m.customer = &x
+}
+
+// CustomerID returns the value of the "customer_id" field in the mutation.
+func (m *CustomerProfileMutation) CustomerID() (r xid.ID, exists bool) {
+	v := m.customer
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCustomerID returns the old "customer_id" field's value of the CustomerProfile entity.
+// If the CustomerProfile object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CustomerProfileMutation) OldCustomerID(ctx context.Context) (v xid.ID, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCustomerID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCustomerID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCustomerID: %w", err)
+	}
+	return oldValue.CustomerID, nil
+}
+
+// ResetCustomerID resets all changes to the "customer_id" field.
+func (m *CustomerProfileMutation) ResetCustomerID() {
+	m.customer = nil
+}
+
+// SetCreatedByID sets the "created_by_id" field.
+func (m *CustomerProfileMutation) SetCreatedByID(x xid.ID) {
+	m.created_by = &x
+}
+
+// CreatedByID returns the value of the "created_by_id" field in the mutation.
+func (m *CustomerProfileMutation) CreatedByID() (r xid.ID, exists bool) {
+	v := m.created_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreatedByID returns the old "created_by_id" field's value of the CustomerProfile entity.
+// If the CustomerProfile object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CustomerProfileMutation) OldCreatedByID(ctx context.Context) (v *xid.ID, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreatedByID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreatedByID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreatedByID: %w", err)
+	}
+	return oldValue.CreatedByID, nil
+}
+
+// ClearCreatedByID clears the value of the "created_by_id" field.
+func (m *CustomerProfileMutation) ClearCreatedByID() {
+	m.created_by = nil
+	m.clearedFields[customerprofile.FieldCreatedByID] = struct{}{}
+}
+
+// CreatedByIDCleared returns if the "created_by_id" field was cleared in this mutation.
+func (m *CustomerProfileMutation) CreatedByIDCleared() bool {
+	_, ok := m.clearedFields[customerprofile.FieldCreatedByID]
+	return ok
+}
+
+// ResetCreatedByID resets all changes to the "created_by_id" field.
+func (m *CustomerProfileMutation) ResetCreatedByID() {
+	m.created_by = nil
+	delete(m.clearedFields, customerprofile.FieldCreatedByID)
+}
+
+// SetApproverID sets the "approver_id" field.
+func (m *CustomerProfileMutation) SetApproverID(x xid.ID) {
+	m.approver = &x
+}
+
+// ApproverID returns the value of the "approver_id" field in the mutation.
+func (m *CustomerProfileMutation) ApproverID() (r xid.ID, exists bool) {
+	v := m.approver
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldApproverID returns the old "approver_id" field's value of the CustomerProfile entity.
+// If the CustomerProfile object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CustomerProfileMutation) OldApproverID(ctx context.Context) (v *xid.ID, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldApproverID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldApproverID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldApproverID: %w", err)
+	}
+	return oldValue.ApproverID, nil
+}
+
+// ClearApproverID clears the value of the "approver_id" field.
+func (m *CustomerProfileMutation) ClearApproverID() {
+	m.approver = nil
+	m.clearedFields[customerprofile.FieldApproverID] = struct{}{}
+}
+
+// ApproverIDCleared returns if the "approver_id" field was cleared in this mutation.
+func (m *CustomerProfileMutation) ApproverIDCleared() bool {
+	_, ok := m.clearedFields[customerprofile.FieldApproverID]
+	return ok
+}
+
+// ResetApproverID resets all changes to the "approver_id" field.
+func (m *CustomerProfileMutation) ResetApproverID() {
+	m.approver = nil
+	delete(m.clearedFields, customerprofile.FieldApproverID)
+}
+
+// ClearCustomer clears the "customer" edge to the Customer entity.
+func (m *CustomerProfileMutation) ClearCustomer() {
+	m.clearedcustomer = true
+	m.clearedFields[customerprofile.FieldCustomerID] = struct{}{}
+}
+
+// CustomerCleared reports if the "customer" edge to the Customer entity was cleared.
+func (m *CustomerProfileMutation) CustomerCleared() bool {
+	return m.clearedcustomer
+}
+
+// CustomerIDs returns the "customer" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// CustomerID instead. It exists only for internal usage by the builders.
+func (m *CustomerProfileMutation) CustomerIDs() (ids []xid.ID) {
+	if id := m.customer; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetCustomer resets all changes to the "customer" edge.
+func (m *CustomerProfileMutation) ResetCustomer() {
+	m.customer = nil
+	m.clearedcustomer = false
+}
+
+// ClearCreatedBy clears the "created_by" edge to the User entity.
+func (m *CustomerProfileMutation) ClearCreatedBy() {
+	m.clearedcreated_by = true
+	m.clearedFields[customerprofile.FieldCreatedByID] = struct{}{}
+}
+
+// CreatedByCleared reports if the "created_by" edge to the User entity was cleared.
+func (m *CustomerProfileMutation) CreatedByCleared() bool {
+	return m.CreatedByIDCleared() || m.clearedcreated_by
+}
+
+// CreatedByIDs returns the "created_by" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// CreatedByID instead. It exists only for internal usage by the builders.
+func (m *CustomerProfileMutation) CreatedByIDs() (ids []xid.ID) {
+	if id := m.created_by; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetCreatedBy resets all changes to the "created_by" edge.
+func (m *CustomerProfileMutation) ResetCreatedBy() {
+	m.created_by = nil
+	m.clearedcreated_by = false
+}
+
+// ClearApprover clears the "approver" edge to the User entity.
+func (m *CustomerProfileMutation) ClearApprover() {
+	m.clearedapprover = true
+	m.clearedFields[customerprofile.FieldApproverID] = struct{}{}
+}
+
+// ApproverCleared reports if the "approver" edge to the User entity was cleared.
+func (m *CustomerProfileMutation) ApproverCleared() bool {
+	return m.ApproverIDCleared() || m.clearedapprover
+}
+
+// ApproverIDs returns the "approver" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// ApproverID instead. It exists only for internal usage by the builders.
+func (m *CustomerProfileMutation) ApproverIDs() (ids []xid.ID) {
+	if id := m.approver; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetApprover resets all changes to the "approver" edge.
+func (m *CustomerProfileMutation) ResetApprover() {
+	m.approver = nil
+	m.clearedapprover = false
+}
+
+// ClearSales clears the "sales" edge to the User entity.
+func (m *CustomerProfileMutation) ClearSales() {
+	m.clearedsales = true
+	m.clearedFields[customerprofile.FieldSalesID] = struct{}{}
+}
+
+// SalesCleared reports if the "sales" edge to the User entity was cleared.
+func (m *CustomerProfileMutation) SalesCleared() bool {
+	return m.SalesIDCleared() || m.clearedsales
+}
+
+// SalesIDs returns the "sales" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// SalesID instead. It exists only for internal usage by the builders.
+func (m *CustomerProfileMutation) SalesIDs() (ids []xid.ID) {
+	if id := m.sales; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetSales resets all changes to the "sales" edge.
+func (m *CustomerProfileMutation) ResetSales() {
+	m.sales = nil
+	m.clearedsales = false
+}
+
+// Where appends a list predicates to the CustomerProfileMutation builder.
+func (m *CustomerProfileMutation) Where(ps ...predicate.CustomerProfile) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// WhereP appends storage-level predicates to the CustomerProfileMutation builder. Using this method,
+// users can use type-assertion to append predicates that do not depend on any generated package.
+func (m *CustomerProfileMutation) WhereP(ps ...func(*sql.Selector)) {
+	p := make([]predicate.CustomerProfile, len(ps))
+	for i := range ps {
+		p[i] = ps[i]
+	}
+	m.Where(p...)
+}
+
+// Op returns the operation name.
+func (m *CustomerProfileMutation) Op() Op {
+	return m.op
+}
+
+// SetOp allows setting the mutation operation.
+func (m *CustomerProfileMutation) SetOp(op Op) {
+	m.op = op
+}
+
+// Type returns the node type of this mutation (CustomerProfile).
+func (m *CustomerProfileMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *CustomerProfileMutation) Fields() []string {
+	fields := make([]string, 0, 15)
+	if m.created_at != nil {
+		fields = append(fields, customerprofile.FieldCreatedAt)
+	}
+	if m.updated_at != nil {
+		fields = append(fields, customerprofile.FieldUpdatedAt)
+	}
+	if m.name != nil {
+		fields = append(fields, customerprofile.FieldName)
+	}
+	if m.approval_status != nil {
+		fields = append(fields, customerprofile.FieldApprovalStatus)
+	}
+	if m.owner_type != nil {
+		fields = append(fields, customerprofile.FieldOwnerType)
+	}
+	if m.industry != nil {
+		fields = append(fields, customerprofile.FieldIndustry)
+	}
+	if m.size != nil {
+		fields = append(fields, customerprofile.FieldSize)
+	}
+	if m.contact_person != nil {
+		fields = append(fields, customerprofile.FieldContactPerson)
+	}
+	if m.contact_person_position != nil {
+		fields = append(fields, customerprofile.FieldContactPersonPosition)
+	}
+	if m.contact_person_phone != nil {
+		fields = append(fields, customerprofile.FieldContactPersonPhone)
+	}
+	if m.contact_person_email != nil {
+		fields = append(fields, customerprofile.FieldContactPersonEmail)
+	}
+	if m.sales != nil {
+		fields = append(fields, customerprofile.FieldSalesID)
+	}
+	if m.customer != nil {
+		fields = append(fields, customerprofile.FieldCustomerID)
+	}
+	if m.created_by != nil {
+		fields = append(fields, customerprofile.FieldCreatedByID)
+	}
+	if m.approver != nil {
+		fields = append(fields, customerprofile.FieldApproverID)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *CustomerProfileMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case customerprofile.FieldCreatedAt:
+		return m.CreatedAt()
+	case customerprofile.FieldUpdatedAt:
+		return m.UpdatedAt()
+	case customerprofile.FieldName:
+		return m.Name()
+	case customerprofile.FieldApprovalStatus:
+		return m.ApprovalStatus()
+	case customerprofile.FieldOwnerType:
+		return m.OwnerType()
+	case customerprofile.FieldIndustry:
+		return m.Industry()
+	case customerprofile.FieldSize:
+		return m.Size()
+	case customerprofile.FieldContactPerson:
+		return m.ContactPerson()
+	case customerprofile.FieldContactPersonPosition:
+		return m.ContactPersonPosition()
+	case customerprofile.FieldContactPersonPhone:
+		return m.ContactPersonPhone()
+	case customerprofile.FieldContactPersonEmail:
+		return m.ContactPersonEmail()
+	case customerprofile.FieldSalesID:
+		return m.SalesID()
+	case customerprofile.FieldCustomerID:
+		return m.CustomerID()
+	case customerprofile.FieldCreatedByID:
+		return m.CreatedByID()
+	case customerprofile.FieldApproverID:
+		return m.ApproverID()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *CustomerProfileMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case customerprofile.FieldCreatedAt:
+		return m.OldCreatedAt(ctx)
+	case customerprofile.FieldUpdatedAt:
+		return m.OldUpdatedAt(ctx)
+	case customerprofile.FieldName:
+		return m.OldName(ctx)
+	case customerprofile.FieldApprovalStatus:
+		return m.OldApprovalStatus(ctx)
+	case customerprofile.FieldOwnerType:
+		return m.OldOwnerType(ctx)
+	case customerprofile.FieldIndustry:
+		return m.OldIndustry(ctx)
+	case customerprofile.FieldSize:
+		return m.OldSize(ctx)
+	case customerprofile.FieldContactPerson:
+		return m.OldContactPerson(ctx)
+	case customerprofile.FieldContactPersonPosition:
+		return m.OldContactPersonPosition(ctx)
+	case customerprofile.FieldContactPersonPhone:
+		return m.OldContactPersonPhone(ctx)
+	case customerprofile.FieldContactPersonEmail:
+		return m.OldContactPersonEmail(ctx)
+	case customerprofile.FieldSalesID:
+		return m.OldSalesID(ctx)
+	case customerprofile.FieldCustomerID:
+		return m.OldCustomerID(ctx)
+	case customerprofile.FieldCreatedByID:
+		return m.OldCreatedByID(ctx)
+	case customerprofile.FieldApproverID:
+		return m.OldApproverID(ctx)
+	}
+	return nil, fmt.Errorf("unknown CustomerProfile field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *CustomerProfileMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case customerprofile.FieldCreatedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreatedAt(v)
+		return nil
+	case customerprofile.FieldUpdatedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdatedAt(v)
+		return nil
+	case customerprofile.FieldName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetName(v)
+		return nil
+	case customerprofile.FieldApprovalStatus:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetApprovalStatus(v)
+		return nil
+	case customerprofile.FieldOwnerType:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetOwnerType(v)
+		return nil
+	case customerprofile.FieldIndustry:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIndustry(v)
+		return nil
+	case customerprofile.FieldSize:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSize(v)
+		return nil
+	case customerprofile.FieldContactPerson:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetContactPerson(v)
+		return nil
+	case customerprofile.FieldContactPersonPosition:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetContactPersonPosition(v)
+		return nil
+	case customerprofile.FieldContactPersonPhone:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetContactPersonPhone(v)
+		return nil
+	case customerprofile.FieldContactPersonEmail:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetContactPersonEmail(v)
+		return nil
+	case customerprofile.FieldSalesID:
+		v, ok := value.(xid.ID)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSalesID(v)
+		return nil
+	case customerprofile.FieldCustomerID:
+		v, ok := value.(xid.ID)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCustomerID(v)
+		return nil
+	case customerprofile.FieldCreatedByID:
+		v, ok := value.(xid.ID)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreatedByID(v)
+		return nil
+	case customerprofile.FieldApproverID:
+		v, ok := value.(xid.ID)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetApproverID(v)
+		return nil
+	}
+	return fmt.Errorf("unknown CustomerProfile field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *CustomerProfileMutation) AddedFields() []string {
+	var fields []string
+	if m.addapproval_status != nil {
+		fields = append(fields, customerprofile.FieldApprovalStatus)
+	}
+	if m.addowner_type != nil {
+		fields = append(fields, customerprofile.FieldOwnerType)
+	}
+	if m.addindustry != nil {
+		fields = append(fields, customerprofile.FieldIndustry)
+	}
+	if m.addsize != nil {
+		fields = append(fields, customerprofile.FieldSize)
+	}
+	return fields
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *CustomerProfileMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case customerprofile.FieldApprovalStatus:
+		return m.AddedApprovalStatus()
+	case customerprofile.FieldOwnerType:
+		return m.AddedOwnerType()
+	case customerprofile.FieldIndustry:
+		return m.AddedIndustry()
+	case customerprofile.FieldSize:
+		return m.AddedSize()
+	}
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *CustomerProfileMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	case customerprofile.FieldApprovalStatus:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddApprovalStatus(v)
+		return nil
+	case customerprofile.FieldOwnerType:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddOwnerType(v)
+		return nil
+	case customerprofile.FieldIndustry:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddIndustry(v)
+		return nil
+	case customerprofile.FieldSize:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddSize(v)
+		return nil
+	}
+	return fmt.Errorf("unknown CustomerProfile numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *CustomerProfileMutation) ClearedFields() []string {
+	var fields []string
+	if m.FieldCleared(customerprofile.FieldOwnerType) {
+		fields = append(fields, customerprofile.FieldOwnerType)
+	}
+	if m.FieldCleared(customerprofile.FieldIndustry) {
+		fields = append(fields, customerprofile.FieldIndustry)
+	}
+	if m.FieldCleared(customerprofile.FieldSize) {
+		fields = append(fields, customerprofile.FieldSize)
+	}
+	if m.FieldCleared(customerprofile.FieldContactPerson) {
+		fields = append(fields, customerprofile.FieldContactPerson)
+	}
+	if m.FieldCleared(customerprofile.FieldContactPersonPosition) {
+		fields = append(fields, customerprofile.FieldContactPersonPosition)
+	}
+	if m.FieldCleared(customerprofile.FieldContactPersonPhone) {
+		fields = append(fields, customerprofile.FieldContactPersonPhone)
+	}
+	if m.FieldCleared(customerprofile.FieldContactPersonEmail) {
+		fields = append(fields, customerprofile.FieldContactPersonEmail)
+	}
+	if m.FieldCleared(customerprofile.FieldSalesID) {
+		fields = append(fields, customerprofile.FieldSalesID)
+	}
+	if m.FieldCleared(customerprofile.FieldCreatedByID) {
+		fields = append(fields, customerprofile.FieldCreatedByID)
+	}
+	if m.FieldCleared(customerprofile.FieldApproverID) {
+		fields = append(fields, customerprofile.FieldApproverID)
+	}
+	return fields
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *CustomerProfileMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *CustomerProfileMutation) ClearField(name string) error {
+	switch name {
+	case customerprofile.FieldOwnerType:
+		m.ClearOwnerType()
+		return nil
+	case customerprofile.FieldIndustry:
+		m.ClearIndustry()
+		return nil
+	case customerprofile.FieldSize:
+		m.ClearSize()
+		return nil
+	case customerprofile.FieldContactPerson:
+		m.ClearContactPerson()
+		return nil
+	case customerprofile.FieldContactPersonPosition:
+		m.ClearContactPersonPosition()
+		return nil
+	case customerprofile.FieldContactPersonPhone:
+		m.ClearContactPersonPhone()
+		return nil
+	case customerprofile.FieldContactPersonEmail:
+		m.ClearContactPersonEmail()
+		return nil
+	case customerprofile.FieldSalesID:
+		m.ClearSalesID()
+		return nil
+	case customerprofile.FieldCreatedByID:
+		m.ClearCreatedByID()
+		return nil
+	case customerprofile.FieldApproverID:
+		m.ClearApproverID()
+		return nil
+	}
+	return fmt.Errorf("unknown CustomerProfile nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *CustomerProfileMutation) ResetField(name string) error {
+	switch name {
+	case customerprofile.FieldCreatedAt:
+		m.ResetCreatedAt()
+		return nil
+	case customerprofile.FieldUpdatedAt:
+		m.ResetUpdatedAt()
+		return nil
+	case customerprofile.FieldName:
+		m.ResetName()
+		return nil
+	case customerprofile.FieldApprovalStatus:
+		m.ResetApprovalStatus()
+		return nil
+	case customerprofile.FieldOwnerType:
+		m.ResetOwnerType()
+		return nil
+	case customerprofile.FieldIndustry:
+		m.ResetIndustry()
+		return nil
+	case customerprofile.FieldSize:
+		m.ResetSize()
+		return nil
+	case customerprofile.FieldContactPerson:
+		m.ResetContactPerson()
+		return nil
+	case customerprofile.FieldContactPersonPosition:
+		m.ResetContactPersonPosition()
+		return nil
+	case customerprofile.FieldContactPersonPhone:
+		m.ResetContactPersonPhone()
+		return nil
+	case customerprofile.FieldContactPersonEmail:
+		m.ResetContactPersonEmail()
+		return nil
+	case customerprofile.FieldSalesID:
+		m.ResetSalesID()
+		return nil
+	case customerprofile.FieldCustomerID:
+		m.ResetCustomerID()
+		return nil
+	case customerprofile.FieldCreatedByID:
+		m.ResetCreatedByID()
+		return nil
+	case customerprofile.FieldApproverID:
+		m.ResetApproverID()
+		return nil
+	}
+	return fmt.Errorf("unknown CustomerProfile field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *CustomerProfileMutation) AddedEdges() []string {
+	edges := make([]string, 0, 4)
+	if m.customer != nil {
+		edges = append(edges, customerprofile.EdgeCustomer)
+	}
+	if m.created_by != nil {
+		edges = append(edges, customerprofile.EdgeCreatedBy)
+	}
+	if m.approver != nil {
+		edges = append(edges, customerprofile.EdgeApprover)
+	}
+	if m.sales != nil {
+		edges = append(edges, customerprofile.EdgeSales)
+	}
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *CustomerProfileMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case customerprofile.EdgeCustomer:
+		if id := m.customer; id != nil {
+			return []ent.Value{*id}
+		}
+	case customerprofile.EdgeCreatedBy:
+		if id := m.created_by; id != nil {
+			return []ent.Value{*id}
+		}
+	case customerprofile.EdgeApprover:
+		if id := m.approver; id != nil {
+			return []ent.Value{*id}
+		}
+	case customerprofile.EdgeSales:
+		if id := m.sales; id != nil {
+			return []ent.Value{*id}
+		}
+	}
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *CustomerProfileMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 4)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *CustomerProfileMutation) RemovedIDs(name string) []ent.Value {
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *CustomerProfileMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 4)
+	if m.clearedcustomer {
+		edges = append(edges, customerprofile.EdgeCustomer)
+	}
+	if m.clearedcreated_by {
+		edges = append(edges, customerprofile.EdgeCreatedBy)
+	}
+	if m.clearedapprover {
+		edges = append(edges, customerprofile.EdgeApprover)
+	}
+	if m.clearedsales {
+		edges = append(edges, customerprofile.EdgeSales)
+	}
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *CustomerProfileMutation) EdgeCleared(name string) bool {
+	switch name {
+	case customerprofile.EdgeCustomer:
+		return m.clearedcustomer
+	case customerprofile.EdgeCreatedBy:
+		return m.clearedcreated_by
+	case customerprofile.EdgeApprover:
+		return m.clearedapprover
+	case customerprofile.EdgeSales:
+		return m.clearedsales
+	}
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *CustomerProfileMutation) ClearEdge(name string) error {
+	switch name {
+	case customerprofile.EdgeCustomer:
+		m.ClearCustomer()
+		return nil
+	case customerprofile.EdgeCreatedBy:
+		m.ClearCreatedBy()
+		return nil
+	case customerprofile.EdgeApprover:
+		m.ClearApprover()
+		return nil
+	case customerprofile.EdgeSales:
+		m.ClearSales()
+		return nil
+	}
+	return fmt.Errorf("unknown CustomerProfile unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *CustomerProfileMutation) ResetEdge(name string) error {
+	switch name {
+	case customerprofile.EdgeCustomer:
+		m.ResetCustomer()
+		return nil
+	case customerprofile.EdgeCreatedBy:
+		m.ResetCreatedBy()
+		return nil
+	case customerprofile.EdgeApprover:
+		m.ResetApprover()
+		return nil
+	case customerprofile.EdgeSales:
+		m.ResetSales()
+		return nil
+	}
+	return fmt.Errorf("unknown CustomerProfile edge %s", name)
 }
 
 // DistrictMutation represents an operation that mutates the District nodes in the graph.

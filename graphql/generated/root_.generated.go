@@ -145,6 +145,8 @@ type ComplexityRoot struct {
 	}
 
 	Customer struct {
+		ActiveProfile         func(childComplexity int) int
+		ActiveProfileID       func(childComplexity int) int
 		ApprovalStatus        func(childComplexity int) int
 		Approver              func(childComplexity int) int
 		ApproverID            func(childComplexity int) int
@@ -162,6 +164,9 @@ type ComplexityRoot struct {
 		Industry              func(childComplexity int) int
 		Name                  func(childComplexity int) int
 		OwnerType             func(childComplexity int) int
+		PendingProfile        func(childComplexity int) int
+		PendingProfileID      func(childComplexity int) int
+		Profiles              func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.CustomerProfileOrder, where *ent.CustomerProfileWhereInput) int
 		Sales                 func(childComplexity int) int
 		SalesID               func(childComplexity int) int
 		Size                  func(childComplexity int) int
@@ -192,6 +197,40 @@ type ComplexityRoot struct {
 	}
 
 	CustomerEdge struct {
+		Cursor func(childComplexity int) int
+		Node   func(childComplexity int) int
+	}
+
+	CustomerProfile struct {
+		ApprovalStatus        func(childComplexity int) int
+		Approver              func(childComplexity int) int
+		ApproverID            func(childComplexity int) int
+		ContactPerson         func(childComplexity int) int
+		ContactPersonEmail    func(childComplexity int) int
+		ContactPersonPhone    func(childComplexity int) int
+		ContactPersonPosition func(childComplexity int) int
+		CreatedAt             func(childComplexity int) int
+		CreatedBy             func(childComplexity int) int
+		CreatedByID           func(childComplexity int) int
+		Customer              func(childComplexity int) int
+		CustomerID            func(childComplexity int) int
+		ID                    func(childComplexity int) int
+		Industry              func(childComplexity int) int
+		Name                  func(childComplexity int) int
+		OwnerType             func(childComplexity int) int
+		Sales                 func(childComplexity int) int
+		SalesID               func(childComplexity int) int
+		Size                  func(childComplexity int) int
+		UpdatedAt             func(childComplexity int) int
+	}
+
+	CustomerProfileConnection struct {
+		Edges      func(childComplexity int) int
+		PageInfo   func(childComplexity int) int
+		TotalCount func(childComplexity int) int
+	}
+
+	CustomerProfileEdge struct {
 		Cursor func(childComplexity int) int
 		Node   func(childComplexity int) int
 	}
@@ -248,37 +287,38 @@ type ComplexityRoot struct {
 	}
 
 	Mutation struct {
-		ApproveCustomerRequest func(childComplexity int, id xid.ID) int
-		ApproveTender          func(childComplexity int, id xid.ID) int
-		CreateArea             func(childComplexity int, input ent.CreateAreaInput) int
-		CreateCompetitor       func(childComplexity int, input ent.CreateCompetitorInput) int
-		CreateCustomer         func(childComplexity int, input ent.CreateCustomerInput) int
-		CreatePlot             func(childComplexity int, input ent.CreatePlotInput, geoBounds [][]float64) int
-		CreateTender           func(childComplexity int, input ent.CreateTenderInput, geoBounds [][]float64, imageFileNames []string, attachmentFileNames []string, geoCoordinate []float64) int
-		CreateTenderProfile    func(childComplexity int, id xid.ID, input ent.CreateTenderProfileInput, imageFileNames []string, attachmentFileNames []string) int
-		CreateTenderV2         func(childComplexity int, tenderInput ent.CreateTenderInput, profileInput ent.CreateTenderProfileInput, imageFileNames []string, attachmentFileNames []string) int
-		CreateUser             func(childComplexity int, input ent.CreateUserInput) int
-		CreateVisitRecord      func(childComplexity int, input ent.CreateVisitRecordInput) int
-		DeleteCompetitor       func(childComplexity int, id xid.ID) int
-		DeleteCustomer         func(childComplexity int, id xid.ID) int
-		DeletePlot             func(childComplexity int, id xid.ID) int
-		DeleteTender           func(childComplexity int, id xid.ID) int
-		DeleteUser             func(childComplexity int, id xid.ID) int
-		DeleteVisitRecord      func(childComplexity int, id xid.ID) int
-		LoseTender             func(childComplexity int, id xid.ID, input model.LoseTenderInput) int
-		RejectCustomerRequest  func(childComplexity int, id xid.ID) int
-		RejectTender           func(childComplexity int, id xid.ID) int
-		UpdateArea             func(childComplexity int, id xid.ID, input ent.UpdateAreaInput) int
-		UpdateCompetitor       func(childComplexity int, id xid.ID, input ent.UpdateCompetitorInput) int
-		UpdateCustomer         func(childComplexity int, id xid.ID, input ent.UpdateCustomerInput) int
-		UpdateCustomerRequest  func(childComplexity int, id xid.ID, input ent.UpdateCustomerInput) int
-		UpdatePlot             func(childComplexity int, id xid.ID, input ent.UpdatePlotInput, geoBounds [][]float64) int
-		UpdateProject          func(childComplexity int, id xid.ID, input ent.UpdateProjectInput) int
-		UpdateTender           func(childComplexity int, id xid.ID, input ent.UpdateTenderInput, geoBounds [][]float64, imageFileNames []string, removeImageFileNames []string, attachmentFileNames []string, removeAttachmentFileNames []string, geoCoordinate []float64) int
-		UpdateTenderV2         func(childComplexity int, id xid.ID, tenderInput ent.UpdateTenderInput, profileInput ent.CreateTenderProfileInput, imageFileNames []string, attachmentFileNames []string) int
-		UpdateUser             func(childComplexity int, id xid.ID, input ent.UpdateUserInput) int
-		UpdateVisitRecord      func(childComplexity int, id xid.ID, input ent.UpdateVisitRecordInput) int
-		WinTender              func(childComplexity int, id xid.ID, input model.WinTenderInput) int
+		ApproveCustomer     func(childComplexity int, id xid.ID) int
+		ApproveTender       func(childComplexity int, id xid.ID) int
+		CreateArea          func(childComplexity int, input ent.CreateAreaInput) int
+		CreateCompetitor    func(childComplexity int, input ent.CreateCompetitorInput) int
+		CreateCustomer      func(childComplexity int, input ent.CreateCustomerInput) int
+		CreateCustomerV2    func(childComplexity int, customerInput ent.CreateCustomerInput, profileInput ent.CreateCustomerProfileInput) int
+		CreatePlot          func(childComplexity int, input ent.CreatePlotInput, geoBounds [][]float64) int
+		CreateTender        func(childComplexity int, input ent.CreateTenderInput, geoBounds [][]float64, imageFileNames []string, attachmentFileNames []string, geoCoordinate []float64) int
+		CreateTenderProfile func(childComplexity int, id xid.ID, input ent.CreateTenderProfileInput, imageFileNames []string, attachmentFileNames []string) int
+		CreateTenderV2      func(childComplexity int, tenderInput ent.CreateTenderInput, profileInput ent.CreateTenderProfileInput, imageFileNames []string, attachmentFileNames []string) int
+		CreateUser          func(childComplexity int, input ent.CreateUserInput) int
+		CreateVisitRecord   func(childComplexity int, input ent.CreateVisitRecordInput) int
+		DeleteCompetitor    func(childComplexity int, id xid.ID) int
+		DeleteCustomer      func(childComplexity int, id xid.ID) int
+		DeletePlot          func(childComplexity int, id xid.ID) int
+		DeleteTender        func(childComplexity int, id xid.ID) int
+		DeleteUser          func(childComplexity int, id xid.ID) int
+		DeleteVisitRecord   func(childComplexity int, id xid.ID) int
+		LoseTender          func(childComplexity int, id xid.ID, input model.LoseTenderInput) int
+		RejectCustomer      func(childComplexity int, id xid.ID) int
+		RejectTender        func(childComplexity int, id xid.ID) int
+		UpdateArea          func(childComplexity int, id xid.ID, input ent.UpdateAreaInput) int
+		UpdateCompetitor    func(childComplexity int, id xid.ID, input ent.UpdateCompetitorInput) int
+		UpdateCustomer      func(childComplexity int, id xid.ID, input ent.UpdateCustomerInput) int
+		UpdateCustomerV2    func(childComplexity int, id xid.ID, customerInput ent.UpdateCustomerInput, profileInput ent.CreateCustomerProfileInput) int
+		UpdatePlot          func(childComplexity int, id xid.ID, input ent.UpdatePlotInput, geoBounds [][]float64) int
+		UpdateProject       func(childComplexity int, id xid.ID, input ent.UpdateProjectInput) int
+		UpdateTender        func(childComplexity int, id xid.ID, input ent.UpdateTenderInput, geoBounds [][]float64, imageFileNames []string, removeImageFileNames []string, attachmentFileNames []string, removeAttachmentFileNames []string, geoCoordinate []float64) int
+		UpdateTenderV2      func(childComplexity int, id xid.ID, tenderInput ent.UpdateTenderInput, profileInput ent.CreateTenderProfileInput, imageFileNames []string, attachmentFileNames []string) int
+		UpdateUser          func(childComplexity int, id xid.ID, input ent.UpdateUserInput) int
+		UpdateVisitRecord   func(childComplexity int, id xid.ID, input ent.UpdateVisitRecordInput) int
+		WinTender           func(childComplexity int, id xid.ID, input model.WinTenderInput) int
 	}
 
 	Operation struct {
@@ -545,6 +585,7 @@ type ComplexityRoot struct {
 		Cities            func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.CityOrder, where *ent.CityWhereInput) int
 		Competitors       func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.CompetitorOrder, where *ent.CompetitorWhereInput) int
 		Countries         func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.CountryOrder, where *ent.CountryWhereInput) int
+		CustomerProfiles  func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.CustomerProfileOrder, where *ent.CustomerProfileWhereInput) int
 		Customers         func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.CustomerOrder, where *ent.CustomerWhereInput) int
 		Districts         func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.DistrictOrder, where *ent.DistrictWhereInput) int
 		Inputtips         func(childComplexity int, areaID xid.ID, keyword string) int
@@ -1309,6 +1350,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.CountryEdge.Node(childComplexity), true
 
+	case "Customer.activeProfile":
+		if e.complexity.Customer.ActiveProfile == nil {
+			break
+		}
+
+		return e.complexity.Customer.ActiveProfile(childComplexity), true
+
+	case "Customer.activeProfileID":
+		if e.complexity.Customer.ActiveProfileID == nil {
+			break
+		}
+
+		return e.complexity.Customer.ActiveProfileID(childComplexity), true
+
 	case "Customer.approvalStatus":
 		if e.complexity.Customer.ApprovalStatus == nil {
 			break
@@ -1427,6 +1482,32 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Customer.OwnerType(childComplexity), true
+
+	case "Customer.pendingProfile":
+		if e.complexity.Customer.PendingProfile == nil {
+			break
+		}
+
+		return e.complexity.Customer.PendingProfile(childComplexity), true
+
+	case "Customer.pendingProfileID":
+		if e.complexity.Customer.PendingProfileID == nil {
+			break
+		}
+
+		return e.complexity.Customer.PendingProfileID(childComplexity), true
+
+	case "Customer.profiles":
+		if e.complexity.Customer.Profiles == nil {
+			break
+		}
+
+		args, err := ec.field_Customer_profiles_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Customer.Profiles(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].([]*ent.CustomerProfileOrder), args["where"].(*ent.CustomerProfileWhereInput)), true
 
 	case "Customer.sales":
 		if e.complexity.Customer.Sales == nil {
@@ -1598,6 +1679,181 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.CustomerEdge.Node(childComplexity), true
+
+	case "CustomerProfile.approvalStatus":
+		if e.complexity.CustomerProfile.ApprovalStatus == nil {
+			break
+		}
+
+		return e.complexity.CustomerProfile.ApprovalStatus(childComplexity), true
+
+	case "CustomerProfile.approver":
+		if e.complexity.CustomerProfile.Approver == nil {
+			break
+		}
+
+		return e.complexity.CustomerProfile.Approver(childComplexity), true
+
+	case "CustomerProfile.approverID":
+		if e.complexity.CustomerProfile.ApproverID == nil {
+			break
+		}
+
+		return e.complexity.CustomerProfile.ApproverID(childComplexity), true
+
+	case "CustomerProfile.contactPerson":
+		if e.complexity.CustomerProfile.ContactPerson == nil {
+			break
+		}
+
+		return e.complexity.CustomerProfile.ContactPerson(childComplexity), true
+
+	case "CustomerProfile.contactPersonEmail":
+		if e.complexity.CustomerProfile.ContactPersonEmail == nil {
+			break
+		}
+
+		return e.complexity.CustomerProfile.ContactPersonEmail(childComplexity), true
+
+	case "CustomerProfile.contactPersonPhone":
+		if e.complexity.CustomerProfile.ContactPersonPhone == nil {
+			break
+		}
+
+		return e.complexity.CustomerProfile.ContactPersonPhone(childComplexity), true
+
+	case "CustomerProfile.contactPersonPosition":
+		if e.complexity.CustomerProfile.ContactPersonPosition == nil {
+			break
+		}
+
+		return e.complexity.CustomerProfile.ContactPersonPosition(childComplexity), true
+
+	case "CustomerProfile.createdAt":
+		if e.complexity.CustomerProfile.CreatedAt == nil {
+			break
+		}
+
+		return e.complexity.CustomerProfile.CreatedAt(childComplexity), true
+
+	case "CustomerProfile.createdBy":
+		if e.complexity.CustomerProfile.CreatedBy == nil {
+			break
+		}
+
+		return e.complexity.CustomerProfile.CreatedBy(childComplexity), true
+
+	case "CustomerProfile.createdByID":
+		if e.complexity.CustomerProfile.CreatedByID == nil {
+			break
+		}
+
+		return e.complexity.CustomerProfile.CreatedByID(childComplexity), true
+
+	case "CustomerProfile.customer":
+		if e.complexity.CustomerProfile.Customer == nil {
+			break
+		}
+
+		return e.complexity.CustomerProfile.Customer(childComplexity), true
+
+	case "CustomerProfile.customerID":
+		if e.complexity.CustomerProfile.CustomerID == nil {
+			break
+		}
+
+		return e.complexity.CustomerProfile.CustomerID(childComplexity), true
+
+	case "CustomerProfile.id":
+		if e.complexity.CustomerProfile.ID == nil {
+			break
+		}
+
+		return e.complexity.CustomerProfile.ID(childComplexity), true
+
+	case "CustomerProfile.industry":
+		if e.complexity.CustomerProfile.Industry == nil {
+			break
+		}
+
+		return e.complexity.CustomerProfile.Industry(childComplexity), true
+
+	case "CustomerProfile.name":
+		if e.complexity.CustomerProfile.Name == nil {
+			break
+		}
+
+		return e.complexity.CustomerProfile.Name(childComplexity), true
+
+	case "CustomerProfile.ownerType":
+		if e.complexity.CustomerProfile.OwnerType == nil {
+			break
+		}
+
+		return e.complexity.CustomerProfile.OwnerType(childComplexity), true
+
+	case "CustomerProfile.sales":
+		if e.complexity.CustomerProfile.Sales == nil {
+			break
+		}
+
+		return e.complexity.CustomerProfile.Sales(childComplexity), true
+
+	case "CustomerProfile.salesID":
+		if e.complexity.CustomerProfile.SalesID == nil {
+			break
+		}
+
+		return e.complexity.CustomerProfile.SalesID(childComplexity), true
+
+	case "CustomerProfile.size":
+		if e.complexity.CustomerProfile.Size == nil {
+			break
+		}
+
+		return e.complexity.CustomerProfile.Size(childComplexity), true
+
+	case "CustomerProfile.updatedAt":
+		if e.complexity.CustomerProfile.UpdatedAt == nil {
+			break
+		}
+
+		return e.complexity.CustomerProfile.UpdatedAt(childComplexity), true
+
+	case "CustomerProfileConnection.edges":
+		if e.complexity.CustomerProfileConnection.Edges == nil {
+			break
+		}
+
+		return e.complexity.CustomerProfileConnection.Edges(childComplexity), true
+
+	case "CustomerProfileConnection.pageInfo":
+		if e.complexity.CustomerProfileConnection.PageInfo == nil {
+			break
+		}
+
+		return e.complexity.CustomerProfileConnection.PageInfo(childComplexity), true
+
+	case "CustomerProfileConnection.totalCount":
+		if e.complexity.CustomerProfileConnection.TotalCount == nil {
+			break
+		}
+
+		return e.complexity.CustomerProfileConnection.TotalCount(childComplexity), true
+
+	case "CustomerProfileEdge.cursor":
+		if e.complexity.CustomerProfileEdge.Cursor == nil {
+			break
+		}
+
+		return e.complexity.CustomerProfileEdge.Cursor(childComplexity), true
+
+	case "CustomerProfileEdge.node":
+		if e.complexity.CustomerProfileEdge.Node == nil {
+			break
+		}
+
+		return e.complexity.CustomerProfileEdge.Node(childComplexity), true
 
 	case "District.adcode":
 		if e.complexity.District.Adcode == nil {
@@ -1840,17 +2096,17 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Location.Province(childComplexity), true
 
-	case "Mutation.approveCustomerRequest":
-		if e.complexity.Mutation.ApproveCustomerRequest == nil {
+	case "Mutation.approveCustomer":
+		if e.complexity.Mutation.ApproveCustomer == nil {
 			break
 		}
 
-		args, err := ec.field_Mutation_approveCustomerRequest_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_approveCustomer_args(context.TODO(), rawArgs)
 		if err != nil {
 			return 0, false
 		}
 
-		return e.complexity.Mutation.ApproveCustomerRequest(childComplexity, args["id"].(xid.ID)), true
+		return e.complexity.Mutation.ApproveCustomer(childComplexity, args["id"].(xid.ID)), true
 
 	case "Mutation.approveTender":
 		if e.complexity.Mutation.ApproveTender == nil {
@@ -1899,6 +2155,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.CreateCustomer(childComplexity, args["input"].(ent.CreateCustomerInput)), true
+
+	case "Mutation.createCustomerV2":
+		if e.complexity.Mutation.CreateCustomerV2 == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_createCustomerV2_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.CreateCustomerV2(childComplexity, args["customerInput"].(ent.CreateCustomerInput), args["profileInput"].(ent.CreateCustomerProfileInput)), true
 
 	case "Mutation.createPlot":
 		if e.complexity.Mutation.CreatePlot == nil {
@@ -2056,17 +2324,17 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.LoseTender(childComplexity, args["id"].(xid.ID), args["input"].(model.LoseTenderInput)), true
 
-	case "Mutation.rejectCustomerRequest":
-		if e.complexity.Mutation.RejectCustomerRequest == nil {
+	case "Mutation.rejectCustomer":
+		if e.complexity.Mutation.RejectCustomer == nil {
 			break
 		}
 
-		args, err := ec.field_Mutation_rejectCustomerRequest_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_rejectCustomer_args(context.TODO(), rawArgs)
 		if err != nil {
 			return 0, false
 		}
 
-		return e.complexity.Mutation.RejectCustomerRequest(childComplexity, args["id"].(xid.ID)), true
+		return e.complexity.Mutation.RejectCustomer(childComplexity, args["id"].(xid.ID)), true
 
 	case "Mutation.rejectTender":
 		if e.complexity.Mutation.RejectTender == nil {
@@ -2116,17 +2384,17 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.UpdateCustomer(childComplexity, args["id"].(xid.ID), args["input"].(ent.UpdateCustomerInput)), true
 
-	case "Mutation.updateCustomerRequest":
-		if e.complexity.Mutation.UpdateCustomerRequest == nil {
+	case "Mutation.updateCustomerV2":
+		if e.complexity.Mutation.UpdateCustomerV2 == nil {
 			break
 		}
 
-		args, err := ec.field_Mutation_updateCustomerRequest_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_updateCustomerV2_args(context.TODO(), rawArgs)
 		if err != nil {
 			return 0, false
 		}
 
-		return e.complexity.Mutation.UpdateCustomerRequest(childComplexity, args["id"].(xid.ID), args["input"].(ent.UpdateCustomerInput)), true
+		return e.complexity.Mutation.UpdateCustomerV2(childComplexity, args["id"].(xid.ID), args["customerInput"].(ent.UpdateCustomerInput), args["profileInput"].(ent.CreateCustomerProfileInput)), true
 
 	case "Mutation.updatePlot":
 		if e.complexity.Mutation.UpdatePlot == nil {
@@ -3661,6 +3929,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.Countries(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.CountryOrder), args["where"].(*ent.CountryWhereInput)), true
+
+	case "Query.customerProfiles":
+		if e.complexity.Query.CustomerProfiles == nil {
+			break
+		}
+
+		args, err := ec.field_Query_customerProfiles_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.CustomerProfiles(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].([]*ent.CustomerProfileOrder), args["where"].(*ent.CustomerProfileWhereInput)), true
 
 	case "Query.customers":
 		if e.complexity.Query.Customers == nil {
@@ -5676,6 +5956,7 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputCreateCompetitorInput,
 		ec.unmarshalInputCreateCountryInput,
 		ec.unmarshalInputCreateCustomerInput,
+		ec.unmarshalInputCreateCustomerProfileInput,
 		ec.unmarshalInputCreateDistrictInput,
 		ec.unmarshalInputCreatePlotInput,
 		ec.unmarshalInputCreatePotentialTenderInput,
@@ -5686,6 +5967,8 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputCreateUserInput,
 		ec.unmarshalInputCreateVisitRecordInput,
 		ec.unmarshalInputCustomerOrder,
+		ec.unmarshalInputCustomerProfileOrder,
+		ec.unmarshalInputCustomerProfileWhereInput,
 		ec.unmarshalInputCustomerWhereInput,
 		ec.unmarshalInputDistrictOrder,
 		ec.unmarshalInputDistrictWhereInput,
@@ -6749,6 +7032,33 @@ input CreateCustomerInput {
   updatedByID: ID
   approverID: ID
   visitRecordIDs: [ID!]
+  profileIDs: [ID!]
+  activeProfileID: ID
+  pendingProfileID: ID
+}
+"""
+CreateCustomerProfileInput is used for create CustomerProfile object.
+Input was generated by ent.
+"""
+input CreateCustomerProfileInput {
+  createdAt: Time
+  updatedAt: Time
+  name: String!
+  """
+  1 待審核 2 已通過 3 已拒絕 4 已撤回
+  """
+  approvalStatus: Int
+  ownerType: Int
+  industry: Int
+  size: Int
+  contactPerson: String
+  contactPersonPosition: String
+  contactPersonPhone: String
+  contactPersonEmail: String
+  customerID: ID!
+  createdByID: ID
+  approverID: ID
+  salesID: ID
 }
 """
 CreateDistrictInput is used for create District object.
@@ -7104,6 +7414,8 @@ type Customer implements Node {
   createdByID: ID
   updatedByID: ID
   approverID: ID
+  activeProfileID: ID
+  pendingProfileID: ID
   area: Area!
   tenders(
     """
@@ -7171,6 +7483,39 @@ type Customer implements Node {
     """
     where: VisitRecordWhereInput
   ): VisitRecordConnection!
+  profiles(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for CustomerProfiles returned from the connection.
+    """
+    orderBy: [CustomerProfileOrder!]
+
+    """
+    Filtering options for CustomerProfiles returned from the connection.
+    """
+    where: CustomerProfileWhereInput
+  ): CustomerProfileConnection!
+  activeProfile: CustomerProfile
+  pendingProfile: CustomerProfile
 }
 """
 A connection to a list of items.
@@ -7223,6 +7568,353 @@ enum CustomerOrderField {
   NAME
   APPROVAL_STATUS
   OWNER_TYPE
+}
+type CustomerProfile implements Node {
+  id: ID!
+  createdAt: Time!
+  updatedAt: Time!
+  name: String!
+  """
+  1 待審核 2 已通過 3 已拒絕 4 已撤回
+  """
+  approvalStatus: Int!
+  ownerType: Int
+  industry: Int
+  size: Int
+  contactPerson: String
+  contactPersonPosition: String
+  contactPersonPhone: String
+  contactPersonEmail: String
+  salesID: ID
+  customerID: ID!
+  createdByID: ID
+  approverID: ID
+  customer: Customer!
+  createdBy: User
+  approver: User
+  sales: User
+}
+"""
+A connection to a list of items.
+"""
+type CustomerProfileConnection {
+  """
+  A list of edges.
+  """
+  edges: [CustomerProfileEdge]
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+  """
+  Identifies the total count of items in the connection.
+  """
+  totalCount: Int!
+}
+"""
+An edge in a connection.
+"""
+type CustomerProfileEdge {
+  """
+  The item at the end of the edge.
+  """
+  node: CustomerProfile
+  """
+  A cursor for use in pagination.
+  """
+  cursor: Cursor!
+}
+"""
+Ordering options for CustomerProfile connections
+"""
+input CustomerProfileOrder {
+  """
+  The ordering direction.
+  """
+  direction: OrderDirection! = ASC
+  """
+  The field by which to order CustomerProfiles.
+  """
+  field: CustomerProfileOrderField!
+}
+"""
+Properties by which CustomerProfile connections can be ordered.
+"""
+enum CustomerProfileOrderField {
+  CREATED_AT
+  NAME
+  APPROVAL_STATUS
+  OWNER_TYPE
+}
+"""
+CustomerProfileWhereInput is used for filtering CustomerProfile objects.
+Input was generated by ent.
+"""
+input CustomerProfileWhereInput {
+  not: CustomerProfileWhereInput
+  and: [CustomerProfileWhereInput!]
+  or: [CustomerProfileWhereInput!]
+  """
+  id field predicates
+  """
+  id: ID
+  idNEQ: ID
+  idIn: [ID!]
+  idNotIn: [ID!]
+  idGT: ID
+  idGTE: ID
+  idLT: ID
+  idLTE: ID
+  """
+  created_at field predicates
+  """
+  createdAt: Time
+  createdAtNEQ: Time
+  createdAtIn: [Time!]
+  createdAtNotIn: [Time!]
+  createdAtGT: Time
+  createdAtGTE: Time
+  createdAtLT: Time
+  createdAtLTE: Time
+  """
+  updated_at field predicates
+  """
+  updatedAt: Time
+  updatedAtNEQ: Time
+  updatedAtIn: [Time!]
+  updatedAtNotIn: [Time!]
+  updatedAtGT: Time
+  updatedAtGTE: Time
+  updatedAtLT: Time
+  updatedAtLTE: Time
+  """
+  name field predicates
+  """
+  name: String
+  nameNEQ: String
+  nameIn: [String!]
+  nameNotIn: [String!]
+  nameGT: String
+  nameGTE: String
+  nameLT: String
+  nameLTE: String
+  nameContains: String
+  nameHasPrefix: String
+  nameHasSuffix: String
+  nameEqualFold: String
+  nameContainsFold: String
+  """
+  approval_status field predicates
+  """
+  approvalStatus: Int
+  approvalStatusNEQ: Int
+  approvalStatusIn: [Int!]
+  approvalStatusNotIn: [Int!]
+  approvalStatusGT: Int
+  approvalStatusGTE: Int
+  approvalStatusLT: Int
+  approvalStatusLTE: Int
+  """
+  owner_type field predicates
+  """
+  ownerType: Int
+  ownerTypeNEQ: Int
+  ownerTypeIn: [Int!]
+  ownerTypeNotIn: [Int!]
+  ownerTypeGT: Int
+  ownerTypeGTE: Int
+  ownerTypeLT: Int
+  ownerTypeLTE: Int
+  ownerTypeIsNil: Boolean
+  ownerTypeNotNil: Boolean
+  """
+  industry field predicates
+  """
+  industry: Int
+  industryNEQ: Int
+  industryIn: [Int!]
+  industryNotIn: [Int!]
+  industryGT: Int
+  industryGTE: Int
+  industryLT: Int
+  industryLTE: Int
+  industryIsNil: Boolean
+  industryNotNil: Boolean
+  """
+  size field predicates
+  """
+  size: Int
+  sizeNEQ: Int
+  sizeIn: [Int!]
+  sizeNotIn: [Int!]
+  sizeGT: Int
+  sizeGTE: Int
+  sizeLT: Int
+  sizeLTE: Int
+  sizeIsNil: Boolean
+  sizeNotNil: Boolean
+  """
+  contact_person field predicates
+  """
+  contactPerson: String
+  contactPersonNEQ: String
+  contactPersonIn: [String!]
+  contactPersonNotIn: [String!]
+  contactPersonGT: String
+  contactPersonGTE: String
+  contactPersonLT: String
+  contactPersonLTE: String
+  contactPersonContains: String
+  contactPersonHasPrefix: String
+  contactPersonHasSuffix: String
+  contactPersonIsNil: Boolean
+  contactPersonNotNil: Boolean
+  contactPersonEqualFold: String
+  contactPersonContainsFold: String
+  """
+  contact_person_position field predicates
+  """
+  contactPersonPosition: String
+  contactPersonPositionNEQ: String
+  contactPersonPositionIn: [String!]
+  contactPersonPositionNotIn: [String!]
+  contactPersonPositionGT: String
+  contactPersonPositionGTE: String
+  contactPersonPositionLT: String
+  contactPersonPositionLTE: String
+  contactPersonPositionContains: String
+  contactPersonPositionHasPrefix: String
+  contactPersonPositionHasSuffix: String
+  contactPersonPositionIsNil: Boolean
+  contactPersonPositionNotNil: Boolean
+  contactPersonPositionEqualFold: String
+  contactPersonPositionContainsFold: String
+  """
+  contact_person_phone field predicates
+  """
+  contactPersonPhone: String
+  contactPersonPhoneNEQ: String
+  contactPersonPhoneIn: [String!]
+  contactPersonPhoneNotIn: [String!]
+  contactPersonPhoneGT: String
+  contactPersonPhoneGTE: String
+  contactPersonPhoneLT: String
+  contactPersonPhoneLTE: String
+  contactPersonPhoneContains: String
+  contactPersonPhoneHasPrefix: String
+  contactPersonPhoneHasSuffix: String
+  contactPersonPhoneIsNil: Boolean
+  contactPersonPhoneNotNil: Boolean
+  contactPersonPhoneEqualFold: String
+  contactPersonPhoneContainsFold: String
+  """
+  contact_person_email field predicates
+  """
+  contactPersonEmail: String
+  contactPersonEmailNEQ: String
+  contactPersonEmailIn: [String!]
+  contactPersonEmailNotIn: [String!]
+  contactPersonEmailGT: String
+  contactPersonEmailGTE: String
+  contactPersonEmailLT: String
+  contactPersonEmailLTE: String
+  contactPersonEmailContains: String
+  contactPersonEmailHasPrefix: String
+  contactPersonEmailHasSuffix: String
+  contactPersonEmailIsNil: Boolean
+  contactPersonEmailNotNil: Boolean
+  contactPersonEmailEqualFold: String
+  contactPersonEmailContainsFold: String
+  """
+  sales_id field predicates
+  """
+  salesID: ID
+  salesIDNEQ: ID
+  salesIDIn: [ID!]
+  salesIDNotIn: [ID!]
+  salesIDGT: ID
+  salesIDGTE: ID
+  salesIDLT: ID
+  salesIDLTE: ID
+  salesIDContains: ID
+  salesIDHasPrefix: ID
+  salesIDHasSuffix: ID
+  salesIDIsNil: Boolean
+  salesIDNotNil: Boolean
+  salesIDEqualFold: ID
+  salesIDContainsFold: ID
+  """
+  customer_id field predicates
+  """
+  customerID: ID
+  customerIDNEQ: ID
+  customerIDIn: [ID!]
+  customerIDNotIn: [ID!]
+  customerIDGT: ID
+  customerIDGTE: ID
+  customerIDLT: ID
+  customerIDLTE: ID
+  customerIDContains: ID
+  customerIDHasPrefix: ID
+  customerIDHasSuffix: ID
+  customerIDEqualFold: ID
+  customerIDContainsFold: ID
+  """
+  created_by_id field predicates
+  """
+  createdByID: ID
+  createdByIDNEQ: ID
+  createdByIDIn: [ID!]
+  createdByIDNotIn: [ID!]
+  createdByIDGT: ID
+  createdByIDGTE: ID
+  createdByIDLT: ID
+  createdByIDLTE: ID
+  createdByIDContains: ID
+  createdByIDHasPrefix: ID
+  createdByIDHasSuffix: ID
+  createdByIDIsNil: Boolean
+  createdByIDNotNil: Boolean
+  createdByIDEqualFold: ID
+  createdByIDContainsFold: ID
+  """
+  approver_id field predicates
+  """
+  approverID: ID
+  approverIDNEQ: ID
+  approverIDIn: [ID!]
+  approverIDNotIn: [ID!]
+  approverIDGT: ID
+  approverIDGTE: ID
+  approverIDLT: ID
+  approverIDLTE: ID
+  approverIDContains: ID
+  approverIDHasPrefix: ID
+  approverIDHasSuffix: ID
+  approverIDIsNil: Boolean
+  approverIDNotNil: Boolean
+  approverIDEqualFold: ID
+  approverIDContainsFold: ID
+  """
+  customer edge predicates
+  """
+  hasCustomer: Boolean
+  hasCustomerWith: [CustomerWhereInput!]
+  """
+  created_by edge predicates
+  """
+  hasCreatedBy: Boolean
+  hasCreatedByWith: [UserWhereInput!]
+  """
+  approver edge predicates
+  """
+  hasApprover: Boolean
+  hasApproverWith: [UserWhereInput!]
+  """
+  sales edge predicates
+  """
+  hasSales: Boolean
+  hasSalesWith: [UserWhereInput!]
 }
 """
 CustomerWhereInput is used for filtering Customer objects.
@@ -7492,6 +8184,42 @@ input CustomerWhereInput {
   approverIDEqualFold: ID
   approverIDContainsFold: ID
   """
+  active_profile_id field predicates
+  """
+  activeProfileID: ID
+  activeProfileIDNEQ: ID
+  activeProfileIDIn: [ID!]
+  activeProfileIDNotIn: [ID!]
+  activeProfileIDGT: ID
+  activeProfileIDGTE: ID
+  activeProfileIDLT: ID
+  activeProfileIDLTE: ID
+  activeProfileIDContains: ID
+  activeProfileIDHasPrefix: ID
+  activeProfileIDHasSuffix: ID
+  activeProfileIDIsNil: Boolean
+  activeProfileIDNotNil: Boolean
+  activeProfileIDEqualFold: ID
+  activeProfileIDContainsFold: ID
+  """
+  pending_profile_id field predicates
+  """
+  pendingProfileID: ID
+  pendingProfileIDNEQ: ID
+  pendingProfileIDIn: [ID!]
+  pendingProfileIDNotIn: [ID!]
+  pendingProfileIDGT: ID
+  pendingProfileIDGTE: ID
+  pendingProfileIDLT: ID
+  pendingProfileIDLTE: ID
+  pendingProfileIDContains: ID
+  pendingProfileIDHasPrefix: ID
+  pendingProfileIDHasSuffix: ID
+  pendingProfileIDIsNil: Boolean
+  pendingProfileIDNotNil: Boolean
+  pendingProfileIDEqualFold: ID
+  pendingProfileIDContainsFold: ID
+  """
   area edge predicates
   """
   hasArea: Boolean
@@ -7526,6 +8254,21 @@ input CustomerWhereInput {
   """
   hasVisitRecords: Boolean
   hasVisitRecordsWith: [VisitRecordWhereInput!]
+  """
+  profiles edge predicates
+  """
+  hasProfiles: Boolean
+  hasProfilesWith: [CustomerProfileWhereInput!]
+  """
+  active_profile edge predicates
+  """
+  hasActiveProfile: Boolean
+  hasActiveProfileWith: [CustomerProfileWhereInput!]
+  """
+  pending_profile edge predicates
+  """
+  hasPendingProfile: Boolean
+  hasPendingProfileWith: [CustomerProfileWhereInput!]
 }
 type District implements Node {
   id: ID!
@@ -11004,6 +11747,37 @@ type Query {
     """
     where: CustomerWhereInput
   ): CustomerConnection!
+  customerProfiles(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for CustomerProfiles returned from the connection.
+    """
+    orderBy: [CustomerProfileOrder!]
+
+    """
+    Filtering options for CustomerProfiles returned from the connection.
+    """
+    where: CustomerProfileWhereInput
+  ): CustomerProfileConnection!
   districts(
     """
     Returns the elements in the list that come after the specified cursor.
@@ -14205,6 +14979,13 @@ input UpdateCustomerInput {
   addVisitRecordIDs: [ID!]
   removeVisitRecordIDs: [ID!]
   clearVisitRecords: Boolean
+  addProfileIDs: [ID!]
+  removeProfileIDs: [ID!]
+  clearProfiles: Boolean
+  activeProfileID: ID
+  clearActiveProfile: Boolean
+  pendingProfileID: ID
+  clearPendingProfile: Boolean
 }
 """
 UpdateDistrictInput is used for update District object.
@@ -15682,9 +16463,17 @@ type GeoJson {
   createCustomer(input: CreateCustomerInput!): CustomerConnection!
   updateCustomer(id: ID!, input: UpdateCustomerInput!): Customer!
   deleteCustomer(id: ID!): Customer!
-  updateCustomerRequest(id: ID!, input: UpdateCustomerInput!): Customer!
-  approveCustomerRequest(id: ID!): Customer!
-  rejectCustomerRequest(id: ID!): Customer!
+  approveCustomer(id: ID!): Customer!
+  rejectCustomer(id: ID!): Customer!
+  createCustomerV2(
+    customerInput: CreateCustomerInput!
+    profileInput: CreateCustomerProfileInput!
+  ): Customer!
+  updateCustomerV2(
+    id: ID!
+    customerInput: UpdateCustomerInput!
+    profileInput: CreateCustomerProfileInput!
+  ): Customer!
 
   createTender(
     input: CreateTenderInput!

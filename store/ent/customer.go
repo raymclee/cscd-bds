@@ -5,6 +5,7 @@ package ent
 import (
 	"cscd-bds/store/ent/area"
 	"cscd-bds/store/ent/customer"
+	"cscd-bds/store/ent/customerprofile"
 	"cscd-bds/store/ent/schema/model"
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/schema/zht"
@@ -59,6 +60,10 @@ type Customer struct {
 	UpdatedByID *xid.ID `json:"updated_by_id,omitempty"`
 	// ApproverID holds the value of the "approver_id" field.
 	ApproverID *xid.ID `json:"approver_id,omitempty"`
+	// ActiveProfileID holds the value of the "active_profile_id" field.
+	ActiveProfileID *xid.ID `json:"active_profile_id,omitempty"`
+	// PendingProfileID holds the value of the "pending_profile_id" field.
+	PendingProfileID *xid.ID `json:"pending_profile_id,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the CustomerQuery when eager-loading is set.
 	Edges        CustomerEdges `json:"edges"`
@@ -81,14 +86,21 @@ type CustomerEdges struct {
 	Approver *User `json:"approver,omitempty"`
 	// VisitRecords holds the value of the visit_records edge.
 	VisitRecords []*VisitRecord `json:"visit_records,omitempty"`
+	// Profiles holds the value of the profiles edge.
+	Profiles []*CustomerProfile `json:"profiles,omitempty"`
+	// ActiveProfile holds the value of the active_profile edge.
+	ActiveProfile *CustomerProfile `json:"active_profile,omitempty"`
+	// PendingProfile holds the value of the pending_profile edge.
+	PendingProfile *CustomerProfile `json:"pending_profile,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [7]bool
+	loadedTypes [10]bool
 	// totalCount holds the count of the edges above.
-	totalCount [7]map[string]int
+	totalCount [10]map[string]int
 
 	namedTenders      map[string][]*Tender
 	namedVisitRecords map[string][]*VisitRecord
+	namedProfiles     map[string][]*CustomerProfile
 }
 
 // AreaOrErr returns the Area value or an error if the edge
@@ -164,12 +176,43 @@ func (e CustomerEdges) VisitRecordsOrErr() ([]*VisitRecord, error) {
 	return nil, &NotLoadedError{edge: "visit_records"}
 }
 
+// ProfilesOrErr returns the Profiles value or an error if the edge
+// was not loaded in eager-loading.
+func (e CustomerEdges) ProfilesOrErr() ([]*CustomerProfile, error) {
+	if e.loadedTypes[7] {
+		return e.Profiles, nil
+	}
+	return nil, &NotLoadedError{edge: "profiles"}
+}
+
+// ActiveProfileOrErr returns the ActiveProfile value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e CustomerEdges) ActiveProfileOrErr() (*CustomerProfile, error) {
+	if e.ActiveProfile != nil {
+		return e.ActiveProfile, nil
+	} else if e.loadedTypes[8] {
+		return nil, &NotFoundError{label: customerprofile.Label}
+	}
+	return nil, &NotLoadedError{edge: "active_profile"}
+}
+
+// PendingProfileOrErr returns the PendingProfile value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e CustomerEdges) PendingProfileOrErr() (*CustomerProfile, error) {
+	if e.PendingProfile != nil {
+		return e.PendingProfile, nil
+	} else if e.loadedTypes[9] {
+		return nil, &NotFoundError{label: customerprofile.Label}
+	}
+	return nil, &NotLoadedError{edge: "pending_profile"}
+}
+
 // scanValues returns the types for scanning values from sql.Rows.
 func (*Customer) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case customer.FieldSalesID, customer.FieldCreatedByID, customer.FieldUpdatedByID, customer.FieldApproverID:
+		case customer.FieldSalesID, customer.FieldCreatedByID, customer.FieldUpdatedByID, customer.FieldApproverID, customer.FieldActiveProfileID, customer.FieldPendingProfileID:
 			values[i] = &sql.NullScanner{S: new(xid.ID)}
 		case customer.FieldDraft, customer.FieldFeishuGroup:
 			values[i] = new([]byte)
@@ -325,6 +368,20 @@ func (c *Customer) assignValues(columns []string, values []any) error {
 				c.ApproverID = new(xid.ID)
 				*c.ApproverID = *value.S.(*xid.ID)
 			}
+		case customer.FieldActiveProfileID:
+			if value, ok := values[i].(*sql.NullScanner); !ok {
+				return fmt.Errorf("unexpected type %T for field active_profile_id", values[i])
+			} else if value.Valid {
+				c.ActiveProfileID = new(xid.ID)
+				*c.ActiveProfileID = *value.S.(*xid.ID)
+			}
+		case customer.FieldPendingProfileID:
+			if value, ok := values[i].(*sql.NullScanner); !ok {
+				return fmt.Errorf("unexpected type %T for field pending_profile_id", values[i])
+			} else if value.Valid {
+				c.PendingProfileID = new(xid.ID)
+				*c.PendingProfileID = *value.S.(*xid.ID)
+			}
 		default:
 			c.selectValues.Set(columns[i], values[i])
 		}
@@ -371,6 +428,21 @@ func (c *Customer) QueryApprover() *UserQuery {
 // QueryVisitRecords queries the "visit_records" edge of the Customer entity.
 func (c *Customer) QueryVisitRecords() *VisitRecordQuery {
 	return NewCustomerClient(c.config).QueryVisitRecords(c)
+}
+
+// QueryProfiles queries the "profiles" edge of the Customer entity.
+func (c *Customer) QueryProfiles() *CustomerProfileQuery {
+	return NewCustomerClient(c.config).QueryProfiles(c)
+}
+
+// QueryActiveProfile queries the "active_profile" edge of the Customer entity.
+func (c *Customer) QueryActiveProfile() *CustomerProfileQuery {
+	return NewCustomerClient(c.config).QueryActiveProfile(c)
+}
+
+// QueryPendingProfile queries the "pending_profile" edge of the Customer entity.
+func (c *Customer) QueryPendingProfile() *CustomerProfileQuery {
+	return NewCustomerClient(c.config).QueryPendingProfile(c)
 }
 
 // Update returns a builder for updating this Customer.
@@ -471,6 +543,16 @@ func (c *Customer) String() string {
 		builder.WriteString("approver_id=")
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
+	builder.WriteString(", ")
+	if v := c.ActiveProfileID; v != nil {
+		builder.WriteString("active_profile_id=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	if v := c.PendingProfileID; v != nil {
+		builder.WriteString("pending_profile_id=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
 	builder.WriteByte(')')
 	return builder.String()
 }
@@ -520,6 +602,30 @@ func (c *Customer) appendNamedVisitRecords(name string, edges ...*VisitRecord) {
 		c.Edges.namedVisitRecords[name] = []*VisitRecord{}
 	} else {
 		c.Edges.namedVisitRecords[name] = append(c.Edges.namedVisitRecords[name], edges...)
+	}
+}
+
+// NamedProfiles returns the Profiles named value or an error if the edge was not
+// loaded in eager-loading with this name.
+func (c *Customer) NamedProfiles(name string) ([]*CustomerProfile, error) {
+	if c.Edges.namedProfiles == nil {
+		return nil, &NotLoadedError{edge: name}
+	}
+	nodes, ok := c.Edges.namedProfiles[name]
+	if !ok {
+		return nil, &NotLoadedError{edge: name}
+	}
+	return nodes, nil
+}
+
+func (c *Customer) appendNamedProfiles(name string, edges ...*CustomerProfile) {
+	if c.Edges.namedProfiles == nil {
+		c.Edges.namedProfiles = make(map[string][]*CustomerProfile)
+	}
+	if len(edges) == 0 {
+		c.Edges.namedProfiles[name] = []*CustomerProfile{}
+	} else {
+		c.Edges.namedProfiles[name] = append(c.Edges.namedProfiles[name], edges...)
 	}
 }
 

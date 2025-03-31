@@ -6,6 +6,7 @@ import (
 	"context"
 	"cscd-bds/store/ent/area"
 	"cscd-bds/store/ent/customer"
+	"cscd-bds/store/ent/customerprofile"
 	"cscd-bds/store/ent/predicate"
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/tender"
@@ -35,10 +36,14 @@ type CustomerQuery struct {
 	withUpdatedBy         *UserQuery
 	withApprover          *UserQuery
 	withVisitRecords      *VisitRecordQuery
+	withProfiles          *CustomerProfileQuery
+	withActiveProfile     *CustomerProfileQuery
+	withPendingProfile    *CustomerProfileQuery
 	modifiers             []func(*sql.Selector)
 	loadTotal             []func(context.Context, []*Customer) error
 	withNamedTenders      map[string]*TenderQuery
 	withNamedVisitRecords map[string]*VisitRecordQuery
+	withNamedProfiles     map[string]*CustomerProfileQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -222,6 +227,72 @@ func (cq *CustomerQuery) QueryVisitRecords() *VisitRecordQuery {
 			sqlgraph.From(customer.Table, customer.FieldID, selector),
 			sqlgraph.To(visitrecord.Table, visitrecord.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, customer.VisitRecordsTable, customer.VisitRecordsColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(cq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryProfiles chains the current query on the "profiles" edge.
+func (cq *CustomerQuery) QueryProfiles() *CustomerProfileQuery {
+	query := (&CustomerProfileClient{config: cq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := cq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := cq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(customer.Table, customer.FieldID, selector),
+			sqlgraph.To(customerprofile.Table, customerprofile.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, customer.ProfilesTable, customer.ProfilesColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(cq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryActiveProfile chains the current query on the "active_profile" edge.
+func (cq *CustomerQuery) QueryActiveProfile() *CustomerProfileQuery {
+	query := (&CustomerProfileClient{config: cq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := cq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := cq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(customer.Table, customer.FieldID, selector),
+			sqlgraph.To(customerprofile.Table, customerprofile.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, customer.ActiveProfileTable, customer.ActiveProfileColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(cq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryPendingProfile chains the current query on the "pending_profile" edge.
+func (cq *CustomerQuery) QueryPendingProfile() *CustomerProfileQuery {
+	query := (&CustomerProfileClient{config: cq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := cq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := cq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(customer.Table, customer.FieldID, selector),
+			sqlgraph.To(customerprofile.Table, customerprofile.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, customer.PendingProfileTable, customer.PendingProfileColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(cq.driver.Dialect(), step)
 		return fromU, nil
@@ -416,18 +487,21 @@ func (cq *CustomerQuery) Clone() *CustomerQuery {
 		return nil
 	}
 	return &CustomerQuery{
-		config:           cq.config,
-		ctx:              cq.ctx.Clone(),
-		order:            append([]customer.OrderOption{}, cq.order...),
-		inters:           append([]Interceptor{}, cq.inters...),
-		predicates:       append([]predicate.Customer{}, cq.predicates...),
-		withArea:         cq.withArea.Clone(),
-		withTenders:      cq.withTenders.Clone(),
-		withSales:        cq.withSales.Clone(),
-		withCreatedBy:    cq.withCreatedBy.Clone(),
-		withUpdatedBy:    cq.withUpdatedBy.Clone(),
-		withApprover:     cq.withApprover.Clone(),
-		withVisitRecords: cq.withVisitRecords.Clone(),
+		config:             cq.config,
+		ctx:                cq.ctx.Clone(),
+		order:              append([]customer.OrderOption{}, cq.order...),
+		inters:             append([]Interceptor{}, cq.inters...),
+		predicates:         append([]predicate.Customer{}, cq.predicates...),
+		withArea:           cq.withArea.Clone(),
+		withTenders:        cq.withTenders.Clone(),
+		withSales:          cq.withSales.Clone(),
+		withCreatedBy:      cq.withCreatedBy.Clone(),
+		withUpdatedBy:      cq.withUpdatedBy.Clone(),
+		withApprover:       cq.withApprover.Clone(),
+		withVisitRecords:   cq.withVisitRecords.Clone(),
+		withProfiles:       cq.withProfiles.Clone(),
+		withActiveProfile:  cq.withActiveProfile.Clone(),
+		withPendingProfile: cq.withPendingProfile.Clone(),
 		// clone intermediate query.
 		sql:  cq.sql.Clone(),
 		path: cq.path,
@@ -511,6 +585,39 @@ func (cq *CustomerQuery) WithVisitRecords(opts ...func(*VisitRecordQuery)) *Cust
 	return cq
 }
 
+// WithProfiles tells the query-builder to eager-load the nodes that are connected to
+// the "profiles" edge. The optional arguments are used to configure the query builder of the edge.
+func (cq *CustomerQuery) WithProfiles(opts ...func(*CustomerProfileQuery)) *CustomerQuery {
+	query := (&CustomerProfileClient{config: cq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	cq.withProfiles = query
+	return cq
+}
+
+// WithActiveProfile tells the query-builder to eager-load the nodes that are connected to
+// the "active_profile" edge. The optional arguments are used to configure the query builder of the edge.
+func (cq *CustomerQuery) WithActiveProfile(opts ...func(*CustomerProfileQuery)) *CustomerQuery {
+	query := (&CustomerProfileClient{config: cq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	cq.withActiveProfile = query
+	return cq
+}
+
+// WithPendingProfile tells the query-builder to eager-load the nodes that are connected to
+// the "pending_profile" edge. The optional arguments are used to configure the query builder of the edge.
+func (cq *CustomerQuery) WithPendingProfile(opts ...func(*CustomerProfileQuery)) *CustomerQuery {
+	query := (&CustomerProfileClient{config: cq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	cq.withPendingProfile = query
+	return cq
+}
+
 // GroupBy is used to group vertices by one or more fields/columns.
 // It is often used with aggregate functions, like: count, max, mean, min, sum.
 //
@@ -589,7 +696,7 @@ func (cq *CustomerQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Cus
 	var (
 		nodes       = []*Customer{}
 		_spec       = cq.querySpec()
-		loadedTypes = [7]bool{
+		loadedTypes = [10]bool{
 			cq.withArea != nil,
 			cq.withTenders != nil,
 			cq.withSales != nil,
@@ -597,6 +704,9 @@ func (cq *CustomerQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Cus
 			cq.withUpdatedBy != nil,
 			cq.withApprover != nil,
 			cq.withVisitRecords != nil,
+			cq.withProfiles != nil,
+			cq.withActiveProfile != nil,
+			cq.withPendingProfile != nil,
 		}
 	)
 	_spec.ScanValues = func(columns []string) ([]any, error) {
@@ -664,6 +774,25 @@ func (cq *CustomerQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Cus
 			return nil, err
 		}
 	}
+	if query := cq.withProfiles; query != nil {
+		if err := cq.loadProfiles(ctx, query, nodes,
+			func(n *Customer) { n.Edges.Profiles = []*CustomerProfile{} },
+			func(n *Customer, e *CustomerProfile) { n.Edges.Profiles = append(n.Edges.Profiles, e) }); err != nil {
+			return nil, err
+		}
+	}
+	if query := cq.withActiveProfile; query != nil {
+		if err := cq.loadActiveProfile(ctx, query, nodes, nil,
+			func(n *Customer, e *CustomerProfile) { n.Edges.ActiveProfile = e }); err != nil {
+			return nil, err
+		}
+	}
+	if query := cq.withPendingProfile; query != nil {
+		if err := cq.loadPendingProfile(ctx, query, nodes, nil,
+			func(n *Customer, e *CustomerProfile) { n.Edges.PendingProfile = e }); err != nil {
+			return nil, err
+		}
+	}
 	for name, query := range cq.withNamedTenders {
 		if err := cq.loadTenders(ctx, query, nodes,
 			func(n *Customer) { n.appendNamedTenders(name) },
@@ -675,6 +804,13 @@ func (cq *CustomerQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Cus
 		if err := cq.loadVisitRecords(ctx, query, nodes,
 			func(n *Customer) { n.appendNamedVisitRecords(name) },
 			func(n *Customer, e *VisitRecord) { n.appendNamedVisitRecords(name, e) }); err != nil {
+			return nil, err
+		}
+	}
+	for name, query := range cq.withNamedProfiles {
+		if err := cq.loadProfiles(ctx, query, nodes,
+			func(n *Customer) { n.appendNamedProfiles(name) },
+			func(n *Customer, e *CustomerProfile) { n.appendNamedProfiles(name, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -906,6 +1042,100 @@ func (cq *CustomerQuery) loadVisitRecords(ctx context.Context, query *VisitRecor
 	}
 	return nil
 }
+func (cq *CustomerQuery) loadProfiles(ctx context.Context, query *CustomerProfileQuery, nodes []*Customer, init func(*Customer), assign func(*Customer, *CustomerProfile)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[xid.ID]*Customer)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
+		}
+	}
+	if len(query.ctx.Fields) > 0 {
+		query.ctx.AppendFieldOnce(customerprofile.FieldCustomerID)
+	}
+	query.Where(predicate.CustomerProfile(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(customer.ProfilesColumn), fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.CustomerID
+		node, ok := nodeids[fk]
+		if !ok {
+			return fmt.Errorf(`unexpected referenced foreign-key "customer_id" returned %v for node %v`, fk, n.ID)
+		}
+		assign(node, n)
+	}
+	return nil
+}
+func (cq *CustomerQuery) loadActiveProfile(ctx context.Context, query *CustomerProfileQuery, nodes []*Customer, init func(*Customer), assign func(*Customer, *CustomerProfile)) error {
+	ids := make([]xid.ID, 0, len(nodes))
+	nodeids := make(map[xid.ID][]*Customer)
+	for i := range nodes {
+		if nodes[i].ActiveProfileID == nil {
+			continue
+		}
+		fk := *nodes[i].ActiveProfileID
+		if _, ok := nodeids[fk]; !ok {
+			ids = append(ids, fk)
+		}
+		nodeids[fk] = append(nodeids[fk], nodes[i])
+	}
+	if len(ids) == 0 {
+		return nil
+	}
+	query.Where(customerprofile.IDIn(ids...))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nodeids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "active_profile_id" returned %v`, n.ID)
+		}
+		for i := range nodes {
+			assign(nodes[i], n)
+		}
+	}
+	return nil
+}
+func (cq *CustomerQuery) loadPendingProfile(ctx context.Context, query *CustomerProfileQuery, nodes []*Customer, init func(*Customer), assign func(*Customer, *CustomerProfile)) error {
+	ids := make([]xid.ID, 0, len(nodes))
+	nodeids := make(map[xid.ID][]*Customer)
+	for i := range nodes {
+		if nodes[i].PendingProfileID == nil {
+			continue
+		}
+		fk := *nodes[i].PendingProfileID
+		if _, ok := nodeids[fk]; !ok {
+			ids = append(ids, fk)
+		}
+		nodeids[fk] = append(nodeids[fk], nodes[i])
+	}
+	if len(ids) == 0 {
+		return nil
+	}
+	query.Where(customerprofile.IDIn(ids...))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nodeids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "pending_profile_id" returned %v`, n.ID)
+		}
+		for i := range nodes {
+			assign(nodes[i], n)
+		}
+	}
+	return nil
+}
 
 func (cq *CustomerQuery) sqlCount(ctx context.Context) (int, error) {
 	_spec := cq.querySpec()
@@ -949,6 +1179,12 @@ func (cq *CustomerQuery) querySpec() *sqlgraph.QuerySpec {
 		}
 		if cq.withApprover != nil {
 			_spec.Node.AddColumnOnce(customer.FieldApproverID)
+		}
+		if cq.withActiveProfile != nil {
+			_spec.Node.AddColumnOnce(customer.FieldActiveProfileID)
+		}
+		if cq.withPendingProfile != nil {
+			_spec.Node.AddColumnOnce(customer.FieldPendingProfileID)
 		}
 	}
 	if ps := cq.predicates; len(ps) > 0 {
@@ -1031,6 +1267,20 @@ func (cq *CustomerQuery) WithNamedVisitRecords(name string, opts ...func(*VisitR
 		cq.withNamedVisitRecords = make(map[string]*VisitRecordQuery)
 	}
 	cq.withNamedVisitRecords[name] = query
+	return cq
+}
+
+// WithNamedProfiles tells the query-builder to eager-load the nodes that are connected to the "profiles"
+// edge with the given name. The optional arguments are used to configure the query builder of the edge.
+func (cq *CustomerQuery) WithNamedProfiles(name string, opts ...func(*CustomerProfileQuery)) *CustomerQuery {
+	query := (&CustomerProfileClient{config: cq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	if cq.withNamedProfiles == nil {
+		cq.withNamedProfiles = make(map[string]*CustomerProfileQuery)
+	}
+	cq.withNamedProfiles[name] = query
 	return cq
 }
 

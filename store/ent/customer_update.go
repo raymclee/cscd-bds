@@ -6,6 +6,7 @@ import (
 	"context"
 	"cscd-bds/store/ent/area"
 	"cscd-bds/store/ent/customer"
+	"cscd-bds/store/ent/customerprofile"
 	"cscd-bds/store/ent/predicate"
 	"cscd-bds/store/ent/schema/model"
 	"cscd-bds/store/ent/schema/xid"
@@ -355,6 +356,46 @@ func (cu *CustomerUpdate) ClearApproverID() *CustomerUpdate {
 	return cu
 }
 
+// SetActiveProfileID sets the "active_profile_id" field.
+func (cu *CustomerUpdate) SetActiveProfileID(x xid.ID) *CustomerUpdate {
+	cu.mutation.SetActiveProfileID(x)
+	return cu
+}
+
+// SetNillableActiveProfileID sets the "active_profile_id" field if the given value is not nil.
+func (cu *CustomerUpdate) SetNillableActiveProfileID(x *xid.ID) *CustomerUpdate {
+	if x != nil {
+		cu.SetActiveProfileID(*x)
+	}
+	return cu
+}
+
+// ClearActiveProfileID clears the value of the "active_profile_id" field.
+func (cu *CustomerUpdate) ClearActiveProfileID() *CustomerUpdate {
+	cu.mutation.ClearActiveProfileID()
+	return cu
+}
+
+// SetPendingProfileID sets the "pending_profile_id" field.
+func (cu *CustomerUpdate) SetPendingProfileID(x xid.ID) *CustomerUpdate {
+	cu.mutation.SetPendingProfileID(x)
+	return cu
+}
+
+// SetNillablePendingProfileID sets the "pending_profile_id" field if the given value is not nil.
+func (cu *CustomerUpdate) SetNillablePendingProfileID(x *xid.ID) *CustomerUpdate {
+	if x != nil {
+		cu.SetPendingProfileID(*x)
+	}
+	return cu
+}
+
+// ClearPendingProfileID clears the value of the "pending_profile_id" field.
+func (cu *CustomerUpdate) ClearPendingProfileID() *CustomerUpdate {
+	cu.mutation.ClearPendingProfileID()
+	return cu
+}
+
 // SetArea sets the "area" edge to the Area entity.
 func (cu *CustomerUpdate) SetArea(a *Area) *CustomerUpdate {
 	return cu.SetAreaID(a.ID)
@@ -408,6 +449,31 @@ func (cu *CustomerUpdate) AddVisitRecords(v ...*VisitRecord) *CustomerUpdate {
 		ids[i] = v[i].ID
 	}
 	return cu.AddVisitRecordIDs(ids...)
+}
+
+// AddProfileIDs adds the "profiles" edge to the CustomerProfile entity by IDs.
+func (cu *CustomerUpdate) AddProfileIDs(ids ...xid.ID) *CustomerUpdate {
+	cu.mutation.AddProfileIDs(ids...)
+	return cu
+}
+
+// AddProfiles adds the "profiles" edges to the CustomerProfile entity.
+func (cu *CustomerUpdate) AddProfiles(c ...*CustomerProfile) *CustomerUpdate {
+	ids := make([]xid.ID, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return cu.AddProfileIDs(ids...)
+}
+
+// SetActiveProfile sets the "active_profile" edge to the CustomerProfile entity.
+func (cu *CustomerUpdate) SetActiveProfile(c *CustomerProfile) *CustomerUpdate {
+	return cu.SetActiveProfileID(c.ID)
+}
+
+// SetPendingProfile sets the "pending_profile" edge to the CustomerProfile entity.
+func (cu *CustomerUpdate) SetPendingProfile(c *CustomerProfile) *CustomerUpdate {
+	return cu.SetPendingProfileID(c.ID)
 }
 
 // Mutation returns the CustomerMutation object of the builder.
@@ -485,6 +551,39 @@ func (cu *CustomerUpdate) RemoveVisitRecords(v ...*VisitRecord) *CustomerUpdate 
 		ids[i] = v[i].ID
 	}
 	return cu.RemoveVisitRecordIDs(ids...)
+}
+
+// ClearProfiles clears all "profiles" edges to the CustomerProfile entity.
+func (cu *CustomerUpdate) ClearProfiles() *CustomerUpdate {
+	cu.mutation.ClearProfiles()
+	return cu
+}
+
+// RemoveProfileIDs removes the "profiles" edge to CustomerProfile entities by IDs.
+func (cu *CustomerUpdate) RemoveProfileIDs(ids ...xid.ID) *CustomerUpdate {
+	cu.mutation.RemoveProfileIDs(ids...)
+	return cu
+}
+
+// RemoveProfiles removes "profiles" edges to CustomerProfile entities.
+func (cu *CustomerUpdate) RemoveProfiles(c ...*CustomerProfile) *CustomerUpdate {
+	ids := make([]xid.ID, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return cu.RemoveProfileIDs(ids...)
+}
+
+// ClearActiveProfile clears the "active_profile" edge to the CustomerProfile entity.
+func (cu *CustomerUpdate) ClearActiveProfile() *CustomerUpdate {
+	cu.mutation.ClearActiveProfile()
+	return cu
+}
+
+// ClearPendingProfile clears the "pending_profile" edge to the CustomerProfile entity.
+func (cu *CustomerUpdate) ClearPendingProfile() *CustomerUpdate {
+	cu.mutation.ClearPendingProfile()
+	return cu
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -858,6 +957,109 @@ func (cu *CustomerUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	if cu.mutation.ProfilesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   customer.ProfilesTable,
+			Columns: []string{customer.ProfilesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(customerprofile.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cu.mutation.RemovedProfilesIDs(); len(nodes) > 0 && !cu.mutation.ProfilesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   customer.ProfilesTable,
+			Columns: []string{customer.ProfilesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(customerprofile.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cu.mutation.ProfilesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   customer.ProfilesTable,
+			Columns: []string{customer.ProfilesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(customerprofile.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if cu.mutation.ActiveProfileCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   customer.ActiveProfileTable,
+			Columns: []string{customer.ActiveProfileColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(customerprofile.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cu.mutation.ActiveProfileIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   customer.ActiveProfileTable,
+			Columns: []string{customer.ActiveProfileColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(customerprofile.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if cu.mutation.PendingProfileCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   customer.PendingProfileTable,
+			Columns: []string{customer.PendingProfileColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(customerprofile.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cu.mutation.PendingProfileIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   customer.PendingProfileTable,
+			Columns: []string{customer.PendingProfileColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(customerprofile.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, cu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{customer.Label}
@@ -1198,6 +1400,46 @@ func (cuo *CustomerUpdateOne) ClearApproverID() *CustomerUpdateOne {
 	return cuo
 }
 
+// SetActiveProfileID sets the "active_profile_id" field.
+func (cuo *CustomerUpdateOne) SetActiveProfileID(x xid.ID) *CustomerUpdateOne {
+	cuo.mutation.SetActiveProfileID(x)
+	return cuo
+}
+
+// SetNillableActiveProfileID sets the "active_profile_id" field if the given value is not nil.
+func (cuo *CustomerUpdateOne) SetNillableActiveProfileID(x *xid.ID) *CustomerUpdateOne {
+	if x != nil {
+		cuo.SetActiveProfileID(*x)
+	}
+	return cuo
+}
+
+// ClearActiveProfileID clears the value of the "active_profile_id" field.
+func (cuo *CustomerUpdateOne) ClearActiveProfileID() *CustomerUpdateOne {
+	cuo.mutation.ClearActiveProfileID()
+	return cuo
+}
+
+// SetPendingProfileID sets the "pending_profile_id" field.
+func (cuo *CustomerUpdateOne) SetPendingProfileID(x xid.ID) *CustomerUpdateOne {
+	cuo.mutation.SetPendingProfileID(x)
+	return cuo
+}
+
+// SetNillablePendingProfileID sets the "pending_profile_id" field if the given value is not nil.
+func (cuo *CustomerUpdateOne) SetNillablePendingProfileID(x *xid.ID) *CustomerUpdateOne {
+	if x != nil {
+		cuo.SetPendingProfileID(*x)
+	}
+	return cuo
+}
+
+// ClearPendingProfileID clears the value of the "pending_profile_id" field.
+func (cuo *CustomerUpdateOne) ClearPendingProfileID() *CustomerUpdateOne {
+	cuo.mutation.ClearPendingProfileID()
+	return cuo
+}
+
 // SetArea sets the "area" edge to the Area entity.
 func (cuo *CustomerUpdateOne) SetArea(a *Area) *CustomerUpdateOne {
 	return cuo.SetAreaID(a.ID)
@@ -1251,6 +1493,31 @@ func (cuo *CustomerUpdateOne) AddVisitRecords(v ...*VisitRecord) *CustomerUpdate
 		ids[i] = v[i].ID
 	}
 	return cuo.AddVisitRecordIDs(ids...)
+}
+
+// AddProfileIDs adds the "profiles" edge to the CustomerProfile entity by IDs.
+func (cuo *CustomerUpdateOne) AddProfileIDs(ids ...xid.ID) *CustomerUpdateOne {
+	cuo.mutation.AddProfileIDs(ids...)
+	return cuo
+}
+
+// AddProfiles adds the "profiles" edges to the CustomerProfile entity.
+func (cuo *CustomerUpdateOne) AddProfiles(c ...*CustomerProfile) *CustomerUpdateOne {
+	ids := make([]xid.ID, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return cuo.AddProfileIDs(ids...)
+}
+
+// SetActiveProfile sets the "active_profile" edge to the CustomerProfile entity.
+func (cuo *CustomerUpdateOne) SetActiveProfile(c *CustomerProfile) *CustomerUpdateOne {
+	return cuo.SetActiveProfileID(c.ID)
+}
+
+// SetPendingProfile sets the "pending_profile" edge to the CustomerProfile entity.
+func (cuo *CustomerUpdateOne) SetPendingProfile(c *CustomerProfile) *CustomerUpdateOne {
+	return cuo.SetPendingProfileID(c.ID)
 }
 
 // Mutation returns the CustomerMutation object of the builder.
@@ -1328,6 +1595,39 @@ func (cuo *CustomerUpdateOne) RemoveVisitRecords(v ...*VisitRecord) *CustomerUpd
 		ids[i] = v[i].ID
 	}
 	return cuo.RemoveVisitRecordIDs(ids...)
+}
+
+// ClearProfiles clears all "profiles" edges to the CustomerProfile entity.
+func (cuo *CustomerUpdateOne) ClearProfiles() *CustomerUpdateOne {
+	cuo.mutation.ClearProfiles()
+	return cuo
+}
+
+// RemoveProfileIDs removes the "profiles" edge to CustomerProfile entities by IDs.
+func (cuo *CustomerUpdateOne) RemoveProfileIDs(ids ...xid.ID) *CustomerUpdateOne {
+	cuo.mutation.RemoveProfileIDs(ids...)
+	return cuo
+}
+
+// RemoveProfiles removes "profiles" edges to CustomerProfile entities.
+func (cuo *CustomerUpdateOne) RemoveProfiles(c ...*CustomerProfile) *CustomerUpdateOne {
+	ids := make([]xid.ID, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return cuo.RemoveProfileIDs(ids...)
+}
+
+// ClearActiveProfile clears the "active_profile" edge to the CustomerProfile entity.
+func (cuo *CustomerUpdateOne) ClearActiveProfile() *CustomerUpdateOne {
+	cuo.mutation.ClearActiveProfile()
+	return cuo
+}
+
+// ClearPendingProfile clears the "pending_profile" edge to the CustomerProfile entity.
+func (cuo *CustomerUpdateOne) ClearPendingProfile() *CustomerUpdateOne {
+	cuo.mutation.ClearPendingProfile()
+	return cuo
 }
 
 // Where appends a list predicates to the CustomerUpdate builder.
@@ -1724,6 +2024,109 @@ func (cuo *CustomerUpdateOne) sqlSave(ctx context.Context) (_node *Customer, err
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(visitrecord.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if cuo.mutation.ProfilesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   customer.ProfilesTable,
+			Columns: []string{customer.ProfilesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(customerprofile.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cuo.mutation.RemovedProfilesIDs(); len(nodes) > 0 && !cuo.mutation.ProfilesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   customer.ProfilesTable,
+			Columns: []string{customer.ProfilesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(customerprofile.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cuo.mutation.ProfilesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   customer.ProfilesTable,
+			Columns: []string{customer.ProfilesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(customerprofile.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if cuo.mutation.ActiveProfileCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   customer.ActiveProfileTable,
+			Columns: []string{customer.ActiveProfileColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(customerprofile.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cuo.mutation.ActiveProfileIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   customer.ActiveProfileTable,
+			Columns: []string{customer.ActiveProfileColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(customerprofile.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if cuo.mutation.PendingProfileCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   customer.PendingProfileTable,
+			Columns: []string{customer.PendingProfileColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(customerprofile.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cuo.mutation.PendingProfileIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   customer.PendingProfileTable,
+			Columns: []string{customer.PendingProfileColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(customerprofile.FieldID, field.TypeString),
 			},
 		}
 		for _, k := range nodes {

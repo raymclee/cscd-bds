@@ -21,6 +21,9 @@ type Country func(*sql.Selector)
 // Customer is the predicate function for customer builders.
 type Customer func(*sql.Selector)
 
+// CustomerProfile is the predicate function for customerprofile builders.
+type CustomerProfile func(*sql.Selector)
+
 // District is the predicate function for district builders.
 type District func(*sql.Selector)
 

@@ -231,6 +231,30 @@ func (f CustomerMutationRuleFunc) EvalMutation(ctx context.Context, m ent.Mutati
 	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.CustomerMutation", m)
 }
 
+// The CustomerProfileQueryRuleFunc type is an adapter to allow the use of ordinary
+// functions as a query rule.
+type CustomerProfileQueryRuleFunc func(context.Context, *ent.CustomerProfileQuery) error
+
+// EvalQuery return f(ctx, q).
+func (f CustomerProfileQueryRuleFunc) EvalQuery(ctx context.Context, q ent.Query) error {
+	if q, ok := q.(*ent.CustomerProfileQuery); ok {
+		return f(ctx, q)
+	}
+	return Denyf("ent/privacy: unexpected query type %T, expect *ent.CustomerProfileQuery", q)
+}
+
+// The CustomerProfileMutationRuleFunc type is an adapter to allow the use of ordinary
+// functions as a mutation rule.
+type CustomerProfileMutationRuleFunc func(context.Context, *ent.CustomerProfileMutation) error
+
+// EvalMutation calls f(ctx, m).
+func (f CustomerProfileMutationRuleFunc) EvalMutation(ctx context.Context, m ent.Mutation) error {
+	if m, ok := m.(*ent.CustomerProfileMutation); ok {
+		return f(ctx, m)
+	}
+	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.CustomerProfileMutation", m)
+}
+
 // The DistrictQueryRuleFunc type is an adapter to allow the use of ordinary
 // functions as a query rule.
 type DistrictQueryRuleFunc func(context.Context, *ent.DistrictQuery) error
@@ -588,6 +612,8 @@ func queryFilter(q ent.Query) (Filter, error) {
 		return q.Filter(), nil
 	case *ent.CustomerQuery:
 		return q.Filter(), nil
+	case *ent.CustomerProfileQuery:
+		return q.Filter(), nil
 	case *ent.DistrictQuery:
 		return q.Filter(), nil
 	case *ent.OperationQuery:
@@ -630,6 +656,8 @@ func mutationFilter(m ent.Mutation) (Filter, error) {
 	case *ent.CountryMutation:
 		return m.Filter(), nil
 	case *ent.CustomerMutation:
+		return m.Filter(), nil
+	case *ent.CustomerProfileMutation:
 		return m.Filter(), nil
 	case *ent.DistrictMutation:
 		return m.Filter(), nil

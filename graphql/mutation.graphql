@@ -9,9 +9,17 @@ type Mutation {
   createCustomer(input: CreateCustomerInput!): CustomerConnection!
   updateCustomer(id: ID!, input: UpdateCustomerInput!): Customer!
   deleteCustomer(id: ID!): Customer!
-  updateCustomerRequest(id: ID!, input: UpdateCustomerInput!): Customer!
-  approveCustomerRequest(id: ID!): Customer!
-  rejectCustomerRequest(id: ID!): Customer!
+  approveCustomer(id: ID!): Customer!
+  rejectCustomer(id: ID!): Customer!
+  createCustomerV2(
+    customerInput: CreateCustomerInput!
+    profileInput: CreateCustomerProfileInput!
+  ): Customer!
+  updateCustomerV2(
+    id: ID!
+    customerInput: UpdateCustomerInput!
+    profileInput: CreateCustomerProfileInput!
+  ): Customer!
 
   createTender(
     input: CreateTenderInput!

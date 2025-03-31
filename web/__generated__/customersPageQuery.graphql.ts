@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<d056b643b3e6166785a99f106d296303>>
+ * @generated SignedSource<<dabc1697028b30eb5e9d00a592f9a891>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -23,17 +23,30 @@ export type customersPageQuery$data = {
           readonly customers: {
             readonly edges: ReadonlyArray<{
               readonly node: {
-                readonly approvalStatus: number;
+                readonly activeProfile: {
+                  readonly approvalStatus: number;
+                  readonly createdAt: any;
+                  readonly id: string;
+                  readonly industry: number | null | undefined;
+                  readonly name: string;
+                  readonly ownerType: number | null | undefined;
+                  readonly size: number | null | undefined;
+                } | null | undefined;
                 readonly area: {
                   readonly code: string;
                   readonly id: string;
                   readonly name: string;
                 };
                 readonly id: string;
-                readonly industry: number | null | undefined;
-                readonly name: string;
-                readonly ownerType: number | null | undefined;
-                readonly size: number | null | undefined;
+                readonly pendingProfile: {
+                  readonly approvalStatus: number;
+                  readonly createdAt: any;
+                  readonly id: string;
+                  readonly industry: number | null | undefined;
+                  readonly name: string;
+                  readonly ownerType: number | null | undefined;
+                  readonly size: number | null | undefined;
+                } | null | undefined;
                 readonly tenders: {
                   readonly edges: ReadonlyArray<{
                     readonly node: {
@@ -41,7 +54,6 @@ export type customersPageQuery$data = {
                     } | null | undefined;
                   } | null | undefined> | null | undefined;
                 };
-                readonly updatedAt: any;
               } | null | undefined;
             } | null | undefined> | null | undefined;
           };
@@ -100,14 +112,53 @@ v6 = {
   "name": "id",
   "storageKey": null
 },
-v7 = {
+v7 = [
+  (v6/*: any*/),
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "approvalStatus",
+    "storageKey": null
+  },
+  (v4/*: any*/),
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "createdAt",
+    "storageKey": null
+  },
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "ownerType",
+    "storageKey": null
+  },
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "industry",
+    "storageKey": null
+  },
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "size",
+    "storageKey": null
+  }
+],
+v8 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "__typename",
   "storageKey": null
 },
-v8 = [
+v9 = [
   {
     "alias": null,
     "args": null,
@@ -128,37 +179,21 @@ v8 = [
           {
             "alias": null,
             "args": null,
-            "kind": "ScalarField",
-            "name": "approvalStatus",
-            "storageKey": null
-          },
-          (v4/*: any*/),
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "updatedAt",
+            "concreteType": "CustomerProfile",
+            "kind": "LinkedField",
+            "name": "activeProfile",
+            "plural": false,
+            "selections": (v7/*: any*/),
             "storageKey": null
           },
           {
             "alias": null,
             "args": null,
-            "kind": "ScalarField",
-            "name": "ownerType",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "industry",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "size",
+            "concreteType": "CustomerProfile",
+            "kind": "LinkedField",
+            "name": "pendingProfile",
+            "plural": false,
+            "selections": (v7/*: any*/),
             "storageKey": null
           },
           {
@@ -209,7 +244,7 @@ v8 = [
             ],
             "storageKey": null
           },
-          (v7/*: any*/)
+          (v8/*: any*/)
         ],
         "storageKey": null
       },
@@ -263,7 +298,7 @@ v8 = [
     "storageKey": null
   }
 ],
-v9 = [
+v10 = [
   {
     "kind": "Variable",
     "name": "first",
@@ -330,7 +365,7 @@ return {
                             "kind": "LinkedField",
                             "name": "__customersPageQuery_customers_connection",
                             "plural": false,
-                            "selections": (v8/*: any*/),
+                            "selections": (v9/*: any*/),
                             "storageKey": null
                           }
                         ],
@@ -371,7 +406,7 @@ return {
         "name": "node",
         "plural": false,
         "selections": [
-          (v7/*: any*/),
+          (v8/*: any*/),
           {
             "kind": "InlineFragment",
             "selections": [
@@ -403,17 +438,17 @@ return {
                           (v5/*: any*/),
                           {
                             "alias": null,
-                            "args": (v9/*: any*/),
+                            "args": (v10/*: any*/),
                             "concreteType": "CustomerConnection",
                             "kind": "LinkedField",
                             "name": "customers",
                             "plural": false,
-                            "selections": (v8/*: any*/),
+                            "selections": (v9/*: any*/),
                             "storageKey": null
                           },
                           {
                             "alias": null,
-                            "args": (v9/*: any*/),
+                            "args": (v10/*: any*/),
                             "filters": null,
                             "handle": "connection",
                             "key": "customersPageQuery_customers",
@@ -441,7 +476,7 @@ return {
     ]
   },
   "params": {
-    "cacheID": "e388208d2c846db86add5fee7dd9a3f3",
+    "cacheID": "9122d13fbb5de875276d6a6358d07234",
     "id": null,
     "metadata": {
       "connection": [
@@ -455,11 +490,11 @@ return {
     },
     "name": "customersPageQuery",
     "operationKind": "query",
-    "text": "query customersPageQuery(\n  $userId: ID!\n  $first: Int\n  $last: Int\n) {\n  node(id: $userId) {\n    __typename\n    ... on User {\n      areas {\n        edges {\n          node {\n            name\n            code\n            customers(first: $first, last: $last) {\n              edges {\n                node {\n                  id\n                  approvalStatus\n                  name\n                  updatedAt\n                  ownerType\n                  industry\n                  size\n                  area {\n                    id\n                    code\n                    name\n                  }\n                  tenders {\n                    edges {\n                      node {\n                        id\n                      }\n                    }\n                  }\n                  __typename\n                }\n                cursor\n              }\n              pageInfo {\n                endCursor\n                hasNextPage\n                hasPreviousPage\n                startCursor\n              }\n            }\n            id\n          }\n        }\n      }\n    }\n    id\n  }\n}\n"
+    "text": "query customersPageQuery(\n  $userId: ID!\n  $first: Int\n  $last: Int\n) {\n  node(id: $userId) {\n    __typename\n    ... on User {\n      areas {\n        edges {\n          node {\n            name\n            code\n            customers(first: $first, last: $last) {\n              edges {\n                node {\n                  id\n                  activeProfile {\n                    id\n                    approvalStatus\n                    name\n                    createdAt\n                    ownerType\n                    industry\n                    size\n                  }\n                  pendingProfile {\n                    id\n                    approvalStatus\n                    name\n                    createdAt\n                    ownerType\n                    industry\n                    size\n                  }\n                  area {\n                    id\n                    code\n                    name\n                  }\n                  tenders {\n                    edges {\n                      node {\n                        id\n                      }\n                    }\n                  }\n                  __typename\n                }\n                cursor\n              }\n              pageInfo {\n                endCursor\n                hasNextPage\n                hasPreviousPage\n                startCursor\n              }\n            }\n            id\n          }\n        }\n      }\n    }\n    id\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "a72a2dccd588c17b720c2175cb67cc82";
+(node as any).hash = "08bdb8d26cf307d76066d895da88962b";
 
 export default node;

@@ -35,12 +35,24 @@ const query = graphql`
                 edges {
                   node {
                     id
-                    approvalStatus
-                    name
-                    updatedAt
-                    ownerType
-                    industry
-                    size
+                    activeProfile {
+                      id
+                      approvalStatus
+                      name
+                      createdAt
+                      ownerType
+                      industry
+                      size
+                    }
+                    pendingProfile {
+                      id
+                      approvalStatus
+                      name
+                      createdAt
+                      ownerType
+                      industry
+                      size
+                    }
                     area {
                       id
                       code
@@ -82,6 +94,8 @@ function RouteComponent() {
   const { session } = Route.useRouteContext();
   const area = searchParams.area;
 
+  console.log({ data });
+
   const areas = data?.node?.areas?.edges?.map((a) => ({
     label: a?.node?.name ?? "",
     value: a?.node?.code ?? "",
@@ -95,8 +109,12 @@ function RouteComponent() {
     data.node?.areas?.edges?.flatMap((a) =>
       a?.node?.customers?.edges
         ?.map((c) => c?.node)
-        .filter((n) =>
-          n?.name?.toLowerCase().includes(searchText?.toLowerCase()),
+        .filter(
+          (n) =>
+            n?.pendingProfile?.name ||
+            n?.activeProfile?.name
+              ?.toLowerCase()
+              .includes(searchText?.toLowerCase()),
         )
         .filter((n) => area === undefined || n?.area?.code === area),
     ) ?? [];
@@ -116,43 +134,39 @@ function RouteComponent() {
         record.id ? (
           <Link to={`/portal/customers/$id`} params={{ id: record.id }}>
             <Button size="small" type="link">
-              {record?.name}
+              {record?.pendingProfile?.name || record?.activeProfile?.name}
             </Button>
           </Link>
         ) : (
-          record?.name
+          record?.pendingProfile?.name || record?.activeProfile?.name
         ),
     },
     { dataIndex: ["area", "name"], title: "区域" },
     {
-      dataIndex: "ownerType",
+      dataIndex: ["activeProfile", "ownerType"],
       title: "业主类型",
-      render: (value) => ownerTypeText(value),
+      render: (value, record) =>
+        record?.pendingProfile
+          ? ownerTypeText(record?.pendingProfile?.ownerType)
+          : ownerTypeText(value),
     },
     {
-      dataIndex: "industry",
+      dataIndex: ["activeProfile", "industry"],
       title: "行业",
-      render: (value) => industryText(value),
+      render: (value, record) =>
+        record?.pendingProfile
+          ? industryText(record?.pendingProfile?.industry)
+          : industryText(value),
     },
     {
-      dataIndex: "size",
+      dataIndex: ["activeProfile", "size"],
       title: "规模",
-      render: (value) => customerSizeText(value),
+      render: (value, record) =>
+        record?.pendingProfile
+          ? customerSizeText(record?.pendingProfile?.size)
+          : customerSizeText(value),
     },
   ];
-
-  if (!isGAOrHW) {
-    columns.push({
-      width: 100,
-      dataIndex: "approvalStatus",
-      title: "审批状态",
-      render: (value) => (
-        <Tag color={approvalStatusTagColor(value)}>
-          {approvalStatusText(value)}
-        </Tag>
-      ),
-    });
-  }
 
   if (session.isAdmin || session.isSuperAdmin) {
     columns.push(
@@ -172,7 +186,7 @@ function RouteComponent() {
   }
 
   columns.push({
-    dataIndex: "updatedAt",
+    dataIndex: ["activeProfile", "createdAt"],
     title: "更新时间",
     width: 300,
     render: (value) => (

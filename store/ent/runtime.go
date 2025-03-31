@@ -8,6 +8,7 @@ import (
 	"cscd-bds/store/ent/competitor"
 	"cscd-bds/store/ent/country"
 	"cscd-bds/store/ent/customer"
+	"cscd-bds/store/ent/customerprofile"
 	"cscd-bds/store/ent/district"
 	"cscd-bds/store/ent/operation"
 	"cscd-bds/store/ent/plot"
@@ -163,6 +164,37 @@ func init() {
 	customerDescID := customerMixinFields0[0].Descriptor()
 	// customer.DefaultID holds the default value on creation for the id field.
 	customer.DefaultID = customerDescID.Default.(func() xid.ID)
+	customerprofileMixin := schema.CustomerProfile{}.Mixin()
+	customerprofileMixinFields0 := customerprofileMixin[0].Fields()
+	_ = customerprofileMixinFields0
+	customerprofileMixinFields1 := customerprofileMixin[1].Fields()
+	_ = customerprofileMixinFields1
+	customerprofileFields := schema.CustomerProfile{}.Fields()
+	_ = customerprofileFields
+	// customerprofileDescCreatedAt is the schema descriptor for created_at field.
+	customerprofileDescCreatedAt := customerprofileMixinFields1[0].Descriptor()
+	// customerprofile.DefaultCreatedAt holds the default value on creation for the created_at field.
+	customerprofile.DefaultCreatedAt = customerprofileDescCreatedAt.Default.(func() time.Time)
+	// customerprofileDescUpdatedAt is the schema descriptor for updated_at field.
+	customerprofileDescUpdatedAt := customerprofileMixinFields1[1].Descriptor()
+	// customerprofile.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	customerprofile.DefaultUpdatedAt = customerprofileDescUpdatedAt.Default.(func() time.Time)
+	// customerprofile.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	customerprofile.UpdateDefaultUpdatedAt = customerprofileDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// customerprofileDescName is the schema descriptor for name field.
+	customerprofileDescName := customerprofileFields[0].Descriptor()
+	// customerprofile.NameValidator is a validator for the "name" field. It is called by the builders before save.
+	customerprofile.NameValidator = customerprofileDescName.Validators[0].(func(string) error)
+	// customerprofileDescApprovalStatus is the schema descriptor for approval_status field.
+	customerprofileDescApprovalStatus := customerprofileFields[1].Descriptor()
+	// customerprofile.DefaultApprovalStatus holds the default value on creation for the approval_status field.
+	customerprofile.DefaultApprovalStatus = customerprofileDescApprovalStatus.Default.(int)
+	// customerprofile.ApprovalStatusValidator is a validator for the "approval_status" field. It is called by the builders before save.
+	customerprofile.ApprovalStatusValidator = customerprofileDescApprovalStatus.Validators[0].(func(int) error)
+	// customerprofileDescID is the schema descriptor for id field.
+	customerprofileDescID := customerprofileMixinFields0[0].Descriptor()
+	// customerprofile.DefaultID holds the default value on creation for the id field.
+	customerprofile.DefaultID = customerprofileDescID.Default.(func() xid.ID)
 	districtMixin := schema.District{}.Mixin()
 	districtMixinFields0 := districtMixin[0].Fields()
 	_ = districtMixinFields0

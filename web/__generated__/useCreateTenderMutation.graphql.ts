@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<ad6474ef3dd7d7fb9a2de0018ab73fd9>>
+ * @generated SignedSource<<f47290308cc079db7fbe4dc1c0e3f481>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -294,142 +294,109 @@ return {
                   },
                   {
                     "alias": null,
-                    "args": [
-                      {
-                        "kind": "Literal",
-                        "name": "orderBy",
-                        "value": [
-                          {
-                            "direction": "DESC",
-                            "field": "CREATED_AT"
-                          }
-                        ]
-                      }
-                    ],
-                    "concreteType": "TenderProfileConnection",
+                    "args": null,
+                    "concreteType": "TenderProfile",
                     "kind": "LinkedField",
-                    "name": "profiles",
+                    "name": "activeProfile",
                     "plural": false,
                     "selections": [
+                      (v6/*: any*/),
                       {
                         "alias": null,
                         "args": null,
-                        "concreteType": "TenderProfileEdge",
+                        "kind": "ScalarField",
+                        "name": "approvalStatus",
+                        "storageKey": null
+                      },
+                      (v7/*: any*/),
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "status",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "createdAt",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "estimatedAmount",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "classify",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Customer",
                         "kind": "LinkedField",
-                        "name": "edges",
-                        "plural": true,
+                        "name": "customer",
+                        "plural": false,
                         "selections": [
-                          {
-                            "alias": null,
-                            "args": null,
-                            "concreteType": "TenderProfile",
-                            "kind": "LinkedField",
-                            "name": "node",
-                            "plural": false,
-                            "selections": [
-                              (v6/*: any*/),
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "approvalStatus",
-                                "storageKey": null
-                              },
-                              (v7/*: any*/),
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "status",
-                                "storageKey": null
-                              },
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "createdAt",
-                                "storageKey": null
-                              },
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "estimatedAmount",
-                                "storageKey": null
-                              },
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "classify",
-                                "storageKey": null
-                              },
-                              {
-                                "alias": null,
-                                "args": null,
-                                "concreteType": "Customer",
-                                "kind": "LinkedField",
-                                "name": "customer",
-                                "plural": false,
-                                "selections": [
-                                  (v6/*: any*/),
-                                  (v7/*: any*/)
-                                ],
-                                "storageKey": null
-                              },
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "images",
-                                "storageKey": null
-                              },
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "fullAddress",
-                                "storageKey": null
-                              },
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "tenderDate",
-                                "storageKey": null
-                              },
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "discoveryDate",
-                                "storageKey": null
-                              },
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "tenderClosingDate",
-                                "storageKey": null
-                              },
-                              {
-                                "alias": null,
-                                "args": null,
-                                "concreteType": "User",
-                                "kind": "LinkedField",
-                                "name": "createdBy",
-                                "plural": false,
-                                "selections": (v8/*: any*/),
-                                "storageKey": null
-                              }
-                            ],
-                            "storageKey": null
-                          }
+                          (v6/*: any*/),
+                          (v7/*: any*/)
                         ],
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "images",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "fullAddress",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "tenderDate",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "discoveryDate",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "tenderClosingDate",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "User",
+                        "kind": "LinkedField",
+                        "name": "createdBy",
+                        "plural": false,
+                        "selections": (v8/*: any*/),
                         "storageKey": null
                       }
                     ],
-                    "storageKey": "profiles(orderBy:[{\"direction\":\"DESC\",\"field\":\"CREATED_AT\"}])"
+                    "storageKey": null
                   }
                 ],
                 "storageKey": null
@@ -459,12 +426,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "725c9ba53926817b2361c69f8b440649",
+    "cacheID": "4a1ff7145da712e362d859c958ec9e3f",
     "id": null,
     "metadata": {},
     "name": "useCreateTenderMutation",
     "operationKind": "mutation",
-    "text": "mutation useCreateTenderMutation(\n  $input: CreateTenderInput!\n  $imageFileNames: [String!]!\n  $attachmentFileNames: [String!]!\n  $geoCoordinate: [Float!]\n) {\n  createTender(input: $input, imageFileNames: $imageFileNames, attachmentFileNames: $attachmentFileNames, geoCoordinate: $geoCoordinate) {\n    edges {\n      node {\n        ...tenderListItemFragment\n        id\n      }\n    }\n  }\n}\n\nfragment tenderListItemFragment on Tender {\n  id\n  area {\n    id\n    name\n    code\n  }\n  followingSales {\n    id\n  }\n  profiles(orderBy: [{field: CREATED_AT, direction: DESC}]) {\n    edges {\n      node {\n        id\n        approvalStatus\n        name\n        status\n        createdAt\n        estimatedAmount\n        classify\n        customer {\n          id\n          name\n        }\n        images\n        fullAddress\n        tenderDate\n        discoveryDate\n        tenderClosingDate\n        createdBy {\n          id\n        }\n      }\n    }\n  }\n}\n"
+    "text": "mutation useCreateTenderMutation(\n  $input: CreateTenderInput!\n  $imageFileNames: [String!]!\n  $attachmentFileNames: [String!]!\n  $geoCoordinate: [Float!]\n) {\n  createTender(input: $input, imageFileNames: $imageFileNames, attachmentFileNames: $attachmentFileNames, geoCoordinate: $geoCoordinate) {\n    edges {\n      node {\n        ...tenderListItemFragment\n        id\n      }\n    }\n  }\n}\n\nfragment tenderListItemFragment on Tender {\n  id\n  area {\n    id\n    name\n    code\n  }\n  followingSales {\n    id\n  }\n  activeProfile {\n    id\n    approvalStatus\n    name\n    status\n    createdAt\n    estimatedAmount\n    classify\n    customer {\n      id\n      name\n    }\n    images\n    fullAddress\n    tenderDate\n    discoveryDate\n    tenderClosingDate\n    createdBy {\n      id\n    }\n  }\n}\n"
   }
 };
 })();

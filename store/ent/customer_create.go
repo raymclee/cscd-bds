@@ -6,6 +6,7 @@ import (
 	"context"
 	"cscd-bds/store/ent/area"
 	"cscd-bds/store/ent/customer"
+	"cscd-bds/store/ent/customerprofile"
 	"cscd-bds/store/ent/schema/model"
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/schema/zht"
@@ -250,6 +251,34 @@ func (cc *CustomerCreate) SetNillableApproverID(x *xid.ID) *CustomerCreate {
 	return cc
 }
 
+// SetActiveProfileID sets the "active_profile_id" field.
+func (cc *CustomerCreate) SetActiveProfileID(x xid.ID) *CustomerCreate {
+	cc.mutation.SetActiveProfileID(x)
+	return cc
+}
+
+// SetNillableActiveProfileID sets the "active_profile_id" field if the given value is not nil.
+func (cc *CustomerCreate) SetNillableActiveProfileID(x *xid.ID) *CustomerCreate {
+	if x != nil {
+		cc.SetActiveProfileID(*x)
+	}
+	return cc
+}
+
+// SetPendingProfileID sets the "pending_profile_id" field.
+func (cc *CustomerCreate) SetPendingProfileID(x xid.ID) *CustomerCreate {
+	cc.mutation.SetPendingProfileID(x)
+	return cc
+}
+
+// SetNillablePendingProfileID sets the "pending_profile_id" field if the given value is not nil.
+func (cc *CustomerCreate) SetNillablePendingProfileID(x *xid.ID) *CustomerCreate {
+	if x != nil {
+		cc.SetPendingProfileID(*x)
+	}
+	return cc
+}
+
 // SetID sets the "id" field.
 func (cc *CustomerCreate) SetID(x xid.ID) *CustomerCreate {
 	cc.mutation.SetID(x)
@@ -317,6 +346,31 @@ func (cc *CustomerCreate) AddVisitRecords(v ...*VisitRecord) *CustomerCreate {
 		ids[i] = v[i].ID
 	}
 	return cc.AddVisitRecordIDs(ids...)
+}
+
+// AddProfileIDs adds the "profiles" edge to the CustomerProfile entity by IDs.
+func (cc *CustomerCreate) AddProfileIDs(ids ...xid.ID) *CustomerCreate {
+	cc.mutation.AddProfileIDs(ids...)
+	return cc
+}
+
+// AddProfiles adds the "profiles" edges to the CustomerProfile entity.
+func (cc *CustomerCreate) AddProfiles(c ...*CustomerProfile) *CustomerCreate {
+	ids := make([]xid.ID, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return cc.AddProfileIDs(ids...)
+}
+
+// SetActiveProfile sets the "active_profile" edge to the CustomerProfile entity.
+func (cc *CustomerCreate) SetActiveProfile(c *CustomerProfile) *CustomerCreate {
+	return cc.SetActiveProfileID(c.ID)
+}
+
+// SetPendingProfile sets the "pending_profile" edge to the CustomerProfile entity.
+func (cc *CustomerCreate) SetPendingProfile(c *CustomerProfile) *CustomerCreate {
+	return cc.SetPendingProfileID(c.ID)
 }
 
 // Mutation returns the CustomerMutation object of the builder.
@@ -600,6 +654,56 @@ func (cc *CustomerCreate) createSpec() (*Customer, *sqlgraph.CreateSpec) {
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := cc.mutation.ProfilesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   customer.ProfilesTable,
+			Columns: []string{customer.ProfilesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(customerprofile.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := cc.mutation.ActiveProfileIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   customer.ActiveProfileTable,
+			Columns: []string{customer.ActiveProfileColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(customerprofile.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.ActiveProfileID = &nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := cc.mutation.PendingProfileIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   customer.PendingProfileTable,
+			Columns: []string{customer.PendingProfileColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(customerprofile.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.PendingProfileID = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec
@@ -957,6 +1061,42 @@ func (u *CustomerUpsert) UpdateApproverID() *CustomerUpsert {
 // ClearApproverID clears the value of the "approver_id" field.
 func (u *CustomerUpsert) ClearApproverID() *CustomerUpsert {
 	u.SetNull(customer.FieldApproverID)
+	return u
+}
+
+// SetActiveProfileID sets the "active_profile_id" field.
+func (u *CustomerUpsert) SetActiveProfileID(v xid.ID) *CustomerUpsert {
+	u.Set(customer.FieldActiveProfileID, v)
+	return u
+}
+
+// UpdateActiveProfileID sets the "active_profile_id" field to the value that was provided on create.
+func (u *CustomerUpsert) UpdateActiveProfileID() *CustomerUpsert {
+	u.SetExcluded(customer.FieldActiveProfileID)
+	return u
+}
+
+// ClearActiveProfileID clears the value of the "active_profile_id" field.
+func (u *CustomerUpsert) ClearActiveProfileID() *CustomerUpsert {
+	u.SetNull(customer.FieldActiveProfileID)
+	return u
+}
+
+// SetPendingProfileID sets the "pending_profile_id" field.
+func (u *CustomerUpsert) SetPendingProfileID(v xid.ID) *CustomerUpsert {
+	u.Set(customer.FieldPendingProfileID, v)
+	return u
+}
+
+// UpdatePendingProfileID sets the "pending_profile_id" field to the value that was provided on create.
+func (u *CustomerUpsert) UpdatePendingProfileID() *CustomerUpsert {
+	u.SetExcluded(customer.FieldPendingProfileID)
+	return u
+}
+
+// ClearPendingProfileID clears the value of the "pending_profile_id" field.
+func (u *CustomerUpsert) ClearPendingProfileID() *CustomerUpsert {
+	u.SetNull(customer.FieldPendingProfileID)
 	return u
 }
 
@@ -1365,6 +1505,48 @@ func (u *CustomerUpsertOne) UpdateApproverID() *CustomerUpsertOne {
 func (u *CustomerUpsertOne) ClearApproverID() *CustomerUpsertOne {
 	return u.Update(func(s *CustomerUpsert) {
 		s.ClearApproverID()
+	})
+}
+
+// SetActiveProfileID sets the "active_profile_id" field.
+func (u *CustomerUpsertOne) SetActiveProfileID(v xid.ID) *CustomerUpsertOne {
+	return u.Update(func(s *CustomerUpsert) {
+		s.SetActiveProfileID(v)
+	})
+}
+
+// UpdateActiveProfileID sets the "active_profile_id" field to the value that was provided on create.
+func (u *CustomerUpsertOne) UpdateActiveProfileID() *CustomerUpsertOne {
+	return u.Update(func(s *CustomerUpsert) {
+		s.UpdateActiveProfileID()
+	})
+}
+
+// ClearActiveProfileID clears the value of the "active_profile_id" field.
+func (u *CustomerUpsertOne) ClearActiveProfileID() *CustomerUpsertOne {
+	return u.Update(func(s *CustomerUpsert) {
+		s.ClearActiveProfileID()
+	})
+}
+
+// SetPendingProfileID sets the "pending_profile_id" field.
+func (u *CustomerUpsertOne) SetPendingProfileID(v xid.ID) *CustomerUpsertOne {
+	return u.Update(func(s *CustomerUpsert) {
+		s.SetPendingProfileID(v)
+	})
+}
+
+// UpdatePendingProfileID sets the "pending_profile_id" field to the value that was provided on create.
+func (u *CustomerUpsertOne) UpdatePendingProfileID() *CustomerUpsertOne {
+	return u.Update(func(s *CustomerUpsert) {
+		s.UpdatePendingProfileID()
+	})
+}
+
+// ClearPendingProfileID clears the value of the "pending_profile_id" field.
+func (u *CustomerUpsertOne) ClearPendingProfileID() *CustomerUpsertOne {
+	return u.Update(func(s *CustomerUpsert) {
+		s.ClearPendingProfileID()
 	})
 }
 
@@ -1940,6 +2122,48 @@ func (u *CustomerUpsertBulk) UpdateApproverID() *CustomerUpsertBulk {
 func (u *CustomerUpsertBulk) ClearApproverID() *CustomerUpsertBulk {
 	return u.Update(func(s *CustomerUpsert) {
 		s.ClearApproverID()
+	})
+}
+
+// SetActiveProfileID sets the "active_profile_id" field.
+func (u *CustomerUpsertBulk) SetActiveProfileID(v xid.ID) *CustomerUpsertBulk {
+	return u.Update(func(s *CustomerUpsert) {
+		s.SetActiveProfileID(v)
+	})
+}
+
+// UpdateActiveProfileID sets the "active_profile_id" field to the value that was provided on create.
+func (u *CustomerUpsertBulk) UpdateActiveProfileID() *CustomerUpsertBulk {
+	return u.Update(func(s *CustomerUpsert) {
+		s.UpdateActiveProfileID()
+	})
+}
+
+// ClearActiveProfileID clears the value of the "active_profile_id" field.
+func (u *CustomerUpsertBulk) ClearActiveProfileID() *CustomerUpsertBulk {
+	return u.Update(func(s *CustomerUpsert) {
+		s.ClearActiveProfileID()
+	})
+}
+
+// SetPendingProfileID sets the "pending_profile_id" field.
+func (u *CustomerUpsertBulk) SetPendingProfileID(v xid.ID) *CustomerUpsertBulk {
+	return u.Update(func(s *CustomerUpsert) {
+		s.SetPendingProfileID(v)
+	})
+}
+
+// UpdatePendingProfileID sets the "pending_profile_id" field to the value that was provided on create.
+func (u *CustomerUpsertBulk) UpdatePendingProfileID() *CustomerUpsertBulk {
+	return u.Update(func(s *CustomerUpsert) {
+		s.UpdatePendingProfileID()
+	})
+}
+
+// ClearPendingProfileID clears the value of the "pending_profile_id" field.
+func (u *CustomerUpsertBulk) ClearPendingProfileID() *CustomerUpsertBulk {
+	return u.Update(func(s *CustomerUpsert) {
+		s.ClearPendingProfileID()
 	})
 }
 

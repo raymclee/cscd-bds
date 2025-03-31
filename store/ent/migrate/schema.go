@@ -99,6 +99,8 @@ var (
 		{Name: "created_by_id", Type: field.TypeString, Nullable: true},
 		{Name: "updated_by_id", Type: field.TypeString, Nullable: true},
 		{Name: "approver_id", Type: field.TypeString, Nullable: true},
+		{Name: "active_profile_id", Type: field.TypeString, Nullable: true},
+		{Name: "pending_profile_id", Type: field.TypeString, Nullable: true},
 		{Name: "sales_id", Type: field.TypeString, Nullable: true},
 	}
 	// CustomersTable holds the schema information for the "customers" table.
@@ -132,8 +134,20 @@ var (
 				OnDelete:   schema.SetNull,
 			},
 			{
-				Symbol:     "customers_users_customers",
+				Symbol:     "customers_customer_profiles_active_profile",
 				Columns:    []*schema.Column{CustomersColumns[18]},
+				RefColumns: []*schema.Column{CustomerProfilesColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:     "customers_customer_profiles_pending_profile",
+				Columns:    []*schema.Column{CustomersColumns[19]},
+				RefColumns: []*schema.Column{CustomerProfilesColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:     "customers_users_customers",
+				Columns:    []*schema.Column{CustomersColumns[20]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -143,6 +157,57 @@ var (
 				Name:    "customer_name_area_id",
 				Unique:  true,
 				Columns: []*schema.Column{CustomersColumns[3], CustomersColumns[14]},
+			},
+		},
+	}
+	// CustomerProfilesColumns holds the columns for the "customer_profiles" table.
+	CustomerProfilesColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeString, Unique: true},
+		{Name: "created_at", Type: field.TypeTime},
+		{Name: "updated_at", Type: field.TypeTime},
+		{Name: "name", Type: field.TypeString},
+		{Name: "approval_status", Type: field.TypeInt, Default: 1},
+		{Name: "owner_type", Type: field.TypeInt, Nullable: true},
+		{Name: "industry", Type: field.TypeInt, Nullable: true},
+		{Name: "size", Type: field.TypeInt, Nullable: true},
+		{Name: "contact_person", Type: field.TypeString, Nullable: true},
+		{Name: "contact_person_position", Type: field.TypeString, Nullable: true},
+		{Name: "contact_person_phone", Type: field.TypeString, Nullable: true},
+		{Name: "contact_person_email", Type: field.TypeString, Nullable: true},
+		{Name: "customer_id", Type: field.TypeString},
+		{Name: "created_by_id", Type: field.TypeString, Nullable: true},
+		{Name: "approver_id", Type: field.TypeString, Nullable: true},
+		{Name: "sales_id", Type: field.TypeString, Nullable: true},
+	}
+	// CustomerProfilesTable holds the schema information for the "customer_profiles" table.
+	CustomerProfilesTable = &schema.Table{
+		Name:       "customer_profiles",
+		Columns:    CustomerProfilesColumns,
+		PrimaryKey: []*schema.Column{CustomerProfilesColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "customer_profiles_customers_profiles",
+				Columns:    []*schema.Column{CustomerProfilesColumns[12]},
+				RefColumns: []*schema.Column{CustomersColumns[0]},
+				OnDelete:   schema.NoAction,
+			},
+			{
+				Symbol:     "customer_profiles_users_created_by",
+				Columns:    []*schema.Column{CustomerProfilesColumns[13]},
+				RefColumns: []*schema.Column{UsersColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:     "customer_profiles_users_approver",
+				Columns:    []*schema.Column{CustomerProfilesColumns[14]},
+				RefColumns: []*schema.Column{UsersColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:     "customer_profiles_users_sales",
+				Columns:    []*schema.Column{CustomerProfilesColumns[15]},
+				RefColumns: []*schema.Column{UsersColumns[0]},
+				OnDelete:   schema.SetNull,
 			},
 		},
 	}
@@ -895,6 +960,7 @@ var (
 		CompetitorsTable,
 		CountriesTable,
 		CustomersTable,
+		CustomerProfilesTable,
 		DistrictsTable,
 		OperationsTable,
 		PlotsTable,
@@ -921,7 +987,13 @@ func init() {
 	CustomersTable.ForeignKeys[1].RefTable = UsersTable
 	CustomersTable.ForeignKeys[2].RefTable = UsersTable
 	CustomersTable.ForeignKeys[3].RefTable = UsersTable
-	CustomersTable.ForeignKeys[4].RefTable = UsersTable
+	CustomersTable.ForeignKeys[4].RefTable = CustomerProfilesTable
+	CustomersTable.ForeignKeys[5].RefTable = CustomerProfilesTable
+	CustomersTable.ForeignKeys[6].RefTable = UsersTable
+	CustomerProfilesTable.ForeignKeys[0].RefTable = CustomersTable
+	CustomerProfilesTable.ForeignKeys[1].RefTable = UsersTable
+	CustomerProfilesTable.ForeignKeys[2].RefTable = UsersTable
+	CustomerProfilesTable.ForeignKeys[3].RefTable = UsersTable
 	DistrictsTable.ForeignKeys[0].RefTable = CitiesTable
 	DistrictsTable.ForeignKeys[1].RefTable = ProvincesTable
 	PlotsTable.ForeignKeys[0].RefTable = DistrictsTable

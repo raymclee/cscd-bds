@@ -71,7 +71,7 @@ const fragment = graphql`
           id
           name
           code
-          customers(first: $first, last: $last, where: { approvalStatusGT: 1 })
+          customers(first: $first, last: $last)
             @connection(key: "tenderFormFragment_customers") {
             edges {
               node {
@@ -183,7 +183,7 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
     [area, areaID],
   );
 
-  const profile = useMemo(() => tender?.profiles?.edges?.[0]?.node, [tender]);
+  const profile = tender?.activeProfile;
 
   useEffect(() => {
     if (profile) {
@@ -293,9 +293,7 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
       form={form}
       className="relative !pb-24"
       // requiredMark="optional"
-      disabled={
-        isCreateInFlight || isUpdateInFlight || profile?.approvalStatus == 1
-      }
+      disabled={isCreateInFlight || isUpdateInFlight}
       scrollToFirstError={{
         behavior: "smooth",
         block: "start",

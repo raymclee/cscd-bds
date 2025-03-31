@@ -9,6 +9,7 @@ import (
 	"cscd-bds/store/ent/competitor"
 	"cscd-bds/store/ent/country"
 	"cscd-bds/store/ent/customer"
+	"cscd-bds/store/ent/customerprofile"
 	"cscd-bds/store/ent/district"
 	"cscd-bds/store/ent/operation"
 	"cscd-bds/store/ent/plot"
@@ -59,6 +60,11 @@ var customerImplementors = []string{"Customer", "Node"}
 
 // IsNode implements the Node interface check for GQLGen.
 func (*Customer) IsNode() {}
+
+var customerprofileImplementors = []string{"CustomerProfile", "Node"}
+
+// IsNode implements the Node interface check for GQLGen.
+func (*CustomerProfile) IsNode() {}
 
 var districtImplementors = []string{"District", "Node"}
 
@@ -244,6 +250,19 @@ func (c *Client) noder(ctx context.Context, table string, id xid.ID) (Noder, err
 			Where(customer.ID(uid))
 		if fc := graphql.GetFieldContext(ctx); fc != nil {
 			if err := query.collectField(ctx, true, graphql.GetOperationContext(ctx), fc.Field, nil, customerImplementors...); err != nil {
+				return nil, err
+			}
+		}
+		return query.Only(ctx)
+	case customerprofile.Table:
+		var uid xid.ID
+		if err := uid.UnmarshalGQL(id); err != nil {
+			return nil, err
+		}
+		query := c.CustomerProfile.Query().
+			Where(customerprofile.ID(uid))
+		if fc := graphql.GetFieldContext(ctx); fc != nil {
+			if err := query.collectField(ctx, true, graphql.GetOperationContext(ctx), fc.Field, nil, customerprofileImplementors...); err != nil {
 				return nil, err
 			}
 		}
@@ -558,6 +577,22 @@ func (c *Client) noders(ctx context.Context, table string, ids []xid.ID) ([]Node
 		query := c.Customer.Query().
 			Where(customer.IDIn(ids...))
 		query, err := query.CollectFields(ctx, customerImplementors...)
+		if err != nil {
+			return nil, err
+		}
+		nodes, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, node := range nodes {
+			for _, noder := range idmap[node.ID] {
+				*noder = node
+			}
+		}
+	case customerprofile.Table:
+		query := c.CustomerProfile.Query().
+			Where(customerprofile.IDIn(ids...))
+		query, err := query.CollectFields(ctx, customerprofileImplementors...)
 		if err != nil {
 			return nil, err
 		}

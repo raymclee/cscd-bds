@@ -111,7 +111,7 @@ export function Switcher() {
       <AnimatePresence mode="wait">
         {isActive && (
           <motion.div
-            className="fixed top-0 left-0 z-30 h-full w-full bg-black/50 backdrop-blur-sm"
+            className="fixed left-0 top-0 z-30 h-full w-full bg-black/50 backdrop-blur-sm"
             variants={menuOverlaySlide}
             initial="initial"
             animate="enter"
@@ -212,7 +212,7 @@ function Nav() {
       initial="initial"
       animate="enter"
       exit="exit"
-      className="fixed top-0 left-0 z-40 h-screen bg-[rgb(41,41,41)] text-white"
+      className="fixed left-0 top-0 z-40 h-screen bg-[rgb(41,41,41)] text-white"
     >
       <div className="flex h-full flex-col justify-between p-[100px]">
         <div
@@ -270,7 +270,7 @@ function AnimatedLink({
         animate={isActive ? "open" : "closed"}
         className="absolute bottom-3 left-[-30px] h-[10px] w-[10px] rounded-full bg-white"
       ></motion.div>
-      <Link href={href}>{title}</Link>
+      <Link to={href}>{title}</Link>
     </motion.div>
   );
 }
@@ -297,7 +297,7 @@ function Curve() {
   };
 
   return (
-    <svg className="absolute top-0 left-[-99px] h-full w-[100px] fill-[rgb(41,41,41)] stroke-none">
+    <svg className="absolute left-[-99px] top-0 h-full w-[100px] fill-[rgb(41,41,41)] stroke-none">
       <motion.path
         variants={curve}
         initial="initial"

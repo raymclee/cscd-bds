@@ -136,6 +136,16 @@ func ApproverID(v xid.ID) predicate.Customer {
 	return predicate.Customer(sql.FieldEQ(FieldApproverID, v))
 }
 
+// ActiveProfileID applies equality check predicate on the "active_profile_id" field. It's identical to ActiveProfileIDEQ.
+func ActiveProfileID(v xid.ID) predicate.Customer {
+	return predicate.Customer(sql.FieldEQ(FieldActiveProfileID, v))
+}
+
+// PendingProfileID applies equality check predicate on the "pending_profile_id" field. It's identical to PendingProfileIDEQ.
+func PendingProfileID(v xid.ID) predicate.Customer {
+	return predicate.Customer(sql.FieldEQ(FieldPendingProfileID, v))
+}
+
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
 func CreatedAtEQ(v time.Time) predicate.Customer {
 	return predicate.Customer(sql.FieldEQ(FieldCreatedAt, v))
@@ -1181,6 +1191,166 @@ func ApproverIDContainsFold(v xid.ID) predicate.Customer {
 	return predicate.Customer(sql.FieldContainsFold(FieldApproverID, vc))
 }
 
+// ActiveProfileIDEQ applies the EQ predicate on the "active_profile_id" field.
+func ActiveProfileIDEQ(v xid.ID) predicate.Customer {
+	return predicate.Customer(sql.FieldEQ(FieldActiveProfileID, v))
+}
+
+// ActiveProfileIDNEQ applies the NEQ predicate on the "active_profile_id" field.
+func ActiveProfileIDNEQ(v xid.ID) predicate.Customer {
+	return predicate.Customer(sql.FieldNEQ(FieldActiveProfileID, v))
+}
+
+// ActiveProfileIDIn applies the In predicate on the "active_profile_id" field.
+func ActiveProfileIDIn(vs ...xid.ID) predicate.Customer {
+	return predicate.Customer(sql.FieldIn(FieldActiveProfileID, vs...))
+}
+
+// ActiveProfileIDNotIn applies the NotIn predicate on the "active_profile_id" field.
+func ActiveProfileIDNotIn(vs ...xid.ID) predicate.Customer {
+	return predicate.Customer(sql.FieldNotIn(FieldActiveProfileID, vs...))
+}
+
+// ActiveProfileIDGT applies the GT predicate on the "active_profile_id" field.
+func ActiveProfileIDGT(v xid.ID) predicate.Customer {
+	return predicate.Customer(sql.FieldGT(FieldActiveProfileID, v))
+}
+
+// ActiveProfileIDGTE applies the GTE predicate on the "active_profile_id" field.
+func ActiveProfileIDGTE(v xid.ID) predicate.Customer {
+	return predicate.Customer(sql.FieldGTE(FieldActiveProfileID, v))
+}
+
+// ActiveProfileIDLT applies the LT predicate on the "active_profile_id" field.
+func ActiveProfileIDLT(v xid.ID) predicate.Customer {
+	return predicate.Customer(sql.FieldLT(FieldActiveProfileID, v))
+}
+
+// ActiveProfileIDLTE applies the LTE predicate on the "active_profile_id" field.
+func ActiveProfileIDLTE(v xid.ID) predicate.Customer {
+	return predicate.Customer(sql.FieldLTE(FieldActiveProfileID, v))
+}
+
+// ActiveProfileIDContains applies the Contains predicate on the "active_profile_id" field.
+func ActiveProfileIDContains(v xid.ID) predicate.Customer {
+	vc := string(v)
+	return predicate.Customer(sql.FieldContains(FieldActiveProfileID, vc))
+}
+
+// ActiveProfileIDHasPrefix applies the HasPrefix predicate on the "active_profile_id" field.
+func ActiveProfileIDHasPrefix(v xid.ID) predicate.Customer {
+	vc := string(v)
+	return predicate.Customer(sql.FieldHasPrefix(FieldActiveProfileID, vc))
+}
+
+// ActiveProfileIDHasSuffix applies the HasSuffix predicate on the "active_profile_id" field.
+func ActiveProfileIDHasSuffix(v xid.ID) predicate.Customer {
+	vc := string(v)
+	return predicate.Customer(sql.FieldHasSuffix(FieldActiveProfileID, vc))
+}
+
+// ActiveProfileIDIsNil applies the IsNil predicate on the "active_profile_id" field.
+func ActiveProfileIDIsNil() predicate.Customer {
+	return predicate.Customer(sql.FieldIsNull(FieldActiveProfileID))
+}
+
+// ActiveProfileIDNotNil applies the NotNil predicate on the "active_profile_id" field.
+func ActiveProfileIDNotNil() predicate.Customer {
+	return predicate.Customer(sql.FieldNotNull(FieldActiveProfileID))
+}
+
+// ActiveProfileIDEqualFold applies the EqualFold predicate on the "active_profile_id" field.
+func ActiveProfileIDEqualFold(v xid.ID) predicate.Customer {
+	vc := string(v)
+	return predicate.Customer(sql.FieldEqualFold(FieldActiveProfileID, vc))
+}
+
+// ActiveProfileIDContainsFold applies the ContainsFold predicate on the "active_profile_id" field.
+func ActiveProfileIDContainsFold(v xid.ID) predicate.Customer {
+	vc := string(v)
+	return predicate.Customer(sql.FieldContainsFold(FieldActiveProfileID, vc))
+}
+
+// PendingProfileIDEQ applies the EQ predicate on the "pending_profile_id" field.
+func PendingProfileIDEQ(v xid.ID) predicate.Customer {
+	return predicate.Customer(sql.FieldEQ(FieldPendingProfileID, v))
+}
+
+// PendingProfileIDNEQ applies the NEQ predicate on the "pending_profile_id" field.
+func PendingProfileIDNEQ(v xid.ID) predicate.Customer {
+	return predicate.Customer(sql.FieldNEQ(FieldPendingProfileID, v))
+}
+
+// PendingProfileIDIn applies the In predicate on the "pending_profile_id" field.
+func PendingProfileIDIn(vs ...xid.ID) predicate.Customer {
+	return predicate.Customer(sql.FieldIn(FieldPendingProfileID, vs...))
+}
+
+// PendingProfileIDNotIn applies the NotIn predicate on the "pending_profile_id" field.
+func PendingProfileIDNotIn(vs ...xid.ID) predicate.Customer {
+	return predicate.Customer(sql.FieldNotIn(FieldPendingProfileID, vs...))
+}
+
+// PendingProfileIDGT applies the GT predicate on the "pending_profile_id" field.
+func PendingProfileIDGT(v xid.ID) predicate.Customer {
+	return predicate.Customer(sql.FieldGT(FieldPendingProfileID, v))
+}
+
+// PendingProfileIDGTE applies the GTE predicate on the "pending_profile_id" field.
+func PendingProfileIDGTE(v xid.ID) predicate.Customer {
+	return predicate.Customer(sql.FieldGTE(FieldPendingProfileID, v))
+}
+
+// PendingProfileIDLT applies the LT predicate on the "pending_profile_id" field.
+func PendingProfileIDLT(v xid.ID) predicate.Customer {
+	return predicate.Customer(sql.FieldLT(FieldPendingProfileID, v))
+}
+
+// PendingProfileIDLTE applies the LTE predicate on the "pending_profile_id" field.
+func PendingProfileIDLTE(v xid.ID) predicate.Customer {
+	return predicate.Customer(sql.FieldLTE(FieldPendingProfileID, v))
+}
+
+// PendingProfileIDContains applies the Contains predicate on the "pending_profile_id" field.
+func PendingProfileIDContains(v xid.ID) predicate.Customer {
+	vc := string(v)
+	return predicate.Customer(sql.FieldContains(FieldPendingProfileID, vc))
+}
+
+// PendingProfileIDHasPrefix applies the HasPrefix predicate on the "pending_profile_id" field.
+func PendingProfileIDHasPrefix(v xid.ID) predicate.Customer {
+	vc := string(v)
+	return predicate.Customer(sql.FieldHasPrefix(FieldPendingProfileID, vc))
+}
+
+// PendingProfileIDHasSuffix applies the HasSuffix predicate on the "pending_profile_id" field.
+func PendingProfileIDHasSuffix(v xid.ID) predicate.Customer {
+	vc := string(v)
+	return predicate.Customer(sql.FieldHasSuffix(FieldPendingProfileID, vc))
+}
+
+// PendingProfileIDIsNil applies the IsNil predicate on the "pending_profile_id" field.
+func PendingProfileIDIsNil() predicate.Customer {
+	return predicate.Customer(sql.FieldIsNull(FieldPendingProfileID))
+}
+
+// PendingProfileIDNotNil applies the NotNil predicate on the "pending_profile_id" field.
+func PendingProfileIDNotNil() predicate.Customer {
+	return predicate.Customer(sql.FieldNotNull(FieldPendingProfileID))
+}
+
+// PendingProfileIDEqualFold applies the EqualFold predicate on the "pending_profile_id" field.
+func PendingProfileIDEqualFold(v xid.ID) predicate.Customer {
+	vc := string(v)
+	return predicate.Customer(sql.FieldEqualFold(FieldPendingProfileID, vc))
+}
+
+// PendingProfileIDContainsFold applies the ContainsFold predicate on the "pending_profile_id" field.
+func PendingProfileIDContainsFold(v xid.ID) predicate.Customer {
+	vc := string(v)
+	return predicate.Customer(sql.FieldContainsFold(FieldPendingProfileID, vc))
+}
+
 // HasArea applies the HasEdge predicate on the "area" edge.
 func HasArea() predicate.Customer {
 	return predicate.Customer(func(s *sql.Selector) {
@@ -1334,6 +1504,75 @@ func HasVisitRecords() predicate.Customer {
 func HasVisitRecordsWith(preds ...predicate.VisitRecord) predicate.Customer {
 	return predicate.Customer(func(s *sql.Selector) {
 		step := newVisitRecordsStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasProfiles applies the HasEdge predicate on the "profiles" edge.
+func HasProfiles() predicate.Customer {
+	return predicate.Customer(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, ProfilesTable, ProfilesColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasProfilesWith applies the HasEdge predicate on the "profiles" edge with a given conditions (other predicates).
+func HasProfilesWith(preds ...predicate.CustomerProfile) predicate.Customer {
+	return predicate.Customer(func(s *sql.Selector) {
+		step := newProfilesStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasActiveProfile applies the HasEdge predicate on the "active_profile" edge.
+func HasActiveProfile() predicate.Customer {
+	return predicate.Customer(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, ActiveProfileTable, ActiveProfileColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasActiveProfileWith applies the HasEdge predicate on the "active_profile" edge with a given conditions (other predicates).
+func HasActiveProfileWith(preds ...predicate.CustomerProfile) predicate.Customer {
+	return predicate.Customer(func(s *sql.Selector) {
+		step := newActiveProfileStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasPendingProfile applies the HasEdge predicate on the "pending_profile" edge.
+func HasPendingProfile() predicate.Customer {
+	return predicate.Customer(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, PendingProfileTable, PendingProfileColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasPendingProfileWith applies the HasEdge predicate on the "pending_profile" edge with a given conditions (other predicates).
+func HasPendingProfileWith(preds ...predicate.CustomerProfile) predicate.Customer {
+	return predicate.Customer(func(s *sql.Selector) {
+		step := newPendingProfileStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

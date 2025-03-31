@@ -257,6 +257,75 @@ func (c *Customer) VisitRecords(
 	return c.QueryVisitRecords().Paginate(ctx, after, first, before, last, opts...)
 }
 
+func (c *Customer) Profiles(
+	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy []*CustomerProfileOrder, where *CustomerProfileWhereInput,
+) (*CustomerProfileConnection, error) {
+	opts := []CustomerProfilePaginateOption{
+		WithCustomerProfileOrder(orderBy),
+		WithCustomerProfileFilter(where.Filter),
+	}
+	alias := graphql.GetFieldContext(ctx).Field.Alias
+	totalCount, hasTotalCount := c.Edges.totalCount[7][alias]
+	if nodes, err := c.NamedProfiles(alias); err == nil || hasTotalCount {
+		pager, err := newCustomerProfilePager(opts, last != nil)
+		if err != nil {
+			return nil, err
+		}
+		conn := &CustomerProfileConnection{Edges: []*CustomerProfileEdge{}, TotalCount: totalCount}
+		conn.build(nodes, pager, after, first, before, last)
+		return conn, nil
+	}
+	return c.QueryProfiles().Paginate(ctx, after, first, before, last, opts...)
+}
+
+func (c *Customer) ActiveProfile(ctx context.Context) (*CustomerProfile, error) {
+	result, err := c.Edges.ActiveProfileOrErr()
+	if IsNotLoaded(err) {
+		result, err = c.QueryActiveProfile().Only(ctx)
+	}
+	return result, MaskNotFound(err)
+}
+
+func (c *Customer) PendingProfile(ctx context.Context) (*CustomerProfile, error) {
+	result, err := c.Edges.PendingProfileOrErr()
+	if IsNotLoaded(err) {
+		result, err = c.QueryPendingProfile().Only(ctx)
+	}
+	return result, MaskNotFound(err)
+}
+
+func (cp *CustomerProfile) Customer(ctx context.Context) (*Customer, error) {
+	result, err := cp.Edges.CustomerOrErr()
+	if IsNotLoaded(err) {
+		result, err = cp.QueryCustomer().Only(ctx)
+	}
+	return result, err
+}
+
+func (cp *CustomerProfile) CreatedBy(ctx context.Context) (*User, error) {
+	result, err := cp.Edges.CreatedByOrErr()
+	if IsNotLoaded(err) {
+		result, err = cp.QueryCreatedBy().Only(ctx)
+	}
+	return result, MaskNotFound(err)
+}
+
+func (cp *CustomerProfile) Approver(ctx context.Context) (*User, error) {
+	result, err := cp.Edges.ApproverOrErr()
+	if IsNotLoaded(err) {
+		result, err = cp.QueryApprover().Only(ctx)
+	}
+	return result, MaskNotFound(err)
+}
+
+func (cp *CustomerProfile) Sales(ctx context.Context) (*User, error) {
+	result, err := cp.Edges.SalesOrErr()
+	if IsNotLoaded(err) {
+		result, err = cp.QuerySales().Only(ctx)
+	}
+	return result, MaskNotFound(err)
+}
+
 func (d *District) Province(ctx context.Context) (*Province, error) {
 	result, err := d.Edges.ProvinceOrErr()
 	if IsNotLoaded(err) {

@@ -1,5 +1,5 @@
 import { EditOutlined } from "@ant-design/icons";
-import { useRouteContext } from "@tanstack/react-router";
+import { useRouteContext, useSearch } from "@tanstack/react-router";
 import { customerDetail_customerContact$key } from "__generated__/customerDetail_customerContact.graphql";
 import {
   customerDetailFragment$data,
@@ -21,8 +21,8 @@ import { canEdit } from "~/lib/permission";
 import { usePortalStore } from "~/store/portal";
 import { VisitRecordFormDrawer } from "./visit-record-form-drawer";
 import { useUpdateCustomer } from "~/hooks/use-update-customer";
-import { useApproveCustomerRequest } from "~/hooks/use-approve-customer-request";
-import { useRejectCustomerRequest } from "~/hooks/use-reject-customer-request";
+import { useApproveCustomer } from "~/hooks/use-approve-customer";
+import { useRejectCustomer } from "~/hooks/use-reject-customer";
 import { isSH } from "~/lib/areas";
 
 export function CustomerDetail(props: {
@@ -33,16 +33,8 @@ export function CustomerDetail(props: {
     graphql`
       fragment customerDetailFragment on Customer {
         id
-        name
         createdAt
         createdBy {
-          name
-        }
-        updatedAt
-        ownerType
-        industry
-        size
-        sales {
           id
           name
         }
@@ -51,36 +43,84 @@ export function CustomerDetail(props: {
           name
           code
         }
-        approvalStatus
-        contactPerson
-        contactPersonPosition
-        contactPersonPhone
-        contactPersonEmail
+        activeProfile {
+          id
+          name
+          createdAt
+          createdBy {
+            name
+          }
+          updatedAt
+          ownerType
+          industry
+          size
+          approvalStatus
+          contactPerson
+          contactPersonPosition
+          contactPersonPhone
+          contactPersonEmail
+          sales {
+            id
+            name
+          }
+          approver {
+            id
+            name
+          }
+        }
+        pendingProfile {
+          id
+          name
+          createdAt
+          createdBy {
+            name
+          }
+          updatedAt
+          ownerType
+          industry
+          size
+          approvalStatus
+          contactPerson
+          contactPersonPosition
+          contactPersonPhone
+          contactPersonEmail
+          sales {
+            id
+            name
+          }
+        }
+        profiles(orderBy: [{ field: CREATED_AT, direction: DESC }]) {
+          edges {
+            node {
+              id
+              name
+              createdAt
+              createdBy {
+                name
+              }
+              updatedAt
+              ownerType
+              industry
+              size
+              approvalStatus
+              contactPerson
+              contactPersonPosition
+              contactPersonPhone
+              contactPersonEmail
+              sales {
+                id
+                name
+              }
+            }
+          }
+        }
+
         lastVisitRecord: visitRecords(last: 1)
           @connection(key: "customerDetailFragment_lastVisitRecord") {
           edges {
             node {
               date
             }
-          }
-        }
-        draft {
-          name
-          ownerType
-          industry
-          size
-          contactPerson
-          contactPersonPosition
-          contactPersonPhone
-          contactPersonEmail
-          area {
-            id
-            code
-            name
-          }
-          sales {
-            id
-            name
           }
         }
         # ...customerDetail_customerContact
@@ -90,51 +130,60 @@ export function CustomerDetail(props: {
   );
   // const [modal, contextHolder] = Modal.useModal();
   const { session } = useRouteContext({ from: "/__auth" });
-  // const [updateCustomer, inFlight] = useUpdateCustomer();
+  const selectedProfile = useSearch({
+    from: "/__auth/__portal/portal/customers_/$id",
+    select: (state) =>
+      customer.profiles.edges?.find((e) => e?.node?.id === state.p)?.node,
+  });
+  const activeProfile =
+    selectedProfile || customer.pendingProfile || customer.activeProfile;
 
   return (
     <>
       <Descriptions
-        extra={
-          canEdit(session) && (
-            <Space>
-              <Button
-                type="primary"
-                icon={<EditOutlined />}
-                disabled={customer.approvalStatus == 1}
-                onClick={() => {
-                  usePortalStore.setState({
-                    customerFormOpen: true,
-                    customerFormCustomer: customer,
-                  });
-                }}
-              >
-                编辑
-              </Button>
-              {/* <Button
-                type="primary"
-                icon={<BookUser size={16} />}
-                onClick={() => {
-                  usePortalStore.setState({
-                    visitRecordFormOpen: true,
-                  });
-                }}
-              >
-                添加拜访记录
-              </Button> */}
-              {(session.isAdmin || session.isSuperAdmin) && (
-                <ApprovalModal customer={customer} />
-              )}
-            </Space>
-          )
-        }
         title={
-          <div className="flex items-center gap-2">
-            <span>{customer.draft?.name || customer.name}</span>
-            {isSH(customer.area.code) && (
-              <Tag color={approvalStatusTagColor(customer.approvalStatus)}>
-                {approvalStatusText(customer.approvalStatus)}
-              </Tag>
+          <div className="flex h-8 flex-wrap items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <span>{activeProfile?.name}</span>
+              {isSH(customer.area.code) && (
+                <Tag
+                  color={approvalStatusTagColor(activeProfile?.approvalStatus)}
+                >
+                  {approvalStatusText(activeProfile?.approvalStatus)}
+                </Tag>
+              )}
+            </div>
+
+            {canEdit(session) && (
+              <Space>
+                <Button
+                  type="primary"
+                  icon={<EditOutlined />}
+                  // disabled={customer.approvalStatus == 1}
+                  onClick={() => {
+                    usePortalStore.setState({
+                      customerFormOpen: true,
+                      customerFormCustomer: customer,
+                    });
+                  }}
+                >
+                  编辑
+                </Button>
+                {/* <Button
+                  type="primary"
+                  icon={<BookUser size={16} />}
+                  onClick={() => {
+                    usePortalStore.setState({
+                      visitRecordFormOpen: true,
+                    });
+                  }}
+                >
+                  添加拜访记录
+                </Button> */}
+                {(session.isAdmin || session.isSuperAdmin) && (
+                  <ApprovalModal customer={customer} />
+                )}
+              </Space>
             )}
           </div>
         }
@@ -144,7 +193,7 @@ export function CustomerDetail(props: {
             label: "业主类型",
             children: (
               <span className="font-normal">
-                {ownerTypeText(customer.draft?.ownerType || customer.ownerType)}
+                {ownerTypeText(activeProfile?.ownerType)}
               </span>
             ),
           },
@@ -153,7 +202,7 @@ export function CustomerDetail(props: {
             label: "行业",
             children: (
               <span className="font-normal">
-                {industryText(customer.draft?.industry || customer.industry)}
+                {industryText(activeProfile?.industry)}
               </span>
             ),
           },
@@ -162,26 +211,20 @@ export function CustomerDetail(props: {
             label: "规模",
             children: (
               <span className="font-normal">
-                {customerSizeText(customer.draft?.size || customer.size)}
+                {customerSizeText(activeProfile?.size)}
               </span>
             ),
           },
           {
             key: "area",
             label: "区域",
-            children: (
-              <span className="font-normal">
-                {customer.draft?.area?.name || customer.area.name}
-              </span>
-            ),
+            children: <span className="font-normal">{customer.area.name}</span>,
           },
           {
             key: "sales",
             label: "客户所有人",
             children: (
-              <span className="font-normal">
-                {customer.draft?.sales?.name || customer.sales?.name}
-              </span>
+              <span className="font-normal">{activeProfile?.sales?.name}</span>
             ),
           },
           // {
@@ -238,23 +281,23 @@ export function CustomerDetail(props: {
             span: { sm: 3, md: 1 },
             children: (
               <span className="font-normal">
-                {dayjs(customer.updatedAt).format("LLL")}
+                {dayjs(activeProfile?.createdAt).format("LLL")}
               </span>
             ),
           },
-          {
-            key: "lastUpdated",
-            label: "最新跟进时间",
-            children: (
-              <span className="font-normal">
-                {customer.lastVisitRecord.edges?.at(0)?.node?.date
-                  ? dayjs(
-                      customer.lastVisitRecord.edges?.at(0)?.node?.date,
-                    ).format("LL")
-                  : "-"}
-              </span>
-            ),
-          },
+          // {
+          //   key: "lastUpdated",
+          //   label: "最新跟进时间",
+          //   children: (
+          //     <span className="font-normal">
+          //       {customer.lastVisitRecord.edges?.at(0)?.node?.date
+          //         ? dayjs(
+          //             customer.lastVisitRecord.edges?.at(0)?.node?.date,
+          //           ).format("LL")
+          //         : "-"}
+          //     </span>
+          //   ),
+          // },
         ]}
       />
       {/* {props.showContact && (
@@ -270,7 +313,9 @@ export function CustomerDetail(props: {
             key: "contactPerson",
             label: "对接人姓名",
             children: (
-              <span className="font-normal">{customer.contactPerson}</span>
+              <span className="font-normal">
+                {activeProfile?.contactPerson}
+              </span>
             ),
           },
           {
@@ -278,7 +323,7 @@ export function CustomerDetail(props: {
             label: "对接人职位",
             children: (
               <span className="font-normal">
-                {customer.contactPersonPosition}
+                {activeProfile?.contactPersonPosition}
               </span>
             ),
           },
@@ -286,7 +331,9 @@ export function CustomerDetail(props: {
             key: "contactPersonPhone",
             label: "对接人电话",
             children: (
-              <span className="font-normal">{customer.contactPersonPhone}</span>
+              <span className="font-normal">
+                {activeProfile?.contactPersonPhone}
+              </span>
             ),
           },
           {
@@ -294,7 +341,9 @@ export function CustomerDetail(props: {
             label: "对接人邮箱",
             span: 2,
             children: (
-              <span className="font-normal">{customer.contactPersonEmail}</span>
+              <span className="font-normal">
+                {activeProfile?.contactPersonEmail}
+              </span>
             ),
           },
         ]}
@@ -377,10 +426,8 @@ function ApprovalModal({
   customer: customerDetailFragment$data;
 }) {
   const [open, setOpen] = useState(false);
-  const [commitApproveCustomerRequest, inApproveCustomerRequestFlight] =
-    useApproveCustomerRequest();
-  const [commitRejectCustomerRequest, inRejectCustomerRequestFlight] =
-    useRejectCustomerRequest();
+  const [commitApproveCustomer, inApproveCustomerFlight] = useApproveCustomer();
+  const [commitRejectCustomer, inRejectCustomerFlight] = useRejectCustomer();
   const { message } = App.useApp();
 
   const handleCancel = () => {
@@ -388,7 +435,7 @@ function ApprovalModal({
   };
 
   const handleReject = () => {
-    commitRejectCustomerRequest({
+    commitRejectCustomer({
       variables: {
         id: customer.id,
       },
@@ -406,7 +453,7 @@ function ApprovalModal({
   };
 
   const handleApprove = () => {
-    commitApproveCustomerRequest({
+    commitApproveCustomer({
       variables: {
         id: customer.id,
       },
@@ -423,10 +470,12 @@ function ApprovalModal({
     });
   };
 
+  const isPendingApproval = Boolean(customer.pendingProfile);
+
   if (!open) {
     return (
       <Button
-        disabled={customer.approvalStatus > 1}
+        disabled={!isPendingApproval}
         type="primary"
         icon={<Check size={16} />}
         onClick={() => {
@@ -438,38 +487,49 @@ function ApprovalModal({
     );
   }
 
-  const isLoading =
-    inApproveCustomerRequestFlight || inRejectCustomerRequestFlight;
+  const isLoading = inApproveCustomerFlight || inRejectCustomerFlight;
 
   return (
-    <Modal
-      open={open}
-      title="批核"
-      onCancel={handleCancel}
-      footer={[
-        <Button key="back" onClick={handleCancel}>
-          取消
-        </Button>,
-        <Button
-          key="reject"
-          // type="primary"
-          loading={isLoading}
-          onClick={handleReject}
-          danger
-        >
-          拒绝
-        </Button>,
-        <Button
-          key="approve"
-          type="primary"
-          loading={isLoading}
-          onClick={handleApprove}
-        >
-          同意
-        </Button>,
-      ]}
-    >
-      <p>确定批核该客户更新吗？</p>
-    </Modal>
+    <>
+      <Button
+        disabled={!isPendingApproval}
+        type="primary"
+        icon={<Check size={16} />}
+        onClick={() => {
+          setOpen(true);
+        }}
+      >
+        批核
+      </Button>
+      <Modal
+        open={open}
+        title="批核"
+        onCancel={handleCancel}
+        footer={[
+          <Button key="back" onClick={handleCancel}>
+            取消
+          </Button>,
+          <Button
+            key="reject"
+            // type="primary"
+            loading={isLoading}
+            onClick={handleReject}
+            danger
+          >
+            拒绝
+          </Button>,
+          <Button
+            key="approve"
+            type="primary"
+            loading={isLoading}
+            onClick={handleApprove}
+          >
+            同意
+          </Button>,
+        ]}
+      >
+        <p>确定批核该客户更新吗？</p>
+      </Modal>
+    </>
   );
 }

@@ -8,6 +8,7 @@ import (
 	"cscd-bds/store/ent/competitor"
 	"cscd-bds/store/ent/country"
 	"cscd-bds/store/ent/customer"
+	"cscd-bds/store/ent/customerprofile"
 	"cscd-bds/store/ent/district"
 	"cscd-bds/store/ent/operation"
 	"cscd-bds/store/ent/plot"
@@ -1847,6 +1848,40 @@ type CustomerWhereInput struct {
 	ApproverIDEqualFold    *xid.ID  `json:"approverIDEqualFold,omitempty"`
 	ApproverIDContainsFold *xid.ID  `json:"approverIDContainsFold,omitempty"`
 
+	// "active_profile_id" field predicates.
+	ActiveProfileID             *xid.ID  `json:"activeProfileID,omitempty"`
+	ActiveProfileIDNEQ          *xid.ID  `json:"activeProfileIDNEQ,omitempty"`
+	ActiveProfileIDIn           []xid.ID `json:"activeProfileIDIn,omitempty"`
+	ActiveProfileIDNotIn        []xid.ID `json:"activeProfileIDNotIn,omitempty"`
+	ActiveProfileIDGT           *xid.ID  `json:"activeProfileIDGT,omitempty"`
+	ActiveProfileIDGTE          *xid.ID  `json:"activeProfileIDGTE,omitempty"`
+	ActiveProfileIDLT           *xid.ID  `json:"activeProfileIDLT,omitempty"`
+	ActiveProfileIDLTE          *xid.ID  `json:"activeProfileIDLTE,omitempty"`
+	ActiveProfileIDContains     *xid.ID  `json:"activeProfileIDContains,omitempty"`
+	ActiveProfileIDHasPrefix    *xid.ID  `json:"activeProfileIDHasPrefix,omitempty"`
+	ActiveProfileIDHasSuffix    *xid.ID  `json:"activeProfileIDHasSuffix,omitempty"`
+	ActiveProfileIDIsNil        bool     `json:"activeProfileIDIsNil,omitempty"`
+	ActiveProfileIDNotNil       bool     `json:"activeProfileIDNotNil,omitempty"`
+	ActiveProfileIDEqualFold    *xid.ID  `json:"activeProfileIDEqualFold,omitempty"`
+	ActiveProfileIDContainsFold *xid.ID  `json:"activeProfileIDContainsFold,omitempty"`
+
+	// "pending_profile_id" field predicates.
+	PendingProfileID             *xid.ID  `json:"pendingProfileID,omitempty"`
+	PendingProfileIDNEQ          *xid.ID  `json:"pendingProfileIDNEQ,omitempty"`
+	PendingProfileIDIn           []xid.ID `json:"pendingProfileIDIn,omitempty"`
+	PendingProfileIDNotIn        []xid.ID `json:"pendingProfileIDNotIn,omitempty"`
+	PendingProfileIDGT           *xid.ID  `json:"pendingProfileIDGT,omitempty"`
+	PendingProfileIDGTE          *xid.ID  `json:"pendingProfileIDGTE,omitempty"`
+	PendingProfileIDLT           *xid.ID  `json:"pendingProfileIDLT,omitempty"`
+	PendingProfileIDLTE          *xid.ID  `json:"pendingProfileIDLTE,omitempty"`
+	PendingProfileIDContains     *xid.ID  `json:"pendingProfileIDContains,omitempty"`
+	PendingProfileIDHasPrefix    *xid.ID  `json:"pendingProfileIDHasPrefix,omitempty"`
+	PendingProfileIDHasSuffix    *xid.ID  `json:"pendingProfileIDHasSuffix,omitempty"`
+	PendingProfileIDIsNil        bool     `json:"pendingProfileIDIsNil,omitempty"`
+	PendingProfileIDNotNil       bool     `json:"pendingProfileIDNotNil,omitempty"`
+	PendingProfileIDEqualFold    *xid.ID  `json:"pendingProfileIDEqualFold,omitempty"`
+	PendingProfileIDContainsFold *xid.ID  `json:"pendingProfileIDContainsFold,omitempty"`
+
 	// "area" edge predicates.
 	HasArea     *bool             `json:"hasArea,omitempty"`
 	HasAreaWith []*AreaWhereInput `json:"hasAreaWith,omitempty"`
@@ -1874,6 +1909,18 @@ type CustomerWhereInput struct {
 	// "visit_records" edge predicates.
 	HasVisitRecords     *bool                    `json:"hasVisitRecords,omitempty"`
 	HasVisitRecordsWith []*VisitRecordWhereInput `json:"hasVisitRecordsWith,omitempty"`
+
+	// "profiles" edge predicates.
+	HasProfiles     *bool                        `json:"hasProfiles,omitempty"`
+	HasProfilesWith []*CustomerProfileWhereInput `json:"hasProfilesWith,omitempty"`
+
+	// "active_profile" edge predicates.
+	HasActiveProfile     *bool                        `json:"hasActiveProfile,omitempty"`
+	HasActiveProfileWith []*CustomerProfileWhereInput `json:"hasActiveProfileWith,omitempty"`
+
+	// "pending_profile" edge predicates.
+	HasPendingProfile     *bool                        `json:"hasPendingProfile,omitempty"`
+	HasPendingProfileWith []*CustomerProfileWhereInput `json:"hasPendingProfileWith,omitempty"`
 }
 
 // AddPredicates adds custom predicates to the where input to be used during the filtering phase.
@@ -2571,6 +2618,96 @@ func (i *CustomerWhereInput) P() (predicate.Customer, error) {
 	if i.ApproverIDContainsFold != nil {
 		predicates = append(predicates, customer.ApproverIDContainsFold(*i.ApproverIDContainsFold))
 	}
+	if i.ActiveProfileID != nil {
+		predicates = append(predicates, customer.ActiveProfileIDEQ(*i.ActiveProfileID))
+	}
+	if i.ActiveProfileIDNEQ != nil {
+		predicates = append(predicates, customer.ActiveProfileIDNEQ(*i.ActiveProfileIDNEQ))
+	}
+	if len(i.ActiveProfileIDIn) > 0 {
+		predicates = append(predicates, customer.ActiveProfileIDIn(i.ActiveProfileIDIn...))
+	}
+	if len(i.ActiveProfileIDNotIn) > 0 {
+		predicates = append(predicates, customer.ActiveProfileIDNotIn(i.ActiveProfileIDNotIn...))
+	}
+	if i.ActiveProfileIDGT != nil {
+		predicates = append(predicates, customer.ActiveProfileIDGT(*i.ActiveProfileIDGT))
+	}
+	if i.ActiveProfileIDGTE != nil {
+		predicates = append(predicates, customer.ActiveProfileIDGTE(*i.ActiveProfileIDGTE))
+	}
+	if i.ActiveProfileIDLT != nil {
+		predicates = append(predicates, customer.ActiveProfileIDLT(*i.ActiveProfileIDLT))
+	}
+	if i.ActiveProfileIDLTE != nil {
+		predicates = append(predicates, customer.ActiveProfileIDLTE(*i.ActiveProfileIDLTE))
+	}
+	if i.ActiveProfileIDContains != nil {
+		predicates = append(predicates, customer.ActiveProfileIDContains(*i.ActiveProfileIDContains))
+	}
+	if i.ActiveProfileIDHasPrefix != nil {
+		predicates = append(predicates, customer.ActiveProfileIDHasPrefix(*i.ActiveProfileIDHasPrefix))
+	}
+	if i.ActiveProfileIDHasSuffix != nil {
+		predicates = append(predicates, customer.ActiveProfileIDHasSuffix(*i.ActiveProfileIDHasSuffix))
+	}
+	if i.ActiveProfileIDIsNil {
+		predicates = append(predicates, customer.ActiveProfileIDIsNil())
+	}
+	if i.ActiveProfileIDNotNil {
+		predicates = append(predicates, customer.ActiveProfileIDNotNil())
+	}
+	if i.ActiveProfileIDEqualFold != nil {
+		predicates = append(predicates, customer.ActiveProfileIDEqualFold(*i.ActiveProfileIDEqualFold))
+	}
+	if i.ActiveProfileIDContainsFold != nil {
+		predicates = append(predicates, customer.ActiveProfileIDContainsFold(*i.ActiveProfileIDContainsFold))
+	}
+	if i.PendingProfileID != nil {
+		predicates = append(predicates, customer.PendingProfileIDEQ(*i.PendingProfileID))
+	}
+	if i.PendingProfileIDNEQ != nil {
+		predicates = append(predicates, customer.PendingProfileIDNEQ(*i.PendingProfileIDNEQ))
+	}
+	if len(i.PendingProfileIDIn) > 0 {
+		predicates = append(predicates, customer.PendingProfileIDIn(i.PendingProfileIDIn...))
+	}
+	if len(i.PendingProfileIDNotIn) > 0 {
+		predicates = append(predicates, customer.PendingProfileIDNotIn(i.PendingProfileIDNotIn...))
+	}
+	if i.PendingProfileIDGT != nil {
+		predicates = append(predicates, customer.PendingProfileIDGT(*i.PendingProfileIDGT))
+	}
+	if i.PendingProfileIDGTE != nil {
+		predicates = append(predicates, customer.PendingProfileIDGTE(*i.PendingProfileIDGTE))
+	}
+	if i.PendingProfileIDLT != nil {
+		predicates = append(predicates, customer.PendingProfileIDLT(*i.PendingProfileIDLT))
+	}
+	if i.PendingProfileIDLTE != nil {
+		predicates = append(predicates, customer.PendingProfileIDLTE(*i.PendingProfileIDLTE))
+	}
+	if i.PendingProfileIDContains != nil {
+		predicates = append(predicates, customer.PendingProfileIDContains(*i.PendingProfileIDContains))
+	}
+	if i.PendingProfileIDHasPrefix != nil {
+		predicates = append(predicates, customer.PendingProfileIDHasPrefix(*i.PendingProfileIDHasPrefix))
+	}
+	if i.PendingProfileIDHasSuffix != nil {
+		predicates = append(predicates, customer.PendingProfileIDHasSuffix(*i.PendingProfileIDHasSuffix))
+	}
+	if i.PendingProfileIDIsNil {
+		predicates = append(predicates, customer.PendingProfileIDIsNil())
+	}
+	if i.PendingProfileIDNotNil {
+		predicates = append(predicates, customer.PendingProfileIDNotNil())
+	}
+	if i.PendingProfileIDEqualFold != nil {
+		predicates = append(predicates, customer.PendingProfileIDEqualFold(*i.PendingProfileIDEqualFold))
+	}
+	if i.PendingProfileIDContainsFold != nil {
+		predicates = append(predicates, customer.PendingProfileIDContainsFold(*i.PendingProfileIDContainsFold))
+	}
 
 	if i.HasArea != nil {
 		p := customer.HasArea()
@@ -2698,6 +2835,60 @@ func (i *CustomerWhereInput) P() (predicate.Customer, error) {
 		}
 		predicates = append(predicates, customer.HasVisitRecordsWith(with...))
 	}
+	if i.HasProfiles != nil {
+		p := customer.HasProfiles()
+		if !*i.HasProfiles {
+			p = customer.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasProfilesWith) > 0 {
+		with := make([]predicate.CustomerProfile, 0, len(i.HasProfilesWith))
+		for _, w := range i.HasProfilesWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'HasProfilesWith'", err)
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, customer.HasProfilesWith(with...))
+	}
+	if i.HasActiveProfile != nil {
+		p := customer.HasActiveProfile()
+		if !*i.HasActiveProfile {
+			p = customer.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasActiveProfileWith) > 0 {
+		with := make([]predicate.CustomerProfile, 0, len(i.HasActiveProfileWith))
+		for _, w := range i.HasActiveProfileWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'HasActiveProfileWith'", err)
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, customer.HasActiveProfileWith(with...))
+	}
+	if i.HasPendingProfile != nil {
+		p := customer.HasPendingProfile()
+		if !*i.HasPendingProfile {
+			p = customer.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasPendingProfileWith) > 0 {
+		with := make([]predicate.CustomerProfile, 0, len(i.HasPendingProfileWith))
+		for _, w := range i.HasPendingProfileWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'HasPendingProfileWith'", err)
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, customer.HasPendingProfileWith(with...))
+	}
 	switch len(predicates) {
 	case 0:
 		return nil, ErrEmptyCustomerWhereInput
@@ -2705,6 +2896,988 @@ func (i *CustomerWhereInput) P() (predicate.Customer, error) {
 		return predicates[0], nil
 	default:
 		return customer.And(predicates...), nil
+	}
+}
+
+// CustomerProfileWhereInput represents a where input for filtering CustomerProfile queries.
+type CustomerProfileWhereInput struct {
+	Predicates []predicate.CustomerProfile  `json:"-"`
+	Not        *CustomerProfileWhereInput   `json:"not,omitempty"`
+	Or         []*CustomerProfileWhereInput `json:"or,omitempty"`
+	And        []*CustomerProfileWhereInput `json:"and,omitempty"`
+
+	// "id" field predicates.
+	ID      *xid.ID  `json:"id,omitempty"`
+	IDNEQ   *xid.ID  `json:"idNEQ,omitempty"`
+	IDIn    []xid.ID `json:"idIn,omitempty"`
+	IDNotIn []xid.ID `json:"idNotIn,omitempty"`
+	IDGT    *xid.ID  `json:"idGT,omitempty"`
+	IDGTE   *xid.ID  `json:"idGTE,omitempty"`
+	IDLT    *xid.ID  `json:"idLT,omitempty"`
+	IDLTE   *xid.ID  `json:"idLTE,omitempty"`
+
+	// "created_at" field predicates.
+	CreatedAt      *time.Time  `json:"createdAt,omitempty"`
+	CreatedAtNEQ   *time.Time  `json:"createdAtNEQ,omitempty"`
+	CreatedAtIn    []time.Time `json:"createdAtIn,omitempty"`
+	CreatedAtNotIn []time.Time `json:"createdAtNotIn,omitempty"`
+	CreatedAtGT    *time.Time  `json:"createdAtGT,omitempty"`
+	CreatedAtGTE   *time.Time  `json:"createdAtGTE,omitempty"`
+	CreatedAtLT    *time.Time  `json:"createdAtLT,omitempty"`
+	CreatedAtLTE   *time.Time  `json:"createdAtLTE,omitempty"`
+
+	// "updated_at" field predicates.
+	UpdatedAt      *time.Time  `json:"updatedAt,omitempty"`
+	UpdatedAtNEQ   *time.Time  `json:"updatedAtNEQ,omitempty"`
+	UpdatedAtIn    []time.Time `json:"updatedAtIn,omitempty"`
+	UpdatedAtNotIn []time.Time `json:"updatedAtNotIn,omitempty"`
+	UpdatedAtGT    *time.Time  `json:"updatedAtGT,omitempty"`
+	UpdatedAtGTE   *time.Time  `json:"updatedAtGTE,omitempty"`
+	UpdatedAtLT    *time.Time  `json:"updatedAtLT,omitempty"`
+	UpdatedAtLTE   *time.Time  `json:"updatedAtLTE,omitempty"`
+
+	// "name" field predicates.
+	Name             *string  `json:"name,omitempty"`
+	NameNEQ          *string  `json:"nameNEQ,omitempty"`
+	NameIn           []string `json:"nameIn,omitempty"`
+	NameNotIn        []string `json:"nameNotIn,omitempty"`
+	NameGT           *string  `json:"nameGT,omitempty"`
+	NameGTE          *string  `json:"nameGTE,omitempty"`
+	NameLT           *string  `json:"nameLT,omitempty"`
+	NameLTE          *string  `json:"nameLTE,omitempty"`
+	NameContains     *string  `json:"nameContains,omitempty"`
+	NameHasPrefix    *string  `json:"nameHasPrefix,omitempty"`
+	NameHasSuffix    *string  `json:"nameHasSuffix,omitempty"`
+	NameEqualFold    *string  `json:"nameEqualFold,omitempty"`
+	NameContainsFold *string  `json:"nameContainsFold,omitempty"`
+
+	// "approval_status" field predicates.
+	ApprovalStatus      *int  `json:"approvalStatus,omitempty"`
+	ApprovalStatusNEQ   *int  `json:"approvalStatusNEQ,omitempty"`
+	ApprovalStatusIn    []int `json:"approvalStatusIn,omitempty"`
+	ApprovalStatusNotIn []int `json:"approvalStatusNotIn,omitempty"`
+	ApprovalStatusGT    *int  `json:"approvalStatusGT,omitempty"`
+	ApprovalStatusGTE   *int  `json:"approvalStatusGTE,omitempty"`
+	ApprovalStatusLT    *int  `json:"approvalStatusLT,omitempty"`
+	ApprovalStatusLTE   *int  `json:"approvalStatusLTE,omitempty"`
+
+	// "owner_type" field predicates.
+	OwnerType       *int  `json:"ownerType,omitempty"`
+	OwnerTypeNEQ    *int  `json:"ownerTypeNEQ,omitempty"`
+	OwnerTypeIn     []int `json:"ownerTypeIn,omitempty"`
+	OwnerTypeNotIn  []int `json:"ownerTypeNotIn,omitempty"`
+	OwnerTypeGT     *int  `json:"ownerTypeGT,omitempty"`
+	OwnerTypeGTE    *int  `json:"ownerTypeGTE,omitempty"`
+	OwnerTypeLT     *int  `json:"ownerTypeLT,omitempty"`
+	OwnerTypeLTE    *int  `json:"ownerTypeLTE,omitempty"`
+	OwnerTypeIsNil  bool  `json:"ownerTypeIsNil,omitempty"`
+	OwnerTypeNotNil bool  `json:"ownerTypeNotNil,omitempty"`
+
+	// "industry" field predicates.
+	Industry       *int  `json:"industry,omitempty"`
+	IndustryNEQ    *int  `json:"industryNEQ,omitempty"`
+	IndustryIn     []int `json:"industryIn,omitempty"`
+	IndustryNotIn  []int `json:"industryNotIn,omitempty"`
+	IndustryGT     *int  `json:"industryGT,omitempty"`
+	IndustryGTE    *int  `json:"industryGTE,omitempty"`
+	IndustryLT     *int  `json:"industryLT,omitempty"`
+	IndustryLTE    *int  `json:"industryLTE,omitempty"`
+	IndustryIsNil  bool  `json:"industryIsNil,omitempty"`
+	IndustryNotNil bool  `json:"industryNotNil,omitempty"`
+
+	// "size" field predicates.
+	Size       *int  `json:"size,omitempty"`
+	SizeNEQ    *int  `json:"sizeNEQ,omitempty"`
+	SizeIn     []int `json:"sizeIn,omitempty"`
+	SizeNotIn  []int `json:"sizeNotIn,omitempty"`
+	SizeGT     *int  `json:"sizeGT,omitempty"`
+	SizeGTE    *int  `json:"sizeGTE,omitempty"`
+	SizeLT     *int  `json:"sizeLT,omitempty"`
+	SizeLTE    *int  `json:"sizeLTE,omitempty"`
+	SizeIsNil  bool  `json:"sizeIsNil,omitempty"`
+	SizeNotNil bool  `json:"sizeNotNil,omitempty"`
+
+	// "contact_person" field predicates.
+	ContactPerson             *string  `json:"contactPerson,omitempty"`
+	ContactPersonNEQ          *string  `json:"contactPersonNEQ,omitempty"`
+	ContactPersonIn           []string `json:"contactPersonIn,omitempty"`
+	ContactPersonNotIn        []string `json:"contactPersonNotIn,omitempty"`
+	ContactPersonGT           *string  `json:"contactPersonGT,omitempty"`
+	ContactPersonGTE          *string  `json:"contactPersonGTE,omitempty"`
+	ContactPersonLT           *string  `json:"contactPersonLT,omitempty"`
+	ContactPersonLTE          *string  `json:"contactPersonLTE,omitempty"`
+	ContactPersonContains     *string  `json:"contactPersonContains,omitempty"`
+	ContactPersonHasPrefix    *string  `json:"contactPersonHasPrefix,omitempty"`
+	ContactPersonHasSuffix    *string  `json:"contactPersonHasSuffix,omitempty"`
+	ContactPersonIsNil        bool     `json:"contactPersonIsNil,omitempty"`
+	ContactPersonNotNil       bool     `json:"contactPersonNotNil,omitempty"`
+	ContactPersonEqualFold    *string  `json:"contactPersonEqualFold,omitempty"`
+	ContactPersonContainsFold *string  `json:"contactPersonContainsFold,omitempty"`
+
+	// "contact_person_position" field predicates.
+	ContactPersonPosition             *string  `json:"contactPersonPosition,omitempty"`
+	ContactPersonPositionNEQ          *string  `json:"contactPersonPositionNEQ,omitempty"`
+	ContactPersonPositionIn           []string `json:"contactPersonPositionIn,omitempty"`
+	ContactPersonPositionNotIn        []string `json:"contactPersonPositionNotIn,omitempty"`
+	ContactPersonPositionGT           *string  `json:"contactPersonPositionGT,omitempty"`
+	ContactPersonPositionGTE          *string  `json:"contactPersonPositionGTE,omitempty"`
+	ContactPersonPositionLT           *string  `json:"contactPersonPositionLT,omitempty"`
+	ContactPersonPositionLTE          *string  `json:"contactPersonPositionLTE,omitempty"`
+	ContactPersonPositionContains     *string  `json:"contactPersonPositionContains,omitempty"`
+	ContactPersonPositionHasPrefix    *string  `json:"contactPersonPositionHasPrefix,omitempty"`
+	ContactPersonPositionHasSuffix    *string  `json:"contactPersonPositionHasSuffix,omitempty"`
+	ContactPersonPositionIsNil        bool     `json:"contactPersonPositionIsNil,omitempty"`
+	ContactPersonPositionNotNil       bool     `json:"contactPersonPositionNotNil,omitempty"`
+	ContactPersonPositionEqualFold    *string  `json:"contactPersonPositionEqualFold,omitempty"`
+	ContactPersonPositionContainsFold *string  `json:"contactPersonPositionContainsFold,omitempty"`
+
+	// "contact_person_phone" field predicates.
+	ContactPersonPhone             *string  `json:"contactPersonPhone,omitempty"`
+	ContactPersonPhoneNEQ          *string  `json:"contactPersonPhoneNEQ,omitempty"`
+	ContactPersonPhoneIn           []string `json:"contactPersonPhoneIn,omitempty"`
+	ContactPersonPhoneNotIn        []string `json:"contactPersonPhoneNotIn,omitempty"`
+	ContactPersonPhoneGT           *string  `json:"contactPersonPhoneGT,omitempty"`
+	ContactPersonPhoneGTE          *string  `json:"contactPersonPhoneGTE,omitempty"`
+	ContactPersonPhoneLT           *string  `json:"contactPersonPhoneLT,omitempty"`
+	ContactPersonPhoneLTE          *string  `json:"contactPersonPhoneLTE,omitempty"`
+	ContactPersonPhoneContains     *string  `json:"contactPersonPhoneContains,omitempty"`
+	ContactPersonPhoneHasPrefix    *string  `json:"contactPersonPhoneHasPrefix,omitempty"`
+	ContactPersonPhoneHasSuffix    *string  `json:"contactPersonPhoneHasSuffix,omitempty"`
+	ContactPersonPhoneIsNil        bool     `json:"contactPersonPhoneIsNil,omitempty"`
+	ContactPersonPhoneNotNil       bool     `json:"contactPersonPhoneNotNil,omitempty"`
+	ContactPersonPhoneEqualFold    *string  `json:"contactPersonPhoneEqualFold,omitempty"`
+	ContactPersonPhoneContainsFold *string  `json:"contactPersonPhoneContainsFold,omitempty"`
+
+	// "contact_person_email" field predicates.
+	ContactPersonEmail             *string  `json:"contactPersonEmail,omitempty"`
+	ContactPersonEmailNEQ          *string  `json:"contactPersonEmailNEQ,omitempty"`
+	ContactPersonEmailIn           []string `json:"contactPersonEmailIn,omitempty"`
+	ContactPersonEmailNotIn        []string `json:"contactPersonEmailNotIn,omitempty"`
+	ContactPersonEmailGT           *string  `json:"contactPersonEmailGT,omitempty"`
+	ContactPersonEmailGTE          *string  `json:"contactPersonEmailGTE,omitempty"`
+	ContactPersonEmailLT           *string  `json:"contactPersonEmailLT,omitempty"`
+	ContactPersonEmailLTE          *string  `json:"contactPersonEmailLTE,omitempty"`
+	ContactPersonEmailContains     *string  `json:"contactPersonEmailContains,omitempty"`
+	ContactPersonEmailHasPrefix    *string  `json:"contactPersonEmailHasPrefix,omitempty"`
+	ContactPersonEmailHasSuffix    *string  `json:"contactPersonEmailHasSuffix,omitempty"`
+	ContactPersonEmailIsNil        bool     `json:"contactPersonEmailIsNil,omitempty"`
+	ContactPersonEmailNotNil       bool     `json:"contactPersonEmailNotNil,omitempty"`
+	ContactPersonEmailEqualFold    *string  `json:"contactPersonEmailEqualFold,omitempty"`
+	ContactPersonEmailContainsFold *string  `json:"contactPersonEmailContainsFold,omitempty"`
+
+	// "sales_id" field predicates.
+	SalesID             *xid.ID  `json:"salesID,omitempty"`
+	SalesIDNEQ          *xid.ID  `json:"salesIDNEQ,omitempty"`
+	SalesIDIn           []xid.ID `json:"salesIDIn,omitempty"`
+	SalesIDNotIn        []xid.ID `json:"salesIDNotIn,omitempty"`
+	SalesIDGT           *xid.ID  `json:"salesIDGT,omitempty"`
+	SalesIDGTE          *xid.ID  `json:"salesIDGTE,omitempty"`
+	SalesIDLT           *xid.ID  `json:"salesIDLT,omitempty"`
+	SalesIDLTE          *xid.ID  `json:"salesIDLTE,omitempty"`
+	SalesIDContains     *xid.ID  `json:"salesIDContains,omitempty"`
+	SalesIDHasPrefix    *xid.ID  `json:"salesIDHasPrefix,omitempty"`
+	SalesIDHasSuffix    *xid.ID  `json:"salesIDHasSuffix,omitempty"`
+	SalesIDIsNil        bool     `json:"salesIDIsNil,omitempty"`
+	SalesIDNotNil       bool     `json:"salesIDNotNil,omitempty"`
+	SalesIDEqualFold    *xid.ID  `json:"salesIDEqualFold,omitempty"`
+	SalesIDContainsFold *xid.ID  `json:"salesIDContainsFold,omitempty"`
+
+	// "customer_id" field predicates.
+	CustomerID             *xid.ID  `json:"customerID,omitempty"`
+	CustomerIDNEQ          *xid.ID  `json:"customerIDNEQ,omitempty"`
+	CustomerIDIn           []xid.ID `json:"customerIDIn,omitempty"`
+	CustomerIDNotIn        []xid.ID `json:"customerIDNotIn,omitempty"`
+	CustomerIDGT           *xid.ID  `json:"customerIDGT,omitempty"`
+	CustomerIDGTE          *xid.ID  `json:"customerIDGTE,omitempty"`
+	CustomerIDLT           *xid.ID  `json:"customerIDLT,omitempty"`
+	CustomerIDLTE          *xid.ID  `json:"customerIDLTE,omitempty"`
+	CustomerIDContains     *xid.ID  `json:"customerIDContains,omitempty"`
+	CustomerIDHasPrefix    *xid.ID  `json:"customerIDHasPrefix,omitempty"`
+	CustomerIDHasSuffix    *xid.ID  `json:"customerIDHasSuffix,omitempty"`
+	CustomerIDEqualFold    *xid.ID  `json:"customerIDEqualFold,omitempty"`
+	CustomerIDContainsFold *xid.ID  `json:"customerIDContainsFold,omitempty"`
+
+	// "created_by_id" field predicates.
+	CreatedByID             *xid.ID  `json:"createdByID,omitempty"`
+	CreatedByIDNEQ          *xid.ID  `json:"createdByIDNEQ,omitempty"`
+	CreatedByIDIn           []xid.ID `json:"createdByIDIn,omitempty"`
+	CreatedByIDNotIn        []xid.ID `json:"createdByIDNotIn,omitempty"`
+	CreatedByIDGT           *xid.ID  `json:"createdByIDGT,omitempty"`
+	CreatedByIDGTE          *xid.ID  `json:"createdByIDGTE,omitempty"`
+	CreatedByIDLT           *xid.ID  `json:"createdByIDLT,omitempty"`
+	CreatedByIDLTE          *xid.ID  `json:"createdByIDLTE,omitempty"`
+	CreatedByIDContains     *xid.ID  `json:"createdByIDContains,omitempty"`
+	CreatedByIDHasPrefix    *xid.ID  `json:"createdByIDHasPrefix,omitempty"`
+	CreatedByIDHasSuffix    *xid.ID  `json:"createdByIDHasSuffix,omitempty"`
+	CreatedByIDIsNil        bool     `json:"createdByIDIsNil,omitempty"`
+	CreatedByIDNotNil       bool     `json:"createdByIDNotNil,omitempty"`
+	CreatedByIDEqualFold    *xid.ID  `json:"createdByIDEqualFold,omitempty"`
+	CreatedByIDContainsFold *xid.ID  `json:"createdByIDContainsFold,omitempty"`
+
+	// "approver_id" field predicates.
+	ApproverID             *xid.ID  `json:"approverID,omitempty"`
+	ApproverIDNEQ          *xid.ID  `json:"approverIDNEQ,omitempty"`
+	ApproverIDIn           []xid.ID `json:"approverIDIn,omitempty"`
+	ApproverIDNotIn        []xid.ID `json:"approverIDNotIn,omitempty"`
+	ApproverIDGT           *xid.ID  `json:"approverIDGT,omitempty"`
+	ApproverIDGTE          *xid.ID  `json:"approverIDGTE,omitempty"`
+	ApproverIDLT           *xid.ID  `json:"approverIDLT,omitempty"`
+	ApproverIDLTE          *xid.ID  `json:"approverIDLTE,omitempty"`
+	ApproverIDContains     *xid.ID  `json:"approverIDContains,omitempty"`
+	ApproverIDHasPrefix    *xid.ID  `json:"approverIDHasPrefix,omitempty"`
+	ApproverIDHasSuffix    *xid.ID  `json:"approverIDHasSuffix,omitempty"`
+	ApproverIDIsNil        bool     `json:"approverIDIsNil,omitempty"`
+	ApproverIDNotNil       bool     `json:"approverIDNotNil,omitempty"`
+	ApproverIDEqualFold    *xid.ID  `json:"approverIDEqualFold,omitempty"`
+	ApproverIDContainsFold *xid.ID  `json:"approverIDContainsFold,omitempty"`
+
+	// "customer" edge predicates.
+	HasCustomer     *bool                 `json:"hasCustomer,omitempty"`
+	HasCustomerWith []*CustomerWhereInput `json:"hasCustomerWith,omitempty"`
+
+	// "created_by" edge predicates.
+	HasCreatedBy     *bool             `json:"hasCreatedBy,omitempty"`
+	HasCreatedByWith []*UserWhereInput `json:"hasCreatedByWith,omitempty"`
+
+	// "approver" edge predicates.
+	HasApprover     *bool             `json:"hasApprover,omitempty"`
+	HasApproverWith []*UserWhereInput `json:"hasApproverWith,omitempty"`
+
+	// "sales" edge predicates.
+	HasSales     *bool             `json:"hasSales,omitempty"`
+	HasSalesWith []*UserWhereInput `json:"hasSalesWith,omitempty"`
+}
+
+// AddPredicates adds custom predicates to the where input to be used during the filtering phase.
+func (i *CustomerProfileWhereInput) AddPredicates(predicates ...predicate.CustomerProfile) {
+	i.Predicates = append(i.Predicates, predicates...)
+}
+
+// Filter applies the CustomerProfileWhereInput filter on the CustomerProfileQuery builder.
+func (i *CustomerProfileWhereInput) Filter(q *CustomerProfileQuery) (*CustomerProfileQuery, error) {
+	if i == nil {
+		return q, nil
+	}
+	p, err := i.P()
+	if err != nil {
+		if err == ErrEmptyCustomerProfileWhereInput {
+			return q, nil
+		}
+		return nil, err
+	}
+	return q.Where(p), nil
+}
+
+// ErrEmptyCustomerProfileWhereInput is returned in case the CustomerProfileWhereInput is empty.
+var ErrEmptyCustomerProfileWhereInput = errors.New("ent: empty predicate CustomerProfileWhereInput")
+
+// P returns a predicate for filtering customerprofiles.
+// An error is returned if the input is empty or invalid.
+func (i *CustomerProfileWhereInput) P() (predicate.CustomerProfile, error) {
+	var predicates []predicate.CustomerProfile
+	if i.Not != nil {
+		p, err := i.Not.P()
+		if err != nil {
+			return nil, fmt.Errorf("%w: field 'not'", err)
+		}
+		predicates = append(predicates, customerprofile.Not(p))
+	}
+	switch n := len(i.Or); {
+	case n == 1:
+		p, err := i.Or[0].P()
+		if err != nil {
+			return nil, fmt.Errorf("%w: field 'or'", err)
+		}
+		predicates = append(predicates, p)
+	case n > 1:
+		or := make([]predicate.CustomerProfile, 0, n)
+		for _, w := range i.Or {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'or'", err)
+			}
+			or = append(or, p)
+		}
+		predicates = append(predicates, customerprofile.Or(or...))
+	}
+	switch n := len(i.And); {
+	case n == 1:
+		p, err := i.And[0].P()
+		if err != nil {
+			return nil, fmt.Errorf("%w: field 'and'", err)
+		}
+		predicates = append(predicates, p)
+	case n > 1:
+		and := make([]predicate.CustomerProfile, 0, n)
+		for _, w := range i.And {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'and'", err)
+			}
+			and = append(and, p)
+		}
+		predicates = append(predicates, customerprofile.And(and...))
+	}
+	predicates = append(predicates, i.Predicates...)
+	if i.ID != nil {
+		predicates = append(predicates, customerprofile.IDEQ(*i.ID))
+	}
+	if i.IDNEQ != nil {
+		predicates = append(predicates, customerprofile.IDNEQ(*i.IDNEQ))
+	}
+	if len(i.IDIn) > 0 {
+		predicates = append(predicates, customerprofile.IDIn(i.IDIn...))
+	}
+	if len(i.IDNotIn) > 0 {
+		predicates = append(predicates, customerprofile.IDNotIn(i.IDNotIn...))
+	}
+	if i.IDGT != nil {
+		predicates = append(predicates, customerprofile.IDGT(*i.IDGT))
+	}
+	if i.IDGTE != nil {
+		predicates = append(predicates, customerprofile.IDGTE(*i.IDGTE))
+	}
+	if i.IDLT != nil {
+		predicates = append(predicates, customerprofile.IDLT(*i.IDLT))
+	}
+	if i.IDLTE != nil {
+		predicates = append(predicates, customerprofile.IDLTE(*i.IDLTE))
+	}
+	if i.CreatedAt != nil {
+		predicates = append(predicates, customerprofile.CreatedAtEQ(*i.CreatedAt))
+	}
+	if i.CreatedAtNEQ != nil {
+		predicates = append(predicates, customerprofile.CreatedAtNEQ(*i.CreatedAtNEQ))
+	}
+	if len(i.CreatedAtIn) > 0 {
+		predicates = append(predicates, customerprofile.CreatedAtIn(i.CreatedAtIn...))
+	}
+	if len(i.CreatedAtNotIn) > 0 {
+		predicates = append(predicates, customerprofile.CreatedAtNotIn(i.CreatedAtNotIn...))
+	}
+	if i.CreatedAtGT != nil {
+		predicates = append(predicates, customerprofile.CreatedAtGT(*i.CreatedAtGT))
+	}
+	if i.CreatedAtGTE != nil {
+		predicates = append(predicates, customerprofile.CreatedAtGTE(*i.CreatedAtGTE))
+	}
+	if i.CreatedAtLT != nil {
+		predicates = append(predicates, customerprofile.CreatedAtLT(*i.CreatedAtLT))
+	}
+	if i.CreatedAtLTE != nil {
+		predicates = append(predicates, customerprofile.CreatedAtLTE(*i.CreatedAtLTE))
+	}
+	if i.UpdatedAt != nil {
+		predicates = append(predicates, customerprofile.UpdatedAtEQ(*i.UpdatedAt))
+	}
+	if i.UpdatedAtNEQ != nil {
+		predicates = append(predicates, customerprofile.UpdatedAtNEQ(*i.UpdatedAtNEQ))
+	}
+	if len(i.UpdatedAtIn) > 0 {
+		predicates = append(predicates, customerprofile.UpdatedAtIn(i.UpdatedAtIn...))
+	}
+	if len(i.UpdatedAtNotIn) > 0 {
+		predicates = append(predicates, customerprofile.UpdatedAtNotIn(i.UpdatedAtNotIn...))
+	}
+	if i.UpdatedAtGT != nil {
+		predicates = append(predicates, customerprofile.UpdatedAtGT(*i.UpdatedAtGT))
+	}
+	if i.UpdatedAtGTE != nil {
+		predicates = append(predicates, customerprofile.UpdatedAtGTE(*i.UpdatedAtGTE))
+	}
+	if i.UpdatedAtLT != nil {
+		predicates = append(predicates, customerprofile.UpdatedAtLT(*i.UpdatedAtLT))
+	}
+	if i.UpdatedAtLTE != nil {
+		predicates = append(predicates, customerprofile.UpdatedAtLTE(*i.UpdatedAtLTE))
+	}
+	if i.Name != nil {
+		predicates = append(predicates, customerprofile.NameEQ(*i.Name))
+	}
+	if i.NameNEQ != nil {
+		predicates = append(predicates, customerprofile.NameNEQ(*i.NameNEQ))
+	}
+	if len(i.NameIn) > 0 {
+		predicates = append(predicates, customerprofile.NameIn(i.NameIn...))
+	}
+	if len(i.NameNotIn) > 0 {
+		predicates = append(predicates, customerprofile.NameNotIn(i.NameNotIn...))
+	}
+	if i.NameGT != nil {
+		predicates = append(predicates, customerprofile.NameGT(*i.NameGT))
+	}
+	if i.NameGTE != nil {
+		predicates = append(predicates, customerprofile.NameGTE(*i.NameGTE))
+	}
+	if i.NameLT != nil {
+		predicates = append(predicates, customerprofile.NameLT(*i.NameLT))
+	}
+	if i.NameLTE != nil {
+		predicates = append(predicates, customerprofile.NameLTE(*i.NameLTE))
+	}
+	if i.NameContains != nil {
+		predicates = append(predicates, customerprofile.NameContains(*i.NameContains))
+	}
+	if i.NameHasPrefix != nil {
+		predicates = append(predicates, customerprofile.NameHasPrefix(*i.NameHasPrefix))
+	}
+	if i.NameHasSuffix != nil {
+		predicates = append(predicates, customerprofile.NameHasSuffix(*i.NameHasSuffix))
+	}
+	if i.NameEqualFold != nil {
+		predicates = append(predicates, customerprofile.NameEqualFold(*i.NameEqualFold))
+	}
+	if i.NameContainsFold != nil {
+		predicates = append(predicates, customerprofile.NameContainsFold(*i.NameContainsFold))
+	}
+	if i.ApprovalStatus != nil {
+		predicates = append(predicates, customerprofile.ApprovalStatusEQ(*i.ApprovalStatus))
+	}
+	if i.ApprovalStatusNEQ != nil {
+		predicates = append(predicates, customerprofile.ApprovalStatusNEQ(*i.ApprovalStatusNEQ))
+	}
+	if len(i.ApprovalStatusIn) > 0 {
+		predicates = append(predicates, customerprofile.ApprovalStatusIn(i.ApprovalStatusIn...))
+	}
+	if len(i.ApprovalStatusNotIn) > 0 {
+		predicates = append(predicates, customerprofile.ApprovalStatusNotIn(i.ApprovalStatusNotIn...))
+	}
+	if i.ApprovalStatusGT != nil {
+		predicates = append(predicates, customerprofile.ApprovalStatusGT(*i.ApprovalStatusGT))
+	}
+	if i.ApprovalStatusGTE != nil {
+		predicates = append(predicates, customerprofile.ApprovalStatusGTE(*i.ApprovalStatusGTE))
+	}
+	if i.ApprovalStatusLT != nil {
+		predicates = append(predicates, customerprofile.ApprovalStatusLT(*i.ApprovalStatusLT))
+	}
+	if i.ApprovalStatusLTE != nil {
+		predicates = append(predicates, customerprofile.ApprovalStatusLTE(*i.ApprovalStatusLTE))
+	}
+	if i.OwnerType != nil {
+		predicates = append(predicates, customerprofile.OwnerTypeEQ(*i.OwnerType))
+	}
+	if i.OwnerTypeNEQ != nil {
+		predicates = append(predicates, customerprofile.OwnerTypeNEQ(*i.OwnerTypeNEQ))
+	}
+	if len(i.OwnerTypeIn) > 0 {
+		predicates = append(predicates, customerprofile.OwnerTypeIn(i.OwnerTypeIn...))
+	}
+	if len(i.OwnerTypeNotIn) > 0 {
+		predicates = append(predicates, customerprofile.OwnerTypeNotIn(i.OwnerTypeNotIn...))
+	}
+	if i.OwnerTypeGT != nil {
+		predicates = append(predicates, customerprofile.OwnerTypeGT(*i.OwnerTypeGT))
+	}
+	if i.OwnerTypeGTE != nil {
+		predicates = append(predicates, customerprofile.OwnerTypeGTE(*i.OwnerTypeGTE))
+	}
+	if i.OwnerTypeLT != nil {
+		predicates = append(predicates, customerprofile.OwnerTypeLT(*i.OwnerTypeLT))
+	}
+	if i.OwnerTypeLTE != nil {
+		predicates = append(predicates, customerprofile.OwnerTypeLTE(*i.OwnerTypeLTE))
+	}
+	if i.OwnerTypeIsNil {
+		predicates = append(predicates, customerprofile.OwnerTypeIsNil())
+	}
+	if i.OwnerTypeNotNil {
+		predicates = append(predicates, customerprofile.OwnerTypeNotNil())
+	}
+	if i.Industry != nil {
+		predicates = append(predicates, customerprofile.IndustryEQ(*i.Industry))
+	}
+	if i.IndustryNEQ != nil {
+		predicates = append(predicates, customerprofile.IndustryNEQ(*i.IndustryNEQ))
+	}
+	if len(i.IndustryIn) > 0 {
+		predicates = append(predicates, customerprofile.IndustryIn(i.IndustryIn...))
+	}
+	if len(i.IndustryNotIn) > 0 {
+		predicates = append(predicates, customerprofile.IndustryNotIn(i.IndustryNotIn...))
+	}
+	if i.IndustryGT != nil {
+		predicates = append(predicates, customerprofile.IndustryGT(*i.IndustryGT))
+	}
+	if i.IndustryGTE != nil {
+		predicates = append(predicates, customerprofile.IndustryGTE(*i.IndustryGTE))
+	}
+	if i.IndustryLT != nil {
+		predicates = append(predicates, customerprofile.IndustryLT(*i.IndustryLT))
+	}
+	if i.IndustryLTE != nil {
+		predicates = append(predicates, customerprofile.IndustryLTE(*i.IndustryLTE))
+	}
+	if i.IndustryIsNil {
+		predicates = append(predicates, customerprofile.IndustryIsNil())
+	}
+	if i.IndustryNotNil {
+		predicates = append(predicates, customerprofile.IndustryNotNil())
+	}
+	if i.Size != nil {
+		predicates = append(predicates, customerprofile.SizeEQ(*i.Size))
+	}
+	if i.SizeNEQ != nil {
+		predicates = append(predicates, customerprofile.SizeNEQ(*i.SizeNEQ))
+	}
+	if len(i.SizeIn) > 0 {
+		predicates = append(predicates, customerprofile.SizeIn(i.SizeIn...))
+	}
+	if len(i.SizeNotIn) > 0 {
+		predicates = append(predicates, customerprofile.SizeNotIn(i.SizeNotIn...))
+	}
+	if i.SizeGT != nil {
+		predicates = append(predicates, customerprofile.SizeGT(*i.SizeGT))
+	}
+	if i.SizeGTE != nil {
+		predicates = append(predicates, customerprofile.SizeGTE(*i.SizeGTE))
+	}
+	if i.SizeLT != nil {
+		predicates = append(predicates, customerprofile.SizeLT(*i.SizeLT))
+	}
+	if i.SizeLTE != nil {
+		predicates = append(predicates, customerprofile.SizeLTE(*i.SizeLTE))
+	}
+	if i.SizeIsNil {
+		predicates = append(predicates, customerprofile.SizeIsNil())
+	}
+	if i.SizeNotNil {
+		predicates = append(predicates, customerprofile.SizeNotNil())
+	}
+	if i.ContactPerson != nil {
+		predicates = append(predicates, customerprofile.ContactPersonEQ(*i.ContactPerson))
+	}
+	if i.ContactPersonNEQ != nil {
+		predicates = append(predicates, customerprofile.ContactPersonNEQ(*i.ContactPersonNEQ))
+	}
+	if len(i.ContactPersonIn) > 0 {
+		predicates = append(predicates, customerprofile.ContactPersonIn(i.ContactPersonIn...))
+	}
+	if len(i.ContactPersonNotIn) > 0 {
+		predicates = append(predicates, customerprofile.ContactPersonNotIn(i.ContactPersonNotIn...))
+	}
+	if i.ContactPersonGT != nil {
+		predicates = append(predicates, customerprofile.ContactPersonGT(*i.ContactPersonGT))
+	}
+	if i.ContactPersonGTE != nil {
+		predicates = append(predicates, customerprofile.ContactPersonGTE(*i.ContactPersonGTE))
+	}
+	if i.ContactPersonLT != nil {
+		predicates = append(predicates, customerprofile.ContactPersonLT(*i.ContactPersonLT))
+	}
+	if i.ContactPersonLTE != nil {
+		predicates = append(predicates, customerprofile.ContactPersonLTE(*i.ContactPersonLTE))
+	}
+	if i.ContactPersonContains != nil {
+		predicates = append(predicates, customerprofile.ContactPersonContains(*i.ContactPersonContains))
+	}
+	if i.ContactPersonHasPrefix != nil {
+		predicates = append(predicates, customerprofile.ContactPersonHasPrefix(*i.ContactPersonHasPrefix))
+	}
+	if i.ContactPersonHasSuffix != nil {
+		predicates = append(predicates, customerprofile.ContactPersonHasSuffix(*i.ContactPersonHasSuffix))
+	}
+	if i.ContactPersonIsNil {
+		predicates = append(predicates, customerprofile.ContactPersonIsNil())
+	}
+	if i.ContactPersonNotNil {
+		predicates = append(predicates, customerprofile.ContactPersonNotNil())
+	}
+	if i.ContactPersonEqualFold != nil {
+		predicates = append(predicates, customerprofile.ContactPersonEqualFold(*i.ContactPersonEqualFold))
+	}
+	if i.ContactPersonContainsFold != nil {
+		predicates = append(predicates, customerprofile.ContactPersonContainsFold(*i.ContactPersonContainsFold))
+	}
+	if i.ContactPersonPosition != nil {
+		predicates = append(predicates, customerprofile.ContactPersonPositionEQ(*i.ContactPersonPosition))
+	}
+	if i.ContactPersonPositionNEQ != nil {
+		predicates = append(predicates, customerprofile.ContactPersonPositionNEQ(*i.ContactPersonPositionNEQ))
+	}
+	if len(i.ContactPersonPositionIn) > 0 {
+		predicates = append(predicates, customerprofile.ContactPersonPositionIn(i.ContactPersonPositionIn...))
+	}
+	if len(i.ContactPersonPositionNotIn) > 0 {
+		predicates = append(predicates, customerprofile.ContactPersonPositionNotIn(i.ContactPersonPositionNotIn...))
+	}
+	if i.ContactPersonPositionGT != nil {
+		predicates = append(predicates, customerprofile.ContactPersonPositionGT(*i.ContactPersonPositionGT))
+	}
+	if i.ContactPersonPositionGTE != nil {
+		predicates = append(predicates, customerprofile.ContactPersonPositionGTE(*i.ContactPersonPositionGTE))
+	}
+	if i.ContactPersonPositionLT != nil {
+		predicates = append(predicates, customerprofile.ContactPersonPositionLT(*i.ContactPersonPositionLT))
+	}
+	if i.ContactPersonPositionLTE != nil {
+		predicates = append(predicates, customerprofile.ContactPersonPositionLTE(*i.ContactPersonPositionLTE))
+	}
+	if i.ContactPersonPositionContains != nil {
+		predicates = append(predicates, customerprofile.ContactPersonPositionContains(*i.ContactPersonPositionContains))
+	}
+	if i.ContactPersonPositionHasPrefix != nil {
+		predicates = append(predicates, customerprofile.ContactPersonPositionHasPrefix(*i.ContactPersonPositionHasPrefix))
+	}
+	if i.ContactPersonPositionHasSuffix != nil {
+		predicates = append(predicates, customerprofile.ContactPersonPositionHasSuffix(*i.ContactPersonPositionHasSuffix))
+	}
+	if i.ContactPersonPositionIsNil {
+		predicates = append(predicates, customerprofile.ContactPersonPositionIsNil())
+	}
+	if i.ContactPersonPositionNotNil {
+		predicates = append(predicates, customerprofile.ContactPersonPositionNotNil())
+	}
+	if i.ContactPersonPositionEqualFold != nil {
+		predicates = append(predicates, customerprofile.ContactPersonPositionEqualFold(*i.ContactPersonPositionEqualFold))
+	}
+	if i.ContactPersonPositionContainsFold != nil {
+		predicates = append(predicates, customerprofile.ContactPersonPositionContainsFold(*i.ContactPersonPositionContainsFold))
+	}
+	if i.ContactPersonPhone != nil {
+		predicates = append(predicates, customerprofile.ContactPersonPhoneEQ(*i.ContactPersonPhone))
+	}
+	if i.ContactPersonPhoneNEQ != nil {
+		predicates = append(predicates, customerprofile.ContactPersonPhoneNEQ(*i.ContactPersonPhoneNEQ))
+	}
+	if len(i.ContactPersonPhoneIn) > 0 {
+		predicates = append(predicates, customerprofile.ContactPersonPhoneIn(i.ContactPersonPhoneIn...))
+	}
+	if len(i.ContactPersonPhoneNotIn) > 0 {
+		predicates = append(predicates, customerprofile.ContactPersonPhoneNotIn(i.ContactPersonPhoneNotIn...))
+	}
+	if i.ContactPersonPhoneGT != nil {
+		predicates = append(predicates, customerprofile.ContactPersonPhoneGT(*i.ContactPersonPhoneGT))
+	}
+	if i.ContactPersonPhoneGTE != nil {
+		predicates = append(predicates, customerprofile.ContactPersonPhoneGTE(*i.ContactPersonPhoneGTE))
+	}
+	if i.ContactPersonPhoneLT != nil {
+		predicates = append(predicates, customerprofile.ContactPersonPhoneLT(*i.ContactPersonPhoneLT))
+	}
+	if i.ContactPersonPhoneLTE != nil {
+		predicates = append(predicates, customerprofile.ContactPersonPhoneLTE(*i.ContactPersonPhoneLTE))
+	}
+	if i.ContactPersonPhoneContains != nil {
+		predicates = append(predicates, customerprofile.ContactPersonPhoneContains(*i.ContactPersonPhoneContains))
+	}
+	if i.ContactPersonPhoneHasPrefix != nil {
+		predicates = append(predicates, customerprofile.ContactPersonPhoneHasPrefix(*i.ContactPersonPhoneHasPrefix))
+	}
+	if i.ContactPersonPhoneHasSuffix != nil {
+		predicates = append(predicates, customerprofile.ContactPersonPhoneHasSuffix(*i.ContactPersonPhoneHasSuffix))
+	}
+	if i.ContactPersonPhoneIsNil {
+		predicates = append(predicates, customerprofile.ContactPersonPhoneIsNil())
+	}
+	if i.ContactPersonPhoneNotNil {
+		predicates = append(predicates, customerprofile.ContactPersonPhoneNotNil())
+	}
+	if i.ContactPersonPhoneEqualFold != nil {
+		predicates = append(predicates, customerprofile.ContactPersonPhoneEqualFold(*i.ContactPersonPhoneEqualFold))
+	}
+	if i.ContactPersonPhoneContainsFold != nil {
+		predicates = append(predicates, customerprofile.ContactPersonPhoneContainsFold(*i.ContactPersonPhoneContainsFold))
+	}
+	if i.ContactPersonEmail != nil {
+		predicates = append(predicates, customerprofile.ContactPersonEmailEQ(*i.ContactPersonEmail))
+	}
+	if i.ContactPersonEmailNEQ != nil {
+		predicates = append(predicates, customerprofile.ContactPersonEmailNEQ(*i.ContactPersonEmailNEQ))
+	}
+	if len(i.ContactPersonEmailIn) > 0 {
+		predicates = append(predicates, customerprofile.ContactPersonEmailIn(i.ContactPersonEmailIn...))
+	}
+	if len(i.ContactPersonEmailNotIn) > 0 {
+		predicates = append(predicates, customerprofile.ContactPersonEmailNotIn(i.ContactPersonEmailNotIn...))
+	}
+	if i.ContactPersonEmailGT != nil {
+		predicates = append(predicates, customerprofile.ContactPersonEmailGT(*i.ContactPersonEmailGT))
+	}
+	if i.ContactPersonEmailGTE != nil {
+		predicates = append(predicates, customerprofile.ContactPersonEmailGTE(*i.ContactPersonEmailGTE))
+	}
+	if i.ContactPersonEmailLT != nil {
+		predicates = append(predicates, customerprofile.ContactPersonEmailLT(*i.ContactPersonEmailLT))
+	}
+	if i.ContactPersonEmailLTE != nil {
+		predicates = append(predicates, customerprofile.ContactPersonEmailLTE(*i.ContactPersonEmailLTE))
+	}
+	if i.ContactPersonEmailContains != nil {
+		predicates = append(predicates, customerprofile.ContactPersonEmailContains(*i.ContactPersonEmailContains))
+	}
+	if i.ContactPersonEmailHasPrefix != nil {
+		predicates = append(predicates, customerprofile.ContactPersonEmailHasPrefix(*i.ContactPersonEmailHasPrefix))
+	}
+	if i.ContactPersonEmailHasSuffix != nil {
+		predicates = append(predicates, customerprofile.ContactPersonEmailHasSuffix(*i.ContactPersonEmailHasSuffix))
+	}
+	if i.ContactPersonEmailIsNil {
+		predicates = append(predicates, customerprofile.ContactPersonEmailIsNil())
+	}
+	if i.ContactPersonEmailNotNil {
+		predicates = append(predicates, customerprofile.ContactPersonEmailNotNil())
+	}
+	if i.ContactPersonEmailEqualFold != nil {
+		predicates = append(predicates, customerprofile.ContactPersonEmailEqualFold(*i.ContactPersonEmailEqualFold))
+	}
+	if i.ContactPersonEmailContainsFold != nil {
+		predicates = append(predicates, customerprofile.ContactPersonEmailContainsFold(*i.ContactPersonEmailContainsFold))
+	}
+	if i.SalesID != nil {
+		predicates = append(predicates, customerprofile.SalesIDEQ(*i.SalesID))
+	}
+	if i.SalesIDNEQ != nil {
+		predicates = append(predicates, customerprofile.SalesIDNEQ(*i.SalesIDNEQ))
+	}
+	if len(i.SalesIDIn) > 0 {
+		predicates = append(predicates, customerprofile.SalesIDIn(i.SalesIDIn...))
+	}
+	if len(i.SalesIDNotIn) > 0 {
+		predicates = append(predicates, customerprofile.SalesIDNotIn(i.SalesIDNotIn...))
+	}
+	if i.SalesIDGT != nil {
+		predicates = append(predicates, customerprofile.SalesIDGT(*i.SalesIDGT))
+	}
+	if i.SalesIDGTE != nil {
+		predicates = append(predicates, customerprofile.SalesIDGTE(*i.SalesIDGTE))
+	}
+	if i.SalesIDLT != nil {
+		predicates = append(predicates, customerprofile.SalesIDLT(*i.SalesIDLT))
+	}
+	if i.SalesIDLTE != nil {
+		predicates = append(predicates, customerprofile.SalesIDLTE(*i.SalesIDLTE))
+	}
+	if i.SalesIDContains != nil {
+		predicates = append(predicates, customerprofile.SalesIDContains(*i.SalesIDContains))
+	}
+	if i.SalesIDHasPrefix != nil {
+		predicates = append(predicates, customerprofile.SalesIDHasPrefix(*i.SalesIDHasPrefix))
+	}
+	if i.SalesIDHasSuffix != nil {
+		predicates = append(predicates, customerprofile.SalesIDHasSuffix(*i.SalesIDHasSuffix))
+	}
+	if i.SalesIDIsNil {
+		predicates = append(predicates, customerprofile.SalesIDIsNil())
+	}
+	if i.SalesIDNotNil {
+		predicates = append(predicates, customerprofile.SalesIDNotNil())
+	}
+	if i.SalesIDEqualFold != nil {
+		predicates = append(predicates, customerprofile.SalesIDEqualFold(*i.SalesIDEqualFold))
+	}
+	if i.SalesIDContainsFold != nil {
+		predicates = append(predicates, customerprofile.SalesIDContainsFold(*i.SalesIDContainsFold))
+	}
+	if i.CustomerID != nil {
+		predicates = append(predicates, customerprofile.CustomerIDEQ(*i.CustomerID))
+	}
+	if i.CustomerIDNEQ != nil {
+		predicates = append(predicates, customerprofile.CustomerIDNEQ(*i.CustomerIDNEQ))
+	}
+	if len(i.CustomerIDIn) > 0 {
+		predicates = append(predicates, customerprofile.CustomerIDIn(i.CustomerIDIn...))
+	}
+	if len(i.CustomerIDNotIn) > 0 {
+		predicates = append(predicates, customerprofile.CustomerIDNotIn(i.CustomerIDNotIn...))
+	}
+	if i.CustomerIDGT != nil {
+		predicates = append(predicates, customerprofile.CustomerIDGT(*i.CustomerIDGT))
+	}
+	if i.CustomerIDGTE != nil {
+		predicates = append(predicates, customerprofile.CustomerIDGTE(*i.CustomerIDGTE))
+	}
+	if i.CustomerIDLT != nil {
+		predicates = append(predicates, customerprofile.CustomerIDLT(*i.CustomerIDLT))
+	}
+	if i.CustomerIDLTE != nil {
+		predicates = append(predicates, customerprofile.CustomerIDLTE(*i.CustomerIDLTE))
+	}
+	if i.CustomerIDContains != nil {
+		predicates = append(predicates, customerprofile.CustomerIDContains(*i.CustomerIDContains))
+	}
+	if i.CustomerIDHasPrefix != nil {
+		predicates = append(predicates, customerprofile.CustomerIDHasPrefix(*i.CustomerIDHasPrefix))
+	}
+	if i.CustomerIDHasSuffix != nil {
+		predicates = append(predicates, customerprofile.CustomerIDHasSuffix(*i.CustomerIDHasSuffix))
+	}
+	if i.CustomerIDEqualFold != nil {
+		predicates = append(predicates, customerprofile.CustomerIDEqualFold(*i.CustomerIDEqualFold))
+	}
+	if i.CustomerIDContainsFold != nil {
+		predicates = append(predicates, customerprofile.CustomerIDContainsFold(*i.CustomerIDContainsFold))
+	}
+	if i.CreatedByID != nil {
+		predicates = append(predicates, customerprofile.CreatedByIDEQ(*i.CreatedByID))
+	}
+	if i.CreatedByIDNEQ != nil {
+		predicates = append(predicates, customerprofile.CreatedByIDNEQ(*i.CreatedByIDNEQ))
+	}
+	if len(i.CreatedByIDIn) > 0 {
+		predicates = append(predicates, customerprofile.CreatedByIDIn(i.CreatedByIDIn...))
+	}
+	if len(i.CreatedByIDNotIn) > 0 {
+		predicates = append(predicates, customerprofile.CreatedByIDNotIn(i.CreatedByIDNotIn...))
+	}
+	if i.CreatedByIDGT != nil {
+		predicates = append(predicates, customerprofile.CreatedByIDGT(*i.CreatedByIDGT))
+	}
+	if i.CreatedByIDGTE != nil {
+		predicates = append(predicates, customerprofile.CreatedByIDGTE(*i.CreatedByIDGTE))
+	}
+	if i.CreatedByIDLT != nil {
+		predicates = append(predicates, customerprofile.CreatedByIDLT(*i.CreatedByIDLT))
+	}
+	if i.CreatedByIDLTE != nil {
+		predicates = append(predicates, customerprofile.CreatedByIDLTE(*i.CreatedByIDLTE))
+	}
+	if i.CreatedByIDContains != nil {
+		predicates = append(predicates, customerprofile.CreatedByIDContains(*i.CreatedByIDContains))
+	}
+	if i.CreatedByIDHasPrefix != nil {
+		predicates = append(predicates, customerprofile.CreatedByIDHasPrefix(*i.CreatedByIDHasPrefix))
+	}
+	if i.CreatedByIDHasSuffix != nil {
+		predicates = append(predicates, customerprofile.CreatedByIDHasSuffix(*i.CreatedByIDHasSuffix))
+	}
+	if i.CreatedByIDIsNil {
+		predicates = append(predicates, customerprofile.CreatedByIDIsNil())
+	}
+	if i.CreatedByIDNotNil {
+		predicates = append(predicates, customerprofile.CreatedByIDNotNil())
+	}
+	if i.CreatedByIDEqualFold != nil {
+		predicates = append(predicates, customerprofile.CreatedByIDEqualFold(*i.CreatedByIDEqualFold))
+	}
+	if i.CreatedByIDContainsFold != nil {
+		predicates = append(predicates, customerprofile.CreatedByIDContainsFold(*i.CreatedByIDContainsFold))
+	}
+	if i.ApproverID != nil {
+		predicates = append(predicates, customerprofile.ApproverIDEQ(*i.ApproverID))
+	}
+	if i.ApproverIDNEQ != nil {
+		predicates = append(predicates, customerprofile.ApproverIDNEQ(*i.ApproverIDNEQ))
+	}
+	if len(i.ApproverIDIn) > 0 {
+		predicates = append(predicates, customerprofile.ApproverIDIn(i.ApproverIDIn...))
+	}
+	if len(i.ApproverIDNotIn) > 0 {
+		predicates = append(predicates, customerprofile.ApproverIDNotIn(i.ApproverIDNotIn...))
+	}
+	if i.ApproverIDGT != nil {
+		predicates = append(predicates, customerprofile.ApproverIDGT(*i.ApproverIDGT))
+	}
+	if i.ApproverIDGTE != nil {
+		predicates = append(predicates, customerprofile.ApproverIDGTE(*i.ApproverIDGTE))
+	}
+	if i.ApproverIDLT != nil {
+		predicates = append(predicates, customerprofile.ApproverIDLT(*i.ApproverIDLT))
+	}
+	if i.ApproverIDLTE != nil {
+		predicates = append(predicates, customerprofile.ApproverIDLTE(*i.ApproverIDLTE))
+	}
+	if i.ApproverIDContains != nil {
+		predicates = append(predicates, customerprofile.ApproverIDContains(*i.ApproverIDContains))
+	}
+	if i.ApproverIDHasPrefix != nil {
+		predicates = append(predicates, customerprofile.ApproverIDHasPrefix(*i.ApproverIDHasPrefix))
+	}
+	if i.ApproverIDHasSuffix != nil {
+		predicates = append(predicates, customerprofile.ApproverIDHasSuffix(*i.ApproverIDHasSuffix))
+	}
+	if i.ApproverIDIsNil {
+		predicates = append(predicates, customerprofile.ApproverIDIsNil())
+	}
+	if i.ApproverIDNotNil {
+		predicates = append(predicates, customerprofile.ApproverIDNotNil())
+	}
+	if i.ApproverIDEqualFold != nil {
+		predicates = append(predicates, customerprofile.ApproverIDEqualFold(*i.ApproverIDEqualFold))
+	}
+	if i.ApproverIDContainsFold != nil {
+		predicates = append(predicates, customerprofile.ApproverIDContainsFold(*i.ApproverIDContainsFold))
+	}
+
+	if i.HasCustomer != nil {
+		p := customerprofile.HasCustomer()
+		if !*i.HasCustomer {
+			p = customerprofile.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasCustomerWith) > 0 {
+		with := make([]predicate.Customer, 0, len(i.HasCustomerWith))
+		for _, w := range i.HasCustomerWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'HasCustomerWith'", err)
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, customerprofile.HasCustomerWith(with...))
+	}
+	if i.HasCreatedBy != nil {
+		p := customerprofile.HasCreatedBy()
+		if !*i.HasCreatedBy {
+			p = customerprofile.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasCreatedByWith) > 0 {
+		with := make([]predicate.User, 0, len(i.HasCreatedByWith))
+		for _, w := range i.HasCreatedByWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'HasCreatedByWith'", err)
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, customerprofile.HasCreatedByWith(with...))
+	}
+	if i.HasApprover != nil {
+		p := customerprofile.HasApprover()
+		if !*i.HasApprover {
+			p = customerprofile.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasApproverWith) > 0 {
+		with := make([]predicate.User, 0, len(i.HasApproverWith))
+		for _, w := range i.HasApproverWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'HasApproverWith'", err)
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, customerprofile.HasApproverWith(with...))
+	}
+	if i.HasSales != nil {
+		p := customerprofile.HasSales()
+		if !*i.HasSales {
+			p = customerprofile.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasSalesWith) > 0 {
+		with := make([]predicate.User, 0, len(i.HasSalesWith))
+		for _, w := range i.HasSalesWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'HasSalesWith'", err)
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, customerprofile.HasSalesWith(with...))
+	}
+	switch len(predicates) {
+	case 0:
+		return nil, ErrEmptyCustomerProfileWhereInput
+	case 1:
+		return predicates[0], nil
+	default:
+		return customerprofile.And(predicates...), nil
 	}
 }
 

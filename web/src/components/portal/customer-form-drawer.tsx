@@ -1,4 +1,4 @@
-import { useRouteContext } from "@tanstack/react-router";
+import { useNavigate, useRouteContext } from "@tanstack/react-router";
 import { customerFormDrawerQuery } from "__generated__/customerFormDrawerQuery.graphql";
 import { useUpdateCustomerMutation } from "__generated__/useUpdateCustomerMutation.graphql";
 import {
@@ -21,8 +21,9 @@ import {
 } from "react-relay";
 import { CreateCustomerInput } from "~/graphql/graphql";
 import { useCreateCustomer } from "~/hooks/use-create-customer";
+import { useCreateCustomerV2 } from "~/hooks/use-create-customer-v2";
 import { useUpdateCustomer } from "~/hooks/use-update-customer";
-import { useUpdateCustomerRequest } from "~/hooks/use-update-customer-request";
+import { useUpdateCustomerV2 } from "~/hooks/use-update-customer-v2";
 import { isSH } from "~/lib/areas";
 import {
   customerSizeOptions,
@@ -40,6 +41,7 @@ const CustomerFormDrawerQuery = graphql`
             node {
               id
               name
+              code
               users {
                 edges {
                   node {
@@ -104,8 +106,10 @@ function CustomerForm({ queryRef }: CustomerFormProps) {
   const [form] = Form.useForm<CreateCustomerInput>();
   const [commitCreateCustomer, isCreateCustomerInFlight] = useCreateCustomer();
   const [commitUpdateCustomer, isUpdateCustomerInFlight] = useUpdateCustomer();
-  const [commitUpdateCustomerRequest, isUpdateCustomerRequestInFlight] =
-    useUpdateCustomerRequest();
+  const [commitCreateCustomerV2, isCreateCustomerV2InFlight] =
+    useCreateCustomerV2();
+  const [commitUpdateCustomerV2, isUpdateCustomerV2InFlight] =
+    useUpdateCustomerV2();
   const { message } = App.useApp();
   const selectedCustomer = usePortalStore(
     (state) => state.customerFormCustomer,
@@ -113,6 +117,8 @@ function CustomerForm({ queryRef }: CustomerFormProps) {
   const selectedAreaID = usePortalStore(
     (state) => state.customerFormSelectedAreaID,
   );
+  const activeProfile = selectedCustomer?.activeProfile;
+  const navigate = useNavigate();
 
   const onClose = () => {
     usePortalStore.setState({
@@ -125,34 +131,21 @@ function CustomerForm({ queryRef }: CustomerFormProps) {
   useEffect(() => {
     if (selectedCustomer?.id) {
       form.setFieldsValue({
-        name: selectedCustomer.draft?.name || selectedCustomer.name,
-        areaID: selectedCustomer.draft?.area?.id || selectedCustomer.area?.id,
-        industry: selectedCustomer.draft?.industry || selectedCustomer.industry,
-        size: selectedCustomer.draft?.size || selectedCustomer.size,
-        ownerType:
-          selectedCustomer.draft?.ownerType || selectedCustomer.ownerType,
-        salesID:
-          selectedCustomer.draft?.sales?.id || selectedCustomer.sales?.id,
-        contactPerson:
-          selectedCustomer.draft?.contactPerson ||
-          selectedCustomer.contactPerson,
-        contactPersonPosition:
-          selectedCustomer.draft?.contactPersonPosition ||
-          selectedCustomer.contactPersonPosition,
-        contactPersonEmail:
-          selectedCustomer.draft?.contactPersonEmail ||
-          selectedCustomer.contactPersonEmail,
-        contactPersonPhone:
-          selectedCustomer.draft?.contactPersonPhone ||
-          selectedCustomer.contactPersonPhone,
+        name: activeProfile?.name,
+        areaID: selectedCustomer?.area?.id,
+        industry: activeProfile?.industry,
+        size: activeProfile?.size,
+        ownerType: activeProfile?.ownerType,
+        salesID: activeProfile?.sales?.id,
+        contactPerson: activeProfile?.contactPerson,
+        contactPersonPosition: activeProfile?.contactPersonPosition,
+        contactPersonEmail: activeProfile?.contactPersonEmail,
+        contactPersonPhone: activeProfile?.contactPersonPhone,
       });
     }
   }, [selectedCustomer]);
 
-  const isSubmitting =
-    isCreateCustomerInFlight ||
-    isUpdateCustomerInFlight ||
-    isUpdateCustomerRequestInFlight;
+  const isSubmitting = isCreateCustomerInFlight || isUpdateCustomerInFlight;
 
   return (
     <div className="h-full">
@@ -164,18 +157,38 @@ function CustomerForm({ queryRef }: CustomerFormProps) {
           areaID: selectedAreaID,
         }}
         // requiredMark="optional"
-        disabled={isSubmitting || selectedCustomer?.approvalStatus == 1}
+        disabled={isSubmitting}
         onFinish={(values) => {
           if (selectedCustomer?.id) {
             if (isSH(selectedCustomer.area.code)) {
-              commitUpdateCustomerRequest({
+              const { areaID, contactPersonPosition, ...rest } = values;
+              commitUpdateCustomerV2({
                 variables: {
                   id: selectedCustomer.id,
-                  input: values,
+                  customerInput: {
+                    ...values,
+                    areaID,
+                    contactPersonPosition: Array.isArray(contactPersonPosition)
+                      ? contactPersonPosition?.at(0)
+                      : null,
+                  },
+                  profileInput: {
+                    ...rest,
+                    createdByID: "",
+                    customerID: selectedCustomer.id,
+                    contactPersonPosition: Array.isArray(contactPersonPosition)
+                      ? contactPersonPosition?.at(0)
+                      : null,
+                  },
                 },
                 onCompleted: () => {
                   message.destroy();
                   message.success("提交客户修改申请成功");
+                  navigate({
+                    to: ".",
+                    search: { p: undefined },
+                    replace: true,
+                  });
                   onClose();
                 },
                 onError: (error) => {
@@ -204,11 +217,42 @@ function CustomerForm({ queryRef }: CustomerFormProps) {
               },
             });
           } else {
-            const { contactPersonPosition, ...rest } = values;
+            const { contactPersonPosition, areaID, ...rest } = values;
+            const areaCode = data.node?.areas?.edges?.find(
+              (a) => a?.node?.id === areaID,
+            )?.node?.code;
+            if (areaCode && isSH(areaCode)) {
+              commitCreateCustomerV2({
+                variables: {
+                  customerInput: {
+                    ...rest,
+                    areaID,
+                    contactPersonPosition: contactPersonPosition?.at(0) ?? null,
+                  },
+                  profileInput: {
+                    ...rest,
+                    customerID: "",
+                    contactPersonPosition: contactPersonPosition?.at(0) ?? null,
+                  },
+                },
+                onCompleted: () => {
+                  message.destroy();
+                  message.success("创建客户成功");
+                  onClose();
+                },
+                onError: (error) => {
+                  message.destroy();
+                  console.error(error);
+                  message.error("创建客户失败");
+                },
+              });
+              return;
+            }
             commitCreateCustomer({
               variables: {
                 input: {
                   ...rest,
+                  areaID,
                   contactPersonPosition: contactPersonPosition?.at(0) ?? null,
                   createdByID: "",
                 },
@@ -230,6 +274,11 @@ function CustomerForm({ queryRef }: CustomerFormProps) {
               onCompleted: () => {
                 message.destroy();
                 message.success("创建客户成功");
+                navigate({
+                  to: ".",
+                  search: { p: selectedCustomer?.pendingProfile?.id },
+                  replace: true,
+                });
                 onClose();
               },
               onError: (error) => {
@@ -353,7 +402,7 @@ function CustomerForm({ queryRef }: CustomerFormProps) {
         </Form.Item>
       </Form>
 
-      <div className="absolute right-0 bottom-0 left-0 flex justify-end gap-3 border-t border-neutral-200 bg-white px-6 py-3">
+      <div className="absolute bottom-0 left-0 right-0 flex justify-end gap-3 border-t border-neutral-200 bg-white px-6 py-3">
         <Space>
           <Button onClick={onClose}>取消</Button>
           <Button

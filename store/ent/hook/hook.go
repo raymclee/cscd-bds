@@ -68,6 +68,18 @@ func (f CustomerFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, er
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.CustomerMutation", m)
 }
 
+// The CustomerProfileFunc type is an adapter to allow the use of ordinary
+// function as CustomerProfile mutator.
+type CustomerProfileFunc func(context.Context, *ent.CustomerProfileMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f CustomerProfileFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.CustomerProfileMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.CustomerProfileMutation", m)
+}
+
 // The DistrictFunc type is an adapter to allow the use of ordinary
 // function as District mutator.
 type DistrictFunc func(context.Context, *ent.DistrictMutation) (ent.Value, error)

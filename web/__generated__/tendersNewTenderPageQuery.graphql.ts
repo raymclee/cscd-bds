@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<864a1cac80867e8725e518455c637b1b>>
+ * @generated SignedSource<<639493971116aeb5d539b9adf87f7c27>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -58,16 +58,7 @@ v4 = {
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
-},
-v5 = [
-  {
-    "kind": "Literal",
-    "name": "where",
-    "value": {
-      "approvalStatusGT": 1
-    }
-  }
-];
+};
 return {
   "fragment": {
     "argumentDefinitions": (v0/*: any*/),
@@ -148,7 +139,7 @@ return {
                           },
                           {
                             "alias": null,
-                            "args": (v5/*: any*/),
+                            "args": null,
                             "concreteType": "CustomerConnection",
                             "kind": "LinkedField",
                             "name": "customers",
@@ -226,14 +217,12 @@ return {
                                 "storageKey": null
                               }
                             ],
-                            "storageKey": "customers(where:{\"approvalStatusGT\":1})"
+                            "storageKey": null
                           },
                           {
                             "alias": null,
-                            "args": (v5/*: any*/),
-                            "filters": [
-                              "where"
-                            ],
+                            "args": null,
+                            "filters": null,
                             "handle": "connection",
                             "key": "tenderFormFragment_customers",
                             "kind": "LinkedHandle",
@@ -294,12 +283,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "13c15c1174030a6d70be0b0a661a4144",
+    "cacheID": "8c4c2f26eae63dc29f72d65a807c7e89",
     "id": null,
     "metadata": {},
     "name": "tendersNewTenderPageQuery",
     "operationKind": "query",
-    "text": "query tendersNewTenderPageQuery(\n  $userId: ID!\n) {\n  node(id: $userId) {\n    __typename\n    ...tenderFormFragment\n    id\n  }\n}\n\nfragment tenderFormFragment on User {\n  areas {\n    edges {\n      node {\n        id\n        name\n        code\n        customers(where: {approvalStatusGT: 1}) {\n          edges {\n            node {\n              id\n              name\n              __typename\n            }\n            cursor\n          }\n          pageInfo {\n            endCursor\n            hasNextPage\n            hasPreviousPage\n            startCursor\n          }\n        }\n        users {\n          edges {\n            node {\n              id\n              name\n            }\n          }\n        }\n      }\n    }\n  }\n}\n"
+    "text": "query tendersNewTenderPageQuery(\n  $userId: ID!\n) {\n  node(id: $userId) {\n    __typename\n    ...tenderFormFragment\n    id\n  }\n}\n\nfragment tenderFormFragment on User {\n  areas {\n    edges {\n      node {\n        id\n        name\n        code\n        customers {\n          edges {\n            node {\n              id\n              name\n              __typename\n            }\n            cursor\n          }\n          pageInfo {\n            endCursor\n            hasNextPage\n            hasPreviousPage\n            startCursor\n          }\n        }\n        users {\n          edges {\n            node {\n              id\n              name\n            }\n          }\n        }\n      }\n    }\n  }\n}\n"
   }
 };
 })();

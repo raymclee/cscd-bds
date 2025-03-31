@@ -26,9 +26,10 @@ type MutationResolver interface {
 	CreateCustomer(ctx context.Context, input ent.CreateCustomerInput) (*ent.CustomerConnection, error)
 	UpdateCustomer(ctx context.Context, id xid.ID, input ent.UpdateCustomerInput) (*ent.Customer, error)
 	DeleteCustomer(ctx context.Context, id xid.ID) (*ent.Customer, error)
-	UpdateCustomerRequest(ctx context.Context, id xid.ID, input ent.UpdateCustomerInput) (*ent.Customer, error)
-	ApproveCustomerRequest(ctx context.Context, id xid.ID) (*ent.Customer, error)
-	RejectCustomerRequest(ctx context.Context, id xid.ID) (*ent.Customer, error)
+	ApproveCustomer(ctx context.Context, id xid.ID) (*ent.Customer, error)
+	RejectCustomer(ctx context.Context, id xid.ID) (*ent.Customer, error)
+	CreateCustomerV2(ctx context.Context, customerInput ent.CreateCustomerInput, profileInput ent.CreateCustomerProfileInput) (*ent.Customer, error)
+	UpdateCustomerV2(ctx context.Context, id xid.ID, customerInput ent.UpdateCustomerInput, profileInput ent.CreateCustomerProfileInput) (*ent.Customer, error)
 	CreateTender(ctx context.Context, input ent.CreateTenderInput, geoBounds [][]float64, imageFileNames []string, attachmentFileNames []string, geoCoordinate []float64) (*ent.TenderConnection, error)
 	UpdateTender(ctx context.Context, id xid.ID, input ent.UpdateTenderInput, geoBounds [][]float64, imageFileNames []string, removeImageFileNames []string, attachmentFileNames []string, removeAttachmentFileNames []string, geoCoordinate []float64) (*ent.Tender, error)
 	CreateTenderV2(ctx context.Context, tenderInput ent.CreateTenderInput, profileInput ent.CreateTenderProfileInput, imageFileNames []string, attachmentFileNames []string) (*ent.Tender, error)
@@ -55,17 +56,17 @@ type MutationResolver interface {
 
 // region    ***************************** args.gotpl *****************************
 
-func (ec *executionContext) field_Mutation_approveCustomerRequest_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+func (ec *executionContext) field_Mutation_approveCustomer_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
-	arg0, err := ec.field_Mutation_approveCustomerRequest_argsID(ctx, rawArgs)
+	arg0, err := ec.field_Mutation_approveCustomer_argsID(ctx, rawArgs)
 	if err != nil {
 		return nil, err
 	}
 	args["id"] = arg0
 	return args, nil
 }
-func (ec *executionContext) field_Mutation_approveCustomerRequest_argsID(
+func (ec *executionContext) field_Mutation_approveCustomer_argsID(
 	ctx context.Context,
 	rawArgs map[string]interface{},
 ) (xid.ID, error) {
@@ -180,6 +181,65 @@ func (ec *executionContext) field_Mutation_createCompetitor_argsInput(
 	}
 
 	var zeroVal ent.CreateCompetitorInput
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_createCustomerV2_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_Mutation_createCustomerV2_argsCustomerInput(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["customerInput"] = arg0
+	arg1, err := ec.field_Mutation_createCustomerV2_argsProfileInput(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["profileInput"] = arg1
+	return args, nil
+}
+func (ec *executionContext) field_Mutation_createCustomerV2_argsCustomerInput(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (ent.CreateCustomerInput, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["customerInput"]
+	if !ok {
+		var zeroVal ent.CreateCustomerInput
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("customerInput"))
+	if tmp, ok := rawArgs["customerInput"]; ok {
+		return ec.unmarshalNCreateCustomerInput2cscdᚑbdsᚋstoreᚋentᚐCreateCustomerInput(ctx, tmp)
+	}
+
+	var zeroVal ent.CreateCustomerInput
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_createCustomerV2_argsProfileInput(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (ent.CreateCustomerProfileInput, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["profileInput"]
+	if !ok {
+		var zeroVal ent.CreateCustomerProfileInput
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("profileInput"))
+	if tmp, ok := rawArgs["profileInput"]; ok {
+		return ec.unmarshalNCreateCustomerProfileInput2cscdᚑbdsᚋstoreᚋentᚐCreateCustomerProfileInput(ctx, tmp)
+	}
+
+	var zeroVal ent.CreateCustomerProfileInput
 	return zeroVal, nil
 }
 
@@ -955,17 +1015,17 @@ func (ec *executionContext) field_Mutation_loseTender_argsInput(
 	return zeroVal, nil
 }
 
-func (ec *executionContext) field_Mutation_rejectCustomerRequest_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+func (ec *executionContext) field_Mutation_rejectCustomer_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
-	arg0, err := ec.field_Mutation_rejectCustomerRequest_argsID(ctx, rawArgs)
+	arg0, err := ec.field_Mutation_rejectCustomer_argsID(ctx, rawArgs)
 	if err != nil {
 		return nil, err
 	}
 	args["id"] = arg0
 	return args, nil
 }
-func (ec *executionContext) field_Mutation_rejectCustomerRequest_argsID(
+func (ec *executionContext) field_Mutation_rejectCustomer_argsID(
 	ctx context.Context,
 	rawArgs map[string]interface{},
 ) (xid.ID, error) {
@@ -1137,22 +1197,27 @@ func (ec *executionContext) field_Mutation_updateCompetitor_argsInput(
 	return zeroVal, nil
 }
 
-func (ec *executionContext) field_Mutation_updateCustomerRequest_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+func (ec *executionContext) field_Mutation_updateCustomerV2_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
-	arg0, err := ec.field_Mutation_updateCustomerRequest_argsID(ctx, rawArgs)
+	arg0, err := ec.field_Mutation_updateCustomerV2_argsID(ctx, rawArgs)
 	if err != nil {
 		return nil, err
 	}
 	args["id"] = arg0
-	arg1, err := ec.field_Mutation_updateCustomerRequest_argsInput(ctx, rawArgs)
+	arg1, err := ec.field_Mutation_updateCustomerV2_argsCustomerInput(ctx, rawArgs)
 	if err != nil {
 		return nil, err
 	}
-	args["input"] = arg1
+	args["customerInput"] = arg1
+	arg2, err := ec.field_Mutation_updateCustomerV2_argsProfileInput(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["profileInput"] = arg2
 	return args, nil
 }
-func (ec *executionContext) field_Mutation_updateCustomerRequest_argsID(
+func (ec *executionContext) field_Mutation_updateCustomerV2_argsID(
 	ctx context.Context,
 	rawArgs map[string]interface{},
 ) (xid.ID, error) {
@@ -1174,25 +1239,47 @@ func (ec *executionContext) field_Mutation_updateCustomerRequest_argsID(
 	return zeroVal, nil
 }
 
-func (ec *executionContext) field_Mutation_updateCustomerRequest_argsInput(
+func (ec *executionContext) field_Mutation_updateCustomerV2_argsCustomerInput(
 	ctx context.Context,
 	rawArgs map[string]interface{},
 ) (ent.UpdateCustomerInput, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
-	_, ok := rawArgs["input"]
+	_, ok := rawArgs["customerInput"]
 	if !ok {
 		var zeroVal ent.UpdateCustomerInput
 		return zeroVal, nil
 	}
 
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-	if tmp, ok := rawArgs["input"]; ok {
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("customerInput"))
+	if tmp, ok := rawArgs["customerInput"]; ok {
 		return ec.unmarshalNUpdateCustomerInput2cscdᚑbdsᚋstoreᚋentᚐUpdateCustomerInput(ctx, tmp)
 	}
 
 	var zeroVal ent.UpdateCustomerInput
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_updateCustomerV2_argsProfileInput(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (ent.CreateCustomerProfileInput, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["profileInput"]
+	if !ok {
+		var zeroVal ent.CreateCustomerProfileInput
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("profileInput"))
+	if tmp, ok := rawArgs["profileInput"]; ok {
+		return ec.unmarshalNCreateCustomerProfileInput2cscdᚑbdsᚋstoreᚋentᚐCreateCustomerProfileInput(ctx, tmp)
+	}
+
+	var zeroVal ent.CreateCustomerProfileInput
 	return zeroVal, nil
 }
 
@@ -2499,6 +2586,10 @@ func (ec *executionContext) fieldContext_Mutation_updateCustomer(ctx context.Con
 				return ec.fieldContext_Customer_updatedByID(ctx, field)
 			case "approverID":
 				return ec.fieldContext_Customer_approverID(ctx, field)
+			case "activeProfileID":
+				return ec.fieldContext_Customer_activeProfileID(ctx, field)
+			case "pendingProfileID":
+				return ec.fieldContext_Customer_pendingProfileID(ctx, field)
 			case "area":
 				return ec.fieldContext_Customer_area(ctx, field)
 			case "tenders":
@@ -2513,6 +2604,12 @@ func (ec *executionContext) fieldContext_Mutation_updateCustomer(ctx context.Con
 				return ec.fieldContext_Customer_approver(ctx, field)
 			case "visitRecords":
 				return ec.fieldContext_Customer_visitRecords(ctx, field)
+			case "profiles":
+				return ec.fieldContext_Customer_profiles(ctx, field)
+			case "activeProfile":
+				return ec.fieldContext_Customer_activeProfile(ctx, field)
+			case "pendingProfile":
+				return ec.fieldContext_Customer_pendingProfile(ctx, field)
 			case "draft":
 				return ec.fieldContext_Customer_draft(ctx, field)
 			}
@@ -2606,6 +2703,10 @@ func (ec *executionContext) fieldContext_Mutation_deleteCustomer(ctx context.Con
 				return ec.fieldContext_Customer_updatedByID(ctx, field)
 			case "approverID":
 				return ec.fieldContext_Customer_approverID(ctx, field)
+			case "activeProfileID":
+				return ec.fieldContext_Customer_activeProfileID(ctx, field)
+			case "pendingProfileID":
+				return ec.fieldContext_Customer_pendingProfileID(ctx, field)
 			case "area":
 				return ec.fieldContext_Customer_area(ctx, field)
 			case "tenders":
@@ -2620,6 +2721,12 @@ func (ec *executionContext) fieldContext_Mutation_deleteCustomer(ctx context.Con
 				return ec.fieldContext_Customer_approver(ctx, field)
 			case "visitRecords":
 				return ec.fieldContext_Customer_visitRecords(ctx, field)
+			case "profiles":
+				return ec.fieldContext_Customer_profiles(ctx, field)
+			case "activeProfile":
+				return ec.fieldContext_Customer_activeProfile(ctx, field)
+			case "pendingProfile":
+				return ec.fieldContext_Customer_pendingProfile(ctx, field)
 			case "draft":
 				return ec.fieldContext_Customer_draft(ctx, field)
 			}
@@ -2640,8 +2747,8 @@ func (ec *executionContext) fieldContext_Mutation_deleteCustomer(ctx context.Con
 	return fc, nil
 }
 
-func (ec *executionContext) _Mutation_updateCustomerRequest(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Mutation_updateCustomerRequest(ctx, field)
+func (ec *executionContext) _Mutation_approveCustomer(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_approveCustomer(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -2654,7 +2761,7 @@ func (ec *executionContext) _Mutation_updateCustomerRequest(ctx context.Context,
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().UpdateCustomerRequest(rctx, fc.Args["id"].(xid.ID), fc.Args["input"].(ent.UpdateCustomerInput))
+		return ec.resolvers.Mutation().ApproveCustomer(rctx, fc.Args["id"].(xid.ID))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -2671,7 +2778,7 @@ func (ec *executionContext) _Mutation_updateCustomerRequest(ctx context.Context,
 	return ec.marshalNCustomer2ᚖcscdᚑbdsᚋstoreᚋentᚐCustomer(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Mutation_updateCustomerRequest(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Mutation_approveCustomer(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Mutation",
 		Field:      field,
@@ -2713,6 +2820,10 @@ func (ec *executionContext) fieldContext_Mutation_updateCustomerRequest(ctx cont
 				return ec.fieldContext_Customer_updatedByID(ctx, field)
 			case "approverID":
 				return ec.fieldContext_Customer_approverID(ctx, field)
+			case "activeProfileID":
+				return ec.fieldContext_Customer_activeProfileID(ctx, field)
+			case "pendingProfileID":
+				return ec.fieldContext_Customer_pendingProfileID(ctx, field)
 			case "area":
 				return ec.fieldContext_Customer_area(ctx, field)
 			case "tenders":
@@ -2727,6 +2838,12 @@ func (ec *executionContext) fieldContext_Mutation_updateCustomerRequest(ctx cont
 				return ec.fieldContext_Customer_approver(ctx, field)
 			case "visitRecords":
 				return ec.fieldContext_Customer_visitRecords(ctx, field)
+			case "profiles":
+				return ec.fieldContext_Customer_profiles(ctx, field)
+			case "activeProfile":
+				return ec.fieldContext_Customer_activeProfile(ctx, field)
+			case "pendingProfile":
+				return ec.fieldContext_Customer_pendingProfile(ctx, field)
 			case "draft":
 				return ec.fieldContext_Customer_draft(ctx, field)
 			}
@@ -2740,15 +2857,15 @@ func (ec *executionContext) fieldContext_Mutation_updateCustomerRequest(ctx cont
 		}
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
-	if fc.Args, err = ec.field_Mutation_updateCustomerRequest_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+	if fc.Args, err = ec.field_Mutation_approveCustomer_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
 	}
 	return fc, nil
 }
 
-func (ec *executionContext) _Mutation_approveCustomerRequest(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Mutation_approveCustomerRequest(ctx, field)
+func (ec *executionContext) _Mutation_rejectCustomer(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_rejectCustomer(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -2761,7 +2878,7 @@ func (ec *executionContext) _Mutation_approveCustomerRequest(ctx context.Context
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().ApproveCustomerRequest(rctx, fc.Args["id"].(xid.ID))
+		return ec.resolvers.Mutation().RejectCustomer(rctx, fc.Args["id"].(xid.ID))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -2778,7 +2895,7 @@ func (ec *executionContext) _Mutation_approveCustomerRequest(ctx context.Context
 	return ec.marshalNCustomer2ᚖcscdᚑbdsᚋstoreᚋentᚐCustomer(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Mutation_approveCustomerRequest(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Mutation_rejectCustomer(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Mutation",
 		Field:      field,
@@ -2820,6 +2937,10 @@ func (ec *executionContext) fieldContext_Mutation_approveCustomerRequest(ctx con
 				return ec.fieldContext_Customer_updatedByID(ctx, field)
 			case "approverID":
 				return ec.fieldContext_Customer_approverID(ctx, field)
+			case "activeProfileID":
+				return ec.fieldContext_Customer_activeProfileID(ctx, field)
+			case "pendingProfileID":
+				return ec.fieldContext_Customer_pendingProfileID(ctx, field)
 			case "area":
 				return ec.fieldContext_Customer_area(ctx, field)
 			case "tenders":
@@ -2834,6 +2955,12 @@ func (ec *executionContext) fieldContext_Mutation_approveCustomerRequest(ctx con
 				return ec.fieldContext_Customer_approver(ctx, field)
 			case "visitRecords":
 				return ec.fieldContext_Customer_visitRecords(ctx, field)
+			case "profiles":
+				return ec.fieldContext_Customer_profiles(ctx, field)
+			case "activeProfile":
+				return ec.fieldContext_Customer_activeProfile(ctx, field)
+			case "pendingProfile":
+				return ec.fieldContext_Customer_pendingProfile(ctx, field)
 			case "draft":
 				return ec.fieldContext_Customer_draft(ctx, field)
 			}
@@ -2847,15 +2974,15 @@ func (ec *executionContext) fieldContext_Mutation_approveCustomerRequest(ctx con
 		}
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
-	if fc.Args, err = ec.field_Mutation_approveCustomerRequest_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+	if fc.Args, err = ec.field_Mutation_rejectCustomer_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
 	}
 	return fc, nil
 }
 
-func (ec *executionContext) _Mutation_rejectCustomerRequest(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Mutation_rejectCustomerRequest(ctx, field)
+func (ec *executionContext) _Mutation_createCustomerV2(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_createCustomerV2(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -2868,7 +2995,7 @@ func (ec *executionContext) _Mutation_rejectCustomerRequest(ctx context.Context,
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().RejectCustomerRequest(rctx, fc.Args["id"].(xid.ID))
+		return ec.resolvers.Mutation().CreateCustomerV2(rctx, fc.Args["customerInput"].(ent.CreateCustomerInput), fc.Args["profileInput"].(ent.CreateCustomerProfileInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -2885,7 +3012,7 @@ func (ec *executionContext) _Mutation_rejectCustomerRequest(ctx context.Context,
 	return ec.marshalNCustomer2ᚖcscdᚑbdsᚋstoreᚋentᚐCustomer(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Mutation_rejectCustomerRequest(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Mutation_createCustomerV2(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Mutation",
 		Field:      field,
@@ -2927,6 +3054,10 @@ func (ec *executionContext) fieldContext_Mutation_rejectCustomerRequest(ctx cont
 				return ec.fieldContext_Customer_updatedByID(ctx, field)
 			case "approverID":
 				return ec.fieldContext_Customer_approverID(ctx, field)
+			case "activeProfileID":
+				return ec.fieldContext_Customer_activeProfileID(ctx, field)
+			case "pendingProfileID":
+				return ec.fieldContext_Customer_pendingProfileID(ctx, field)
 			case "area":
 				return ec.fieldContext_Customer_area(ctx, field)
 			case "tenders":
@@ -2941,6 +3072,12 @@ func (ec *executionContext) fieldContext_Mutation_rejectCustomerRequest(ctx cont
 				return ec.fieldContext_Customer_approver(ctx, field)
 			case "visitRecords":
 				return ec.fieldContext_Customer_visitRecords(ctx, field)
+			case "profiles":
+				return ec.fieldContext_Customer_profiles(ctx, field)
+			case "activeProfile":
+				return ec.fieldContext_Customer_activeProfile(ctx, field)
+			case "pendingProfile":
+				return ec.fieldContext_Customer_pendingProfile(ctx, field)
 			case "draft":
 				return ec.fieldContext_Customer_draft(ctx, field)
 			}
@@ -2954,7 +3091,124 @@ func (ec *executionContext) fieldContext_Mutation_rejectCustomerRequest(ctx cont
 		}
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
-	if fc.Args, err = ec.field_Mutation_rejectCustomerRequest_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+	if fc.Args, err = ec.field_Mutation_createCustomerV2_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Mutation_updateCustomerV2(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_updateCustomerV2(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().UpdateCustomerV2(rctx, fc.Args["id"].(xid.ID), fc.Args["customerInput"].(ent.UpdateCustomerInput), fc.Args["profileInput"].(ent.CreateCustomerProfileInput))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*ent.Customer)
+	fc.Result = res
+	return ec.marshalNCustomer2ᚖcscdᚑbdsᚋstoreᚋentᚐCustomer(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_updateCustomerV2(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_Customer_id(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_Customer_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_Customer_updatedAt(ctx, field)
+			case "name":
+				return ec.fieldContext_Customer_name(ctx, field)
+			case "approvalStatus":
+				return ec.fieldContext_Customer_approvalStatus(ctx, field)
+			case "ownerType":
+				return ec.fieldContext_Customer_ownerType(ctx, field)
+			case "industry":
+				return ec.fieldContext_Customer_industry(ctx, field)
+			case "size":
+				return ec.fieldContext_Customer_size(ctx, field)
+			case "contactPerson":
+				return ec.fieldContext_Customer_contactPerson(ctx, field)
+			case "contactPersonPosition":
+				return ec.fieldContext_Customer_contactPersonPosition(ctx, field)
+			case "contactPersonPhone":
+				return ec.fieldContext_Customer_contactPersonPhone(ctx, field)
+			case "contactPersonEmail":
+				return ec.fieldContext_Customer_contactPersonEmail(ctx, field)
+			case "areaID":
+				return ec.fieldContext_Customer_areaID(ctx, field)
+			case "salesID":
+				return ec.fieldContext_Customer_salesID(ctx, field)
+			case "createdByID":
+				return ec.fieldContext_Customer_createdByID(ctx, field)
+			case "updatedByID":
+				return ec.fieldContext_Customer_updatedByID(ctx, field)
+			case "approverID":
+				return ec.fieldContext_Customer_approverID(ctx, field)
+			case "activeProfileID":
+				return ec.fieldContext_Customer_activeProfileID(ctx, field)
+			case "pendingProfileID":
+				return ec.fieldContext_Customer_pendingProfileID(ctx, field)
+			case "area":
+				return ec.fieldContext_Customer_area(ctx, field)
+			case "tenders":
+				return ec.fieldContext_Customer_tenders(ctx, field)
+			case "sales":
+				return ec.fieldContext_Customer_sales(ctx, field)
+			case "createdBy":
+				return ec.fieldContext_Customer_createdBy(ctx, field)
+			case "updatedBy":
+				return ec.fieldContext_Customer_updatedBy(ctx, field)
+			case "approver":
+				return ec.fieldContext_Customer_approver(ctx, field)
+			case "visitRecords":
+				return ec.fieldContext_Customer_visitRecords(ctx, field)
+			case "profiles":
+				return ec.fieldContext_Customer_profiles(ctx, field)
+			case "activeProfile":
+				return ec.fieldContext_Customer_activeProfile(ctx, field)
+			case "pendingProfile":
+				return ec.fieldContext_Customer_pendingProfile(ctx, field)
+			case "draft":
+				return ec.fieldContext_Customer_draft(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Customer", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_updateCustomerV2_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
 	}
@@ -6137,23 +6391,30 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "updateCustomerRequest":
+		case "approveCustomer":
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
-				return ec._Mutation_updateCustomerRequest(ctx, field)
+				return ec._Mutation_approveCustomer(ctx, field)
 			})
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "approveCustomerRequest":
+		case "rejectCustomer":
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
-				return ec._Mutation_approveCustomerRequest(ctx, field)
+				return ec._Mutation_rejectCustomer(ctx, field)
 			})
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "rejectCustomerRequest":
+		case "createCustomerV2":
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
-				return ec._Mutation_rejectCustomerRequest(ctx, field)
+				return ec._Mutation_createCustomerV2(ctx, field)
+			})
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "updateCustomerV2":
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_updateCustomerV2(ctx, field)
 			})
 			if out.Values[i] == graphql.Null {
 				out.Invalids++

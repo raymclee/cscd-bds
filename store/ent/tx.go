@@ -22,6 +22,8 @@ type Tx struct {
 	Country *CountryClient
 	// Customer is the client for interacting with the Customer builders.
 	Customer *CustomerClient
+	// CustomerProfile is the client for interacting with the CustomerProfile builders.
+	CustomerProfile *CustomerProfileClient
 	// District is the client for interacting with the District builders.
 	District *DistrictClient
 	// Operation is the client for interacting with the Operation builders.
@@ -184,6 +186,7 @@ func (tx *Tx) init() {
 	tx.Competitor = NewCompetitorClient(tx.config)
 	tx.Country = NewCountryClient(tx.config)
 	tx.Customer = NewCustomerClient(tx.config)
+	tx.CustomerProfile = NewCustomerProfileClient(tx.config)
 	tx.District = NewDistrictClient(tx.config)
 	tx.Operation = NewOperationClient(tx.config)
 	tx.Plot = NewPlotClient(tx.config)

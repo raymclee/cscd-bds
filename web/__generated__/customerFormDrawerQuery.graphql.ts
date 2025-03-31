@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<f778cf04d29fe50e1b77d9bcbf876ab4>>
+ * @generated SignedSource<<f029104b3897541393d21ae4ab5b0031>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -17,6 +17,7 @@ export type customerFormDrawerQuery$data = {
     readonly areas?: {
       readonly edges: ReadonlyArray<{
         readonly node: {
+          readonly code: string;
           readonly id: string;
           readonly name: string;
           readonly users: {
@@ -95,6 +96,13 @@ v4 = {
               "selections": [
                 (v2/*: any*/),
                 (v3/*: any*/),
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "code",
+                  "storageKey": null
+                },
                 {
                   "alias": null,
                   "args": null,
@@ -195,16 +203,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "340be84531ae70093c117e8a5bcb0bba",
+    "cacheID": "749f597cdff0b488539e2a746be587f5",
     "id": null,
     "metadata": {},
     "name": "customerFormDrawerQuery",
     "operationKind": "query",
-    "text": "query customerFormDrawerQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ... on User {\n      areas {\n        edges {\n          node {\n            id\n            name\n            users {\n              edges {\n                node {\n                  id\n                  name\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n    id\n  }\n}\n"
+    "text": "query customerFormDrawerQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ... on User {\n      areas {\n        edges {\n          node {\n            id\n            name\n            code\n            users {\n              edges {\n                node {\n                  id\n                  name\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n    id\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "d837702f8db9f8fa96f2c0b2ff01f2c8";
+(node as any).hash = "d6d7181fedfcf776d67267758f8f9e7b";
 
 export default node;

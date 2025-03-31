@@ -91,6 +91,15 @@ func (Customer) Fields() []ent.Field {
 			GoType(xid.ID("")).
 			Optional().
 			Nillable(),
+
+		field.String("active_profile_id").
+			GoType(xid.ID("")).
+			Optional().
+			Nillable(),
+		field.String("pending_profile_id").
+			GoType(xid.ID("")).
+			Optional().
+			Nillable(),
 	}
 }
 
@@ -123,6 +132,16 @@ func (Customer) Edges() []ent.Edge {
 			Annotations(
 				entgql.RelayConnection(),
 			),
+		edge.To("profiles", CustomerProfile.Type).
+			Annotations(
+				entgql.RelayConnection(),
+			),
+		edge.To("active_profile", CustomerProfile.Type).
+			Field("active_profile_id").
+			Unique(),
+		edge.To("pending_profile", CustomerProfile.Type).
+			Field("pending_profile_id").
+			Unique(),
 	}
 }
 

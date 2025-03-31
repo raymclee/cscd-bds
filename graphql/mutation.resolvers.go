@@ -13,9 +13,9 @@ import (
 	"cscd-bds/store/ent"
 	"cscd-bds/store/ent/area"
 	"cscd-bds/store/ent/customer"
+	"cscd-bds/store/ent/customerprofile"
 	"cscd-bds/store/ent/district"
 	"cscd-bds/store/ent/schema/geo"
-	"cscd-bds/store/ent/schema/model"
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/tenderprofile"
@@ -218,154 +218,116 @@ func (r *mutationResolver) DeleteCustomer(ctx context.Context, id xid.ID) (*ent.
 	return c, r.store.Customer.DeleteOne(c).Exec(ctx)
 }
 
-// UpdateCustomerRequest is the resolver for the updateCustomerRequest field.
-func (r *mutationResolver) UpdateCustomerRequest(ctx context.Context, id xid.ID, input ent.UpdateCustomerInput) (*ent.Customer, error) {
+// ApproveCustomer is the resolver for the approveCustomer field.
+func (r *mutationResolver) ApproveCustomer(ctx context.Context, id xid.ID) (*ent.Customer, error) {
 	sess, err := r.session.GetSession(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get session: %w", err)
 	}
-	draft := &model.Customer{
-		Name:                  input.Name,
-		OwnerType:             input.OwnerType,
-		Industry:              input.Industry,
-		Size:                  input.Size,
-		ContactPerson:         input.ContactPerson,
-		ContactPersonPosition: input.ContactPersonPosition,
-		ContactPersonPhone:    input.ContactPersonPhone,
-		ContactPersonEmail:    input.ContactPersonEmail,
-	}
-	if input.AreaID != nil {
-		id := string(*input.AreaID)
-		draft.AreaID = &id
-	}
-	if input.SalesID != nil {
-		id := string(*input.SalesID)
-		draft.SalesID = &id
-	}
-
-	cus, err := r.store.Customer.UpdateOneID(id).SetApprovalStatus(1).ClearApprover().SetDraft(draft).SetUpdatedByID(xid.ID(sess.UserId)).Save(ctx)
+	c, err := r.store.Customer.Query().Where(customer.ID(id)).WithPendingProfile().Only(ctx)
 	if err != nil {
-		return nil, fmt.Errorf("failed to update customer: %w", err)
+		return nil, fmt.Errorf("failed to get customer: %w", err)
 	}
-
-	go func() {
-		ctxx := context.Background()
-		ncus, err := r.store.Customer.Query().
-			Where(customer.ID(cus.ID)).
-			WithArea().
-			WithCreatedBy().
-			WithUpdatedBy().
-			WithApprover().
-			WithSales().
-			Only(ctxx)
-		if err != nil {
-			fmt.Printf("failed to get customer: %v\n", err)
-			return
-		}
-		chatId := r.feishu.GetLeaderChatId(ncus.Edges.Area)
-		if chatId == nil {
-			fmt.Printf("failed to get leader chat id: %v\n", errors.New("leader chat id is nil"))
-			return
-		}
-		if _, err := r.feishu.SendGroupMessage(ctxx, feishu.TemplateIdCustomerUpdateRequest, &feishu.GroupMessageParams{
-			Customer: ncus,
-			ChatId:   *chatId,
-		}); err != nil {
-			fmt.Printf("failed to send group message: %v\n", err)
-		}
-	}()
-
-	return cus, nil
+	if c.Edges.PendingProfile == nil {
+		return nil, fmt.Errorf("failed to approve customer: %w", errors.New("customer has no pending profile"))
+	}
+	if err := r.store.CustomerProfile.UpdateOneID(c.Edges.PendingProfile.ID).SetApprovalStatus(2).SetApproverID(xid.ID(sess.UserId)).Exec(ctx); err != nil {
+		return nil, fmt.Errorf("failed to approve customer: %w", err)
+	}
+	return c.Update().SetActiveProfileID(c.Edges.PendingProfile.ID).ClearPendingProfile().Save(ctx)
 }
 
-// ApproveCustomerRequest is the resolver for the approveCustomerRequest field.
-func (r *mutationResolver) ApproveCustomerRequest(ctx context.Context, id xid.ID) (*ent.Customer, error) {
+// RejectCustomer is the resolver for the rejectCustomer field.
+func (r *mutationResolver) RejectCustomer(ctx context.Context, id xid.ID) (*ent.Customer, error) {
 	sess, err := r.session.GetSession(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get session: %w", err)
 	}
-	cus, err := r.store.ApproveCustomerUpdate(ctx, id, xid.ID(sess.UserId))
+	c, err := r.store.Customer.Query().Where(customer.ID(id)).WithPendingProfile().Only(ctx)
 	if err != nil {
-		return nil, fmt.Errorf("failed to approve customer request: %w", err)
+		return nil, fmt.Errorf("failed to get customer: %w", err)
 	}
-
-	go func() {
-		ctxx := context.Background()
-
-		ncus, err := r.store.Customer.Query().
-			Where(customer.ID(cus.ID)).
-			WithArea().
-			WithCreatedBy().
-			WithUpdatedBy().
-			WithApprover().
-			WithSales().
-			Only(ctxx)
-		if err != nil {
-			fmt.Printf("failed to get customer: %v\n", err)
-			return
-		}
-
-		chatId := r.feishu.GetSalesChatId(ncus.Edges.Area)
-		if chatId == nil {
-			fmt.Printf("failed to get sales chat id: %v\n", errors.New("sales chat id is nil"))
-			return
-		}
-		if _, err := r.feishu.SendGroupMessage(ctxx, feishu.TemplateIdCustomerApproved, &feishu.GroupMessageParams{
-			Customer: ncus,
-			ChatId:   *chatId,
-		}); err != nil {
-			fmt.Printf("failed to send group message: %v\n", err)
-		}
-	}()
-
-	return cus, nil
+	if c.Edges.PendingProfile == nil {
+		return nil, fmt.Errorf("failed to approve customer: %w", errors.New("customer has no pending profile"))
+	}
+	if err := r.store.CustomerProfile.UpdateOneID(c.Edges.PendingProfile.ID).SetApprovalStatus(3).SetApproverID(xid.ID(sess.UserId)).Exec(ctx); err != nil {
+		return nil, fmt.Errorf("failed to approve customer: %w", err)
+	}
+	return c.Update().ClearPendingProfile().Save(ctx)
 }
 
-// RejectCustomerRequest is the resolver for the rejectCustomerRequest field.
-func (r *mutationResolver) RejectCustomerRequest(ctx context.Context, id xid.ID) (*ent.Customer, error) {
-	// cus, err := r.store.Customer.Get(ctx, id)
-	// if err != nil {
-	// 	return nil, fmt.Errorf("failed to get customer: %w", err)
-	// }
+// CreateCustomerV2 is the resolver for the createCustomerV2 field.
+func (r *mutationResolver) CreateCustomerV2(ctx context.Context, customerInput ent.CreateCustomerInput, profileInput ent.CreateCustomerProfileInput) (*ent.Customer, error) {
 	sess, err := r.session.GetSession(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get session: %w", err)
 	}
-	cus, err := r.store.Customer.UpdateOneID(id).SetApprovalStatus(3).ClearDraft().SetApproverID(xid.ID(sess.UserId)).Save(ctx)
+
+	cus, err := r.store.Customer.Create().SetInput(customerInput).SetCreatedByID(xid.ID(sess.UserId)).Save(ctx)
 	if err != nil {
-		return nil, fmt.Errorf("failed to update customer: %w", err)
+		return nil, fmt.Errorf("failed to create customer: %w", err)
 	}
 
-	go func() {
-		ctxx := context.Background()
+	cp, err := r.store.CustomerProfile.Create().SetInput(profileInput).SetCreatedByID(xid.ID(sess.UserId)).SetCustomerID(cus.ID).Save(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create customer profile: %w", err)
+	}
 
-		ncus, err := r.store.Customer.Query().
-			Where(customer.ID(cus.ID)).
-			WithArea().
-			WithCreatedBy().
-			WithUpdatedBy().
-			WithApprover().
-			WithSales().
-			Only(ctxx)
-		if err != nil {
-			fmt.Printf("failed to get customer: %v\n", err)
-			return
-		}
+	return cus.Update().SetPendingProfile(cp).Save(ctx)
+}
 
-		chatId := r.feishu.GetSalesChatId(ncus.Edges.Area)
-		if chatId == nil {
-			fmt.Printf("failed to get sales chat id: %v\n", errors.New("sales chat id is nil"))
-			return
-		}
-		if _, err := r.feishu.SendGroupMessage(ctxx, feishu.TemplateIdCustomerRejected, &feishu.GroupMessageParams{
-			Customer: ncus,
-			ChatId:   *chatId,
-		}); err != nil {
-			fmt.Printf("failed to send group message: %v\n", err)
-		}
-	}()
+// UpdateCustomerV2 is the resolver for the updateCustomerV2 field.
+func (r *mutationResolver) UpdateCustomerV2(ctx context.Context, id xid.ID, customerInput ent.UpdateCustomerInput, profileInput ent.CreateCustomerProfileInput) (*ent.Customer, error) {
+	sess, err := r.session.GetSession(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get session: %w", err)
+	}
 
-	return cus, nil
+	cus, err := r.store.Customer.Get(ctx, id)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get customer: %w", err)
+	}
+
+	if err := r.store.CustomerProfile.Update().Where(customerprofile.And(
+		customerprofile.CustomerID(cus.ID),
+		customerprofile.ApprovalStatus(1),
+	)).SetApprovalStatus(4).Exec(ctx); err != nil {
+		return nil, fmt.Errorf("failed to approve customer profile: %w", err)
+	}
+
+	cp, err := r.store.CustomerProfile.Create().SetInput(profileInput).SetCreatedByID(xid.ID(sess.UserId)).Save(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create customer profile: %w", err)
+	}
+
+	// go func() {
+	// 	ctxx := context.Background()
+	// 	ncus, err := r.store.Customer.Query().
+	// 		Where(customer.ID(cus.ID)).
+	// 		WithArea().
+	// 		WithCreatedBy().
+	// 		WithUpdatedBy().
+	// 		WithApprover().
+	// 		WithSales().
+	// 		Only(ctxx)
+	// 	if err != nil {
+	// 		fmt.Printf("failed to get customer: %v\n", err)
+	// 		return
+	// 	}
+	// 	chatId := r.feishu.GetLeaderChatId(ncus.Edges.Area)
+	// 	if chatId == nil {
+	// 		fmt.Printf("failed to get leader chat id: %v\n", errors.New("leader chat id is nil"))
+	// 		return
+	// 	}
+	// 	if _, err := r.feishu.SendGroupMessage(ctxx, feishu.TemplateIdCustomerUpdateRequest, &feishu.GroupMessageParams{
+	// 		Customer: ncus,
+	// 		ChatId:   *chatId,
+	// 	}); err != nil {
+	// 		fmt.Printf("failed to send group message: %v\n", err)
+	// 	}
+	// }()
+
+	return cus.Update().SetPendingProfile(cp).Save(ctx)
 }
 
 // CreateTender is the resolver for the createTender field.
@@ -747,27 +709,7 @@ func (r *mutationResolver) CreateTenderV2(ctx context.Context, tenderInput ent.C
 		return nil, fmt.Errorf("failed to create tender: %w", err)
 	}
 
-	isSHTender := util.IsSHTender(a.Code)
-
-	if !isSHTender && profileInput.Address != nil {
-		adcode, lng, lat, address, err := r.amap.GeoCode(*profileInput.Address)
-		if err != nil {
-			return nil, fmt.Errorf("failed to get geo code: %w", err)
-		}
-		d, err := r.store.District.Query().Where(district.Adcode(adcode)).WithCity().WithProvince().Only(ctx)
-		if err != nil {
-			return nil, fmt.Errorf("failed to get district: %w", err)
-		}
-		if d.Edges.City != nil {
-			profileInput.CityID = &d.Edges.City.ID
-		}
-		if d.Edges.Province != nil {
-			profileInput.ProvinceID = &d.Edges.Province.ID
-		}
-		profileInput.DistrictID = &d.ID
-		profileInput.FullAddress = &address
-		profileInput.GeoCoordinate = []float64{lat, lng}
-	}
+	// isSHTender := util.IsSHTender(a.Code)
 
 	var images []string
 	{
@@ -797,11 +739,12 @@ func (r *mutationResolver) CreateTenderV2(ctx context.Context, tenderInput ent.C
 		}
 	}
 
-	if err := r.store.TenderProfile.Create().SetInput(profileInput).SetTender(t).Exec(ctx); err != nil {
+	tp, err := r.store.TenderProfile.Create().SetInput(profileInput).SetTender(t).Save(ctx)
+	if err != nil {
 		return nil, fmt.Errorf("failed to create tender profile: %w", err)
 	}
 
-	return t, nil
+	return t.Update().SetPendingProfileID(tp.ID).Save(ctx)
 }
 
 // UpdateTenderV2 is the resolver for the updateTenderV2 field.

@@ -13,6 +13,7 @@ const customerDetailSearchSchema = v.object({
     ),
     1,
   ),
+  p: v.optional(v.string()),
 });
 
 export const Route = createFileRoute("/__auth/__portal/portal/customers_/$id")({

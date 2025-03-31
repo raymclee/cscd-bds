@@ -42,29 +42,25 @@ export function TenderListItem({
         followingSales {
           id
         }
-        profiles(orderBy: [{ field: CREATED_AT, direction: DESC }]) {
-          edges {
-            node {
-              id
-              approvalStatus
-              name
-              status
-              createdAt
-              estimatedAmount
-              classify
-              customer {
-                id
-                name
-              }
-              images
-              fullAddress
-              tenderDate
-              discoveryDate
-              tenderClosingDate
-              createdBy {
-                id
-              }
-            }
+        activeProfile {
+          id
+          approvalStatus
+          name
+          status
+          createdAt
+          estimatedAmount
+          classify
+          customer {
+            id
+            name
+          }
+          images
+          fullAddress
+          tenderDate
+          discoveryDate
+          tenderClosingDate
+          createdBy {
+            id
           }
         }
       }
@@ -74,7 +70,7 @@ export function TenderListItem({
   const { session } = useRouteContext({ from: "/__auth" });
 
   const isGAOrHW = item.area.code === "GA" || item.area.code === "HW";
-  const profile = item.profiles?.edges?.[0]?.node;
+  const profile = item.activeProfile;
 
   return (
     <List.Item
@@ -184,11 +180,6 @@ export function TenderListItem({
           <Tag color={tenderStatusTagColor(profile?.status)}>
             {tenderStatusText(profile?.status)}
           </Tag>
-          {!isGAOrHW && (
-            <Tag color={approvalStatusTagColor(profile?.approvalStatus)}>
-              {approvalStatusText(profile?.approvalStatus)}
-            </Tag>
-          )}
         </div>
 
         <div>
@@ -219,7 +210,7 @@ export function TenderListItem({
 function DeleteButton({ tender }: { tender?: tenderListItemFragment$data }) {
   const { message } = App.useApp();
   const [commit, inFlight] = useUpdateTender();
-  const profile = tender?.profiles?.edges?.[0]?.node;
+  const profile = tender?.activeProfile;
   return (
     <Popconfirm
       title="确定要作废吗？"

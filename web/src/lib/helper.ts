@@ -16,6 +16,8 @@ export function approvalStatusText(status: Maybe<number> | undefined): string {
       return "已通过";
     case 3:
       return "已拒绝";
+    case 4:
+      return "已取消";
     default:
       return "待审批";
   }

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<09d0433c81ce275c90c8eacd3e01d8cc>>
+ * @generated SignedSource<<8451a67c7a94f8aa27a74f3befc2b5f0>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -119,15 +119,7 @@ return {
                 },
                 {
                   "alias": "customers",
-                  "args": [
-                    {
-                      "kind": "Literal",
-                      "name": "where",
-                      "value": {
-                        "approvalStatusGT": 1
-                      }
-                    }
-                  ],
+                  "args": null,
                   "concreteType": "CustomerConnection",
                   "kind": "LinkedField",
                   "name": "__tenderFormFragment_customers_connection",
@@ -211,7 +203,7 @@ return {
                       "storageKey": null
                     }
                   ],
-                  "storageKey": "__tenderFormFragment_customers_connection(where:{\"approvalStatusGT\":1})"
+                  "storageKey": null
                 },
                 {
                   "alias": null,
@@ -263,6 +255,6 @@ return {
 };
 })();
 
-(node as any).hash = "e079ccd85f6f2e1e03a238f3d6dc0f9a";
+(node as any).hash = "fe562b18017e2e9decbccefc36579145";
 
 export default node;

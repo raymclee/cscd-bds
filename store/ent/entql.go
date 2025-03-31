@@ -8,6 +8,7 @@ import (
 	"cscd-bds/store/ent/competitor"
 	"cscd-bds/store/ent/country"
 	"cscd-bds/store/ent/customer"
+	"cscd-bds/store/ent/customerprofile"
 	"cscd-bds/store/ent/district"
 	"cscd-bds/store/ent/operation"
 	"cscd-bds/store/ent/plot"
@@ -31,7 +32,7 @@ import (
 
 // schemaGraph holds a representation of ent/schema at runtime.
 var schemaGraph = func() *sqlgraph.Schema {
-	graph := &sqlgraph.Schema{Nodes: make([]*sqlgraph.Node, 18)}
+	graph := &sqlgraph.Schema{Nodes: make([]*sqlgraph.Node, 19)}
 	graph.Nodes[0] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   area.Table,
@@ -136,9 +137,39 @@ var schemaGraph = func() *sqlgraph.Schema {
 			customer.FieldCreatedByID:           {Type: field.TypeString, Column: customer.FieldCreatedByID},
 			customer.FieldUpdatedByID:           {Type: field.TypeString, Column: customer.FieldUpdatedByID},
 			customer.FieldApproverID:            {Type: field.TypeString, Column: customer.FieldApproverID},
+			customer.FieldActiveProfileID:       {Type: field.TypeString, Column: customer.FieldActiveProfileID},
+			customer.FieldPendingProfileID:      {Type: field.TypeString, Column: customer.FieldPendingProfileID},
 		},
 	}
 	graph.Nodes[5] = &sqlgraph.Node{
+		NodeSpec: sqlgraph.NodeSpec{
+			Table:   customerprofile.Table,
+			Columns: customerprofile.Columns,
+			ID: &sqlgraph.FieldSpec{
+				Type:   field.TypeString,
+				Column: customerprofile.FieldID,
+			},
+		},
+		Type: "CustomerProfile",
+		Fields: map[string]*sqlgraph.FieldSpec{
+			customerprofile.FieldCreatedAt:             {Type: field.TypeTime, Column: customerprofile.FieldCreatedAt},
+			customerprofile.FieldUpdatedAt:             {Type: field.TypeTime, Column: customerprofile.FieldUpdatedAt},
+			customerprofile.FieldName:                  {Type: field.TypeString, Column: customerprofile.FieldName},
+			customerprofile.FieldApprovalStatus:        {Type: field.TypeInt, Column: customerprofile.FieldApprovalStatus},
+			customerprofile.FieldOwnerType:             {Type: field.TypeInt, Column: customerprofile.FieldOwnerType},
+			customerprofile.FieldIndustry:              {Type: field.TypeInt, Column: customerprofile.FieldIndustry},
+			customerprofile.FieldSize:                  {Type: field.TypeInt, Column: customerprofile.FieldSize},
+			customerprofile.FieldContactPerson:         {Type: field.TypeString, Column: customerprofile.FieldContactPerson},
+			customerprofile.FieldContactPersonPosition: {Type: field.TypeString, Column: customerprofile.FieldContactPersonPosition},
+			customerprofile.FieldContactPersonPhone:    {Type: field.TypeString, Column: customerprofile.FieldContactPersonPhone},
+			customerprofile.FieldContactPersonEmail:    {Type: field.TypeString, Column: customerprofile.FieldContactPersonEmail},
+			customerprofile.FieldSalesID:               {Type: field.TypeString, Column: customerprofile.FieldSalesID},
+			customerprofile.FieldCustomerID:            {Type: field.TypeString, Column: customerprofile.FieldCustomerID},
+			customerprofile.FieldCreatedByID:           {Type: field.TypeString, Column: customerprofile.FieldCreatedByID},
+			customerprofile.FieldApproverID:            {Type: field.TypeString, Column: customerprofile.FieldApproverID},
+		},
+	}
+	graph.Nodes[6] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   district.Table,
 			Columns: district.Columns,
@@ -160,7 +191,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			district.FieldCityID:     {Type: field.TypeString, Column: district.FieldCityID},
 		},
 	}
-	graph.Nodes[6] = &sqlgraph.Node{
+	graph.Nodes[7] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   operation.Table,
 			Columns: operation.Columns,
@@ -183,7 +214,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			operation.FieldXmsjf:     {Type: field.TypeFloat64, Column: operation.FieldXmsjf},
 		},
 	}
-	graph.Nodes[7] = &sqlgraph.Node{
+	graph.Nodes[8] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   plot.Table,
 			Columns: plot.Columns,
@@ -202,7 +233,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			plot.FieldDistrictID: {Type: field.TypeString, Column: plot.FieldDistrictID},
 		},
 	}
-	graph.Nodes[8] = &sqlgraph.Node{
+	graph.Nodes[9] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   potentialtender.Table,
 			Columns: potentialtender.Columns,
@@ -232,7 +263,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			potentialtender.FieldContactAddress: {Type: field.TypeString, Column: potentialtender.FieldContactAddress},
 		},
 	}
-	graph.Nodes[9] = &sqlgraph.Node{
+	graph.Nodes[10] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   project.Table,
 			Columns: project.Columns,
@@ -327,7 +358,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			project.FieldDiagramCApprovalRatioDenominator:        {Type: field.TypeInt, Column: project.FieldDiagramCApprovalRatioDenominator},
 		},
 	}
-	graph.Nodes[10] = &sqlgraph.Node{
+	graph.Nodes[11] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   projectstaff.Table,
 			Columns: projectstaff.Columns,
@@ -347,7 +378,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			projectstaff.FieldProjectID:    {Type: field.TypeString, Column: projectstaff.FieldProjectID},
 		},
 	}
-	graph.Nodes[11] = &sqlgraph.Node{
+	graph.Nodes[12] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   projectvo.Table,
 			Columns: projectvo.Columns,
@@ -369,7 +400,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			projectvo.FieldApproveAmount: {Type: field.TypeFloat64, Column: projectvo.FieldApproveAmount},
 		},
 	}
-	graph.Nodes[12] = &sqlgraph.Node{
+	graph.Nodes[13] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   province.Table,
 			Columns: province.Columns,
@@ -389,7 +420,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			province.FieldAreaID:    {Type: field.TypeString, Column: province.FieldAreaID},
 		},
 	}
-	graph.Nodes[13] = &sqlgraph.Node{
+	graph.Nodes[14] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   tender.Table,
 			Columns: tender.Columns,
@@ -472,7 +503,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			tender.FieldPendingProfileID:                     {Type: field.TypeString, Column: tender.FieldPendingProfileID},
 		},
 	}
-	graph.Nodes[14] = &sqlgraph.Node{
+	graph.Nodes[15] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   tendercompetitor.Table,
 			Columns: tendercompetitor.Columns,
@@ -490,7 +521,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			tendercompetitor.FieldAmount:       {Type: field.TypeFloat64, Column: tendercompetitor.FieldAmount},
 		},
 	}
-	graph.Nodes[15] = &sqlgraph.Node{
+	graph.Nodes[16] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   tenderprofile.Table,
 			Columns: tenderprofile.Columns,
@@ -570,7 +601,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			tenderprofile.FieldApproverID:                           {Type: field.TypeString, Column: tenderprofile.FieldApproverID},
 		},
 	}
-	graph.Nodes[16] = &sqlgraph.Node{
+	graph.Nodes[17] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   user.Table,
 			Columns: user.Columns,
@@ -597,7 +628,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			user.FieldLeaderID:      {Type: field.TypeString, Column: user.FieldLeaderID},
 		},
 	}
-	graph.Nodes[17] = &sqlgraph.Node{
+	graph.Nodes[18] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   visitrecord.Table,
 			Columns: visitrecord.Columns,
@@ -810,6 +841,90 @@ var schemaGraph = func() *sqlgraph.Schema {
 		},
 		"Customer",
 		"VisitRecord",
+	)
+	graph.MustAddE(
+		"profiles",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   customer.ProfilesTable,
+			Columns: []string{customer.ProfilesColumn},
+			Bidi:    false,
+		},
+		"Customer",
+		"CustomerProfile",
+	)
+	graph.MustAddE(
+		"active_profile",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   customer.ActiveProfileTable,
+			Columns: []string{customer.ActiveProfileColumn},
+			Bidi:    false,
+		},
+		"Customer",
+		"CustomerProfile",
+	)
+	graph.MustAddE(
+		"pending_profile",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   customer.PendingProfileTable,
+			Columns: []string{customer.PendingProfileColumn},
+			Bidi:    false,
+		},
+		"Customer",
+		"CustomerProfile",
+	)
+	graph.MustAddE(
+		"customer",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   customerprofile.CustomerTable,
+			Columns: []string{customerprofile.CustomerColumn},
+			Bidi:    false,
+		},
+		"CustomerProfile",
+		"Customer",
+	)
+	graph.MustAddE(
+		"created_by",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   customerprofile.CreatedByTable,
+			Columns: []string{customerprofile.CreatedByColumn},
+			Bidi:    false,
+		},
+		"CustomerProfile",
+		"User",
+	)
+	graph.MustAddE(
+		"approver",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   customerprofile.ApproverTable,
+			Columns: []string{customerprofile.ApproverColumn},
+			Bidi:    false,
+		},
+		"CustomerProfile",
+		"User",
+	)
+	graph.MustAddE(
+		"sales",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   customerprofile.SalesTable,
+			Columns: []string{customerprofile.SalesColumn},
+			Bidi:    false,
+		},
+		"CustomerProfile",
+		"User",
 	)
 	graph.MustAddE(
 		"province",
@@ -1939,6 +2054,16 @@ func (f *CustomerFilter) WhereApproverID(p entql.StringP) {
 	f.Where(p.Field(customer.FieldApproverID))
 }
 
+// WhereActiveProfileID applies the entql string predicate on the active_profile_id field.
+func (f *CustomerFilter) WhereActiveProfileID(p entql.StringP) {
+	f.Where(p.Field(customer.FieldActiveProfileID))
+}
+
+// WherePendingProfileID applies the entql string predicate on the pending_profile_id field.
+func (f *CustomerFilter) WherePendingProfileID(p entql.StringP) {
+	f.Where(p.Field(customer.FieldPendingProfileID))
+}
+
 // WhereHasArea applies a predicate to check if query has an edge area.
 func (f *CustomerFilter) WhereHasArea() {
 	f.Where(entql.HasEdge("area"))
@@ -2037,6 +2162,219 @@ func (f *CustomerFilter) WhereHasVisitRecordsWith(preds ...predicate.VisitRecord
 	})))
 }
 
+// WhereHasProfiles applies a predicate to check if query has an edge profiles.
+func (f *CustomerFilter) WhereHasProfiles() {
+	f.Where(entql.HasEdge("profiles"))
+}
+
+// WhereHasProfilesWith applies a predicate to check if query has an edge profiles with a given conditions (other predicates).
+func (f *CustomerFilter) WhereHasProfilesWith(preds ...predicate.CustomerProfile) {
+	f.Where(entql.HasEdgeWith("profiles", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
+// WhereHasActiveProfile applies a predicate to check if query has an edge active_profile.
+func (f *CustomerFilter) WhereHasActiveProfile() {
+	f.Where(entql.HasEdge("active_profile"))
+}
+
+// WhereHasActiveProfileWith applies a predicate to check if query has an edge active_profile with a given conditions (other predicates).
+func (f *CustomerFilter) WhereHasActiveProfileWith(preds ...predicate.CustomerProfile) {
+	f.Where(entql.HasEdgeWith("active_profile", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
+// WhereHasPendingProfile applies a predicate to check if query has an edge pending_profile.
+func (f *CustomerFilter) WhereHasPendingProfile() {
+	f.Where(entql.HasEdge("pending_profile"))
+}
+
+// WhereHasPendingProfileWith applies a predicate to check if query has an edge pending_profile with a given conditions (other predicates).
+func (f *CustomerFilter) WhereHasPendingProfileWith(preds ...predicate.CustomerProfile) {
+	f.Where(entql.HasEdgeWith("pending_profile", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
+// addPredicate implements the predicateAdder interface.
+func (cpq *CustomerProfileQuery) addPredicate(pred func(s *sql.Selector)) {
+	cpq.predicates = append(cpq.predicates, pred)
+}
+
+// Filter returns a Filter implementation to apply filters on the CustomerProfileQuery builder.
+func (cpq *CustomerProfileQuery) Filter() *CustomerProfileFilter {
+	return &CustomerProfileFilter{config: cpq.config, predicateAdder: cpq}
+}
+
+// addPredicate implements the predicateAdder interface.
+func (m *CustomerProfileMutation) addPredicate(pred func(s *sql.Selector)) {
+	m.predicates = append(m.predicates, pred)
+}
+
+// Filter returns an entql.Where implementation to apply filters on the CustomerProfileMutation builder.
+func (m *CustomerProfileMutation) Filter() *CustomerProfileFilter {
+	return &CustomerProfileFilter{config: m.config, predicateAdder: m}
+}
+
+// CustomerProfileFilter provides a generic filtering capability at runtime for CustomerProfileQuery.
+type CustomerProfileFilter struct {
+	predicateAdder
+	config
+}
+
+// Where applies the entql predicate on the query filter.
+func (f *CustomerProfileFilter) Where(p entql.P) {
+	f.addPredicate(func(s *sql.Selector) {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[5].Type, p, s); err != nil {
+			s.AddError(err)
+		}
+	})
+}
+
+// WhereID applies the entql string predicate on the id field.
+func (f *CustomerProfileFilter) WhereID(p entql.StringP) {
+	f.Where(p.Field(customerprofile.FieldID))
+}
+
+// WhereCreatedAt applies the entql time.Time predicate on the created_at field.
+func (f *CustomerProfileFilter) WhereCreatedAt(p entql.TimeP) {
+	f.Where(p.Field(customerprofile.FieldCreatedAt))
+}
+
+// WhereUpdatedAt applies the entql time.Time predicate on the updated_at field.
+func (f *CustomerProfileFilter) WhereUpdatedAt(p entql.TimeP) {
+	f.Where(p.Field(customerprofile.FieldUpdatedAt))
+}
+
+// WhereName applies the entql string predicate on the name field.
+func (f *CustomerProfileFilter) WhereName(p entql.StringP) {
+	f.Where(p.Field(customerprofile.FieldName))
+}
+
+// WhereApprovalStatus applies the entql int predicate on the approval_status field.
+func (f *CustomerProfileFilter) WhereApprovalStatus(p entql.IntP) {
+	f.Where(p.Field(customerprofile.FieldApprovalStatus))
+}
+
+// WhereOwnerType applies the entql int predicate on the owner_type field.
+func (f *CustomerProfileFilter) WhereOwnerType(p entql.IntP) {
+	f.Where(p.Field(customerprofile.FieldOwnerType))
+}
+
+// WhereIndustry applies the entql int predicate on the industry field.
+func (f *CustomerProfileFilter) WhereIndustry(p entql.IntP) {
+	f.Where(p.Field(customerprofile.FieldIndustry))
+}
+
+// WhereSize applies the entql int predicate on the size field.
+func (f *CustomerProfileFilter) WhereSize(p entql.IntP) {
+	f.Where(p.Field(customerprofile.FieldSize))
+}
+
+// WhereContactPerson applies the entql string predicate on the contact_person field.
+func (f *CustomerProfileFilter) WhereContactPerson(p entql.StringP) {
+	f.Where(p.Field(customerprofile.FieldContactPerson))
+}
+
+// WhereContactPersonPosition applies the entql string predicate on the contact_person_position field.
+func (f *CustomerProfileFilter) WhereContactPersonPosition(p entql.StringP) {
+	f.Where(p.Field(customerprofile.FieldContactPersonPosition))
+}
+
+// WhereContactPersonPhone applies the entql string predicate on the contact_person_phone field.
+func (f *CustomerProfileFilter) WhereContactPersonPhone(p entql.StringP) {
+	f.Where(p.Field(customerprofile.FieldContactPersonPhone))
+}
+
+// WhereContactPersonEmail applies the entql string predicate on the contact_person_email field.
+func (f *CustomerProfileFilter) WhereContactPersonEmail(p entql.StringP) {
+	f.Where(p.Field(customerprofile.FieldContactPersonEmail))
+}
+
+// WhereSalesID applies the entql string predicate on the sales_id field.
+func (f *CustomerProfileFilter) WhereSalesID(p entql.StringP) {
+	f.Where(p.Field(customerprofile.FieldSalesID))
+}
+
+// WhereCustomerID applies the entql string predicate on the customer_id field.
+func (f *CustomerProfileFilter) WhereCustomerID(p entql.StringP) {
+	f.Where(p.Field(customerprofile.FieldCustomerID))
+}
+
+// WhereCreatedByID applies the entql string predicate on the created_by_id field.
+func (f *CustomerProfileFilter) WhereCreatedByID(p entql.StringP) {
+	f.Where(p.Field(customerprofile.FieldCreatedByID))
+}
+
+// WhereApproverID applies the entql string predicate on the approver_id field.
+func (f *CustomerProfileFilter) WhereApproverID(p entql.StringP) {
+	f.Where(p.Field(customerprofile.FieldApproverID))
+}
+
+// WhereHasCustomer applies a predicate to check if query has an edge customer.
+func (f *CustomerProfileFilter) WhereHasCustomer() {
+	f.Where(entql.HasEdge("customer"))
+}
+
+// WhereHasCustomerWith applies a predicate to check if query has an edge customer with a given conditions (other predicates).
+func (f *CustomerProfileFilter) WhereHasCustomerWith(preds ...predicate.Customer) {
+	f.Where(entql.HasEdgeWith("customer", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
+// WhereHasCreatedBy applies a predicate to check if query has an edge created_by.
+func (f *CustomerProfileFilter) WhereHasCreatedBy() {
+	f.Where(entql.HasEdge("created_by"))
+}
+
+// WhereHasCreatedByWith applies a predicate to check if query has an edge created_by with a given conditions (other predicates).
+func (f *CustomerProfileFilter) WhereHasCreatedByWith(preds ...predicate.User) {
+	f.Where(entql.HasEdgeWith("created_by", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
+// WhereHasApprover applies a predicate to check if query has an edge approver.
+func (f *CustomerProfileFilter) WhereHasApprover() {
+	f.Where(entql.HasEdge("approver"))
+}
+
+// WhereHasApproverWith applies a predicate to check if query has an edge approver with a given conditions (other predicates).
+func (f *CustomerProfileFilter) WhereHasApproverWith(preds ...predicate.User) {
+	f.Where(entql.HasEdgeWith("approver", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
+// WhereHasSales applies a predicate to check if query has an edge sales.
+func (f *CustomerProfileFilter) WhereHasSales() {
+	f.Where(entql.HasEdge("sales"))
+}
+
+// WhereHasSalesWith applies a predicate to check if query has an edge sales with a given conditions (other predicates).
+func (f *CustomerProfileFilter) WhereHasSalesWith(preds ...predicate.User) {
+	f.Where(entql.HasEdgeWith("sales", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
 // addPredicate implements the predicateAdder interface.
 func (dq *DistrictQuery) addPredicate(pred func(s *sql.Selector)) {
 	dq.predicates = append(dq.predicates, pred)
@@ -2066,7 +2404,7 @@ type DistrictFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *DistrictFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[5].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[6].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
@@ -2207,7 +2545,7 @@ type OperationFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *OperationFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[6].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[7].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
@@ -2297,7 +2635,7 @@ type PlotFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *PlotFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[7].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[8].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
@@ -2381,7 +2719,7 @@ type PotentialTenderFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *PotentialTenderFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[8].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[9].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
@@ -2506,7 +2844,7 @@ type ProjectFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *ProjectFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[9].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[10].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
@@ -2998,7 +3336,7 @@ type ProjectStaffFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *ProjectStaffFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[10].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[11].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
@@ -3087,7 +3425,7 @@ type ProjectVOFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *ProjectVOFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[11].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[12].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
@@ -3186,7 +3524,7 @@ type ProvinceFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *ProvinceFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[12].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[13].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
@@ -3331,7 +3669,7 @@ type TenderFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *TenderFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[13].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[14].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
@@ -3917,7 +4255,7 @@ type TenderCompetitorFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *TenderCompetitorFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[14].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[15].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
@@ -4010,7 +4348,7 @@ type TenderProfileFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *TenderProfileFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[15].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[16].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
@@ -4497,7 +4835,7 @@ type UserFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *UserFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[16].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[17].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
@@ -4705,7 +5043,7 @@ type VisitRecordFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *VisitRecordFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[17].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[18].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})

@@ -17,6 +17,7 @@ import (
 	"cscd-bds/store/ent/competitor"
 	"cscd-bds/store/ent/country"
 	"cscd-bds/store/ent/customer"
+	"cscd-bds/store/ent/customerprofile"
 	"cscd-bds/store/ent/district"
 	"cscd-bds/store/ent/operation"
 	"cscd-bds/store/ent/plot"
@@ -52,6 +53,8 @@ type Client struct {
 	Country *CountryClient
 	// Customer is the client for interacting with the Customer builders.
 	Customer *CustomerClient
+	// CustomerProfile is the client for interacting with the CustomerProfile builders.
+	CustomerProfile *CustomerProfileClient
 	// District is the client for interacting with the District builders.
 	District *DistrictClient
 	// Operation is the client for interacting with the Operation builders.
@@ -94,6 +97,7 @@ func (c *Client) init() {
 	c.Competitor = NewCompetitorClient(c.config)
 	c.Country = NewCountryClient(c.config)
 	c.Customer = NewCustomerClient(c.config)
+	c.CustomerProfile = NewCustomerProfileClient(c.config)
 	c.District = NewDistrictClient(c.config)
 	c.Operation = NewOperationClient(c.config)
 	c.Plot = NewPlotClient(c.config)
@@ -204,6 +208,7 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		Competitor:       NewCompetitorClient(cfg),
 		Country:          NewCountryClient(cfg),
 		Customer:         NewCustomerClient(cfg),
+		CustomerProfile:  NewCustomerProfileClient(cfg),
 		District:         NewDistrictClient(cfg),
 		Operation:        NewOperationClient(cfg),
 		Plot:             NewPlotClient(cfg),
@@ -241,6 +246,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		Competitor:       NewCompetitorClient(cfg),
 		Country:          NewCountryClient(cfg),
 		Customer:         NewCustomerClient(cfg),
+		CustomerProfile:  NewCustomerProfileClient(cfg),
 		District:         NewDistrictClient(cfg),
 		Operation:        NewOperationClient(cfg),
 		Plot:             NewPlotClient(cfg),
@@ -283,9 +289,10 @@ func (c *Client) Close() error {
 // In order to add hooks to a specific client, call: `client.Node.Use(...)`.
 func (c *Client) Use(hooks ...Hook) {
 	for _, n := range []interface{ Use(...Hook) }{
-		c.Area, c.City, c.Competitor, c.Country, c.Customer, c.District, c.Operation,
-		c.Plot, c.PotentialTender, c.Project, c.ProjectStaff, c.ProjectVO, c.Province,
-		c.Tender, c.TenderCompetitor, c.TenderProfile, c.User, c.VisitRecord,
+		c.Area, c.City, c.Competitor, c.Country, c.Customer, c.CustomerProfile,
+		c.District, c.Operation, c.Plot, c.PotentialTender, c.Project, c.ProjectStaff,
+		c.ProjectVO, c.Province, c.Tender, c.TenderCompetitor, c.TenderProfile, c.User,
+		c.VisitRecord,
 	} {
 		n.Use(hooks...)
 	}
@@ -295,9 +302,10 @@ func (c *Client) Use(hooks ...Hook) {
 // In order to add interceptors to a specific client, call: `client.Node.Intercept(...)`.
 func (c *Client) Intercept(interceptors ...Interceptor) {
 	for _, n := range []interface{ Intercept(...Interceptor) }{
-		c.Area, c.City, c.Competitor, c.Country, c.Customer, c.District, c.Operation,
-		c.Plot, c.PotentialTender, c.Project, c.ProjectStaff, c.ProjectVO, c.Province,
-		c.Tender, c.TenderCompetitor, c.TenderProfile, c.User, c.VisitRecord,
+		c.Area, c.City, c.Competitor, c.Country, c.Customer, c.CustomerProfile,
+		c.District, c.Operation, c.Plot, c.PotentialTender, c.Project, c.ProjectStaff,
+		c.ProjectVO, c.Province, c.Tender, c.TenderCompetitor, c.TenderProfile, c.User,
+		c.VisitRecord,
 	} {
 		n.Intercept(interceptors...)
 	}
@@ -316,6 +324,8 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 		return c.Country.mutate(ctx, m)
 	case *CustomerMutation:
 		return c.Customer.mutate(ctx, m)
+	case *CustomerProfileMutation:
+		return c.CustomerProfile.mutate(ctx, m)
 	case *DistrictMutation:
 		return c.District.mutate(ctx, m)
 	case *OperationMutation:
@@ -1243,6 +1253,54 @@ func (c *CustomerClient) QueryVisitRecords(cu *Customer) *VisitRecordQuery {
 	return query
 }
 
+// QueryProfiles queries the profiles edge of a Customer.
+func (c *CustomerClient) QueryProfiles(cu *Customer) *CustomerProfileQuery {
+	query := (&CustomerProfileClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := cu.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(customer.Table, customer.FieldID, id),
+			sqlgraph.To(customerprofile.Table, customerprofile.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, customer.ProfilesTable, customer.ProfilesColumn),
+		)
+		fromV = sqlgraph.Neighbors(cu.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryActiveProfile queries the active_profile edge of a Customer.
+func (c *CustomerClient) QueryActiveProfile(cu *Customer) *CustomerProfileQuery {
+	query := (&CustomerProfileClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := cu.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(customer.Table, customer.FieldID, id),
+			sqlgraph.To(customerprofile.Table, customerprofile.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, customer.ActiveProfileTable, customer.ActiveProfileColumn),
+		)
+		fromV = sqlgraph.Neighbors(cu.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryPendingProfile queries the pending_profile edge of a Customer.
+func (c *CustomerClient) QueryPendingProfile(cu *Customer) *CustomerProfileQuery {
+	query := (&CustomerProfileClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := cu.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(customer.Table, customer.FieldID, id),
+			sqlgraph.To(customerprofile.Table, customerprofile.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, customer.PendingProfileTable, customer.PendingProfileColumn),
+		)
+		fromV = sqlgraph.Neighbors(cu.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // Hooks returns the client hooks.
 func (c *CustomerClient) Hooks() []Hook {
 	return c.hooks.Customer
@@ -1265,6 +1323,203 @@ func (c *CustomerClient) mutate(ctx context.Context, m *CustomerMutation) (Value
 		return (&CustomerDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
 	default:
 		return nil, fmt.Errorf("ent: unknown Customer mutation op: %q", m.Op())
+	}
+}
+
+// CustomerProfileClient is a client for the CustomerProfile schema.
+type CustomerProfileClient struct {
+	config
+}
+
+// NewCustomerProfileClient returns a client for the CustomerProfile from the given config.
+func NewCustomerProfileClient(c config) *CustomerProfileClient {
+	return &CustomerProfileClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `customerprofile.Hooks(f(g(h())))`.
+func (c *CustomerProfileClient) Use(hooks ...Hook) {
+	c.hooks.CustomerProfile = append(c.hooks.CustomerProfile, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `customerprofile.Intercept(f(g(h())))`.
+func (c *CustomerProfileClient) Intercept(interceptors ...Interceptor) {
+	c.inters.CustomerProfile = append(c.inters.CustomerProfile, interceptors...)
+}
+
+// Create returns a builder for creating a CustomerProfile entity.
+func (c *CustomerProfileClient) Create() *CustomerProfileCreate {
+	mutation := newCustomerProfileMutation(c.config, OpCreate)
+	return &CustomerProfileCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of CustomerProfile entities.
+func (c *CustomerProfileClient) CreateBulk(builders ...*CustomerProfileCreate) *CustomerProfileCreateBulk {
+	return &CustomerProfileCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *CustomerProfileClient) MapCreateBulk(slice any, setFunc func(*CustomerProfileCreate, int)) *CustomerProfileCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &CustomerProfileCreateBulk{err: fmt.Errorf("calling to CustomerProfileClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*CustomerProfileCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &CustomerProfileCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for CustomerProfile.
+func (c *CustomerProfileClient) Update() *CustomerProfileUpdate {
+	mutation := newCustomerProfileMutation(c.config, OpUpdate)
+	return &CustomerProfileUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *CustomerProfileClient) UpdateOne(cp *CustomerProfile) *CustomerProfileUpdateOne {
+	mutation := newCustomerProfileMutation(c.config, OpUpdateOne, withCustomerProfile(cp))
+	return &CustomerProfileUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *CustomerProfileClient) UpdateOneID(id xid.ID) *CustomerProfileUpdateOne {
+	mutation := newCustomerProfileMutation(c.config, OpUpdateOne, withCustomerProfileID(id))
+	return &CustomerProfileUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for CustomerProfile.
+func (c *CustomerProfileClient) Delete() *CustomerProfileDelete {
+	mutation := newCustomerProfileMutation(c.config, OpDelete)
+	return &CustomerProfileDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *CustomerProfileClient) DeleteOne(cp *CustomerProfile) *CustomerProfileDeleteOne {
+	return c.DeleteOneID(cp.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *CustomerProfileClient) DeleteOneID(id xid.ID) *CustomerProfileDeleteOne {
+	builder := c.Delete().Where(customerprofile.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &CustomerProfileDeleteOne{builder}
+}
+
+// Query returns a query builder for CustomerProfile.
+func (c *CustomerProfileClient) Query() *CustomerProfileQuery {
+	return &CustomerProfileQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeCustomerProfile},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a CustomerProfile entity by its id.
+func (c *CustomerProfileClient) Get(ctx context.Context, id xid.ID) (*CustomerProfile, error) {
+	return c.Query().Where(customerprofile.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *CustomerProfileClient) GetX(ctx context.Context, id xid.ID) *CustomerProfile {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryCustomer queries the customer edge of a CustomerProfile.
+func (c *CustomerProfileClient) QueryCustomer(cp *CustomerProfile) *CustomerQuery {
+	query := (&CustomerClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := cp.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(customerprofile.Table, customerprofile.FieldID, id),
+			sqlgraph.To(customer.Table, customer.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, customerprofile.CustomerTable, customerprofile.CustomerColumn),
+		)
+		fromV = sqlgraph.Neighbors(cp.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryCreatedBy queries the created_by edge of a CustomerProfile.
+func (c *CustomerProfileClient) QueryCreatedBy(cp *CustomerProfile) *UserQuery {
+	query := (&UserClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := cp.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(customerprofile.Table, customerprofile.FieldID, id),
+			sqlgraph.To(user.Table, user.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, customerprofile.CreatedByTable, customerprofile.CreatedByColumn),
+		)
+		fromV = sqlgraph.Neighbors(cp.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryApprover queries the approver edge of a CustomerProfile.
+func (c *CustomerProfileClient) QueryApprover(cp *CustomerProfile) *UserQuery {
+	query := (&UserClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := cp.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(customerprofile.Table, customerprofile.FieldID, id),
+			sqlgraph.To(user.Table, user.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, customerprofile.ApproverTable, customerprofile.ApproverColumn),
+		)
+		fromV = sqlgraph.Neighbors(cp.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QuerySales queries the sales edge of a CustomerProfile.
+func (c *CustomerProfileClient) QuerySales(cp *CustomerProfile) *UserQuery {
+	query := (&UserClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := cp.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(customerprofile.Table, customerprofile.FieldID, id),
+			sqlgraph.To(user.Table, user.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, customerprofile.SalesTable, customerprofile.SalesColumn),
+		)
+		fromV = sqlgraph.Neighbors(cp.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *CustomerProfileClient) Hooks() []Hook {
+	return c.hooks.CustomerProfile
+}
+
+// Interceptors returns the client interceptors.
+func (c *CustomerProfileClient) Interceptors() []Interceptor {
+	return c.inters.CustomerProfile
+}
+
+func (c *CustomerProfileClient) mutate(ctx context.Context, m *CustomerProfileMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&CustomerProfileCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&CustomerProfileUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&CustomerProfileUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&CustomerProfileDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("ent: unknown CustomerProfile mutation op: %q", m.Op())
 	}
 }
 
@@ -3784,13 +4039,13 @@ func (c *VisitRecordClient) mutate(ctx context.Context, m *VisitRecordMutation) 
 // hooks and interceptors per client, for fast access.
 type (
 	hooks struct {
-		Area, City, Competitor, Country, Customer, District, Operation, Plot,
-		PotentialTender, Project, ProjectStaff, ProjectVO, Province, Tender,
+		Area, City, Competitor, Country, Customer, CustomerProfile, District, Operation,
+		Plot, PotentialTender, Project, ProjectStaff, ProjectVO, Province, Tender,
 		TenderCompetitor, TenderProfile, User, VisitRecord []ent.Hook
 	}
 	inters struct {
-		Area, City, Competitor, Country, Customer, District, Operation, Plot,
-		PotentialTender, Project, ProjectStaff, ProjectVO, Province, Tender,
+		Area, City, Competitor, Country, Customer, CustomerProfile, District, Operation,
+		Plot, PotentialTender, Project, ProjectStaff, ProjectVO, Province, Tender,
 		TenderCompetitor, TenderProfile, User, VisitRecord []ent.Interceptor
 	}
 )

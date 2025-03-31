@@ -12,7 +12,6 @@ export const Route = createLazyFileRoute("/__auth/__dashboard")({
 
 function RouteComponent() {
   const { session } = Route.useRouteContext();
-  const { level } = Route.useSearch();
 
   return (
     <LazyMotion features={domAnimation}>

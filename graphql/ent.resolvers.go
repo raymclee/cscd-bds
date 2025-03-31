@@ -9,6 +9,7 @@ import (
 	"cscd-bds/graphql/generated"
 	"cscd-bds/store/ent"
 	"cscd-bds/store/ent/schema/xid"
+	"fmt"
 
 	"entgo.io/contrib/entgql"
 )
@@ -46,6 +47,11 @@ func (r *queryResolver) Countries(ctx context.Context, after *entgql.Cursor[xid.
 // Customers is the resolver for the customers field.
 func (r *queryResolver) Customers(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.CustomerOrder, where *ent.CustomerWhereInput) (*ent.CustomerConnection, error) {
 	return r.store.Customer.Query().Paginate(ctx, after, first, before, last, ent.WithCustomerFilter(where.Filter), ent.WithCustomerOrder(orderBy))
+}
+
+// CustomerProfiles is the resolver for the customerProfiles field.
+func (r *queryResolver) CustomerProfiles(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.CustomerProfileOrder, where *ent.CustomerProfileWhereInput) (*ent.CustomerProfileConnection, error) {
+	panic(fmt.Errorf("not implemented: CustomerProfiles - customerProfiles"))
 }
 
 // Districts is the resolver for the districts field.

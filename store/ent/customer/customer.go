@@ -51,6 +51,10 @@ const (
 	FieldUpdatedByID = "updated_by_id"
 	// FieldApproverID holds the string denoting the approver_id field in the database.
 	FieldApproverID = "approver_id"
+	// FieldActiveProfileID holds the string denoting the active_profile_id field in the database.
+	FieldActiveProfileID = "active_profile_id"
+	// FieldPendingProfileID holds the string denoting the pending_profile_id field in the database.
+	FieldPendingProfileID = "pending_profile_id"
 	// EdgeArea holds the string denoting the area edge name in mutations.
 	EdgeArea = "area"
 	// EdgeTenders holds the string denoting the tenders edge name in mutations.
@@ -65,6 +69,12 @@ const (
 	EdgeApprover = "approver"
 	// EdgeVisitRecords holds the string denoting the visit_records edge name in mutations.
 	EdgeVisitRecords = "visit_records"
+	// EdgeProfiles holds the string denoting the profiles edge name in mutations.
+	EdgeProfiles = "profiles"
+	// EdgeActiveProfile holds the string denoting the active_profile edge name in mutations.
+	EdgeActiveProfile = "active_profile"
+	// EdgePendingProfile holds the string denoting the pending_profile edge name in mutations.
+	EdgePendingProfile = "pending_profile"
 	// Table holds the table name of the customer in the database.
 	Table = "customers"
 	// AreaTable is the table that holds the area relation/edge.
@@ -116,6 +126,27 @@ const (
 	VisitRecordsInverseTable = "visit_records"
 	// VisitRecordsColumn is the table column denoting the visit_records relation/edge.
 	VisitRecordsColumn = "customer_id"
+	// ProfilesTable is the table that holds the profiles relation/edge.
+	ProfilesTable = "customer_profiles"
+	// ProfilesInverseTable is the table name for the CustomerProfile entity.
+	// It exists in this package in order to avoid circular dependency with the "customerprofile" package.
+	ProfilesInverseTable = "customer_profiles"
+	// ProfilesColumn is the table column denoting the profiles relation/edge.
+	ProfilesColumn = "customer_id"
+	// ActiveProfileTable is the table that holds the active_profile relation/edge.
+	ActiveProfileTable = "customers"
+	// ActiveProfileInverseTable is the table name for the CustomerProfile entity.
+	// It exists in this package in order to avoid circular dependency with the "customerprofile" package.
+	ActiveProfileInverseTable = "customer_profiles"
+	// ActiveProfileColumn is the table column denoting the active_profile relation/edge.
+	ActiveProfileColumn = "active_profile_id"
+	// PendingProfileTable is the table that holds the pending_profile relation/edge.
+	PendingProfileTable = "customers"
+	// PendingProfileInverseTable is the table name for the CustomerProfile entity.
+	// It exists in this package in order to avoid circular dependency with the "customerprofile" package.
+	PendingProfileInverseTable = "customer_profiles"
+	// PendingProfileColumn is the table column denoting the pending_profile relation/edge.
+	PendingProfileColumn = "pending_profile_id"
 )
 
 // Columns holds all SQL columns for customer fields.
@@ -139,6 +170,8 @@ var Columns = []string{
 	FieldCreatedByID,
 	FieldUpdatedByID,
 	FieldApproverID,
+	FieldActiveProfileID,
+	FieldPendingProfileID,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -254,6 +287,16 @@ func ByApproverID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldApproverID, opts...).ToFunc()
 }
 
+// ByActiveProfileID orders the results by the active_profile_id field.
+func ByActiveProfileID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldActiveProfileID, opts...).ToFunc()
+}
+
+// ByPendingProfileID orders the results by the pending_profile_id field.
+func ByPendingProfileID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldPendingProfileID, opts...).ToFunc()
+}
+
 // ByAreaField orders the results by area field.
 func ByAreaField(field string, opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
@@ -316,6 +359,34 @@ func ByVisitRecords(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 		sqlgraph.OrderByNeighborTerms(s, newVisitRecordsStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
+
+// ByProfilesCount orders the results by profiles count.
+func ByProfilesCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newProfilesStep(), opts...)
+	}
+}
+
+// ByProfiles orders the results by profiles terms.
+func ByProfiles(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newProfilesStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
+
+// ByActiveProfileField orders the results by active_profile field.
+func ByActiveProfileField(field string, opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newActiveProfileStep(), sql.OrderByField(field, opts...))
+	}
+}
+
+// ByPendingProfileField orders the results by pending_profile field.
+func ByPendingProfileField(field string, opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newPendingProfileStep(), sql.OrderByField(field, opts...))
+	}
+}
 func newAreaStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
@@ -363,5 +434,26 @@ func newVisitRecordsStep() *sqlgraph.Step {
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(VisitRecordsInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.O2M, false, VisitRecordsTable, VisitRecordsColumn),
+	)
+}
+func newProfilesStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(ProfilesInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, ProfilesTable, ProfilesColumn),
+	)
+}
+func newActiveProfileStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(ActiveProfileInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, false, ActiveProfileTable, ActiveProfileColumn),
+	)
+}
+func newPendingProfileStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(PendingProfileInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, false, PendingProfileTable, PendingProfileColumn),
 	)
 }

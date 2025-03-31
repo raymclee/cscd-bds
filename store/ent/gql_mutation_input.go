@@ -423,6 +423,9 @@ type CreateCustomerInput struct {
 	UpdatedByID           *xid.ID
 	ApproverID            *xid.ID
 	VisitRecordIDs        []xid.ID
+	ProfileIDs            []xid.ID
+	ActiveProfileID       *xid.ID
+	PendingProfileID      *xid.ID
 }
 
 // Mutate applies the CreateCustomerInput on the CustomerMutation builder.
@@ -477,6 +480,15 @@ func (i *CreateCustomerInput) Mutate(m *CustomerMutation) {
 	if v := i.VisitRecordIDs; len(v) > 0 {
 		m.AddVisitRecordIDs(v...)
 	}
+	if v := i.ProfileIDs; len(v) > 0 {
+		m.AddProfileIDs(v...)
+	}
+	if v := i.ActiveProfileID; v != nil {
+		m.SetActiveProfileID(*v)
+	}
+	if v := i.PendingProfileID; v != nil {
+		m.SetPendingProfileID(*v)
+	}
 }
 
 // SetInput applies the change-set in the CreateCustomerInput on the CustomerCreate builder.
@@ -519,6 +531,13 @@ type UpdateCustomerInput struct {
 	ClearVisitRecords          bool
 	AddVisitRecordIDs          []xid.ID
 	RemoveVisitRecordIDs       []xid.ID
+	ClearProfiles              bool
+	AddProfileIDs              []xid.ID
+	RemoveProfileIDs           []xid.ID
+	ClearActiveProfile         bool
+	ActiveProfileID            *xid.ID
+	ClearPendingProfile        bool
+	PendingProfileID           *xid.ID
 }
 
 // Mutate applies the UpdateCustomerInput on the CustomerMutation builder.
@@ -619,6 +638,27 @@ func (i *UpdateCustomerInput) Mutate(m *CustomerMutation) {
 	if v := i.RemoveVisitRecordIDs; len(v) > 0 {
 		m.RemoveVisitRecordIDs(v...)
 	}
+	if i.ClearProfiles {
+		m.ClearProfiles()
+	}
+	if v := i.AddProfileIDs; len(v) > 0 {
+		m.AddProfileIDs(v...)
+	}
+	if v := i.RemoveProfileIDs; len(v) > 0 {
+		m.RemoveProfileIDs(v...)
+	}
+	if i.ClearActiveProfile {
+		m.ClearActiveProfile()
+	}
+	if v := i.ActiveProfileID; v != nil {
+		m.SetActiveProfileID(*v)
+	}
+	if i.ClearPendingProfile {
+		m.ClearPendingProfile()
+	}
+	if v := i.PendingProfileID; v != nil {
+		m.SetPendingProfileID(*v)
+	}
 }
 
 // SetInput applies the change-set in the UpdateCustomerInput on the CustomerUpdate builder.
@@ -629,6 +669,76 @@ func (c *CustomerUpdate) SetInput(i UpdateCustomerInput) *CustomerUpdate {
 
 // SetInput applies the change-set in the UpdateCustomerInput on the CustomerUpdateOne builder.
 func (c *CustomerUpdateOne) SetInput(i UpdateCustomerInput) *CustomerUpdateOne {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// CreateCustomerProfileInput represents a mutation input for creating customerprofiles.
+type CreateCustomerProfileInput struct {
+	CreatedAt             *time.Time
+	UpdatedAt             *time.Time
+	Name                  string
+	ApprovalStatus        *int
+	OwnerType             *int
+	Industry              *int
+	Size                  *int
+	ContactPerson         *string
+	ContactPersonPosition *string
+	ContactPersonPhone    *string
+	ContactPersonEmail    *string
+	CustomerID            xid.ID
+	CreatedByID           *xid.ID
+	ApproverID            *xid.ID
+	SalesID               *xid.ID
+}
+
+// Mutate applies the CreateCustomerProfileInput on the CustomerProfileMutation builder.
+func (i *CreateCustomerProfileInput) Mutate(m *CustomerProfileMutation) {
+	if v := i.CreatedAt; v != nil {
+		m.SetCreatedAt(*v)
+	}
+	if v := i.UpdatedAt; v != nil {
+		m.SetUpdatedAt(*v)
+	}
+	m.SetName(i.Name)
+	if v := i.ApprovalStatus; v != nil {
+		m.SetApprovalStatus(*v)
+	}
+	if v := i.OwnerType; v != nil {
+		m.SetOwnerType(*v)
+	}
+	if v := i.Industry; v != nil {
+		m.SetIndustry(*v)
+	}
+	if v := i.Size; v != nil {
+		m.SetSize(*v)
+	}
+	if v := i.ContactPerson; v != nil {
+		m.SetContactPerson(*v)
+	}
+	if v := i.ContactPersonPosition; v != nil {
+		m.SetContactPersonPosition(*v)
+	}
+	if v := i.ContactPersonPhone; v != nil {
+		m.SetContactPersonPhone(*v)
+	}
+	if v := i.ContactPersonEmail; v != nil {
+		m.SetContactPersonEmail(*v)
+	}
+	m.SetCustomerID(i.CustomerID)
+	if v := i.CreatedByID; v != nil {
+		m.SetCreatedByID(*v)
+	}
+	if v := i.ApproverID; v != nil {
+		m.SetApproverID(*v)
+	}
+	if v := i.SalesID; v != nil {
+		m.SetSalesID(*v)
+	}
+}
+
+// SetInput applies the change-set in the CreateCustomerProfileInput on the CustomerProfileCreate builder.
+func (c *CustomerProfileCreate) SetInput(i CreateCustomerProfileInput) *CustomerProfileCreate {
 	i.Mutate(c.Mutation())
 	return c
 }
