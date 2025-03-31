@@ -73,13 +73,21 @@ function TenderList({
           edges {
             node {
               id
-              name
-              status
-              tenderClosingDate
-              classify
               area {
                 id
                 code
+              }
+              activeProfile {
+                name
+                status
+                tenderClosingDate
+                classify
+              }
+              pendingProfile {
+                name
+                status
+                tenderClosingDate
+                classify
               }
               ...tenderListItemFragment
             }
@@ -102,27 +110,46 @@ function TenderList({
   const dataSource = data?.tenders.edges
     ?.map((t) => t?.node)
     .filter((t) =>
-      t?.name.toLocaleLowerCase().includes(searchText?.toLocaleLowerCase()),
+      (t?.pendingProfile?.name || t?.activeProfile?.name)
+        ?.toLocaleLowerCase()
+        .includes(searchText?.toLocaleLowerCase()),
     )
-    .filter((t) => statusFilter === undefined || t?.status === statusFilter)
+    .filter(
+      (t) =>
+        statusFilter === undefined ||
+        (t?.pendingProfile || t?.activeProfile)?.status === statusFilter,
+    )
     .filter((t) => areaFilter === undefined || t?.area?.code === areaFilter)
     .filter(
-      (t) => classifyFilter === undefined || t?.classify === classifyFilter,
+      (t) =>
+        classifyFilter === undefined ||
+        (t?.pendingProfile || t?.activeProfile)?.classify === classifyFilter,
     )
     .sort((a, b) => {
-      if (a?.tenderClosingDate === null && b?.tenderClosingDate === null) {
+      if (
+        (a?.pendingProfile || a?.activeProfile)?.tenderClosingDate === null &&
+        (b?.pendingProfile || b?.activeProfile)?.tenderClosingDate === null
+      ) {
         return 0;
       }
-      if (a?.tenderClosingDate === null) {
+      if ((a?.pendingProfile || a?.activeProfile)?.tenderClosingDate === null) {
         return 1;
       }
-      if (b?.tenderClosingDate === null) {
+      if ((b?.pendingProfile || b?.activeProfile)?.tenderClosingDate === null) {
         return -1;
       }
       if (closingDateFilter === "asc") {
-        return dayjs(a?.tenderClosingDate).diff(dayjs(b?.tenderClosingDate));
+        return dayjs(
+          (a?.pendingProfile || a?.activeProfile)?.tenderClosingDate,
+        ).diff(
+          dayjs((b?.pendingProfile || b?.activeProfile)?.tenderClosingDate),
+        );
       } else if (closingDateFilter === "desc") {
-        return dayjs(b?.tenderClosingDate).diff(dayjs(a?.tenderClosingDate));
+        return dayjs(
+          (b?.pendingProfile || b?.activeProfile)?.tenderClosingDate,
+        ).diff(
+          dayjs((a?.pendingProfile || a?.activeProfile)?.tenderClosingDate),
+        );
       }
       return 0;
     });
@@ -179,7 +206,7 @@ function TenderList({
         }}
         dataSource={dataSource}
         itemLayout="vertical"
-        className="rounded-lg bg-white !px-4 !pt-px !pb-6"
+        className="rounded-lg bg-white !px-4 !pb-6 !pt-px"
         renderItem={(node) =>
           node && <TenderListItem key={node?.id} tender={node} />
         }

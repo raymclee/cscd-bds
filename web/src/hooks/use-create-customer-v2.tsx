@@ -6,11 +6,12 @@ export function useCreateCustomerV2() {
     mutation useCreateCustomerV2Mutation(
       $customerInput: CreateCustomerInput!
       $profileInput: CreateCustomerProfileInput!
+      $connections: [ID!]!
     ) {
       createCustomerV2(
         customerInput: $customerInput
         profileInput: $profileInput
-      ) {
+      ) @appendNode(connections: $connections, edgeTypeName: "CustomerEdge") {
         ...customerDetailFragment
         activeProfile {
           id

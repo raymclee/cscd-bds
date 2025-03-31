@@ -374,81 +374,98 @@ export function TenderDetail({
     }
   }, [pendingProfile]);
 
+  const isSH = data.area.code !== "GA" && data.area.code !== "HW";
+
   return (
     <div className="grid grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4">
-      {data.area.code === "GA" || data.area.code === "HW" ? (
-        <GAAndHWTender tender={data} />
-      ) : (
+      {isSH ? (
         <SHTender
           tender={data}
           competitorRef={competitorRef}
           lostCompetitorRef={lostCompetitorRef}
         />
+      ) : (
+        <GAAndHWTender tender={data} />
       )}
 
-      <div className={cn("top-28 mt-8 self-start lg:sticky")}>
-        <ScrollArea className={cn("h-[calc(100vh-128px)]")}>
-          <Timeline
-            className="py-2 pr-4 lg:-ml-28"
-            mode="left"
-            items={[
-              ...(profiles?.edges?.map((e, i) => {
-                const isFirst =
-                  profiles?.edges && i == profiles?.edges?.length - 1;
-                const action = isFirst ? "创建了" : "更新了";
-                const isApproved = e?.node?.approvalStatus == 2;
-                const isRejected = e?.node?.approvalStatus == 3;
-                const isActive = data.activeProfile?.id === e?.node?.id;
-                const isPending = data.pendingProfile?.id === e?.node?.id;
-                return {
-                  color: isActive ? undefined : "gray",
-                  label: isActive ? (
-                    <Tag color="blue">当前</Tag>
-                  ) : isPending ? (
-                    <Tag color="green">待审批</Tag>
-                  ) : (
-                    <Tag
-                      color={approvalStatusTagColor(e?.node?.approvalStatus)}
-                    >
-                      {approvalStatusText(e?.node?.approvalStatus)}
-                    </Tag>
-                  ),
-                  children: (
-                    <Link
-                      to="."
-                      search={(prev) => ({ ...prev, p: e?.node?.id })}
-                      preload={false}
-                      className="flex flex-col gap-1"
-                      activeOptions={{
-                        includeSearch: true,
-                      }}
-                      activeProps={{ className: "font-bold" }}
-                      replace
-                    >
-                      <div className="flex gap-1 py-0.5 text-sm text-gray-500">
-                        <span>{dayjs(e?.node?.createdAt).format("LLL")}</span>
+      {isSH && (
+        <div className={cn("self-start mt-8 top-28 lg:sticky")}>
+          <ScrollArea className={cn("h-[calc(100vh-128px)]")}>
+            <Timeline
+              className="py-2 pr-4 lg:-ml-28"
+              mode="left"
+              items={[
+                ...(profiles?.edges?.map((e, i) => {
+                  const isFirst =
+                    profiles?.edges && i == profiles?.edges?.length - 1;
+                  const action = isFirst ? "创建了" : "更新了";
+                  const isPending = e?.node?.approvalStatus == 1;
+                  const isApproved = e?.node?.approvalStatus == 2;
+                  const isRejected = e?.node?.approvalStatus == 3;
+                  const isCancelled = e?.node?.approvalStatus == 4;
+                  const isActive = data.activeProfile?.id === e?.node?.id;
+                  return {
+                    color: isActive ? undefined : "gray",
+                    // label: isPending ? (
+                    //   <div>
+                    //     <Tag color="blue">当前</Tag>
+                    //     <Tag color="green">待审批</Tag>
+                    //   </div>
+                    // ) : isActive ? (
+                    //   <Tag color="blue">当前</Tag>
+                    // ) : (
+                    //   <Tag
+                    //     color={approvalStatusTagColor(e?.node?.approvalStatus)}
+                    //   >
+                    //     {approvalStatusText(e?.node?.approvalStatus)}
+                    //   </Tag>
+                    // ),
+                    label: (
+                      <div>
+                        {isActive && <Tag color="blue">当前</Tag>}
+                        {isPending && <Tag color="green">待审批</Tag>}
+                        {isApproved && <Tag color="green">已审批</Tag>}
+                        {isRejected && <Tag color="red">已拒绝</Tag>}
+                        {isCancelled && <Tag color="red">已取消</Tag>}
                       </div>
-                      <div className="text-sm text-gray-500">
-                        {`${e?.node?.createdBy?.name} ${action}商机`}
-                      </div>
-                      {isApproved && (
-                        <div className="text-sm text-gray-500">
-                          {e?.node?.approver?.name || "系统"} 批核了
+                    ),
+                    children: (
+                      <Link
+                        to="."
+                        search={(prev) => ({ ...prev, p: e?.node?.id })}
+                        preload={false}
+                        className="flex flex-col gap-1"
+                        activeOptions={{
+                          includeSearch: true,
+                        }}
+                        activeProps={{ className: "font-bold" }}
+                        replace
+                      >
+                        <div className="flex gap-1 py-0.5 text-sm text-gray-500">
+                          <span>{dayjs(e?.node?.createdAt).format("LLL")}</span>
                         </div>
-                      )}
-                      {isRejected && (
                         <div className="text-sm text-gray-500">
-                          {e?.node?.approver?.name || "系统"} 拒绝了
+                          {`${e?.node?.createdBy?.name} ${action}商机`}
                         </div>
-                      )}
-                    </Link>
-                  ),
-                };
-              }) || []),
-            ]}
-          />
-        </ScrollArea>
-      </div>
+                        {isApproved && (
+                          <div className="text-sm text-gray-500">
+                            {e?.node?.approver?.name || "系统"} 批核了
+                          </div>
+                        )}
+                        {isRejected && (
+                          <div className="text-sm text-gray-500">
+                            {e?.node?.approver?.name || "系统"} 拒绝了
+                          </div>
+                        )}
+                      </Link>
+                    ),
+                  };
+                }) || []),
+              ]}
+            />
+          </ScrollArea>
+        </div>
+      )}
     </div>
   );
 }
@@ -522,14 +539,14 @@ function SHTender({
       <Descriptions
         className="rounded-lg bg-white !p-6"
         title={
-          <div className="flex h-8 flex-wrap items-center justify-between gap-2">
+          <div className="flex flex-wrap items-center justify-between h-8 gap-2">
             <div className="flex items-center gap-2">
               <span>{name}</span>
               <div className="flex items-center">
                 <Tag>{area.name}</Tag>
-                <Tag color={approvalStatusTagColor(approvalStatus)}>
+                {/* <Tag color={approvalStatusTagColor(approvalStatus)}>
                   {approvalStatusText(approvalStatus)}
-                </Tag>
+                </Tag> */}
               </div>
             </div>
             {canEdit(session, { tender }) && (
@@ -1065,7 +1082,7 @@ function ApprovalModal({ tender }: { tender: tenderDetailFragment$data }) {
     });
   };
 
-  const isPendingApproval = Boolean(tender.pendingProfile);
+  const isPendingApproval = tender.pendingProfile?.approvalStatus == 1;
 
   if (!open) {
     return (

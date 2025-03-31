@@ -26,10 +26,10 @@ export function TenderAddedCard() {
   const thisMonthText = now.format("YYYY-MM");
 
   const lastMonthTenders = tenders?.filter((e) =>
-    e?.createdAt.includes(lastMonthText),
+    e?.activeProfile?.createdAt.includes(lastMonthText),
   );
   const thisMonthTenders = tenders?.filter((e) =>
-    e?.createdAt.includes(thisMonthText),
+    e?.activeProfile?.createdAt.includes(thisMonthText),
   );
 
   const lastMonthAmount = lastMonthTenders?.reduce(
@@ -70,7 +70,7 @@ export function TenderAddedCard() {
   ];
 
   return (
-    <Card className="relative h-56 border-none bg-slate-900/60 text-white backdrop-blur">
+    <Card className="relative h-56 text-white border-none bg-slate-900/60 backdrop-blur">
       {/* 科技感装饰线条 */}
       <div className="absolute left-0 top-0 h-[2px] w-full bg-gradient-to-r from-transparent via-blue-500/50 to-transparent" />
       <div className="absolute right-0 top-0 h-full w-[2px] bg-gradient-to-b from-transparent via-cyan-500/50 to-transparent" />
@@ -78,20 +78,20 @@ export function TenderAddedCard() {
       <div className="absolute left-0 top-0 h-full w-[2px] bg-gradient-to-b from-transparent via-cyan-500/50 to-transparent" />
 
       {/* 全息扫描效果 */}
-      <div className="holographic-effect pointer-events-none absolute inset-0" />
+      <div className="absolute inset-0 pointer-events-none holographic-effect" />
 
       <CardHeader>
         <img
           src={headerSvg}
           alt="sub-head"
-          className="h-8 w-full select-none"
+          className="w-full h-8 select-none"
         />
       </CardHeader>
       <CardContent className="pt-2">
         <ChartContainer
           config={chartConfig}
           //   className="aspect-auto h-32 w-full max-w-[85%]"
-          className="h-32 w-full"
+          className="w-full h-32"
         >
           <BarChart
             accessibilityLayer

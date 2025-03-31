@@ -284,9 +284,11 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
     const tendersWithinArea = selectedArea?.tenders.edges?.map((e) => e?.node);
 
     const adcodes = [
-      ...(tendersWithinArea?.map((t) => t?.province?.adcode) || []),
-      ...(tendersWithinArea?.map((t) => t?.city?.adcode) || []),
-      ...(tendersWithinArea?.map((t) => t?.district?.adcode) || []),
+      ...(tendersWithinArea?.map((t) => t?.activeProfile?.province?.adcode) ||
+        []),
+      ...(tendersWithinArea?.map((t) => t?.activeProfile?.city?.adcode) || []),
+      ...(tendersWithinArea?.map((t) => t?.activeProfile?.district?.adcode) ||
+        []),
     ].filter(Boolean);
 
     if (!adcodes.includes(props.adcode)) {
@@ -298,11 +300,11 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
       ?.map((t) => {
         switch (props.level) {
           case "province":
-            if (t?.province?.adcode === props.adcode) return t;
+            if (t?.activeProfile?.province?.adcode === props.adcode) return t;
           case "city":
-            if (t?.city?.adcode === props.adcode) return t;
+            if (t?.activeProfile?.city?.adcode === props.adcode) return t;
           case "district":
-            if (t?.district?.adcode === props.adcode) return t;
+            if (t?.activeProfile?.district?.adcode === props.adcode) return t;
         }
       })
       .filter(Boolean);
@@ -310,7 +312,10 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
     const projectCount = tenderWithInLocation?.length || 0;
     const projectAmount = fixAmount(
       tenderWithInLocation?.reduce(
-        (acc, inc) => (inc?.estimatedAmount ? acc + inc?.estimatedAmount : acc),
+        (acc, inc) =>
+          inc?.activeProfile?.estimatedAmount
+            ? acc + inc?.activeProfile?.estimatedAmount
+            : acc,
         0,
       ),
     );
@@ -446,7 +451,9 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
         const tenders =
           selectedArea?.tenders.edges
             ?.map((e) => e?.node)
-            .filter((t) => t?.district?.adcode === areaProps.adcode) || [];
+            .filter(
+              (t) => t?.activeProfile?.district?.adcode === areaProps.adcode,
+            ) || [];
 
         for (const [i, tender] of tenders.entries()) {
           if (tender?.geoBounds) {
@@ -459,7 +466,11 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
             });
             polygon.setPath(tender.geoBounds as AMap.LngLatLike[]);
             const pBounds = polygon.getBounds();
-            const offsetY = tender.name && tender.name?.length > 10 ? -20 : -10;
+            const offsetY =
+              tender.activeProfile?.name &&
+              tender.activeProfile?.name?.length > 10
+                ? -20
+                : -10;
             // @ts-expect-error
             const label = new AMapUI.SimpleMarker({
               // @ts-expect-error
@@ -483,7 +494,7 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
                   <div class="group-hover:bg-corner-border-glow absolute bottom-0 left-0 h-[2px] w-4 bg-transparent opacity-0 transition-all duration-300 group-hover:opacity-100"></div>
                   <div class="group-hover:bg-corner-border-glow absolute bottom-0 right-0 h-[2px] w-4 bg-transparent opacity-0 transition-all duration-300 group-hover:opacity-100"></div>
                   
-                  <div class="relative z-10 text-sm font-medium text-center transition-all duration-300 text-wrap group-hover:text-shadow-glow group-hover:text-blue-200 line-clamp-2">${tender.name}</div>
+                  <div class="relative z-10 text-sm font-medium text-center transition-all duration-300 text-wrap group-hover:text-shadow-glow group-hover:text-blue-200 line-clamp-2">${tender.activeProfile?.name}</div>
                 </div>
                 `,
                 offset: new AMap.Pixel(-80, offsetY),
@@ -519,8 +530,12 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
             });
             // mapCircles.push(polygon);
             mapCircles.push(label);
-          } else if (tender?.geoCoordinate?.coordinates) {
-            const offsetY = tender.name && tender.name?.length > 10 ? -35 : -25;
+          } else if (tender?.activeProfile?.geoCoordinate) {
+            const offsetY =
+              tender.activeProfile?.name &&
+              tender.activeProfile?.name?.length > 10
+                ? -35
+                : -25;
             // @ts-expect-error
             const label = new AMapUI.SimpleMarker({
               // @ts-expect-error
@@ -544,15 +559,15 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
                   <div class="group-hover:bg-corner-border-glow absolute bottom-0 left-0 h-[2px] w-4 bg-transparent opacity-0 transition-all duration-300 group-hover:opacity-100"></div>
                   <div class="group-hover:bg-corner-border-glow absolute bottom-0 right-0 h-[2px] w-4 bg-transparent opacity-0 transition-all duration-300 group-hover:opacity-100"></div>
                   
-                  <div class="relative z-10 text-sm font-medium text-center transition-all duration-300 text-wrap group-hover:text-shadow-glow group-hover:text-blue-200 line-clamp-2">${tender.name}</div>
+                  <div class="relative z-10 text-sm font-medium text-center transition-all duration-300 text-wrap group-hover:text-shadow-glow group-hover:text-blue-200 line-clamp-2">${tender.activeProfile?.name}</div>
                 </div>
                 `,
                 offset: new AMap.Pixel(-235, offsetY),
               },
               map,
               position: new AMap.LngLat(
-                tender.geoCoordinate?.coordinates[0],
-                tender.geoCoordinate?.coordinates[1],
+                tender.activeProfile?.geoCoordinate?.[1],
+                tender.activeProfile?.geoCoordinate?.[0],
               ),
               extData: {
                 tenderId: tender.id,
@@ -584,8 +599,8 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
 
             const circleMarker = new AMap.CircleMarker({
               center: new AMap.LngLat(
-                tender.geoCoordinate?.coordinates[0],
-                tender.geoCoordinate?.coordinates[1],
+                tender.activeProfile?.geoCoordinate?.[1],
+                tender.activeProfile?.geoCoordinate?.[0],
               ),
               radius: 20 + Math.random() * 10, //3D视图下，CircleMarker半径不要超过64px
               fillColor: tenderStatusBoundColor(tender!),
@@ -610,8 +625,11 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
         if (mapCircles) set({ mapCircles });
 
         const center =
-          tenders?.length > 0 && tenders[0]?.geoCoordinate
-            ? tenders[0]?.geoCoordinate?.coordinates
+          tenders?.length > 0 && tenders[0]?.activeProfile?.geoCoordinate
+            ? [
+                tenders[0]?.activeProfile?.geoCoordinate?.[1],
+                tenders[0]?.activeProfile?.geoCoordinate?.[0],
+              ]
             : areaProps.center;
         map?.setZoomAndCenter(15, center, false, 600);
 

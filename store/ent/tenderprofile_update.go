@@ -118,6 +118,12 @@ func (tpu *TenderProfileUpdate) SetNillableName(s *string) *TenderProfileUpdate 
 	return tpu
 }
 
+// ClearName clears the value of the "name" field.
+func (tpu *TenderProfileUpdate) ClearName() *TenderProfileUpdate {
+	tpu.mutation.ClearName()
+	return tpu
+}
+
 // SetEstimatedAmount sets the "estimated_amount" field.
 func (tpu *TenderProfileUpdate) SetEstimatedAmount(f float64) *TenderProfileUpdate {
 	tpu.mutation.ResetEstimatedAmount()
@@ -203,6 +209,12 @@ func (tpu *TenderProfileUpdate) SetNillableDiscoveryDate(t *time.Time) *TenderPr
 	if t != nil {
 		tpu.SetDiscoveryDate(*t)
 	}
+	return tpu
+}
+
+// ClearDiscoveryDate clears the value of the "discovery_date" field.
+func (tpu *TenderProfileUpdate) ClearDiscoveryDate() *TenderProfileUpdate {
+	tpu.mutation.ClearDiscoveryDate()
 	return tpu
 }
 
@@ -1604,6 +1616,9 @@ func (tpu *TenderProfileUpdate) sqlSave(ctx context.Context) (n int, err error) 
 	if value, ok := tpu.mutation.Name(); ok {
 		_spec.SetField(tenderprofile.FieldName, field.TypeString, value)
 	}
+	if tpu.mutation.NameCleared() {
+		_spec.ClearField(tenderprofile.FieldName, field.TypeString)
+	}
 	if value, ok := tpu.mutation.EstimatedAmount(); ok {
 		_spec.SetField(tenderprofile.FieldEstimatedAmount, field.TypeFloat64, value)
 	}
@@ -1630,6 +1645,9 @@ func (tpu *TenderProfileUpdate) sqlSave(ctx context.Context) (n int, err error) 
 	}
 	if value, ok := tpu.mutation.DiscoveryDate(); ok {
 		_spec.SetField(tenderprofile.FieldDiscoveryDate, field.TypeTime, value)
+	}
+	if tpu.mutation.DiscoveryDateCleared() {
+		_spec.ClearField(tenderprofile.FieldDiscoveryDate, field.TypeTime)
 	}
 	if value, ok := tpu.mutation.Address(); ok {
 		_spec.SetField(tenderprofile.FieldAddress, field.TypeString, value)
@@ -2297,6 +2315,12 @@ func (tpuo *TenderProfileUpdateOne) SetNillableName(s *string) *TenderProfileUpd
 	return tpuo
 }
 
+// ClearName clears the value of the "name" field.
+func (tpuo *TenderProfileUpdateOne) ClearName() *TenderProfileUpdateOne {
+	tpuo.mutation.ClearName()
+	return tpuo
+}
+
 // SetEstimatedAmount sets the "estimated_amount" field.
 func (tpuo *TenderProfileUpdateOne) SetEstimatedAmount(f float64) *TenderProfileUpdateOne {
 	tpuo.mutation.ResetEstimatedAmount()
@@ -2382,6 +2406,12 @@ func (tpuo *TenderProfileUpdateOne) SetNillableDiscoveryDate(t *time.Time) *Tend
 	if t != nil {
 		tpuo.SetDiscoveryDate(*t)
 	}
+	return tpuo
+}
+
+// ClearDiscoveryDate clears the value of the "discovery_date" field.
+func (tpuo *TenderProfileUpdateOne) ClearDiscoveryDate() *TenderProfileUpdateOne {
+	tpuo.mutation.ClearDiscoveryDate()
 	return tpuo
 }
 
@@ -3813,6 +3843,9 @@ func (tpuo *TenderProfileUpdateOne) sqlSave(ctx context.Context) (_node *TenderP
 	if value, ok := tpuo.mutation.Name(); ok {
 		_spec.SetField(tenderprofile.FieldName, field.TypeString, value)
 	}
+	if tpuo.mutation.NameCleared() {
+		_spec.ClearField(tenderprofile.FieldName, field.TypeString)
+	}
 	if value, ok := tpuo.mutation.EstimatedAmount(); ok {
 		_spec.SetField(tenderprofile.FieldEstimatedAmount, field.TypeFloat64, value)
 	}
@@ -3839,6 +3872,9 @@ func (tpuo *TenderProfileUpdateOne) sqlSave(ctx context.Context) (_node *TenderP
 	}
 	if value, ok := tpuo.mutation.DiscoveryDate(); ok {
 		_spec.SetField(tenderprofile.FieldDiscoveryDate, field.TypeTime, value)
+	}
+	if tpuo.mutation.DiscoveryDateCleared() {
+		_spec.ClearField(tenderprofile.FieldDiscoveryDate, field.TypeTime)
 	}
 	if value, ok := tpuo.mutation.Address(); ok {
 		_spec.SetField(tenderprofile.FieldAddress, field.TypeString, value)

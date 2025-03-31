@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<d25f1365552a0cee4b805dc9e9632602>>
+ * @generated SignedSource<<825521dd8866e4b249a2f6783a667a7a>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -424,6 +424,88 @@ v38 = [
   }
 ],
 v39 = [
+  (v5/*: any*/),
+  (v15/*: any*/),
+  (v8/*: any*/),
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "status",
+    "storageKey": null
+  },
+  (v9/*: any*/),
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "estimatedAmount",
+    "storageKey": null
+  },
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "classify",
+    "storageKey": null
+  },
+  {
+    "alias": null,
+    "args": null,
+    "concreteType": "Customer",
+    "kind": "LinkedField",
+    "name": "customer",
+    "plural": false,
+    "selections": (v22/*: any*/),
+    "storageKey": null
+  },
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "images",
+    "storageKey": null
+  },
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "fullAddress",
+    "storageKey": null
+  },
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "tenderDate",
+    "storageKey": null
+  },
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "discoveryDate",
+    "storageKey": null
+  },
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "tenderClosingDate",
+    "storageKey": null
+  },
+  {
+    "alias": null,
+    "args": null,
+    "concreteType": "User",
+    "kind": "LinkedField",
+    "name": "createdBy",
+    "plural": false,
+    "selections": (v6/*: any*/),
+    "storageKey": null
+  }
+],
+v40 = [
   (v24/*: any*/),
   (v25/*: any*/),
   (v28/*: any*/)
@@ -840,90 +922,19 @@ return {
                             "args": null,
                             "concreteType": "TenderProfile",
                             "kind": "LinkedField",
+                            "name": "pendingProfile",
+                            "plural": false,
+                            "selections": (v39/*: any*/),
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "TenderProfile",
+                            "kind": "LinkedField",
                             "name": "activeProfile",
                             "plural": false,
-                            "selections": [
-                              (v5/*: any*/),
-                              (v15/*: any*/),
-                              (v8/*: any*/),
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "status",
-                                "storageKey": null
-                              },
-                              (v9/*: any*/),
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "estimatedAmount",
-                                "storageKey": null
-                              },
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "classify",
-                                "storageKey": null
-                              },
-                              {
-                                "alias": null,
-                                "args": null,
-                                "concreteType": "Customer",
-                                "kind": "LinkedField",
-                                "name": "customer",
-                                "plural": false,
-                                "selections": (v22/*: any*/),
-                                "storageKey": null
-                              },
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "images",
-                                "storageKey": null
-                              },
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "fullAddress",
-                                "storageKey": null
-                              },
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "tenderDate",
-                                "storageKey": null
-                              },
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "discoveryDate",
-                                "storageKey": null
-                              },
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "tenderClosingDate",
-                                "storageKey": null
-                              },
-                              {
-                                "alias": null,
-                                "args": null,
-                                "concreteType": "User",
-                                "kind": "LinkedField",
-                                "name": "createdBy",
-                                "plural": false,
-                                "selections": (v6/*: any*/),
-                                "storageKey": null
-                              }
-                            ],
+                            "selections": (v39/*: any*/),
                             "storageKey": null
                           },
                           (v30/*: any*/)
@@ -968,7 +979,7 @@ return {
             "selections": [
               {
                 "alias": "tenders",
-                "args": (v39/*: any*/),
+                "args": (v40/*: any*/),
                 "concreteType": "TenderConnection",
                 "kind": "LinkedField",
                 "name": "myTenders",
@@ -1006,7 +1017,7 @@ return {
               },
               {
                 "alias": "tenders",
-                "args": (v39/*: any*/),
+                "args": (v40/*: any*/),
                 "filters": [
                   "where"
                 ],
@@ -1026,7 +1037,7 @@ return {
     ]
   },
   "params": {
-    "cacheID": "a684e4e0689bf0e984227ff932fdea7a",
+    "cacheID": "bc1a380ee7032f819a18cfcda1b7a50f",
     "id": null,
     "metadata": {
       "connection": [
@@ -1043,7 +1054,7 @@ return {
     },
     "name": "customersDetailPageQuery",
     "operationKind": "query",
-    "text": "query customersDetailPageQuery(\n  $id: ID!\n  $first: Int\n  $last: Int\n  $userId: ID!\n) {\n  node(id: $id) {\n    __typename\n    ... on Customer {\n      id\n      sales {\n        id\n      }\n      activeProfile {\n        id\n        name\n        createdAt\n        createdBy {\n          name\n          id\n        }\n        updatedAt\n        ownerType\n        industry\n        size\n        approvalStatus\n        contactPerson\n        contactPersonPosition\n        contactPersonPhone\n        contactPersonEmail\n      }\n      pendingProfile {\n        id\n        name\n        createdAt\n        createdBy {\n          name\n          id\n        }\n        updatedAt\n        ownerType\n        industry\n        size\n        approvalStatus\n        contactPerson\n        contactPersonPosition\n        contactPersonPhone\n        contactPersonEmail\n      }\n      profiles(orderBy: [{field: CREATED_AT, direction: DESC}]) {\n        edges {\n          node {\n            id\n            name\n            createdAt\n            createdBy {\n              name\n              id\n            }\n            updatedAt\n            ownerType\n            industry\n            size\n            approvalStatus\n            contactPerson\n            contactPersonPosition\n            contactPersonPhone\n            contactPersonEmail\n            approver {\n              id\n              name\n            }\n          }\n        }\n      }\n      ...customerDetailFragment\n      ...customerTenderListFragment_2pIUTM\n    }\n    id\n  }\n  user: node(id: $userId) {\n    __typename\n    ... on User {\n      tenders: myTenders(first: $first, last: $last, where: {hasCustomerWith: {id: $id}}) {\n        edges {\n          cursor\n          node {\n            __typename\n            id\n          }\n        }\n        pageInfo {\n          endCursor\n          hasNextPage\n          hasPreviousPage\n          startCursor\n        }\n      }\n    }\n    id\n  }\n}\n\nfragment customerDetailFragment on Customer {\n  id\n  createdAt\n  createdBy {\n    id\n    name\n  }\n  area {\n    id\n    name\n    code\n  }\n  activeProfile {\n    id\n    name\n    createdAt\n    createdBy {\n      name\n      id\n    }\n    updatedAt\n    ownerType\n    industry\n    size\n    approvalStatus\n    contactPerson\n    contactPersonPosition\n    contactPersonPhone\n    contactPersonEmail\n    sales {\n      id\n      name\n    }\n    approver {\n      id\n      name\n    }\n  }\n  pendingProfile {\n    id\n    name\n    createdAt\n    createdBy {\n      name\n      id\n    }\n    updatedAt\n    ownerType\n    industry\n    size\n    approvalStatus\n    contactPerson\n    contactPersonPosition\n    contactPersonPhone\n    contactPersonEmail\n    sales {\n      id\n      name\n    }\n  }\n  profiles(orderBy: [{field: CREATED_AT, direction: DESC}]) {\n    edges {\n      node {\n        id\n        name\n        createdAt\n        createdBy {\n          name\n          id\n        }\n        updatedAt\n        ownerType\n        industry\n        size\n        approvalStatus\n        contactPerson\n        contactPersonPosition\n        contactPersonPhone\n        contactPersonEmail\n        sales {\n          id\n          name\n        }\n      }\n    }\n  }\n  lastVisitRecord: visitRecords(last: 1) {\n    edges {\n      node {\n        date\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n\nfragment customerTenderListFragment_2pIUTM on Customer {\n  tenders(first: $first, last: $last) {\n    edges {\n      node {\n        id\n        ...tenderListItemFragment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n\nfragment tenderListItemFragment on Tender {\n  id\n  area {\n    id\n    name\n    code\n  }\n  followingSales {\n    id\n  }\n  activeProfile {\n    id\n    approvalStatus\n    name\n    status\n    createdAt\n    estimatedAmount\n    classify\n    customer {\n      id\n      name\n    }\n    images\n    fullAddress\n    tenderDate\n    discoveryDate\n    tenderClosingDate\n    createdBy {\n      id\n    }\n  }\n}\n"
+    "text": "query customersDetailPageQuery(\n  $id: ID!\n  $first: Int\n  $last: Int\n  $userId: ID!\n) {\n  node(id: $id) {\n    __typename\n    ... on Customer {\n      id\n      sales {\n        id\n      }\n      activeProfile {\n        id\n        name\n        createdAt\n        createdBy {\n          name\n          id\n        }\n        updatedAt\n        ownerType\n        industry\n        size\n        approvalStatus\n        contactPerson\n        contactPersonPosition\n        contactPersonPhone\n        contactPersonEmail\n      }\n      pendingProfile {\n        id\n        name\n        createdAt\n        createdBy {\n          name\n          id\n        }\n        updatedAt\n        ownerType\n        industry\n        size\n        approvalStatus\n        contactPerson\n        contactPersonPosition\n        contactPersonPhone\n        contactPersonEmail\n      }\n      profiles(orderBy: [{field: CREATED_AT, direction: DESC}]) {\n        edges {\n          node {\n            id\n            name\n            createdAt\n            createdBy {\n              name\n              id\n            }\n            updatedAt\n            ownerType\n            industry\n            size\n            approvalStatus\n            contactPerson\n            contactPersonPosition\n            contactPersonPhone\n            contactPersonEmail\n            approver {\n              id\n              name\n            }\n          }\n        }\n      }\n      ...customerDetailFragment\n      ...customerTenderListFragment_2pIUTM\n    }\n    id\n  }\n  user: node(id: $userId) {\n    __typename\n    ... on User {\n      tenders: myTenders(first: $first, last: $last, where: {hasCustomerWith: {id: $id}}) {\n        edges {\n          cursor\n          node {\n            __typename\n            id\n          }\n        }\n        pageInfo {\n          endCursor\n          hasNextPage\n          hasPreviousPage\n          startCursor\n        }\n      }\n    }\n    id\n  }\n}\n\nfragment customerDetailFragment on Customer {\n  id\n  createdAt\n  createdBy {\n    id\n    name\n  }\n  area {\n    id\n    name\n    code\n  }\n  activeProfile {\n    id\n    name\n    createdAt\n    createdBy {\n      name\n      id\n    }\n    updatedAt\n    ownerType\n    industry\n    size\n    approvalStatus\n    contactPerson\n    contactPersonPosition\n    contactPersonPhone\n    contactPersonEmail\n    sales {\n      id\n      name\n    }\n    approver {\n      id\n      name\n    }\n  }\n  pendingProfile {\n    id\n    name\n    createdAt\n    createdBy {\n      name\n      id\n    }\n    updatedAt\n    ownerType\n    industry\n    size\n    approvalStatus\n    contactPerson\n    contactPersonPosition\n    contactPersonPhone\n    contactPersonEmail\n    sales {\n      id\n      name\n    }\n  }\n  profiles(orderBy: [{field: CREATED_AT, direction: DESC}]) {\n    edges {\n      node {\n        id\n        name\n        createdAt\n        createdBy {\n          name\n          id\n        }\n        updatedAt\n        ownerType\n        industry\n        size\n        approvalStatus\n        contactPerson\n        contactPersonPosition\n        contactPersonPhone\n        contactPersonEmail\n        sales {\n          id\n          name\n        }\n      }\n    }\n  }\n  lastVisitRecord: visitRecords(last: 1) {\n    edges {\n      node {\n        date\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n\nfragment customerTenderListFragment_2pIUTM on Customer {\n  tenders(first: $first, last: $last) {\n    edges {\n      node {\n        id\n        ...tenderListItemFragment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n\nfragment tenderListItemFragment on Tender {\n  id\n  area {\n    id\n    name\n    code\n  }\n  followingSales {\n    id\n  }\n  pendingProfile {\n    id\n    approvalStatus\n    name\n    status\n    createdAt\n    estimatedAmount\n    classify\n    customer {\n      id\n      name\n    }\n    images\n    fullAddress\n    tenderDate\n    discoveryDate\n    tenderClosingDate\n    createdBy {\n      id\n    }\n  }\n  activeProfile {\n    id\n    approvalStatus\n    name\n    status\n    createdAt\n    estimatedAmount\n    classify\n    customer {\n      id\n      name\n    }\n    images\n    fullAddress\n    tenderDate\n    discoveryDate\n    tenderClosingDate\n    createdBy {\n      id\n    }\n  }\n}\n"
   }
 };
 })();

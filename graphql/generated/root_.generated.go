@@ -287,38 +287,37 @@ type ComplexityRoot struct {
 	}
 
 	Mutation struct {
-		ApproveCustomer     func(childComplexity int, id xid.ID) int
-		ApproveTender       func(childComplexity int, id xid.ID) int
-		CreateArea          func(childComplexity int, input ent.CreateAreaInput) int
-		CreateCompetitor    func(childComplexity int, input ent.CreateCompetitorInput) int
-		CreateCustomer      func(childComplexity int, input ent.CreateCustomerInput) int
-		CreateCustomerV2    func(childComplexity int, customerInput ent.CreateCustomerInput, profileInput ent.CreateCustomerProfileInput) int
-		CreatePlot          func(childComplexity int, input ent.CreatePlotInput, geoBounds [][]float64) int
-		CreateTender        func(childComplexity int, input ent.CreateTenderInput, geoBounds [][]float64, imageFileNames []string, attachmentFileNames []string, geoCoordinate []float64) int
-		CreateTenderProfile func(childComplexity int, id xid.ID, input ent.CreateTenderProfileInput, imageFileNames []string, attachmentFileNames []string) int
-		CreateTenderV2      func(childComplexity int, tenderInput ent.CreateTenderInput, profileInput ent.CreateTenderProfileInput, imageFileNames []string, attachmentFileNames []string) int
-		CreateUser          func(childComplexity int, input ent.CreateUserInput) int
-		CreateVisitRecord   func(childComplexity int, input ent.CreateVisitRecordInput) int
-		DeleteCompetitor    func(childComplexity int, id xid.ID) int
-		DeleteCustomer      func(childComplexity int, id xid.ID) int
-		DeletePlot          func(childComplexity int, id xid.ID) int
-		DeleteTender        func(childComplexity int, id xid.ID) int
-		DeleteUser          func(childComplexity int, id xid.ID) int
-		DeleteVisitRecord   func(childComplexity int, id xid.ID) int
-		LoseTender          func(childComplexity int, id xid.ID, input model.LoseTenderInput) int
-		RejectCustomer      func(childComplexity int, id xid.ID) int
-		RejectTender        func(childComplexity int, id xid.ID) int
-		UpdateArea          func(childComplexity int, id xid.ID, input ent.UpdateAreaInput) int
-		UpdateCompetitor    func(childComplexity int, id xid.ID, input ent.UpdateCompetitorInput) int
-		UpdateCustomer      func(childComplexity int, id xid.ID, input ent.UpdateCustomerInput) int
-		UpdateCustomerV2    func(childComplexity int, id xid.ID, customerInput ent.UpdateCustomerInput, profileInput ent.CreateCustomerProfileInput) int
-		UpdatePlot          func(childComplexity int, id xid.ID, input ent.UpdatePlotInput, geoBounds [][]float64) int
-		UpdateProject       func(childComplexity int, id xid.ID, input ent.UpdateProjectInput) int
-		UpdateTender        func(childComplexity int, id xid.ID, input ent.UpdateTenderInput, geoBounds [][]float64, imageFileNames []string, removeImageFileNames []string, attachmentFileNames []string, removeAttachmentFileNames []string, geoCoordinate []float64) int
-		UpdateTenderV2      func(childComplexity int, id xid.ID, tenderInput ent.UpdateTenderInput, profileInput ent.CreateTenderProfileInput, imageFileNames []string, attachmentFileNames []string) int
-		UpdateUser          func(childComplexity int, id xid.ID, input ent.UpdateUserInput) int
-		UpdateVisitRecord   func(childComplexity int, id xid.ID, input ent.UpdateVisitRecordInput) int
-		WinTender           func(childComplexity int, id xid.ID, input model.WinTenderInput) int
+		ApproveCustomer   func(childComplexity int, id xid.ID) int
+		ApproveTender     func(childComplexity int, id xid.ID) int
+		CreateArea        func(childComplexity int, input ent.CreateAreaInput) int
+		CreateCompetitor  func(childComplexity int, input ent.CreateCompetitorInput) int
+		CreateCustomer    func(childComplexity int, input ent.CreateCustomerInput) int
+		CreateCustomerV2  func(childComplexity int, customerInput ent.CreateCustomerInput, profileInput ent.CreateCustomerProfileInput) int
+		CreatePlot        func(childComplexity int, input ent.CreatePlotInput, geoBounds [][]float64) int
+		CreateTender      func(childComplexity int, tenderInput ent.CreateTenderInput, profileInput ent.CreateTenderProfileInput, imageFileNames []string) int
+		CreateTenderV2    func(childComplexity int, tenderInput ent.CreateTenderInput, profileInput ent.CreateTenderProfileInput, imageFileNames []string, attachmentFileNames []string) int
+		CreateUser        func(childComplexity int, input ent.CreateUserInput) int
+		CreateVisitRecord func(childComplexity int, input ent.CreateVisitRecordInput) int
+		DeleteCompetitor  func(childComplexity int, id xid.ID) int
+		DeleteCustomer    func(childComplexity int, id xid.ID) int
+		DeletePlot        func(childComplexity int, id xid.ID) int
+		DeleteUser        func(childComplexity int, id xid.ID) int
+		DeleteVisitRecord func(childComplexity int, id xid.ID) int
+		LoseTender        func(childComplexity int, id xid.ID, input model.LoseTenderInput) int
+		RejectCustomer    func(childComplexity int, id xid.ID) int
+		RejectTender      func(childComplexity int, id xid.ID) int
+		UpdateArea        func(childComplexity int, id xid.ID, input ent.UpdateAreaInput) int
+		UpdateCompetitor  func(childComplexity int, id xid.ID, input ent.UpdateCompetitorInput) int
+		UpdateCustomer    func(childComplexity int, id xid.ID, input ent.UpdateCustomerInput) int
+		UpdateCustomerV2  func(childComplexity int, id xid.ID, customerInput ent.UpdateCustomerInput, profileInput ent.CreateCustomerProfileInput) int
+		UpdatePlot        func(childComplexity int, id xid.ID, input ent.UpdatePlotInput, geoBounds [][]float64) int
+		UpdateProject     func(childComplexity int, id xid.ID, input ent.UpdateProjectInput) int
+		UpdateTender      func(childComplexity int, id xid.ID, tenderInput ent.UpdateTenderInput, profileInput ent.CreateTenderProfileInput, imageFileNames []string) int
+		UpdateTenderV2    func(childComplexity int, id xid.ID, tenderInput ent.UpdateTenderInput, profileInput ent.CreateTenderProfileInput, imageFileNames []string, attachmentFileNames []string) int
+		UpdateUser        func(childComplexity int, id xid.ID, input ent.UpdateUserInput) int
+		UpdateVisitRecord func(childComplexity int, id xid.ID, input ent.UpdateVisitRecordInput) int
+		VoidTender        func(childComplexity int, id xid.ID) int
+		WinTender         func(childComplexity int, id xid.ID, input model.WinTenderInput) int
 	}
 
 	Operation struct {
@@ -2190,19 +2189,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.CreateTender(childComplexity, args["input"].(ent.CreateTenderInput), args["geoBounds"].([][]float64), args["imageFileNames"].([]string), args["attachmentFileNames"].([]string), args["geoCoordinate"].([]float64)), true
-
-	case "Mutation.createTenderProfile":
-		if e.complexity.Mutation.CreateTenderProfile == nil {
-			break
-		}
-
-		args, err := ec.field_Mutation_createTenderProfile_args(context.TODO(), rawArgs)
-		if err != nil {
-			return 0, false
-		}
-
-		return e.complexity.Mutation.CreateTenderProfile(childComplexity, args["id"].(xid.ID), args["input"].(ent.CreateTenderProfileInput), args["imageFileNames"].([]string), args["attachmentFileNames"].([]string)), true
+		return e.complexity.Mutation.CreateTender(childComplexity, args["tenderInput"].(ent.CreateTenderInput), args["profileInput"].(ent.CreateTenderProfileInput), args["imageFileNames"].([]string)), true
 
 	case "Mutation.createTenderV2":
 		if e.complexity.Mutation.CreateTenderV2 == nil {
@@ -2275,18 +2262,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.DeletePlot(childComplexity, args["id"].(xid.ID)), true
-
-	case "Mutation.deleteTender":
-		if e.complexity.Mutation.DeleteTender == nil {
-			break
-		}
-
-		args, err := ec.field_Mutation_deleteTender_args(context.TODO(), rawArgs)
-		if err != nil {
-			return 0, false
-		}
-
-		return e.complexity.Mutation.DeleteTender(childComplexity, args["id"].(xid.ID)), true
 
 	case "Mutation.deleteUser":
 		if e.complexity.Mutation.DeleteUser == nil {
@@ -2430,7 +2405,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.UpdateTender(childComplexity, args["id"].(xid.ID), args["input"].(ent.UpdateTenderInput), args["geoBounds"].([][]float64), args["imageFileNames"].([]string), args["removeImageFileNames"].([]string), args["attachmentFileNames"].([]string), args["removeAttachmentFileNames"].([]string), args["geoCoordinate"].([]float64)), true
+		return e.complexity.Mutation.UpdateTender(childComplexity, args["id"].(xid.ID), args["tenderInput"].(ent.UpdateTenderInput), args["profileInput"].(ent.CreateTenderProfileInput), args["imageFileNames"].([]string)), true
 
 	case "Mutation.updateTenderV2":
 		if e.complexity.Mutation.UpdateTenderV2 == nil {
@@ -2467,6 +2442,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.UpdateVisitRecord(childComplexity, args["id"].(xid.ID), args["input"].(ent.UpdateVisitRecordInput)), true
+
+	case "Mutation.voidTender":
+		if e.complexity.Mutation.VoidTender == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_voidTender_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.VoidTender(childComplexity, args["id"].(xid.ID)), true
 
 	case "Mutation.winTender":
 		if e.complexity.Mutation.WinTender == nil {
@@ -7260,11 +7247,11 @@ input CreateTenderProfileInput {
   審核飛書訊息ID
   """
   approvalMsgID: String
-  name: String!
+  name: String
   estimatedAmount: Float
   tenderDate: Time
   classify: Int
-  discoveryDate: Time!
+  discoveryDate: Time
   address: String
   fullAddress: String
   contractor: String
@@ -12546,11 +12533,11 @@ type TenderProfile implements Node {
   審核飛書訊息ID
   """
   approvalMsgID: String
-  name: String!
+  name: String
   estimatedAmount: Float
   tenderDate: Time
   classify: Int
-  discoveryDate: Time!
+  discoveryDate: Time
   address: String
   fullAddress: String
   contractor: String
@@ -12788,6 +12775,8 @@ input TenderProfileWhereInput {
   nameContains: String
   nameHasPrefix: String
   nameHasSuffix: String
+  nameIsNil: Boolean
+  nameNotNil: Boolean
   nameEqualFold: String
   nameContainsFold: String
   """
@@ -12840,6 +12829,8 @@ input TenderProfileWhereInput {
   discoveryDateGTE: Time
   discoveryDateLT: Time
   discoveryDateLTE: Time
+  discoveryDateIsNil: Boolean
+  discoveryDateNotNil: Boolean
   """
   address field predicates
   """
@@ -16476,21 +16467,15 @@ type GeoJson {
   ): Customer!
 
   createTender(
-    input: CreateTenderInput!
-    geoBounds: [[Float!]!]
+    tenderInput: CreateTenderInput!
+    profileInput: CreateTenderProfileInput!
     imageFileNames: [String!]!
-    attachmentFileNames: [String!]!
-    geoCoordinate: [Float!]
-  ): TenderConnection!
+  ): Tender!
   updateTender(
     id: ID!
-    input: UpdateTenderInput!
-    geoBounds: [[Float!]!]
+    tenderInput: UpdateTenderInput!
+    profileInput: CreateTenderProfileInput!
     imageFileNames: [String!]
-    removeImageFileNames: [String!]
-    attachmentFileNames: [String!]
-    removeAttachmentFileNames: [String!]
-    geoCoordinate: [Float!]
   ): Tender!
   createTenderV2(
     tenderInput: CreateTenderInput!
@@ -16505,13 +16490,7 @@ type GeoJson {
     imageFileNames: [String!]!
     attachmentFileNames: [String!]!
   ): Tender!
-  createTenderProfile(
-    id: ID!
-    input: CreateTenderProfileInput!
-    imageFileNames: [String!]!
-    attachmentFileNames: [String!]!
-  ): Tender!
-  deleteTender(id: ID!): Tender!
+  voidTender(id: ID!): Tender!
   winTender(id: ID!, input: WinTenderInput!): Tender!
   loseTender(id: ID!, input: LoseTenderInput!): Tender!
   approveTender(id: ID!): Tender!

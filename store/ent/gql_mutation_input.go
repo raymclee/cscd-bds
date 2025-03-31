@@ -2898,11 +2898,11 @@ type CreateTenderProfileInput struct {
 	Status                               *int
 	ApprovalStatus                       *int
 	ApprovalMsgID                        *string
-	Name                                 string
+	Name                                 *string
 	EstimatedAmount                      *float64
 	TenderDate                           *time.Time
 	Classify                             *int
-	DiscoveryDate                        time.Time
+	DiscoveryDate                        *time.Time
 	Address                              *string
 	FullAddress                          *string
 	Contractor                           *string
@@ -2978,7 +2978,9 @@ func (i *CreateTenderProfileInput) Mutate(m *TenderProfileMutation) {
 	if v := i.ApprovalMsgID; v != nil {
 		m.SetApprovalMsgID(*v)
 	}
-	m.SetName(i.Name)
+	if v := i.Name; v != nil {
+		m.SetName(*v)
+	}
 	if v := i.EstimatedAmount; v != nil {
 		m.SetEstimatedAmount(*v)
 	}
@@ -2988,7 +2990,9 @@ func (i *CreateTenderProfileInput) Mutate(m *TenderProfileMutation) {
 	if v := i.Classify; v != nil {
 		m.SetClassify(*v)
 	}
-	m.SetDiscoveryDate(i.DiscoveryDate)
+	if v := i.DiscoveryDate; v != nil {
+		m.SetDiscoveryDate(*v)
+	}
 	if v := i.Address; v != nil {
 		m.SetAddress(*v)
 	}

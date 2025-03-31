@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<7b49a5494df68d30fb342d03311bdfde>>
+ * @generated SignedSource<<40ebd53bc49034ceeac79c0ab18e701a>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -24,15 +24,23 @@ export type tendersTenderListFragment$data = {
     readonly __id: string;
     readonly edges: ReadonlyArray<{
       readonly node: {
+        readonly activeProfile: {
+          readonly classify: number | null | undefined;
+          readonly name: string | null | undefined;
+          readonly status: number;
+          readonly tenderClosingDate: any | null | undefined;
+        } | null | undefined;
         readonly area: {
           readonly code: string;
           readonly id: string;
         };
-        readonly classify: number | null | undefined;
         readonly id: string;
-        readonly name: string;
-        readonly status: number;
-        readonly tenderClosingDate: any | null | undefined;
+        readonly pendingProfile: {
+          readonly classify: number | null | undefined;
+          readonly name: string | null | undefined;
+          readonly status: number;
+          readonly tenderClosingDate: any | null | undefined;
+        } | null | undefined;
         readonly " $fragmentSpreads": FragmentRefs<"tenderListItemFragment">;
       } | null | undefined;
     } | null | undefined> | null | undefined;
@@ -65,7 +73,31 @@ v2 = {
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
-};
+},
+v3 = [
+  (v2/*: any*/),
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "status",
+    "storageKey": null
+  },
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "tenderClosingDate",
+    "storageKey": null
+  },
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "classify",
+    "storageKey": null
+  }
+];
 return {
   "argumentDefinitions": [
     {
@@ -166,28 +198,6 @@ return {
               "plural": false,
               "selections": [
                 (v0/*: any*/),
-                (v2/*: any*/),
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "status",
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "tenderClosingDate",
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "classify",
-                  "storageKey": null
-                },
                 {
                   "alias": null,
                   "args": null,
@@ -199,6 +209,26 @@ return {
                     (v0/*: any*/),
                     (v1/*: any*/)
                   ],
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "concreteType": "TenderProfile",
+                  "kind": "LinkedField",
+                  "name": "activeProfile",
+                  "plural": false,
+                  "selections": (v3/*: any*/),
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "concreteType": "TenderProfile",
+                  "kind": "LinkedField",
+                  "name": "pendingProfile",
+                  "plural": false,
+                  "selections": (v3/*: any*/),
                   "storageKey": null
                 },
                 {
@@ -286,6 +316,6 @@ return {
 };
 })();
 
-(node as any).hash = "5987c92df228c095a9c34bdf18f246e9";
+(node as any).hash = "6da02a4ea4173e853092bc6537450fbb";
 
 export default node;

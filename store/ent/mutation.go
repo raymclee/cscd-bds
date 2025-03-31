@@ -31099,7 +31099,7 @@ func (m *TenderProfileMutation) Name() (r string, exists bool) {
 // OldName returns the old "name" field's value of the TenderProfile entity.
 // If the TenderProfile object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *TenderProfileMutation) OldName(ctx context.Context) (v string, err error) {
+func (m *TenderProfileMutation) OldName(ctx context.Context) (v *string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldName is only allowed on UpdateOne operations")
 	}
@@ -31113,9 +31113,22 @@ func (m *TenderProfileMutation) OldName(ctx context.Context) (v string, err erro
 	return oldValue.Name, nil
 }
 
+// ClearName clears the value of the "name" field.
+func (m *TenderProfileMutation) ClearName() {
+	m.name = nil
+	m.clearedFields[tenderprofile.FieldName] = struct{}{}
+}
+
+// NameCleared returns if the "name" field was cleared in this mutation.
+func (m *TenderProfileMutation) NameCleared() bool {
+	_, ok := m.clearedFields[tenderprofile.FieldName]
+	return ok
+}
+
 // ResetName resets all changes to the "name" field.
 func (m *TenderProfileMutation) ResetName() {
 	m.name = nil
+	delete(m.clearedFields, tenderprofile.FieldName)
 }
 
 // SetEstimatedAmount sets the "estimated_amount" field.
@@ -31324,7 +31337,7 @@ func (m *TenderProfileMutation) DiscoveryDate() (r time.Time, exists bool) {
 // OldDiscoveryDate returns the old "discovery_date" field's value of the TenderProfile entity.
 // If the TenderProfile object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *TenderProfileMutation) OldDiscoveryDate(ctx context.Context) (v time.Time, err error) {
+func (m *TenderProfileMutation) OldDiscoveryDate(ctx context.Context) (v *time.Time, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldDiscoveryDate is only allowed on UpdateOne operations")
 	}
@@ -31338,9 +31351,22 @@ func (m *TenderProfileMutation) OldDiscoveryDate(ctx context.Context) (v time.Ti
 	return oldValue.DiscoveryDate, nil
 }
 
+// ClearDiscoveryDate clears the value of the "discovery_date" field.
+func (m *TenderProfileMutation) ClearDiscoveryDate() {
+	m.discovery_date = nil
+	m.clearedFields[tenderprofile.FieldDiscoveryDate] = struct{}{}
+}
+
+// DiscoveryDateCleared returns if the "discovery_date" field was cleared in this mutation.
+func (m *TenderProfileMutation) DiscoveryDateCleared() bool {
+	_, ok := m.clearedFields[tenderprofile.FieldDiscoveryDate]
+	return ok
+}
+
 // ResetDiscoveryDate resets all changes to the "discovery_date" field.
 func (m *TenderProfileMutation) ResetDiscoveryDate() {
 	m.discovery_date = nil
+	delete(m.clearedFields, tenderprofile.FieldDiscoveryDate)
 }
 
 // SetAddress sets the "address" field.
@@ -35724,6 +35750,9 @@ func (m *TenderProfileMutation) ClearedFields() []string {
 	if m.FieldCleared(tenderprofile.FieldApprovalMsgID) {
 		fields = append(fields, tenderprofile.FieldApprovalMsgID)
 	}
+	if m.FieldCleared(tenderprofile.FieldName) {
+		fields = append(fields, tenderprofile.FieldName)
+	}
 	if m.FieldCleared(tenderprofile.FieldEstimatedAmount) {
 		fields = append(fields, tenderprofile.FieldEstimatedAmount)
 	}
@@ -35732,6 +35761,9 @@ func (m *TenderProfileMutation) ClearedFields() []string {
 	}
 	if m.FieldCleared(tenderprofile.FieldClassify) {
 		fields = append(fields, tenderprofile.FieldClassify)
+	}
+	if m.FieldCleared(tenderprofile.FieldDiscoveryDate) {
+		fields = append(fields, tenderprofile.FieldDiscoveryDate)
 	}
 	if m.FieldCleared(tenderprofile.FieldAddress) {
 		fields = append(fields, tenderprofile.FieldAddress)
@@ -35912,6 +35944,9 @@ func (m *TenderProfileMutation) ClearField(name string) error {
 	case tenderprofile.FieldApprovalMsgID:
 		m.ClearApprovalMsgID()
 		return nil
+	case tenderprofile.FieldName:
+		m.ClearName()
+		return nil
 	case tenderprofile.FieldEstimatedAmount:
 		m.ClearEstimatedAmount()
 		return nil
@@ -35920,6 +35955,9 @@ func (m *TenderProfileMutation) ClearField(name string) error {
 		return nil
 	case tenderprofile.FieldClassify:
 		m.ClearClassify()
+		return nil
+	case tenderprofile.FieldDiscoveryDate:
+		m.ClearDiscoveryDate()
 		return nil
 	case tenderprofile.FieldAddress:
 		m.ClearAddress()

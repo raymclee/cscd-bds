@@ -3,22 +3,21 @@ import {
   PlusOutlined,
   SaveOutlined,
   StopOutlined,
-} from '@ant-design/icons'
-import { createLazyFileRoute } from '@tanstack/react-router'
-import { tendersDetailPageMutation } from '__generated__/tendersDetailPageMutation.graphql'
-import { tendersDetailPlotPageQuery } from '__generated__/tendersDetailPlotPageQuery.graphql'
-import { App, Button, Popconfirm } from 'antd'
-import * as React from 'react'
-import { useMutation, usePreloadedQuery } from 'react-relay'
-import { graphql } from 'relay-runtime'
-import { Loading } from '~/components/loading'
-import { useMapStore } from '~/store/map'
+} from "@ant-design/icons";
+import { createLazyFileRoute } from "@tanstack/react-router";
+import { tendersDetailPlotPageQuery } from "__generated__/tendersDetailPlotPageQuery.graphql";
+import { App, Button, Popconfirm } from "antd";
+import * as React from "react";
+import { useMutation, usePreloadedQuery } from "react-relay";
+import { graphql } from "relay-runtime";
+import { Loading } from "~/components/loading";
+import { useMapStore } from "~/store/map";
 
 export const Route = createLazyFileRoute(
-  '/__auth/__portal/portal/tenders_/$id_/plot',
+  "/__auth/__portal/portal/tenders_/$id_/plot",
 )({
   component: RouteComponent,
-})
+});
 
 const query = graphql`
   query tendersDetailPlotPageQuery($id: ID!) {
@@ -33,51 +32,34 @@ const query = graphql`
       }
     }
   }
-`
-
-const updateTenderMutation = graphql`
-  mutation tendersDetailPageMutation(
-    $id: ID!
-    $input: UpdateTenderInput!
-    $geoBounds: [[Float!]!]
-  ) {
-    updateTender(id: $id, input: $input, geoBounds: $geoBounds) {
-      id
-      name
-      geoCoordinate {
-        coordinates
-      }
-      geoBounds
-    }
-  }
-`
+`;
 
 function RouteComponent() {
-  const map = useMapStore((state) => state.map)
-  const initMap = useMapStore((state) => state.initMap)
+  const map = useMapStore((state) => state.map);
+  const initMap = useMapStore((state) => state.initMap);
   const data = usePreloadedQuery<tendersDetailPlotPageQuery>(
     query,
     Route.useLoaderData(),
-  )
+  );
 
-  const [isReady, setIsReady] = React.useState(false)
+  const [isReady, setIsReady] = React.useState(false);
 
   React.useEffect(() => {
-    initMap('map', {
+    initMap("map", {
       // center: [116.397428, 39.90923] as [number, number],
       layers: [AMap.createDefaultLayer(), new AMap.TileLayer.Satellite()],
-    })
-  }, [data.node])
+    });
+  }, [data.node]);
 
   React.useEffect(() => {
-    map?.on('complete', () => {
-      setIsReady(true)
-    })
+    map?.on("complete", () => {
+      setIsReady(true);
+    });
 
     return () => {
-      map?.destroy()
-    }
-  }, [map])
+      map?.destroy();
+    };
+  }, [map]);
 
   return (
     <div className="relative -m-4 min-h-[calc(100dvh-64px)]">
@@ -85,27 +67,27 @@ function RouteComponent() {
       <div id="map" className="absolute inset-0"></div>
       {isReady ? <Editor /> : <Loading />}
     </div>
-  )
+  );
 }
 
 function Editor() {
   const data = usePreloadedQuery<tendersDetailPlotPageQuery>(
     query,
     Route.useLoaderData(),
-  )
-  const map = useMapStore((state) => state.map)
+  );
+  const map = useMapStore((state) => state.map);
 
-  const [commitMutation, isMutationInFlight] =
-    useMutation<tendersDetailPageMutation>(updateTenderMutation)
+  // const [commitMutation, isMutationInFlight] =
+  //   useMutation<tendersDetailPageMutation>(updateTenderMutation);
 
-  const polygonRef = React.useRef<AMap.Polygon | null>(null)
+  const polygonRef = React.useRef<AMap.Polygon | null>(null);
   const polygonEditorRef = React.useRef<AMap.PolygonEditor | null>(
     new AMap.PolygonEditor(map!),
-  )
-  const [isEditing, setIsEditing] = React.useState(false)
-  const params = Route.useParams()
-  const navigate = Route.useNavigate()
-  const { message } = App.useApp()
+  );
+  const [isEditing, setIsEditing] = React.useState(false);
+  const params = Route.useParams();
+  const navigate = Route.useNavigate();
+  const { message } = App.useApp();
 
   React.useEffect(() => {
     if (map && !data.node?.geoBounds && data.node?.geoCoordinate?.coordinates) {
@@ -114,61 +96,61 @@ function Editor() {
         data.node.geoCoordinate.coordinates as [number, number],
         false,
         600,
-      )
+      );
     }
-  }, [map, data.node])
+  }, [map, data.node]);
 
   React.useEffect(() => {
     if (map && data?.node?.geoBounds?.length) {
-      polygonRef.current = new AMap.Polygon()
-      polygonRef.current?.setPath(data.node.geoBounds as AMap.LngLatLike[])
+      polygonRef.current = new AMap.Polygon();
+      polygonRef.current?.setPath(data.node.geoBounds as AMap.LngLatLike[]);
       // polygonRef.current?.setMap(map);
-      map.add(polygonRef.current)
+      map.add(polygonRef.current);
       // @ts-expect-error
-      map.setFitView(polygonRef.current, false, [0, 0, 0, 0], 15)
+      map.setFitView(polygonRef.current, false, [0, 0, 0, 0], 15);
     }
-  }, [map, data.node])
+  }, [map, data.node]);
 
   function startEditing() {
-    setIsEditing(true)
-    polygonEditorRef.current?.setTarget(polygonRef.current)
-    polygonEditorRef.current?.open()
+    setIsEditing(true);
+    polygonEditorRef.current?.setTarget(polygonRef.current);
+    polygonEditorRef.current?.open();
   }
 
   function endEditing() {
-    setIsEditing(false)
-    polygonEditorRef.current?.getTarget()?.remove()
-    polygonEditorRef.current?.setTarget(null)
-    polygonEditorRef.current?.close()
+    setIsEditing(false);
+    polygonEditorRef.current?.getTarget()?.remove();
+    polygonEditorRef.current?.setTarget(null);
+    polygonEditorRef.current?.close();
   }
 
   function handleNewClick() {
     if (isEditing) {
-      endEditing()
+      endEditing();
     } else {
-      startEditing()
+      startEditing();
     }
   }
 
   function confirm() {
-    commitMutation({
-      variables: {
-        id: params.id,
-        input: {},
-        geoBounds: null,
-      },
-      onCompleted: (res) => {
-        message.success('地塊刪除成功')
-        endEditing()
-      },
-      onError(error) {
-        console.error(error)
-        message.error({
-          content: '地塊刪除失敗',
-          duration: 5,
-        })
-      },
-    })
+    // commitMutation({
+    //   variables: {
+    //     id: params.id,
+    //     input: {},
+    //     geoBounds: null,
+    //   },
+    //   onCompleted: (res) => {
+    //     message.success("地塊刪除成功");
+    //     endEditing();
+    //   },
+    //   onError(error) {
+    //     console.error(error);
+    //     message.error({
+    //       content: "地塊刪除失敗",
+    //       duration: 5,
+    //     });
+    //   },
+    // });
   }
 
   return (
@@ -201,7 +183,7 @@ function Editor() {
           <Button
             danger
             onClick={endEditing}
-            disabled={isMutationInFlight}
+            // disabled={isMutationInFlight}
             icon={<StopOutlined />}
           >
             取消
@@ -212,30 +194,30 @@ function Editor() {
               const geoBounds = polygonEditorRef.current
                 ?.getTarget()
                 ?.getPath()
-                ?.map((item: any) => [item.lng, item.lat])
+                ?.map((item: any) => [item.lng, item.lat]);
 
               if (geoBounds?.length) {
-                commitMutation({
-                  variables: {
-                    id: params.id,
-                    input: {},
-                    geoBounds: geoBounds,
-                  },
-                  onCompleted: (res) => {
-                    endEditing()
-                    navigate({ to: '/portal/tenders' })
-                    message.destroy()
-                    message.success('地塊更新成功')
-                  },
-                  onError(error) {
-                    console.error(error)
-                    message.destroy()
-                    message.error({
-                      content: '地塊更新失敗',
-                      duration: 5,
-                    })
-                  },
-                })
+                // commitMutation({
+                //   variables: {
+                //     id: params.id,
+                //     input: {},
+                //     geoBounds: geoBounds,
+                //   },
+                //   onCompleted: (res) => {
+                //     endEditing();
+                //     navigate({ to: "/portal/tenders" });
+                //     message.destroy();
+                //     message.success("地塊更新成功");
+                //   },
+                //   onError(error) {
+                //     console.error(error);
+                //     message.destroy();
+                //     message.error({
+                //       content: "地塊更新失敗",
+                //       duration: 5,
+                //     });
+                //   },
+                // });
               }
             }}
           >
@@ -244,5 +226,5 @@ function Editor() {
         </>
       )}
     </div>
-  )
+  );
 }

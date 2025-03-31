@@ -58,7 +58,6 @@ import { useFormLocalStorage } from "~/hooks/use-form-localstorage";
 import { useBlocker } from "@tanstack/react-router";
 import { useLocalStorage } from "usehooks-ts";
 import { useCreateTenderV2 } from "~/hooks/use-create-tender-v2";
-import { useCreateTenderProfile } from "~/hooks/use-create-tender-profile";
 import { useUpdateTenderV2 } from "~/hooks/use-update-tender-v2";
 const { Dragger } = Upload;
 
@@ -113,8 +112,6 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
   const [commitUpdateMutation, isUpdateInFlight] = useUpdateTender();
   const [commitCreateTenderV2Mutation, isCreateTenderV2InFlight] =
     useCreateTenderV2();
-  const [commitCreateTenderProfileMutation, isCreateTenderProfileInFlight] =
-    useCreateTenderProfile();
   const [commitUpdateTenderV2Mutation, isUpdateTenderV2InFlight] =
     useUpdateTenderV2();
   const navigate = useNavigate();
@@ -183,7 +180,7 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
     [area, areaID],
   );
 
-  const profile = tender?.activeProfile;
+  const profile = tender?.pendingProfile || tender?.activeProfile;
 
   useEffect(() => {
     if (profile) {
@@ -302,6 +299,9 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
       // initialValues={{ discoveryDate: dayjs() }}
       layout="vertical"
       onFinish={async (values) => {
+        const areaCode = area?.find((e) => e?.node?.id === areaID)?.node?.code;
+        const isSH = areaCode !== "HW" && areaCode !== "GA";
+
         if (tender?.id) {
           const {
             images,
@@ -313,11 +313,61 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
             areaID,
             ...input
           } = values;
-          commitUpdateTenderV2Mutation({
+
+          if (isSH) {
+            commitUpdateTenderV2Mutation({
+              variables: {
+                id: tender.id,
+                tenderInput: {
+                  ...input,
+                  clearFollowingSales: true,
+                  addFollowingSaleIDs: followingSaleIDs
+                    ? followingSaleIDs?.map((id) => id)
+                    : undefined,
+                },
+                profileInput: {
+                  ...input,
+                  tenderID: tender.id,
+                  estimatedAmount: toActualAmount(estimatedAmount),
+                  tenderWinAmount: tenderWinAmount
+                    ? toActualAmount(tenderWinAmount)
+                    : undefined,
+                },
+                imageFileNames,
+                attachmentFileNames,
+              },
+              onCompleted() {
+                navigate({
+                  to: "/portal/tenders/$id",
+                  params: { id: tender.id },
+                });
+                message.destroy();
+                message.success("更新成功");
+              },
+              onError(error) {
+                let text = "更新失败";
+                if (error.message.includes("no geo code")) {
+                  text = "请输入正确和完整的地址";
+                } else if (error.message.includes("failed to get district")) {
+                  text = "请输入正确和完整的地址";
+                }
+                console.error({ error });
+                message.destroy();
+                message.error(text);
+              },
+            });
+            return;
+          }
+
+          commitUpdateMutation({
             variables: {
               id: tender.id,
               tenderInput: {
                 ...input,
+                clearFollowingSales: true,
+                addFollowingSaleIDs: followingSaleIDs
+                  ? followingSaleIDs?.map((id) => id)
+                  : undefined,
               },
               profileInput: {
                 ...input,
@@ -328,7 +378,6 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
                   : undefined,
               },
               imageFileNames,
-              attachmentFileNames,
             },
             onCompleted() {
               navigate({
@@ -380,7 +429,51 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
             );
           }
 
-          commitCreateTenderV2Mutation({
+          if (isSH) {
+            commitCreateTenderV2Mutation({
+              variables: {
+                tenderInput: {
+                  areaID,
+                  discoveryDate: dayjs(),
+                  code: "",
+                  name: "",
+                },
+                profileInput: {
+                  ...input,
+                  tenderID: "",
+                  estimatedAmount: toActualAmount(estimatedAmount),
+                  tenderWinAmount: tenderWinAmount
+                    ? toActualAmount(tenderWinAmount)
+                    : undefined,
+                },
+                connections,
+                imageFileNames,
+                attachmentFileNames,
+              },
+              onCompleted() {
+                clear();
+                navigate({
+                  to: "/portal/tenders",
+                  search: (prev) => ({ ...prev, create: true }),
+                });
+                message.success("创建成功");
+              },
+              onError(error) {
+                let text = "创建失败";
+                if (error.message.includes("no geo code")) {
+                  text = "请输入正确和完整的地址";
+                } else if (error.message.includes("failed to get district")) {
+                  text = "请输入正确和完整的地址";
+                }
+                console.error({ error });
+                message.destroy();
+                message.error(text);
+              },
+            });
+            return;
+          }
+
+          commitCreateMutation({
             variables: {
               tenderInput: {
                 areaID,
@@ -398,7 +491,6 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
               },
               connections,
               imageFileNames,
-              attachmentFileNames,
             },
             onCompleted() {
               clear();

@@ -58,79 +58,78 @@ export const query = graphql`
                 orderBy: $orderBy
                 first: $first
                 last: $last
-                where: { statusNEQ: 7, approvalStatus: 2 }
+                where: { statusNEQ: 7, activeProfileIDNotNil: true }
               ) @connection(key: "MapIndexPageQuery_tenders") {
                 edges {
                   node {
                     id
-                    name
-                    status
-                    createdAt
-                    estimatedAmount
-                    customer {
-                      id
+                    area {
+                      code
                       name
-                      ownerType
-                      area {
-                        id
-                        name
-                      }
                     }
                     followingSales {
                       id
                       name
                     }
-                    images
-                    fullAddress
-                    tenderDate
-                    discoveryDate
-                    contractor
-                    designUnit
-                    tenderForm
-                    keyProject
-                    contractForm
-                    tenderingAgency
-                    consultingFirm
-                    facadeConsultant
-                    contractForm
-                    timeLimitRating
-                    sizeAndValueRating
-                    creditAndPaymentRating
-                    customerRelationshipRating
-                    competitivePartnershipRating
-                    timeLimitRatingOverview
-                    sizeAndValueRatingOverview
-                    creditAndPaymentRatingOverview
-                    customerRelationshipRatingOverview
-                    competitivePartnershipRatingOverview
-                    tenderWinCompany
-                    tenderCode
-                    developer
-                    architect
-                    tenderClosingDate
-                    constructionArea
-                    tenderWinAmount
-                    tenderWinDate
-                    area {
-                      code
+                    activeProfile {
                       name
+                      status
+                      createdAt
+                      estimatedAmount
+                      customer {
+                        id
+                        name
+                        ownerType
+                        area {
+                          id
+                          name
+                        }
+                      }
+                      images
+                      fullAddress
+                      tenderDate
+                      discoveryDate
+                      contractor
+                      designUnit
+                      tenderForm
+                      keyProject
+                      contractForm
+                      tenderingAgency
+                      consultingFirm
+                      facadeConsultant
+                      contractForm
+                      timeLimitRating
+                      sizeAndValueRating
+                      creditAndPaymentRating
+                      customerRelationshipRating
+                      competitivePartnershipRating
+                      timeLimitRatingOverview
+                      sizeAndValueRatingOverview
+                      creditAndPaymentRatingOverview
+                      customerRelationshipRatingOverview
+                      competitivePartnershipRatingOverview
+                      tenderWinCompany
+                      tenderCode
+                      developer
+                      architect
+                      tenderClosingDate
+                      constructionArea
+                      tenderWinAmount
+                      tenderWinDate
+                      province {
+                        adcode
+                        name
+                      }
+                      city {
+                        name
+                        adcode
+                      }
+                      district {
+                        name
+                        adcode
+                      }
+                      geoCoordinate
                     }
-                    province {
-                      adcode
-                      name
-                    }
-                    city {
-                      name
-                      adcode
-                    }
-                    district {
-                      name
-                      adcode
-                    }
-                    geoCoordinate {
-                      coordinates
-                    }
-                    geoBounds
                   }
                 }
               }
@@ -214,16 +213,16 @@ function RouteComponent() {
                   }}
                 >
                   {/* 科技感装饰 */}
-                  <div className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-500/10 to-cyan-500/10 opacity-0 transition-opacity duration-300 hover:opacity-100" />
-                  <div className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-500/0 via-blue-500/0 to-cyan-500/0 opacity-0 transition-opacity duration-300 hover:opacity-100" />
+                  <div className="absolute inset-0 transition-opacity duration-300 rounded-full opacity-0 bg-gradient-to-br from-blue-500/10 to-cyan-500/10 hover:opacity-100" />
+                  <div className="absolute inset-0 transition-opacity duration-300 rounded-full opacity-0 bg-gradient-to-br from-blue-500/0 via-blue-500/0 to-cyan-500/0 hover:opacity-100" />
 
                   {/* 扫描线效果 */}
-                  <div className="absolute inset-0 rounded-full bg-gradient-to-b from-transparent via-cyan-500/20 to-transparent opacity-0 transition-opacity duration-300 hover:opacity-100" />
+                  <div className="absolute inset-0 transition-opacity duration-300 rounded-full opacity-0 bg-gradient-to-b from-transparent via-cyan-500/20 to-transparent hover:opacity-100" />
 
                   {/* 边框发光效果 */}
                   <div className="absolute -inset-0.5 rounded-full bg-gradient-to-r from-blue-500/30 to-cyan-500/30 opacity-0 transition-opacity duration-300 hover:opacity-100" />
 
-                  <LayoutDashboard className="relative h-5 w-5" />
+                  <LayoutDashboard className="relative w-5 h-5" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent className="dark">

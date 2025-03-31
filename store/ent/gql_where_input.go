@@ -16075,6 +16075,8 @@ type TenderProfileWhereInput struct {
 	NameContains     *string  `json:"nameContains,omitempty"`
 	NameHasPrefix    *string  `json:"nameHasPrefix,omitempty"`
 	NameHasSuffix    *string  `json:"nameHasSuffix,omitempty"`
+	NameIsNil        bool     `json:"nameIsNil,omitempty"`
+	NameNotNil       bool     `json:"nameNotNil,omitempty"`
 	NameEqualFold    *string  `json:"nameEqualFold,omitempty"`
 	NameContainsFold *string  `json:"nameContainsFold,omitempty"`
 
@@ -16115,14 +16117,16 @@ type TenderProfileWhereInput struct {
 	ClassifyNotNil bool  `json:"classifyNotNil,omitempty"`
 
 	// "discovery_date" field predicates.
-	DiscoveryDate      *time.Time  `json:"discoveryDate,omitempty"`
-	DiscoveryDateNEQ   *time.Time  `json:"discoveryDateNEQ,omitempty"`
-	DiscoveryDateIn    []time.Time `json:"discoveryDateIn,omitempty"`
-	DiscoveryDateNotIn []time.Time `json:"discoveryDateNotIn,omitempty"`
-	DiscoveryDateGT    *time.Time  `json:"discoveryDateGT,omitempty"`
-	DiscoveryDateGTE   *time.Time  `json:"discoveryDateGTE,omitempty"`
-	DiscoveryDateLT    *time.Time  `json:"discoveryDateLT,omitempty"`
-	DiscoveryDateLTE   *time.Time  `json:"discoveryDateLTE,omitempty"`
+	DiscoveryDate       *time.Time  `json:"discoveryDate,omitempty"`
+	DiscoveryDateNEQ    *time.Time  `json:"discoveryDateNEQ,omitempty"`
+	DiscoveryDateIn     []time.Time `json:"discoveryDateIn,omitempty"`
+	DiscoveryDateNotIn  []time.Time `json:"discoveryDateNotIn,omitempty"`
+	DiscoveryDateGT     *time.Time  `json:"discoveryDateGT,omitempty"`
+	DiscoveryDateGTE    *time.Time  `json:"discoveryDateGTE,omitempty"`
+	DiscoveryDateLT     *time.Time  `json:"discoveryDateLT,omitempty"`
+	DiscoveryDateLTE    *time.Time  `json:"discoveryDateLTE,omitempty"`
+	DiscoveryDateIsNil  bool        `json:"discoveryDateIsNil,omitempty"`
+	DiscoveryDateNotNil bool        `json:"discoveryDateNotNil,omitempty"`
 
 	// "address" field predicates.
 	Address             *string  `json:"address,omitempty"`
@@ -17234,6 +17238,12 @@ func (i *TenderProfileWhereInput) P() (predicate.TenderProfile, error) {
 	if i.NameHasSuffix != nil {
 		predicates = append(predicates, tenderprofile.NameHasSuffix(*i.NameHasSuffix))
 	}
+	if i.NameIsNil {
+		predicates = append(predicates, tenderprofile.NameIsNil())
+	}
+	if i.NameNotNil {
+		predicates = append(predicates, tenderprofile.NameNotNil())
+	}
 	if i.NameEqualFold != nil {
 		predicates = append(predicates, tenderprofile.NameEqualFold(*i.NameEqualFold))
 	}
@@ -17353,6 +17363,12 @@ func (i *TenderProfileWhereInput) P() (predicate.TenderProfile, error) {
 	}
 	if i.DiscoveryDateLTE != nil {
 		predicates = append(predicates, tenderprofile.DiscoveryDateLTE(*i.DiscoveryDateLTE))
+	}
+	if i.DiscoveryDateIsNil {
+		predicates = append(predicates, tenderprofile.DiscoveryDateIsNil())
+	}
+	if i.DiscoveryDateNotNil {
+		predicates = append(predicates, tenderprofile.DiscoveryDateNotNil())
 	}
 	if i.Address != nil {
 		predicates = append(predicates, tenderprofile.AddressEQ(*i.Address))

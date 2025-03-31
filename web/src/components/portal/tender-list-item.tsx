@@ -20,6 +20,7 @@ import {
 } from "~/lib/helper";
 import { canEdit } from "~/lib/permission";
 import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel";
+import { useVoidTender } from "~/hooks/use-void-tender";
 
 type TenderListItemProps = {
   tender: tenderListItemFragment$key;
@@ -41,6 +42,27 @@ export function TenderListItem({
         }
         followingSales {
           id
+        }
+        pendingProfile {
+          id
+          approvalStatus
+          name
+          status
+          createdAt
+          estimatedAmount
+          classify
+          customer {
+            id
+            name
+          }
+          images
+          fullAddress
+          tenderDate
+          discoveryDate
+          tenderClosingDate
+          createdBy {
+            id
+          }
         }
         activeProfile {
           id
@@ -70,7 +92,9 @@ export function TenderListItem({
   const { session } = useRouteContext({ from: "/__auth" });
 
   const isGAOrHW = item.area.code === "GA" || item.area.code === "HW";
-  const profile = item.activeProfile;
+  const profile = !item.activeProfile
+    ? item.pendingProfile
+    : item.activeProfile;
 
   return (
     <List.Item
@@ -90,26 +114,26 @@ export function TenderListItem({
                 key="edit-link"
                 to="/portal/tenders/$id/edit"
                 params={{ id: item.id }}
-                disabled={profile?.approvalStatus == 1}
+                // disabled={profile?.approvalStatus == 1}
               >
                 <Button
                   type="link"
                   size="small"
-                  disabled={profile?.approvalStatus == 1}
+                  // disabled={profile?.approvalStatus == 1}
                 >
                   修改
                 </Button>
               </Link>,
-              <Link
-                key="draw-link"
-                to="/portal/tenders/$id/plot"
-                params={{ id: item.id }}
-                resetScroll={false}
-              >
-                <Button type="link" size="small">
-                  地块
-                </Button>
-              </Link>,
+              // <Link
+              //   key="draw-link"
+              //   to="/portal/tenders/$id/plot"
+              //   params={{ id: item.id }}
+              //   resetScroll={false}
+              // >
+              //   <Button type="link" size="small">
+              //     地块
+              //   </Button>
+              // </Link>,
               showDelete && <DeleteButton key="delete" tender={item} />,
               // <a key="list-loadmore-more">more</a>,
               // !isGAOrHW && (
@@ -146,7 +170,7 @@ export function TenderListItem({
                     <img
                       src={image}
                       className="aspect-[16/9] rounded-lg object-cover"
-                      alt={profile?.name}
+                      alt={profile?.name || ""}
                     />
                   </CarouselItem>
                 ))}
@@ -154,7 +178,7 @@ export function TenderListItem({
             </Carousel>
           ) : (
             <div className="flex aspect-[16/9] h-full w-[60vw] flex-col items-center justify-center rounded-lg bg-gray-100 sm:w-[30vw] lg:w-[280px]">
-              <ImageOff className="mb-2 h-12 w-12" />
+              <ImageOff className="w-12 h-12 mb-2" />
               暂没图片
             </div>
           )}
@@ -209,8 +233,8 @@ export function TenderListItem({
 
 function DeleteButton({ tender }: { tender?: tenderListItemFragment$data }) {
   const { message } = App.useApp();
-  const [commit, inFlight] = useUpdateTender();
   const profile = tender?.activeProfile;
+  const [commitVoid, inFlightVoid] = useVoidTender();
   return (
     <Popconfirm
       title="确定要作废吗？"
@@ -234,14 +258,9 @@ function DeleteButton({ tender }: { tender?: tenderListItemFragment$data }) {
         //   );
         // }
 
-        commit({
+        commitVoid({
           variables: {
             id: tender.id,
-            input: {
-              status: 7,
-            },
-            imageFileNames: [],
-            attachmentFileNames: [],
           },
           onCompleted() {
             message.destroy();
@@ -256,7 +275,7 @@ function DeleteButton({ tender }: { tender?: tenderListItemFragment$data }) {
       }}
     >
       <Button
-        disabled={inFlight || profile?.status === 7}
+        disabled={inFlightVoid || profile?.status === 7}
         danger
         type="link"
         size="small"

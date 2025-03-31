@@ -5,21 +5,15 @@ export function useUpdateTender() {
   return useMutation<useUpdateTenderMutation>(graphql`
     mutation useUpdateTenderMutation(
       $id: ID!
-      $input: UpdateTenderInput!
+      $tenderInput: UpdateTenderInput!
+      $profileInput: CreateTenderProfileInput!
       $imageFileNames: [String!]!
-      $attachmentFileNames: [String!]!
-      $removeImageFileNames: [String!]
-      $removeAttachmentFileNames: [String!]
-      $geoCoordinate: [Float!]
     ) {
       updateTender(
         id: $id
-        input: $input
+        tenderInput: $tenderInput
+        profileInput: $profileInput
         imageFileNames: $imageFileNames
-        attachmentFileNames: $attachmentFileNames
-        removeImageFileNames: $removeImageFileNames
-        removeAttachmentFileNames: $removeAttachmentFileNames
-        geoCoordinate: $geoCoordinate
       ) {
         ...tenderDetailFragment
         customer {

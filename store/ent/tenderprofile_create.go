@@ -106,6 +106,14 @@ func (tpc *TenderProfileCreate) SetName(s string) *TenderProfileCreate {
 	return tpc
 }
 
+// SetNillableName sets the "name" field if the given value is not nil.
+func (tpc *TenderProfileCreate) SetNillableName(s *string) *TenderProfileCreate {
+	if s != nil {
+		tpc.SetName(*s)
+	}
+	return tpc
+}
+
 // SetEstimatedAmount sets the "estimated_amount" field.
 func (tpc *TenderProfileCreate) SetEstimatedAmount(f float64) *TenderProfileCreate {
 	tpc.mutation.SetEstimatedAmount(f)
@@ -151,6 +159,14 @@ func (tpc *TenderProfileCreate) SetNillableClassify(i *int) *TenderProfileCreate
 // SetDiscoveryDate sets the "discovery_date" field.
 func (tpc *TenderProfileCreate) SetDiscoveryDate(t time.Time) *TenderProfileCreate {
 	tpc.mutation.SetDiscoveryDate(t)
+	return tpc
+}
+
+// SetNillableDiscoveryDate sets the "discovery_date" field if the given value is not nil.
+func (tpc *TenderProfileCreate) SetNillableDiscoveryDate(t *time.Time) *TenderProfileCreate {
+	if t != nil {
+		tpc.SetDiscoveryDate(*t)
+	}
 	return tpc
 }
 
@@ -1050,9 +1066,6 @@ func (tpc *TenderProfileCreate) check() error {
 			return &ValidationError{Name: "approval_status", err: fmt.Errorf(`ent: validator failed for field "TenderProfile.approval_status": %w`, err)}
 		}
 	}
-	if _, ok := tpc.mutation.Name(); !ok {
-		return &ValidationError{Name: "name", err: errors.New(`ent: missing required field "TenderProfile.name"`)}
-	}
 	if v, ok := tpc.mutation.Name(); ok {
 		if err := tenderprofile.NameValidator(v); err != nil {
 			return &ValidationError{Name: "name", err: fmt.Errorf(`ent: validator failed for field "TenderProfile.name": %w`, err)}
@@ -1062,9 +1075,6 @@ func (tpc *TenderProfileCreate) check() error {
 		if err := tenderprofile.ClassifyValidator(v); err != nil {
 			return &ValidationError{Name: "classify", err: fmt.Errorf(`ent: validator failed for field "TenderProfile.classify": %w`, err)}
 		}
-	}
-	if _, ok := tpc.mutation.DiscoveryDate(); !ok {
-		return &ValidationError{Name: "discovery_date", err: errors.New(`ent: missing required field "TenderProfile.discovery_date"`)}
 	}
 	if v, ok := tpc.mutation.LevelInvolved(); ok {
 		if err := tenderprofile.LevelInvolvedValidator(v); err != nil {
@@ -1176,7 +1186,7 @@ func (tpc *TenderProfileCreate) createSpec() (*TenderProfile, *sqlgraph.CreateSp
 	}
 	if value, ok := tpc.mutation.Name(); ok {
 		_spec.SetField(tenderprofile.FieldName, field.TypeString, value)
-		_node.Name = value
+		_node.Name = &value
 	}
 	if value, ok := tpc.mutation.EstimatedAmount(); ok {
 		_spec.SetField(tenderprofile.FieldEstimatedAmount, field.TypeFloat64, value)
@@ -1192,7 +1202,7 @@ func (tpc *TenderProfileCreate) createSpec() (*TenderProfile, *sqlgraph.CreateSp
 	}
 	if value, ok := tpc.mutation.DiscoveryDate(); ok {
 		_spec.SetField(tenderprofile.FieldDiscoveryDate, field.TypeTime, value)
-		_node.DiscoveryDate = value
+		_node.DiscoveryDate = &value
 	}
 	if value, ok := tpc.mutation.Address(); ok {
 		_spec.SetField(tenderprofile.FieldAddress, field.TypeString, value)
@@ -1656,6 +1666,12 @@ func (u *TenderProfileUpsert) UpdateName() *TenderProfileUpsert {
 	return u
 }
 
+// ClearName clears the value of the "name" field.
+func (u *TenderProfileUpsert) ClearName() *TenderProfileUpsert {
+	u.SetNull(tenderprofile.FieldName)
+	return u
+}
+
 // SetEstimatedAmount sets the "estimated_amount" field.
 func (u *TenderProfileUpsert) SetEstimatedAmount(v float64) *TenderProfileUpsert {
 	u.Set(tenderprofile.FieldEstimatedAmount, v)
@@ -1731,6 +1747,12 @@ func (u *TenderProfileUpsert) SetDiscoveryDate(v time.Time) *TenderProfileUpsert
 // UpdateDiscoveryDate sets the "discovery_date" field to the value that was provided on create.
 func (u *TenderProfileUpsert) UpdateDiscoveryDate() *TenderProfileUpsert {
 	u.SetExcluded(tenderprofile.FieldDiscoveryDate)
+	return u
+}
+
+// ClearDiscoveryDate clears the value of the "discovery_date" field.
+func (u *TenderProfileUpsert) ClearDiscoveryDate() *TenderProfileUpsert {
+	u.SetNull(tenderprofile.FieldDiscoveryDate)
 	return u
 }
 
@@ -2932,6 +2954,13 @@ func (u *TenderProfileUpsertOne) UpdateName() *TenderProfileUpsertOne {
 	})
 }
 
+// ClearName clears the value of the "name" field.
+func (u *TenderProfileUpsertOne) ClearName() *TenderProfileUpsertOne {
+	return u.Update(func(s *TenderProfileUpsert) {
+		s.ClearName()
+	})
+}
+
 // SetEstimatedAmount sets the "estimated_amount" field.
 func (u *TenderProfileUpsertOne) SetEstimatedAmount(v float64) *TenderProfileUpsertOne {
 	return u.Update(func(s *TenderProfileUpsert) {
@@ -3020,6 +3049,13 @@ func (u *TenderProfileUpsertOne) SetDiscoveryDate(v time.Time) *TenderProfileUps
 func (u *TenderProfileUpsertOne) UpdateDiscoveryDate() *TenderProfileUpsertOne {
 	return u.Update(func(s *TenderProfileUpsert) {
 		s.UpdateDiscoveryDate()
+	})
+}
+
+// ClearDiscoveryDate clears the value of the "discovery_date" field.
+func (u *TenderProfileUpsertOne) ClearDiscoveryDate() *TenderProfileUpsertOne {
+	return u.Update(func(s *TenderProfileUpsert) {
+		s.ClearDiscoveryDate()
 	})
 }
 
@@ -4564,6 +4600,13 @@ func (u *TenderProfileUpsertBulk) UpdateName() *TenderProfileUpsertBulk {
 	})
 }
 
+// ClearName clears the value of the "name" field.
+func (u *TenderProfileUpsertBulk) ClearName() *TenderProfileUpsertBulk {
+	return u.Update(func(s *TenderProfileUpsert) {
+		s.ClearName()
+	})
+}
+
 // SetEstimatedAmount sets the "estimated_amount" field.
 func (u *TenderProfileUpsertBulk) SetEstimatedAmount(v float64) *TenderProfileUpsertBulk {
 	return u.Update(func(s *TenderProfileUpsert) {
@@ -4652,6 +4695,13 @@ func (u *TenderProfileUpsertBulk) SetDiscoveryDate(v time.Time) *TenderProfileUp
 func (u *TenderProfileUpsertBulk) UpdateDiscoveryDate() *TenderProfileUpsertBulk {
 	return u.Update(func(s *TenderProfileUpsert) {
 		s.UpdateDiscoveryDate()
+	})
+}
+
+// ClearDiscoveryDate clears the value of the "discovery_date" field.
+func (u *TenderProfileUpsertBulk) ClearDiscoveryDate() *TenderProfileUpsertBulk {
+	return u.Update(func(s *TenderProfileUpsert) {
+		s.ClearDiscoveryDate()
 	})
 }
 

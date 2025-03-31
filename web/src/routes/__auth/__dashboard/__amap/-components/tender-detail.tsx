@@ -62,7 +62,7 @@ export function TenderDetailFrame() {
             <Button
               variant="ghost"
               size="icon"
-              className="relative h-10 w-10 rounded-full border border-brand/30 bg-slate-900/60 text-white backdrop-blur hover:bg-slate-800/60"
+              className="relative w-10 h-10 text-white border rounded-full border-brand/30 bg-slate-900/60 backdrop-blur hover:bg-slate-800/60"
               onClick={() => {
                 // 这里添加隐藏逻辑
                 navigate({
@@ -73,16 +73,16 @@ export function TenderDetailFrame() {
               }}
             >
               {/* 科技感装饰 */}
-              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-500/10 to-cyan-500/10 opacity-0 transition-opacity duration-300 hover:opacity-100" />
-              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-500/0 via-blue-500/0 to-cyan-500/0 opacity-0 transition-opacity duration-300 hover:opacity-100" />
+              <div className="absolute inset-0 transition-opacity duration-300 rounded-full opacity-0 bg-gradient-to-br from-blue-500/10 to-cyan-500/10 hover:opacity-100" />
+              <div className="absolute inset-0 transition-opacity duration-300 rounded-full opacity-0 bg-gradient-to-br from-blue-500/0 via-blue-500/0 to-cyan-500/0 hover:opacity-100" />
 
               {/* 扫描线效果 */}
-              <div className="absolute inset-0 rounded-full bg-gradient-to-b from-transparent via-cyan-500/20 to-transparent opacity-0 transition-opacity duration-300 hover:opacity-100" />
+              <div className="absolute inset-0 transition-opacity duration-300 rounded-full opacity-0 bg-gradient-to-b from-transparent via-cyan-500/20 to-transparent hover:opacity-100" />
 
               {/* 边框发光效果 */}
               <div className="absolute -inset-0.5 rounded-full bg-gradient-to-r from-blue-500/30 to-cyan-500/30 opacity-0 transition-opacity duration-300 hover:opacity-100" />
 
-              <ChevronRight className="relative h-5 w-5" />
+              <ChevronRight className="relative w-5 h-5" />
             </Button>
           </motion.div>
 
@@ -99,7 +99,7 @@ export function TenderDetailFrame() {
             <div className="absolute left-0 top-0 h-full w-[2px] bg-gradient-to-b from-transparent via-cyan-500/50 to-transparent" />
 
             {/* 全息扫描效果 */}
-            <div className="holographic-effect pointer-events-none absolute inset-0" />
+            <div className="absolute inset-0 pointer-events-none holographic-effect" />
 
             <TenderDetail tender={tender} />
           </div>
@@ -115,24 +115,27 @@ export function TenderDetail({ tender }: { tender: Tender }) {
   return (
     <>
       <div className="relative">
-        <div className="mt-4 flex items-center justify-between px-6 py-4 md:mt-0">
-          <div className="line-clamp-1 font-semibold">{tender?.name}</div>
+        <div className="flex items-center justify-between px-6 py-4 mt-4 md:mt-0">
+          <div className="font-semibold line-clamp-1">
+            {tender?.activeProfile?.name}
+          </div>
         </div>
       </div>
       <div className="relative h-full px-6">
-        {tender?.images && tender?.images?.length > 0 ? (
+        {tender?.activeProfile?.images &&
+        tender?.activeProfile?.images?.length > 0 ? (
           <Carousel>
             <CarouselContent className="md:min-h-[220px]">
-              {tender?.images?.map((image, i) => (
+              {tender?.activeProfile?.images?.map((image, i) => (
                 <CarouselItem key={i}>
-                  <div className="group relative">
-                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                  <div className="relative group">
+                    <div className="absolute inset-0 transition-opacity duration-300 opacity-0 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 group-hover:opacity-100" />
                     <img
                       src={image}
                       className="aspect-[16/9] rounded-lg"
-                      alt={tender?.name}
+                      alt={tender?.activeProfile?.name || ""}
                     />
-                    <div className="group-hover:animate-scan-line absolute inset-0 rounded-lg bg-gradient-to-br from-blue-500/0 via-blue-500/0 to-cyan-500/0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                    <div className="absolute inset-0 transition-opacity duration-300 rounded-lg opacity-0 group-hover:animate-scan-line bg-gradient-to-br from-blue-500/0 via-blue-500/0 to-cyan-500/0 group-hover:opacity-100" />
                   </div>
                 </CarouselItem>
               ))}
@@ -140,7 +143,7 @@ export function TenderDetail({ tender }: { tender: Tender }) {
           </Carousel>
         ) : (
           <div className="flex aspect-[16/9] flex-col items-center justify-center rounded-lg bg-slate-800/50 text-white">
-            <ImageOff className="mb-2 h-16 w-16" />
+            <ImageOff className="w-16 h-16 mb-2" />
             暂没图片
           </div>
         )}
@@ -156,9 +159,9 @@ function SHInfo({ tender }: { tender: Tender }) {
     <Tabs
       key={tender?.id}
       defaultValue="detail"
-      className="mt-4 flex w-full flex-col overflow-hidden"
+      className="flex flex-col w-full mt-4 overflow-hidden"
     >
-      <TabsList className="grid w-full grid-cols-2 bg-gradient-to-br from-sky-950 to-sky-900 text-white">
+      <TabsList className="grid w-full grid-cols-2 text-white bg-gradient-to-br from-sky-950 to-sky-900">
         <TabsTrigger
           value="detail"
           className="cursor-pointer data-[state=active]:bg-slate-800/70 data-[state=active]:text-white"
@@ -182,63 +185,83 @@ className="data-[state=active]:bg-brand/70 data-[state=active]:text-white"
         <TabsContent value="detail" className="mt-4 space-y-2">
           <div className="grid grid-cols-3">
             <div className="text-gray-400">项目名称</div>
-            <div className="col-span-2">{tender?.name}</div>
+            <div className="col-span-2">{tender?.activeProfile?.name}</div>
           </div>
           <div className="grid grid-cols-3">
             <div className="text-gray-400">项目地址</div>
-            <div className="col-span-2">{tender?.fullAddress}</div>
+            <div className="col-span-2">
+              {tender?.activeProfile?.fullAddress}
+            </div>
           </div>
           <div className="grid grid-cols-3">
             <div className="text-gray-400">业主</div>
-            <div className="col-span-2">{tender?.customer?.name || "-"}</div>
+            <div className="col-span-2">
+              {tender?.activeProfile?.customer?.name || "-"}
+            </div>
           </div>
           <div className="grid grid-cols-3">
             <div className="text-gray-400">总包单位</div>
-            <div className="col-span-2">{tender?.contractor || "-"}</div>
+            <div className="col-span-2">
+              {tender?.activeProfile?.contractor || "-"}
+            </div>
           </div>
           <div className="grid grid-cols-3">
             <div className="text-gray-400">业主类型</div>
             <div className="col-span-2">
-              {ownerTypeText(tender?.customer?.ownerType) || "-"}
+              {ownerTypeText(tender?.activeProfile?.customer?.ownerType) || "-"}
             </div>
           </div>
           <div className="grid grid-cols-3">
             <div className="text-gray-400">设计单位</div>
-            <div className="col-span-2">{tender?.designUnit || "-"}</div>
+            <div className="col-span-2">
+              {tender?.activeProfile?.designUnit || "-"}
+            </div>
           </div>
           <div className="grid grid-cols-3">
             <div className="text-gray-400">预计金额</div>
             <div className="col-span-2">
-              {tender?.estimatedAmount
-                ? `${fixAmount(tender?.estimatedAmount)} 亿`
+              {tender?.activeProfile?.estimatedAmount
+                ? `${fixAmount(tender?.activeProfile?.estimatedAmount)} 亿`
                 : "-"}
             </div>
           </div>
           <div className="grid grid-cols-3">
             <div className="text-gray-400">幕墙顾问</div>
-            <div className="col-span-2">{tender?.facadeConsultant || "-"}</div>
+            <div className="col-span-2">
+              {tender?.activeProfile?.facadeConsultant || "-"}
+            </div>
           </div>
           <div className="grid grid-cols-3">
             <div className="text-gray-400">咨询公司</div>
-            <div className="col-span-2">{tender?.consultingFirm || "-"}</div>
+            <div className="col-span-2">
+              {tender?.activeProfile?.consultingFirm || "-"}
+            </div>
           </div>
           <div className="grid grid-cols-3">
             <div className="text-gray-400">招标代理</div>
-            <div className="col-span-2">{tender?.tenderingAgency || "-"}</div>
+            <div className="col-span-2">
+              {tender?.activeProfile?.tenderingAgency || "-"}
+            </div>
           </div>
           <div className="grid grid-cols-3">
             <div className="text-gray-400">招标形式</div>
-            <div className="col-span-2">{tender?.tenderForm || "-"}</div>
+            <div className="col-span-2">
+              {tender?.activeProfile?.tenderForm || "-"}
+            </div>
           </div>
           <div className="grid grid-cols-3">
             <div className="text-gray-400">预计招标日期</div>
             <div className="col-span-2">
-              {tender?.tenderDate ? dayjs(tender.tenderDate).format("LL") : "-"}
+              {tender?.activeProfile?.tenderDate
+                ? dayjs(tender.activeProfile.tenderDate).format("LL")
+                : "-"}
             </div>
           </div>
           <div className="grid grid-cols-3">
             <div className="text-gray-400">合同形式</div>
-            <div className="col-span-2">{tender?.contractForm || "-"}</div>
+            <div className="col-span-2">
+              {tender?.activeProfile?.contractForm || "-"}
+            </div>
           </div>
         </TabsContent>
         <TabsContent value="rating" className="mt-4">
@@ -246,40 +269,48 @@ className="data-[state=active]:bg-brand/70 data-[state=active]:text-white"
             <div className="grid grid-cols-3">
               <div className="text-gray-400">规模及价值</div>
               <div className="col-span-2">
-                {tender?.sizeAndValueRatingOverview || "-"}
+                {tender?.activeProfile?.sizeAndValueRatingOverview || "-"}
               </div>
             </div>
             <div className="grid grid-cols-3">
               <div className="text-gray-400">资信及付款</div>
               <div className="col-span-2">
-                {tender?.creditAndPaymentRatingOverview || "-"}
+                {tender?.activeProfile?.creditAndPaymentRatingOverview || "-"}
               </div>
             </div>
             <div className="grid grid-cols-3">
               <div className="text-gray-400">中标原则及时限</div>
               <div className="col-span-2">
-                {tender?.timeLimitRatingOverview || "-"}
+                {tender?.activeProfile?.timeLimitRatingOverview || "-"}
               </div>
             </div>
             <div className="grid grid-cols-3">
               <div className="text-gray-400">客情关系</div>
               <div className="col-span-2">
-                {tender?.customerRelationshipRatingOverview || "-"}
+                {tender?.activeProfile?.customerRelationshipRatingOverview ||
+                  "-"}
               </div>
             </div>
             <div className="grid grid-cols-3">
               <div className="text-gray-400">竞争合作关系</div>
               <div className="col-span-2">
-                {tender?.competitivePartnershipRatingOverview || "-"}
+                {tender?.activeProfile?.competitivePartnershipRatingOverview ||
+                  "-"}
               </div>
             </div>
           </div>
           <TenderRatingChart
-            sizeAndValueRating={tender?.sizeAndValueRating}
-            creditAndPaymentRating={tender?.creditAndPaymentRating}
-            timeLimitRating={tender?.timeLimitRating}
-            customerRelationshipRating={tender?.customerRelationshipRating}
-            competitivePartnershipRating={tender?.competitivePartnershipRating}
+            sizeAndValueRating={tender?.activeProfile?.sizeAndValueRating}
+            creditAndPaymentRating={
+              tender?.activeProfile?.creditAndPaymentRating
+            }
+            timeLimitRating={tender?.activeProfile?.timeLimitRating}
+            customerRelationshipRating={
+              tender?.activeProfile?.customerRelationshipRating
+            }
+            competitivePartnershipRating={
+              tender?.activeProfile?.competitivePartnershipRating
+            }
           />
         </TabsContent>
         {/* <TabsContent value="follow-up" className="">
@@ -337,37 +368,49 @@ function GAInfo({ tender }: { tender: Tender }) {
     <div className="mt-4 space-y-3">
       <div className="grid grid-cols-3">
         <div className="text-gray-400">项目名称</div>
-        <div className="col-span-2">{tender?.name}</div>
+        <div className="col-span-2">{tender?.activeProfile?.name}</div>
       </div>
       <div className="grid grid-cols-3">
         <div className="text-gray-400">项目地址</div>
-        <div className="col-span-2">{tender?.fullAddress || "-"}</div>
+        <div className="col-span-2">
+          {tender?.activeProfile?.fullAddress || "-"}
+        </div>
       </div>
       <div className="grid grid-cols-3">
         <div className="text-gray-400">项目编号</div>
-        <div className="col-span-2">{tender?.tenderCode || "-"}</div>
+        <div className="col-span-2">
+          {tender?.activeProfile?.tenderCode || "-"}
+        </div>
       </div>
       <div className="grid grid-cols-3">
         <div className="text-gray-400">业主</div>
-        <div className="col-span-2">{tender?.developer || "-"}</div>
+        <div className="col-span-2">
+          {tender?.activeProfile?.developer || "-"}
+        </div>
       </div>
       <div className="grid grid-cols-3">
         <div className="text-gray-400">总包单位</div>
-        <div className="col-span-2">{tender?.contractor || "-"}</div>
+        <div className="col-span-2">
+          {tender?.activeProfile?.contractor || "-"}
+        </div>
       </div>
       <div className="grid grid-cols-3">
-        <div className="text-gray-400">則師</div>
-        <div className="col-span-2">{tender?.architect || "-"}</div>
+        <div className="text-gray-400">则師</div>
+        <div className="col-span-2">
+          {tender?.activeProfile?.architect || "-"}
+        </div>
       </div>
       <div className="grid grid-cols-3">
         <div className="text-gray-400">幕牆顧問</div>
-        <div className="col-span-2">{tender?.facadeConsultant || "-"}</div>
+        <div className="col-span-2">
+          {tender?.activeProfile?.facadeConsultant || "-"}
+        </div>
       </div>
       <div className="grid grid-cols-3">
         <div className="text-gray-400">交標日期</div>
         <div className="col-span-2">
-          {tender?.tenderClosingDate
-            ? dayjs(tender.tenderClosingDate).format("LL")
+          {tender?.activeProfile?.tenderClosingDate
+            ? dayjs(tender.activeProfile?.tenderClosingDate).format("LL")
             : "-"}
         </div>
       </div>
@@ -381,35 +424,39 @@ function GAInfo({ tender }: { tender: Tender }) {
       </div>
       <div className="grid grid-cols-3">
         <div className="text-gray-400">面積</div>
-        <div className="col-span-2">{tender?.constructionArea || "-"}</div>
+        <div className="col-span-2">
+          {tender?.activeProfile?.constructionArea || "-"}
+        </div>
       </div>
       <div className="grid grid-cols-3">
         <div className="text-gray-400">中標日期</div>
         <div className="col-span-2">
-          {tender?.tenderWinDate
-            ? dayjs(tender.tenderWinDate).format("LL")
+          {tender?.activeProfile?.tenderWinDate
+            ? dayjs(tender.activeProfile?.tenderWinDate).format("LL")
             : "-"}
         </div>
       </div>
       <div className="grid grid-cols-3">
         <div className="text-gray-400">中標金額</div>
         <div className="col-span-2">
-          {tender?.tenderWinAmount
-            ? `${fixAmount(tender?.tenderWinAmount)} 亿`
+          {tender?.activeProfile?.tenderWinAmount
+            ? `${fixAmount(tender?.activeProfile?.tenderWinAmount)} 亿`
             : "-"}
         </div>
       </div>
       <div className="grid grid-cols-3">
         <div className="text-gray-400">最後出標金額</div>
         <div className="col-span-2">
-          {tender?.lastTenderAmount
-            ? `${fixAmount(tender.lastTenderAmount)} 亿`
+          {tender?.activeProfile?.lastTenderAmount
+            ? `${fixAmount(tender?.activeProfile?.lastTenderAmount)} 亿`
             : "-"}
         </div>
       </div>
       <div className="grid grid-cols-3">
         <div className="text-gray-400">中標對手</div>
-        <div className="col-span-2">{tender?.tenderWinCompany || "-"}</div>
+        <div className="col-span-2">
+          {tender?.activeProfile?.tenderWinCompany || "-"}
+        </div>
       </div>
     </div>
   );

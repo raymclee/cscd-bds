@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<d41cf8f097b294d9c6f5593250898209>>
+ * @generated SignedSource<<2928830343ebc40a95c799d93830834c>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -180,7 +180,7 @@ export type CreateTenderProfileInput = {
   customerRelationshipRatingOverview?: string | null | undefined;
   designUnit?: string | null | undefined;
   developer?: string | null | undefined;
-  discoveryDate: any;
+  discoveryDate?: any | null | undefined;
   districtID?: string | null | undefined;
   estimatedAmount?: number | null | undefined;
   estimatedProjectEndDate?: any | null | undefined;
@@ -194,7 +194,7 @@ export type CreateTenderProfileInput = {
   lastTenderAmount?: number | null | undefined;
   levelInvolved?: number | null | undefined;
   managementCompany?: string | null | undefined;
-  name: string;
+  name?: string | null | undefined;
   ownerSituations?: string | null | undefined;
   prepareToBid?: boolean | null | undefined;
   projectCode?: string | null | undefined;

@@ -661,6 +661,16 @@ func NameHasSuffix(v string) predicate.TenderProfile {
 	return predicate.TenderProfile(sql.FieldHasSuffix(FieldName, v))
 }
 
+// NameIsNil applies the IsNil predicate on the "name" field.
+func NameIsNil() predicate.TenderProfile {
+	return predicate.TenderProfile(sql.FieldIsNull(FieldName))
+}
+
+// NameNotNil applies the NotNil predicate on the "name" field.
+func NameNotNil() predicate.TenderProfile {
+	return predicate.TenderProfile(sql.FieldNotNull(FieldName))
+}
+
 // NameEqualFold applies the EqualFold predicate on the "name" field.
 func NameEqualFold(v string) predicate.TenderProfile {
 	return predicate.TenderProfile(sql.FieldEqualFold(FieldName, v))
@@ -859,6 +869,16 @@ func DiscoveryDateLT(v time.Time) predicate.TenderProfile {
 // DiscoveryDateLTE applies the LTE predicate on the "discovery_date" field.
 func DiscoveryDateLTE(v time.Time) predicate.TenderProfile {
 	return predicate.TenderProfile(sql.FieldLTE(FieldDiscoveryDate, v))
+}
+
+// DiscoveryDateIsNil applies the IsNil predicate on the "discovery_date" field.
+func DiscoveryDateIsNil() predicate.TenderProfile {
+	return predicate.TenderProfile(sql.FieldIsNull(FieldDiscoveryDate))
+}
+
+// DiscoveryDateNotNil applies the NotNil predicate on the "discovery_date" field.
+func DiscoveryDateNotNil() predicate.TenderProfile {
+	return predicate.TenderProfile(sql.FieldNotNull(FieldDiscoveryDate))
 }
 
 // AddressEQ applies the EQ predicate on the "address" field.

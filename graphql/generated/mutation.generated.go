@@ -30,12 +30,11 @@ type MutationResolver interface {
 	RejectCustomer(ctx context.Context, id xid.ID) (*ent.Customer, error)
 	CreateCustomerV2(ctx context.Context, customerInput ent.CreateCustomerInput, profileInput ent.CreateCustomerProfileInput) (*ent.Customer, error)
 	UpdateCustomerV2(ctx context.Context, id xid.ID, customerInput ent.UpdateCustomerInput, profileInput ent.CreateCustomerProfileInput) (*ent.Customer, error)
-	CreateTender(ctx context.Context, input ent.CreateTenderInput, geoBounds [][]float64, imageFileNames []string, attachmentFileNames []string, geoCoordinate []float64) (*ent.TenderConnection, error)
-	UpdateTender(ctx context.Context, id xid.ID, input ent.UpdateTenderInput, geoBounds [][]float64, imageFileNames []string, removeImageFileNames []string, attachmentFileNames []string, removeAttachmentFileNames []string, geoCoordinate []float64) (*ent.Tender, error)
+	CreateTender(ctx context.Context, tenderInput ent.CreateTenderInput, profileInput ent.CreateTenderProfileInput, imageFileNames []string) (*ent.Tender, error)
+	UpdateTender(ctx context.Context, id xid.ID, tenderInput ent.UpdateTenderInput, profileInput ent.CreateTenderProfileInput, imageFileNames []string) (*ent.Tender, error)
 	CreateTenderV2(ctx context.Context, tenderInput ent.CreateTenderInput, profileInput ent.CreateTenderProfileInput, imageFileNames []string, attachmentFileNames []string) (*ent.Tender, error)
 	UpdateTenderV2(ctx context.Context, id xid.ID, tenderInput ent.UpdateTenderInput, profileInput ent.CreateTenderProfileInput, imageFileNames []string, attachmentFileNames []string) (*ent.Tender, error)
-	CreateTenderProfile(ctx context.Context, id xid.ID, input ent.CreateTenderProfileInput, imageFileNames []string, attachmentFileNames []string) (*ent.Tender, error)
-	DeleteTender(ctx context.Context, id xid.ID) (*ent.Tender, error)
+	VoidTender(ctx context.Context, id xid.ID) (*ent.Tender, error)
 	WinTender(ctx context.Context, id xid.ID, input model.WinTenderInput) (*ent.Tender, error)
 	LoseTender(ctx context.Context, id xid.ID, input model.LoseTenderInput) (*ent.Tender, error)
 	ApproveTender(ctx context.Context, id xid.ID) (*ent.Tender, error)
@@ -334,119 +333,6 @@ func (ec *executionContext) field_Mutation_createPlot_argsGeoBounds(
 	return zeroVal, nil
 }
 
-func (ec *executionContext) field_Mutation_createTenderProfile_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
-	var err error
-	args := map[string]interface{}{}
-	arg0, err := ec.field_Mutation_createTenderProfile_argsID(ctx, rawArgs)
-	if err != nil {
-		return nil, err
-	}
-	args["id"] = arg0
-	arg1, err := ec.field_Mutation_createTenderProfile_argsInput(ctx, rawArgs)
-	if err != nil {
-		return nil, err
-	}
-	args["input"] = arg1
-	arg2, err := ec.field_Mutation_createTenderProfile_argsImageFileNames(ctx, rawArgs)
-	if err != nil {
-		return nil, err
-	}
-	args["imageFileNames"] = arg2
-	arg3, err := ec.field_Mutation_createTenderProfile_argsAttachmentFileNames(ctx, rawArgs)
-	if err != nil {
-		return nil, err
-	}
-	args["attachmentFileNames"] = arg3
-	return args, nil
-}
-func (ec *executionContext) field_Mutation_createTenderProfile_argsID(
-	ctx context.Context,
-	rawArgs map[string]interface{},
-) (xid.ID, error) {
-	// We won't call the directive if the argument is null.
-	// Set call_argument_directives_with_null to true to call directives
-	// even if the argument is null.
-	_, ok := rawArgs["id"]
-	if !ok {
-		var zeroVal xid.ID
-		return zeroVal, nil
-	}
-
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
-	if tmp, ok := rawArgs["id"]; ok {
-		return ec.unmarshalNID2cscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, tmp)
-	}
-
-	var zeroVal xid.ID
-	return zeroVal, nil
-}
-
-func (ec *executionContext) field_Mutation_createTenderProfile_argsInput(
-	ctx context.Context,
-	rawArgs map[string]interface{},
-) (ent.CreateTenderProfileInput, error) {
-	// We won't call the directive if the argument is null.
-	// Set call_argument_directives_with_null to true to call directives
-	// even if the argument is null.
-	_, ok := rawArgs["input"]
-	if !ok {
-		var zeroVal ent.CreateTenderProfileInput
-		return zeroVal, nil
-	}
-
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNCreateTenderProfileInput2cscdᚑbdsᚋstoreᚋentᚐCreateTenderProfileInput(ctx, tmp)
-	}
-
-	var zeroVal ent.CreateTenderProfileInput
-	return zeroVal, nil
-}
-
-func (ec *executionContext) field_Mutation_createTenderProfile_argsImageFileNames(
-	ctx context.Context,
-	rawArgs map[string]interface{},
-) ([]string, error) {
-	// We won't call the directive if the argument is null.
-	// Set call_argument_directives_with_null to true to call directives
-	// even if the argument is null.
-	_, ok := rawArgs["imageFileNames"]
-	if !ok {
-		var zeroVal []string
-		return zeroVal, nil
-	}
-
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("imageFileNames"))
-	if tmp, ok := rawArgs["imageFileNames"]; ok {
-		return ec.unmarshalNString2ᚕstringᚄ(ctx, tmp)
-	}
-
-	var zeroVal []string
-	return zeroVal, nil
-}
-
-func (ec *executionContext) field_Mutation_createTenderProfile_argsAttachmentFileNames(
-	ctx context.Context,
-	rawArgs map[string]interface{},
-) ([]string, error) {
-	// We won't call the directive if the argument is null.
-	// Set call_argument_directives_with_null to true to call directives
-	// even if the argument is null.
-	_, ok := rawArgs["attachmentFileNames"]
-	if !ok {
-		var zeroVal []string
-		return zeroVal, nil
-	}
-
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("attachmentFileNames"))
-	if tmp, ok := rawArgs["attachmentFileNames"]; ok {
-		return ec.unmarshalNString2ᚕstringᚄ(ctx, tmp)
-	}
-
-	var zeroVal []string
-	return zeroVal, nil
-}
-
 func (ec *executionContext) field_Mutation_createTenderV2_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
@@ -563,48 +449,38 @@ func (ec *executionContext) field_Mutation_createTenderV2_argsAttachmentFileName
 func (ec *executionContext) field_Mutation_createTender_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
-	arg0, err := ec.field_Mutation_createTender_argsInput(ctx, rawArgs)
+	arg0, err := ec.field_Mutation_createTender_argsTenderInput(ctx, rawArgs)
 	if err != nil {
 		return nil, err
 	}
-	args["input"] = arg0
-	arg1, err := ec.field_Mutation_createTender_argsGeoBounds(ctx, rawArgs)
+	args["tenderInput"] = arg0
+	arg1, err := ec.field_Mutation_createTender_argsProfileInput(ctx, rawArgs)
 	if err != nil {
 		return nil, err
 	}
-	args["geoBounds"] = arg1
+	args["profileInput"] = arg1
 	arg2, err := ec.field_Mutation_createTender_argsImageFileNames(ctx, rawArgs)
 	if err != nil {
 		return nil, err
 	}
 	args["imageFileNames"] = arg2
-	arg3, err := ec.field_Mutation_createTender_argsAttachmentFileNames(ctx, rawArgs)
-	if err != nil {
-		return nil, err
-	}
-	args["attachmentFileNames"] = arg3
-	arg4, err := ec.field_Mutation_createTender_argsGeoCoordinate(ctx, rawArgs)
-	if err != nil {
-		return nil, err
-	}
-	args["geoCoordinate"] = arg4
 	return args, nil
 }
-func (ec *executionContext) field_Mutation_createTender_argsInput(
+func (ec *executionContext) field_Mutation_createTender_argsTenderInput(
 	ctx context.Context,
 	rawArgs map[string]interface{},
 ) (ent.CreateTenderInput, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
-	_, ok := rawArgs["input"]
+	_, ok := rawArgs["tenderInput"]
 	if !ok {
 		var zeroVal ent.CreateTenderInput
 		return zeroVal, nil
 	}
 
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-	if tmp, ok := rawArgs["input"]; ok {
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderInput"))
+	if tmp, ok := rawArgs["tenderInput"]; ok {
 		return ec.unmarshalNCreateTenderInput2cscdᚑbdsᚋstoreᚋentᚐCreateTenderInput(ctx, tmp)
 	}
 
@@ -612,25 +488,25 @@ func (ec *executionContext) field_Mutation_createTender_argsInput(
 	return zeroVal, nil
 }
 
-func (ec *executionContext) field_Mutation_createTender_argsGeoBounds(
+func (ec *executionContext) field_Mutation_createTender_argsProfileInput(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) ([][]float64, error) {
+) (ent.CreateTenderProfileInput, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
-	_, ok := rawArgs["geoBounds"]
+	_, ok := rawArgs["profileInput"]
 	if !ok {
-		var zeroVal [][]float64
+		var zeroVal ent.CreateTenderProfileInput
 		return zeroVal, nil
 	}
 
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("geoBounds"))
-	if tmp, ok := rawArgs["geoBounds"]; ok {
-		return ec.unmarshalOFloat2ᚕᚕfloat64ᚄ(ctx, tmp)
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("profileInput"))
+	if tmp, ok := rawArgs["profileInput"]; ok {
+		return ec.unmarshalNCreateTenderProfileInput2cscdᚑbdsᚋstoreᚋentᚐCreateTenderProfileInput(ctx, tmp)
 	}
 
-	var zeroVal [][]float64
+	var zeroVal ent.CreateTenderProfileInput
 	return zeroVal, nil
 }
 
@@ -653,50 +529,6 @@ func (ec *executionContext) field_Mutation_createTender_argsImageFileNames(
 	}
 
 	var zeroVal []string
-	return zeroVal, nil
-}
-
-func (ec *executionContext) field_Mutation_createTender_argsAttachmentFileNames(
-	ctx context.Context,
-	rawArgs map[string]interface{},
-) ([]string, error) {
-	// We won't call the directive if the argument is null.
-	// Set call_argument_directives_with_null to true to call directives
-	// even if the argument is null.
-	_, ok := rawArgs["attachmentFileNames"]
-	if !ok {
-		var zeroVal []string
-		return zeroVal, nil
-	}
-
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("attachmentFileNames"))
-	if tmp, ok := rawArgs["attachmentFileNames"]; ok {
-		return ec.unmarshalNString2ᚕstringᚄ(ctx, tmp)
-	}
-
-	var zeroVal []string
-	return zeroVal, nil
-}
-
-func (ec *executionContext) field_Mutation_createTender_argsGeoCoordinate(
-	ctx context.Context,
-	rawArgs map[string]interface{},
-) ([]float64, error) {
-	// We won't call the directive if the argument is null.
-	// Set call_argument_directives_with_null to true to call directives
-	// even if the argument is null.
-	_, ok := rawArgs["geoCoordinate"]
-	if !ok {
-		var zeroVal []float64
-		return zeroVal, nil
-	}
-
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("geoCoordinate"))
-	if tmp, ok := rawArgs["geoCoordinate"]; ok {
-		return ec.unmarshalOFloat2ᚕfloat64ᚄ(ctx, tmp)
-	}
-
-	var zeroVal []float64
 	return zeroVal, nil
 }
 
@@ -839,38 +671,6 @@ func (ec *executionContext) field_Mutation_deletePlot_args(ctx context.Context, 
 	return args, nil
 }
 func (ec *executionContext) field_Mutation_deletePlot_argsID(
-	ctx context.Context,
-	rawArgs map[string]interface{},
-) (xid.ID, error) {
-	// We won't call the directive if the argument is null.
-	// Set call_argument_directives_with_null to true to call directives
-	// even if the argument is null.
-	_, ok := rawArgs["id"]
-	if !ok {
-		var zeroVal xid.ID
-		return zeroVal, nil
-	}
-
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
-	if tmp, ok := rawArgs["id"]; ok {
-		return ec.unmarshalNID2cscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, tmp)
-	}
-
-	var zeroVal xid.ID
-	return zeroVal, nil
-}
-
-func (ec *executionContext) field_Mutation_deleteTender_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
-	var err error
-	args := map[string]interface{}{}
-	arg0, err := ec.field_Mutation_deleteTender_argsID(ctx, rawArgs)
-	if err != nil {
-		return nil, err
-	}
-	args["id"] = arg0
-	return args, nil
-}
-func (ec *executionContext) field_Mutation_deleteTender_argsID(
 	ctx context.Context,
 	rawArgs map[string]interface{},
 ) (xid.ID, error) {
@@ -1635,41 +1435,21 @@ func (ec *executionContext) field_Mutation_updateTender_args(ctx context.Context
 		return nil, err
 	}
 	args["id"] = arg0
-	arg1, err := ec.field_Mutation_updateTender_argsInput(ctx, rawArgs)
+	arg1, err := ec.field_Mutation_updateTender_argsTenderInput(ctx, rawArgs)
 	if err != nil {
 		return nil, err
 	}
-	args["input"] = arg1
-	arg2, err := ec.field_Mutation_updateTender_argsGeoBounds(ctx, rawArgs)
+	args["tenderInput"] = arg1
+	arg2, err := ec.field_Mutation_updateTender_argsProfileInput(ctx, rawArgs)
 	if err != nil {
 		return nil, err
 	}
-	args["geoBounds"] = arg2
+	args["profileInput"] = arg2
 	arg3, err := ec.field_Mutation_updateTender_argsImageFileNames(ctx, rawArgs)
 	if err != nil {
 		return nil, err
 	}
 	args["imageFileNames"] = arg3
-	arg4, err := ec.field_Mutation_updateTender_argsRemoveImageFileNames(ctx, rawArgs)
-	if err != nil {
-		return nil, err
-	}
-	args["removeImageFileNames"] = arg4
-	arg5, err := ec.field_Mutation_updateTender_argsAttachmentFileNames(ctx, rawArgs)
-	if err != nil {
-		return nil, err
-	}
-	args["attachmentFileNames"] = arg5
-	arg6, err := ec.field_Mutation_updateTender_argsRemoveAttachmentFileNames(ctx, rawArgs)
-	if err != nil {
-		return nil, err
-	}
-	args["removeAttachmentFileNames"] = arg6
-	arg7, err := ec.field_Mutation_updateTender_argsGeoCoordinate(ctx, rawArgs)
-	if err != nil {
-		return nil, err
-	}
-	args["geoCoordinate"] = arg7
 	return args, nil
 }
 func (ec *executionContext) field_Mutation_updateTender_argsID(
@@ -1694,21 +1474,21 @@ func (ec *executionContext) field_Mutation_updateTender_argsID(
 	return zeroVal, nil
 }
 
-func (ec *executionContext) field_Mutation_updateTender_argsInput(
+func (ec *executionContext) field_Mutation_updateTender_argsTenderInput(
 	ctx context.Context,
 	rawArgs map[string]interface{},
 ) (ent.UpdateTenderInput, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
-	_, ok := rawArgs["input"]
+	_, ok := rawArgs["tenderInput"]
 	if !ok {
 		var zeroVal ent.UpdateTenderInput
 		return zeroVal, nil
 	}
 
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-	if tmp, ok := rawArgs["input"]; ok {
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderInput"))
+	if tmp, ok := rawArgs["tenderInput"]; ok {
 		return ec.unmarshalNUpdateTenderInput2cscdᚑbdsᚋstoreᚋentᚐUpdateTenderInput(ctx, tmp)
 	}
 
@@ -1716,25 +1496,25 @@ func (ec *executionContext) field_Mutation_updateTender_argsInput(
 	return zeroVal, nil
 }
 
-func (ec *executionContext) field_Mutation_updateTender_argsGeoBounds(
+func (ec *executionContext) field_Mutation_updateTender_argsProfileInput(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) ([][]float64, error) {
+) (ent.CreateTenderProfileInput, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
-	_, ok := rawArgs["geoBounds"]
+	_, ok := rawArgs["profileInput"]
 	if !ok {
-		var zeroVal [][]float64
+		var zeroVal ent.CreateTenderProfileInput
 		return zeroVal, nil
 	}
 
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("geoBounds"))
-	if tmp, ok := rawArgs["geoBounds"]; ok {
-		return ec.unmarshalOFloat2ᚕᚕfloat64ᚄ(ctx, tmp)
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("profileInput"))
+	if tmp, ok := rawArgs["profileInput"]; ok {
+		return ec.unmarshalNCreateTenderProfileInput2cscdᚑbdsᚋstoreᚋentᚐCreateTenderProfileInput(ctx, tmp)
 	}
 
-	var zeroVal [][]float64
+	var zeroVal ent.CreateTenderProfileInput
 	return zeroVal, nil
 }
 
@@ -1757,94 +1537,6 @@ func (ec *executionContext) field_Mutation_updateTender_argsImageFileNames(
 	}
 
 	var zeroVal []string
-	return zeroVal, nil
-}
-
-func (ec *executionContext) field_Mutation_updateTender_argsRemoveImageFileNames(
-	ctx context.Context,
-	rawArgs map[string]interface{},
-) ([]string, error) {
-	// We won't call the directive if the argument is null.
-	// Set call_argument_directives_with_null to true to call directives
-	// even if the argument is null.
-	_, ok := rawArgs["removeImageFileNames"]
-	if !ok {
-		var zeroVal []string
-		return zeroVal, nil
-	}
-
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("removeImageFileNames"))
-	if tmp, ok := rawArgs["removeImageFileNames"]; ok {
-		return ec.unmarshalOString2ᚕstringᚄ(ctx, tmp)
-	}
-
-	var zeroVal []string
-	return zeroVal, nil
-}
-
-func (ec *executionContext) field_Mutation_updateTender_argsAttachmentFileNames(
-	ctx context.Context,
-	rawArgs map[string]interface{},
-) ([]string, error) {
-	// We won't call the directive if the argument is null.
-	// Set call_argument_directives_with_null to true to call directives
-	// even if the argument is null.
-	_, ok := rawArgs["attachmentFileNames"]
-	if !ok {
-		var zeroVal []string
-		return zeroVal, nil
-	}
-
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("attachmentFileNames"))
-	if tmp, ok := rawArgs["attachmentFileNames"]; ok {
-		return ec.unmarshalOString2ᚕstringᚄ(ctx, tmp)
-	}
-
-	var zeroVal []string
-	return zeroVal, nil
-}
-
-func (ec *executionContext) field_Mutation_updateTender_argsRemoveAttachmentFileNames(
-	ctx context.Context,
-	rawArgs map[string]interface{},
-) ([]string, error) {
-	// We won't call the directive if the argument is null.
-	// Set call_argument_directives_with_null to true to call directives
-	// even if the argument is null.
-	_, ok := rawArgs["removeAttachmentFileNames"]
-	if !ok {
-		var zeroVal []string
-		return zeroVal, nil
-	}
-
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("removeAttachmentFileNames"))
-	if tmp, ok := rawArgs["removeAttachmentFileNames"]; ok {
-		return ec.unmarshalOString2ᚕstringᚄ(ctx, tmp)
-	}
-
-	var zeroVal []string
-	return zeroVal, nil
-}
-
-func (ec *executionContext) field_Mutation_updateTender_argsGeoCoordinate(
-	ctx context.Context,
-	rawArgs map[string]interface{},
-) ([]float64, error) {
-	// We won't call the directive if the argument is null.
-	// Set call_argument_directives_with_null to true to call directives
-	// even if the argument is null.
-	_, ok := rawArgs["geoCoordinate"]
-	if !ok {
-		var zeroVal []float64
-		return zeroVal, nil
-	}
-
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("geoCoordinate"))
-	if tmp, ok := rawArgs["geoCoordinate"]; ok {
-		return ec.unmarshalOFloat2ᚕfloat64ᚄ(ctx, tmp)
-	}
-
-	var zeroVal []float64
 	return zeroVal, nil
 }
 
@@ -1963,6 +1655,38 @@ func (ec *executionContext) field_Mutation_updateVisitRecord_argsInput(
 	}
 
 	var zeroVal ent.UpdateVisitRecordInput
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_voidTender_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_Mutation_voidTender_argsID(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["id"] = arg0
+	return args, nil
+}
+func (ec *executionContext) field_Mutation_voidTender_argsID(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (xid.ID, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["id"]
+	if !ok {
+		var zeroVal xid.ID
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
+	if tmp, ok := rawArgs["id"]; ok {
+		return ec.unmarshalNID2cscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, tmp)
+	}
+
+	var zeroVal xid.ID
 	return zeroVal, nil
 }
 
@@ -3229,7 +2953,7 @@ func (ec *executionContext) _Mutation_createTender(ctx context.Context, field gr
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().CreateTender(rctx, fc.Args["input"].(ent.CreateTenderInput), fc.Args["geoBounds"].([][]float64), fc.Args["imageFileNames"].([]string), fc.Args["attachmentFileNames"].([]string), fc.Args["geoCoordinate"].([]float64))
+		return ec.resolvers.Mutation().CreateTender(rctx, fc.Args["tenderInput"].(ent.CreateTenderInput), fc.Args["profileInput"].(ent.CreateTenderProfileInput), fc.Args["imageFileNames"].([]string))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -3241,9 +2965,9 @@ func (ec *executionContext) _Mutation_createTender(ctx context.Context, field gr
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*ent.TenderConnection)
+	res := resTmp.(*ent.Tender)
 	fc.Result = res
-	return ec.marshalNTenderConnection2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderConnection(ctx, field.Selections, res)
+	return ec.marshalNTender2ᚖcscdᚑbdsᚋstoreᚋentᚐTender(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_createTender(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -3254,14 +2978,178 @@ func (ec *executionContext) fieldContext_Mutation_createTender(ctx context.Conte
 		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
-			case "edges":
-				return ec.fieldContext_TenderConnection_edges(ctx, field)
-			case "pageInfo":
-				return ec.fieldContext_TenderConnection_pageInfo(ctx, field)
-			case "totalCount":
-				return ec.fieldContext_TenderConnection_totalCount(ctx, field)
+			case "id":
+				return ec.fieldContext_Tender_id(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_Tender_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_Tender_updatedAt(ctx, field)
+			case "code":
+				return ec.fieldContext_Tender_code(ctx, field)
+			case "status":
+				return ec.fieldContext_Tender_status(ctx, field)
+			case "approvalStatus":
+				return ec.fieldContext_Tender_approvalStatus(ctx, field)
+			case "approvalMsgID":
+				return ec.fieldContext_Tender_approvalMsgID(ctx, field)
+			case "name":
+				return ec.fieldContext_Tender_name(ctx, field)
+			case "estimatedAmount":
+				return ec.fieldContext_Tender_estimatedAmount(ctx, field)
+			case "tenderDate":
+				return ec.fieldContext_Tender_tenderDate(ctx, field)
+			case "classify":
+				return ec.fieldContext_Tender_classify(ctx, field)
+			case "discoveryDate":
+				return ec.fieldContext_Tender_discoveryDate(ctx, field)
+			case "address":
+				return ec.fieldContext_Tender_address(ctx, field)
+			case "fullAddress":
+				return ec.fieldContext_Tender_fullAddress(ctx, field)
+			case "contractor":
+				return ec.fieldContext_Tender_contractor(ctx, field)
+			case "levelInvolved":
+				return ec.fieldContext_Tender_levelInvolved(ctx, field)
+			case "sizeAndValueRating":
+				return ec.fieldContext_Tender_sizeAndValueRating(ctx, field)
+			case "sizeAndValueRatingOverview":
+				return ec.fieldContext_Tender_sizeAndValueRatingOverview(ctx, field)
+			case "creditAndPaymentRating":
+				return ec.fieldContext_Tender_creditAndPaymentRating(ctx, field)
+			case "creditAndPaymentRatingOverview":
+				return ec.fieldContext_Tender_creditAndPaymentRatingOverview(ctx, field)
+			case "timeLimitRating":
+				return ec.fieldContext_Tender_timeLimitRating(ctx, field)
+			case "timeLimitRatingOverview":
+				return ec.fieldContext_Tender_timeLimitRatingOverview(ctx, field)
+			case "customerRelationshipRating":
+				return ec.fieldContext_Tender_customerRelationshipRating(ctx, field)
+			case "customerRelationshipRatingOverview":
+				return ec.fieldContext_Tender_customerRelationshipRatingOverview(ctx, field)
+			case "competitivePartnershipRating":
+				return ec.fieldContext_Tender_competitivePartnershipRating(ctx, field)
+			case "competitivePartnershipRatingOverview":
+				return ec.fieldContext_Tender_competitivePartnershipRatingOverview(ctx, field)
+			case "prepareToBid":
+				return ec.fieldContext_Tender_prepareToBid(ctx, field)
+			case "projectCode":
+				return ec.fieldContext_Tender_projectCode(ctx, field)
+			case "projectType":
+				return ec.fieldContext_Tender_projectType(ctx, field)
+			case "projectDefinition":
+				return ec.fieldContext_Tender_projectDefinition(ctx, field)
+			case "estimatedProjectStartDate":
+				return ec.fieldContext_Tender_estimatedProjectStartDate(ctx, field)
+			case "estimatedProjectEndDate":
+				return ec.fieldContext_Tender_estimatedProjectEndDate(ctx, field)
+			case "attachements":
+				return ec.fieldContext_Tender_attachements(ctx, field)
+			case "remark":
+				return ec.fieldContext_Tender_remark(ctx, field)
+			case "images":
+				return ec.fieldContext_Tender_images(ctx, field)
+			case "tenderSituations":
+				return ec.fieldContext_Tender_tenderSituations(ctx, field)
+			case "ownerSituations":
+				return ec.fieldContext_Tender_ownerSituations(ctx, field)
+			case "biddingInstructions":
+				return ec.fieldContext_Tender_biddingInstructions(ctx, field)
+			case "competitorSituations":
+				return ec.fieldContext_Tender_competitorSituations(ctx, field)
+			case "costEngineer":
+				return ec.fieldContext_Tender_costEngineer(ctx, field)
+			case "tenderForm":
+				return ec.fieldContext_Tender_tenderForm(ctx, field)
+			case "contractForm":
+				return ec.fieldContext_Tender_contractForm(ctx, field)
+			case "managementCompany":
+				return ec.fieldContext_Tender_managementCompany(ctx, field)
+			case "tenderingAgency":
+				return ec.fieldContext_Tender_tenderingAgency(ctx, field)
+			case "biddingDate":
+				return ec.fieldContext_Tender_biddingDate(ctx, field)
+			case "facadeConsultant":
+				return ec.fieldContext_Tender_facadeConsultant(ctx, field)
+			case "designUnit":
+				return ec.fieldContext_Tender_designUnit(ctx, field)
+			case "consultingFirm":
+				return ec.fieldContext_Tender_consultingFirm(ctx, field)
+			case "keyProject":
+				return ec.fieldContext_Tender_keyProject(ctx, field)
+			case "currentProgress":
+				return ec.fieldContext_Tender_currentProgress(ctx, field)
+			case "tenderWinCompany":
+				return ec.fieldContext_Tender_tenderWinCompany(ctx, field)
+			case "tenderCode":
+				return ec.fieldContext_Tender_tenderCode(ctx, field)
+			case "architect":
+				return ec.fieldContext_Tender_architect(ctx, field)
+			case "developer":
+				return ec.fieldContext_Tender_developer(ctx, field)
+			case "tenderClosingDate":
+				return ec.fieldContext_Tender_tenderClosingDate(ctx, field)
+			case "constructionArea":
+				return ec.fieldContext_Tender_constructionArea(ctx, field)
+			case "tenderWinDate":
+				return ec.fieldContext_Tender_tenderWinDate(ctx, field)
+			case "tenderWinAmount":
+				return ec.fieldContext_Tender_tenderWinAmount(ctx, field)
+			case "lastTenderAmount":
+				return ec.fieldContext_Tender_lastTenderAmount(ctx, field)
+			case "areaID":
+				return ec.fieldContext_Tender_areaID(ctx, field)
+			case "provinceID":
+				return ec.fieldContext_Tender_provinceID(ctx, field)
+			case "cityID":
+				return ec.fieldContext_Tender_cityID(ctx, field)
+			case "districtID":
+				return ec.fieldContext_Tender_districtID(ctx, field)
+			case "customerID":
+				return ec.fieldContext_Tender_customerID(ctx, field)
+			case "finderID":
+				return ec.fieldContext_Tender_finderID(ctx, field)
+			case "createdByID":
+				return ec.fieldContext_Tender_createdByID(ctx, field)
+			case "approverID":
+				return ec.fieldContext_Tender_approverID(ctx, field)
+			case "activeProfileID":
+				return ec.fieldContext_Tender_activeProfileID(ctx, field)
+			case "pendingProfileID":
+				return ec.fieldContext_Tender_pendingProfileID(ctx, field)
+			case "area":
+				return ec.fieldContext_Tender_area(ctx, field)
+			case "profiles":
+				return ec.fieldContext_Tender_profiles(ctx, field)
+			case "competitors":
+				return ec.fieldContext_Tender_competitors(ctx, field)
+			case "customer":
+				return ec.fieldContext_Tender_customer(ctx, field)
+			case "finder":
+				return ec.fieldContext_Tender_finder(ctx, field)
+			case "createdBy":
+				return ec.fieldContext_Tender_createdBy(ctx, field)
+			case "followingSales":
+				return ec.fieldContext_Tender_followingSales(ctx, field)
+			case "province":
+				return ec.fieldContext_Tender_province(ctx, field)
+			case "city":
+				return ec.fieldContext_Tender_city(ctx, field)
+			case "district":
+				return ec.fieldContext_Tender_district(ctx, field)
+			case "visitRecords":
+				return ec.fieldContext_Tender_visitRecords(ctx, field)
+			case "approver":
+				return ec.fieldContext_Tender_approver(ctx, field)
+			case "activeProfile":
+				return ec.fieldContext_Tender_activeProfile(ctx, field)
+			case "pendingProfile":
+				return ec.fieldContext_Tender_pendingProfile(ctx, field)
+			case "geoCoordinate":
+				return ec.fieldContext_Tender_geoCoordinate(ctx, field)
+			case "geoBounds":
+				return ec.fieldContext_Tender_geoBounds(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type TenderConnection", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type Tender", field.Name)
 		},
 	}
 	defer func() {
@@ -3292,7 +3180,7 @@ func (ec *executionContext) _Mutation_updateTender(ctx context.Context, field gr
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().UpdateTender(rctx, fc.Args["id"].(xid.ID), fc.Args["input"].(ent.UpdateTenderInput), fc.Args["geoBounds"].([][]float64), fc.Args["imageFileNames"].([]string), fc.Args["removeImageFileNames"].([]string), fc.Args["attachmentFileNames"].([]string), fc.Args["removeAttachmentFileNames"].([]string), fc.Args["geoCoordinate"].([]float64))
+		return ec.resolvers.Mutation().UpdateTender(rctx, fc.Args["id"].(xid.ID), fc.Args["tenderInput"].(ent.UpdateTenderInput), fc.Args["profileInput"].(ent.CreateTenderProfileInput), fc.Args["imageFileNames"].([]string))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -3959,8 +3847,8 @@ func (ec *executionContext) fieldContext_Mutation_updateTenderV2(ctx context.Con
 	return fc, nil
 }
 
-func (ec *executionContext) _Mutation_createTenderProfile(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Mutation_createTenderProfile(ctx, field)
+func (ec *executionContext) _Mutation_voidTender(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_voidTender(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -3973,7 +3861,7 @@ func (ec *executionContext) _Mutation_createTenderProfile(ctx context.Context, f
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().CreateTenderProfile(rctx, fc.Args["id"].(xid.ID), fc.Args["input"].(ent.CreateTenderProfileInput), fc.Args["imageFileNames"].([]string), fc.Args["attachmentFileNames"].([]string))
+		return ec.resolvers.Mutation().VoidTender(rctx, fc.Args["id"].(xid.ID))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -3990,7 +3878,7 @@ func (ec *executionContext) _Mutation_createTenderProfile(ctx context.Context, f
 	return ec.marshalNTender2ᚖcscdᚑbdsᚋstoreᚋentᚐTender(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Mutation_createTenderProfile(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Mutation_voidTender(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Mutation",
 		Field:      field,
@@ -4179,234 +4067,7 @@ func (ec *executionContext) fieldContext_Mutation_createTenderProfile(ctx contex
 		}
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
-	if fc.Args, err = ec.field_Mutation_createTenderProfile_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
-		ec.Error(ctx, err)
-		return fc, err
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Mutation_deleteTender(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Mutation_deleteTender(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().DeleteTender(rctx, fc.Args["id"].(xid.ID))
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(*ent.Tender)
-	fc.Result = res
-	return ec.marshalNTender2ᚖcscdᚑbdsᚋstoreᚋentᚐTender(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Mutation_deleteTender(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Mutation",
-		Field:      field,
-		IsMethod:   true,
-		IsResolver: true,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "id":
-				return ec.fieldContext_Tender_id(ctx, field)
-			case "createdAt":
-				return ec.fieldContext_Tender_createdAt(ctx, field)
-			case "updatedAt":
-				return ec.fieldContext_Tender_updatedAt(ctx, field)
-			case "code":
-				return ec.fieldContext_Tender_code(ctx, field)
-			case "status":
-				return ec.fieldContext_Tender_status(ctx, field)
-			case "approvalStatus":
-				return ec.fieldContext_Tender_approvalStatus(ctx, field)
-			case "approvalMsgID":
-				return ec.fieldContext_Tender_approvalMsgID(ctx, field)
-			case "name":
-				return ec.fieldContext_Tender_name(ctx, field)
-			case "estimatedAmount":
-				return ec.fieldContext_Tender_estimatedAmount(ctx, field)
-			case "tenderDate":
-				return ec.fieldContext_Tender_tenderDate(ctx, field)
-			case "classify":
-				return ec.fieldContext_Tender_classify(ctx, field)
-			case "discoveryDate":
-				return ec.fieldContext_Tender_discoveryDate(ctx, field)
-			case "address":
-				return ec.fieldContext_Tender_address(ctx, field)
-			case "fullAddress":
-				return ec.fieldContext_Tender_fullAddress(ctx, field)
-			case "contractor":
-				return ec.fieldContext_Tender_contractor(ctx, field)
-			case "levelInvolved":
-				return ec.fieldContext_Tender_levelInvolved(ctx, field)
-			case "sizeAndValueRating":
-				return ec.fieldContext_Tender_sizeAndValueRating(ctx, field)
-			case "sizeAndValueRatingOverview":
-				return ec.fieldContext_Tender_sizeAndValueRatingOverview(ctx, field)
-			case "creditAndPaymentRating":
-				return ec.fieldContext_Tender_creditAndPaymentRating(ctx, field)
-			case "creditAndPaymentRatingOverview":
-				return ec.fieldContext_Tender_creditAndPaymentRatingOverview(ctx, field)
-			case "timeLimitRating":
-				return ec.fieldContext_Tender_timeLimitRating(ctx, field)
-			case "timeLimitRatingOverview":
-				return ec.fieldContext_Tender_timeLimitRatingOverview(ctx, field)
-			case "customerRelationshipRating":
-				return ec.fieldContext_Tender_customerRelationshipRating(ctx, field)
-			case "customerRelationshipRatingOverview":
-				return ec.fieldContext_Tender_customerRelationshipRatingOverview(ctx, field)
-			case "competitivePartnershipRating":
-				return ec.fieldContext_Tender_competitivePartnershipRating(ctx, field)
-			case "competitivePartnershipRatingOverview":
-				return ec.fieldContext_Tender_competitivePartnershipRatingOverview(ctx, field)
-			case "prepareToBid":
-				return ec.fieldContext_Tender_prepareToBid(ctx, field)
-			case "projectCode":
-				return ec.fieldContext_Tender_projectCode(ctx, field)
-			case "projectType":
-				return ec.fieldContext_Tender_projectType(ctx, field)
-			case "projectDefinition":
-				return ec.fieldContext_Tender_projectDefinition(ctx, field)
-			case "estimatedProjectStartDate":
-				return ec.fieldContext_Tender_estimatedProjectStartDate(ctx, field)
-			case "estimatedProjectEndDate":
-				return ec.fieldContext_Tender_estimatedProjectEndDate(ctx, field)
-			case "attachements":
-				return ec.fieldContext_Tender_attachements(ctx, field)
-			case "remark":
-				return ec.fieldContext_Tender_remark(ctx, field)
-			case "images":
-				return ec.fieldContext_Tender_images(ctx, field)
-			case "tenderSituations":
-				return ec.fieldContext_Tender_tenderSituations(ctx, field)
-			case "ownerSituations":
-				return ec.fieldContext_Tender_ownerSituations(ctx, field)
-			case "biddingInstructions":
-				return ec.fieldContext_Tender_biddingInstructions(ctx, field)
-			case "competitorSituations":
-				return ec.fieldContext_Tender_competitorSituations(ctx, field)
-			case "costEngineer":
-				return ec.fieldContext_Tender_costEngineer(ctx, field)
-			case "tenderForm":
-				return ec.fieldContext_Tender_tenderForm(ctx, field)
-			case "contractForm":
-				return ec.fieldContext_Tender_contractForm(ctx, field)
-			case "managementCompany":
-				return ec.fieldContext_Tender_managementCompany(ctx, field)
-			case "tenderingAgency":
-				return ec.fieldContext_Tender_tenderingAgency(ctx, field)
-			case "biddingDate":
-				return ec.fieldContext_Tender_biddingDate(ctx, field)
-			case "facadeConsultant":
-				return ec.fieldContext_Tender_facadeConsultant(ctx, field)
-			case "designUnit":
-				return ec.fieldContext_Tender_designUnit(ctx, field)
-			case "consultingFirm":
-				return ec.fieldContext_Tender_consultingFirm(ctx, field)
-			case "keyProject":
-				return ec.fieldContext_Tender_keyProject(ctx, field)
-			case "currentProgress":
-				return ec.fieldContext_Tender_currentProgress(ctx, field)
-			case "tenderWinCompany":
-				return ec.fieldContext_Tender_tenderWinCompany(ctx, field)
-			case "tenderCode":
-				return ec.fieldContext_Tender_tenderCode(ctx, field)
-			case "architect":
-				return ec.fieldContext_Tender_architect(ctx, field)
-			case "developer":
-				return ec.fieldContext_Tender_developer(ctx, field)
-			case "tenderClosingDate":
-				return ec.fieldContext_Tender_tenderClosingDate(ctx, field)
-			case "constructionArea":
-				return ec.fieldContext_Tender_constructionArea(ctx, field)
-			case "tenderWinDate":
-				return ec.fieldContext_Tender_tenderWinDate(ctx, field)
-			case "tenderWinAmount":
-				return ec.fieldContext_Tender_tenderWinAmount(ctx, field)
-			case "lastTenderAmount":
-				return ec.fieldContext_Tender_lastTenderAmount(ctx, field)
-			case "areaID":
-				return ec.fieldContext_Tender_areaID(ctx, field)
-			case "provinceID":
-				return ec.fieldContext_Tender_provinceID(ctx, field)
-			case "cityID":
-				return ec.fieldContext_Tender_cityID(ctx, field)
-			case "districtID":
-				return ec.fieldContext_Tender_districtID(ctx, field)
-			case "customerID":
-				return ec.fieldContext_Tender_customerID(ctx, field)
-			case "finderID":
-				return ec.fieldContext_Tender_finderID(ctx, field)
-			case "createdByID":
-				return ec.fieldContext_Tender_createdByID(ctx, field)
-			case "approverID":
-				return ec.fieldContext_Tender_approverID(ctx, field)
-			case "activeProfileID":
-				return ec.fieldContext_Tender_activeProfileID(ctx, field)
-			case "pendingProfileID":
-				return ec.fieldContext_Tender_pendingProfileID(ctx, field)
-			case "area":
-				return ec.fieldContext_Tender_area(ctx, field)
-			case "profiles":
-				return ec.fieldContext_Tender_profiles(ctx, field)
-			case "competitors":
-				return ec.fieldContext_Tender_competitors(ctx, field)
-			case "customer":
-				return ec.fieldContext_Tender_customer(ctx, field)
-			case "finder":
-				return ec.fieldContext_Tender_finder(ctx, field)
-			case "createdBy":
-				return ec.fieldContext_Tender_createdBy(ctx, field)
-			case "followingSales":
-				return ec.fieldContext_Tender_followingSales(ctx, field)
-			case "province":
-				return ec.fieldContext_Tender_province(ctx, field)
-			case "city":
-				return ec.fieldContext_Tender_city(ctx, field)
-			case "district":
-				return ec.fieldContext_Tender_district(ctx, field)
-			case "visitRecords":
-				return ec.fieldContext_Tender_visitRecords(ctx, field)
-			case "approver":
-				return ec.fieldContext_Tender_approver(ctx, field)
-			case "activeProfile":
-				return ec.fieldContext_Tender_activeProfile(ctx, field)
-			case "pendingProfile":
-				return ec.fieldContext_Tender_pendingProfile(ctx, field)
-			case "geoCoordinate":
-				return ec.fieldContext_Tender_geoCoordinate(ctx, field)
-			case "geoBounds":
-				return ec.fieldContext_Tender_geoBounds(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type Tender", field.Name)
-		},
-	}
-	defer func() {
-		if r := recover(); r != nil {
-			err = ec.Recover(ctx, r)
-			ec.Error(ctx, err)
-		}
-	}()
-	ctx = graphql.WithFieldContext(ctx, fc)
-	if fc.Args, err = ec.field_Mutation_deleteTender_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+	if fc.Args, err = ec.field_Mutation_voidTender_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
 	}
@@ -6447,16 +6108,9 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "createTenderProfile":
+		case "voidTender":
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
-				return ec._Mutation_createTenderProfile(ctx, field)
-			})
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
-			}
-		case "deleteTender":
-			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
-				return ec._Mutation_deleteTender(ctx, field)
+				return ec._Mutation_voidTender(ctx, field)
 			})
 			if out.Values[i] == graphql.Null {
 				out.Invalids++

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<b48c3cd9db47d3c3ee643ac6ce752e00>>
+ * @generated SignedSource<<704c408d872f88e74dee44413d0e78f8>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -51,6 +51,7 @@ export type CreateCustomerProfileInput = {
   updatedAt?: any | null | undefined;
 };
 export type useCreateCustomerV2Mutation$variables = {
+  connections: ReadonlyArray<string>;
   customerInput: CreateCustomerInput;
   profileInput: CreateCustomerProfileInput;
 };
@@ -86,19 +87,22 @@ export type useCreateCustomerV2Mutation = {
 };
 
 const node: ConcreteRequest = (function(){
-var v0 = [
-  {
-    "defaultValue": null,
-    "kind": "LocalArgument",
-    "name": "customerInput"
-  },
-  {
-    "defaultValue": null,
-    "kind": "LocalArgument",
-    "name": "profileInput"
-  }
-],
-v1 = [
+var v0 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "connections"
+},
+v1 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "customerInput"
+},
+v2 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "profileInput"
+},
+v3 = [
   {
     "kind": "Variable",
     "name": "customerInput",
@@ -110,63 +114,63 @@ v1 = [
     "variableName": "profileInput"
   }
 ],
-v2 = {
+v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v3 = {
+v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "approvalStatus",
   "storageKey": null
 },
-v4 = {
+v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
 },
-v5 = {
+v7 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "createdAt",
   "storageKey": null
 },
-v6 = {
+v8 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "ownerType",
   "storageKey": null
 },
-v7 = {
+v9 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "industry",
   "storageKey": null
 },
-v8 = {
+v10 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "size",
   "storageKey": null
 },
-v9 = {
+v11 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "code",
   "storageKey": null
 },
-v10 = {
+v12 = {
   "alias": null,
   "args": null,
   "concreteType": "TenderConnection",
@@ -190,7 +194,7 @@ v10 = {
           "name": "node",
           "plural": false,
           "selections": [
-            (v2/*: any*/)
+            (v4/*: any*/)
           ],
           "storageKey": null
         }
@@ -200,11 +204,11 @@ v10 = {
   ],
   "storageKey": null
 },
-v11 = [
-  (v2/*: any*/),
-  (v4/*: any*/)
+v13 = [
+  (v4/*: any*/),
+  (v6/*: any*/)
 ],
-v12 = {
+v14 = {
   "alias": null,
   "args": null,
   "concreteType": "User",
@@ -212,73 +216,73 @@ v12 = {
   "name": "createdBy",
   "plural": false,
   "selections": [
-    (v4/*: any*/),
-    (v2/*: any*/)
+    (v6/*: any*/),
+    (v4/*: any*/)
   ],
-  "storageKey": null
-},
-v13 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "updatedAt",
-  "storageKey": null
-},
-v14 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "contactPerson",
   "storageKey": null
 },
 v15 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "contactPersonPosition",
+  "name": "updatedAt",
   "storageKey": null
 },
 v16 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "contactPersonPhone",
+  "name": "contactPerson",
   "storageKey": null
 },
 v17 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "contactPersonEmail",
+  "name": "contactPersonPosition",
   "storageKey": null
 },
 v18 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "contactPersonPhone",
+  "storageKey": null
+},
+v19 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "contactPersonEmail",
+  "storageKey": null
+},
+v20 = {
   "alias": null,
   "args": null,
   "concreteType": "User",
   "kind": "LinkedField",
   "name": "sales",
   "plural": false,
-  "selections": (v11/*: any*/),
+  "selections": (v13/*: any*/),
   "storageKey": null
 },
-v19 = [
-  (v2/*: any*/),
+v21 = [
   (v4/*: any*/),
-  (v5/*: any*/),
-  (v12/*: any*/),
-  (v13/*: any*/),
   (v6/*: any*/),
   (v7/*: any*/),
-  (v8/*: any*/),
-  (v3/*: any*/),
   (v14/*: any*/),
   (v15/*: any*/),
+  (v8/*: any*/),
+  (v9/*: any*/),
+  (v10/*: any*/),
+  (v5/*: any*/),
   (v16/*: any*/),
   (v17/*: any*/),
-  (v18/*: any*/)
+  (v18/*: any*/),
+  (v19/*: any*/),
+  (v20/*: any*/)
 ],
-v20 = [
+v22 = [
   {
     "kind": "Literal",
     "name": "last",
@@ -287,14 +291,18 @@ v20 = [
 ];
 return {
   "fragment": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [
+      (v0/*: any*/),
+      (v1/*: any*/),
+      (v2/*: any*/)
+    ],
     "kind": "Fragment",
     "metadata": null,
     "name": "useCreateCustomerV2Mutation",
     "selections": [
       {
         "alias": null,
-        "args": (v1/*: any*/),
+        "args": (v3/*: any*/),
         "concreteType": "Customer",
         "kind": "LinkedField",
         "name": "createCustomerV2",
@@ -313,13 +321,13 @@ return {
             "name": "activeProfile",
             "plural": false,
             "selections": [
-              (v2/*: any*/),
-              (v3/*: any*/),
               (v4/*: any*/),
               (v5/*: any*/),
               (v6/*: any*/),
               (v7/*: any*/),
-              (v8/*: any*/)
+              (v8/*: any*/),
+              (v9/*: any*/),
+              (v10/*: any*/)
             ],
             "storageKey": null
           },
@@ -331,13 +339,13 @@ return {
             "name": "area",
             "plural": false,
             "selections": [
-              (v2/*: any*/),
-              (v9/*: any*/),
-              (v4/*: any*/)
+              (v4/*: any*/),
+              (v11/*: any*/),
+              (v6/*: any*/)
             ],
             "storageKey": null
           },
-          (v10/*: any*/)
+          (v12/*: any*/)
         ],
         "storageKey": null
       }
@@ -347,20 +355,24 @@ return {
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [
+      (v1/*: any*/),
+      (v2/*: any*/),
+      (v0/*: any*/)
+    ],
     "kind": "Operation",
     "name": "useCreateCustomerV2Mutation",
     "selections": [
       {
         "alias": null,
-        "args": (v1/*: any*/),
+        "args": (v3/*: any*/),
         "concreteType": "Customer",
         "kind": "LinkedField",
         "name": "createCustomerV2",
         "plural": false,
         "selections": [
-          (v2/*: any*/),
-          (v5/*: any*/),
+          (v4/*: any*/),
+          (v7/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -368,7 +380,7 @@ return {
             "kind": "LinkedField",
             "name": "createdBy",
             "plural": false,
-            "selections": (v11/*: any*/),
+            "selections": (v13/*: any*/),
             "storageKey": null
           },
           {
@@ -379,9 +391,9 @@ return {
             "name": "area",
             "plural": false,
             "selections": [
-              (v2/*: any*/),
               (v4/*: any*/),
-              (v9/*: any*/)
+              (v6/*: any*/),
+              (v11/*: any*/)
             ],
             "storageKey": null
           },
@@ -393,20 +405,20 @@ return {
             "name": "activeProfile",
             "plural": false,
             "selections": [
-              (v2/*: any*/),
               (v4/*: any*/),
-              (v5/*: any*/),
-              (v12/*: any*/),
-              (v13/*: any*/),
               (v6/*: any*/),
               (v7/*: any*/),
-              (v8/*: any*/),
-              (v3/*: any*/),
               (v14/*: any*/),
               (v15/*: any*/),
+              (v8/*: any*/),
+              (v9/*: any*/),
+              (v10/*: any*/),
+              (v5/*: any*/),
               (v16/*: any*/),
               (v17/*: any*/),
               (v18/*: any*/),
+              (v19/*: any*/),
+              (v20/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -414,7 +426,7 @@ return {
                 "kind": "LinkedField",
                 "name": "approver",
                 "plural": false,
-                "selections": (v11/*: any*/),
+                "selections": (v13/*: any*/),
                 "storageKey": null
               }
             ],
@@ -427,7 +439,7 @@ return {
             "kind": "LinkedField",
             "name": "pendingProfile",
             "plural": false,
-            "selections": (v19/*: any*/),
+            "selections": (v21/*: any*/),
             "storageKey": null
           },
           {
@@ -464,7 +476,7 @@ return {
                     "kind": "LinkedField",
                     "name": "node",
                     "plural": false,
-                    "selections": (v19/*: any*/),
+                    "selections": (v21/*: any*/),
                     "storageKey": null
                   }
                 ],
@@ -475,7 +487,7 @@ return {
           },
           {
             "alias": "lastVisitRecord",
-            "args": (v20/*: any*/),
+            "args": (v22/*: any*/),
             "concreteType": "VisitRecordConnection",
             "kind": "LinkedField",
             "name": "visitRecords",
@@ -504,7 +516,7 @@ return {
                         "name": "date",
                         "storageKey": null
                       },
-                      (v2/*: any*/),
+                      (v4/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -555,16 +567,37 @@ return {
           },
           {
             "alias": "lastVisitRecord",
-            "args": (v20/*: any*/),
+            "args": (v22/*: any*/),
             "filters": null,
             "handle": "connection",
             "key": "customerDetailFragment_lastVisitRecord",
             "kind": "LinkedHandle",
             "name": "visitRecords"
           },
-          (v10/*: any*/)
+          (v12/*: any*/)
         ],
         "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": (v3/*: any*/),
+        "filters": null,
+        "handle": "appendNode",
+        "key": "",
+        "kind": "LinkedHandle",
+        "name": "createCustomerV2",
+        "handleArgs": [
+          {
+            "kind": "Variable",
+            "name": "connections",
+            "variableName": "connections"
+          },
+          {
+            "kind": "Literal",
+            "name": "edgeTypeName",
+            "value": "CustomerEdge"
+          }
+        ]
       }
     ]
   },
@@ -579,6 +612,6 @@ return {
 };
 })();
 
-(node as any).hash = "c409cdca4a6f14081a1cc295b1d4ea46";
+(node as any).hash = "2632e48d40b5a76741efe5b251d9989c";
 
 export default node;

@@ -37,6 +37,8 @@ func (TenderProfile) Fields() []ent.Field {
 		field.String("approval_msg_id").Optional().Nillable().Comment("審核飛書訊息ID"),
 
 		field.String("name").
+			Optional().
+			Nillable().
 			NotEmpty().
 			Annotations(
 				entgql.OrderField("NAME"),
@@ -51,7 +53,7 @@ func (TenderProfile) Fields() []ent.Field {
 			entgql.OrderField("TENDER_DATE"),
 		),
 		field.Int("classify").Optional().Nillable().Min(1).Max(3),
-		field.Time("discovery_date"),
+		field.Time("discovery_date").Optional().Nillable(),
 		field.String("address").Optional().Nillable(),
 		field.String("full_address").Optional().Nillable(),
 		field.String("contractor").Optional().Nillable(),

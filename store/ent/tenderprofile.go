@@ -36,7 +36,7 @@ type TenderProfile struct {
 	// 審核飛書訊息ID
 	ApprovalMsgID *string `json:"approval_msg_id,omitempty"`
 	// Name holds the value of the "name" field.
-	Name string `json:"name,omitempty"`
+	Name *string `json:"name,omitempty"`
 	// EstimatedAmount holds the value of the "estimated_amount" field.
 	EstimatedAmount *float64 `json:"estimated_amount,omitempty"`
 	// TenderDate holds the value of the "tender_date" field.
@@ -44,7 +44,7 @@ type TenderProfile struct {
 	// Classify holds the value of the "classify" field.
 	Classify *int `json:"classify,omitempty"`
 	// DiscoveryDate holds the value of the "discovery_date" field.
-	DiscoveryDate time.Time `json:"discovery_date,omitempty"`
+	DiscoveryDate *time.Time `json:"discovery_date,omitempty"`
 	// Address holds the value of the "address" field.
 	Address *string `json:"address,omitempty"`
 	// FullAddress holds the value of the "full_address" field.
@@ -355,7 +355,8 @@ func (tp *TenderProfile) assignValues(columns []string, values []any) error {
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field name", values[i])
 			} else if value.Valid {
-				tp.Name = value.String
+				tp.Name = new(string)
+				*tp.Name = value.String
 			}
 		case tenderprofile.FieldEstimatedAmount:
 			if value, ok := values[i].(*sql.NullFloat64); !ok {
@@ -382,7 +383,8 @@ func (tp *TenderProfile) assignValues(columns []string, values []any) error {
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field discovery_date", values[i])
 			} else if value.Valid {
-				tp.DiscoveryDate = value.Time
+				tp.DiscoveryDate = new(time.Time)
+				*tp.DiscoveryDate = value.Time
 			}
 		case tenderprofile.FieldAddress:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -877,8 +879,10 @@ func (tp *TenderProfile) String() string {
 		builder.WriteString(*v)
 	}
 	builder.WriteString(", ")
-	builder.WriteString("name=")
-	builder.WriteString(tp.Name)
+	if v := tp.Name; v != nil {
+		builder.WriteString("name=")
+		builder.WriteString(*v)
+	}
 	builder.WriteString(", ")
 	if v := tp.EstimatedAmount; v != nil {
 		builder.WriteString("estimated_amount=")
@@ -895,8 +899,10 @@ func (tp *TenderProfile) String() string {
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteString(", ")
-	builder.WriteString("discovery_date=")
-	builder.WriteString(tp.DiscoveryDate.Format(time.ANSIC))
+	if v := tp.DiscoveryDate; v != nil {
+		builder.WriteString("discovery_date=")
+		builder.WriteString(v.Format(time.ANSIC))
+	}
 	builder.WriteString(", ")
 	if v := tp.Address; v != nil {
 		builder.WriteString("address=")

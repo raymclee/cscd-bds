@@ -187,7 +187,7 @@ function RouteComponent() {
         {/* {tab === 2 && data.user && <CustomerVisitRecordList user={data.user} />} */}
       </Card>
 
-      <div className={cn("top-28 mt-8 self-start lg:sticky")}>
+      <div className={cn("self-start mt-8 top-28 lg:sticky")}>
         <ScrollArea className={cn("h-[calc(100vh-128px)]")}>
           <Timeline
             mode="left"
@@ -197,20 +197,30 @@ function RouteComponent() {
                 customer.profiles?.edges &&
                 i == customer.profiles?.edges?.length - 1;
               const action = isFirst ? "创建了" : "更新了";
+              const isPending = e?.node?.approvalStatus == 1;
               const isApproved = e?.node?.approvalStatus == 2;
               const isRejected = e?.node?.approvalStatus == 3;
+              const isCancelled = e?.node?.approvalStatus == 4;
               const isActive = customer.activeProfile?.id === e?.node?.id;
-              const isPending = customer.pendingProfile?.id === e?.node?.id;
               return {
                 color: isActive ? undefined : "gray",
-                label: isActive ? (
-                  <Tag color="blue">当前</Tag>
-                ) : isPending ? (
-                  <Tag color="green">待审批</Tag>
-                ) : (
-                  <Tag color={approvalStatusTagColor(e?.node?.approvalStatus)}>
-                    {approvalStatusText(e?.node?.approvalStatus)}
-                  </Tag>
+                // label: isActive ? (
+                //   <Tag color="blue">当前</Tag>
+                // ) : isPending ? (
+                //   <Tag color="green">待审批</Tag>
+                // ) : (
+                //   <Tag color={approvalStatusTagColor(e?.node?.approvalStatus)}>
+                //     {approvalStatusText(e?.node?.approvalStatus)}
+                //   </Tag>
+                // ),
+                label: (
+                  <div>
+                    {isActive && <Tag color="blue">当前</Tag>}
+                    {isPending && <Tag color="green">待审批</Tag>}
+                    {isApproved && <Tag color="green">已审批</Tag>}
+                    {isRejected && <Tag color="red">已拒绝</Tag>}
+                    {isCancelled && <Tag color="red">已取消</Tag>}
+                  </div>
                 ),
                 children: (
                   <Link

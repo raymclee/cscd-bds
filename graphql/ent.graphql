@@ -1148,11 +1148,11 @@ input CreateTenderProfileInput {
   審核飛書訊息ID
   """
   approvalMsgID: String
-  name: String!
+  name: String
   estimatedAmount: Float
   tenderDate: Time
   classify: Int
-  discoveryDate: Time!
+  discoveryDate: Time
   address: String
   fullAddress: String
   contractor: String
@@ -6434,11 +6434,11 @@ type TenderProfile implements Node {
   審核飛書訊息ID
   """
   approvalMsgID: String
-  name: String!
+  name: String
   estimatedAmount: Float
   tenderDate: Time
   classify: Int
-  discoveryDate: Time!
+  discoveryDate: Time
   address: String
   fullAddress: String
   contractor: String
@@ -6676,6 +6676,8 @@ input TenderProfileWhereInput {
   nameContains: String
   nameHasPrefix: String
   nameHasSuffix: String
+  nameIsNil: Boolean
+  nameNotNil: Boolean
   nameEqualFold: String
   nameContainsFold: String
   """
@@ -6728,6 +6730,8 @@ input TenderProfileWhereInput {
   discoveryDateGTE: Time
   discoveryDateLT: Time
   discoveryDateLTE: Time
+  discoveryDateIsNil: Boolean
+  discoveryDateNotNil: Boolean
   """
   address field predicates
   """

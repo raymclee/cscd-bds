@@ -4,23 +4,17 @@ import { graphql } from "relay-runtime";
 
 const mutation = graphql`
   mutation useCreateTenderMutation(
-    $input: CreateTenderInput!
+    $tenderInput: CreateTenderInput!
+    $profileInput: CreateTenderProfileInput!
     $connections: [ID!]!
     $imageFileNames: [String!]!
-    $attachmentFileNames: [String!]!
-    $geoCoordinate: [Float!]
   ) {
     createTender(
-      input: $input
+      tenderInput: $tenderInput
+      profileInput: $profileInput
       imageFileNames: $imageFileNames
-      attachmentFileNames: $attachmentFileNames
-      geoCoordinate: $geoCoordinate
-    ) {
-      edges @prependEdge(connections: $connections) {
-        node {
-          ...tenderListItemFragment
-        }
-      }
+    ) @prependNode(connections: $connections, edgeTypeName: "TenderEdge") {
+      ...tenderListItemFragment
     }
   }
 `;

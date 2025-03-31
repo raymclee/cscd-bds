@@ -37,21 +37,27 @@ export function TenderList() {
       tenders
         ?.filter((t) =>
           state.q
-            ? t?.name?.toLowerCase().includes(state.q.toLowerCase())
+            ? t?.activeProfile?.name
+                ?.toLowerCase()
+                .includes(state.q.toLowerCase())
             : true,
         )
         .filter((t) =>
           state.status
             ? state.status === 0
               ? true
-              : t?.status === state.status
+              : t?.activeProfile?.status === state.status
             : true,
         )
         .filter((t) =>
-          state.sd ? dayjs(t?.tenderDate).isAfter(dayjs(state.sd)) : true,
+          state.sd
+            ? dayjs(t?.activeProfile?.tenderDate).isAfter(dayjs(state.sd))
+            : true,
         )
         .filter((t) =>
-          state.ed ? dayjs(t?.tenderDate).isBefore(dayjs(state.ed)) : true,
+          state.ed
+            ? dayjs(t?.activeProfile?.tenderDate).isBefore(dayjs(state.ed))
+            : true,
         ),
   });
 
@@ -67,18 +73,18 @@ export function TenderList() {
         <img
           src={subHeadTenderListSvg}
           alt="sub-head"
-          className="mb-4 mt-2 h-8 w-full px-4"
+          className="w-full h-8 px-4 mt-2 mb-4"
         />
         <div className="sticky z-20 rounded bg-gradient-to-br from-sky-950 to-sky-900 px-4 py-2 md:top-[3.5rem]">
           <TenderListFilter />
         </div>
 
-        <div className="flex justify-between px-6 pb-1 pt-2 text-sm text-slate-400">
+        <div className="flex justify-between px-6 pt-2 pb-1 text-sm text-slate-400">
           <div>当前显示: {filteredTenders?.length || 0} 个项目</div>
           <div>总计: {tenders?.length || 0} 个项目</div>
         </div>
 
-        <div className="mt-0 space-y-1 pb-4">
+        <div className="pb-4 mt-0 space-y-1">
           {filteredTenders.map((tender) => {
             if (!tender) return null;
             return <TenderListItem key={tender.id} tender={tender} />;
@@ -130,7 +136,6 @@ function TenderListFilter() {
 
   const onDateSelect = useCallback(
     (value: DateRange | undefined) => {
-      console.log(value);
       const s: Record<string, string | undefined> = {};
       if (value?.from) {
         s.sd = dayjs(value?.from).format("YYYY-MM-DD");
@@ -154,15 +159,15 @@ function TenderListFilter() {
       <Input
         type="search"
         placeholder="搜索"
-        className="h-8 border-sky-800 bg-transparent focus:ring-sky-500 focus:ring-offset-0 focus-visible:ring-sky-500 focus-visible:ring-offset-0"
+        className="h-8 bg-transparent border-sky-800 focus:ring-sky-500 focus:ring-offset-0 focus-visible:ring-sky-500 focus-visible:ring-offset-0"
         onChange={inputChange}
       />
 
       <Select value={String(status)} onValueChange={onStatusChange}>
-        <SelectTrigger className="h-8 w-56 border-sky-800 bg-transparent focus:ring-sky-500 focus:ring-offset-0">
+        <SelectTrigger className="w-56 h-8 bg-transparent border-sky-800 focus:ring-sky-500 focus:ring-offset-0">
           <SelectValue placeholder="状态" />
         </SelectTrigger>
-        <SelectContent className="border-sky-800 bg-sky-950 text-white">
+        <SelectContent className="text-white border-sky-800 bg-sky-950">
           <SelectItem
             value="undefined"
             className="hover:bg-sky-700 focus:bg-sky-700 focus:text-white"
@@ -216,10 +221,10 @@ function TenderListFilter() {
             className="h-8 w-56 border-sky-800 bg-transparent hover:bg-transparent hover:text-white focus:ring-sky-500 focus:ring-offset-0 focus-visible:ring-sky-500 focus-visible:ring-offset-0"
           >
             <span>投标日期</span>
-            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+            <CalendarIcon className="w-4 h-4 ml-auto opacity-50" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="dark w-auto p-0" align="center">
+        <PopoverContent className="w-auto p-0 dark" align="center">
           <Calendar
             locale={zhCN}
             mode="range"
@@ -228,7 +233,7 @@ function TenderListFilter() {
               to: endDate ? new Date(endDate) : undefined,
             }}
             onSelect={onDateSelect}
-            className="rounded-lg border border-sky-900 bg-sky-950 font-bold text-white shadow-xl"
+            className="font-bold text-white border rounded-lg shadow-xl border-sky-900 bg-sky-950"
             classNames={{
               day_today: "bg-sky-700 hover:bg-sky-600",
               day: cn(
@@ -241,7 +246,7 @@ function TenderListFilter() {
               day_range_middle: "bg-slate-800 hover:bg-slate-700",
             }}
             footer={
-              <div className="mt-4 flex items-center gap-2 text-sm">
+              <div className="flex items-center gap-2 mt-4 text-sm">
                 <Link
                   to="."
                   search={(prev) => ({
@@ -249,7 +254,7 @@ function TenderListFilter() {
                     sd: dayjs().subtract(1, "year").format("YYYY-MM-DD"),
                     ed: dayjs().format("YYYY-MM-DD"),
                   })}
-                  className="rounded-lg border border-sky-800 px-2 py-1"
+                  className="px-2 py-1 border rounded-lg border-sky-800"
                 >
                   一年內
                 </Link>
@@ -260,7 +265,7 @@ function TenderListFilter() {
                     sd: dayjs().subtract(6, "month").format("YYYY-MM-DD"),
                     ed: dayjs().format("YYYY-MM-DD"),
                   })}
-                  className="rounded-lg border border-sky-800 px-2 py-1"
+                  className="px-2 py-1 border rounded-lg border-sky-800"
                 >
                   半年內
                 </Link>
@@ -271,7 +276,7 @@ function TenderListFilter() {
                     sd: dayjs().subtract(3, "month").format("YYYY-MM-DD"),
                     ed: dayjs().format("YYYY-MM-DD"),
                   })}
-                  className="rounded-lg border border-sky-800 px-2 py-1"
+                  className="px-2 py-1 border rounded-lg border-sky-800"
                 >
                   三個月內
                 </Link>
@@ -288,7 +293,7 @@ function TenderListFilter() {
       <Button
         variant="outline"
         size="icon"
-        className="h-8 border-sky-800 bg-transparent p-2 hover:bg-transparent hover:text-white focus:ring-sky-500 focus:ring-offset-0 focus-visible:ring-sky-500 focus-visible:ring-offset-0"
+        className="h-8 p-2 bg-transparent border-sky-800 hover:bg-transparent hover:text-white focus:ring-sky-500 focus:ring-offset-0 focus-visible:ring-sky-500 focus-visible:ring-offset-0"
         onClick={() => {
           navigate({
             to: ".",
@@ -302,7 +307,7 @@ function TenderListFilter() {
           });
         }}
       >
-        <X className="h-4 w-4" />
+        <X className="w-4 h-4" />
       </Button>
     </div>
   );
@@ -385,9 +390,9 @@ function TenderListItem({ tender }: { tender: Tender }) {
           ? (prev) => ({
               ...prev,
               a: tender?.area?.code,
-              p: tender?.province?.adcode,
-              d: tender?.district?.adcode,
-              c: tender?.city?.adcode,
+              p: tender?.activeProfile?.province?.adcode,
+              d: tender?.activeProfile?.district?.adcode,
+              c: tender?.activeProfile?.city?.adcode,
               t: tender?.id,
             })
           : undefined
@@ -395,16 +400,16 @@ function TenderListItem({ tender }: { tender: Tender }) {
       replace={!isMobile && !!t}
       to={isMobile ? "/tenders/$id" : "."}
       params={{ id: tender?.id }}
-      className="group block"
+      className="block group"
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
-      <div className="relative grid grid-cols-3 gap-4 overflow-hidden rounded-lg px-6 py-4 transition-all duration-300 group-hover:scale-105 group-hover:bg-gradient-to-br group-hover:from-sky-950 group-hover:to-sky-700">
+      <div className="relative grid grid-cols-3 gap-4 px-6 py-4 overflow-hidden transition-all duration-300 rounded-lg group-hover:scale-105 group-hover:bg-gradient-to-br group-hover:from-sky-950 group-hover:to-sky-700">
         {/* Full card overlay effect */}
-        <div className="pointer-events-none absolute inset-0 z-0 bg-gradient-to-br from-blue-900/30 to-cyan-900/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
+        <div className="absolute inset-0 z-0 transition-opacity duration-300 opacity-0 pointer-events-none bg-gradient-to-br from-blue-900/30 to-cyan-900/20 group-hover:opacity-100"></div>
 
         {/* Tech scan line */}
-        <div className="group-hover:animate-scan-line pointer-events-none absolute inset-0 z-10 translate-y-full bg-gradient-to-b from-transparent via-cyan-500/15 to-transparent opacity-0 group-hover:opacity-100"></div>
+        <div className="absolute inset-0 z-10 translate-y-full opacity-0 pointer-events-none group-hover:animate-scan-line bg-gradient-to-b from-transparent via-cyan-500/15 to-transparent group-hover:opacity-100"></div>
 
         {/* Corner borders - top left */}
         <div className="group-hover:bg-corner-border-glow absolute left-0 top-0 h-[2px] w-10 bg-transparent opacity-0 transition-all duration-300 group-hover:opacity-100"></div>
@@ -426,41 +431,43 @@ function TenderListItem({ tender }: { tender: Tender }) {
           {/* Image effects container */}
           <div className="relative">
             {/* Image glow effect */}
-            <div className="absolute -inset-1 rounded bg-gradient-to-r from-blue-500/30 to-cyan-500/30 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
+            <div className="absolute transition-opacity duration-300 rounded opacity-0 -inset-1 bg-gradient-to-r from-blue-500/30 to-cyan-500/30 group-hover:opacity-100"></div>
 
             {/* Image border glow */}
             <div className="group-hover:animate-pulse-glow absolute -inset-0.5 rounded opacity-0 transition-all duration-300 group-hover:opacity-100"></div>
 
             <img
-              src={tender?.images?.at(0)}
-              alt={tender?.name}
+              src={tender?.activeProfile?.images?.at(0)}
+              alt={tender?.activeProfile?.name || ""}
               className="relative z-10 aspect-[5/3] rounded"
             />
 
             {/* Tech corner marker */}
-            <div className="pointer-events-none absolute left-0 top-0 h-6 w-6 bg-gradient-to-br from-cyan-500/50 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
+            <div className="absolute top-0 left-0 w-6 h-6 transition-opacity duration-300 opacity-0 pointer-events-none bg-gradient-to-br from-cyan-500/50 to-transparent group-hover:opacity-100"></div>
           </div>
         </div>
 
         <div className="relative z-10 col-span-2 space-y-1">
-          <h2 className="group-hover:text-shadow-glow line-clamp-1 font-semibold transition-all duration-300 group-hover:text-white">
-            {tender?.name}
+          <h2 className="font-semibold transition-all duration-300 group-hover:text-shadow-glow line-clamp-1 group-hover:text-white">
+            {tender?.activeProfile?.name}
           </h2>
 
-          <div className="group-hover:text-shadow-sm text-sm transition-all duration-300 group-hover:text-blue-200">
-            {tender?.tenderDate ? dayjs(tender?.tenderDate).format("LL") : "-"}
+          <div className="text-sm transition-all duration-300 group-hover:text-shadow-sm group-hover:text-blue-200">
+            {tender?.activeProfile?.tenderDate
+              ? dayjs(tender?.activeProfile?.tenderDate).format("LL")
+              : "-"}
           </div>
 
           <div className="flex items-center justify-between gap-2">
-            <div className="group-hover:text-shadow-sm text-sm transition-all duration-300 group-hover:scale-110 group-hover:text-cyan-400">
-              {tenderStatusText(tender?.status)}
+            <div className="text-sm transition-all duration-300 group-hover:text-shadow-sm group-hover:scale-110 group-hover:text-cyan-400">
+              {tenderStatusText(tender?.activeProfile?.status)}
             </div>
-            <div className="group-hover:text-shadow-sm flex items-center text-sm transition-all duration-300 group-hover:scale-110 group-hover:text-cyan-400">
+            <div className="flex items-center text-sm transition-all duration-300 group-hover:text-shadow-sm group-hover:scale-110 group-hover:text-cyan-400">
               {/* Data dot - positioned at edge */}
               <div className="group-hover:animate-pulse-dot mr-2 h-1.5 w-1.5 scale-0 rounded-full bg-cyan-400 opacity-0"></div>
 
-              {tender?.estimatedAmount
-                ? `¥${fixAmount(tender?.estimatedAmount)}亿`
+              {tender?.activeProfile?.estimatedAmount
+                ? `¥${fixAmount(tender?.activeProfile?.estimatedAmount)}亿`
                 : "-"}
             </div>
           </div>

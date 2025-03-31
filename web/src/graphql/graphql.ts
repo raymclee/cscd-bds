@@ -925,7 +925,7 @@ export type CreateTenderProfileInput = {
   designUnit?: InputMaybe<Scalars['String']['input']>;
   /** 業主，只限港澳 */
   developer?: InputMaybe<Scalars['String']['input']>;
-  discoveryDate: Scalars['Time']['input'];
+  discoveryDate?: InputMaybe<Scalars['Time']['input']>;
   districtID?: InputMaybe<Scalars['ID']['input']>;
   estimatedAmount?: InputMaybe<Scalars['Float']['input']>;
   estimatedProjectEndDate?: InputMaybe<Scalars['Time']['input']>;
@@ -940,7 +940,7 @@ export type CreateTenderProfileInput = {
   lastTenderAmount?: InputMaybe<Scalars['Float']['input']>;
   levelInvolved?: InputMaybe<Scalars['Int']['input']>;
   managementCompany?: InputMaybe<Scalars['String']['input']>;
-  name: Scalars['String']['input'];
+  name?: InputMaybe<Scalars['String']['input']>;
   ownerSituations?: InputMaybe<Scalars['String']['input']>;
   prepareToBid?: InputMaybe<Scalars['Boolean']['input']>;
   projectCode?: InputMaybe<Scalars['String']['input']>;
@@ -1948,15 +1948,13 @@ export type Mutation = {
   createCustomer: CustomerConnection;
   createCustomerV2: Customer;
   createPlot: PlotConnection;
-  createTender: TenderConnection;
-  createTenderProfile: Tender;
+  createTender: Tender;
   createTenderV2: Tender;
   createUser: UserConnection;
   createVisitRecord: VisitRecordConnection;
   deleteCompetitor: Competitor;
   deleteCustomer: Customer;
   deletePlot: Plot;
-  deleteTender: Tender;
   deleteUser: User;
   deleteVisitRecord: VisitRecord;
   loseTender: Tender;
@@ -1972,6 +1970,7 @@ export type Mutation = {
   updateTenderV2: Tender;
   updateUser: User;
   updateVisitRecord: VisitRecord;
+  voidTender: Tender;
   winTender: Tender;
 };
 
@@ -2014,19 +2013,9 @@ export type MutationCreatePlotArgs = {
 
 
 export type MutationCreateTenderArgs = {
-  attachmentFileNames: Array<Scalars['String']['input']>;
-  geoBounds?: InputMaybe<Array<Array<Scalars['Float']['input']>>>;
-  geoCoordinate?: InputMaybe<Array<Scalars['Float']['input']>>;
   imageFileNames: Array<Scalars['String']['input']>;
-  input: CreateTenderInput;
-};
-
-
-export type MutationCreateTenderProfileArgs = {
-  attachmentFileNames: Array<Scalars['String']['input']>;
-  id: Scalars['ID']['input'];
-  imageFileNames: Array<Scalars['String']['input']>;
-  input: CreateTenderProfileInput;
+  profileInput: CreateTenderProfileInput;
+  tenderInput: CreateTenderInput;
 };
 
 
@@ -2059,11 +2048,6 @@ export type MutationDeleteCustomerArgs = {
 
 
 export type MutationDeletePlotArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type MutationDeleteTenderArgs = {
   id: Scalars['ID']['input'];
 };
 
@@ -2133,14 +2117,10 @@ export type MutationUpdateProjectArgs = {
 
 
 export type MutationUpdateTenderArgs = {
-  attachmentFileNames?: InputMaybe<Array<Scalars['String']['input']>>;
-  geoBounds?: InputMaybe<Array<Array<Scalars['Float']['input']>>>;
-  geoCoordinate?: InputMaybe<Array<Scalars['Float']['input']>>;
   id: Scalars['ID']['input'];
   imageFileNames?: InputMaybe<Array<Scalars['String']['input']>>;
-  input: UpdateTenderInput;
-  removeAttachmentFileNames?: InputMaybe<Array<Scalars['String']['input']>>;
-  removeImageFileNames?: InputMaybe<Array<Scalars['String']['input']>>;
+  profileInput: CreateTenderProfileInput;
+  tenderInput: UpdateTenderInput;
 };
 
 
@@ -2162,6 +2142,11 @@ export type MutationUpdateUserArgs = {
 export type MutationUpdateVisitRecordArgs = {
   id: Scalars['ID']['input'];
   input: UpdateVisitRecordInput;
+};
+
+
+export type MutationVoidTenderArgs = {
+  id: Scalars['ID']['input'];
 };
 
 
@@ -5105,7 +5090,7 @@ export type TenderProfile = Node & {
   designUnit?: Maybe<Scalars['String']['output']>;
   /** 業主，只限港澳 */
   developer?: Maybe<Scalars['String']['output']>;
-  discoveryDate: Scalars['Time']['output'];
+  discoveryDate?: Maybe<Scalars['Time']['output']>;
   district?: Maybe<District>;
   districtID?: Maybe<Scalars['ID']['output']>;
   estimatedAmount?: Maybe<Scalars['Float']['output']>;
@@ -5123,7 +5108,7 @@ export type TenderProfile = Node & {
   lastTenderAmount?: Maybe<Scalars['Float']['output']>;
   levelInvolved?: Maybe<Scalars['Int']['output']>;
   managementCompany?: Maybe<Scalars['String']['output']>;
-  name: Scalars['String']['output'];
+  name?: Maybe<Scalars['String']['output']>;
   ownerSituations?: Maybe<Scalars['String']['output']>;
   prepareToBid: Scalars['Boolean']['output'];
   projectCode?: Maybe<Scalars['String']['output']>;
@@ -5596,10 +5581,12 @@ export type TenderProfileWhereInput = {
   discoveryDateGT?: InputMaybe<Scalars['Time']['input']>;
   discoveryDateGTE?: InputMaybe<Scalars['Time']['input']>;
   discoveryDateIn?: InputMaybe<Array<Scalars['Time']['input']>>;
+  discoveryDateIsNil?: InputMaybe<Scalars['Boolean']['input']>;
   discoveryDateLT?: InputMaybe<Scalars['Time']['input']>;
   discoveryDateLTE?: InputMaybe<Scalars['Time']['input']>;
   discoveryDateNEQ?: InputMaybe<Scalars['Time']['input']>;
   discoveryDateNotIn?: InputMaybe<Array<Scalars['Time']['input']>>;
+  discoveryDateNotNil?: InputMaybe<Scalars['Boolean']['input']>;
   /** district_id field predicates */
   districtID?: InputMaybe<Scalars['ID']['input']>;
   districtIDContains?: InputMaybe<Scalars['ID']['input']>;
@@ -5781,10 +5768,12 @@ export type TenderProfileWhereInput = {
   nameHasPrefix?: InputMaybe<Scalars['String']['input']>;
   nameHasSuffix?: InputMaybe<Scalars['String']['input']>;
   nameIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  nameIsNil?: InputMaybe<Scalars['Boolean']['input']>;
   nameLT?: InputMaybe<Scalars['String']['input']>;
   nameLTE?: InputMaybe<Scalars['String']['input']>;
   nameNEQ?: InputMaybe<Scalars['String']['input']>;
   nameNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  nameNotNil?: InputMaybe<Scalars['Boolean']['input']>;
   not?: InputMaybe<TenderProfileWhereInput>;
   or?: InputMaybe<Array<TenderProfileWhereInput>>;
   /** owner_situations field predicates */

@@ -22,13 +22,19 @@ export function useAreaTenders() {
     [];
 
   if (search.d) {
-    return allTenders.filter((t) => t?.district?.adcode === search.d);
+    return allTenders.filter(
+      (t) => t?.activeProfile?.district?.adcode === search.d,
+    );
   }
   if (search.c) {
-    return allTenders.filter((t) => t?.city?.adcode === search.c);
+    return allTenders.filter(
+      (t) => t?.activeProfile?.city?.adcode === search.c,
+    );
   }
   if (search.p) {
-    return allTenders.filter((t) => t?.province?.adcode === search.p);
+    return allTenders.filter(
+      (t) => t?.activeProfile?.province?.adcode === search.p,
+    );
   }
   if (search.a) {
     return allTenders.filter((t) => t?.area?.code === search.a);

@@ -103,7 +103,11 @@ type CustomerFormProps = {
 
 function CustomerForm({ queryRef }: CustomerFormProps) {
   const data = usePreloadedQuery(CustomerFormDrawerQuery, queryRef);
-  const [form] = Form.useForm<CreateCustomerInput>();
+  const [form] = Form.useForm<
+    Omit<CreateCustomerInput, "contactPersonPosition"> & {
+      contactPersonPosition: string[];
+    }
+  >();
   const [commitCreateCustomer, isCreateCustomerInFlight] = useCreateCustomer();
   const [commitUpdateCustomer, isUpdateCustomerInFlight] = useUpdateCustomer();
   const [commitCreateCustomerV2, isCreateCustomerV2InFlight] =
@@ -138,7 +142,9 @@ function CustomerForm({ queryRef }: CustomerFormProps) {
         ownerType: activeProfile?.ownerType,
         salesID: activeProfile?.sales?.id,
         contactPerson: activeProfile?.contactPerson,
-        contactPersonPosition: activeProfile?.contactPersonPosition,
+        contactPersonPosition: activeProfile?.contactPersonPosition
+          ? [activeProfile?.contactPersonPosition]
+          : [],
         contactPersonEmail: activeProfile?.contactPersonEmail,
         contactPersonPhone: activeProfile?.contactPersonPhone,
       });
@@ -162,23 +168,21 @@ function CustomerForm({ queryRef }: CustomerFormProps) {
           if (selectedCustomer?.id) {
             if (isSH(selectedCustomer.area.code)) {
               const { areaID, contactPersonPosition, ...rest } = values;
+
+              console.log({ values });
               commitUpdateCustomerV2({
                 variables: {
                   id: selectedCustomer.id,
                   customerInput: {
                     ...values,
                     areaID,
-                    contactPersonPosition: Array.isArray(contactPersonPosition)
-                      ? contactPersonPosition?.at(0)
-                      : null,
+                    contactPersonPosition: contactPersonPosition.at(0),
                   },
                   profileInput: {
                     ...rest,
                     createdByID: "",
                     customerID: selectedCustomer.id,
-                    contactPersonPosition: Array.isArray(contactPersonPosition)
-                      ? contactPersonPosition?.at(0)
-                      : null,
+                    contactPersonPosition: contactPersonPosition.at(0),
                   },
                 },
                 onCompleted: () => {
@@ -203,7 +207,10 @@ function CustomerForm({ queryRef }: CustomerFormProps) {
             commitUpdateCustomer({
               variables: {
                 id: selectedCustomer.id,
-                input: values,
+                input: {
+                  ...values,
+                  contactPersonPosition: values.contactPersonPosition.at(0),
+                },
               },
               onCompleted: () => {
                 message.destroy();
@@ -217,23 +224,38 @@ function CustomerForm({ queryRef }: CustomerFormProps) {
               },
             });
           } else {
-            const { contactPersonPosition, areaID, ...rest } = values;
+            const { areaID, ...rest } = values;
             const areaCode = data.node?.areas?.edges?.find(
               (a) => a?.node?.id === areaID,
             )?.node?.code;
+            console.log({ values });
             if (areaCode && isSH(areaCode)) {
               commitCreateCustomerV2({
                 variables: {
                   customerInput: {
                     ...rest,
                     areaID,
-                    contactPersonPosition: contactPersonPosition?.at(0) ?? null,
+                    contactPersonPosition: values.contactPersonPosition.at(0),
                   },
                   profileInput: {
                     ...rest,
                     customerID: "",
-                    contactPersonPosition: contactPersonPosition?.at(0) ?? null,
+                    contactPersonPosition: values.contactPersonPosition.at(0),
                   },
+                  connections: [
+                    ConnectionHandler.getConnectionID(
+                      values.areaID,
+                      "customersPageQuery_customers",
+                    ),
+                    ConnectionHandler.getConnectionID(
+                      "root",
+                      "tenderFormFragment_customers",
+                    ),
+                    ConnectionHandler.getConnectionID(
+                      values.areaID,
+                      "tenderFormFragment_customers",
+                    ),
+                  ],
                 },
                 onCompleted: () => {
                   message.destroy();
@@ -253,8 +275,8 @@ function CustomerForm({ queryRef }: CustomerFormProps) {
                 input: {
                   ...rest,
                   areaID,
-                  contactPersonPosition: contactPersonPosition?.at(0) ?? null,
                   createdByID: "",
+                  contactPersonPosition: values.contactPersonPosition.at(0),
                 },
                 connections: [
                   ConnectionHandler.getConnectionID(
@@ -367,10 +389,13 @@ function CustomerForm({ queryRef }: CustomerFormProps) {
           <Select
             mode="tags"
             onChange={(value) => {
+              console.log({ value });
               if (value?.length == 0) {
-                form.setFieldValue("contactPersonPosition", null);
+                form.setFieldValue("contactPersonPosition", []);
               } else if (value.at(1)) {
-                form.setFieldValue("contactPersonPosition", value.at(1));
+                form.setFieldValue("contactPersonPosition", [value.at(1)]);
+              } else {
+                form.setFieldValue("contactPersonPosition", [value.at(0)]);
               }
             }}
             onDeselect={() => {
@@ -402,7 +427,7 @@ function CustomerForm({ queryRef }: CustomerFormProps) {
         </Form.Item>
       </Form>
 
-      <div className="absolute bottom-0 left-0 right-0 flex justify-end gap-3 border-t border-neutral-200 bg-white px-6 py-3">
+      <div className="absolute bottom-0 left-0 right-0 flex justify-end gap-3 px-6 py-3 bg-white border-t border-neutral-200">
         <Space>
           <Button onClick={onClose}>取消</Button>
           <Button

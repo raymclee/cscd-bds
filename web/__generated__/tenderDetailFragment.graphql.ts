@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<d8c3e4bf97864e4ecdefc330bd10dcdf>>
+ * @generated SignedSource<<0276313a5b9a45d3f98423491cf96146>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -53,7 +53,7 @@ export type tenderDetailFragment$data = {
     readonly customerRelationshipRatingOverview: string | null | undefined;
     readonly designUnit: string | null | undefined;
     readonly developer: string | null | undefined;
-    readonly discoveryDate: any;
+    readonly discoveryDate: any | null | undefined;
     readonly district: {
       readonly adcode: number;
       readonly id: string;
@@ -75,7 +75,7 @@ export type tenderDetailFragment$data = {
     readonly lastTenderAmount: number | null | undefined;
     readonly levelInvolved: number | null | undefined;
     readonly managementCompany: string | null | undefined;
-    readonly name: string;
+    readonly name: string | null | undefined;
     readonly ownerSituations: string | null | undefined;
     readonly prepareToBid: boolean;
     readonly projectCode: string | null | undefined;
@@ -154,7 +154,7 @@ export type tenderDetailFragment$data = {
     readonly customerRelationshipRatingOverview: string | null | undefined;
     readonly designUnit: string | null | undefined;
     readonly developer: string | null | undefined;
-    readonly discoveryDate: any;
+    readonly discoveryDate: any | null | undefined;
     readonly district: {
       readonly adcode: number;
       readonly id: string;
@@ -176,7 +176,7 @@ export type tenderDetailFragment$data = {
     readonly lastTenderAmount: number | null | undefined;
     readonly levelInvolved: number | null | undefined;
     readonly managementCompany: string | null | undefined;
-    readonly name: string;
+    readonly name: string | null | undefined;
     readonly ownerSituations: string | null | undefined;
     readonly prepareToBid: boolean;
     readonly projectCode: string | null | undefined;
@@ -246,7 +246,7 @@ export type tenderDetailFragment$data = {
         readonly customerRelationshipRatingOverview: string | null | undefined;
         readonly designUnit: string | null | undefined;
         readonly developer: string | null | undefined;
-        readonly discoveryDate: any;
+        readonly discoveryDate: any | null | undefined;
         readonly district: {
           readonly adcode: number;
           readonly id: string;
@@ -268,7 +268,7 @@ export type tenderDetailFragment$data = {
         readonly lastTenderAmount: number | null | undefined;
         readonly levelInvolved: number | null | undefined;
         readonly managementCompany: string | null | undefined;
-        readonly name: string;
+        readonly name: string | null | undefined;
         readonly ownerSituations: string | null | undefined;
         readonly prepareToBid: boolean;
         readonly projectCode: string | null | undefined;

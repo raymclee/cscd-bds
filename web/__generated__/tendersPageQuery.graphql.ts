@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<9a2d75e02349fb2df080ee08dd071fed>>
+ * @generated SignedSource<<018180d7896a5555bbf1ff5d12409c86>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -100,29 +100,105 @@ v8 = [
   },
   (v7/*: any*/)
 ],
-v9 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "status",
-  "storageKey": null
-},
-v10 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "tenderClosingDate",
-  "storageKey": null
-},
-v11 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "classify",
-  "storageKey": null
-},
-v12 = [
+v9 = [
   (v6/*: any*/)
+],
+v10 = [
+  (v7/*: any*/),
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "status",
+    "storageKey": null
+  },
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "tenderClosingDate",
+    "storageKey": null
+  },
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "classify",
+    "storageKey": null
+  },
+  (v6/*: any*/),
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "approvalStatus",
+    "storageKey": null
+  },
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "createdAt",
+    "storageKey": null
+  },
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "estimatedAmount",
+    "storageKey": null
+  },
+  {
+    "alias": null,
+    "args": null,
+    "concreteType": "Customer",
+    "kind": "LinkedField",
+    "name": "customer",
+    "plural": false,
+    "selections": [
+      (v6/*: any*/),
+      (v7/*: any*/)
+    ],
+    "storageKey": null
+  },
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "images",
+    "storageKey": null
+  },
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "fullAddress",
+    "storageKey": null
+  },
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "tenderDate",
+    "storageKey": null
+  },
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "discoveryDate",
+    "storageKey": null
+  },
+  {
+    "alias": null,
+    "args": null,
+    "concreteType": "User",
+    "kind": "LinkedField",
+    "name": "createdBy",
+    "plural": false,
+    "selections": (v9/*: any*/),
+    "storageKey": null
+  }
 ];
 return {
   "fragment": {
@@ -252,10 +328,6 @@ return {
                         "plural": false,
                         "selections": [
                           (v6/*: any*/),
-                          (v7/*: any*/),
-                          (v9/*: any*/),
-                          (v10/*: any*/),
-                          (v11/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -269,11 +341,11 @@ return {
                           {
                             "alias": null,
                             "args": null,
-                            "concreteType": "User",
+                            "concreteType": "TenderProfile",
                             "kind": "LinkedField",
-                            "name": "followingSales",
-                            "plural": true,
-                            "selections": (v12/*: any*/),
+                            "name": "activeProfile",
+                            "plural": false,
+                            "selections": (v10/*: any*/),
                             "storageKey": null
                           },
                           {
@@ -281,87 +353,19 @@ return {
                             "args": null,
                             "concreteType": "TenderProfile",
                             "kind": "LinkedField",
-                            "name": "activeProfile",
+                            "name": "pendingProfile",
                             "plural": false,
-                            "selections": [
-                              (v6/*: any*/),
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "approvalStatus",
-                                "storageKey": null
-                              },
-                              (v7/*: any*/),
-                              (v9/*: any*/),
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "createdAt",
-                                "storageKey": null
-                              },
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "estimatedAmount",
-                                "storageKey": null
-                              },
-                              (v11/*: any*/),
-                              {
-                                "alias": null,
-                                "args": null,
-                                "concreteType": "Customer",
-                                "kind": "LinkedField",
-                                "name": "customer",
-                                "plural": false,
-                                "selections": [
-                                  (v6/*: any*/),
-                                  (v7/*: any*/)
-                                ],
-                                "storageKey": null
-                              },
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "images",
-                                "storageKey": null
-                              },
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "fullAddress",
-                                "storageKey": null
-                              },
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "tenderDate",
-                                "storageKey": null
-                              },
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "discoveryDate",
-                                "storageKey": null
-                              },
-                              (v10/*: any*/),
-                              {
-                                "alias": null,
-                                "args": null,
-                                "concreteType": "User",
-                                "kind": "LinkedField",
-                                "name": "createdBy",
-                                "plural": false,
-                                "selections": (v12/*: any*/),
-                                "storageKey": null
-                              }
-                            ],
+                            "selections": (v10/*: any*/),
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "User",
+                            "kind": "LinkedField",
+                            "name": "followingSales",
+                            "plural": true,
+                            "selections": (v9/*: any*/),
                             "storageKey": null
                           },
                           (v5/*: any*/)
@@ -454,12 +458,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "f7264b18a54be4dffeaf9d4797e76232",
+    "cacheID": "d29c56e75946c152c2e9406d5b0d6556",
     "id": null,
     "metadata": {},
     "name": "tendersPageQuery",
     "operationKind": "query",
-    "text": "query tendersPageQuery(\n  $userId: ID!\n  $orderBy: [TenderOrder!]\n  $first: Int\n) {\n  node(id: $userId) {\n    __typename\n    ... on User {\n      ...tendersTenderListFragment_3p2xDJ\n    }\n    id\n  }\n}\n\nfragment tenderListItemFragment on Tender {\n  id\n  area {\n    id\n    name\n    code\n  }\n  followingSales {\n    id\n  }\n  activeProfile {\n    id\n    approvalStatus\n    name\n    status\n    createdAt\n    estimatedAmount\n    classify\n    customer {\n      id\n      name\n    }\n    images\n    fullAddress\n    tenderDate\n    discoveryDate\n    tenderClosingDate\n    createdBy {\n      id\n    }\n  }\n}\n\nfragment tendersTenderListFragment_3p2xDJ on User {\n  areas {\n    edges {\n      node {\n        id\n        code\n        name\n      }\n    }\n  }\n  tenders: myTenders(orderBy: $orderBy, first: $first) {\n    edges {\n      node {\n        id\n        name\n        status\n        tenderClosingDate\n        classify\n        area {\n          id\n          code\n        }\n        ...tenderListItemFragment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n"
+    "text": "query tendersPageQuery(\n  $userId: ID!\n  $orderBy: [TenderOrder!]\n  $first: Int\n) {\n  node(id: $userId) {\n    __typename\n    ... on User {\n      ...tendersTenderListFragment_3p2xDJ\n    }\n    id\n  }\n}\n\nfragment tenderListItemFragment on Tender {\n  id\n  area {\n    id\n    name\n    code\n  }\n  followingSales {\n    id\n  }\n  pendingProfile {\n    id\n    approvalStatus\n    name\n    status\n    createdAt\n    estimatedAmount\n    classify\n    customer {\n      id\n      name\n    }\n    images\n    fullAddress\n    tenderDate\n    discoveryDate\n    tenderClosingDate\n    createdBy {\n      id\n    }\n  }\n  activeProfile {\n    id\n    approvalStatus\n    name\n    status\n    createdAt\n    estimatedAmount\n    classify\n    customer {\n      id\n      name\n    }\n    images\n    fullAddress\n    tenderDate\n    discoveryDate\n    tenderClosingDate\n    createdBy {\n      id\n    }\n  }\n}\n\nfragment tendersTenderListFragment_3p2xDJ on User {\n  areas {\n    edges {\n      node {\n        id\n        code\n        name\n      }\n    }\n  }\n  tenders: myTenders(orderBy: $orderBy, first: $first) {\n    edges {\n      node {\n        id\n        area {\n          id\n          code\n        }\n        activeProfile {\n          name\n          status\n          tenderClosingDate\n          classify\n          id\n        }\n        pendingProfile {\n          name\n          status\n          tenderClosingDate\n          classify\n          id\n        }\n        ...tenderListItemFragment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n"
   }
 };
 })();

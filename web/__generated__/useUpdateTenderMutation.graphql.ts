@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<4670a7832effb7745e28f87afabf50ca>>
+ * @generated SignedSource<<bc7a6a6a36250abef6af1bc4eae05acf>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -151,14 +151,79 @@ export type UpdateTenderInput = {
   timeLimitRatingOverview?: string | null | undefined;
   updatedAt?: any | null | undefined;
 };
-export type useUpdateTenderMutation$variables = {
-  attachmentFileNames: ReadonlyArray<string>;
+export type CreateTenderProfileInput = {
+  address?: string | null | undefined;
+  approvalMsgID?: string | null | undefined;
+  approvalStatus?: number | null | undefined;
+  approverID?: string | null | undefined;
+  architect?: string | null | undefined;
+  attachments?: ReadonlyArray<string> | null | undefined;
+  biddingDate?: any | null | undefined;
+  biddingInstructions?: string | null | undefined;
+  cityID?: string | null | undefined;
+  classify?: number | null | undefined;
+  competitivePartnershipRating?: number | null | undefined;
+  competitivePartnershipRatingOverview?: string | null | undefined;
+  competitorSituations?: string | null | undefined;
+  constructionArea?: string | null | undefined;
+  consultingFirm?: string | null | undefined;
+  contractForm?: string | null | undefined;
+  contractor?: string | null | undefined;
+  costEngineer?: string | null | undefined;
+  createdAt?: any | null | undefined;
+  createdByID?: string | null | undefined;
+  creditAndPaymentRating?: number | null | undefined;
+  creditAndPaymentRatingOverview?: string | null | undefined;
+  currentProgress?: string | null | undefined;
+  customerID?: string | null | undefined;
+  customerRelationshipRating?: number | null | undefined;
+  customerRelationshipRatingOverview?: string | null | undefined;
+  designUnit?: string | null | undefined;
+  developer?: string | null | undefined;
+  discoveryDate?: any | null | undefined;
+  districtID?: string | null | undefined;
+  estimatedAmount?: number | null | undefined;
+  estimatedProjectEndDate?: any | null | undefined;
+  estimatedProjectStartDate?: any | null | undefined;
+  facadeConsultant?: string | null | undefined;
+  finderID?: string | null | undefined;
+  fullAddress?: string | null | undefined;
   geoCoordinate?: ReadonlyArray<number> | null | undefined;
+  images?: ReadonlyArray<string> | null | undefined;
+  keyProject?: boolean | null | undefined;
+  lastTenderAmount?: number | null | undefined;
+  levelInvolved?: number | null | undefined;
+  managementCompany?: string | null | undefined;
+  name?: string | null | undefined;
+  ownerSituations?: string | null | undefined;
+  prepareToBid?: boolean | null | undefined;
+  projectCode?: string | null | undefined;
+  projectDefinition?: string | null | undefined;
+  projectType?: string | null | undefined;
+  provinceID?: string | null | undefined;
+  remark?: string | null | undefined;
+  sizeAndValueRating?: number | null | undefined;
+  sizeAndValueRatingOverview?: string | null | undefined;
+  status?: number | null | undefined;
+  tenderClosingDate?: any | null | undefined;
+  tenderCode?: string | null | undefined;
+  tenderDate?: any | null | undefined;
+  tenderForm?: string | null | undefined;
+  tenderID: string;
+  tenderSituations?: string | null | undefined;
+  tenderWinAmount?: number | null | undefined;
+  tenderWinCompany?: string | null | undefined;
+  tenderWinDate?: any | null | undefined;
+  tenderingAgency?: string | null | undefined;
+  timeLimitRating?: number | null | undefined;
+  timeLimitRatingOverview?: string | null | undefined;
+  updatedAt?: any | null | undefined;
+};
+export type useUpdateTenderMutation$variables = {
   id: string;
   imageFileNames: ReadonlyArray<string>;
-  input: UpdateTenderInput;
-  removeAttachmentFileNames?: ReadonlyArray<string> | null | undefined;
-  removeImageFileNames?: ReadonlyArray<string> | null | undefined;
+  profileInput: CreateTenderProfileInput;
+  tenderInput: UpdateTenderInput;
 };
 export type useUpdateTenderMutation$data = {
   readonly updateTender: {
@@ -178,49 +243,24 @@ const node: ConcreteRequest = (function(){
 var v0 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "attachmentFileNames"
+  "name": "id"
 },
 v1 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "geoCoordinate"
+  "name": "imageFileNames"
 },
 v2 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "id"
+  "name": "profileInput"
 },
 v3 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "imageFileNames"
+  "name": "tenderInput"
 },
-v4 = {
-  "defaultValue": null,
-  "kind": "LocalArgument",
-  "name": "input"
-},
-v5 = {
-  "defaultValue": null,
-  "kind": "LocalArgument",
-  "name": "removeAttachmentFileNames"
-},
-v6 = {
-  "defaultValue": null,
-  "kind": "LocalArgument",
-  "name": "removeImageFileNames"
-},
-v7 = [
-  {
-    "kind": "Variable",
-    "name": "attachmentFileNames",
-    "variableName": "attachmentFileNames"
-  },
-  {
-    "kind": "Variable",
-    "name": "geoCoordinate",
-    "variableName": "geoCoordinate"
-  },
+v4 = [
   {
     "kind": "Variable",
     "name": "id",
@@ -233,57 +273,52 @@ v7 = [
   },
   {
     "kind": "Variable",
-    "name": "input",
-    "variableName": "input"
+    "name": "profileInput",
+    "variableName": "profileInput"
   },
   {
     "kind": "Variable",
-    "name": "removeAttachmentFileNames",
-    "variableName": "removeAttachmentFileNames"
-  },
-  {
-    "kind": "Variable",
-    "name": "removeImageFileNames",
-    "variableName": "removeImageFileNames"
+    "name": "tenderInput",
+    "variableName": "tenderInput"
   }
 ],
-v8 = {
+v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v9 = {
+v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
 },
-v10 = [
-  (v8/*: any*/),
-  (v9/*: any*/)
+v7 = [
+  (v5/*: any*/),
+  (v6/*: any*/)
 ],
-v11 = {
+v8 = {
   "alias": null,
   "args": null,
   "concreteType": "Customer",
   "kind": "LinkedField",
   "name": "customer",
   "plural": false,
-  "selections": (v10/*: any*/),
+  "selections": (v7/*: any*/),
   "storageKey": null
 },
-v12 = {
+v9 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "code",
   "storageKey": null
 },
-v13 = [
-  (v8/*: any*/),
+v10 = [
+  (v5/*: any*/),
   {
     "alias": null,
     "args": null,
@@ -291,10 +326,10 @@ v13 = [
     "name": "adcode",
     "storageKey": null
   },
-  (v9/*: any*/)
+  (v6/*: any*/)
 ],
-v14 = [
-  (v8/*: any*/),
+v11 = [
+  (v5/*: any*/),
   {
     "alias": null,
     "args": null,
@@ -316,10 +351,10 @@ v14 = [
     "kind": "LinkedField",
     "name": "approver",
     "plural": false,
-    "selections": (v10/*: any*/),
+    "selections": (v7/*: any*/),
     "storageKey": null
   },
-  (v9/*: any*/),
+  (v6/*: any*/),
   {
     "alias": null,
     "args": null,
@@ -684,7 +719,7 @@ v14 = [
     "kind": "LinkedField",
     "name": "createdBy",
     "plural": false,
-    "selections": (v10/*: any*/),
+    "selections": (v7/*: any*/),
     "storageKey": null
   },
   {
@@ -694,7 +729,7 @@ v14 = [
     "kind": "LinkedField",
     "name": "finder",
     "plural": false,
-    "selections": (v10/*: any*/),
+    "selections": (v7/*: any*/),
     "storageKey": null
   },
   {
@@ -705,7 +740,7 @@ v14 = [
     "name": "customer",
     "plural": false,
     "selections": [
-      (v8/*: any*/),
+      (v5/*: any*/),
       {
         "alias": null,
         "args": null,
@@ -713,7 +748,7 @@ v14 = [
         "name": "ownerType",
         "storageKey": null
       },
-      (v9/*: any*/)
+      (v6/*: any*/)
     ],
     "storageKey": null
   },
@@ -724,7 +759,7 @@ v14 = [
     "kind": "LinkedField",
     "name": "province",
     "plural": false,
-    "selections": (v13/*: any*/),
+    "selections": (v10/*: any*/),
     "storageKey": null
   },
   {
@@ -734,7 +769,7 @@ v14 = [
     "kind": "LinkedField",
     "name": "city",
     "plural": false,
-    "selections": (v13/*: any*/),
+    "selections": (v10/*: any*/),
     "storageKey": null
   },
   {
@@ -744,7 +779,7 @@ v14 = [
     "kind": "LinkedField",
     "name": "district",
     "plural": false,
-    "selections": (v13/*: any*/),
+    "selections": (v10/*: any*/),
     "storageKey": null
   },
   {
@@ -761,10 +796,7 @@ return {
       (v0/*: any*/),
       (v1/*: any*/),
       (v2/*: any*/),
-      (v3/*: any*/),
-      (v4/*: any*/),
-      (v5/*: any*/),
-      (v6/*: any*/)
+      (v3/*: any*/)
     ],
     "kind": "Fragment",
     "metadata": null,
@@ -772,7 +804,7 @@ return {
     "selections": [
       {
         "alias": null,
-        "args": (v7/*: any*/),
+        "args": (v4/*: any*/),
         "concreteType": "Tender",
         "kind": "LinkedField",
         "name": "updateTender",
@@ -783,7 +815,7 @@ return {
             "kind": "FragmentSpread",
             "name": "tenderDetailFragment"
           },
-          (v11/*: any*/)
+          (v8/*: any*/)
         ],
         "storageKey": null
       }
@@ -794,12 +826,9 @@ return {
   "kind": "Request",
   "operation": {
     "argumentDefinitions": [
-      (v2/*: any*/),
-      (v4/*: any*/),
-      (v3/*: any*/),
       (v0/*: any*/),
-      (v6/*: any*/),
-      (v5/*: any*/),
+      (v3/*: any*/),
+      (v2/*: any*/),
       (v1/*: any*/)
     ],
     "kind": "Operation",
@@ -807,14 +836,14 @@ return {
     "selections": [
       {
         "alias": null,
-        "args": (v7/*: any*/),
+        "args": (v4/*: any*/),
         "concreteType": "Tender",
         "kind": "LinkedField",
         "name": "updateTender",
         "plural": false,
         "selections": [
-          (v8/*: any*/),
-          (v12/*: any*/),
+          (v5/*: any*/),
+          (v9/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -823,9 +852,9 @@ return {
             "name": "area",
             "plural": false,
             "selections": [
-              (v8/*: any*/),
-              (v12/*: any*/),
-              (v9/*: any*/)
+              (v5/*: any*/),
+              (v9/*: any*/),
+              (v6/*: any*/)
             ],
             "storageKey": null
           },
@@ -836,7 +865,7 @@ return {
             "kind": "LinkedField",
             "name": "followingSales",
             "plural": true,
-            "selections": (v10/*: any*/),
+            "selections": (v7/*: any*/),
             "storageKey": null
           },
           {
@@ -846,7 +875,7 @@ return {
             "kind": "LinkedField",
             "name": "activeProfile",
             "plural": false,
-            "selections": (v14/*: any*/),
+            "selections": (v11/*: any*/),
             "storageKey": null
           },
           {
@@ -856,7 +885,7 @@ return {
             "kind": "LinkedField",
             "name": "pendingProfile",
             "plural": false,
-            "selections": (v14/*: any*/),
+            "selections": (v11/*: any*/),
             "storageKey": null
           },
           {
@@ -893,7 +922,7 @@ return {
                     "kind": "LinkedField",
                     "name": "node",
                     "plural": false,
-                    "selections": (v14/*: any*/),
+                    "selections": (v11/*: any*/),
                     "storageKey": null
                   }
                 ],
@@ -902,23 +931,23 @@ return {
             ],
             "storageKey": "profiles(orderBy:[{\"direction\":\"DESC\",\"field\":\"CREATED_AT\"}])"
           },
-          (v11/*: any*/)
+          (v8/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "cacheID": "867ffa2807786cd7567cb0a94b51d43c",
+    "cacheID": "b853878291e27fcf9c90709fb72e4c40",
     "id": null,
     "metadata": {},
     "name": "useUpdateTenderMutation",
     "operationKind": "mutation",
-    "text": "mutation useUpdateTenderMutation(\n  $id: ID!\n  $input: UpdateTenderInput!\n  $imageFileNames: [String!]!\n  $attachmentFileNames: [String!]!\n  $removeImageFileNames: [String!]\n  $removeAttachmentFileNames: [String!]\n  $geoCoordinate: [Float!]\n) {\n  updateTender(id: $id, input: $input, imageFileNames: $imageFileNames, attachmentFileNames: $attachmentFileNames, removeImageFileNames: $removeImageFileNames, removeAttachmentFileNames: $removeAttachmentFileNames, geoCoordinate: $geoCoordinate) {\n    ...tenderDetailFragment\n    customer {\n      id\n      name\n    }\n    id\n  }\n}\n\nfragment tenderDetailFragment on Tender {\n  id\n  code\n  area {\n    id\n    code\n    name\n  }\n  followingSales {\n    id\n    name\n  }\n  activeProfile {\n    id\n    createdAt\n    approvalStatus\n    approver {\n      id\n      name\n    }\n    name\n    status\n    estimatedAmount\n    tenderDate\n    discoveryDate\n    address\n    fullAddress\n    contractor\n    prepareToBid\n    projectCode\n    projectType\n    estimatedProjectStartDate\n    estimatedProjectEndDate\n    levelInvolved\n    costEngineer\n    sizeAndValueRating\n    sizeAndValueRatingOverview\n    creditAndPaymentRating\n    creditAndPaymentRatingOverview\n    timeLimitRating\n    timeLimitRatingOverview\n    customerRelationshipRating\n    customerRelationshipRatingOverview\n    competitivePartnershipRating\n    competitivePartnershipRatingOverview\n    tenderSituations\n    ownerSituations\n    biddingInstructions\n    competitorSituations\n    tenderForm\n    contractForm\n    managementCompany\n    tenderingAgency\n    biddingDate\n    facadeConsultant\n    designUnit\n    consultingFirm\n    keyProject\n    currentProgress\n    tenderWinCompany\n    tenderWinDate\n    tenderWinAmount\n    lastTenderAmount\n    attachments\n    tenderCode\n    developer\n    architect\n    tenderClosingDate\n    constructionArea\n    remark\n    images\n    geoCoordinate\n    createdBy {\n      id\n      name\n    }\n    finder {\n      id\n      name\n    }\n    customer {\n      id\n      ownerType\n      name\n    }\n    province {\n      id\n      adcode\n      name\n    }\n    city {\n      id\n      adcode\n      name\n    }\n    district {\n      id\n      adcode\n      name\n    }\n    classify\n  }\n  pendingProfile {\n    id\n    createdAt\n    approvalStatus\n    approver {\n      id\n      name\n    }\n    name\n    status\n    estimatedAmount\n    tenderDate\n    discoveryDate\n    address\n    fullAddress\n    contractor\n    prepareToBid\n    projectCode\n    projectType\n    estimatedProjectStartDate\n    estimatedProjectEndDate\n    levelInvolved\n    costEngineer\n    sizeAndValueRating\n    sizeAndValueRatingOverview\n    creditAndPaymentRating\n    creditAndPaymentRatingOverview\n    timeLimitRating\n    timeLimitRatingOverview\n    customerRelationshipRating\n    customerRelationshipRatingOverview\n    competitivePartnershipRating\n    competitivePartnershipRatingOverview\n    tenderSituations\n    ownerSituations\n    biddingInstructions\n    competitorSituations\n    tenderForm\n    contractForm\n    managementCompany\n    tenderingAgency\n    biddingDate\n    facadeConsultant\n    designUnit\n    consultingFirm\n    keyProject\n    currentProgress\n    tenderWinCompany\n    tenderWinDate\n    tenderWinAmount\n    lastTenderAmount\n    attachments\n    tenderCode\n    developer\n    architect\n    tenderClosingDate\n    constructionArea\n    remark\n    images\n    geoCoordinate\n    createdBy {\n      id\n      name\n    }\n    finder {\n      id\n      name\n    }\n    customer {\n      id\n      ownerType\n      name\n    }\n    province {\n      id\n      adcode\n      name\n    }\n    city {\n      id\n      adcode\n      name\n    }\n    district {\n      id\n      adcode\n      name\n    }\n    classify\n  }\n  profiles(orderBy: [{field: CREATED_AT, direction: DESC}]) {\n    edges {\n      node {\n        id\n        createdAt\n        approvalStatus\n        approver {\n          id\n          name\n        }\n        name\n        status\n        estimatedAmount\n        tenderDate\n        discoveryDate\n        address\n        fullAddress\n        contractor\n        prepareToBid\n        projectCode\n        projectType\n        estimatedProjectStartDate\n        estimatedProjectEndDate\n        levelInvolved\n        costEngineer\n        sizeAndValueRating\n        sizeAndValueRatingOverview\n        creditAndPaymentRating\n        creditAndPaymentRatingOverview\n        timeLimitRating\n        timeLimitRatingOverview\n        customerRelationshipRating\n        customerRelationshipRatingOverview\n        competitivePartnershipRating\n        competitivePartnershipRatingOverview\n        tenderSituations\n        ownerSituations\n        biddingInstructions\n        competitorSituations\n        tenderForm\n        contractForm\n        managementCompany\n        tenderingAgency\n        biddingDate\n        facadeConsultant\n        designUnit\n        consultingFirm\n        keyProject\n        currentProgress\n        tenderWinCompany\n        tenderWinDate\n        tenderWinAmount\n        lastTenderAmount\n        attachments\n        tenderCode\n        developer\n        architect\n        tenderClosingDate\n        constructionArea\n        remark\n        images\n        geoCoordinate\n        createdBy {\n          id\n          name\n        }\n        finder {\n          id\n          name\n        }\n        customer {\n          id\n          ownerType\n          name\n        }\n        province {\n          id\n          adcode\n          name\n        }\n        city {\n          id\n          adcode\n          name\n        }\n        district {\n          id\n          adcode\n          name\n        }\n        classify\n      }\n    }\n  }\n}\n"
+    "text": "mutation useUpdateTenderMutation(\n  $id: ID!\n  $tenderInput: UpdateTenderInput!\n  $profileInput: CreateTenderProfileInput!\n  $imageFileNames: [String!]!\n) {\n  updateTender(id: $id, tenderInput: $tenderInput, profileInput: $profileInput, imageFileNames: $imageFileNames) {\n    ...tenderDetailFragment\n    customer {\n      id\n      name\n    }\n    id\n  }\n}\n\nfragment tenderDetailFragment on Tender {\n  id\n  code\n  area {\n    id\n    code\n    name\n  }\n  followingSales {\n    id\n    name\n  }\n  activeProfile {\n    id\n    createdAt\n    approvalStatus\n    approver {\n      id\n      name\n    }\n    name\n    status\n    estimatedAmount\n    tenderDate\n    discoveryDate\n    address\n    fullAddress\n    contractor\n    prepareToBid\n    projectCode\n    projectType\n    estimatedProjectStartDate\n    estimatedProjectEndDate\n    levelInvolved\n    costEngineer\n    sizeAndValueRating\n    sizeAndValueRatingOverview\n    creditAndPaymentRating\n    creditAndPaymentRatingOverview\n    timeLimitRating\n    timeLimitRatingOverview\n    customerRelationshipRating\n    customerRelationshipRatingOverview\n    competitivePartnershipRating\n    competitivePartnershipRatingOverview\n    tenderSituations\n    ownerSituations\n    biddingInstructions\n    competitorSituations\n    tenderForm\n    contractForm\n    managementCompany\n    tenderingAgency\n    biddingDate\n    facadeConsultant\n    designUnit\n    consultingFirm\n    keyProject\n    currentProgress\n    tenderWinCompany\n    tenderWinDate\n    tenderWinAmount\n    lastTenderAmount\n    attachments\n    tenderCode\n    developer\n    architect\n    tenderClosingDate\n    constructionArea\n    remark\n    images\n    geoCoordinate\n    createdBy {\n      id\n      name\n    }\n    finder {\n      id\n      name\n    }\n    customer {\n      id\n      ownerType\n      name\n    }\n    province {\n      id\n      adcode\n      name\n    }\n    city {\n      id\n      adcode\n      name\n    }\n    district {\n      id\n      adcode\n      name\n    }\n    classify\n  }\n  pendingProfile {\n    id\n    createdAt\n    approvalStatus\n    approver {\n      id\n      name\n    }\n    name\n    status\n    estimatedAmount\n    tenderDate\n    discoveryDate\n    address\n    fullAddress\n    contractor\n    prepareToBid\n    projectCode\n    projectType\n    estimatedProjectStartDate\n    estimatedProjectEndDate\n    levelInvolved\n    costEngineer\n    sizeAndValueRating\n    sizeAndValueRatingOverview\n    creditAndPaymentRating\n    creditAndPaymentRatingOverview\n    timeLimitRating\n    timeLimitRatingOverview\n    customerRelationshipRating\n    customerRelationshipRatingOverview\n    competitivePartnershipRating\n    competitivePartnershipRatingOverview\n    tenderSituations\n    ownerSituations\n    biddingInstructions\n    competitorSituations\n    tenderForm\n    contractForm\n    managementCompany\n    tenderingAgency\n    biddingDate\n    facadeConsultant\n    designUnit\n    consultingFirm\n    keyProject\n    currentProgress\n    tenderWinCompany\n    tenderWinDate\n    tenderWinAmount\n    lastTenderAmount\n    attachments\n    tenderCode\n    developer\n    architect\n    tenderClosingDate\n    constructionArea\n    remark\n    images\n    geoCoordinate\n    createdBy {\n      id\n      name\n    }\n    finder {\n      id\n      name\n    }\n    customer {\n      id\n      ownerType\n      name\n    }\n    province {\n      id\n      adcode\n      name\n    }\n    city {\n      id\n      adcode\n      name\n    }\n    district {\n      id\n      adcode\n      name\n    }\n    classify\n  }\n  profiles(orderBy: [{field: CREATED_AT, direction: DESC}]) {\n    edges {\n      node {\n        id\n        createdAt\n        approvalStatus\n        approver {\n          id\n          name\n        }\n        name\n        status\n        estimatedAmount\n        tenderDate\n        discoveryDate\n        address\n        fullAddress\n        contractor\n        prepareToBid\n        projectCode\n        projectType\n        estimatedProjectStartDate\n        estimatedProjectEndDate\n        levelInvolved\n        costEngineer\n        sizeAndValueRating\n        sizeAndValueRatingOverview\n        creditAndPaymentRating\n        creditAndPaymentRatingOverview\n        timeLimitRating\n        timeLimitRatingOverview\n        customerRelationshipRating\n        customerRelationshipRatingOverview\n        competitivePartnershipRating\n        competitivePartnershipRatingOverview\n        tenderSituations\n        ownerSituations\n        biddingInstructions\n        competitorSituations\n        tenderForm\n        contractForm\n        managementCompany\n        tenderingAgency\n        biddingDate\n        facadeConsultant\n        designUnit\n        consultingFirm\n        keyProject\n        currentProgress\n        tenderWinCompany\n        tenderWinDate\n        tenderWinAmount\n        lastTenderAmount\n        attachments\n        tenderCode\n        developer\n        architect\n        tenderClosingDate\n        constructionArea\n        remark\n        images\n        geoCoordinate\n        createdBy {\n          id\n          name\n        }\n        finder {\n          id\n          name\n        }\n        customer {\n          id\n          ownerType\n          name\n        }\n        province {\n          id\n          adcode\n          name\n        }\n        city {\n          id\n          adcode\n          name\n        }\n        district {\n          id\n          adcode\n          name\n        }\n        classify\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "662d3eb00679de87bbf6ec7c66e5df40";
+(node as any).hash = "e4bc63afd2ddfeba08d5b536bc0ca02c";
 
 export default node;

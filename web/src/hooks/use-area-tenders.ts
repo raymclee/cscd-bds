@@ -34,8 +34,8 @@ export function useAreaTenders() {
           case "province":
           case "city":
             return (
-              adcodes?.includes(t?.city?.adcode) ||
-              adcodes?.includes(t?.district?.adcode)
+              adcodes?.includes(t?.activeProfile?.city?.adcode) ||
+              adcodes?.includes(t?.activeProfile?.district?.adcode)
             );
           // return t?.map(
           //   (e) =>

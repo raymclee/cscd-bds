@@ -933,7 +933,7 @@ input CreateTenderProfileInput {
   designUnit: String
   """業主，只限港澳"""
   developer: String
-  discoveryDate: Time!
+  discoveryDate: Time
   districtID: ID
   estimatedAmount: Float
   estimatedProjectEndDate: Time
@@ -948,7 +948,7 @@ input CreateTenderProfileInput {
   lastTenderAmount: Float
   levelInvolved: Int
   managementCompany: String
-  name: String!
+  name: String
   ownerSituations: String
   prepareToBid: Boolean
   projectCode: String
@@ -1973,15 +1973,13 @@ type Mutation {
   createCustomer(input: CreateCustomerInput!): CustomerConnection!
   createCustomerV2(customerInput: CreateCustomerInput!, profileInput: CreateCustomerProfileInput!): Customer!
   createPlot(geoBounds: [[Float!]!], input: CreatePlotInput!): PlotConnection!
-  createTender(attachmentFileNames: [String!]!, geoBounds: [[Float!]!], geoCoordinate: [Float!], imageFileNames: [String!]!, input: CreateTenderInput!): TenderConnection!
-  createTenderProfile(attachmentFileNames: [String!]!, id: ID!, imageFileNames: [String!]!, input: CreateTenderProfileInput!): Tender!
+  createTender(imageFileNames: [String!]!, profileInput: CreateTenderProfileInput!, tenderInput: CreateTenderInput!): Tender!
   createTenderV2(attachmentFileNames: [String!]!, imageFileNames: [String!]!, profileInput: CreateTenderProfileInput!, tenderInput: CreateTenderInput!): Tender!
   createUser(input: CreateUserInput!): UserConnection!
   createVisitRecord(input: CreateVisitRecordInput!): VisitRecordConnection!
   deleteCompetitor(id: ID!): Competitor!
   deleteCustomer(id: ID!): Customer!
   deletePlot(id: ID!): Plot!
-  deleteTender(id: ID!): Tender!
   deleteUser(id: ID!): User!
   deleteVisitRecord(id: ID!): VisitRecord!
   loseTender(id: ID!, input: LoseTenderInput!): Tender!
@@ -1993,10 +1991,11 @@ type Mutation {
   updateCustomerV2(customerInput: UpdateCustomerInput!, id: ID!, profileInput: CreateCustomerProfileInput!): Customer!
   updatePlot(geoBounds: [[Float!]!], id: ID!, input: UpdatePlotInput!): Plot!
   updateProject(id: ID!, input: UpdateProjectInput!): Project!
-  updateTender(attachmentFileNames: [String!], geoBounds: [[Float!]!], geoCoordinate: [Float!], id: ID!, imageFileNames: [String!], input: UpdateTenderInput!, removeAttachmentFileNames: [String!], removeImageFileNames: [String!]): Tender!
+  updateTender(id: ID!, imageFileNames: [String!], profileInput: CreateTenderProfileInput!, tenderInput: UpdateTenderInput!): Tender!
   updateTenderV2(attachmentFileNames: [String!]!, id: ID!, imageFileNames: [String!]!, profileInput: CreateTenderProfileInput!, tenderInput: UpdateTenderInput!): Tender!
   updateUser(id: ID!, input: UpdateUserInput!): User!
   updateVisitRecord(id: ID!, input: UpdateVisitRecordInput!): VisitRecord!
+  voidTender(id: ID!): Tender!
   winTender(id: ID!, input: WinTenderInput!): Tender!
 }
 
@@ -5001,7 +5000,7 @@ type TenderProfile implements Node {
   designUnit: String
   """業主，只限港澳"""
   developer: String
-  discoveryDate: Time!
+  discoveryDate: Time
   district: District
   districtID: ID
   estimatedAmount: Float
@@ -5019,7 +5018,7 @@ type TenderProfile implements Node {
   lastTenderAmount: Float
   levelInvolved: Int
   managementCompany: String
-  name: String!
+  name: String
   ownerSituations: String
   prepareToBid: Boolean!
   projectCode: String
@@ -5490,10 +5489,12 @@ input TenderProfileWhereInput {
   discoveryDateGT: Time
   discoveryDateGTE: Time
   discoveryDateIn: [Time!]
+  discoveryDateIsNil: Boolean
   discoveryDateLT: Time
   discoveryDateLTE: Time
   discoveryDateNEQ: Time
   discoveryDateNotIn: [Time!]
+  discoveryDateNotNil: Boolean
   """district_id field predicates"""
   districtID: ID
   districtIDContains: ID
@@ -5675,10 +5676,12 @@ input TenderProfileWhereInput {
   nameHasPrefix: String
   nameHasSuffix: String
   nameIn: [String!]
+  nameIsNil: Boolean
   nameLT: String
   nameLTE: String
   nameNEQ: String
   nameNotIn: [String!]
+  nameNotNil: Boolean
   not: TenderProfileWhereInput
   or: [TenderProfileWhereInput!]
   """owner_situations field predicates"""
