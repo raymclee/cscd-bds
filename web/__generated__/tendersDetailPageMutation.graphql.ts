@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<e375aceabb2ccd5a44d788b7e0255b7b>>
+ * @generated SignedSource<<4d4916436051f280177cd891f88ff2f7>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,6 +10,7 @@
 
 import { ConcreteRequest } from 'relay-runtime';
 export type UpdateTenderInput = {
+  activeProfileID?: string | null | undefined;
   addCompetitorIDs?: ReadonlyArray<string> | null | undefined;
   addFollowingSaleIDs?: ReadonlyArray<string> | null | undefined;
   addProfileIDs?: ReadonlyArray<string> | null | undefined;
@@ -27,6 +28,7 @@ export type UpdateTenderInput = {
   biddingInstructions?: string | null | undefined;
   cityID?: string | null | undefined;
   classify?: number | null | undefined;
+  clearActiveProfile?: boolean | null | undefined;
   clearAddress?: boolean | null | undefined;
   clearApprovalMsgID?: boolean | null | undefined;
   clearApprover?: boolean | null | undefined;
@@ -67,6 +69,7 @@ export type UpdateTenderInput = {
   clearLevelInvolved?: boolean | null | undefined;
   clearManagementCompany?: boolean | null | undefined;
   clearOwnerSituations?: boolean | null | undefined;
+  clearPendingProfile?: boolean | null | undefined;
   clearProfiles?: boolean | null | undefined;
   clearProjectCode?: boolean | null | undefined;
   clearProjectDefinition?: boolean | null | undefined;
@@ -86,7 +89,6 @@ export type UpdateTenderInput = {
   clearTenderingAgency?: boolean | null | undefined;
   clearTimeLimitRating?: boolean | null | undefined;
   clearTimeLimitRatingOverview?: boolean | null | undefined;
-  clearUpdatedBy?: boolean | null | undefined;
   clearVisitRecords?: boolean | null | undefined;
   code?: string | null | undefined;
   competitivePartnershipRating?: number | null | undefined;
@@ -121,6 +123,7 @@ export type UpdateTenderInput = {
   managementCompany?: string | null | undefined;
   name?: string | null | undefined;
   ownerSituations?: string | null | undefined;
+  pendingProfileID?: string | null | undefined;
   prepareToBid?: boolean | null | undefined;
   projectCode?: string | null | undefined;
   projectDefinition?: string | null | undefined;
@@ -146,7 +149,6 @@ export type UpdateTenderInput = {
   timeLimitRating?: number | null | undefined;
   timeLimitRatingOverview?: string | null | undefined;
   updatedAt?: any | null | undefined;
-  updatedByID?: string | null | undefined;
 };
 export type tendersDetailPageMutation$variables = {
   geoBounds?: ReadonlyArray<ReadonlyArray<number>> | null | undefined;

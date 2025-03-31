@@ -26,9 +26,8 @@ import (
 // TenderProfileUpdate is the builder for updating TenderProfile entities.
 type TenderProfileUpdate struct {
 	config
-	hooks     []Hook
-	mutation  *TenderProfileMutation
-	modifiers []func(*sql.UpdateBuilder)
+	hooks    []Hook
+	mutation *TenderProfileMutation
 }
 
 // Where appends a list predicates to the TenderProfileUpdate builder.
@@ -1569,12 +1568,6 @@ func (tpu *TenderProfileUpdate) check() error {
 	return nil
 }
 
-// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
-func (tpu *TenderProfileUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *TenderProfileUpdate {
-	tpu.modifiers = append(tpu.modifiers, modifiers...)
-	return tpu
-}
-
 func (tpu *TenderProfileUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if err := tpu.check(); err != nil {
 		return n, err
@@ -2202,7 +2195,6 @@ func (tpu *TenderProfileUpdate) sqlSave(ctx context.Context) (n int, err error) 
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	_spec.AddModifiers(tpu.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, tpu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{tenderprofile.Label}
@@ -2218,10 +2210,9 @@ func (tpu *TenderProfileUpdate) sqlSave(ctx context.Context) (n int, err error) 
 // TenderProfileUpdateOne is the builder for updating a single TenderProfile entity.
 type TenderProfileUpdateOne struct {
 	config
-	fields    []string
-	hooks     []Hook
-	mutation  *TenderProfileMutation
-	modifiers []func(*sql.UpdateBuilder)
+	fields   []string
+	hooks    []Hook
+	mutation *TenderProfileMutation
 }
 
 // SetUpdatedAt sets the "updated_at" field.
@@ -3769,12 +3760,6 @@ func (tpuo *TenderProfileUpdateOne) check() error {
 	return nil
 }
 
-// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
-func (tpuo *TenderProfileUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *TenderProfileUpdateOne {
-	tpuo.modifiers = append(tpuo.modifiers, modifiers...)
-	return tpuo
-}
-
 func (tpuo *TenderProfileUpdateOne) sqlSave(ctx context.Context) (_node *TenderProfile, err error) {
 	if err := tpuo.check(); err != nil {
 		return _node, err
@@ -4419,7 +4404,6 @@ func (tpuo *TenderProfileUpdateOne) sqlSave(ctx context.Context) (_node *TenderP
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	_spec.AddModifiers(tpuo.modifiers...)
 	_node = &TenderProfile{config: tpuo.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues

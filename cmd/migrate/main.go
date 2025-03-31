@@ -124,8 +124,12 @@ func main() {
 			q.SetGeoCoordinate(coords)
 		}
 
-		if _, err := q.Save(ctx); err != nil {
+		tp, err := q.Save(ctx)
+		if err != nil {
 			log.Fatalf("failed to save tender profile: %v", err)
+		}
+		if err := s.Tender.UpdateOneID(t.ID).SetActiveProfileID(tp.ID).Exec(ctx); err != nil {
+			log.Fatalf("failed to update tender active profile: %v", err)
 		}
 	}
 }

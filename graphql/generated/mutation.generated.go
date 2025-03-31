@@ -37,8 +37,8 @@ type MutationResolver interface {
 	DeleteTender(ctx context.Context, id xid.ID) (*ent.Tender, error)
 	WinTender(ctx context.Context, id xid.ID, input model.WinTenderInput) (*ent.Tender, error)
 	LoseTender(ctx context.Context, id xid.ID, input model.LoseTenderInput) (*ent.Tender, error)
-	ApproveTender(ctx context.Context, id xid.ID, profileID xid.ID) (*ent.Tender, error)
-	RejectTender(ctx context.Context, id xid.ID, profileID xid.ID) (*ent.Tender, error)
+	ApproveTender(ctx context.Context, id xid.ID) (*ent.Tender, error)
+	RejectTender(ctx context.Context, id xid.ID) (*ent.Tender, error)
 	CreatePlot(ctx context.Context, input ent.CreatePlotInput, geoBounds [][]float64) (*ent.PlotConnection, error)
 	UpdatePlot(ctx context.Context, id xid.ID, input ent.UpdatePlotInput, geoBounds [][]float64) (*ent.Plot, error)
 	DeletePlot(ctx context.Context, id xid.ID) (*ent.Plot, error)
@@ -95,11 +95,6 @@ func (ec *executionContext) field_Mutation_approveTender_args(ctx context.Contex
 		return nil, err
 	}
 	args["id"] = arg0
-	arg1, err := ec.field_Mutation_approveTender_argsProfileID(ctx, rawArgs)
-	if err != nil {
-		return nil, err
-	}
-	args["profileId"] = arg1
 	return args, nil
 }
 func (ec *executionContext) field_Mutation_approveTender_argsID(
@@ -117,28 +112,6 @@ func (ec *executionContext) field_Mutation_approveTender_argsID(
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
 	if tmp, ok := rawArgs["id"]; ok {
-		return ec.unmarshalNID2cscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, tmp)
-	}
-
-	var zeroVal xid.ID
-	return zeroVal, nil
-}
-
-func (ec *executionContext) field_Mutation_approveTender_argsProfileID(
-	ctx context.Context,
-	rawArgs map[string]interface{},
-) (xid.ID, error) {
-	// We won't call the directive if the argument is null.
-	// Set call_argument_directives_with_null to true to call directives
-	// even if the argument is null.
-	_, ok := rawArgs["profileId"]
-	if !ok {
-		var zeroVal xid.ID
-		return zeroVal, nil
-	}
-
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("profileId"))
-	if tmp, ok := rawArgs["profileId"]; ok {
 		return ec.unmarshalNID2cscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, tmp)
 	}
 
@@ -1022,11 +995,6 @@ func (ec *executionContext) field_Mutation_rejectTender_args(ctx context.Context
 		return nil, err
 	}
 	args["id"] = arg0
-	arg1, err := ec.field_Mutation_rejectTender_argsProfileID(ctx, rawArgs)
-	if err != nil {
-		return nil, err
-	}
-	args["profileId"] = arg1
 	return args, nil
 }
 func (ec *executionContext) field_Mutation_rejectTender_argsID(
@@ -1044,28 +1012,6 @@ func (ec *executionContext) field_Mutation_rejectTender_argsID(
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
 	if tmp, ok := rawArgs["id"]; ok {
-		return ec.unmarshalNID2cscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, tmp)
-	}
-
-	var zeroVal xid.ID
-	return zeroVal, nil
-}
-
-func (ec *executionContext) field_Mutation_rejectTender_argsProfileID(
-	ctx context.Context,
-	rawArgs map[string]interface{},
-) (xid.ID, error) {
-	// We won't call the directive if the argument is null.
-	// Set call_argument_directives_with_null to true to call directives
-	// even if the argument is null.
-	_, ok := rawArgs["profileId"]
-	if !ok {
-		var zeroVal xid.ID
-		return zeroVal, nil
-	}
-
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("profileId"))
-	if tmp, ok := rawArgs["profileId"]; ok {
 		return ec.unmarshalNID2cscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, tmp)
 	}
 
@@ -3251,8 +3197,10 @@ func (ec *executionContext) fieldContext_Mutation_updateTender(ctx context.Conte
 				return ec.fieldContext_Tender_createdByID(ctx, field)
 			case "approverID":
 				return ec.fieldContext_Tender_approverID(ctx, field)
-			case "updatedByID":
-				return ec.fieldContext_Tender_updatedByID(ctx, field)
+			case "activeProfileID":
+				return ec.fieldContext_Tender_activeProfileID(ctx, field)
+			case "pendingProfileID":
+				return ec.fieldContext_Tender_pendingProfileID(ctx, field)
 			case "area":
 				return ec.fieldContext_Tender_area(ctx, field)
 			case "profiles":
@@ -3277,8 +3225,10 @@ func (ec *executionContext) fieldContext_Mutation_updateTender(ctx context.Conte
 				return ec.fieldContext_Tender_visitRecords(ctx, field)
 			case "approver":
 				return ec.fieldContext_Tender_approver(ctx, field)
-			case "updatedBy":
-				return ec.fieldContext_Tender_updatedBy(ctx, field)
+			case "activeProfile":
+				return ec.fieldContext_Tender_activeProfile(ctx, field)
+			case "pendingProfile":
+				return ec.fieldContext_Tender_pendingProfile(ctx, field)
 			case "geoCoordinate":
 				return ec.fieldContext_Tender_geoCoordinate(ctx, field)
 			case "geoBounds":
@@ -3474,8 +3424,10 @@ func (ec *executionContext) fieldContext_Mutation_createTenderV2(ctx context.Con
 				return ec.fieldContext_Tender_createdByID(ctx, field)
 			case "approverID":
 				return ec.fieldContext_Tender_approverID(ctx, field)
-			case "updatedByID":
-				return ec.fieldContext_Tender_updatedByID(ctx, field)
+			case "activeProfileID":
+				return ec.fieldContext_Tender_activeProfileID(ctx, field)
+			case "pendingProfileID":
+				return ec.fieldContext_Tender_pendingProfileID(ctx, field)
 			case "area":
 				return ec.fieldContext_Tender_area(ctx, field)
 			case "profiles":
@@ -3500,8 +3452,10 @@ func (ec *executionContext) fieldContext_Mutation_createTenderV2(ctx context.Con
 				return ec.fieldContext_Tender_visitRecords(ctx, field)
 			case "approver":
 				return ec.fieldContext_Tender_approver(ctx, field)
-			case "updatedBy":
-				return ec.fieldContext_Tender_updatedBy(ctx, field)
+			case "activeProfile":
+				return ec.fieldContext_Tender_activeProfile(ctx, field)
+			case "pendingProfile":
+				return ec.fieldContext_Tender_pendingProfile(ctx, field)
 			case "geoCoordinate":
 				return ec.fieldContext_Tender_geoCoordinate(ctx, field)
 			case "geoBounds":
@@ -3697,8 +3651,10 @@ func (ec *executionContext) fieldContext_Mutation_updateTenderV2(ctx context.Con
 				return ec.fieldContext_Tender_createdByID(ctx, field)
 			case "approverID":
 				return ec.fieldContext_Tender_approverID(ctx, field)
-			case "updatedByID":
-				return ec.fieldContext_Tender_updatedByID(ctx, field)
+			case "activeProfileID":
+				return ec.fieldContext_Tender_activeProfileID(ctx, field)
+			case "pendingProfileID":
+				return ec.fieldContext_Tender_pendingProfileID(ctx, field)
 			case "area":
 				return ec.fieldContext_Tender_area(ctx, field)
 			case "profiles":
@@ -3723,8 +3679,10 @@ func (ec *executionContext) fieldContext_Mutation_updateTenderV2(ctx context.Con
 				return ec.fieldContext_Tender_visitRecords(ctx, field)
 			case "approver":
 				return ec.fieldContext_Tender_approver(ctx, field)
-			case "updatedBy":
-				return ec.fieldContext_Tender_updatedBy(ctx, field)
+			case "activeProfile":
+				return ec.fieldContext_Tender_activeProfile(ctx, field)
+			case "pendingProfile":
+				return ec.fieldContext_Tender_pendingProfile(ctx, field)
 			case "geoCoordinate":
 				return ec.fieldContext_Tender_geoCoordinate(ctx, field)
 			case "geoBounds":
@@ -3920,8 +3878,10 @@ func (ec *executionContext) fieldContext_Mutation_createTenderProfile(ctx contex
 				return ec.fieldContext_Tender_createdByID(ctx, field)
 			case "approverID":
 				return ec.fieldContext_Tender_approverID(ctx, field)
-			case "updatedByID":
-				return ec.fieldContext_Tender_updatedByID(ctx, field)
+			case "activeProfileID":
+				return ec.fieldContext_Tender_activeProfileID(ctx, field)
+			case "pendingProfileID":
+				return ec.fieldContext_Tender_pendingProfileID(ctx, field)
 			case "area":
 				return ec.fieldContext_Tender_area(ctx, field)
 			case "profiles":
@@ -3946,8 +3906,10 @@ func (ec *executionContext) fieldContext_Mutation_createTenderProfile(ctx contex
 				return ec.fieldContext_Tender_visitRecords(ctx, field)
 			case "approver":
 				return ec.fieldContext_Tender_approver(ctx, field)
-			case "updatedBy":
-				return ec.fieldContext_Tender_updatedBy(ctx, field)
+			case "activeProfile":
+				return ec.fieldContext_Tender_activeProfile(ctx, field)
+			case "pendingProfile":
+				return ec.fieldContext_Tender_pendingProfile(ctx, field)
 			case "geoCoordinate":
 				return ec.fieldContext_Tender_geoCoordinate(ctx, field)
 			case "geoBounds":
@@ -4143,8 +4105,10 @@ func (ec *executionContext) fieldContext_Mutation_deleteTender(ctx context.Conte
 				return ec.fieldContext_Tender_createdByID(ctx, field)
 			case "approverID":
 				return ec.fieldContext_Tender_approverID(ctx, field)
-			case "updatedByID":
-				return ec.fieldContext_Tender_updatedByID(ctx, field)
+			case "activeProfileID":
+				return ec.fieldContext_Tender_activeProfileID(ctx, field)
+			case "pendingProfileID":
+				return ec.fieldContext_Tender_pendingProfileID(ctx, field)
 			case "area":
 				return ec.fieldContext_Tender_area(ctx, field)
 			case "profiles":
@@ -4169,8 +4133,10 @@ func (ec *executionContext) fieldContext_Mutation_deleteTender(ctx context.Conte
 				return ec.fieldContext_Tender_visitRecords(ctx, field)
 			case "approver":
 				return ec.fieldContext_Tender_approver(ctx, field)
-			case "updatedBy":
-				return ec.fieldContext_Tender_updatedBy(ctx, field)
+			case "activeProfile":
+				return ec.fieldContext_Tender_activeProfile(ctx, field)
+			case "pendingProfile":
+				return ec.fieldContext_Tender_pendingProfile(ctx, field)
 			case "geoCoordinate":
 				return ec.fieldContext_Tender_geoCoordinate(ctx, field)
 			case "geoBounds":
@@ -4366,8 +4332,10 @@ func (ec *executionContext) fieldContext_Mutation_winTender(ctx context.Context,
 				return ec.fieldContext_Tender_createdByID(ctx, field)
 			case "approverID":
 				return ec.fieldContext_Tender_approverID(ctx, field)
-			case "updatedByID":
-				return ec.fieldContext_Tender_updatedByID(ctx, field)
+			case "activeProfileID":
+				return ec.fieldContext_Tender_activeProfileID(ctx, field)
+			case "pendingProfileID":
+				return ec.fieldContext_Tender_pendingProfileID(ctx, field)
 			case "area":
 				return ec.fieldContext_Tender_area(ctx, field)
 			case "profiles":
@@ -4392,8 +4360,10 @@ func (ec *executionContext) fieldContext_Mutation_winTender(ctx context.Context,
 				return ec.fieldContext_Tender_visitRecords(ctx, field)
 			case "approver":
 				return ec.fieldContext_Tender_approver(ctx, field)
-			case "updatedBy":
-				return ec.fieldContext_Tender_updatedBy(ctx, field)
+			case "activeProfile":
+				return ec.fieldContext_Tender_activeProfile(ctx, field)
+			case "pendingProfile":
+				return ec.fieldContext_Tender_pendingProfile(ctx, field)
 			case "geoCoordinate":
 				return ec.fieldContext_Tender_geoCoordinate(ctx, field)
 			case "geoBounds":
@@ -4589,8 +4559,10 @@ func (ec *executionContext) fieldContext_Mutation_loseTender(ctx context.Context
 				return ec.fieldContext_Tender_createdByID(ctx, field)
 			case "approverID":
 				return ec.fieldContext_Tender_approverID(ctx, field)
-			case "updatedByID":
-				return ec.fieldContext_Tender_updatedByID(ctx, field)
+			case "activeProfileID":
+				return ec.fieldContext_Tender_activeProfileID(ctx, field)
+			case "pendingProfileID":
+				return ec.fieldContext_Tender_pendingProfileID(ctx, field)
 			case "area":
 				return ec.fieldContext_Tender_area(ctx, field)
 			case "profiles":
@@ -4615,8 +4587,10 @@ func (ec *executionContext) fieldContext_Mutation_loseTender(ctx context.Context
 				return ec.fieldContext_Tender_visitRecords(ctx, field)
 			case "approver":
 				return ec.fieldContext_Tender_approver(ctx, field)
-			case "updatedBy":
-				return ec.fieldContext_Tender_updatedBy(ctx, field)
+			case "activeProfile":
+				return ec.fieldContext_Tender_activeProfile(ctx, field)
+			case "pendingProfile":
+				return ec.fieldContext_Tender_pendingProfile(ctx, field)
 			case "geoCoordinate":
 				return ec.fieldContext_Tender_geoCoordinate(ctx, field)
 			case "geoBounds":
@@ -4653,7 +4627,7 @@ func (ec *executionContext) _Mutation_approveTender(ctx context.Context, field g
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().ApproveTender(rctx, fc.Args["id"].(xid.ID), fc.Args["profileId"].(xid.ID))
+		return ec.resolvers.Mutation().ApproveTender(rctx, fc.Args["id"].(xid.ID))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -4812,8 +4786,10 @@ func (ec *executionContext) fieldContext_Mutation_approveTender(ctx context.Cont
 				return ec.fieldContext_Tender_createdByID(ctx, field)
 			case "approverID":
 				return ec.fieldContext_Tender_approverID(ctx, field)
-			case "updatedByID":
-				return ec.fieldContext_Tender_updatedByID(ctx, field)
+			case "activeProfileID":
+				return ec.fieldContext_Tender_activeProfileID(ctx, field)
+			case "pendingProfileID":
+				return ec.fieldContext_Tender_pendingProfileID(ctx, field)
 			case "area":
 				return ec.fieldContext_Tender_area(ctx, field)
 			case "profiles":
@@ -4838,8 +4814,10 @@ func (ec *executionContext) fieldContext_Mutation_approveTender(ctx context.Cont
 				return ec.fieldContext_Tender_visitRecords(ctx, field)
 			case "approver":
 				return ec.fieldContext_Tender_approver(ctx, field)
-			case "updatedBy":
-				return ec.fieldContext_Tender_updatedBy(ctx, field)
+			case "activeProfile":
+				return ec.fieldContext_Tender_activeProfile(ctx, field)
+			case "pendingProfile":
+				return ec.fieldContext_Tender_pendingProfile(ctx, field)
 			case "geoCoordinate":
 				return ec.fieldContext_Tender_geoCoordinate(ctx, field)
 			case "geoBounds":
@@ -4876,7 +4854,7 @@ func (ec *executionContext) _Mutation_rejectTender(ctx context.Context, field gr
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().RejectTender(rctx, fc.Args["id"].(xid.ID), fc.Args["profileId"].(xid.ID))
+		return ec.resolvers.Mutation().RejectTender(rctx, fc.Args["id"].(xid.ID))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -5035,8 +5013,10 @@ func (ec *executionContext) fieldContext_Mutation_rejectTender(ctx context.Conte
 				return ec.fieldContext_Tender_createdByID(ctx, field)
 			case "approverID":
 				return ec.fieldContext_Tender_approverID(ctx, field)
-			case "updatedByID":
-				return ec.fieldContext_Tender_updatedByID(ctx, field)
+			case "activeProfileID":
+				return ec.fieldContext_Tender_activeProfileID(ctx, field)
+			case "pendingProfileID":
+				return ec.fieldContext_Tender_pendingProfileID(ctx, field)
 			case "area":
 				return ec.fieldContext_Tender_area(ctx, field)
 			case "profiles":
@@ -5061,8 +5041,10 @@ func (ec *executionContext) fieldContext_Mutation_rejectTender(ctx context.Conte
 				return ec.fieldContext_Tender_visitRecords(ctx, field)
 			case "approver":
 				return ec.fieldContext_Tender_approver(ctx, field)
-			case "updatedBy":
-				return ec.fieldContext_Tender_updatedBy(ctx, field)
+			case "activeProfile":
+				return ec.fieldContext_Tender_activeProfile(ctx, field)
+			case "pendingProfile":
+				return ec.fieldContext_Tender_pendingProfile(ctx, field)
 			case "geoCoordinate":
 				return ec.fieldContext_Tender_geoCoordinate(ctx, field)
 			case "geoBounds":

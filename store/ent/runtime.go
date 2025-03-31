@@ -577,21 +577,7 @@ func init() {
 	// tenderprofile.DefaultApprovalStatus holds the default value on creation for the approval_status field.
 	tenderprofile.DefaultApprovalStatus = tenderprofileDescApprovalStatus.Default.(int)
 	// tenderprofile.ApprovalStatusValidator is a validator for the "approval_status" field. It is called by the builders before save.
-	tenderprofile.ApprovalStatusValidator = func() func(int) error {
-		validators := tenderprofileDescApprovalStatus.Validators
-		fns := [...]func(int) error{
-			validators[0].(func(int) error),
-			validators[1].(func(int) error),
-		}
-		return func(approval_status int) error {
-			for _, fn := range fns {
-				if err := fn(approval_status); err != nil {
-					return err
-				}
-			}
-			return nil
-		}
-	}()
+	tenderprofile.ApprovalStatusValidator = tenderprofileDescApprovalStatus.Validators[0].(func(int) error)
 	// tenderprofileDescName is the schema descriptor for name field.
 	tenderprofileDescName := tenderprofileFields[3].Descriptor()
 	// tenderprofile.NameValidator is a validator for the "name" field. It is called by the builders before save.

@@ -4,7 +4,12 @@ import {
   EditOutlined,
   HistoryOutlined,
 } from "@ant-design/icons";
-import { Link, useRouteContext, useSearch } from "@tanstack/react-router";
+import {
+  Link,
+  useNavigate,
+  useRouteContext,
+  useSearch,
+} from "@tanstack/react-router";
 import {
   tenderDetailFragment$data,
   tenderDetailFragment$key,
@@ -42,7 +47,7 @@ import { TenderLoseModal } from "./tender-lose-modal";
 import { tenderWinModalFragment$key } from "__generated__/tenderWinModalFragment.graphql";
 import { tenderLoseModalFragment$key } from "__generated__/tenderLoseModalFragment.graphql";
 import { Check, History } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { cn } from "~/lib/utils";
 import { ScrollArea } from "../ui/scroll-area";
 import { useApproveTender } from "~/hooks/use-approve-tender";
@@ -65,6 +70,190 @@ export const TenderDetailFragment = graphql`
     followingSales {
       id
       name
+    }
+    activeProfile {
+      id
+      createdAt
+      approvalStatus
+      approver {
+        id
+        name
+      }
+      name
+      status
+      estimatedAmount
+      tenderDate
+      discoveryDate
+      address
+      fullAddress
+      contractor
+      prepareToBid
+      projectCode
+      projectType
+      estimatedProjectStartDate
+      estimatedProjectEndDate
+      levelInvolved
+      costEngineer
+      sizeAndValueRating
+      sizeAndValueRatingOverview
+      creditAndPaymentRating
+      creditAndPaymentRatingOverview
+      timeLimitRating
+      timeLimitRatingOverview
+      customerRelationshipRating
+      customerRelationshipRatingOverview
+      competitivePartnershipRating
+      competitivePartnershipRatingOverview
+      tenderSituations
+      ownerSituations
+      biddingInstructions
+      competitorSituations
+      tenderForm
+      contractForm
+      managementCompany
+      tenderingAgency
+      biddingDate
+      facadeConsultant
+      designUnit
+      consultingFirm
+      keyProject
+      currentProgress
+      tenderWinCompany
+      tenderWinDate
+      tenderWinAmount
+      lastTenderAmount
+      attachments
+      tenderCode
+      developer
+      architect
+      facadeConsultant
+      tenderClosingDate
+      constructionArea
+      remark
+      images
+      geoCoordinate
+      createdBy {
+        id
+        name
+      }
+      finder {
+        id
+        name
+      }
+
+      customer {
+        id
+        ownerType
+        name
+      }
+      province {
+        id
+        adcode
+        name
+      }
+      city {
+        id
+        adcode
+        name
+      }
+      district {
+        id
+        adcode
+        name
+      }
+      classify
+    }
+    pendingProfile {
+      id
+      createdAt
+      approvalStatus
+      approver {
+        id
+        name
+      }
+      name
+      status
+      estimatedAmount
+      tenderDate
+      discoveryDate
+      address
+      fullAddress
+      contractor
+      prepareToBid
+      projectCode
+      projectType
+      estimatedProjectStartDate
+      estimatedProjectEndDate
+      levelInvolved
+      costEngineer
+      sizeAndValueRating
+      sizeAndValueRatingOverview
+      creditAndPaymentRating
+      creditAndPaymentRatingOverview
+      timeLimitRating
+      timeLimitRatingOverview
+      customerRelationshipRating
+      customerRelationshipRatingOverview
+      competitivePartnershipRating
+      competitivePartnershipRatingOverview
+      tenderSituations
+      ownerSituations
+      biddingInstructions
+      competitorSituations
+      tenderForm
+      contractForm
+      managementCompany
+      tenderingAgency
+      biddingDate
+      facadeConsultant
+      designUnit
+      consultingFirm
+      keyProject
+      currentProgress
+      tenderWinCompany
+      tenderWinDate
+      tenderWinAmount
+      lastTenderAmount
+      attachments
+      tenderCode
+      developer
+      architect
+      facadeConsultant
+      tenderClosingDate
+      constructionArea
+      remark
+      images
+      geoCoordinate
+      createdBy {
+        id
+        name
+      }
+      finder {
+        id
+        name
+      }
+
+      customer {
+        id
+        ownerType
+        name
+      }
+      province {
+        id
+        adcode
+        name
+      }
+      city {
+        id
+        adcode
+        name
+      }
+      district {
+        id
+        adcode
+        name
+      }
+      classify
     }
     profiles(orderBy: [{ field: CREATED_AT, direction: DESC }]) {
       edges {
@@ -170,45 +359,63 @@ export function TenderDetail({
   competitorRef,
   lostCompetitorRef,
 }: TenderDetailProps) {
-  const [historyOpen, setHistoryOpen] = useState(false);
   const data = useFragment(TenderDetailFragment, queryRef);
   const { profiles } = data;
   const selectedProfileId = useSearch({
     from: "/__auth/__portal/portal/tenders_/$id",
     select: (state) => state.p,
   });
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (profiles.edges?.at(0)?.node?.approvalStatus == 1) {
+      navigate({
+        to: ".",
+        search: {
+          p: profiles.edges?.at(0)?.node?.id,
+        },
+      });
+    }
+  }, [profiles]);
 
   return (
     <div className="flex flex-wrap">
       {data.area.code === "GA" || data.area.code === "HW" ? (
-        <GAAndHWTender
-          tender={data}
-          toggleHistory={() => setHistoryOpen(!historyOpen)}
-        />
+        <GAAndHWTender tender={data} />
       ) : (
         <SHTender
           tender={data}
           competitorRef={competitorRef}
           lostCompetitorRef={lostCompetitorRef}
-          toggleHistory={() => setHistoryOpen(!historyOpen)}
         />
       )}
 
-      <div
-        className={cn(
-          "sticky top-28 mt-8 self-start",
-          historyOpen ? "w-34" : "w-0",
-        )}
-      >
-        <ScrollArea
-          className={cn(
-            "h-[calc(100vh-128px)] transition-all",
-            historyOpen ? "w-34" : "w-0",
-          )}
-        >
+      <div className={cn("w-34 sticky top-28 mt-8 self-start")}>
+        <ScrollArea className={cn("h-[calc(100vh-128px)] transition-all")}>
           <Timeline
             className="px-4 py-1"
             items={[
+              ...(data.pendingProfile
+                ? [
+                    {
+                      color: "blue",
+                      children: (
+                        <Link
+                          to="."
+                          search={(prev) => ({
+                            ...prev,
+                            p: data.pendingProfile?.id,
+                          })}
+                          className="text-sm text-gray-500"
+                          replace
+                        >
+                          待审批
+                        </Link>
+                      ),
+                    },
+                  ]
+                : []),
+
               {
                 color: "green",
                 children: (
@@ -221,43 +428,46 @@ export function TenderDetail({
                   </Link>
                 ),
               },
-              ...(profiles?.edges?.map((e, i) => {
-                const isFirst =
-                  profiles?.edges && i == profiles?.edges?.length - 1;
-                const isLast = profiles?.edges && i == 0;
-                const isApproved = e?.node?.approvalStatus == 2;
-                const isRejected = e?.node?.approvalStatus == 3;
-                const action = isFirst ? "创建了" : "更新了";
-                return {
-                  color: selectedProfileId === e?.node?.id ? undefined : "gray",
-                  children: (
-                    <Link
-                      to="."
-                      search={(prev) => ({ ...prev, p: e?.node?.id })}
-                      preload={false}
-                      className="flex flex-col gap-1"
-                      replace
-                    >
-                      <div className="text-sm text-gray-500">
-                        {dayjs(e?.node?.createdAt).format("LLL")}
-                      </div>
-                      <div className="text-sm text-gray-500">
-                        {`${e?.node?.createdBy?.name} ${action}商机`}
-                      </div>
-                      {isApproved && (
+              ...(profiles?.edges
+                ?.filter((e) => e?.node?.id !== data.pendingProfile?.id)
+                .map((e, i) => {
+                  const isFirst =
+                    profiles?.edges && i == profiles?.edges?.length - 1;
+                  const isLast = profiles?.edges && i == 0;
+                  const isApproved = e?.node?.approvalStatus == 2;
+                  const isRejected = e?.node?.approvalStatus == 3;
+                  const action = isFirst ? "创建了" : "更新了";
+                  return {
+                    color:
+                      selectedProfileId === e?.node?.id ? undefined : "gray",
+                    children: (
+                      <Link
+                        to="."
+                        search={(prev) => ({ ...prev, p: e?.node?.id })}
+                        preload={false}
+                        className="flex flex-col gap-1"
+                        replace
+                      >
                         <div className="text-sm text-gray-500">
-                          {e?.node?.approver?.name} 批核了
+                          {dayjs(e?.node?.createdAt).format("LLL")}
                         </div>
-                      )}
-                      {isRejected && (
                         <div className="text-sm text-gray-500">
-                          {e?.node?.approver?.name} 拒绝了
+                          {`${e?.node?.createdBy?.name} ${action}商机`}
                         </div>
-                      )}
-                    </Link>
-                  ),
-                };
-              }) || []),
+                        {isApproved && (
+                          <div className="text-sm text-gray-500">
+                            {e?.node?.approver?.name} 批核了
+                          </div>
+                        )}
+                        {isRejected && (
+                          <div className="text-sm text-gray-500">
+                            {e?.node?.approver?.name} 拒绝了
+                          </div>
+                        )}
+                      </Link>
+                    ),
+                  };
+                }) || []),
             ]}
           />
         </ScrollArea>
@@ -270,19 +480,17 @@ function SHTender({
   tender,
   competitorRef,
   lostCompetitorRef,
-  toggleHistory,
 }: {
   tender: tenderDetailFragment$data;
   competitorRef: tenderWinModalFragment$key;
   lostCompetitorRef: tenderLoseModalFragment$key;
-  toggleHistory: () => void;
 }) {
-  const selectedProfile = useSearch({
+  const selectedProfileId = useSearch({
     from: "/__auth/__portal/portal/tenders_/$id",
     select: (state) => state.p,
   });
   const { session } = useRouteContext({ from: "/__auth" });
-  const { id, followingSales, area, profiles } = tender;
+  const { id, followingSales, area, profiles, activeProfile } = tender;
   const {
     name,
     status,
@@ -327,24 +535,25 @@ function SHTender({
     finder,
     approvalStatus,
     classify,
-  } = selectedProfile
-    ? (profiles?.edges?.find((e) => e?.node?.id === selectedProfile)?.node ??
+  } = selectedProfileId
+    ? (profiles?.edges?.find((e) => e?.node?.id === selectedProfileId)?.node ??
       {})
-    : (profiles?.edges?.find((e) => e?.node?.approvalStatus == 2)?.node ?? {});
+    : activeProfile || {};
   const { message, modal } = App.useApp();
   const [updateTender, inFlight] = useUpdateTender();
   const [approveTender, inApproveFlight] = useApproveTender();
-  const current = profiles.edges?.at(0)?.node;
-  const isEditable = (current?.approvalStatus || 0) > 1;
-  const isApprovable =
-    current?.approvalStatus != 2 && current?.approvalStatus != 3;
+  const selectedProfile = profiles.edges?.find(
+    (e) => e?.node?.id === selectedProfileId,
+  )?.node;
+  const isEditable = activeProfile?.approvalStatus != 1;
+  const isPendingApproval = Boolean(tender.pendingProfile);
 
   return (
     <div className="flex-1 !space-y-4">
       <Descriptions
         className="rounded-lg bg-white !p-6"
         title={
-          <div className="flex flex-wrap items-center justify-between gap-2">
+          <div className="flex h-8 flex-wrap items-center justify-between gap-2">
             <div className="flex items-center gap-2">
               <span>{name}</span>
               <div className="flex items-center">
@@ -372,18 +581,17 @@ function SHTender({
                 </Link>
                 <TenderWinModal
                   id={id}
-                  disabled={approvalStatus != 2}
+                  disabled={activeProfile?.approvalStatus != 2}
                   competitorRef={competitorRef}
                 />
                 <TenderLoseModal
                   id={id}
-                  disabled={approvalStatus != 2}
+                  disabled={activeProfile?.approvalStatus != 2}
                   competitorRef={lostCompetitorRef}
                 />
                 {(session.isAdmin || session.isSuperAdmin) && (
                   <ApprovalModal tender={tender} />
                 )}
-                <Button icon={<HistoryOutlined />} onClick={toggleHistory} />
               </div>
             )}
           </div>
@@ -672,13 +880,7 @@ function SHTender({
   );
 }
 
-function GAAndHWTender({
-  tender,
-  toggleHistory,
-}: {
-  tender: tenderDetailFragment$data;
-  toggleHistory: () => void;
-}) {
+function GAAndHWTender({ tender }: { tender: tenderDetailFragment$data }) {
   const { session } = useRouteContext({ from: "/__auth" });
   const { id, followingSales, profiles } = tender;
   const {
@@ -712,7 +914,6 @@ function GAAndHWTender({
                     编辑
                   </Button>
                 </Link>
-                <Button icon={<HistoryOutlined />} onClick={toggleHistory} />
               </Space>
             )}
           </div>
@@ -841,24 +1042,15 @@ function ApprovalModal({ tender }: { tender: tenderDetailFragment$data }) {
   const [commitRejectTenderRequest, inRejectTenderRequestFlight] =
     useRejectTender();
   const { message } = App.useApp();
-  const profileId = useSearch({
-    from: "/__auth/__portal/portal/tenders_/$id",
-    select: (state) => state.p,
-  });
 
   const handleCancel = () => {
     setOpen(false);
   };
 
   const handleReject = () => {
-    if (!profileId) {
-      message.error("请选择一个商机");
-      return;
-    }
     commitRejectTenderRequest({
       variables: {
         id: tender.id,
-        profileId,
       },
       onCompleted: () => {
         message.destroy();
@@ -874,14 +1066,9 @@ function ApprovalModal({ tender }: { tender: tenderDetailFragment$data }) {
   };
 
   const handleApprove = () => {
-    if (!profileId) {
-      message.error("请选择一个商机");
-      return;
-    }
     commitApproveTenderRequest({
       variables: {
         id: tender.id,
-        profileId,
       },
       onCompleted: () => {
         message.destroy();
@@ -896,14 +1083,12 @@ function ApprovalModal({ tender }: { tender: tenderDetailFragment$data }) {
     });
   };
 
-  const isApprovable =
-    (tender.profiles.edges?.find((e) => e?.node?.id === profileId)?.node
-      ?.approvalStatus || 0) < 2;
+  const isPendingApproval = Boolean(tender.pendingProfile);
 
   if (!open) {
     return (
       <Button
-        disabled={!isApprovable}
+        disabled={!isPendingApproval}
         type="primary"
         icon={<Check size={16} />}
         onClick={() => {

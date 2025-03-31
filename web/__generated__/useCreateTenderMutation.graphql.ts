@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<c04dc4624ffc85713cd31619c31f890b>>
+ * @generated SignedSource<<ad6474ef3dd7d7fb9a2de0018ab73fd9>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -11,6 +11,7 @@
 import { ConcreteRequest } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type CreateTenderInput = {
+  activeProfileID?: string | null | undefined;
   address?: string | null | undefined;
   approvalMsgID?: string | null | undefined;
   approvalStatus?: number | null | undefined;
@@ -58,6 +59,7 @@ export type CreateTenderInput = {
   managementCompany?: string | null | undefined;
   name: string;
   ownerSituations?: string | null | undefined;
+  pendingProfileID?: string | null | undefined;
   prepareToBid?: boolean | null | undefined;
   profileIDs?: ReadonlyArray<string> | null | undefined;
   projectCode?: string | null | undefined;
@@ -80,7 +82,6 @@ export type CreateTenderInput = {
   timeLimitRating?: number | null | undefined;
   timeLimitRatingOverview?: string | null | undefined;
   updatedAt?: any | null | undefined;
-  updatedByID?: string | null | undefined;
   visitRecordIDs?: ReadonlyArray<string> | null | undefined;
 };
 export type useCreateTenderMutation$variables = {

@@ -25,9 +25,9 @@ func (f *Feishu) SendGroupMessage(ctx context.Context, templateId string, params
 	switch {
 	case params.Tender != nil:
 		tv = tenderTemplateVars(params.Tender)
-		if params.Tender.Edges.UpdatedBy != nil {
-			tv["created_by_id"] = params.Tender.Edges.UpdatedBy.OpenID
-		}
+		// if params.Tender.Edges.UpdatedBy != nil {
+		// 	tv["created_by_id"] = params.Tender.Edges.UpdatedBy.OpenID
+		// }
 		contentData = map[string]any{
 			"template_id":       templateId,
 			"template_variable": tv,

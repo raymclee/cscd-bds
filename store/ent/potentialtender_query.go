@@ -23,8 +23,8 @@ type PotentialTenderQuery struct {
 	order      []potentialtender.OrderOption
 	inters     []Interceptor
 	predicates []predicate.PotentialTender
-	loadTotal  []func(context.Context, []*PotentialTender) error
 	modifiers  []func(*sql.Selector)
+	loadTotal  []func(context.Context, []*PotentialTender) error
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -254,9 +254,8 @@ func (ptq *PotentialTenderQuery) Clone() *PotentialTenderQuery {
 		inters:     append([]Interceptor{}, ptq.inters...),
 		predicates: append([]predicate.PotentialTender{}, ptq.predicates...),
 		// clone intermediate query.
-		sql:       ptq.sql.Clone(),
-		path:      ptq.path,
-		modifiers: append([]func(*sql.Selector){}, ptq.modifiers...),
+		sql:  ptq.sql.Clone(),
+		path: ptq.path,
 	}
 }
 
@@ -434,9 +433,6 @@ func (ptq *PotentialTenderQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if ptq.ctx.Unique != nil && *ptq.ctx.Unique {
 		selector.Distinct()
 	}
-	for _, m := range ptq.modifiers {
-		m(selector)
-	}
 	for _, p := range ptq.predicates {
 		p(selector)
 	}
@@ -452,12 +448,6 @@ func (ptq *PotentialTenderQuery) sqlQuery(ctx context.Context) *sql.Selector {
 		selector.Limit(*limit)
 	}
 	return selector
-}
-
-// Modify adds a query modifier for attaching custom logic to queries.
-func (ptq *PotentialTenderQuery) Modify(modifiers ...func(s *sql.Selector)) *PotentialTenderSelect {
-	ptq.modifiers = append(ptq.modifiers, modifiers...)
-	return ptq.Select()
 }
 
 // PotentialTenderGroupBy is the group-by builder for PotentialTender entities.
@@ -548,10 +538,4 @@ func (pts *PotentialTenderSelect) sqlScan(ctx context.Context, root *PotentialTe
 	}
 	defer rows.Close()
 	return sql.ScanSlice(rows, v)
-}
-
-// Modify adds a query modifier for attaching custom logic to queries.
-func (pts *PotentialTenderSelect) Modify(modifiers ...func(s *sql.Selector)) *PotentialTenderSelect {
-	pts.modifiers = append(pts.modifiers, modifiers...)
-	return pts
 }

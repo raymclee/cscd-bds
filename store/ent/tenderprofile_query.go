@@ -37,8 +37,8 @@ type TenderProfileQuery struct {
 	withCity      *CityQuery
 	withDistrict  *DistrictQuery
 	withApprover  *UserQuery
-	loadTotal     []func(context.Context, []*TenderProfile) error
 	modifiers     []func(*sql.Selector)
+	loadTotal     []func(context.Context, []*TenderProfile) error
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -452,9 +452,8 @@ func (tpq *TenderProfileQuery) Clone() *TenderProfileQuery {
 		withDistrict:  tpq.withDistrict.Clone(),
 		withApprover:  tpq.withApprover.Clone(),
 		// clone intermediate query.
-		sql:       tpq.sql.Clone(),
-		path:      tpq.path,
-		modifiers: append([]func(*sql.Selector){}, tpq.modifiers...),
+		sql:  tpq.sql.Clone(),
+		path: tpq.path,
 	}
 }
 
@@ -1057,9 +1056,6 @@ func (tpq *TenderProfileQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if tpq.ctx.Unique != nil && *tpq.ctx.Unique {
 		selector.Distinct()
 	}
-	for _, m := range tpq.modifiers {
-		m(selector)
-	}
 	for _, p := range tpq.predicates {
 		p(selector)
 	}
@@ -1075,12 +1071,6 @@ func (tpq *TenderProfileQuery) sqlQuery(ctx context.Context) *sql.Selector {
 		selector.Limit(*limit)
 	}
 	return selector
-}
-
-// Modify adds a query modifier for attaching custom logic to queries.
-func (tpq *TenderProfileQuery) Modify(modifiers ...func(s *sql.Selector)) *TenderProfileSelect {
-	tpq.modifiers = append(tpq.modifiers, modifiers...)
-	return tpq.Select()
 }
 
 // TenderProfileGroupBy is the group-by builder for TenderProfile entities.
@@ -1171,10 +1161,4 @@ func (tps *TenderProfileSelect) sqlScan(ctx context.Context, root *TenderProfile
 	}
 	defer rows.Close()
 	return sql.ScanSlice(rows, v)
-}
-
-// Modify adds a query modifier for attaching custom logic to queries.
-func (tps *TenderProfileSelect) Modify(modifiers ...func(s *sql.Selector)) *TenderProfileSelect {
-	tps.modifiers = append(tps.modifiers, modifiers...)
-	return tps
 }

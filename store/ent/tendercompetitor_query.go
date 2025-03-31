@@ -27,8 +27,8 @@ type TenderCompetitorQuery struct {
 	predicates     []predicate.TenderCompetitor
 	withTender     *TenderQuery
 	withCompetitor *CompetitorQuery
-	loadTotal      []func(context.Context, []*TenderCompetitor) error
 	modifiers      []func(*sql.Selector)
+	loadTotal      []func(context.Context, []*TenderCompetitor) error
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -304,9 +304,8 @@ func (tcq *TenderCompetitorQuery) Clone() *TenderCompetitorQuery {
 		withTender:     tcq.withTender.Clone(),
 		withCompetitor: tcq.withCompetitor.Clone(),
 		// clone intermediate query.
-		sql:       tcq.sql.Clone(),
-		path:      tcq.path,
-		modifiers: append([]func(*sql.Selector){}, tcq.modifiers...),
+		sql:  tcq.sql.Clone(),
+		path: tcq.path,
 	}
 }
 
@@ -588,9 +587,6 @@ func (tcq *TenderCompetitorQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if tcq.ctx.Unique != nil && *tcq.ctx.Unique {
 		selector.Distinct()
 	}
-	for _, m := range tcq.modifiers {
-		m(selector)
-	}
 	for _, p := range tcq.predicates {
 		p(selector)
 	}
@@ -606,12 +602,6 @@ func (tcq *TenderCompetitorQuery) sqlQuery(ctx context.Context) *sql.Selector {
 		selector.Limit(*limit)
 	}
 	return selector
-}
-
-// Modify adds a query modifier for attaching custom logic to queries.
-func (tcq *TenderCompetitorQuery) Modify(modifiers ...func(s *sql.Selector)) *TenderCompetitorSelect {
-	tcq.modifiers = append(tcq.modifiers, modifiers...)
-	return tcq.Select()
 }
 
 // TenderCompetitorGroupBy is the group-by builder for TenderCompetitor entities.
@@ -702,10 +692,4 @@ func (tcs *TenderCompetitorSelect) sqlScan(ctx context.Context, root *TenderComp
 	}
 	defer rows.Close()
 	return sql.ScanSlice(rows, v)
-}
-
-// Modify adds a query modifier for attaching custom logic to queries.
-func (tcs *TenderCompetitorSelect) Modify(modifiers ...func(s *sql.Selector)) *TenderCompetitorSelect {
-	tcs.modifiers = append(tcs.modifiers, modifiers...)
-	return tcs
 }

@@ -468,7 +468,8 @@ var schemaGraph = func() *sqlgraph.Schema {
 			tender.FieldFinderID:                             {Type: field.TypeString, Column: tender.FieldFinderID},
 			tender.FieldCreatedByID:                          {Type: field.TypeString, Column: tender.FieldCreatedByID},
 			tender.FieldApproverID:                           {Type: field.TypeString, Column: tender.FieldApproverID},
-			tender.FieldUpdatedByID:                          {Type: field.TypeString, Column: tender.FieldUpdatedByID},
+			tender.FieldActiveProfileID:                      {Type: field.TypeString, Column: tender.FieldActiveProfileID},
+			tender.FieldPendingProfileID:                     {Type: field.TypeString, Column: tender.FieldPendingProfileID},
 		},
 	}
 	graph.Nodes[14] = &sqlgraph.Node{
@@ -1135,16 +1136,28 @@ var schemaGraph = func() *sqlgraph.Schema {
 		"User",
 	)
 	graph.MustAddE(
-		"updated_by",
+		"active_profile",
 		&sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: false,
-			Table:   tender.UpdatedByTable,
-			Columns: []string{tender.UpdatedByColumn},
+			Table:   tender.ActiveProfileTable,
+			Columns: []string{tender.ActiveProfileColumn},
 			Bidi:    false,
 		},
 		"Tender",
-		"User",
+		"TenderProfile",
+	)
+	graph.MustAddE(
+		"pending_profile",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   tender.PendingProfileTable,
+			Columns: []string{tender.PendingProfileColumn},
+			Bidi:    false,
+		},
+		"Tender",
+		"TenderProfile",
 	)
 	graph.MustAddE(
 		"tender",
@@ -3669,9 +3682,14 @@ func (f *TenderFilter) WhereApproverID(p entql.StringP) {
 	f.Where(p.Field(tender.FieldApproverID))
 }
 
-// WhereUpdatedByID applies the entql string predicate on the updated_by_id field.
-func (f *TenderFilter) WhereUpdatedByID(p entql.StringP) {
-	f.Where(p.Field(tender.FieldUpdatedByID))
+// WhereActiveProfileID applies the entql string predicate on the active_profile_id field.
+func (f *TenderFilter) WhereActiveProfileID(p entql.StringP) {
+	f.Where(p.Field(tender.FieldActiveProfileID))
+}
+
+// WherePendingProfileID applies the entql string predicate on the pending_profile_id field.
+func (f *TenderFilter) WherePendingProfileID(p entql.StringP) {
+	f.Where(p.Field(tender.FieldPendingProfileID))
 }
 
 // WhereHasArea applies a predicate to check if query has an edge area.
@@ -3842,14 +3860,28 @@ func (f *TenderFilter) WhereHasApproverWith(preds ...predicate.User) {
 	})))
 }
 
-// WhereHasUpdatedBy applies a predicate to check if query has an edge updated_by.
-func (f *TenderFilter) WhereHasUpdatedBy() {
-	f.Where(entql.HasEdge("updated_by"))
+// WhereHasActiveProfile applies a predicate to check if query has an edge active_profile.
+func (f *TenderFilter) WhereHasActiveProfile() {
+	f.Where(entql.HasEdge("active_profile"))
 }
 
-// WhereHasUpdatedByWith applies a predicate to check if query has an edge updated_by with a given conditions (other predicates).
-func (f *TenderFilter) WhereHasUpdatedByWith(preds ...predicate.User) {
-	f.Where(entql.HasEdgeWith("updated_by", sqlgraph.WrapFunc(func(s *sql.Selector) {
+// WhereHasActiveProfileWith applies a predicate to check if query has an edge active_profile with a given conditions (other predicates).
+func (f *TenderFilter) WhereHasActiveProfileWith(preds ...predicate.TenderProfile) {
+	f.Where(entql.HasEdgeWith("active_profile", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
+// WhereHasPendingProfile applies a predicate to check if query has an edge pending_profile.
+func (f *TenderFilter) WhereHasPendingProfile() {
+	f.Where(entql.HasEdge("pending_profile"))
+}
+
+// WhereHasPendingProfileWith applies a predicate to check if query has an edge pending_profile with a given conditions (other predicates).
+func (f *TenderFilter) WhereHasPendingProfileWith(preds ...predicate.TenderProfile) {
+	f.Where(entql.HasEdgeWith("pending_profile", sqlgraph.WrapFunc(func(s *sql.Selector) {
 		for _, p := range preds {
 			p(s)
 		}

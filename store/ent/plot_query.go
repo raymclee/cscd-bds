@@ -25,8 +25,8 @@ type PlotQuery struct {
 	inters       []Interceptor
 	predicates   []predicate.Plot
 	withDistrict *DistrictQuery
-	loadTotal    []func(context.Context, []*Plot) error
 	modifiers    []func(*sql.Selector)
+	loadTotal    []func(context.Context, []*Plot) error
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -279,9 +279,8 @@ func (pq *PlotQuery) Clone() *PlotQuery {
 		predicates:   append([]predicate.Plot{}, pq.predicates...),
 		withDistrict: pq.withDistrict.Clone(),
 		// clone intermediate query.
-		sql:       pq.sql.Clone(),
-		path:      pq.path,
-		modifiers: append([]func(*sql.Selector){}, pq.modifiers...),
+		sql:  pq.sql.Clone(),
+		path: pq.path,
 	}
 }
 
@@ -513,9 +512,6 @@ func (pq *PlotQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if pq.ctx.Unique != nil && *pq.ctx.Unique {
 		selector.Distinct()
 	}
-	for _, m := range pq.modifiers {
-		m(selector)
-	}
 	for _, p := range pq.predicates {
 		p(selector)
 	}
@@ -531,12 +527,6 @@ func (pq *PlotQuery) sqlQuery(ctx context.Context) *sql.Selector {
 		selector.Limit(*limit)
 	}
 	return selector
-}
-
-// Modify adds a query modifier for attaching custom logic to queries.
-func (pq *PlotQuery) Modify(modifiers ...func(s *sql.Selector)) *PlotSelect {
-	pq.modifiers = append(pq.modifiers, modifiers...)
-	return pq.Select()
 }
 
 // PlotGroupBy is the group-by builder for Plot entities.
@@ -627,10 +617,4 @@ func (ps *PlotSelect) sqlScan(ctx context.Context, root *PlotQuery, v any) error
 	}
 	defer rows.Close()
 	return sql.ScanSlice(rows, v)
-}
-
-// Modify adds a query modifier for attaching custom logic to queries.
-func (ps *PlotSelect) Modify(modifiers ...func(s *sql.Selector)) *PlotSelect {
-	ps.modifiers = append(ps.modifiers, modifiers...)
-	return ps
 }

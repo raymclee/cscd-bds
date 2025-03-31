@@ -30,8 +30,8 @@ type VisitRecordQuery struct {
 	withTender           *TenderQuery
 	withCustomer         *CustomerQuery
 	withFollowUpBys      *UserQuery
-	loadTotal            []func(context.Context, []*VisitRecord) error
 	modifiers            []func(*sql.Selector)
+	loadTotal            []func(context.Context, []*VisitRecord) error
 	withNamedFollowUpBys map[string]*UserQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
@@ -331,9 +331,8 @@ func (vrq *VisitRecordQuery) Clone() *VisitRecordQuery {
 		withCustomer:    vrq.withCustomer.Clone(),
 		withFollowUpBys: vrq.withFollowUpBys.Clone(),
 		// clone intermediate query.
-		sql:       vrq.sql.Clone(),
-		path:      vrq.path,
-		modifiers: append([]func(*sql.Selector){}, vrq.modifiers...),
+		sql:  vrq.sql.Clone(),
+		path: vrq.path,
 	}
 }
 
@@ -705,9 +704,6 @@ func (vrq *VisitRecordQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if vrq.ctx.Unique != nil && *vrq.ctx.Unique {
 		selector.Distinct()
 	}
-	for _, m := range vrq.modifiers {
-		m(selector)
-	}
 	for _, p := range vrq.predicates {
 		p(selector)
 	}
@@ -723,12 +719,6 @@ func (vrq *VisitRecordQuery) sqlQuery(ctx context.Context) *sql.Selector {
 		selector.Limit(*limit)
 	}
 	return selector
-}
-
-// Modify adds a query modifier for attaching custom logic to queries.
-func (vrq *VisitRecordQuery) Modify(modifiers ...func(s *sql.Selector)) *VisitRecordSelect {
-	vrq.modifiers = append(vrq.modifiers, modifiers...)
-	return vrq.Select()
 }
 
 // WithNamedFollowUpBys tells the query-builder to eager-load the nodes that are connected to the "followUpBys"
@@ -833,10 +823,4 @@ func (vrs *VisitRecordSelect) sqlScan(ctx context.Context, root *VisitRecordQuer
 	}
 	defer rows.Close()
 	return sql.ScanSlice(rows, v)
-}
-
-// Modify adds a query modifier for attaching custom logic to queries.
-func (vrs *VisitRecordSelect) Modify(modifiers ...func(s *sql.Selector)) *VisitRecordSelect {
-	vrs.modifiers = append(vrs.modifiers, modifiers...)
-	return vrs
 }

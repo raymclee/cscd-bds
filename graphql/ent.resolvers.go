@@ -9,7 +9,6 @@ import (
 	"cscd-bds/graphql/generated"
 	"cscd-bds/store/ent"
 	"cscd-bds/store/ent/schema/xid"
-	"fmt"
 
 	"entgo.io/contrib/entgql"
 )
@@ -91,12 +90,12 @@ func (r *queryResolver) Tenders(ctx context.Context, after *entgql.Cursor[xid.ID
 
 // TenderCompetitors is the resolver for the tenderCompetitors field.
 func (r *queryResolver) TenderCompetitors(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.TenderCompetitorOrder, where *ent.TenderCompetitorWhereInput) (*ent.TenderCompetitorConnection, error) {
-	panic(fmt.Errorf("not implemented: TenderCompetitors - tenderCompetitors"))
+	return r.store.TenderCompetitor.Query().Paginate(ctx, after, first, before, last, ent.WithTenderCompetitorFilter(where.Filter), ent.WithTenderCompetitorOrder(orderBy))
 }
 
 // TenderProfiles is the resolver for the tenderProfiles field.
 func (r *queryResolver) TenderProfiles(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.TenderProfileOrder, where *ent.TenderProfileWhereInput) (*ent.TenderProfileConnection, error) {
-	panic(fmt.Errorf("not implemented: TenderProfiles - tenderProfiles"))
+	return r.store.TenderProfile.Query().Paginate(ctx, after, first, before, last, ent.WithTenderProfileFilter(where.Filter), ent.WithTenderProfileOrder(orderBy))
 }
 
 // Users is the resolver for the users field.

@@ -20,9 +20,8 @@ import (
 // ProjectStaffUpdate is the builder for updating ProjectStaff entities.
 type ProjectStaffUpdate struct {
 	config
-	hooks     []Hook
-	mutation  *ProjectStaffMutation
-	modifiers []func(*sql.UpdateBuilder)
+	hooks    []Hook
+	mutation *ProjectStaffMutation
 }
 
 // Where appends a list predicates to the ProjectStaffUpdate builder.
@@ -206,12 +205,6 @@ func (psu *ProjectStaffUpdate) check() error {
 	return nil
 }
 
-// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
-func (psu *ProjectStaffUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *ProjectStaffUpdate {
-	psu.modifiers = append(psu.modifiers, modifiers...)
-	return psu
-}
-
 func (psu *ProjectStaffUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if err := psu.check(); err != nil {
 		return n, err
@@ -286,7 +279,6 @@ func (psu *ProjectStaffUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	_spec.AddModifiers(psu.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, psu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{projectstaff.Label}
@@ -302,10 +294,9 @@ func (psu *ProjectStaffUpdate) sqlSave(ctx context.Context) (n int, err error) {
 // ProjectStaffUpdateOne is the builder for updating a single ProjectStaff entity.
 type ProjectStaffUpdateOne struct {
 	config
-	fields    []string
-	hooks     []Hook
-	mutation  *ProjectStaffMutation
-	modifiers []func(*sql.UpdateBuilder)
+	fields   []string
+	hooks    []Hook
+	mutation *ProjectStaffMutation
 }
 
 // SetUpdatedAt sets the "updated_at" field.
@@ -496,12 +487,6 @@ func (psuo *ProjectStaffUpdateOne) check() error {
 	return nil
 }
 
-// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
-func (psuo *ProjectStaffUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *ProjectStaffUpdateOne {
-	psuo.modifiers = append(psuo.modifiers, modifiers...)
-	return psuo
-}
-
 func (psuo *ProjectStaffUpdateOne) sqlSave(ctx context.Context) (_node *ProjectStaff, err error) {
 	if err := psuo.check(); err != nil {
 		return _node, err
@@ -593,7 +578,6 @@ func (psuo *ProjectStaffUpdateOne) sqlSave(ctx context.Context) (_node *ProjectS
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	_spec.AddModifiers(psuo.modifiers...)
 	_node = &ProjectStaff{config: psuo.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues

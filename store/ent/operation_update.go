@@ -18,9 +18,8 @@ import (
 // OperationUpdate is the builder for updating Operation entities.
 type OperationUpdate struct {
 	config
-	hooks     []Hook
-	mutation  *OperationMutation
-	modifiers []func(*sql.UpdateBuilder)
+	hooks    []Hook
+	mutation *OperationMutation
 }
 
 // Where appends a list predicates to the OperationUpdate builder.
@@ -292,12 +291,6 @@ func (ou *OperationUpdate) defaults() {
 	}
 }
 
-// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
-func (ou *OperationUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *OperationUpdate {
-	ou.modifiers = append(ou.modifiers, modifiers...)
-	return ou
-}
-
 func (ou *OperationUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	_spec := sqlgraph.NewUpdateSpec(operation.Table, operation.Columns, sqlgraph.NewFieldSpec(operation.FieldID, field.TypeString))
 	if ps := ou.mutation.predicates; len(ps) > 0 {
@@ -382,7 +375,6 @@ func (ou *OperationUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if ou.mutation.XmsjfCleared() {
 		_spec.ClearField(operation.FieldXmsjf, field.TypeFloat64)
 	}
-	_spec.AddModifiers(ou.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, ou.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{operation.Label}
@@ -398,10 +390,9 @@ func (ou *OperationUpdate) sqlSave(ctx context.Context) (n int, err error) {
 // OperationUpdateOne is the builder for updating a single Operation entity.
 type OperationUpdateOne struct {
 	config
-	fields    []string
-	hooks     []Hook
-	mutation  *OperationMutation
-	modifiers []func(*sql.UpdateBuilder)
+	fields   []string
+	hooks    []Hook
+	mutation *OperationMutation
 }
 
 // SetUpdatedAt sets the "updated_at" field.
@@ -680,12 +671,6 @@ func (ouo *OperationUpdateOne) defaults() {
 	}
 }
 
-// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
-func (ouo *OperationUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *OperationUpdateOne {
-	ouo.modifiers = append(ouo.modifiers, modifiers...)
-	return ouo
-}
-
 func (ouo *OperationUpdateOne) sqlSave(ctx context.Context) (_node *Operation, err error) {
 	_spec := sqlgraph.NewUpdateSpec(operation.Table, operation.Columns, sqlgraph.NewFieldSpec(operation.FieldID, field.TypeString))
 	id, ok := ouo.mutation.ID()
@@ -787,7 +772,6 @@ func (ouo *OperationUpdateOne) sqlSave(ctx context.Context) (_node *Operation, e
 	if ouo.mutation.XmsjfCleared() {
 		_spec.ClearField(operation.FieldXmsjf, field.TypeFloat64)
 	}
-	_spec.AddModifiers(ouo.modifiers...)
 	_node = &Operation{config: ouo.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues

@@ -43,7 +43,7 @@ func (f *Feishu) StartWSClient(ctx context.Context) {
 					t, err := f.store.Tender.Query().
 						Where(tender.ID(xid.ID(tenderId))).
 						WithCreatedBy().
-						WithUpdatedBy().
+						// WithUpdatedBy().
 						WithCustomer().
 						WithApprover().
 						WithFinder().
@@ -86,7 +86,7 @@ func (f *Feishu) StartWSClient(ctx context.Context) {
 					t, err := f.store.Tender.Query().
 						Where(tender.ID(xid.ID(tenderId))).
 						WithCreatedBy().
-						WithUpdatedBy().
+						// WithUpdatedBy().
 						WithCustomer().
 						WithApprover().
 						WithFinder().
@@ -97,9 +97,9 @@ func (f *Feishu) StartWSClient(ctx context.Context) {
 
 					templateId = TemplateIdTenderRejected
 					templateVars = tenderTemplateVars(t)
-					if t.Edges.UpdatedBy != nil {
-						templateVars["created_by_id"] = t.Edges.UpdatedBy.OpenID
-					}
+					// if t.Edges.UpdatedBy != nil {
+					// 	templateVars["created_by_id"] = t.Edges.UpdatedBy.OpenID
+					// }
 
 					go func() {
 						ctxx := context.Background()

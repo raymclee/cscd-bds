@@ -4052,19 +4052,34 @@ func (t *TenderQuery) collectField(ctx context.Context, oneNode bool, opCtx *gra
 				fieldSeen[tender.FieldApproverID] = struct{}{}
 			}
 
-		case "updatedBy":
+		case "activeProfile":
 			var (
 				alias = field.Alias
 				path  = append(path, alias)
-				query = (&UserClient{config: t.config}).Query()
+				query = (&TenderProfileClient{config: t.config}).Query()
 			)
-			if err := query.collectField(ctx, oneNode, opCtx, field, path, mayAddCondition(satisfies, userImplementors)...); err != nil {
+			if err := query.collectField(ctx, oneNode, opCtx, field, path, mayAddCondition(satisfies, tenderprofileImplementors)...); err != nil {
 				return err
 			}
-			t.withUpdatedBy = query
-			if _, ok := fieldSeen[tender.FieldUpdatedByID]; !ok {
-				selectedFields = append(selectedFields, tender.FieldUpdatedByID)
-				fieldSeen[tender.FieldUpdatedByID] = struct{}{}
+			t.withActiveProfile = query
+			if _, ok := fieldSeen[tender.FieldActiveProfileID]; !ok {
+				selectedFields = append(selectedFields, tender.FieldActiveProfileID)
+				fieldSeen[tender.FieldActiveProfileID] = struct{}{}
+			}
+
+		case "pendingProfile":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&TenderProfileClient{config: t.config}).Query()
+			)
+			if err := query.collectField(ctx, oneNode, opCtx, field, path, mayAddCondition(satisfies, tenderprofileImplementors)...); err != nil {
+				return err
+			}
+			t.withPendingProfile = query
+			if _, ok := fieldSeen[tender.FieldPendingProfileID]; !ok {
+				selectedFields = append(selectedFields, tender.FieldPendingProfileID)
+				fieldSeen[tender.FieldPendingProfileID] = struct{}{}
 			}
 		case "createdAt":
 			if _, ok := fieldSeen[tender.FieldCreatedAt]; !ok {
@@ -4396,10 +4411,15 @@ func (t *TenderQuery) collectField(ctx context.Context, oneNode bool, opCtx *gra
 				selectedFields = append(selectedFields, tender.FieldApproverID)
 				fieldSeen[tender.FieldApproverID] = struct{}{}
 			}
-		case "updatedByID":
-			if _, ok := fieldSeen[tender.FieldUpdatedByID]; !ok {
-				selectedFields = append(selectedFields, tender.FieldUpdatedByID)
-				fieldSeen[tender.FieldUpdatedByID] = struct{}{}
+		case "activeProfileID":
+			if _, ok := fieldSeen[tender.FieldActiveProfileID]; !ok {
+				selectedFields = append(selectedFields, tender.FieldActiveProfileID)
+				fieldSeen[tender.FieldActiveProfileID] = struct{}{}
+			}
+		case "pendingProfileID":
+			if _, ok := fieldSeen[tender.FieldPendingProfileID]; !ok {
+				selectedFields = append(selectedFields, tender.FieldPendingProfileID)
+				fieldSeen[tender.FieldPendingProfileID] = struct{}{}
 			}
 		case "id":
 		case "__typename":

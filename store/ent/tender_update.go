@@ -30,9 +30,8 @@ import (
 // TenderUpdate is the builder for updating Tender entities.
 type TenderUpdate struct {
 	config
-	hooks     []Hook
-	mutation  *TenderMutation
-	modifiers []func(*sql.UpdateBuilder)
+	hooks    []Hook
+	mutation *TenderMutation
 }
 
 // Where appends a list predicates to the TenderUpdate builder.
@@ -1389,23 +1388,43 @@ func (tu *TenderUpdate) ClearApproverID() *TenderUpdate {
 	return tu
 }
 
-// SetUpdatedByID sets the "updated_by_id" field.
-func (tu *TenderUpdate) SetUpdatedByID(x xid.ID) *TenderUpdate {
-	tu.mutation.SetUpdatedByID(x)
+// SetActiveProfileID sets the "active_profile_id" field.
+func (tu *TenderUpdate) SetActiveProfileID(x xid.ID) *TenderUpdate {
+	tu.mutation.SetActiveProfileID(x)
 	return tu
 }
 
-// SetNillableUpdatedByID sets the "updated_by_id" field if the given value is not nil.
-func (tu *TenderUpdate) SetNillableUpdatedByID(x *xid.ID) *TenderUpdate {
+// SetNillableActiveProfileID sets the "active_profile_id" field if the given value is not nil.
+func (tu *TenderUpdate) SetNillableActiveProfileID(x *xid.ID) *TenderUpdate {
 	if x != nil {
-		tu.SetUpdatedByID(*x)
+		tu.SetActiveProfileID(*x)
 	}
 	return tu
 }
 
-// ClearUpdatedByID clears the value of the "updated_by_id" field.
-func (tu *TenderUpdate) ClearUpdatedByID() *TenderUpdate {
-	tu.mutation.ClearUpdatedByID()
+// ClearActiveProfileID clears the value of the "active_profile_id" field.
+func (tu *TenderUpdate) ClearActiveProfileID() *TenderUpdate {
+	tu.mutation.ClearActiveProfileID()
+	return tu
+}
+
+// SetPendingProfileID sets the "pending_profile_id" field.
+func (tu *TenderUpdate) SetPendingProfileID(x xid.ID) *TenderUpdate {
+	tu.mutation.SetPendingProfileID(x)
+	return tu
+}
+
+// SetNillablePendingProfileID sets the "pending_profile_id" field if the given value is not nil.
+func (tu *TenderUpdate) SetNillablePendingProfileID(x *xid.ID) *TenderUpdate {
+	if x != nil {
+		tu.SetPendingProfileID(*x)
+	}
+	return tu
+}
+
+// ClearPendingProfileID clears the value of the "pending_profile_id" field.
+func (tu *TenderUpdate) ClearPendingProfileID() *TenderUpdate {
+	tu.mutation.ClearPendingProfileID()
 	return tu
 }
 
@@ -1509,9 +1528,14 @@ func (tu *TenderUpdate) SetApprover(u *User) *TenderUpdate {
 	return tu.SetApproverID(u.ID)
 }
 
-// SetUpdatedBy sets the "updated_by" edge to the User entity.
-func (tu *TenderUpdate) SetUpdatedBy(u *User) *TenderUpdate {
-	return tu.SetUpdatedByID(u.ID)
+// SetActiveProfile sets the "active_profile" edge to the TenderProfile entity.
+func (tu *TenderUpdate) SetActiveProfile(t *TenderProfile) *TenderUpdate {
+	return tu.SetActiveProfileID(t.ID)
+}
+
+// SetPendingProfile sets the "pending_profile" edge to the TenderProfile entity.
+func (tu *TenderUpdate) SetPendingProfile(t *TenderProfile) *TenderUpdate {
+	return tu.SetPendingProfileID(t.ID)
 }
 
 // Mutation returns the TenderMutation object of the builder.
@@ -1651,9 +1675,15 @@ func (tu *TenderUpdate) ClearApprover() *TenderUpdate {
 	return tu
 }
 
-// ClearUpdatedBy clears the "updated_by" edge to the User entity.
-func (tu *TenderUpdate) ClearUpdatedBy() *TenderUpdate {
-	tu.mutation.ClearUpdatedBy()
+// ClearActiveProfile clears the "active_profile" edge to the TenderProfile entity.
+func (tu *TenderUpdate) ClearActiveProfile() *TenderUpdate {
+	tu.mutation.ClearActiveProfile()
+	return tu
+}
+
+// ClearPendingProfile clears the "pending_profile" edge to the TenderProfile entity.
+func (tu *TenderUpdate) ClearPendingProfile() *TenderUpdate {
+	tu.mutation.ClearPendingProfile()
 	return tu
 }
 
@@ -1749,12 +1779,6 @@ func (tu *TenderUpdate) check() error {
 		return errors.New(`ent: clearing a required unique edge "Tender.area"`)
 	}
 	return nil
-}
-
-// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
-func (tu *TenderUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *TenderUpdate {
-	tu.modifiers = append(tu.modifiers, modifiers...)
-	return tu
 }
 
 func (tu *TenderUpdate) sqlSave(ctx context.Context) (n int, err error) {
@@ -2562,28 +2586,28 @@ func (tu *TenderUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if tu.mutation.UpdatedByCleared() {
+	if tu.mutation.ActiveProfileCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: false,
-			Table:   tender.UpdatedByTable,
-			Columns: []string{tender.UpdatedByColumn},
+			Table:   tender.ActiveProfileTable,
+			Columns: []string{tender.ActiveProfileColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+				IDSpec: sqlgraph.NewFieldSpec(tenderprofile.FieldID, field.TypeString),
 			},
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := tu.mutation.UpdatedByIDs(); len(nodes) > 0 {
+	if nodes := tu.mutation.ActiveProfileIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: false,
-			Table:   tender.UpdatedByTable,
-			Columns: []string{tender.UpdatedByColumn},
+			Table:   tender.ActiveProfileTable,
+			Columns: []string{tender.ActiveProfileColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+				IDSpec: sqlgraph.NewFieldSpec(tenderprofile.FieldID, field.TypeString),
 			},
 		}
 		for _, k := range nodes {
@@ -2591,7 +2615,35 @@ func (tu *TenderUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	_spec.AddModifiers(tu.modifiers...)
+	if tu.mutation.PendingProfileCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   tender.PendingProfileTable,
+			Columns: []string{tender.PendingProfileColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tenderprofile.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tu.mutation.PendingProfileIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   tender.PendingProfileTable,
+			Columns: []string{tender.PendingProfileColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tenderprofile.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, tu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{tender.Label}
@@ -2607,10 +2659,9 @@ func (tu *TenderUpdate) sqlSave(ctx context.Context) (n int, err error) {
 // TenderUpdateOne is the builder for updating a single Tender entity.
 type TenderUpdateOne struct {
 	config
-	fields    []string
-	hooks     []Hook
-	mutation  *TenderMutation
-	modifiers []func(*sql.UpdateBuilder)
+	fields   []string
+	hooks    []Hook
+	mutation *TenderMutation
 }
 
 // SetUpdatedAt sets the "updated_at" field.
@@ -3961,23 +4012,43 @@ func (tuo *TenderUpdateOne) ClearApproverID() *TenderUpdateOne {
 	return tuo
 }
 
-// SetUpdatedByID sets the "updated_by_id" field.
-func (tuo *TenderUpdateOne) SetUpdatedByID(x xid.ID) *TenderUpdateOne {
-	tuo.mutation.SetUpdatedByID(x)
+// SetActiveProfileID sets the "active_profile_id" field.
+func (tuo *TenderUpdateOne) SetActiveProfileID(x xid.ID) *TenderUpdateOne {
+	tuo.mutation.SetActiveProfileID(x)
 	return tuo
 }
 
-// SetNillableUpdatedByID sets the "updated_by_id" field if the given value is not nil.
-func (tuo *TenderUpdateOne) SetNillableUpdatedByID(x *xid.ID) *TenderUpdateOne {
+// SetNillableActiveProfileID sets the "active_profile_id" field if the given value is not nil.
+func (tuo *TenderUpdateOne) SetNillableActiveProfileID(x *xid.ID) *TenderUpdateOne {
 	if x != nil {
-		tuo.SetUpdatedByID(*x)
+		tuo.SetActiveProfileID(*x)
 	}
 	return tuo
 }
 
-// ClearUpdatedByID clears the value of the "updated_by_id" field.
-func (tuo *TenderUpdateOne) ClearUpdatedByID() *TenderUpdateOne {
-	tuo.mutation.ClearUpdatedByID()
+// ClearActiveProfileID clears the value of the "active_profile_id" field.
+func (tuo *TenderUpdateOne) ClearActiveProfileID() *TenderUpdateOne {
+	tuo.mutation.ClearActiveProfileID()
+	return tuo
+}
+
+// SetPendingProfileID sets the "pending_profile_id" field.
+func (tuo *TenderUpdateOne) SetPendingProfileID(x xid.ID) *TenderUpdateOne {
+	tuo.mutation.SetPendingProfileID(x)
+	return tuo
+}
+
+// SetNillablePendingProfileID sets the "pending_profile_id" field if the given value is not nil.
+func (tuo *TenderUpdateOne) SetNillablePendingProfileID(x *xid.ID) *TenderUpdateOne {
+	if x != nil {
+		tuo.SetPendingProfileID(*x)
+	}
+	return tuo
+}
+
+// ClearPendingProfileID clears the value of the "pending_profile_id" field.
+func (tuo *TenderUpdateOne) ClearPendingProfileID() *TenderUpdateOne {
+	tuo.mutation.ClearPendingProfileID()
 	return tuo
 }
 
@@ -4081,9 +4152,14 @@ func (tuo *TenderUpdateOne) SetApprover(u *User) *TenderUpdateOne {
 	return tuo.SetApproverID(u.ID)
 }
 
-// SetUpdatedBy sets the "updated_by" edge to the User entity.
-func (tuo *TenderUpdateOne) SetUpdatedBy(u *User) *TenderUpdateOne {
-	return tuo.SetUpdatedByID(u.ID)
+// SetActiveProfile sets the "active_profile" edge to the TenderProfile entity.
+func (tuo *TenderUpdateOne) SetActiveProfile(t *TenderProfile) *TenderUpdateOne {
+	return tuo.SetActiveProfileID(t.ID)
+}
+
+// SetPendingProfile sets the "pending_profile" edge to the TenderProfile entity.
+func (tuo *TenderUpdateOne) SetPendingProfile(t *TenderProfile) *TenderUpdateOne {
+	return tuo.SetPendingProfileID(t.ID)
 }
 
 // Mutation returns the TenderMutation object of the builder.
@@ -4223,9 +4299,15 @@ func (tuo *TenderUpdateOne) ClearApprover() *TenderUpdateOne {
 	return tuo
 }
 
-// ClearUpdatedBy clears the "updated_by" edge to the User entity.
-func (tuo *TenderUpdateOne) ClearUpdatedBy() *TenderUpdateOne {
-	tuo.mutation.ClearUpdatedBy()
+// ClearActiveProfile clears the "active_profile" edge to the TenderProfile entity.
+func (tuo *TenderUpdateOne) ClearActiveProfile() *TenderUpdateOne {
+	tuo.mutation.ClearActiveProfile()
+	return tuo
+}
+
+// ClearPendingProfile clears the "pending_profile" edge to the TenderProfile entity.
+func (tuo *TenderUpdateOne) ClearPendingProfile() *TenderUpdateOne {
+	tuo.mutation.ClearPendingProfile()
 	return tuo
 }
 
@@ -4334,12 +4416,6 @@ func (tuo *TenderUpdateOne) check() error {
 		return errors.New(`ent: clearing a required unique edge "Tender.area"`)
 	}
 	return nil
-}
-
-// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
-func (tuo *TenderUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *TenderUpdateOne {
-	tuo.modifiers = append(tuo.modifiers, modifiers...)
-	return tuo
 }
 
 func (tuo *TenderUpdateOne) sqlSave(ctx context.Context) (_node *Tender, err error) {
@@ -5164,28 +5240,28 @@ func (tuo *TenderUpdateOne) sqlSave(ctx context.Context) (_node *Tender, err err
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if tuo.mutation.UpdatedByCleared() {
+	if tuo.mutation.ActiveProfileCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: false,
-			Table:   tender.UpdatedByTable,
-			Columns: []string{tender.UpdatedByColumn},
+			Table:   tender.ActiveProfileTable,
+			Columns: []string{tender.ActiveProfileColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+				IDSpec: sqlgraph.NewFieldSpec(tenderprofile.FieldID, field.TypeString),
 			},
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := tuo.mutation.UpdatedByIDs(); len(nodes) > 0 {
+	if nodes := tuo.mutation.ActiveProfileIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: false,
-			Table:   tender.UpdatedByTable,
-			Columns: []string{tender.UpdatedByColumn},
+			Table:   tender.ActiveProfileTable,
+			Columns: []string{tender.ActiveProfileColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+				IDSpec: sqlgraph.NewFieldSpec(tenderprofile.FieldID, field.TypeString),
 			},
 		}
 		for _, k := range nodes {
@@ -5193,7 +5269,35 @@ func (tuo *TenderUpdateOne) sqlSave(ctx context.Context) (_node *Tender, err err
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	_spec.AddModifiers(tuo.modifiers...)
+	if tuo.mutation.PendingProfileCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   tender.PendingProfileTable,
+			Columns: []string{tender.PendingProfileColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tenderprofile.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tuo.mutation.PendingProfileIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   tender.PendingProfileTable,
+			Columns: []string{tender.PendingProfileColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tenderprofile.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	_node = &Tender{config: tuo.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues

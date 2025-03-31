@@ -496,7 +496,8 @@ var (
 		{Name: "finder_id", Type: field.TypeString, Nullable: true},
 		{Name: "created_by_id", Type: field.TypeString, Nullable: true},
 		{Name: "approver_id", Type: field.TypeString, Nullable: true},
-		{Name: "updated_by_id", Type: field.TypeString, Nullable: true},
+		{Name: "active_profile_id", Type: field.TypeString, Nullable: true},
+		{Name: "pending_profile_id", Type: field.TypeString, Nullable: true},
 	}
 	// TendersTable holds the schema information for the "tenders" table.
 	TendersTable = &schema.Table{
@@ -553,9 +554,15 @@ var (
 				OnDelete:   schema.SetNull,
 			},
 			{
-				Symbol:     "tenders_users_updated_by",
+				Symbol:     "tenders_tender_profiles_active_profile",
 				Columns:    []*schema.Column{TendersColumns[69]},
-				RefColumns: []*schema.Column{UsersColumns[0]},
+				RefColumns: []*schema.Column{TenderProfilesColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:     "tenders_tender_profiles_pending_profile",
+				Columns:    []*schema.Column{TendersColumns[70]},
+				RefColumns: []*schema.Column{TenderProfilesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 		},
@@ -930,7 +937,8 @@ func init() {
 	TendersTable.ForeignKeys[5].RefTable = UsersTable
 	TendersTable.ForeignKeys[6].RefTable = UsersTable
 	TendersTable.ForeignKeys[7].RefTable = UsersTable
-	TendersTable.ForeignKeys[8].RefTable = UsersTable
+	TendersTable.ForeignKeys[8].RefTable = TenderProfilesTable
+	TendersTable.ForeignKeys[9].RefTable = TenderProfilesTable
 	TenderCompetitorsTable.ForeignKeys[0].RefTable = CompetitorsTable
 	TenderCompetitorsTable.ForeignKeys[1].RefTable = TendersTable
 	TenderProfilesTable.ForeignKeys[0].RefTable = TendersTable

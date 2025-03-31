@@ -21,9 +21,8 @@ import (
 // PlotUpdate is the builder for updating Plot entities.
 type PlotUpdate struct {
 	config
-	hooks     []Hook
-	mutation  *PlotMutation
-	modifiers []func(*sql.UpdateBuilder)
+	hooks    []Hook
+	mutation *PlotMutation
 }
 
 // Where appends a list predicates to the PlotUpdate builder.
@@ -158,12 +157,6 @@ func (pu *PlotUpdate) check() error {
 	return nil
 }
 
-// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
-func (pu *PlotUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *PlotUpdate {
-	pu.modifiers = append(pu.modifiers, modifiers...)
-	return pu
-}
-
 func (pu *PlotUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if err := pu.check(); err != nil {
 		return n, err
@@ -225,7 +218,6 @@ func (pu *PlotUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	_spec.AddModifiers(pu.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, pu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{plot.Label}
@@ -241,10 +233,9 @@ func (pu *PlotUpdate) sqlSave(ctx context.Context) (n int, err error) {
 // PlotUpdateOne is the builder for updating a single Plot entity.
 type PlotUpdateOne struct {
 	config
-	fields    []string
-	hooks     []Hook
-	mutation  *PlotMutation
-	modifiers []func(*sql.UpdateBuilder)
+	fields   []string
+	hooks    []Hook
+	mutation *PlotMutation
 }
 
 // SetUpdatedAt sets the "updated_at" field.
@@ -386,12 +377,6 @@ func (puo *PlotUpdateOne) check() error {
 	return nil
 }
 
-// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
-func (puo *PlotUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *PlotUpdateOne {
-	puo.modifiers = append(puo.modifiers, modifiers...)
-	return puo
-}
-
 func (puo *PlotUpdateOne) sqlSave(ctx context.Context) (_node *Plot, err error) {
 	if err := puo.check(); err != nil {
 		return _node, err
@@ -470,7 +455,6 @@ func (puo *PlotUpdateOne) sqlSave(ctx context.Context) (_node *Plot, err error) 
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	_spec.AddModifiers(puo.modifiers...)
 	_node = &Plot{config: puo.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues

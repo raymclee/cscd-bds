@@ -20,9 +20,8 @@ import (
 // ProjectVOUpdate is the builder for updating ProjectVO entities.
 type ProjectVOUpdate struct {
 	config
-	hooks     []Hook
-	mutation  *ProjectVOMutation
-	modifiers []func(*sql.UpdateBuilder)
+	hooks    []Hook
+	mutation *ProjectVOMutation
 }
 
 // Where appends a list predicates to the ProjectVOUpdate builder.
@@ -254,12 +253,6 @@ func (pvu *ProjectVOUpdate) check() error {
 	return nil
 }
 
-// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
-func (pvu *ProjectVOUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *ProjectVOUpdate {
-	pvu.modifiers = append(pvu.modifiers, modifiers...)
-	return pvu
-}
-
 func (pvu *ProjectVOUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if err := pvu.check(); err != nil {
 		return n, err
@@ -349,7 +342,6 @@ func (pvu *ProjectVOUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	_spec.AddModifiers(pvu.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, pvu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{projectvo.Label}
@@ -365,10 +357,9 @@ func (pvu *ProjectVOUpdate) sqlSave(ctx context.Context) (n int, err error) {
 // ProjectVOUpdateOne is the builder for updating a single ProjectVO entity.
 type ProjectVOUpdateOne struct {
 	config
-	fields    []string
-	hooks     []Hook
-	mutation  *ProjectVOMutation
-	modifiers []func(*sql.UpdateBuilder)
+	fields   []string
+	hooks    []Hook
+	mutation *ProjectVOMutation
 }
 
 // SetUpdatedAt sets the "updated_at" field.
@@ -607,12 +598,6 @@ func (pvuo *ProjectVOUpdateOne) check() error {
 	return nil
 }
 
-// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
-func (pvuo *ProjectVOUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *ProjectVOUpdateOne {
-	pvuo.modifiers = append(pvuo.modifiers, modifiers...)
-	return pvuo
-}
-
 func (pvuo *ProjectVOUpdateOne) sqlSave(ctx context.Context) (_node *ProjectVO, err error) {
 	if err := pvuo.check(); err != nil {
 		return _node, err
@@ -719,7 +704,6 @@ func (pvuo *ProjectVOUpdateOne) sqlSave(ctx context.Context) (_node *ProjectVO, 
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	_spec.AddModifiers(pvuo.modifiers...)
 	_node = &ProjectVO{config: pvuo.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues

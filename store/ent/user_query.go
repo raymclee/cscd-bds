@@ -36,8 +36,8 @@ type UserQuery struct {
 	withTenders           *TenderQuery
 	withVisitRecords      *VisitRecordQuery
 	withProjects          *ProjectQuery
-	loadTotal             []func(context.Context, []*User) error
 	modifiers             []func(*sql.Selector)
+	loadTotal             []func(context.Context, []*User) error
 	withNamedAreas        map[string]*AreaQuery
 	withNamedCustomers    map[string]*CustomerQuery
 	withNamedTeamMembers  map[string]*UserQuery
@@ -434,9 +434,8 @@ func (uq *UserQuery) Clone() *UserQuery {
 		withVisitRecords: uq.withVisitRecords.Clone(),
 		withProjects:     uq.withProjects.Clone(),
 		// clone intermediate query.
-		sql:       uq.sql.Clone(),
-		path:      uq.path,
-		modifiers: append([]func(*sql.Selector){}, uq.modifiers...),
+		sql:  uq.sql.Clone(),
+		path: uq.path,
 	}
 }
 
@@ -1137,9 +1136,6 @@ func (uq *UserQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if uq.ctx.Unique != nil && *uq.ctx.Unique {
 		selector.Distinct()
 	}
-	for _, m := range uq.modifiers {
-		m(selector)
-	}
 	for _, p := range uq.predicates {
 		p(selector)
 	}
@@ -1155,12 +1151,6 @@ func (uq *UserQuery) sqlQuery(ctx context.Context) *sql.Selector {
 		selector.Limit(*limit)
 	}
 	return selector
-}
-
-// Modify adds a query modifier for attaching custom logic to queries.
-func (uq *UserQuery) Modify(modifiers ...func(s *sql.Selector)) *UserSelect {
-	uq.modifiers = append(uq.modifiers, modifiers...)
-	return uq.Select()
 }
 
 // WithNamedAreas tells the query-builder to eager-load the nodes that are connected to the "areas"
@@ -1335,10 +1325,4 @@ func (us *UserSelect) sqlScan(ctx context.Context, root *UserQuery, v any) error
 	}
 	defer rows.Close()
 	return sql.ScanSlice(rows, v)
-}
-
-// Modify adds a query modifier for attaching custom logic to queries.
-func (us *UserSelect) Modify(modifiers ...func(s *sql.Selector)) *UserSelect {
-	us.modifiers = append(us.modifiers, modifiers...)
-	return us
 }

@@ -17,7 +17,7 @@ create:
 	go run -mod=mod entgo.io/ent/cmd/ent new --target store/ent/schema
 
 dev:
-	air
+	air -c .air.toml
 	
 gen:
 	go generate ./...

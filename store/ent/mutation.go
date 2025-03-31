@@ -21671,8 +21671,10 @@ type TenderMutation struct {
 	clearedvisit_records                    bool
 	approver                                *xid.ID
 	clearedapprover                         bool
-	updated_by                              *xid.ID
-	clearedupdated_by                       bool
+	active_profile                          *xid.ID
+	clearedactive_profile                   bool
+	pending_profile                         *xid.ID
+	clearedpending_profile                  bool
 	done                                    bool
 	oldValue                                func(context.Context) (*Tender, error)
 	predicates                              []predicate.Tender
@@ -25282,53 +25284,102 @@ func (m *TenderMutation) ResetApproverID() {
 	delete(m.clearedFields, tender.FieldApproverID)
 }
 
-// SetUpdatedByID sets the "updated_by_id" field.
-func (m *TenderMutation) SetUpdatedByID(x xid.ID) {
-	m.updated_by = &x
+// SetActiveProfileID sets the "active_profile_id" field.
+func (m *TenderMutation) SetActiveProfileID(x xid.ID) {
+	m.active_profile = &x
 }
 
-// UpdatedByID returns the value of the "updated_by_id" field in the mutation.
-func (m *TenderMutation) UpdatedByID() (r xid.ID, exists bool) {
-	v := m.updated_by
+// ActiveProfileID returns the value of the "active_profile_id" field in the mutation.
+func (m *TenderMutation) ActiveProfileID() (r xid.ID, exists bool) {
+	v := m.active_profile
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldUpdatedByID returns the old "updated_by_id" field's value of the Tender entity.
+// OldActiveProfileID returns the old "active_profile_id" field's value of the Tender entity.
 // If the Tender object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *TenderMutation) OldUpdatedByID(ctx context.Context) (v *xid.ID, err error) {
+func (m *TenderMutation) OldActiveProfileID(ctx context.Context) (v *xid.ID, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldUpdatedByID is only allowed on UpdateOne operations")
+		return v, errors.New("OldActiveProfileID is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldUpdatedByID requires an ID field in the mutation")
+		return v, errors.New("OldActiveProfileID requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldUpdatedByID: %w", err)
+		return v, fmt.Errorf("querying old value for OldActiveProfileID: %w", err)
 	}
-	return oldValue.UpdatedByID, nil
+	return oldValue.ActiveProfileID, nil
 }
 
-// ClearUpdatedByID clears the value of the "updated_by_id" field.
-func (m *TenderMutation) ClearUpdatedByID() {
-	m.updated_by = nil
-	m.clearedFields[tender.FieldUpdatedByID] = struct{}{}
+// ClearActiveProfileID clears the value of the "active_profile_id" field.
+func (m *TenderMutation) ClearActiveProfileID() {
+	m.active_profile = nil
+	m.clearedFields[tender.FieldActiveProfileID] = struct{}{}
 }
 
-// UpdatedByIDCleared returns if the "updated_by_id" field was cleared in this mutation.
-func (m *TenderMutation) UpdatedByIDCleared() bool {
-	_, ok := m.clearedFields[tender.FieldUpdatedByID]
+// ActiveProfileIDCleared returns if the "active_profile_id" field was cleared in this mutation.
+func (m *TenderMutation) ActiveProfileIDCleared() bool {
+	_, ok := m.clearedFields[tender.FieldActiveProfileID]
 	return ok
 }
 
-// ResetUpdatedByID resets all changes to the "updated_by_id" field.
-func (m *TenderMutation) ResetUpdatedByID() {
-	m.updated_by = nil
-	delete(m.clearedFields, tender.FieldUpdatedByID)
+// ResetActiveProfileID resets all changes to the "active_profile_id" field.
+func (m *TenderMutation) ResetActiveProfileID() {
+	m.active_profile = nil
+	delete(m.clearedFields, tender.FieldActiveProfileID)
+}
+
+// SetPendingProfileID sets the "pending_profile_id" field.
+func (m *TenderMutation) SetPendingProfileID(x xid.ID) {
+	m.pending_profile = &x
+}
+
+// PendingProfileID returns the value of the "pending_profile_id" field in the mutation.
+func (m *TenderMutation) PendingProfileID() (r xid.ID, exists bool) {
+	v := m.pending_profile
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPendingProfileID returns the old "pending_profile_id" field's value of the Tender entity.
+// If the Tender object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *TenderMutation) OldPendingProfileID(ctx context.Context) (v *xid.ID, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPendingProfileID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPendingProfileID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPendingProfileID: %w", err)
+	}
+	return oldValue.PendingProfileID, nil
+}
+
+// ClearPendingProfileID clears the value of the "pending_profile_id" field.
+func (m *TenderMutation) ClearPendingProfileID() {
+	m.pending_profile = nil
+	m.clearedFields[tender.FieldPendingProfileID] = struct{}{}
+}
+
+// PendingProfileIDCleared returns if the "pending_profile_id" field was cleared in this mutation.
+func (m *TenderMutation) PendingProfileIDCleared() bool {
+	_, ok := m.clearedFields[tender.FieldPendingProfileID]
+	return ok
+}
+
+// ResetPendingProfileID resets all changes to the "pending_profile_id" field.
+func (m *TenderMutation) ResetPendingProfileID() {
+	m.pending_profile = nil
+	delete(m.clearedFields, tender.FieldPendingProfileID)
 }
 
 // ClearArea clears the "area" edge to the Area entity.
@@ -25763,31 +25814,58 @@ func (m *TenderMutation) ResetApprover() {
 	m.clearedapprover = false
 }
 
-// ClearUpdatedBy clears the "updated_by" edge to the User entity.
-func (m *TenderMutation) ClearUpdatedBy() {
-	m.clearedupdated_by = true
-	m.clearedFields[tender.FieldUpdatedByID] = struct{}{}
+// ClearActiveProfile clears the "active_profile" edge to the TenderProfile entity.
+func (m *TenderMutation) ClearActiveProfile() {
+	m.clearedactive_profile = true
+	m.clearedFields[tender.FieldActiveProfileID] = struct{}{}
 }
 
-// UpdatedByCleared reports if the "updated_by" edge to the User entity was cleared.
-func (m *TenderMutation) UpdatedByCleared() bool {
-	return m.UpdatedByIDCleared() || m.clearedupdated_by
+// ActiveProfileCleared reports if the "active_profile" edge to the TenderProfile entity was cleared.
+func (m *TenderMutation) ActiveProfileCleared() bool {
+	return m.ActiveProfileIDCleared() || m.clearedactive_profile
 }
 
-// UpdatedByIDs returns the "updated_by" edge IDs in the mutation.
+// ActiveProfileIDs returns the "active_profile" edge IDs in the mutation.
 // Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
-// UpdatedByID instead. It exists only for internal usage by the builders.
-func (m *TenderMutation) UpdatedByIDs() (ids []xid.ID) {
-	if id := m.updated_by; id != nil {
+// ActiveProfileID instead. It exists only for internal usage by the builders.
+func (m *TenderMutation) ActiveProfileIDs() (ids []xid.ID) {
+	if id := m.active_profile; id != nil {
 		ids = append(ids, *id)
 	}
 	return
 }
 
-// ResetUpdatedBy resets all changes to the "updated_by" edge.
-func (m *TenderMutation) ResetUpdatedBy() {
-	m.updated_by = nil
-	m.clearedupdated_by = false
+// ResetActiveProfile resets all changes to the "active_profile" edge.
+func (m *TenderMutation) ResetActiveProfile() {
+	m.active_profile = nil
+	m.clearedactive_profile = false
+}
+
+// ClearPendingProfile clears the "pending_profile" edge to the TenderProfile entity.
+func (m *TenderMutation) ClearPendingProfile() {
+	m.clearedpending_profile = true
+	m.clearedFields[tender.FieldPendingProfileID] = struct{}{}
+}
+
+// PendingProfileCleared reports if the "pending_profile" edge to the TenderProfile entity was cleared.
+func (m *TenderMutation) PendingProfileCleared() bool {
+	return m.PendingProfileIDCleared() || m.clearedpending_profile
+}
+
+// PendingProfileIDs returns the "pending_profile" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// PendingProfileID instead. It exists only for internal usage by the builders.
+func (m *TenderMutation) PendingProfileIDs() (ids []xid.ID) {
+	if id := m.pending_profile; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetPendingProfile resets all changes to the "pending_profile" edge.
+func (m *TenderMutation) ResetPendingProfile() {
+	m.pending_profile = nil
+	m.clearedpending_profile = false
 }
 
 // Where appends a list predicates to the TenderMutation builder.
@@ -25824,7 +25902,7 @@ func (m *TenderMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *TenderMutation) Fields() []string {
-	fields := make([]string, 0, 69)
+	fields := make([]string, 0, 70)
 	if m.created_at != nil {
 		fields = append(fields, tender.FieldCreatedAt)
 	}
@@ -26029,8 +26107,11 @@ func (m *TenderMutation) Fields() []string {
 	if m.approver != nil {
 		fields = append(fields, tender.FieldApproverID)
 	}
-	if m.updated_by != nil {
-		fields = append(fields, tender.FieldUpdatedByID)
+	if m.active_profile != nil {
+		fields = append(fields, tender.FieldActiveProfileID)
+	}
+	if m.pending_profile != nil {
+		fields = append(fields, tender.FieldPendingProfileID)
 	}
 	return fields
 }
@@ -26176,8 +26257,10 @@ func (m *TenderMutation) Field(name string) (ent.Value, bool) {
 		return m.CreatedByID()
 	case tender.FieldApproverID:
 		return m.ApproverID()
-	case tender.FieldUpdatedByID:
-		return m.UpdatedByID()
+	case tender.FieldActiveProfileID:
+		return m.ActiveProfileID()
+	case tender.FieldPendingProfileID:
+		return m.PendingProfileID()
 	}
 	return nil, false
 }
@@ -26323,8 +26406,10 @@ func (m *TenderMutation) OldField(ctx context.Context, name string) (ent.Value, 
 		return m.OldCreatedByID(ctx)
 	case tender.FieldApproverID:
 		return m.OldApproverID(ctx)
-	case tender.FieldUpdatedByID:
-		return m.OldUpdatedByID(ctx)
+	case tender.FieldActiveProfileID:
+		return m.OldActiveProfileID(ctx)
+	case tender.FieldPendingProfileID:
+		return m.OldPendingProfileID(ctx)
 	}
 	return nil, fmt.Errorf("unknown Tender field %s", name)
 }
@@ -26810,12 +26895,19 @@ func (m *TenderMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetApproverID(v)
 		return nil
-	case tender.FieldUpdatedByID:
+	case tender.FieldActiveProfileID:
 		v, ok := value.(xid.ID)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetUpdatedByID(v)
+		m.SetActiveProfileID(v)
+		return nil
+	case tender.FieldPendingProfileID:
+		v, ok := value.(xid.ID)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPendingProfileID(v)
 		return nil
 	}
 	return fmt.Errorf("unknown Tender field %s", name)
@@ -27168,8 +27260,11 @@ func (m *TenderMutation) ClearedFields() []string {
 	if m.FieldCleared(tender.FieldApproverID) {
 		fields = append(fields, tender.FieldApproverID)
 	}
-	if m.FieldCleared(tender.FieldUpdatedByID) {
-		fields = append(fields, tender.FieldUpdatedByID)
+	if m.FieldCleared(tender.FieldActiveProfileID) {
+		fields = append(fields, tender.FieldActiveProfileID)
+	}
+	if m.FieldCleared(tender.FieldPendingProfileID) {
+		fields = append(fields, tender.FieldPendingProfileID)
 	}
 	return fields
 }
@@ -27359,8 +27454,11 @@ func (m *TenderMutation) ClearField(name string) error {
 	case tender.FieldApproverID:
 		m.ClearApproverID()
 		return nil
-	case tender.FieldUpdatedByID:
-		m.ClearUpdatedByID()
+	case tender.FieldActiveProfileID:
+		m.ClearActiveProfileID()
+		return nil
+	case tender.FieldPendingProfileID:
+		m.ClearPendingProfileID()
 		return nil
 	}
 	return fmt.Errorf("unknown Tender nullable field %s", name)
@@ -27574,8 +27672,11 @@ func (m *TenderMutation) ResetField(name string) error {
 	case tender.FieldApproverID:
 		m.ResetApproverID()
 		return nil
-	case tender.FieldUpdatedByID:
-		m.ResetUpdatedByID()
+	case tender.FieldActiveProfileID:
+		m.ResetActiveProfileID()
+		return nil
+	case tender.FieldPendingProfileID:
+		m.ResetPendingProfileID()
 		return nil
 	}
 	return fmt.Errorf("unknown Tender field %s", name)
@@ -27583,7 +27684,7 @@ func (m *TenderMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *TenderMutation) AddedEdges() []string {
-	edges := make([]string, 0, 13)
+	edges := make([]string, 0, 14)
 	if m.area != nil {
 		edges = append(edges, tender.EdgeArea)
 	}
@@ -27620,8 +27721,11 @@ func (m *TenderMutation) AddedEdges() []string {
 	if m.approver != nil {
 		edges = append(edges, tender.EdgeApprover)
 	}
-	if m.updated_by != nil {
-		edges = append(edges, tender.EdgeUpdatedBy)
+	if m.active_profile != nil {
+		edges = append(edges, tender.EdgeActiveProfile)
+	}
+	if m.pending_profile != nil {
+		edges = append(edges, tender.EdgePendingProfile)
 	}
 	return edges
 }
@@ -27686,8 +27790,12 @@ func (m *TenderMutation) AddedIDs(name string) []ent.Value {
 		if id := m.approver; id != nil {
 			return []ent.Value{*id}
 		}
-	case tender.EdgeUpdatedBy:
-		if id := m.updated_by; id != nil {
+	case tender.EdgeActiveProfile:
+		if id := m.active_profile; id != nil {
+			return []ent.Value{*id}
+		}
+	case tender.EdgePendingProfile:
+		if id := m.pending_profile; id != nil {
 			return []ent.Value{*id}
 		}
 	}
@@ -27696,7 +27804,7 @@ func (m *TenderMutation) AddedIDs(name string) []ent.Value {
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *TenderMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 13)
+	edges := make([]string, 0, 14)
 	if m.removedprofiles != nil {
 		edges = append(edges, tender.EdgeProfiles)
 	}
@@ -27746,7 +27854,7 @@ func (m *TenderMutation) RemovedIDs(name string) []ent.Value {
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *TenderMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 13)
+	edges := make([]string, 0, 14)
 	if m.clearedarea {
 		edges = append(edges, tender.EdgeArea)
 	}
@@ -27783,8 +27891,11 @@ func (m *TenderMutation) ClearedEdges() []string {
 	if m.clearedapprover {
 		edges = append(edges, tender.EdgeApprover)
 	}
-	if m.clearedupdated_by {
-		edges = append(edges, tender.EdgeUpdatedBy)
+	if m.clearedactive_profile {
+		edges = append(edges, tender.EdgeActiveProfile)
+	}
+	if m.clearedpending_profile {
+		edges = append(edges, tender.EdgePendingProfile)
 	}
 	return edges
 }
@@ -27817,8 +27928,10 @@ func (m *TenderMutation) EdgeCleared(name string) bool {
 		return m.clearedvisit_records
 	case tender.EdgeApprover:
 		return m.clearedapprover
-	case tender.EdgeUpdatedBy:
-		return m.clearedupdated_by
+	case tender.EdgeActiveProfile:
+		return m.clearedactive_profile
+	case tender.EdgePendingProfile:
+		return m.clearedpending_profile
 	}
 	return false
 }
@@ -27851,8 +27964,11 @@ func (m *TenderMutation) ClearEdge(name string) error {
 	case tender.EdgeApprover:
 		m.ClearApprover()
 		return nil
-	case tender.EdgeUpdatedBy:
-		m.ClearUpdatedBy()
+	case tender.EdgeActiveProfile:
+		m.ClearActiveProfile()
+		return nil
+	case tender.EdgePendingProfile:
+		m.ClearPendingProfile()
 		return nil
 	}
 	return fmt.Errorf("unknown Tender unique edge %s", name)
@@ -27898,8 +28014,11 @@ func (m *TenderMutation) ResetEdge(name string) error {
 	case tender.EdgeApprover:
 		m.ResetApprover()
 		return nil
-	case tender.EdgeUpdatedBy:
-		m.ResetUpdatedBy()
+	case tender.EdgeActiveProfile:
+		m.ResetActiveProfile()
+		return nil
+	case tender.EdgePendingProfile:
+		m.ResetPendingProfile()
 		return nil
 	}
 	return fmt.Errorf("unknown Tender edge %s", name)

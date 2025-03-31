@@ -23,8 +23,8 @@ type OperationQuery struct {
 	order      []operation.OrderOption
 	inters     []Interceptor
 	predicates []predicate.Operation
-	loadTotal  []func(context.Context, []*Operation) error
 	modifiers  []func(*sql.Selector)
+	loadTotal  []func(context.Context, []*Operation) error
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -254,9 +254,8 @@ func (oq *OperationQuery) Clone() *OperationQuery {
 		inters:     append([]Interceptor{}, oq.inters...),
 		predicates: append([]predicate.Operation{}, oq.predicates...),
 		// clone intermediate query.
-		sql:       oq.sql.Clone(),
-		path:      oq.path,
-		modifiers: append([]func(*sql.Selector){}, oq.modifiers...),
+		sql:  oq.sql.Clone(),
+		path: oq.path,
 	}
 }
 
@@ -434,9 +433,6 @@ func (oq *OperationQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if oq.ctx.Unique != nil && *oq.ctx.Unique {
 		selector.Distinct()
 	}
-	for _, m := range oq.modifiers {
-		m(selector)
-	}
 	for _, p := range oq.predicates {
 		p(selector)
 	}
@@ -452,12 +448,6 @@ func (oq *OperationQuery) sqlQuery(ctx context.Context) *sql.Selector {
 		selector.Limit(*limit)
 	}
 	return selector
-}
-
-// Modify adds a query modifier for attaching custom logic to queries.
-func (oq *OperationQuery) Modify(modifiers ...func(s *sql.Selector)) *OperationSelect {
-	oq.modifiers = append(oq.modifiers, modifiers...)
-	return oq.Select()
 }
 
 // OperationGroupBy is the group-by builder for Operation entities.
@@ -548,10 +538,4 @@ func (os *OperationSelect) sqlScan(ctx context.Context, root *OperationQuery, v 
 	}
 	defer rows.Close()
 	return sql.ScanSlice(rows, v)
-}
-
-// Modify adds a query modifier for attaching custom logic to queries.
-func (os *OperationSelect) Modify(modifiers ...func(s *sql.Selector)) *OperationSelect {
-	os.modifiers = append(os.modifiers, modifiers...)
-	return os
 }

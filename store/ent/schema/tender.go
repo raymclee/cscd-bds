@@ -158,7 +158,11 @@ func (Tender) Fields() []ent.Field {
 			GoType(xid.ID("")).
 			Optional().
 			Nillable(),
-		field.String("updated_by_id").
+		field.String("active_profile_id").
+			GoType(xid.ID("")).
+			Optional().
+			Nillable(),
+		field.String("pending_profile_id").
 			GoType(xid.ID("")).
 			Optional().
 			Nillable(),
@@ -208,8 +212,11 @@ func (Tender) Edges() []ent.Edge {
 		edge.To("approver", User.Type).
 			Field("approver_id").
 			Unique(),
-		edge.To("updated_by", User.Type).
-			Field("updated_by_id").
+		edge.To("active_profile", TenderProfile.Type).
+			Field("active_profile_id").
+			Unique(),
+		edge.To("pending_profile", TenderProfile.Type).
+			Field("pending_profile_id").
 			Unique(),
 	}
 }

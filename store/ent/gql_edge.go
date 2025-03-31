@@ -602,10 +602,18 @@ func (t *Tender) Approver(ctx context.Context) (*User, error) {
 	return result, MaskNotFound(err)
 }
 
-func (t *Tender) UpdatedBy(ctx context.Context) (*User, error) {
-	result, err := t.Edges.UpdatedByOrErr()
+func (t *Tender) ActiveProfile(ctx context.Context) (*TenderProfile, error) {
+	result, err := t.Edges.ActiveProfileOrErr()
 	if IsNotLoaded(err) {
-		result, err = t.QueryUpdatedBy().Only(ctx)
+		result, err = t.QueryActiveProfile().Only(ctx)
+	}
+	return result, MaskNotFound(err)
+}
+
+func (t *Tender) PendingProfile(ctx context.Context) (*TenderProfile, error) {
+	result, err := t.Edges.PendingProfileOrErr()
+	if IsNotLoaded(err) {
+		result, err = t.QueryPendingProfile().Only(ctx)
 	}
 	return result, MaskNotFound(err)
 }

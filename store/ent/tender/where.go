@@ -382,9 +382,14 @@ func ApproverID(v xid.ID) predicate.Tender {
 	return predicate.Tender(sql.FieldEQ(FieldApproverID, v))
 }
 
-// UpdatedByID applies equality check predicate on the "updated_by_id" field. It's identical to UpdatedByIDEQ.
-func UpdatedByID(v xid.ID) predicate.Tender {
-	return predicate.Tender(sql.FieldEQ(FieldUpdatedByID, v))
+// ActiveProfileID applies equality check predicate on the "active_profile_id" field. It's identical to ActiveProfileIDEQ.
+func ActiveProfileID(v xid.ID) predicate.Tender {
+	return predicate.Tender(sql.FieldEQ(FieldActiveProfileID, v))
+}
+
+// PendingProfileID applies equality check predicate on the "pending_profile_id" field. It's identical to PendingProfileIDEQ.
+func PendingProfileID(v xid.ID) predicate.Tender {
+	return predicate.Tender(sql.FieldEQ(FieldPendingProfileID, v))
 }
 
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
@@ -4572,84 +4577,164 @@ func ApproverIDContainsFold(v xid.ID) predicate.Tender {
 	return predicate.Tender(sql.FieldContainsFold(FieldApproverID, vc))
 }
 
-// UpdatedByIDEQ applies the EQ predicate on the "updated_by_id" field.
-func UpdatedByIDEQ(v xid.ID) predicate.Tender {
-	return predicate.Tender(sql.FieldEQ(FieldUpdatedByID, v))
+// ActiveProfileIDEQ applies the EQ predicate on the "active_profile_id" field.
+func ActiveProfileIDEQ(v xid.ID) predicate.Tender {
+	return predicate.Tender(sql.FieldEQ(FieldActiveProfileID, v))
 }
 
-// UpdatedByIDNEQ applies the NEQ predicate on the "updated_by_id" field.
-func UpdatedByIDNEQ(v xid.ID) predicate.Tender {
-	return predicate.Tender(sql.FieldNEQ(FieldUpdatedByID, v))
+// ActiveProfileIDNEQ applies the NEQ predicate on the "active_profile_id" field.
+func ActiveProfileIDNEQ(v xid.ID) predicate.Tender {
+	return predicate.Tender(sql.FieldNEQ(FieldActiveProfileID, v))
 }
 
-// UpdatedByIDIn applies the In predicate on the "updated_by_id" field.
-func UpdatedByIDIn(vs ...xid.ID) predicate.Tender {
-	return predicate.Tender(sql.FieldIn(FieldUpdatedByID, vs...))
+// ActiveProfileIDIn applies the In predicate on the "active_profile_id" field.
+func ActiveProfileIDIn(vs ...xid.ID) predicate.Tender {
+	return predicate.Tender(sql.FieldIn(FieldActiveProfileID, vs...))
 }
 
-// UpdatedByIDNotIn applies the NotIn predicate on the "updated_by_id" field.
-func UpdatedByIDNotIn(vs ...xid.ID) predicate.Tender {
-	return predicate.Tender(sql.FieldNotIn(FieldUpdatedByID, vs...))
+// ActiveProfileIDNotIn applies the NotIn predicate on the "active_profile_id" field.
+func ActiveProfileIDNotIn(vs ...xid.ID) predicate.Tender {
+	return predicate.Tender(sql.FieldNotIn(FieldActiveProfileID, vs...))
 }
 
-// UpdatedByIDGT applies the GT predicate on the "updated_by_id" field.
-func UpdatedByIDGT(v xid.ID) predicate.Tender {
-	return predicate.Tender(sql.FieldGT(FieldUpdatedByID, v))
+// ActiveProfileIDGT applies the GT predicate on the "active_profile_id" field.
+func ActiveProfileIDGT(v xid.ID) predicate.Tender {
+	return predicate.Tender(sql.FieldGT(FieldActiveProfileID, v))
 }
 
-// UpdatedByIDGTE applies the GTE predicate on the "updated_by_id" field.
-func UpdatedByIDGTE(v xid.ID) predicate.Tender {
-	return predicate.Tender(sql.FieldGTE(FieldUpdatedByID, v))
+// ActiveProfileIDGTE applies the GTE predicate on the "active_profile_id" field.
+func ActiveProfileIDGTE(v xid.ID) predicate.Tender {
+	return predicate.Tender(sql.FieldGTE(FieldActiveProfileID, v))
 }
 
-// UpdatedByIDLT applies the LT predicate on the "updated_by_id" field.
-func UpdatedByIDLT(v xid.ID) predicate.Tender {
-	return predicate.Tender(sql.FieldLT(FieldUpdatedByID, v))
+// ActiveProfileIDLT applies the LT predicate on the "active_profile_id" field.
+func ActiveProfileIDLT(v xid.ID) predicate.Tender {
+	return predicate.Tender(sql.FieldLT(FieldActiveProfileID, v))
 }
 
-// UpdatedByIDLTE applies the LTE predicate on the "updated_by_id" field.
-func UpdatedByIDLTE(v xid.ID) predicate.Tender {
-	return predicate.Tender(sql.FieldLTE(FieldUpdatedByID, v))
+// ActiveProfileIDLTE applies the LTE predicate on the "active_profile_id" field.
+func ActiveProfileIDLTE(v xid.ID) predicate.Tender {
+	return predicate.Tender(sql.FieldLTE(FieldActiveProfileID, v))
 }
 
-// UpdatedByIDContains applies the Contains predicate on the "updated_by_id" field.
-func UpdatedByIDContains(v xid.ID) predicate.Tender {
+// ActiveProfileIDContains applies the Contains predicate on the "active_profile_id" field.
+func ActiveProfileIDContains(v xid.ID) predicate.Tender {
 	vc := string(v)
-	return predicate.Tender(sql.FieldContains(FieldUpdatedByID, vc))
+	return predicate.Tender(sql.FieldContains(FieldActiveProfileID, vc))
 }
 
-// UpdatedByIDHasPrefix applies the HasPrefix predicate on the "updated_by_id" field.
-func UpdatedByIDHasPrefix(v xid.ID) predicate.Tender {
+// ActiveProfileIDHasPrefix applies the HasPrefix predicate on the "active_profile_id" field.
+func ActiveProfileIDHasPrefix(v xid.ID) predicate.Tender {
 	vc := string(v)
-	return predicate.Tender(sql.FieldHasPrefix(FieldUpdatedByID, vc))
+	return predicate.Tender(sql.FieldHasPrefix(FieldActiveProfileID, vc))
 }
 
-// UpdatedByIDHasSuffix applies the HasSuffix predicate on the "updated_by_id" field.
-func UpdatedByIDHasSuffix(v xid.ID) predicate.Tender {
+// ActiveProfileIDHasSuffix applies the HasSuffix predicate on the "active_profile_id" field.
+func ActiveProfileIDHasSuffix(v xid.ID) predicate.Tender {
 	vc := string(v)
-	return predicate.Tender(sql.FieldHasSuffix(FieldUpdatedByID, vc))
+	return predicate.Tender(sql.FieldHasSuffix(FieldActiveProfileID, vc))
 }
 
-// UpdatedByIDIsNil applies the IsNil predicate on the "updated_by_id" field.
-func UpdatedByIDIsNil() predicate.Tender {
-	return predicate.Tender(sql.FieldIsNull(FieldUpdatedByID))
+// ActiveProfileIDIsNil applies the IsNil predicate on the "active_profile_id" field.
+func ActiveProfileIDIsNil() predicate.Tender {
+	return predicate.Tender(sql.FieldIsNull(FieldActiveProfileID))
 }
 
-// UpdatedByIDNotNil applies the NotNil predicate on the "updated_by_id" field.
-func UpdatedByIDNotNil() predicate.Tender {
-	return predicate.Tender(sql.FieldNotNull(FieldUpdatedByID))
+// ActiveProfileIDNotNil applies the NotNil predicate on the "active_profile_id" field.
+func ActiveProfileIDNotNil() predicate.Tender {
+	return predicate.Tender(sql.FieldNotNull(FieldActiveProfileID))
 }
 
-// UpdatedByIDEqualFold applies the EqualFold predicate on the "updated_by_id" field.
-func UpdatedByIDEqualFold(v xid.ID) predicate.Tender {
+// ActiveProfileIDEqualFold applies the EqualFold predicate on the "active_profile_id" field.
+func ActiveProfileIDEqualFold(v xid.ID) predicate.Tender {
 	vc := string(v)
-	return predicate.Tender(sql.FieldEqualFold(FieldUpdatedByID, vc))
+	return predicate.Tender(sql.FieldEqualFold(FieldActiveProfileID, vc))
 }
 
-// UpdatedByIDContainsFold applies the ContainsFold predicate on the "updated_by_id" field.
-func UpdatedByIDContainsFold(v xid.ID) predicate.Tender {
+// ActiveProfileIDContainsFold applies the ContainsFold predicate on the "active_profile_id" field.
+func ActiveProfileIDContainsFold(v xid.ID) predicate.Tender {
 	vc := string(v)
-	return predicate.Tender(sql.FieldContainsFold(FieldUpdatedByID, vc))
+	return predicate.Tender(sql.FieldContainsFold(FieldActiveProfileID, vc))
+}
+
+// PendingProfileIDEQ applies the EQ predicate on the "pending_profile_id" field.
+func PendingProfileIDEQ(v xid.ID) predicate.Tender {
+	return predicate.Tender(sql.FieldEQ(FieldPendingProfileID, v))
+}
+
+// PendingProfileIDNEQ applies the NEQ predicate on the "pending_profile_id" field.
+func PendingProfileIDNEQ(v xid.ID) predicate.Tender {
+	return predicate.Tender(sql.FieldNEQ(FieldPendingProfileID, v))
+}
+
+// PendingProfileIDIn applies the In predicate on the "pending_profile_id" field.
+func PendingProfileIDIn(vs ...xid.ID) predicate.Tender {
+	return predicate.Tender(sql.FieldIn(FieldPendingProfileID, vs...))
+}
+
+// PendingProfileIDNotIn applies the NotIn predicate on the "pending_profile_id" field.
+func PendingProfileIDNotIn(vs ...xid.ID) predicate.Tender {
+	return predicate.Tender(sql.FieldNotIn(FieldPendingProfileID, vs...))
+}
+
+// PendingProfileIDGT applies the GT predicate on the "pending_profile_id" field.
+func PendingProfileIDGT(v xid.ID) predicate.Tender {
+	return predicate.Tender(sql.FieldGT(FieldPendingProfileID, v))
+}
+
+// PendingProfileIDGTE applies the GTE predicate on the "pending_profile_id" field.
+func PendingProfileIDGTE(v xid.ID) predicate.Tender {
+	return predicate.Tender(sql.FieldGTE(FieldPendingProfileID, v))
+}
+
+// PendingProfileIDLT applies the LT predicate on the "pending_profile_id" field.
+func PendingProfileIDLT(v xid.ID) predicate.Tender {
+	return predicate.Tender(sql.FieldLT(FieldPendingProfileID, v))
+}
+
+// PendingProfileIDLTE applies the LTE predicate on the "pending_profile_id" field.
+func PendingProfileIDLTE(v xid.ID) predicate.Tender {
+	return predicate.Tender(sql.FieldLTE(FieldPendingProfileID, v))
+}
+
+// PendingProfileIDContains applies the Contains predicate on the "pending_profile_id" field.
+func PendingProfileIDContains(v xid.ID) predicate.Tender {
+	vc := string(v)
+	return predicate.Tender(sql.FieldContains(FieldPendingProfileID, vc))
+}
+
+// PendingProfileIDHasPrefix applies the HasPrefix predicate on the "pending_profile_id" field.
+func PendingProfileIDHasPrefix(v xid.ID) predicate.Tender {
+	vc := string(v)
+	return predicate.Tender(sql.FieldHasPrefix(FieldPendingProfileID, vc))
+}
+
+// PendingProfileIDHasSuffix applies the HasSuffix predicate on the "pending_profile_id" field.
+func PendingProfileIDHasSuffix(v xid.ID) predicate.Tender {
+	vc := string(v)
+	return predicate.Tender(sql.FieldHasSuffix(FieldPendingProfileID, vc))
+}
+
+// PendingProfileIDIsNil applies the IsNil predicate on the "pending_profile_id" field.
+func PendingProfileIDIsNil() predicate.Tender {
+	return predicate.Tender(sql.FieldIsNull(FieldPendingProfileID))
+}
+
+// PendingProfileIDNotNil applies the NotNil predicate on the "pending_profile_id" field.
+func PendingProfileIDNotNil() predicate.Tender {
+	return predicate.Tender(sql.FieldNotNull(FieldPendingProfileID))
+}
+
+// PendingProfileIDEqualFold applies the EqualFold predicate on the "pending_profile_id" field.
+func PendingProfileIDEqualFold(v xid.ID) predicate.Tender {
+	vc := string(v)
+	return predicate.Tender(sql.FieldEqualFold(FieldPendingProfileID, vc))
+}
+
+// PendingProfileIDContainsFold applies the ContainsFold predicate on the "pending_profile_id" field.
+func PendingProfileIDContainsFold(v xid.ID) predicate.Tender {
+	vc := string(v)
+	return predicate.Tender(sql.FieldContainsFold(FieldPendingProfileID, vc))
 }
 
 // HasArea applies the HasEdge predicate on the "area" edge.
@@ -4928,21 +5013,44 @@ func HasApproverWith(preds ...predicate.User) predicate.Tender {
 	})
 }
 
-// HasUpdatedBy applies the HasEdge predicate on the "updated_by" edge.
-func HasUpdatedBy() predicate.Tender {
+// HasActiveProfile applies the HasEdge predicate on the "active_profile" edge.
+func HasActiveProfile() predicate.Tender {
 	return predicate.Tender(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, false, UpdatedByTable, UpdatedByColumn),
+			sqlgraph.Edge(sqlgraph.M2O, false, ActiveProfileTable, ActiveProfileColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
 
-// HasUpdatedByWith applies the HasEdge predicate on the "updated_by" edge with a given conditions (other predicates).
-func HasUpdatedByWith(preds ...predicate.User) predicate.Tender {
+// HasActiveProfileWith applies the HasEdge predicate on the "active_profile" edge with a given conditions (other predicates).
+func HasActiveProfileWith(preds ...predicate.TenderProfile) predicate.Tender {
 	return predicate.Tender(func(s *sql.Selector) {
-		step := newUpdatedByStep()
+		step := newActiveProfileStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasPendingProfile applies the HasEdge predicate on the "pending_profile" edge.
+func HasPendingProfile() predicate.Tender {
+	return predicate.Tender(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, PendingProfileTable, PendingProfileColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasPendingProfileWith applies the HasEdge predicate on the "pending_profile" edge with a given conditions (other predicates).
+func HasPendingProfileWith(preds ...predicate.TenderProfile) predicate.Tender {
+	return predicate.Tender(func(s *sql.Selector) {
+		step := newPendingProfileStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

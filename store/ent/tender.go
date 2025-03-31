@@ -11,6 +11,7 @@ import (
 	"cscd-bds/store/ent/schema/geo"
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/tender"
+	"cscd-bds/store/ent/tenderprofile"
 	"cscd-bds/store/ent/user"
 	"encoding/json"
 	"fmt"
@@ -162,8 +163,10 @@ type Tender struct {
 	CreatedByID *xid.ID `json:"created_by_id,omitempty"`
 	// ApproverID holds the value of the "approver_id" field.
 	ApproverID *xid.ID `json:"approver_id,omitempty"`
-	// UpdatedByID holds the value of the "updated_by_id" field.
-	UpdatedByID *xid.ID `json:"updated_by_id,omitempty"`
+	// ActiveProfileID holds the value of the "active_profile_id" field.
+	ActiveProfileID *xid.ID `json:"active_profile_id,omitempty"`
+	// PendingProfileID holds the value of the "pending_profile_id" field.
+	PendingProfileID *xid.ID `json:"pending_profile_id,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the TenderQuery when eager-loading is set.
 	Edges        TenderEdges `json:"edges"`
@@ -196,13 +199,15 @@ type TenderEdges struct {
 	VisitRecords []*VisitRecord `json:"visit_records,omitempty"`
 	// Approver holds the value of the approver edge.
 	Approver *User `json:"approver,omitempty"`
-	// UpdatedBy holds the value of the updated_by edge.
-	UpdatedBy *User `json:"updated_by,omitempty"`
+	// ActiveProfile holds the value of the active_profile edge.
+	ActiveProfile *TenderProfile `json:"active_profile,omitempty"`
+	// PendingProfile holds the value of the pending_profile edge.
+	PendingProfile *TenderProfile `json:"pending_profile,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [13]bool
+	loadedTypes [14]bool
 	// totalCount holds the count of the edges above.
-	totalCount [13]map[string]int
+	totalCount [14]map[string]int
 
 	namedProfiles       map[string][]*TenderProfile
 	namedCompetitors    map[string][]*TenderCompetitor
@@ -334,15 +339,26 @@ func (e TenderEdges) ApproverOrErr() (*User, error) {
 	return nil, &NotLoadedError{edge: "approver"}
 }
 
-// UpdatedByOrErr returns the UpdatedBy value or an error if the edge
+// ActiveProfileOrErr returns the ActiveProfile value or an error if the edge
 // was not loaded in eager-loading, or loaded but was not found.
-func (e TenderEdges) UpdatedByOrErr() (*User, error) {
-	if e.UpdatedBy != nil {
-		return e.UpdatedBy, nil
+func (e TenderEdges) ActiveProfileOrErr() (*TenderProfile, error) {
+	if e.ActiveProfile != nil {
+		return e.ActiveProfile, nil
 	} else if e.loadedTypes[12] {
-		return nil, &NotFoundError{label: user.Label}
+		return nil, &NotFoundError{label: tenderprofile.Label}
 	}
-	return nil, &NotLoadedError{edge: "updated_by"}
+	return nil, &NotLoadedError{edge: "active_profile"}
+}
+
+// PendingProfileOrErr returns the PendingProfile value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e TenderEdges) PendingProfileOrErr() (*TenderProfile, error) {
+	if e.PendingProfile != nil {
+		return e.PendingProfile, nil
+	} else if e.loadedTypes[13] {
+		return nil, &NotFoundError{label: tenderprofile.Label}
+	}
+	return nil, &NotLoadedError{edge: "pending_profile"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -352,7 +368,7 @@ func (*Tender) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case tender.FieldGeoCoordinate:
 			values[i] = &sql.NullScanner{S: new(geo.GeoJson)}
-		case tender.FieldProvinceID, tender.FieldCityID, tender.FieldDistrictID, tender.FieldCustomerID, tender.FieldFinderID, tender.FieldCreatedByID, tender.FieldApproverID, tender.FieldUpdatedByID:
+		case tender.FieldProvinceID, tender.FieldCityID, tender.FieldDistrictID, tender.FieldCustomerID, tender.FieldFinderID, tender.FieldCreatedByID, tender.FieldApproverID, tender.FieldActiveProfileID, tender.FieldPendingProfileID:
 			values[i] = &sql.NullScanner{S: new(xid.ID)}
 		case tender.FieldAttachements, tender.FieldGeoBounds, tender.FieldImages:
 			values[i] = new([]byte)
@@ -846,12 +862,19 @@ func (t *Tender) assignValues(columns []string, values []any) error {
 				t.ApproverID = new(xid.ID)
 				*t.ApproverID = *value.S.(*xid.ID)
 			}
-		case tender.FieldUpdatedByID:
+		case tender.FieldActiveProfileID:
 			if value, ok := values[i].(*sql.NullScanner); !ok {
-				return fmt.Errorf("unexpected type %T for field updated_by_id", values[i])
+				return fmt.Errorf("unexpected type %T for field active_profile_id", values[i])
 			} else if value.Valid {
-				t.UpdatedByID = new(xid.ID)
-				*t.UpdatedByID = *value.S.(*xid.ID)
+				t.ActiveProfileID = new(xid.ID)
+				*t.ActiveProfileID = *value.S.(*xid.ID)
+			}
+		case tender.FieldPendingProfileID:
+			if value, ok := values[i].(*sql.NullScanner); !ok {
+				return fmt.Errorf("unexpected type %T for field pending_profile_id", values[i])
+			} else if value.Valid {
+				t.PendingProfileID = new(xid.ID)
+				*t.PendingProfileID = *value.S.(*xid.ID)
 			}
 		default:
 			t.selectValues.Set(columns[i], values[i])
@@ -926,9 +949,14 @@ func (t *Tender) QueryApprover() *UserQuery {
 	return NewTenderClient(t.config).QueryApprover(t)
 }
 
-// QueryUpdatedBy queries the "updated_by" edge of the Tender entity.
-func (t *Tender) QueryUpdatedBy() *UserQuery {
-	return NewTenderClient(t.config).QueryUpdatedBy(t)
+// QueryActiveProfile queries the "active_profile" edge of the Tender entity.
+func (t *Tender) QueryActiveProfile() *TenderProfileQuery {
+	return NewTenderClient(t.config).QueryActiveProfile(t)
+}
+
+// QueryPendingProfile queries the "pending_profile" edge of the Tender entity.
+func (t *Tender) QueryPendingProfile() *TenderProfileQuery {
+	return NewTenderClient(t.config).QueryPendingProfile(t)
 }
 
 // Update returns a builder for updating this Tender.
@@ -1246,8 +1274,13 @@ func (t *Tender) String() string {
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteString(", ")
-	if v := t.UpdatedByID; v != nil {
-		builder.WriteString("updated_by_id=")
+	if v := t.ActiveProfileID; v != nil {
+		builder.WriteString("active_profile_id=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	if v := t.PendingProfileID; v != nil {
+		builder.WriteString("pending_profile_id=")
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteByte(')')

@@ -45,9 +45,10 @@ type TenderQuery struct {
 	withDistrict            *DistrictQuery
 	withVisitRecords        *VisitRecordQuery
 	withApprover            *UserQuery
-	withUpdatedBy           *UserQuery
-	loadTotal               []func(context.Context, []*Tender) error
+	withActiveProfile       *TenderProfileQuery
+	withPendingProfile      *TenderProfileQuery
 	modifiers               []func(*sql.Selector)
+	loadTotal               []func(context.Context, []*Tender) error
 	withNamedProfiles       map[string]*TenderProfileQuery
 	withNamedCompetitors    map[string]*TenderCompetitorQuery
 	withNamedFollowingSales map[string]*UserQuery
@@ -352,9 +353,9 @@ func (tq *TenderQuery) QueryApprover() *UserQuery {
 	return query
 }
 
-// QueryUpdatedBy chains the current query on the "updated_by" edge.
-func (tq *TenderQuery) QueryUpdatedBy() *UserQuery {
-	query := (&UserClient{config: tq.config}).Query()
+// QueryActiveProfile chains the current query on the "active_profile" edge.
+func (tq *TenderQuery) QueryActiveProfile() *TenderProfileQuery {
+	query := (&TenderProfileClient{config: tq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := tq.prepareQuery(ctx); err != nil {
 			return nil, err
@@ -365,8 +366,30 @@ func (tq *TenderQuery) QueryUpdatedBy() *UserQuery {
 		}
 		step := sqlgraph.NewStep(
 			sqlgraph.From(tender.Table, tender.FieldID, selector),
-			sqlgraph.To(user.Table, user.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, false, tender.UpdatedByTable, tender.UpdatedByColumn),
+			sqlgraph.To(tenderprofile.Table, tenderprofile.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, tender.ActiveProfileTable, tender.ActiveProfileColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(tq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryPendingProfile chains the current query on the "pending_profile" edge.
+func (tq *TenderQuery) QueryPendingProfile() *TenderProfileQuery {
+	query := (&TenderProfileClient{config: tq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := tq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := tq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(tender.Table, tender.FieldID, selector),
+			sqlgraph.To(tenderprofile.Table, tenderprofile.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, tender.PendingProfileTable, tender.PendingProfileColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(tq.driver.Dialect(), step)
 		return fromU, nil
@@ -578,11 +601,11 @@ func (tq *TenderQuery) Clone() *TenderQuery {
 		withDistrict:       tq.withDistrict.Clone(),
 		withVisitRecords:   tq.withVisitRecords.Clone(),
 		withApprover:       tq.withApprover.Clone(),
-		withUpdatedBy:      tq.withUpdatedBy.Clone(),
+		withActiveProfile:  tq.withActiveProfile.Clone(),
+		withPendingProfile: tq.withPendingProfile.Clone(),
 		// clone intermediate query.
-		sql:       tq.sql.Clone(),
-		path:      tq.path,
-		modifiers: append([]func(*sql.Selector){}, tq.modifiers...),
+		sql:  tq.sql.Clone(),
+		path: tq.path,
 	}
 }
 
@@ -718,14 +741,25 @@ func (tq *TenderQuery) WithApprover(opts ...func(*UserQuery)) *TenderQuery {
 	return tq
 }
 
-// WithUpdatedBy tells the query-builder to eager-load the nodes that are connected to
-// the "updated_by" edge. The optional arguments are used to configure the query builder of the edge.
-func (tq *TenderQuery) WithUpdatedBy(opts ...func(*UserQuery)) *TenderQuery {
-	query := (&UserClient{config: tq.config}).Query()
+// WithActiveProfile tells the query-builder to eager-load the nodes that are connected to
+// the "active_profile" edge. The optional arguments are used to configure the query builder of the edge.
+func (tq *TenderQuery) WithActiveProfile(opts ...func(*TenderProfileQuery)) *TenderQuery {
+	query := (&TenderProfileClient{config: tq.config}).Query()
 	for _, opt := range opts {
 		opt(query)
 	}
-	tq.withUpdatedBy = query
+	tq.withActiveProfile = query
+	return tq
+}
+
+// WithPendingProfile tells the query-builder to eager-load the nodes that are connected to
+// the "pending_profile" edge. The optional arguments are used to configure the query builder of the edge.
+func (tq *TenderQuery) WithPendingProfile(opts ...func(*TenderProfileQuery)) *TenderQuery {
+	query := (&TenderProfileClient{config: tq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	tq.withPendingProfile = query
 	return tq
 }
 
@@ -807,7 +841,7 @@ func (tq *TenderQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Tende
 	var (
 		nodes       = []*Tender{}
 		_spec       = tq.querySpec()
-		loadedTypes = [13]bool{
+		loadedTypes = [14]bool{
 			tq.withArea != nil,
 			tq.withProfiles != nil,
 			tq.withCompetitors != nil,
@@ -820,7 +854,8 @@ func (tq *TenderQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Tende
 			tq.withDistrict != nil,
 			tq.withVisitRecords != nil,
 			tq.withApprover != nil,
-			tq.withUpdatedBy != nil,
+			tq.withActiveProfile != nil,
+			tq.withPendingProfile != nil,
 		}
 	)
 	_spec.ScanValues = func(columns []string) ([]any, error) {
@@ -920,9 +955,15 @@ func (tq *TenderQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Tende
 			return nil, err
 		}
 	}
-	if query := tq.withUpdatedBy; query != nil {
-		if err := tq.loadUpdatedBy(ctx, query, nodes, nil,
-			func(n *Tender, e *User) { n.Edges.UpdatedBy = e }); err != nil {
+	if query := tq.withActiveProfile; query != nil {
+		if err := tq.loadActiveProfile(ctx, query, nodes, nil,
+			func(n *Tender, e *TenderProfile) { n.Edges.ActiveProfile = e }); err != nil {
+			return nil, err
+		}
+	}
+	if query := tq.withPendingProfile; query != nil {
+		if err := tq.loadPendingProfile(ctx, query, nodes, nil,
+			func(n *Tender, e *TenderProfile) { n.Edges.PendingProfile = e }); err != nil {
 			return nil, err
 		}
 	}
@@ -1369,14 +1410,14 @@ func (tq *TenderQuery) loadApprover(ctx context.Context, query *UserQuery, nodes
 	}
 	return nil
 }
-func (tq *TenderQuery) loadUpdatedBy(ctx context.Context, query *UserQuery, nodes []*Tender, init func(*Tender), assign func(*Tender, *User)) error {
+func (tq *TenderQuery) loadActiveProfile(ctx context.Context, query *TenderProfileQuery, nodes []*Tender, init func(*Tender), assign func(*Tender, *TenderProfile)) error {
 	ids := make([]xid.ID, 0, len(nodes))
 	nodeids := make(map[xid.ID][]*Tender)
 	for i := range nodes {
-		if nodes[i].UpdatedByID == nil {
+		if nodes[i].ActiveProfileID == nil {
 			continue
 		}
-		fk := *nodes[i].UpdatedByID
+		fk := *nodes[i].ActiveProfileID
 		if _, ok := nodeids[fk]; !ok {
 			ids = append(ids, fk)
 		}
@@ -1385,7 +1426,7 @@ func (tq *TenderQuery) loadUpdatedBy(ctx context.Context, query *UserQuery, node
 	if len(ids) == 0 {
 		return nil
 	}
-	query.Where(user.IDIn(ids...))
+	query.Where(tenderprofile.IDIn(ids...))
 	neighbors, err := query.All(ctx)
 	if err != nil {
 		return err
@@ -1393,7 +1434,39 @@ func (tq *TenderQuery) loadUpdatedBy(ctx context.Context, query *UserQuery, node
 	for _, n := range neighbors {
 		nodes, ok := nodeids[n.ID]
 		if !ok {
-			return fmt.Errorf(`unexpected foreign-key "updated_by_id" returned %v`, n.ID)
+			return fmt.Errorf(`unexpected foreign-key "active_profile_id" returned %v`, n.ID)
+		}
+		for i := range nodes {
+			assign(nodes[i], n)
+		}
+	}
+	return nil
+}
+func (tq *TenderQuery) loadPendingProfile(ctx context.Context, query *TenderProfileQuery, nodes []*Tender, init func(*Tender), assign func(*Tender, *TenderProfile)) error {
+	ids := make([]xid.ID, 0, len(nodes))
+	nodeids := make(map[xid.ID][]*Tender)
+	for i := range nodes {
+		if nodes[i].PendingProfileID == nil {
+			continue
+		}
+		fk := *nodes[i].PendingProfileID
+		if _, ok := nodeids[fk]; !ok {
+			ids = append(ids, fk)
+		}
+		nodeids[fk] = append(nodeids[fk], nodes[i])
+	}
+	if len(ids) == 0 {
+		return nil
+	}
+	query.Where(tenderprofile.IDIn(ids...))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nodeids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "pending_profile_id" returned %v`, n.ID)
 		}
 		for i := range nodes {
 			assign(nodes[i], n)
@@ -1454,8 +1527,11 @@ func (tq *TenderQuery) querySpec() *sqlgraph.QuerySpec {
 		if tq.withApprover != nil {
 			_spec.Node.AddColumnOnce(tender.FieldApproverID)
 		}
-		if tq.withUpdatedBy != nil {
-			_spec.Node.AddColumnOnce(tender.FieldUpdatedByID)
+		if tq.withActiveProfile != nil {
+			_spec.Node.AddColumnOnce(tender.FieldActiveProfileID)
+		}
+		if tq.withPendingProfile != nil {
+			_spec.Node.AddColumnOnce(tender.FieldPendingProfileID)
 		}
 	}
 	if ps := tq.predicates; len(ps) > 0 {
@@ -1496,9 +1572,6 @@ func (tq *TenderQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if tq.ctx.Unique != nil && *tq.ctx.Unique {
 		selector.Distinct()
 	}
-	for _, m := range tq.modifiers {
-		m(selector)
-	}
 	for _, p := range tq.predicates {
 		p(selector)
 	}
@@ -1514,12 +1587,6 @@ func (tq *TenderQuery) sqlQuery(ctx context.Context) *sql.Selector {
 		selector.Limit(*limit)
 	}
 	return selector
-}
-
-// Modify adds a query modifier for attaching custom logic to queries.
-func (tq *TenderQuery) Modify(modifiers ...func(s *sql.Selector)) *TenderSelect {
-	tq.modifiers = append(tq.modifiers, modifiers...)
-	return tq.Select()
 }
 
 // WithNamedProfiles tells the query-builder to eager-load the nodes that are connected to the "profiles"
@@ -1666,10 +1733,4 @@ func (ts *TenderSelect) sqlScan(ctx context.Context, root *TenderQuery, v any) e
 	}
 	defer rows.Close()
 	return sql.ScanSlice(rows, v)
-}
-
-// Modify adds a query modifier for attaching custom logic to queries.
-func (ts *TenderSelect) Modify(modifiers ...func(s *sql.Selector)) *TenderSelect {
-	ts.modifiers = append(ts.modifiers, modifiers...)
-	return ts
 }

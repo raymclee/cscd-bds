@@ -922,16 +922,30 @@ func (tc *TenderCreate) SetNillableApproverID(x *xid.ID) *TenderCreate {
 	return tc
 }
 
-// SetUpdatedByID sets the "updated_by_id" field.
-func (tc *TenderCreate) SetUpdatedByID(x xid.ID) *TenderCreate {
-	tc.mutation.SetUpdatedByID(x)
+// SetActiveProfileID sets the "active_profile_id" field.
+func (tc *TenderCreate) SetActiveProfileID(x xid.ID) *TenderCreate {
+	tc.mutation.SetActiveProfileID(x)
 	return tc
 }
 
-// SetNillableUpdatedByID sets the "updated_by_id" field if the given value is not nil.
-func (tc *TenderCreate) SetNillableUpdatedByID(x *xid.ID) *TenderCreate {
+// SetNillableActiveProfileID sets the "active_profile_id" field if the given value is not nil.
+func (tc *TenderCreate) SetNillableActiveProfileID(x *xid.ID) *TenderCreate {
 	if x != nil {
-		tc.SetUpdatedByID(*x)
+		tc.SetActiveProfileID(*x)
+	}
+	return tc
+}
+
+// SetPendingProfileID sets the "pending_profile_id" field.
+func (tc *TenderCreate) SetPendingProfileID(x xid.ID) *TenderCreate {
+	tc.mutation.SetPendingProfileID(x)
+	return tc
+}
+
+// SetNillablePendingProfileID sets the "pending_profile_id" field if the given value is not nil.
+func (tc *TenderCreate) SetNillablePendingProfileID(x *xid.ID) *TenderCreate {
+	if x != nil {
+		tc.SetPendingProfileID(*x)
 	}
 	return tc
 }
@@ -1050,9 +1064,14 @@ func (tc *TenderCreate) SetApprover(u *User) *TenderCreate {
 	return tc.SetApproverID(u.ID)
 }
 
-// SetUpdatedBy sets the "updated_by" edge to the User entity.
-func (tc *TenderCreate) SetUpdatedBy(u *User) *TenderCreate {
-	return tc.SetUpdatedByID(u.ID)
+// SetActiveProfile sets the "active_profile" edge to the TenderProfile entity.
+func (tc *TenderCreate) SetActiveProfile(t *TenderProfile) *TenderCreate {
+	return tc.SetActiveProfileID(t.ID)
+}
+
+// SetPendingProfile sets the "pending_profile" edge to the TenderProfile entity.
+func (tc *TenderCreate) SetPendingProfile(t *TenderProfile) *TenderCreate {
+	return tc.SetPendingProfileID(t.ID)
 }
 
 // Mutation returns the TenderMutation object of the builder.
@@ -1681,21 +1700,38 @@ func (tc *TenderCreate) createSpec() (*Tender, *sqlgraph.CreateSpec) {
 		_node.ApproverID = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
-	if nodes := tc.mutation.UpdatedByIDs(); len(nodes) > 0 {
+	if nodes := tc.mutation.ActiveProfileIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: false,
-			Table:   tender.UpdatedByTable,
-			Columns: []string{tender.UpdatedByColumn},
+			Table:   tender.ActiveProfileTable,
+			Columns: []string{tender.ActiveProfileColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+				IDSpec: sqlgraph.NewFieldSpec(tenderprofile.FieldID, field.TypeString),
 			},
 		}
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
-		_node.UpdatedByID = &nodes[0]
+		_node.ActiveProfileID = &nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := tc.mutation.PendingProfileIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   tender.PendingProfileTable,
+			Columns: []string{tender.PendingProfileColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tenderprofile.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.PendingProfileID = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec
@@ -2974,21 +3010,39 @@ func (u *TenderUpsert) ClearApproverID() *TenderUpsert {
 	return u
 }
 
-// SetUpdatedByID sets the "updated_by_id" field.
-func (u *TenderUpsert) SetUpdatedByID(v xid.ID) *TenderUpsert {
-	u.Set(tender.FieldUpdatedByID, v)
+// SetActiveProfileID sets the "active_profile_id" field.
+func (u *TenderUpsert) SetActiveProfileID(v xid.ID) *TenderUpsert {
+	u.Set(tender.FieldActiveProfileID, v)
 	return u
 }
 
-// UpdateUpdatedByID sets the "updated_by_id" field to the value that was provided on create.
-func (u *TenderUpsert) UpdateUpdatedByID() *TenderUpsert {
-	u.SetExcluded(tender.FieldUpdatedByID)
+// UpdateActiveProfileID sets the "active_profile_id" field to the value that was provided on create.
+func (u *TenderUpsert) UpdateActiveProfileID() *TenderUpsert {
+	u.SetExcluded(tender.FieldActiveProfileID)
 	return u
 }
 
-// ClearUpdatedByID clears the value of the "updated_by_id" field.
-func (u *TenderUpsert) ClearUpdatedByID() *TenderUpsert {
-	u.SetNull(tender.FieldUpdatedByID)
+// ClearActiveProfileID clears the value of the "active_profile_id" field.
+func (u *TenderUpsert) ClearActiveProfileID() *TenderUpsert {
+	u.SetNull(tender.FieldActiveProfileID)
+	return u
+}
+
+// SetPendingProfileID sets the "pending_profile_id" field.
+func (u *TenderUpsert) SetPendingProfileID(v xid.ID) *TenderUpsert {
+	u.Set(tender.FieldPendingProfileID, v)
+	return u
+}
+
+// UpdatePendingProfileID sets the "pending_profile_id" field to the value that was provided on create.
+func (u *TenderUpsert) UpdatePendingProfileID() *TenderUpsert {
+	u.SetExcluded(tender.FieldPendingProfileID)
+	return u
+}
+
+// ClearPendingProfileID clears the value of the "pending_profile_id" field.
+func (u *TenderUpsert) ClearPendingProfileID() *TenderUpsert {
+	u.SetNull(tender.FieldPendingProfileID)
 	return u
 }
 
@@ -4471,24 +4525,45 @@ func (u *TenderUpsertOne) ClearApproverID() *TenderUpsertOne {
 	})
 }
 
-// SetUpdatedByID sets the "updated_by_id" field.
-func (u *TenderUpsertOne) SetUpdatedByID(v xid.ID) *TenderUpsertOne {
+// SetActiveProfileID sets the "active_profile_id" field.
+func (u *TenderUpsertOne) SetActiveProfileID(v xid.ID) *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
-		s.SetUpdatedByID(v)
+		s.SetActiveProfileID(v)
 	})
 }
 
-// UpdateUpdatedByID sets the "updated_by_id" field to the value that was provided on create.
-func (u *TenderUpsertOne) UpdateUpdatedByID() *TenderUpsertOne {
+// UpdateActiveProfileID sets the "active_profile_id" field to the value that was provided on create.
+func (u *TenderUpsertOne) UpdateActiveProfileID() *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
-		s.UpdateUpdatedByID()
+		s.UpdateActiveProfileID()
 	})
 }
 
-// ClearUpdatedByID clears the value of the "updated_by_id" field.
-func (u *TenderUpsertOne) ClearUpdatedByID() *TenderUpsertOne {
+// ClearActiveProfileID clears the value of the "active_profile_id" field.
+func (u *TenderUpsertOne) ClearActiveProfileID() *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
-		s.ClearUpdatedByID()
+		s.ClearActiveProfileID()
+	})
+}
+
+// SetPendingProfileID sets the "pending_profile_id" field.
+func (u *TenderUpsertOne) SetPendingProfileID(v xid.ID) *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetPendingProfileID(v)
+	})
+}
+
+// UpdatePendingProfileID sets the "pending_profile_id" field to the value that was provided on create.
+func (u *TenderUpsertOne) UpdatePendingProfileID() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdatePendingProfileID()
+	})
+}
+
+// ClearPendingProfileID clears the value of the "pending_profile_id" field.
+func (u *TenderUpsertOne) ClearPendingProfileID() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearPendingProfileID()
 	})
 }
 
@@ -6138,24 +6213,45 @@ func (u *TenderUpsertBulk) ClearApproverID() *TenderUpsertBulk {
 	})
 }
 
-// SetUpdatedByID sets the "updated_by_id" field.
-func (u *TenderUpsertBulk) SetUpdatedByID(v xid.ID) *TenderUpsertBulk {
+// SetActiveProfileID sets the "active_profile_id" field.
+func (u *TenderUpsertBulk) SetActiveProfileID(v xid.ID) *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
-		s.SetUpdatedByID(v)
+		s.SetActiveProfileID(v)
 	})
 }
 
-// UpdateUpdatedByID sets the "updated_by_id" field to the value that was provided on create.
-func (u *TenderUpsertBulk) UpdateUpdatedByID() *TenderUpsertBulk {
+// UpdateActiveProfileID sets the "active_profile_id" field to the value that was provided on create.
+func (u *TenderUpsertBulk) UpdateActiveProfileID() *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
-		s.UpdateUpdatedByID()
+		s.UpdateActiveProfileID()
 	})
 }
 
-// ClearUpdatedByID clears the value of the "updated_by_id" field.
-func (u *TenderUpsertBulk) ClearUpdatedByID() *TenderUpsertBulk {
+// ClearActiveProfileID clears the value of the "active_profile_id" field.
+func (u *TenderUpsertBulk) ClearActiveProfileID() *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
-		s.ClearUpdatedByID()
+		s.ClearActiveProfileID()
+	})
+}
+
+// SetPendingProfileID sets the "pending_profile_id" field.
+func (u *TenderUpsertBulk) SetPendingProfileID(v xid.ID) *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetPendingProfileID(v)
+	})
+}
+
+// UpdatePendingProfileID sets the "pending_profile_id" field to the value that was provided on create.
+func (u *TenderUpsertBulk) UpdatePendingProfileID() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdatePendingProfileID()
+	})
+}
+
+// ClearPendingProfileID clears the value of the "pending_profile_id" field.
+func (u *TenderUpsertBulk) ClearPendingProfileID() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearPendingProfileID()
 	})
 }
 

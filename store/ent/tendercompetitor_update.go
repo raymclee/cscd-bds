@@ -21,9 +21,8 @@ import (
 // TenderCompetitorUpdate is the builder for updating TenderCompetitor entities.
 type TenderCompetitorUpdate struct {
 	config
-	hooks     []Hook
-	mutation  *TenderCompetitorMutation
-	modifiers []func(*sql.UpdateBuilder)
+	hooks    []Hook
+	mutation *TenderCompetitorMutation
 }
 
 // Where appends a list predicates to the TenderCompetitorUpdate builder.
@@ -161,12 +160,6 @@ func (tcu *TenderCompetitorUpdate) check() error {
 	return nil
 }
 
-// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
-func (tcu *TenderCompetitorUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *TenderCompetitorUpdate {
-	tcu.modifiers = append(tcu.modifiers, modifiers...)
-	return tcu
-}
-
 func (tcu *TenderCompetitorUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if err := tcu.check(); err != nil {
 		return n, err
@@ -246,7 +239,6 @@ func (tcu *TenderCompetitorUpdate) sqlSave(ctx context.Context) (n int, err erro
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	_spec.AddModifiers(tcu.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, tcu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{tendercompetitor.Label}
@@ -262,10 +254,9 @@ func (tcu *TenderCompetitorUpdate) sqlSave(ctx context.Context) (n int, err erro
 // TenderCompetitorUpdateOne is the builder for updating a single TenderCompetitor entity.
 type TenderCompetitorUpdateOne struct {
 	config
-	fields    []string
-	hooks     []Hook
-	mutation  *TenderCompetitorMutation
-	modifiers []func(*sql.UpdateBuilder)
+	fields   []string
+	hooks    []Hook
+	mutation *TenderCompetitorMutation
 }
 
 // SetUpdatedAt sets the "updated_at" field.
@@ -410,12 +401,6 @@ func (tcuo *TenderCompetitorUpdateOne) check() error {
 	return nil
 }
 
-// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
-func (tcuo *TenderCompetitorUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *TenderCompetitorUpdateOne {
-	tcuo.modifiers = append(tcuo.modifiers, modifiers...)
-	return tcuo
-}
-
 func (tcuo *TenderCompetitorUpdateOne) sqlSave(ctx context.Context) (_node *TenderCompetitor, err error) {
 	if err := tcuo.check(); err != nil {
 		return _node, err
@@ -512,7 +497,6 @@ func (tcuo *TenderCompetitorUpdateOne) sqlSave(ctx context.Context) (_node *Tend
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	_spec.AddModifiers(tcuo.modifiers...)
 	_node = &TenderCompetitor{config: tcuo.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues

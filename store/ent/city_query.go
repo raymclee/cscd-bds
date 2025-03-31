@@ -30,8 +30,8 @@ type CityQuery struct {
 	withDistricts      *DistrictQuery
 	withProvince       *ProvinceQuery
 	withTenders        *TenderQuery
-	loadTotal          []func(context.Context, []*City) error
 	modifiers          []func(*sql.Selector)
+	loadTotal          []func(context.Context, []*City) error
 	withNamedDistricts map[string]*DistrictQuery
 	withNamedTenders   map[string]*TenderQuery
 	// intermediate query (i.e. traversal path).
@@ -332,9 +332,8 @@ func (cq *CityQuery) Clone() *CityQuery {
 		withProvince:  cq.withProvince.Clone(),
 		withTenders:   cq.withTenders.Clone(),
 		// clone intermediate query.
-		sql:       cq.sql.Clone(),
-		path:      cq.path,
-		modifiers: append([]func(*sql.Selector){}, cq.modifiers...),
+		sql:  cq.sql.Clone(),
+		path: cq.path,
 	}
 }
 
@@ -684,9 +683,6 @@ func (cq *CityQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if cq.ctx.Unique != nil && *cq.ctx.Unique {
 		selector.Distinct()
 	}
-	for _, m := range cq.modifiers {
-		m(selector)
-	}
 	for _, p := range cq.predicates {
 		p(selector)
 	}
@@ -702,12 +698,6 @@ func (cq *CityQuery) sqlQuery(ctx context.Context) *sql.Selector {
 		selector.Limit(*limit)
 	}
 	return selector
-}
-
-// Modify adds a query modifier for attaching custom logic to queries.
-func (cq *CityQuery) Modify(modifiers ...func(s *sql.Selector)) *CitySelect {
-	cq.modifiers = append(cq.modifiers, modifiers...)
-	return cq.Select()
 }
 
 // WithNamedDistricts tells the query-builder to eager-load the nodes that are connected to the "districts"
@@ -826,10 +816,4 @@ func (cs *CitySelect) sqlScan(ctx context.Context, root *CityQuery, v any) error
 	}
 	defer rows.Close()
 	return sql.ScanSlice(rows, v)
-}
-
-// Modify adds a query modifier for attaching custom logic to queries.
-func (cs *CitySelect) Modify(modifiers ...func(s *sql.Selector)) *CitySelect {
-	cs.modifiers = append(cs.modifiers, modifiers...)
-	return cs
 }

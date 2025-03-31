@@ -249,7 +249,7 @@ type ComplexityRoot struct {
 
 	Mutation struct {
 		ApproveCustomerRequest func(childComplexity int, id xid.ID) int
-		ApproveTender          func(childComplexity int, id xid.ID, profileID xid.ID) int
+		ApproveTender          func(childComplexity int, id xid.ID) int
 		CreateArea             func(childComplexity int, input ent.CreateAreaInput) int
 		CreateCompetitor       func(childComplexity int, input ent.CreateCompetitorInput) int
 		CreateCustomer         func(childComplexity int, input ent.CreateCustomerInput) int
@@ -267,7 +267,7 @@ type ComplexityRoot struct {
 		DeleteVisitRecord      func(childComplexity int, id xid.ID) int
 		LoseTender             func(childComplexity int, id xid.ID, input model.LoseTenderInput) int
 		RejectCustomerRequest  func(childComplexity int, id xid.ID) int
-		RejectTender           func(childComplexity int, id xid.ID, profileID xid.ID) int
+		RejectTender           func(childComplexity int, id xid.ID) int
 		UpdateArea             func(childComplexity int, id xid.ID, input ent.UpdateAreaInput) int
 		UpdateCompetitor       func(childComplexity int, id xid.ID, input ent.UpdateCompetitorInput) int
 		UpdateCustomer         func(childComplexity int, id xid.ID, input ent.UpdateCustomerInput) int
@@ -581,6 +581,8 @@ type ComplexityRoot struct {
 	}
 
 	Tender struct {
+		ActiveProfile                        func(childComplexity int) int
+		ActiveProfileID                      func(childComplexity int) int
 		Address                              func(childComplexity int) int
 		ApprovalMsgID                        func(childComplexity int) int
 		ApprovalStatus                       func(childComplexity int) int
@@ -638,6 +640,8 @@ type ComplexityRoot struct {
 		ManagementCompany                    func(childComplexity int) int
 		Name                                 func(childComplexity int) int
 		OwnerSituations                      func(childComplexity int) int
+		PendingProfile                       func(childComplexity int) int
+		PendingProfileID                     func(childComplexity int) int
 		PrepareToBid                         func(childComplexity int) int
 		Profiles                             func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.TenderProfileOrder, where *ent.TenderProfileWhereInput) int
 		ProjectCode                          func(childComplexity int) int
@@ -661,8 +665,6 @@ type ComplexityRoot struct {
 		TimeLimitRating                      func(childComplexity int) int
 		TimeLimitRatingOverview              func(childComplexity int) int
 		UpdatedAt                            func(childComplexity int) int
-		UpdatedBy                            func(childComplexity int) int
-		UpdatedByID                          func(childComplexity int) int
 		VisitRecords                         func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.VisitRecordOrder, where *ent.VisitRecordWhereInput) int
 	}
 
@@ -1860,7 +1862,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.ApproveTender(childComplexity, args["id"].(xid.ID), args["profileId"].(xid.ID)), true
+		return e.complexity.Mutation.ApproveTender(childComplexity, args["id"].(xid.ID)), true
 
 	case "Mutation.createArea":
 		if e.complexity.Mutation.CreateArea == nil {
@@ -2076,7 +2078,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.RejectTender(childComplexity, args["id"].(xid.ID), args["profileId"].(xid.ID)), true
+		return e.complexity.Mutation.RejectTender(childComplexity, args["id"].(xid.ID)), true
 
 	case "Mutation.updateArea":
 		if e.complexity.Mutation.UpdateArea == nil {
@@ -3965,6 +3967,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Session.Username(childComplexity), true
 
+	case "Tender.activeProfile":
+		if e.complexity.Tender.ActiveProfile == nil {
+			break
+		}
+
+		return e.complexity.Tender.ActiveProfile(childComplexity), true
+
+	case "Tender.activeProfileID":
+		if e.complexity.Tender.ActiveProfileID == nil {
+			break
+		}
+
+		return e.complexity.Tender.ActiveProfileID(childComplexity), true
+
 	case "Tender.address":
 		if e.complexity.Tender.Address == nil {
 			break
@@ -4364,6 +4380,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Tender.OwnerSituations(childComplexity), true
 
+	case "Tender.pendingProfile":
+		if e.complexity.Tender.PendingProfile == nil {
+			break
+		}
+
+		return e.complexity.Tender.PendingProfile(childComplexity), true
+
+	case "Tender.pendingProfileID":
+		if e.complexity.Tender.PendingProfileID == nil {
+			break
+		}
+
+		return e.complexity.Tender.PendingProfileID(childComplexity), true
+
 	case "Tender.prepareToBid":
 		if e.complexity.Tender.PrepareToBid == nil {
 			break
@@ -4529,20 +4559,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Tender.UpdatedAt(childComplexity), true
-
-	case "Tender.updatedBy":
-		if e.complexity.Tender.UpdatedBy == nil {
-			break
-		}
-
-		return e.complexity.Tender.UpdatedBy(childComplexity), true
-
-	case "Tender.updatedByID":
-		if e.complexity.Tender.UpdatedByID == nil {
-			break
-		}
-
-		return e.complexity.Tender.UpdatedByID(childComplexity), true
 
 	case "Tender.visitRecords":
 		if e.complexity.Tender.VisitRecords == nil {
@@ -6915,7 +6931,8 @@ input CreateTenderInput {
   districtID: ID
   visitRecordIDs: [ID!]
   approverID: ID
-  updatedByID: ID
+  activeProfileID: ID
+  pendingProfileID: ID
 }
 """
 CreateTenderProfileInput is used for create TenderProfile object.
@@ -6926,7 +6943,7 @@ input CreateTenderProfileInput {
   updatedAt: Time
   status: Int
   """
-  1 待審核 2 已通過 3 已拒絕
+  1 待審核 2 已通過 3 已拒絕 4 已撤回
   """
   approvalStatus: Int
   """
@@ -11458,7 +11475,8 @@ type Tender implements Node {
   finderID: ID
   createdByID: ID
   approverID: ID
-  updatedByID: ID
+  activeProfileID: ID
+  pendingProfileID: ID
   area: Area!
   profiles(
     """
@@ -11531,7 +11549,8 @@ type Tender implements Node {
     where: VisitRecordWhereInput
   ): VisitRecordConnection!
   approver: User
-  updatedBy: User
+  activeProfile: TenderProfile
+  pendingProfile: TenderProfile
 }
 type TenderCompetitor implements Node {
   id: ID!
@@ -11746,7 +11765,7 @@ type TenderProfile implements Node {
   updatedAt: Time!
   status: Int!
   """
-  1 待審核 2 已通過 3 已拒絕
+  1 待審核 2 已通過 3 已拒絕 4 已撤回
   """
   approvalStatus: Int!
   """
@@ -13974,23 +13993,41 @@ input TenderWhereInput {
   approverIDEqualFold: ID
   approverIDContainsFold: ID
   """
-  updated_by_id field predicates
+  active_profile_id field predicates
   """
-  updatedByID: ID
-  updatedByIDNEQ: ID
-  updatedByIDIn: [ID!]
-  updatedByIDNotIn: [ID!]
-  updatedByIDGT: ID
-  updatedByIDGTE: ID
-  updatedByIDLT: ID
-  updatedByIDLTE: ID
-  updatedByIDContains: ID
-  updatedByIDHasPrefix: ID
-  updatedByIDHasSuffix: ID
-  updatedByIDIsNil: Boolean
-  updatedByIDNotNil: Boolean
-  updatedByIDEqualFold: ID
-  updatedByIDContainsFold: ID
+  activeProfileID: ID
+  activeProfileIDNEQ: ID
+  activeProfileIDIn: [ID!]
+  activeProfileIDNotIn: [ID!]
+  activeProfileIDGT: ID
+  activeProfileIDGTE: ID
+  activeProfileIDLT: ID
+  activeProfileIDLTE: ID
+  activeProfileIDContains: ID
+  activeProfileIDHasPrefix: ID
+  activeProfileIDHasSuffix: ID
+  activeProfileIDIsNil: Boolean
+  activeProfileIDNotNil: Boolean
+  activeProfileIDEqualFold: ID
+  activeProfileIDContainsFold: ID
+  """
+  pending_profile_id field predicates
+  """
+  pendingProfileID: ID
+  pendingProfileIDNEQ: ID
+  pendingProfileIDIn: [ID!]
+  pendingProfileIDNotIn: [ID!]
+  pendingProfileIDGT: ID
+  pendingProfileIDGTE: ID
+  pendingProfileIDLT: ID
+  pendingProfileIDLTE: ID
+  pendingProfileIDContains: ID
+  pendingProfileIDHasPrefix: ID
+  pendingProfileIDHasSuffix: ID
+  pendingProfileIDIsNil: Boolean
+  pendingProfileIDNotNil: Boolean
+  pendingProfileIDEqualFold: ID
+  pendingProfileIDContainsFold: ID
   """
   area edge predicates
   """
@@ -14052,10 +14089,15 @@ input TenderWhereInput {
   hasApprover: Boolean
   hasApproverWith: [UserWhereInput!]
   """
-  updated_by edge predicates
+  active_profile edge predicates
   """
-  hasUpdatedBy: Boolean
-  hasUpdatedByWith: [UserWhereInput!]
+  hasActiveProfile: Boolean
+  hasActiveProfileWith: [TenderProfileWhereInput!]
+  """
+  pending_profile edge predicates
+  """
+  hasPendingProfile: Boolean
+  hasPendingProfileWith: [TenderProfileWhereInput!]
 }
 """
 UpdateAreaInput is used for update Area object.
@@ -14838,8 +14880,10 @@ input UpdateTenderInput {
   clearVisitRecords: Boolean
   approverID: ID
   clearApprover: Boolean
-  updatedByID: ID
-  clearUpdatedBy: Boolean
+  activeProfileID: ID
+  clearActiveProfile: Boolean
+  pendingProfileID: ID
+  clearPendingProfile: Boolean
 }
 """
 UpdateUserInput is used for update User object.
@@ -15681,8 +15725,8 @@ type GeoJson {
   deleteTender(id: ID!): Tender!
   winTender(id: ID!, input: WinTenderInput!): Tender!
   loseTender(id: ID!, input: LoseTenderInput!): Tender!
-  approveTender(id: ID!, profileId: ID!): Tender!
-  rejectTender(id: ID!, profileId: ID!): Tender!
+  approveTender(id: ID!): Tender!
+  rejectTender(id: ID!): Tender!
 
   createPlot(input: CreatePlotInput!, geoBounds: [[Float!]!]): PlotConnection!
   updatePlot(id: ID!, input: UpdatePlotInput!, geoBounds: [[Float!]!]): Plot!

@@ -30,8 +30,8 @@ type ProjectQuery struct {
 	withVos                *ProjectVOQuery
 	withProjectStaffs      *ProjectStaffQuery
 	withUsers              *UserQuery
-	loadTotal              []func(context.Context, []*Project) error
 	modifiers              []func(*sql.Selector)
+	loadTotal              []func(context.Context, []*Project) error
 	withNamedVos           map[string]*ProjectVOQuery
 	withNamedProjectStaffs map[string]*ProjectStaffQuery
 	withNamedUsers         map[string]*UserQuery
@@ -333,9 +333,8 @@ func (pq *ProjectQuery) Clone() *ProjectQuery {
 		withProjectStaffs: pq.withProjectStaffs.Clone(),
 		withUsers:         pq.withUsers.Clone(),
 		// clone intermediate query.
-		sql:       pq.sql.Clone(),
-		path:      pq.path,
-		modifiers: append([]func(*sql.Selector){}, pq.modifiers...),
+		sql:  pq.sql.Clone(),
+		path: pq.path,
 	}
 }
 
@@ -716,9 +715,6 @@ func (pq *ProjectQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if pq.ctx.Unique != nil && *pq.ctx.Unique {
 		selector.Distinct()
 	}
-	for _, m := range pq.modifiers {
-		m(selector)
-	}
 	for _, p := range pq.predicates {
 		p(selector)
 	}
@@ -734,12 +730,6 @@ func (pq *ProjectQuery) sqlQuery(ctx context.Context) *sql.Selector {
 		selector.Limit(*limit)
 	}
 	return selector
-}
-
-// Modify adds a query modifier for attaching custom logic to queries.
-func (pq *ProjectQuery) Modify(modifiers ...func(s *sql.Selector)) *ProjectSelect {
-	pq.modifiers = append(pq.modifiers, modifiers...)
-	return pq.Select()
 }
 
 // WithNamedVos tells the query-builder to eager-load the nodes that are connected to the "vos"
@@ -872,10 +862,4 @@ func (ps *ProjectSelect) sqlScan(ctx context.Context, root *ProjectQuery, v any)
 	}
 	defer rows.Close()
 	return sql.ScanSlice(rows, v)
-}
-
-// Modify adds a query modifier for attaching custom logic to queries.
-func (ps *ProjectSelect) Modify(modifiers ...func(s *sql.Selector)) *ProjectSelect {
-	ps.modifiers = append(ps.modifiers, modifiers...)
-	return ps
 }

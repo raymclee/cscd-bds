@@ -18,6 +18,7 @@ import (
 	"cscd-bds/store/ent/schema/model"
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/tender"
+	"cscd-bds/store/ent/tenderprofile"
 	"cscd-bds/store/ent/user"
 	"cscd-bds/util"
 	"errors"
@@ -548,8 +549,7 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input en
 
 	q := r.store.Tender.
 		UpdateOneID(id).
-		SetInput(input).
-		SetUpdatedByID(xid.ID(sess.UserId))
+		SetInput(input)
 	if len(geoBounds) > 0 {
 		q.SetGeoBounds(geoBounds)
 	} else {
@@ -675,7 +675,6 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input en
 			ten, err := r.store.Tender.Query().
 				Where(tender.ID(t.ID)).
 				WithCreatedBy().
-				WithUpdatedBy().
 				WithArea().
 				WithCustomer().
 				WithApprover().
@@ -885,20 +884,30 @@ func (r *mutationResolver) UpdateTenderV2(ctx context.Context, id xid.ID, tender
 		profileInput.ApprovalStatus = &[]int{1}[0]
 	}
 
-	st, err := r.store.TenderProfile.Create().SetInput(profileInput).SetTender(t).SetCreatedByID(xid.ID(sess.UserId)).Save(ctx)
+	// 如果当前有待审批的profile，则将之前的profile设置为驳回
+	if err := r.store.TenderProfile.Update().
+		Where(tenderprofile.And(
+			tenderprofile.TenderID(t.ID),
+			tenderprofile.ApprovalStatus(1),
+		)).
+		SetApprovalStatus(4).
+		Exec(ctx); err != nil {
+		return nil, fmt.Errorf("failed to update tender profile: %w", err)
+	}
+
+	// 创建新的profile
+	tp, err := r.store.TenderProfile.Create().SetInput(profileInput).SetTender(t).SetCreatedByID(xid.ID(sess.UserId)).Save(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to update tender: %w", err)
 	}
 
 	isSHTender := util.IsSHTender(t.Edges.Area.Code)
-
-	if isSHTender && st.ApprovalStatus == 2 && profileInput.ApprovalStatus == nil {
+	if isSHTender && tp.ApprovalStatus == 2 && profileInput.ApprovalStatus == nil {
 		go func() {
 			ctxx := context.Background()
 			ten, err := r.store.Tender.Query().
 				Where(tender.ID(t.ID)).
 				WithCreatedBy().
-				WithUpdatedBy().
 				WithArea().
 				WithCustomer().
 				WithApprover().
@@ -908,8 +917,8 @@ func (r *mutationResolver) UpdateTenderV2(ctx context.Context, id xid.ID, tender
 				fmt.Printf("failed to get tender: %v\n", err)
 				return
 			}
-			if st.ApprovalMsgID != nil {
-				if err := r.feishu.UpdateGroupMessage(ctxx, *st.ApprovalMsgID, ten); err != nil {
+			if tp.ApprovalMsgID != nil {
+				if err := r.feishu.UpdateGroupMessage(ctxx, *tp.ApprovalMsgID, ten); err != nil {
 					fmt.Printf("failed to update group message: %v\n", err)
 				}
 			}
@@ -934,7 +943,8 @@ func (r *mutationResolver) UpdateTenderV2(ctx context.Context, id xid.ID, tender
 		}()
 	}
 
-	return t, nil
+	// 设置新的profile为待审批
+	return r.store.Tender.UpdateOneID(t.ID).SetPendingProfileID(tp.ID).Save(ctx)
 }
 
 // CreateTenderProfile is the resolver for the createTenderProfile field.
@@ -1020,17 +1030,11 @@ func (r *mutationResolver) DeleteTender(ctx context.Context, id xid.ID) (*ent.Te
 
 // WinTender is the resolver for the winTender field.
 func (r *mutationResolver) WinTender(ctx context.Context, id xid.ID, input model1.WinTenderInput) (*ent.Tender, error) {
-	sess, err := r.session.GetSession(ctx)
-	if err != nil {
-		return nil, fmt.Errorf("failed to get session: %w", err)
-	}
-
 	if err := r.store.Tender.UpdateOneID(id).
 		SetStatus(3).
 		SetProjectCode(input.ProjectCode).
 		SetProjectDefinition(input.ProjectDefinition).
 		SetTenderWinAmount(input.TenderWinAmount).
-		SetUpdatedByID(xid.ID(sess.UserId)).
 		Exec(ctx); err != nil {
 		return nil, fmt.Errorf("failed to update tender: %w", err)
 	}
@@ -1087,14 +1091,8 @@ func (r *mutationResolver) WinTender(ctx context.Context, id xid.ID, input model
 
 // LoseTender is the resolver for the loseTender field.
 func (r *mutationResolver) LoseTender(ctx context.Context, id xid.ID, input model1.LoseTenderInput) (*ent.Tender, error) {
-	sess, err := r.session.GetSession(ctx)
-	if err != nil {
-		return nil, fmt.Errorf("failed to get session: %w", err)
-	}
-
 	if err := r.store.Tender.UpdateOneID(id).
 		SetStatus(4).
-		SetUpdatedByID(xid.ID(sess.UserId)).
 		Exec(ctx); err != nil {
 		return nil, fmt.Errorf("failed to update tender: %w", err)
 	}
@@ -1150,33 +1148,52 @@ func (r *mutationResolver) LoseTender(ctx context.Context, id xid.ID, input mode
 }
 
 // ApproveTender is the resolver for the approveTender field.
-func (r *mutationResolver) ApproveTender(ctx context.Context, id xid.ID, profileID xid.ID) (*ent.Tender, error) {
+func (r *mutationResolver) ApproveTender(ctx context.Context, id xid.ID) (*ent.Tender, error) {
 	sess, err := r.session.GetSession(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get session: %w", err)
 	}
-	if err := r.store.TenderProfile.UpdateOneID(profileID).
+	t, err := r.store.Tender.Query().Where(tender.ID(id)).WithProfiles(func(tpq *ent.TenderProfileQuery) {
+		tpq.Where(tenderprofile.ApprovalStatus(1)).Order(ent.Desc(tenderprofile.FieldCreatedAt)).Limit(1)
+	}).Only(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get tender: %w", err)
+	}
+	if len(t.Edges.Profiles) == 0 {
+		return nil, fmt.Errorf("tender profile not found")
+	}
+	activeProfile, err := r.store.TenderProfile.UpdateOneID(t.Edges.Profiles[0].ID).
 		SetApprovalStatus(2).
 		SetApproverID(xid.ID(sess.UserId)).
-		Exec(ctx); err != nil {
+		Save(ctx)
+	if err != nil {
 		return nil, fmt.Errorf("failed to approve tender profile: %w", err)
 	}
-	return r.store.Tender.Get(ctx, id)
+	return t.Update().SetActiveProfileID(activeProfile.ID).ClearPendingProfile().Save(ctx)
 }
 
 // RejectTender is the resolver for the rejectTender field.
-func (r *mutationResolver) RejectTender(ctx context.Context, id xid.ID, profileID xid.ID) (*ent.Tender, error) {
+func (r *mutationResolver) RejectTender(ctx context.Context, id xid.ID) (*ent.Tender, error) {
 	sess, err := r.session.GetSession(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get session: %w", err)
 	}
-	if err := r.store.TenderProfile.UpdateOneID(profileID).
+	t, err := r.store.Tender.Query().Where(tender.ID(id)).WithProfiles(func(tpq *ent.TenderProfileQuery) {
+		tpq.Where(tenderprofile.ApprovalStatus(1)).Order(ent.Desc(tenderprofile.FieldCreatedAt)).Limit(1)
+	}).Only(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get tender: %w", err)
+	}
+	if len(t.Edges.Profiles) == 0 {
+		return nil, fmt.Errorf("tender profile not found")
+	}
+	if err := r.store.TenderProfile.UpdateOneID(t.Edges.Profiles[0].ID).
 		SetApprovalStatus(3).
 		SetApproverID(xid.ID(sess.UserId)).
 		Exec(ctx); err != nil {
 		return nil, fmt.Errorf("failed to reject tender profile: %w", err)
 	}
-	return r.store.Tender.Get(ctx, id)
+	return t.Update().ClearPendingProfile().Save(ctx)
 }
 
 // CreatePlot is the resolver for the createPlot field.

@@ -18,9 +18,8 @@ import (
 // PotentialTenderUpdate is the builder for updating PotentialTender entities.
 type PotentialTenderUpdate struct {
 	config
-	hooks     []Hook
-	mutation  *PotentialTenderMutation
-	modifiers []func(*sql.UpdateBuilder)
+	hooks    []Hook
+	mutation *PotentialTenderMutation
 }
 
 // Where appends a list predicates to the PotentialTenderUpdate builder.
@@ -364,12 +363,6 @@ func (ptu *PotentialTenderUpdate) defaults() {
 	}
 }
 
-// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
-func (ptu *PotentialTenderUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *PotentialTenderUpdate {
-	ptu.modifiers = append(ptu.modifiers, modifiers...)
-	return ptu
-}
-
 func (ptu *PotentialTenderUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	_spec := sqlgraph.NewUpdateSpec(potentialtender.Table, potentialtender.Columns, sqlgraph.NewFieldSpec(potentialtender.FieldID, field.TypeString))
 	if ps := ptu.mutation.predicates; len(ps) > 0 {
@@ -466,7 +459,6 @@ func (ptu *PotentialTenderUpdate) sqlSave(ctx context.Context) (n int, err error
 	if ptu.mutation.ContactAddressCleared() {
 		_spec.ClearField(potentialtender.FieldContactAddress, field.TypeString)
 	}
-	_spec.AddModifiers(ptu.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, ptu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{potentialtender.Label}
@@ -482,10 +474,9 @@ func (ptu *PotentialTenderUpdate) sqlSave(ctx context.Context) (n int, err error
 // PotentialTenderUpdateOne is the builder for updating a single PotentialTender entity.
 type PotentialTenderUpdateOne struct {
 	config
-	fields    []string
-	hooks     []Hook
-	mutation  *PotentialTenderMutation
-	modifiers []func(*sql.UpdateBuilder)
+	fields   []string
+	hooks    []Hook
+	mutation *PotentialTenderMutation
 }
 
 // SetUpdatedAt sets the "updated_at" field.
@@ -836,12 +827,6 @@ func (ptuo *PotentialTenderUpdateOne) defaults() {
 	}
 }
 
-// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
-func (ptuo *PotentialTenderUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *PotentialTenderUpdateOne {
-	ptuo.modifiers = append(ptuo.modifiers, modifiers...)
-	return ptuo
-}
-
 func (ptuo *PotentialTenderUpdateOne) sqlSave(ctx context.Context) (_node *PotentialTender, err error) {
 	_spec := sqlgraph.NewUpdateSpec(potentialtender.Table, potentialtender.Columns, sqlgraph.NewFieldSpec(potentialtender.FieldID, field.TypeString))
 	id, ok := ptuo.mutation.ID()
@@ -955,7 +940,6 @@ func (ptuo *PotentialTenderUpdateOne) sqlSave(ctx context.Context) (_node *Poten
 	if ptuo.mutation.ContactAddressCleared() {
 		_spec.ClearField(potentialtender.FieldContactAddress, field.TypeString)
 	}
-	_spec.AddModifiers(ptuo.modifiers...)
 	_node = &PotentialTender{config: ptuo.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues

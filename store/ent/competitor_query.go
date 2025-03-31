@@ -26,8 +26,8 @@ type CompetitorQuery struct {
 	inters           []Interceptor
 	predicates       []predicate.Competitor
 	withTenders      *TenderCompetitorQuery
-	loadTotal        []func(context.Context, []*Competitor) error
 	modifiers        []func(*sql.Selector)
+	loadTotal        []func(context.Context, []*Competitor) error
 	withNamedTenders map[string]*TenderCompetitorQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
@@ -281,9 +281,8 @@ func (cq *CompetitorQuery) Clone() *CompetitorQuery {
 		predicates:  append([]predicate.Competitor{}, cq.predicates...),
 		withTenders: cq.withTenders.Clone(),
 		// clone intermediate query.
-		sql:       cq.sql.Clone(),
-		path:      cq.path,
-		modifiers: append([]func(*sql.Selector){}, cq.modifiers...),
+		sql:  cq.sql.Clone(),
+		path: cq.path,
 	}
 }
 
@@ -521,9 +520,6 @@ func (cq *CompetitorQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if cq.ctx.Unique != nil && *cq.ctx.Unique {
 		selector.Distinct()
 	}
-	for _, m := range cq.modifiers {
-		m(selector)
-	}
 	for _, p := range cq.predicates {
 		p(selector)
 	}
@@ -539,12 +535,6 @@ func (cq *CompetitorQuery) sqlQuery(ctx context.Context) *sql.Selector {
 		selector.Limit(*limit)
 	}
 	return selector
-}
-
-// Modify adds a query modifier for attaching custom logic to queries.
-func (cq *CompetitorQuery) Modify(modifiers ...func(s *sql.Selector)) *CompetitorSelect {
-	cq.modifiers = append(cq.modifiers, modifiers...)
-	return cq.Select()
 }
 
 // WithNamedTenders tells the query-builder to eager-load the nodes that are connected to the "tenders"
@@ -649,10 +639,4 @@ func (cs *CompetitorSelect) sqlScan(ctx context.Context, root *CompetitorQuery, 
 	}
 	defer rows.Close()
 	return sql.ScanSlice(rows, v)
-}
-
-// Modify adds a query modifier for attaching custom logic to queries.
-func (cs *CompetitorSelect) Modify(modifiers ...func(s *sql.Selector)) *CompetitorSelect {
-	cs.modifiers = append(cs.modifiers, modifiers...)
-	return cs
 }

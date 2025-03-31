@@ -22,9 +22,8 @@ import (
 // VisitRecordUpdate is the builder for updating VisitRecord entities.
 type VisitRecordUpdate struct {
 	config
-	hooks     []Hook
-	mutation  *VisitRecordMutation
-	modifiers []func(*sql.UpdateBuilder)
+	hooks    []Hook
+	mutation *VisitRecordMutation
 }
 
 // Where appends a list predicates to the VisitRecordUpdate builder.
@@ -273,12 +272,6 @@ func (vru *VisitRecordUpdate) check() error {
 	return nil
 }
 
-// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
-func (vru *VisitRecordUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *VisitRecordUpdate {
-	vru.modifiers = append(vru.modifiers, modifiers...)
-	return vru
-}
-
 func (vru *VisitRecordUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if err := vru.check(); err != nil {
 		return n, err
@@ -418,7 +411,6 @@ func (vru *VisitRecordUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	_spec.AddModifiers(vru.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, vru.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{visitrecord.Label}
@@ -434,10 +426,9 @@ func (vru *VisitRecordUpdate) sqlSave(ctx context.Context) (n int, err error) {
 // VisitRecordUpdateOne is the builder for updating a single VisitRecord entity.
 type VisitRecordUpdateOne struct {
 	config
-	fields    []string
-	hooks     []Hook
-	mutation  *VisitRecordMutation
-	modifiers []func(*sql.UpdateBuilder)
+	fields   []string
+	hooks    []Hook
+	mutation *VisitRecordMutation
 }
 
 // SetUpdatedAt sets the "updated_at" field.
@@ -693,12 +684,6 @@ func (vruo *VisitRecordUpdateOne) check() error {
 	return nil
 }
 
-// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
-func (vruo *VisitRecordUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *VisitRecordUpdateOne {
-	vruo.modifiers = append(vruo.modifiers, modifiers...)
-	return vruo
-}
-
 func (vruo *VisitRecordUpdateOne) sqlSave(ctx context.Context) (_node *VisitRecord, err error) {
 	if err := vruo.check(); err != nil {
 		return _node, err
@@ -855,7 +840,6 @@ func (vruo *VisitRecordUpdateOne) sqlSave(ctx context.Context) (_node *VisitReco
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	_spec.AddModifiers(vruo.modifiers...)
 	_node = &VisitRecord{config: vruo.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues

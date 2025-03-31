@@ -3,8 +3,8 @@ import { graphql, useMutation } from "react-relay";
 
 export function useApproveTender() {
   return useMutation<useApproveTenderMutation>(graphql`
-    mutation useApproveTenderMutation($id: ID!, $profileId: ID!) {
-      approveTender(id: $id, profileId: $profileId) {
+    mutation useApproveTenderMutation($id: ID!) {
+      approveTender(id: $id) {
         ...tenderDetailFragment
       }
     }

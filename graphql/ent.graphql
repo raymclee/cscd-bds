@@ -1102,7 +1102,8 @@ input CreateTenderInput {
   districtID: ID
   visitRecordIDs: [ID!]
   approverID: ID
-  updatedByID: ID
+  activeProfileID: ID
+  pendingProfileID: ID
 }
 """
 CreateTenderProfileInput is used for create TenderProfile object.
@@ -1113,7 +1114,7 @@ input CreateTenderProfileInput {
   updatedAt: Time
   status: Int
   """
-  1 待審核 2 已通過 3 已拒絕
+  1 待審核 2 已通過 3 已拒絕 4 已撤回
   """
   approvalStatus: Int
   """
@@ -5645,7 +5646,8 @@ type Tender implements Node {
   finderID: ID
   createdByID: ID
   approverID: ID
-  updatedByID: ID
+  activeProfileID: ID
+  pendingProfileID: ID
   area: Area!
   profiles(
     """
@@ -5718,7 +5720,8 @@ type Tender implements Node {
     where: VisitRecordWhereInput
   ): VisitRecordConnection!
   approver: User
-  updatedBy: User
+  activeProfile: TenderProfile
+  pendingProfile: TenderProfile
 }
 type TenderCompetitor implements Node {
   id: ID!
@@ -5933,7 +5936,7 @@ type TenderProfile implements Node {
   updatedAt: Time!
   status: Int!
   """
-  1 待審核 2 已通過 3 已拒絕
+  1 待審核 2 已通過 3 已拒絕 4 已撤回
   """
   approvalStatus: Int!
   """
@@ -8161,23 +8164,41 @@ input TenderWhereInput {
   approverIDEqualFold: ID
   approverIDContainsFold: ID
   """
-  updated_by_id field predicates
+  active_profile_id field predicates
   """
-  updatedByID: ID
-  updatedByIDNEQ: ID
-  updatedByIDIn: [ID!]
-  updatedByIDNotIn: [ID!]
-  updatedByIDGT: ID
-  updatedByIDGTE: ID
-  updatedByIDLT: ID
-  updatedByIDLTE: ID
-  updatedByIDContains: ID
-  updatedByIDHasPrefix: ID
-  updatedByIDHasSuffix: ID
-  updatedByIDIsNil: Boolean
-  updatedByIDNotNil: Boolean
-  updatedByIDEqualFold: ID
-  updatedByIDContainsFold: ID
+  activeProfileID: ID
+  activeProfileIDNEQ: ID
+  activeProfileIDIn: [ID!]
+  activeProfileIDNotIn: [ID!]
+  activeProfileIDGT: ID
+  activeProfileIDGTE: ID
+  activeProfileIDLT: ID
+  activeProfileIDLTE: ID
+  activeProfileIDContains: ID
+  activeProfileIDHasPrefix: ID
+  activeProfileIDHasSuffix: ID
+  activeProfileIDIsNil: Boolean
+  activeProfileIDNotNil: Boolean
+  activeProfileIDEqualFold: ID
+  activeProfileIDContainsFold: ID
+  """
+  pending_profile_id field predicates
+  """
+  pendingProfileID: ID
+  pendingProfileIDNEQ: ID
+  pendingProfileIDIn: [ID!]
+  pendingProfileIDNotIn: [ID!]
+  pendingProfileIDGT: ID
+  pendingProfileIDGTE: ID
+  pendingProfileIDLT: ID
+  pendingProfileIDLTE: ID
+  pendingProfileIDContains: ID
+  pendingProfileIDHasPrefix: ID
+  pendingProfileIDHasSuffix: ID
+  pendingProfileIDIsNil: Boolean
+  pendingProfileIDNotNil: Boolean
+  pendingProfileIDEqualFold: ID
+  pendingProfileIDContainsFold: ID
   """
   area edge predicates
   """
@@ -8239,10 +8260,15 @@ input TenderWhereInput {
   hasApprover: Boolean
   hasApproverWith: [UserWhereInput!]
   """
-  updated_by edge predicates
+  active_profile edge predicates
   """
-  hasUpdatedBy: Boolean
-  hasUpdatedByWith: [UserWhereInput!]
+  hasActiveProfile: Boolean
+  hasActiveProfileWith: [TenderProfileWhereInput!]
+  """
+  pending_profile edge predicates
+  """
+  hasPendingProfile: Boolean
+  hasPendingProfileWith: [TenderProfileWhereInput!]
 }
 """
 UpdateAreaInput is used for update Area object.
@@ -9025,8 +9051,10 @@ input UpdateTenderInput {
   clearVisitRecords: Boolean
   approverID: ID
   clearApprover: Boolean
-  updatedByID: ID
-  clearUpdatedBy: Boolean
+  activeProfileID: ID
+  clearActiveProfile: Boolean
+  pendingProfileID: ID
+  clearPendingProfile: Boolean
 }
 """
 UpdateUserInput is used for update User object.

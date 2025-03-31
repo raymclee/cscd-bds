@@ -30,11 +30,10 @@ func (TenderProfile) Fields() []ent.Field {
 		field.Int("approval_status").
 			Default(1).
 			Min(1).
-			Max(3).
 			Annotations(
 				entgql.OrderField("APPROVAL_STATUS"),
 			).
-			Comment("1 待審核 2 已通過 3 已拒絕"),
+			Comment("1 待審核 2 已通過 3 已拒絕 4 已撤回"),
 		field.String("approval_msg_id").Optional().Nillable().Comment("審核飛書訊息ID"),
 
 		field.String("name").

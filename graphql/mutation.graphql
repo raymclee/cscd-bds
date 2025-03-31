@@ -52,8 +52,8 @@ type Mutation {
   deleteTender(id: ID!): Tender!
   winTender(id: ID!, input: WinTenderInput!): Tender!
   loseTender(id: ID!, input: LoseTenderInput!): Tender!
-  approveTender(id: ID!, profileId: ID!): Tender!
-  rejectTender(id: ID!, profileId: ID!): Tender!
+  approveTender(id: ID!): Tender!
+  rejectTender(id: ID!): Tender!
 
   createPlot(input: CreatePlotInput!, geoBounds: [[Float!]!]): PlotConnection!
   updatePlot(id: ID!, input: UpdatePlotInput!, geoBounds: [[Float!]!]): Plot!

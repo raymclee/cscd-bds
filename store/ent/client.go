@@ -2872,15 +2872,31 @@ func (c *TenderClient) QueryApprover(t *Tender) *UserQuery {
 	return query
 }
 
-// QueryUpdatedBy queries the updated_by edge of a Tender.
-func (c *TenderClient) QueryUpdatedBy(t *Tender) *UserQuery {
-	query := (&UserClient{config: c.config}).Query()
+// QueryActiveProfile queries the active_profile edge of a Tender.
+func (c *TenderClient) QueryActiveProfile(t *Tender) *TenderProfileQuery {
+	query := (&TenderProfileClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
 		id := t.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(tender.Table, tender.FieldID, id),
-			sqlgraph.To(user.Table, user.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, false, tender.UpdatedByTable, tender.UpdatedByColumn),
+			sqlgraph.To(tenderprofile.Table, tenderprofile.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, tender.ActiveProfileTable, tender.ActiveProfileColumn),
+		)
+		fromV = sqlgraph.Neighbors(t.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryPendingProfile queries the pending_profile edge of a Tender.
+func (c *TenderClient) QueryPendingProfile(t *Tender) *TenderProfileQuery {
+	query := (&TenderProfileClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := t.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(tender.Table, tender.FieldID, id),
+			sqlgraph.To(tenderprofile.Table, tenderprofile.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, tender.PendingProfileTable, tender.PendingProfileColumn),
 		)
 		fromV = sqlgraph.Neighbors(t.driver.Dialect(), step)
 		return fromV, nil

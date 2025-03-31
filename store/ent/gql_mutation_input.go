@@ -1919,7 +1919,8 @@ type CreateTenderInput struct {
 	DistrictID                           *xid.ID
 	VisitRecordIDs                       []xid.ID
 	ApproverID                           *xid.ID
-	UpdatedByID                          *xid.ID
+	ActiveProfileID                      *xid.ID
+	PendingProfileID                     *xid.ID
 }
 
 // Mutate applies the CreateTenderInput on the TenderMutation builder.
@@ -2126,8 +2127,11 @@ func (i *CreateTenderInput) Mutate(m *TenderMutation) {
 	if v := i.ApproverID; v != nil {
 		m.SetApproverID(*v)
 	}
-	if v := i.UpdatedByID; v != nil {
-		m.SetUpdatedByID(*v)
+	if v := i.ActiveProfileID; v != nil {
+		m.SetActiveProfileID(*v)
+	}
+	if v := i.PendingProfileID; v != nil {
+		m.SetPendingProfileID(*v)
 	}
 }
 
@@ -2274,8 +2278,10 @@ type UpdateTenderInput struct {
 	RemoveVisitRecordIDs                      []xid.ID
 	ClearApprover                             bool
 	ApproverID                                *xid.ID
-	ClearUpdatedBy                            bool
-	UpdatedByID                               *xid.ID
+	ClearActiveProfile                        bool
+	ActiveProfileID                           *xid.ID
+	ClearPendingProfile                       bool
+	PendingProfileID                          *xid.ID
 }
 
 // Mutate applies the UpdateTenderInput on the TenderMutation builder.
@@ -2685,11 +2691,17 @@ func (i *UpdateTenderInput) Mutate(m *TenderMutation) {
 	if v := i.ApproverID; v != nil {
 		m.SetApproverID(*v)
 	}
-	if i.ClearUpdatedBy {
-		m.ClearUpdatedBy()
+	if i.ClearActiveProfile {
+		m.ClearActiveProfile()
 	}
-	if v := i.UpdatedByID; v != nil {
-		m.SetUpdatedByID(*v)
+	if v := i.ActiveProfileID; v != nil {
+		m.SetActiveProfileID(*v)
+	}
+	if i.ClearPendingProfile {
+		m.ClearPendingProfile()
+	}
+	if v := i.PendingProfileID; v != nil {
+		m.SetPendingProfileID(*v)
 	}
 }
 

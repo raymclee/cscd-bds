@@ -31,7 +31,7 @@ type TenderProfile struct {
 	UpdatedAt time.Time `json:"updated_at,omitempty"`
 	// Status holds the value of the "status" field.
 	Status int `json:"status,omitempty"`
-	// 1 待審核 2 已通過 3 已拒絕
+	// 1 待審核 2 已通過 3 已拒絕 4 已撤回
 	ApprovalStatus int `json:"approval_status,omitempty"`
 	// 審核飛書訊息ID
 	ApprovalMsgID *string `json:"approval_msg_id,omitempty"`

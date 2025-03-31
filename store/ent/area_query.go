@@ -32,8 +32,8 @@ type AreaQuery struct {
 	withTenders        *TenderQuery
 	withUsers          *UserQuery
 	withProvinces      *ProvinceQuery
-	loadTotal          []func(context.Context, []*Area) error
 	modifiers          []func(*sql.Selector)
+	loadTotal          []func(context.Context, []*Area) error
 	withNamedCustomers map[string]*CustomerQuery
 	withNamedTenders   map[string]*TenderQuery
 	withNamedUsers     map[string]*UserQuery
@@ -359,9 +359,8 @@ func (aq *AreaQuery) Clone() *AreaQuery {
 		withUsers:     aq.withUsers.Clone(),
 		withProvinces: aq.withProvinces.Clone(),
 		// clone intermediate query.
-		sql:       aq.sql.Clone(),
-		path:      aq.path,
-		modifiers: append([]func(*sql.Selector){}, aq.modifiers...),
+		sql:  aq.sql.Clone(),
+		path: aq.path,
 	}
 }
 
@@ -801,9 +800,6 @@ func (aq *AreaQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if aq.ctx.Unique != nil && *aq.ctx.Unique {
 		selector.Distinct()
 	}
-	for _, m := range aq.modifiers {
-		m(selector)
-	}
 	for _, p := range aq.predicates {
 		p(selector)
 	}
@@ -819,12 +815,6 @@ func (aq *AreaQuery) sqlQuery(ctx context.Context) *sql.Selector {
 		selector.Limit(*limit)
 	}
 	return selector
-}
-
-// Modify adds a query modifier for attaching custom logic to queries.
-func (aq *AreaQuery) Modify(modifiers ...func(s *sql.Selector)) *AreaSelect {
-	aq.modifiers = append(aq.modifiers, modifiers...)
-	return aq.Select()
 }
 
 // WithNamedCustomers tells the query-builder to eager-load the nodes that are connected to the "customers"
@@ -971,10 +961,4 @@ func (as *AreaSelect) sqlScan(ctx context.Context, root *AreaQuery, v any) error
 	}
 	defer rows.Close()
 	return sql.ScanSlice(rows, v)
-}
-
-// Modify adds a query modifier for attaching custom logic to queries.
-func (as *AreaSelect) Modify(modifiers ...func(s *sql.Selector)) *AreaSelect {
-	as.modifiers = append(as.modifiers, modifiers...)
-	return as
 }

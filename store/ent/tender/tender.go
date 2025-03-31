@@ -151,8 +151,10 @@ const (
 	FieldCreatedByID = "created_by_id"
 	// FieldApproverID holds the string denoting the approver_id field in the database.
 	FieldApproverID = "approver_id"
-	// FieldUpdatedByID holds the string denoting the updated_by_id field in the database.
-	FieldUpdatedByID = "updated_by_id"
+	// FieldActiveProfileID holds the string denoting the active_profile_id field in the database.
+	FieldActiveProfileID = "active_profile_id"
+	// FieldPendingProfileID holds the string denoting the pending_profile_id field in the database.
+	FieldPendingProfileID = "pending_profile_id"
 	// EdgeArea holds the string denoting the area edge name in mutations.
 	EdgeArea = "area"
 	// EdgeProfiles holds the string denoting the profiles edge name in mutations.
@@ -177,8 +179,10 @@ const (
 	EdgeVisitRecords = "visit_records"
 	// EdgeApprover holds the string denoting the approver edge name in mutations.
 	EdgeApprover = "approver"
-	// EdgeUpdatedBy holds the string denoting the updated_by edge name in mutations.
-	EdgeUpdatedBy = "updated_by"
+	// EdgeActiveProfile holds the string denoting the active_profile edge name in mutations.
+	EdgeActiveProfile = "active_profile"
+	// EdgePendingProfile holds the string denoting the pending_profile edge name in mutations.
+	EdgePendingProfile = "pending_profile"
 	// Table holds the table name of the tender in the database.
 	Table = "tenders"
 	// AreaTable is the table that holds the area relation/edge.
@@ -263,13 +267,20 @@ const (
 	ApproverInverseTable = "users"
 	// ApproverColumn is the table column denoting the approver relation/edge.
 	ApproverColumn = "approver_id"
-	// UpdatedByTable is the table that holds the updated_by relation/edge.
-	UpdatedByTable = "tenders"
-	// UpdatedByInverseTable is the table name for the User entity.
-	// It exists in this package in order to avoid circular dependency with the "user" package.
-	UpdatedByInverseTable = "users"
-	// UpdatedByColumn is the table column denoting the updated_by relation/edge.
-	UpdatedByColumn = "updated_by_id"
+	// ActiveProfileTable is the table that holds the active_profile relation/edge.
+	ActiveProfileTable = "tenders"
+	// ActiveProfileInverseTable is the table name for the TenderProfile entity.
+	// It exists in this package in order to avoid circular dependency with the "tenderprofile" package.
+	ActiveProfileInverseTable = "tender_profiles"
+	// ActiveProfileColumn is the table column denoting the active_profile relation/edge.
+	ActiveProfileColumn = "active_profile_id"
+	// PendingProfileTable is the table that holds the pending_profile relation/edge.
+	PendingProfileTable = "tenders"
+	// PendingProfileInverseTable is the table name for the TenderProfile entity.
+	// It exists in this package in order to avoid circular dependency with the "tenderprofile" package.
+	PendingProfileInverseTable = "tender_profiles"
+	// PendingProfileColumn is the table column denoting the pending_profile relation/edge.
+	PendingProfileColumn = "pending_profile_id"
 )
 
 // Columns holds all SQL columns for tender fields.
@@ -343,7 +354,8 @@ var Columns = []string{
 	FieldFinderID,
 	FieldCreatedByID,
 	FieldApproverID,
-	FieldUpdatedByID,
+	FieldActiveProfileID,
+	FieldPendingProfileID,
 }
 
 var (
@@ -734,9 +746,14 @@ func ByApproverID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldApproverID, opts...).ToFunc()
 }
 
-// ByUpdatedByID orders the results by the updated_by_id field.
-func ByUpdatedByID(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldUpdatedByID, opts...).ToFunc()
+// ByActiveProfileID orders the results by the active_profile_id field.
+func ByActiveProfileID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldActiveProfileID, opts...).ToFunc()
+}
+
+// ByPendingProfileID orders the results by the pending_profile_id field.
+func ByPendingProfileID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldPendingProfileID, opts...).ToFunc()
 }
 
 // ByAreaField orders the results by area field.
@@ -851,10 +868,17 @@ func ByApproverField(field string, opts ...sql.OrderTermOption) OrderOption {
 	}
 }
 
-// ByUpdatedByField orders the results by updated_by field.
-func ByUpdatedByField(field string, opts ...sql.OrderTermOption) OrderOption {
+// ByActiveProfileField orders the results by active_profile field.
+func ByActiveProfileField(field string, opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newUpdatedByStep(), sql.OrderByField(field, opts...))
+		sqlgraph.OrderByNeighborTerms(s, newActiveProfileStep(), sql.OrderByField(field, opts...))
+	}
+}
+
+// ByPendingProfileField orders the results by pending_profile field.
+func ByPendingProfileField(field string, opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newPendingProfileStep(), sql.OrderByField(field, opts...))
 	}
 }
 func newAreaStep() *sqlgraph.Step {
@@ -941,10 +965,17 @@ func newApproverStep() *sqlgraph.Step {
 		sqlgraph.Edge(sqlgraph.M2O, false, ApproverTable, ApproverColumn),
 	)
 }
-func newUpdatedByStep() *sqlgraph.Step {
+func newActiveProfileStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(UpdatedByInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.M2O, false, UpdatedByTable, UpdatedByColumn),
+		sqlgraph.To(ActiveProfileInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, false, ActiveProfileTable, ActiveProfileColumn),
+	)
+}
+func newPendingProfileStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(PendingProfileInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, false, PendingProfileTable, PendingProfileColumn),
 	)
 }
