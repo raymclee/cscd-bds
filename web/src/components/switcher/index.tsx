@@ -6,12 +6,12 @@ import { biTitleMap } from "~/lib/bi-title";
 
 const navItems = [
   {
-    title: "市场拓展地图",
-    href: "/",
-  },
-  {
     title: "项目运营管控",
     href: "/operations",
+  },
+  {
+    title: "市场拓展地图",
+    href: "/",
   },
   {
     title: "BI数字远东报表",
@@ -270,7 +270,7 @@ function AnimatedLink({
         animate={isActive ? "open" : "closed"}
         className="absolute bottom-3 left-[-30px] h-[10px] w-[10px] rounded-full bg-white"
       ></motion.div>
-      <Link href={href}>{title}</Link>
+      <Link to={href}>{title}</Link>
     </motion.div>
   );
 }
