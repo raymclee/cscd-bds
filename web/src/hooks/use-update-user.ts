@@ -24,6 +24,10 @@ export function useUpdateUser() {
           id
           name
         }
+        teamMembers {
+          id
+          name
+        }
         projects(where: { isFinishedNEQ: true }, orderBy: { field: CODE }) {
           edges {
             node {

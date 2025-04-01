@@ -5,8 +5,7 @@ export function useVoidTender() {
   return useMutation<useVoidTenderMutation>(graphql`
     mutation useVoidTenderMutation($id: ID!) {
       voidTender(id: $id) {
-        id
-        status
+        ...tenderDetailFragment
       }
     }
   `);

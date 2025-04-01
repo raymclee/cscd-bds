@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<b38572ff251c8c9682d74924ed613911>>
+ * @generated SignedSource<<e39d49eadd195095e2a4f20da9d7a742>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -70,6 +70,10 @@ export type useCreateUserMutation$data = {
             } | null | undefined;
           } | null | undefined> | null | undefined;
         };
+        readonly teamMembers: ReadonlyArray<{
+          readonly id: string;
+          readonly name: string | null | undefined;
+        }> | null | undefined;
         readonly username: string | null | undefined;
       } | null | undefined;
     } | null | undefined> | null | undefined;
@@ -208,6 +212,16 @@ v6 = {
           "kind": "LinkedField",
           "name": "leader",
           "plural": false,
+          "selections": (v5/*: any*/),
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "User",
+          "kind": "LinkedField",
+          "name": "teamMembers",
+          "plural": true,
           "selections": (v5/*: any*/),
           "storageKey": null
         },
@@ -359,16 +373,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "b019c4bf2e95841534745577cf2e0c85",
+    "cacheID": "58a40f9da28db2386190522be61f97cc",
     "id": null,
     "metadata": {},
     "name": "useCreateUserMutation",
     "operationKind": "mutation",
-    "text": "mutation useCreateUserMutation(\n  $input: CreateUserInput!\n) {\n  createUser(input: $input) {\n    edges {\n      node {\n        id\n        name\n        email\n        username\n        openID\n        avatarURL\n        disabled\n        areas {\n          edges {\n            node {\n              id\n              name\n            }\n          }\n        }\n        leader {\n          id\n          name\n        }\n        projects {\n          edges {\n            node {\n              id\n              code\n            }\n          }\n        }\n        isAdmin\n        isSuperAdmin\n        isCeo\n        hasMapAccess\n        hasEditAccess\n      }\n    }\n  }\n}\n"
+    "text": "mutation useCreateUserMutation(\n  $input: CreateUserInput!\n) {\n  createUser(input: $input) {\n    edges {\n      node {\n        id\n        name\n        email\n        username\n        openID\n        avatarURL\n        disabled\n        areas {\n          edges {\n            node {\n              id\n              name\n            }\n          }\n        }\n        leader {\n          id\n          name\n        }\n        teamMembers {\n          id\n          name\n        }\n        projects {\n          edges {\n            node {\n              id\n              code\n            }\n          }\n        }\n        isAdmin\n        isSuperAdmin\n        isCeo\n        hasMapAccess\n        hasEditAccess\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "b38d59591c452a9ececb02aae88dd256";
+(node as any).hash = "aa43f54669e690d1db8d70c152f5f0cb";
 
 export default node;

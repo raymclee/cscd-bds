@@ -9,7 +9,9 @@ import {
   App,
   Button,
   Drawer,
+  Form,
   Popconfirm,
+  Select,
   Switch,
   Table,
   TableProps,
@@ -116,8 +118,15 @@ function RouteComponent() {
   const [commitUpdateUser, isUpdateUserInFlight] = useUpdateUser();
   const { message } = App.useApp();
   const { session } = Route.useRouteContext();
-  const searchText = searchParams.q || "";
-  const area = searchParams.area;
+  const searchText = Route.useSearch({ select: (s) => s.q || "" });
+  const area = Route.useSearch({ select: (s) => s.area });
+  const leader = Route.useSearch({ select: (s) => s.leader });
+
+  const leaders = [
+    ...new Map(
+      data.users.edges?.map((e) => [e?.node?.leader?.id, e?.node?.leader]),
+    ).values(),
+  ].filter((l) => !!l);
 
   const dataSource =
     data.users.edges
@@ -127,7 +136,8 @@ function RouteComponent() {
         (n) =>
           area === undefined ||
           n?.areas?.edges?.some((a) => a?.node?.code === area),
-      ) ?? [];
+      )
+      .filter((n) => leader === undefined || n?.leader?.id === leader) ?? [];
 
   const columns: TableProps<User>["columns"] = [
     {
@@ -165,17 +175,9 @@ function RouteComponent() {
     },
     {
       dataIndex: "leader",
-      title: "隊長",
+      title: "团队",
       render(value) {
         return value?.name ?? "无";
-      },
-    },
-    {
-      dataIndex: "teamMembers",
-      title: "隊員",
-      ellipsis: true,
-      render(_, record) {
-        return record.teamMembers?.map((v) => v?.name).join(", ") ?? "无";
       },
     },
     {
@@ -302,6 +304,34 @@ function RouteComponent() {
           label: a?.node?.name ?? "",
           value: a?.node?.code ?? "",
         }))}
+        left={
+          <Form.Item label="团队" className="!mb-0">
+            <Select
+              placeholder="团队"
+              className="w-full md:!w-24"
+              value={leader}
+              onSelect={(leader) => {
+                navigate({
+                  to: ".",
+                  search: (prev) => ({ ...prev, leader }),
+                  replace: true,
+                });
+              }}
+              allowClear
+              onClear={() => {
+                navigate({
+                  to: ".",
+                  replace: true,
+                  search: (prev) => ({ ...prev, leader: undefined }),
+                });
+              }}
+              options={leaders.map((l) => ({
+                label: l?.name ?? "",
+                value: l?.id ?? "",
+              }))}
+            />
+          </Form.Item>
+        }
       >
         <UserFormDrawer
           connectionID={data.users.__id}

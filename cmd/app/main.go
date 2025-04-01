@@ -54,9 +54,9 @@ func main() {
 	sh := sap.New()
 	amap := amap.New("28982eb1a6a3cd956e0e0614c2fb131b")
 
-	if config.IsProd || config.IsUat {
-		go f.StartWSClient(ctx)
-	}
+	// if config.IsProd || config.IsUat {
+	go f.StartWSClient(ctx)
+	// }
 
 	stgDb, err := sql.Open("sqlserver", fmt.Sprintf("sqlserver://%s:%s@%s:%d?database=%s&connection+timeout=30", STG_USER, STG_PASSWORD, STG_HOST, STG_PORT, STG_DATABASE))
 	if err != nil {

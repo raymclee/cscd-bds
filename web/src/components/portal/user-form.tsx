@@ -97,8 +97,7 @@ export function UserForm({
         // requiredMark="optional"
         onFinish={(values) => {
           if (selectedUser) {
-            const { areaIDs, projectIDs, leaderID, ...rest } =
-              values as CreateUserInput;
+            const { areaIDs, projectIDs, ...rest } = values as CreateUserInput;
 
             commitUpdateUser({
               variables: {
@@ -114,8 +113,6 @@ export function UserForm({
                         (i): i is string => !!i && !removedAreaIDs?.includes(i),
                       ) ?? []),
                   ],
-                  clearLeader: true,
-                  leaderID: leaderID ?? undefined,
                   addProjectIDs: projectIDs,
                 },
               },

@@ -29,6 +29,10 @@ export function useCreateUser() {
               id
               name
             }
+            teamMembers {
+              id
+              name
+            }
             projects {
               edges {
                 node {

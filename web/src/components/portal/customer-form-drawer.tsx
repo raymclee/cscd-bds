@@ -169,7 +169,6 @@ function CustomerForm({ queryRef }: CustomerFormProps) {
             if (isSH(selectedCustomer.area.code)) {
               const { areaID, contactPersonPosition, ...rest } = values;
 
-              console.log({ values });
               commitUpdateCustomerV2({
                 variables: {
                   id: selectedCustomer.id,
@@ -187,7 +186,7 @@ function CustomerForm({ queryRef }: CustomerFormProps) {
                 },
                 onCompleted: () => {
                   message.destroy();
-                  message.success("提交客户修改申请成功");
+                  message.success("修改客户成功");
                   navigate({
                     to: ".",
                     search: { p: undefined },
@@ -198,7 +197,7 @@ function CustomerForm({ queryRef }: CustomerFormProps) {
                 onError: (error) => {
                   message.destroy();
                   console.error(error);
-                  message.error("提交客户修改申请失败");
+                  message.error("修改客户失败");
                 },
               });
               return;
@@ -214,13 +213,13 @@ function CustomerForm({ queryRef }: CustomerFormProps) {
               },
               onCompleted: () => {
                 message.destroy();
-                message.success("更新客户成功");
+                message.success("修改客户成功");
                 onClose();
               },
               onError: (error) => {
                 message.destroy();
                 console.error(error);
-                message.error("更新客户失败");
+                message.error("修改客户失败");
               },
             });
           } else {
@@ -228,7 +227,7 @@ function CustomerForm({ queryRef }: CustomerFormProps) {
             const areaCode = data.node?.areas?.edges?.find(
               (a) => a?.node?.id === areaID,
             )?.node?.code;
-            console.log({ values });
+
             if (areaCode && isSH(areaCode)) {
               commitCreateCustomerV2({
                 variables: {
@@ -265,11 +264,16 @@ function CustomerForm({ queryRef }: CustomerFormProps) {
                 onError: (error) => {
                   message.destroy();
                   console.error(error);
-                  message.error("创建客户失败");
+                  let msgText = "创建客户失败";
+                  if (error.message.includes("duplicate")) {
+                    msgText = "客户已存在";
+                  }
+                  message.error(msgText);
                 },
               });
               return;
             }
+
             commitCreateCustomer({
               variables: {
                 input: {
@@ -366,11 +370,7 @@ function CustomerForm({ queryRef }: CustomerFormProps) {
         </Form.Item>
 
         <Form.Item name="size" label="规模" rules={[{ required: true }]}>
-          <Select
-            options={customerSizeOptions}
-            showSearch
-            optionFilterProp="label"
-          />
+          <Select options={customerSizeOptions} />
         </Form.Item>
 
         <Form.Item
@@ -427,7 +427,7 @@ function CustomerForm({ queryRef }: CustomerFormProps) {
         </Form.Item>
       </Form>
 
-      <div className="absolute bottom-0 left-0 right-0 flex justify-end gap-3 px-6 py-3 bg-white border-t border-neutral-200">
+      <div className="absolute bottom-0 left-0 right-0 flex justify-end gap-3 border-t border-neutral-200 bg-white px-6 py-3">
         <Space>
           <Button onClick={onClose}>取消</Button>
           <Button

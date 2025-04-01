@@ -96,6 +96,11 @@ export function TenderListItem({
     ? item.pendingProfile
     : item.activeProfile;
 
+  const canDelete =
+    item.activeProfile?.status !== 3 &&
+    item.activeProfile?.status !== 4 &&
+    item.activeProfile?.status !== 7;
+
   return (
     <List.Item
       actions={
@@ -134,7 +139,9 @@ export function TenderListItem({
               //     地块
               //   </Button>
               // </Link>,
-              showDelete && <DeleteButton key="delete" tender={item} />,
+              canDelete && showDelete && (
+                <DeleteButton key="delete" tender={item} />
+              ),
               // <a key="list-loadmore-more">more</a>,
               // !isGAOrHW && (
               //   <Button
@@ -178,7 +185,7 @@ export function TenderListItem({
             </Carousel>
           ) : (
             <div className="flex aspect-[16/9] h-full w-[60vw] flex-col items-center justify-center rounded-lg bg-gray-100 sm:w-[30vw] lg:w-[280px]">
-              <ImageOff className="w-12 h-12 mb-2" />
+              <ImageOff className="mb-2 h-12 w-12" />
               暂没图片
             </div>
           )}

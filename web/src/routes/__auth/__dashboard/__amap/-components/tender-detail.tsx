@@ -62,7 +62,7 @@ export function TenderDetailFrame() {
             <Button
               variant="ghost"
               size="icon"
-              className="relative w-10 h-10 text-white border rounded-full border-brand/30 bg-slate-900/60 backdrop-blur hover:bg-slate-800/60"
+              className="relative h-10 w-10 rounded-full border border-brand/30 bg-slate-900/60 text-white backdrop-blur hover:bg-slate-800/60"
               onClick={() => {
                 // 这里添加隐藏逻辑
                 navigate({
@@ -73,16 +73,16 @@ export function TenderDetailFrame() {
               }}
             >
               {/* 科技感装饰 */}
-              <div className="absolute inset-0 transition-opacity duration-300 rounded-full opacity-0 bg-gradient-to-br from-blue-500/10 to-cyan-500/10 hover:opacity-100" />
-              <div className="absolute inset-0 transition-opacity duration-300 rounded-full opacity-0 bg-gradient-to-br from-blue-500/0 via-blue-500/0 to-cyan-500/0 hover:opacity-100" />
+              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-500/10 to-cyan-500/10 opacity-0 transition-opacity duration-300 hover:opacity-100" />
+              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-500/0 via-blue-500/0 to-cyan-500/0 opacity-0 transition-opacity duration-300 hover:opacity-100" />
 
               {/* 扫描线效果 */}
-              <div className="absolute inset-0 transition-opacity duration-300 rounded-full opacity-0 bg-gradient-to-b from-transparent via-cyan-500/20 to-transparent hover:opacity-100" />
+              <div className="absolute inset-0 rounded-full bg-gradient-to-b from-transparent via-cyan-500/20 to-transparent opacity-0 transition-opacity duration-300 hover:opacity-100" />
 
               {/* 边框发光效果 */}
               <div className="absolute -inset-0.5 rounded-full bg-gradient-to-r from-blue-500/30 to-cyan-500/30 opacity-0 transition-opacity duration-300 hover:opacity-100" />
 
-              <ChevronRight className="relative w-5 h-5" />
+              <ChevronRight className="relative h-5 w-5" />
             </Button>
           </motion.div>
 
@@ -99,7 +99,7 @@ export function TenderDetailFrame() {
             <div className="absolute left-0 top-0 h-full w-[2px] bg-gradient-to-b from-transparent via-cyan-500/50 to-transparent" />
 
             {/* 全息扫描效果 */}
-            <div className="absolute inset-0 pointer-events-none holographic-effect" />
+            <div className="holographic-effect pointer-events-none absolute inset-0" />
 
             <TenderDetail tender={tender} />
           </div>
@@ -115,8 +115,8 @@ export function TenderDetail({ tender }: { tender: Tender }) {
   return (
     <>
       <div className="relative">
-        <div className="flex items-center justify-between px-6 py-4 mt-4 md:mt-0">
-          <div className="font-semibold line-clamp-1">
+        <div className="mt-4 flex items-center justify-between px-6 py-4 md:mt-0">
+          <div className="line-clamp-1 font-semibold">
             {tender?.activeProfile?.name}
           </div>
         </div>
@@ -128,14 +128,14 @@ export function TenderDetail({ tender }: { tender: Tender }) {
             <CarouselContent className="md:min-h-[220px]">
               {tender?.activeProfile?.images?.map((image, i) => (
                 <CarouselItem key={i}>
-                  <div className="relative group">
-                    <div className="absolute inset-0 transition-opacity duration-300 opacity-0 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 group-hover:opacity-100" />
+                  <div className="group relative">
+                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                     <img
                       src={image}
                       className="aspect-[16/9] rounded-lg"
                       alt={tender?.activeProfile?.name || ""}
                     />
-                    <div className="absolute inset-0 transition-opacity duration-300 rounded-lg opacity-0 group-hover:animate-scan-line bg-gradient-to-br from-blue-500/0 via-blue-500/0 to-cyan-500/0 group-hover:opacity-100" />
+                    <div className="group-hover:animate-scan-line absolute inset-0 rounded-lg bg-gradient-to-br from-blue-500/0 via-blue-500/0 to-cyan-500/0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                   </div>
                 </CarouselItem>
               ))}
@@ -143,7 +143,7 @@ export function TenderDetail({ tender }: { tender: Tender }) {
           </Carousel>
         ) : (
           <div className="flex aspect-[16/9] flex-col items-center justify-center rounded-lg bg-slate-800/50 text-white">
-            <ImageOff className="w-16 h-16 mb-2" />
+            <ImageOff className="mb-2 h-16 w-16" />
             暂没图片
           </div>
         )}
@@ -159,9 +159,9 @@ function SHInfo({ tender }: { tender: Tender }) {
     <Tabs
       key={tender?.id}
       defaultValue="detail"
-      className="flex flex-col w-full mt-4 overflow-hidden"
+      className="mt-4 flex w-full flex-col overflow-hidden"
     >
-      <TabsList className="grid w-full grid-cols-2 text-white bg-gradient-to-br from-sky-950 to-sky-900">
+      <TabsList className="grid w-full grid-cols-2 bg-gradient-to-br from-sky-950 to-sky-900 text-white">
         <TabsTrigger
           value="detail"
           className="cursor-pointer data-[state=active]:bg-slate-800/70 data-[state=active]:text-white"

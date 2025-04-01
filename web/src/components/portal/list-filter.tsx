@@ -8,6 +8,7 @@ type Props = {
   showTenderClosingDate?: boolean;
   showClassify?: boolean;
   children?: React.ReactNode;
+  left?: React.ReactNode;
 };
 
 export function ListFilter({
@@ -16,6 +17,7 @@ export function ListFilter({
   showTenderClosingDate,
   showClassify,
   children,
+  left,
 }: Props) {
   const navigate = useNavigate();
   const { search } = useLocation();
@@ -26,8 +28,8 @@ export function ListFilter({
   const classifyFilter = search.classify;
 
   return (
-    <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
-      <div className="flex flex-wrap items-center flex-1 gap-4">
+    <div className="mb-4 flex flex-wrap items-center justify-between gap-4">
+      <div className="flex flex-1 flex-wrap items-center gap-4">
         <Form.Item
           label="搜索"
           className="!mb-0 w-full md:w-auto"
@@ -157,6 +159,7 @@ export function ListFilter({
             />
           </Form.Item>
         )}
+        {left}
       </div>
 
       {children}

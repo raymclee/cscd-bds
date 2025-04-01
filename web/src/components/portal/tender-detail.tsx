@@ -360,19 +360,7 @@ export function TenderDetail({
   lostCompetitorRef,
 }: TenderDetailProps) {
   const data = useFragment(TenderDetailFragment, queryRef);
-  const { profiles, pendingProfile } = data;
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (pendingProfile) {
-      navigate({
-        to: ".",
-        search: {
-          p: pendingProfile?.id,
-        },
-      });
-    }
-  }, [pendingProfile]);
+  const { profiles } = data;
 
   const isSH = data.area.code !== "GA" && data.area.code !== "HW";
 
@@ -389,7 +377,7 @@ export function TenderDetail({
       )}
 
       {isSH && (
-        <div className={cn("self-start mt-8 top-28 lg:sticky")}>
+        <div className={cn("top-28 mt-8 self-start lg:sticky")}>
           <ScrollArea className={cn("h-[calc(100vh-128px)]")}>
             <Timeline
               className="py-2 pr-4 lg:-ml-28"
@@ -539,7 +527,7 @@ function SHTender({
       <Descriptions
         className="rounded-lg bg-white !p-6"
         title={
-          <div className="flex flex-wrap items-center justify-between h-8 gap-2">
+          <div className="flex h-8 flex-wrap items-center justify-between gap-2">
             <div className="flex items-center gap-2">
               <span>{name}</span>
               <div className="flex items-center">
