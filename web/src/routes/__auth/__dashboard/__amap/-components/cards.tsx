@@ -53,7 +53,7 @@ export function Cards() {
               <Carousel
                 plugins={[]}
                 opts={{ loop: true }}
-                className="large-screen::px-0 px-8"
+                className="px-8 large-screen:px-0"
               >
                 <CarouselContent>
                   {[
