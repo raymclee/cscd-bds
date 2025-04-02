@@ -90,8 +90,8 @@ export function Cards() {
                     </CarouselItem>
                   ))}
                 </CarouselContent>
-                <CarouselPrevious className="large-screen::hidden -left-0 h-full w-6 rounded border-none bg-slate-950/30 hover:bg-slate-950/50 hover:text-white" />
-                <CarouselNext className="large-screen::hidden -right-0 h-full w-6 rounded border-none bg-slate-950/30 hover:bg-slate-950/50 hover:text-white" />
+                <CarouselPrevious className="-left-0 h-full w-6 rounded border-none bg-slate-950/30 hover:bg-slate-950/50 hover:text-white large-screen:hidden" />
+                <CarouselNext className="-right-0 h-full w-6 rounded border-none bg-slate-950/30 hover:bg-slate-950/50 hover:text-white large-screen:hidden" />
               </Carousel>
             </motion.div>
           )}
