@@ -9,11 +9,10 @@ import { useMapV2Store } from "~/store";
 const MotionButton = motion.create(Button);
 
 export function Navigator() {
-  const areas = useMapV2Store.use.areas();
   const { selectedArea, province, city, district } = useSearch({
     from: "/__auth/__dashboard/__amap/",
-    structuralSharing: false,
     select(state) {
+      const { areas } = useMapV2Store.getState();
       const selectedArea = areas?.edges?.find(
         (a) => a?.node?.code === state.a,
       )?.node;
@@ -93,11 +92,11 @@ export function Navigator() {
         damping: 20,
         delay: 0.2,
       }}
-      className="fixed bottom-0 z-40 hidden transform -translate-x-1/2 left-1/2 md:block"
+      className="fixed bottom-0 left-1/2 z-40 hidden -translate-x-1/2 transform md:block"
     >
       {/* Backdrop glow */}
       <motion.div
-        className="absolute rounded-full -inset-1 opacity-60"
+        className="absolute -inset-1 rounded-full opacity-60"
         animate={{
           boxShadow: [
             "0 0 10px 2px rgba(0,150,255,0.4)",
@@ -113,22 +112,22 @@ export function Navigator() {
       />
 
       {/* Container */}
-      <div className="fixed flex items-center justify-center h-10 px-4 -translate-x-1/2 border rounded-full bottom-6 left-1/2 gap-x-1 border-blue-500/30 bg-slate-900/60 backdrop-blur-md">
+      <div className="fixed bottom-6 left-1/2 flex h-10 -translate-x-1/2 items-center justify-center gap-x-1 rounded-full border border-blue-500/30 bg-slate-900/60 px-4 backdrop-blur-md">
         {/* Holographic scan effect */}
         <div className="absolute inset-0 z-10 overflow-hidden rounded-full">
-          <div className="absolute inset-0 holographic-effect"></div>
+          <div className="holographic-effect absolute inset-0"></div>
         </div>
 
         {/* Digital circuit lines - left side */}
         <motion.div
-          className="absolute w-10 h-px origin-right pointer-events-none bg-cyan-400"
+          className="pointer-events-none absolute h-px w-10 origin-right bg-cyan-400"
           style={{ right: "100%", top: "35%" }}
           initial={{ scaleX: 0, opacity: 0 }}
           animate={{ scaleX: 1, opacity: [0, 0.8, 0.5] }}
           transition={{ duration: 0.5, delay: 0.3 }}
         />
         <motion.div
-          className="absolute w-16 h-px origin-right bg-blue-400 pointer-events-none"
+          className="pointer-events-none absolute h-px w-16 origin-right bg-blue-400"
           style={{ right: "100%", top: "65%" }}
           initial={{ scaleX: 0, opacity: 0 }}
           animate={{ scaleX: 1, opacity: [0, 0.5, 0.7] }}
@@ -137,14 +136,14 @@ export function Navigator() {
 
         {/* Digital circuit lines - right side */}
         <motion.div
-          className="absolute w-10 h-px origin-left pointer-events-none bg-cyan-400"
+          className="pointer-events-none absolute h-px w-10 origin-left bg-cyan-400"
           style={{ left: "100%", top: "35%" }}
           initial={{ scaleX: 0, opacity: 0 }}
           animate={{ scaleX: 1, opacity: [0, 0.8, 0.5] }}
           transition={{ duration: 0.5, delay: 0.3 }}
         />
         <motion.div
-          className="absolute w-16 h-px origin-left bg-blue-400 pointer-events-none"
+          className="pointer-events-none absolute h-px w-16 origin-left bg-blue-400"
           style={{ left: "100%", top: "65%" }}
           initial={{ scaleX: 0, opacity: 0 }}
           animate={{ scaleX: 1, opacity: [0, 0.5, 0.7] }}
@@ -154,7 +153,7 @@ export function Navigator() {
         <Link to="." preload={false}>
           <MotionButton
             className={cn(
-              "relative z-20 overflow-hidden font-semibold border-none hover:bg-transparent hover:text-white",
+              "relative z-20 overflow-hidden border-none font-semibold hover:bg-transparent hover:text-white",
               // activeTab === tab.id
               //   ? "text-white"
               //   : "text-slate-400 hover:text-slate-200",
@@ -170,11 +169,11 @@ export function Navigator() {
             全国
           </MotionButton>
         </Link>
-        <ChevronRight className="w-4 h-4" />
+        <ChevronRight className="h-4 w-4" />
 
         {tabs.map((tab, i) => (
           <Fragment key={tab.id}>
-            {i > 0 && <ChevronRight className="w-4 h-4" />}
+            {i > 0 && <ChevronRight className="h-4 w-4" />}
             <Link to="." search={tab.search} disabled={i === tabs.length - 1}>
               <MotionButton
                 disabled={i === tabs.length - 1}

@@ -151,11 +151,11 @@ func (f *Feishu) SendGroupMessage(ctx context.Context, templateId string, params
 	return msgId, nil
 }
 
-func (f *Feishu) UpdateGroupMessage(ctx context.Context, msgId string, tender *ent.Tender) error {
+func (f *Feishu) UpdateGroupMessage(ctx context.Context, templateId string, msgId string, tenderProfile *ent.TenderProfile) error {
 
 	contentData := map[string]any{
-		"template_id":       TemplateIdTenderApproved,
-		"template_variable": tenderProfileTemplateVars(tender.Edges.PendingProfile),
+		"template_id":       templateId,
+		"template_variable": tenderProfileTemplateVars(tenderProfile),
 	}
 	content, err := json.Marshal(map[string]any{
 		"type": "template",

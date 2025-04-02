@@ -53,7 +53,7 @@ func main() {
 	sh := sap.New()
 	amap := amap.New("28982eb1a6a3cd956e0e0614c2fb131b")
 
-	if config.IsProd {
+	if config.IsProd || config.IsUat {
 		go f.StartWSClient(ctx)
 	}
 
