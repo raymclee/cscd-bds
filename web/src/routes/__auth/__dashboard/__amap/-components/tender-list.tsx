@@ -362,7 +362,7 @@ function TenderListItem({ tender }: { tender: Tender }) {
       selectedArea: selectedArea?.node as Area,
     });
 
-    if (!d || !tender?.activeProfile?.geoCoordinate?.length) return;
+    if (!d) return;
 
     const marker = getMarker(tender?.id);
     if (marker) {
@@ -388,11 +388,13 @@ function TenderListItem({ tender }: { tender: Tender }) {
       });
     }
 
-    const [lat, lng] = tender?.activeProfile?.geoCoordinate ?? [];
-    if (lat && lng) {
-      useMapV2Store
-        .getState()
-        .map?.setCenter([lng, lat] as [number, number], false, 300);
+    if (tender?.activeProfile?.geoCoordinate?.length === 2) {
+      const [lat, lng] = tender?.activeProfile?.geoCoordinate ?? [];
+      if (lat && lng) {
+        useMapV2Store
+          .getState()
+          .map?.setCenter([lng, lat] as [number, number], false, 300);
+      }
     }
   }, [navigate, tender?.id, tender?.activeProfile?.geoCoordinate]);
 
@@ -431,7 +433,7 @@ function TenderListItem({ tender }: { tender: Tender }) {
       to={isMobile ? "/tenders/$id" : "."}
       params={{ id: tender?.id }}
       className="group block"
-      // onClick={onMouseEnter}
+      onClick={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
       <div className="relative grid grid-cols-3 gap-4 overflow-hidden rounded-lg px-6 py-4 transition-all duration-300 group-hover:scale-105 group-hover:bg-gradient-to-br group-hover:from-sky-950 group-hover:to-sky-700">

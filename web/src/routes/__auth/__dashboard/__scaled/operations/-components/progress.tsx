@@ -40,7 +40,7 @@ export function Progress({ pj }: { pj: Project }) {
         <div className="mt-1 flex gap-1">
           <div className="relative">
             <img src={drawingLeft} />
-            <div className="absolute left-1/2 top-[3.75em] flex flex-col gap-y-[0.5em] text-xxs text-yellow-500">
+            <div className="absolute left-1/2 top-[2.5rem] flex flex-col gap-y-[0.5em] text-xxs text-yellow-500">
               <span>
                 <TextScramble characterSet="0123456789" as="span">
                   {`${formatAmountWithCommas(diagramBdFinishCount)}`}
@@ -59,7 +59,7 @@ export function Progress({ pj }: { pj: Project }) {
 
           <div className="relative">
             <img src={drawingCenter} />
-            <div className="absolute left-1/2 top-[3.75em] flex flex-col gap-y-[0.5em] text-xxs text-yellow-500">
+            <div className="absolute left-1/2 top-[2.5rem] flex flex-col gap-y-[0.5em] text-xxs text-yellow-500">
               <span>
                 <TextScramble characterSet="0123456789" as="span">
                   {`${formatAmountWithCommas(diagramConstructionFinishCount)}`}
@@ -78,7 +78,7 @@ export function Progress({ pj }: { pj: Project }) {
 
           <div className="relative">
             <img src={drawingRight} />
-            <div className="absolute left-1/2 top-[3.75em] flex flex-col gap-y-[0.5em] text-xxs text-yellow-500">
+            <div className="absolute left-1/2 top-[2.5rem] flex flex-col gap-y-[0.5em] text-xxs text-yellow-500">
               <span>
                 <TextScramble characterSet="0123456789" as="span">
                   {`${formatAmountWithCommas(diagramProcessingFinishCount)}`}
@@ -98,7 +98,7 @@ export function Progress({ pj }: { pj: Project }) {
 
         <div className="relative mt-1">
           <img src={drawingBottom} />
-          <div className="absolute right-[7em] top-[1em] flex flex-col gap-y-[0.5em] text-xxs text-yellow-500">
+          <div className="absolute right-[5rem] top-[0.75rem] flex flex-col gap-y-[0.5rem] text-xxs text-yellow-500">
             <TextScramble characterSet="0123456789" as="span">
               {`${formatAmountWithCommas(diagramCApprovalRatioNumerator)}`}
             </TextScramble>

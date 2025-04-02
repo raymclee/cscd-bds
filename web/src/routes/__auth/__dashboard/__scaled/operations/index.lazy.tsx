@@ -220,7 +220,7 @@ function Operation({ data }: { data: operationsIndexPageQuery$data }) {
 
   return (
     <>
-      <div className="absolute left-[14em] top-[0.4em]">
+      <div className="absolute left-[14rem] top-[0.4rem]">
         <ProjectSelect data={data} defaultCode={defaultCode} />
       </div>
 

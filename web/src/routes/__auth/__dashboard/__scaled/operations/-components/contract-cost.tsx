@@ -105,11 +105,11 @@ export function ContractCost({ project }: { project: Project }) {
       <div className="mt-2">
         <SmallHeader>结算进度</SmallHeader>
 
-        <div className="relative mt-2 flex h-20 items-center justify-center py-4">
+        <div className="relative mt-2 flex h-[4.5rem] items-center justify-center py-4">
           <div className="relative flex-1">
             <img
               src={contractCostAmountChart}
-              className="absolute left-1/2 top-1/2 mx-auto h-20 -translate-x-1/2 -translate-y-1/2"
+              className="absolute left-1/2 top-1/2 mx-auto h-[4.5rem] -translate-x-1/2 -translate-y-1/2"
             />
             <div className="absolute left-[52%] -translate-x-1/2 -translate-y-[60%] text-center font-bold text-brand-project">
               76%
