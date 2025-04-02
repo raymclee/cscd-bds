@@ -7,7 +7,6 @@ import (
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/tenderprofile"
 	"cscd-bds/store/ent/user"
-	"errors"
 	"fmt"
 
 	larkcore "github.com/larksuite/oapi-sdk-go/v3/core"
@@ -68,13 +67,9 @@ func (f *Feishu) StartWSClient(ctx context.Context) {
 					go func() {
 						ctxx := context.Background()
 						chatId := f.GetSalesChatId(t.Edges.Area)
-						if chatId == nil {
-							fmt.Printf("failed to get sales chat id: %v\n", errors.New("sales chat id is nil"))
-							return
-						}
 						if _, err := f.SendGroupMessage(ctxx, TemplateIdTenderApproved, &GroupMessageParams{
 							TenderProfile: tpp,
-							ChatId:        *chatId,
+							ChatId:        chatId,
 						}); err != nil {
 							fmt.Printf("failed to send group message: %v\n", err)
 						}
@@ -116,13 +111,9 @@ func (f *Feishu) StartWSClient(ctx context.Context) {
 					go func() {
 						ctxx := context.Background()
 						chatId := f.GetSalesChatId(tpp.Edges.Tender.Edges.Area)
-						if chatId == nil {
-							fmt.Printf("failed to get sales chat id: %v\n", errors.New("sales chat id is nil"))
-							return
-						}
 						if _, err := f.SendGroupMessage(ctxx, TemplateIdTenderRejected, &GroupMessageParams{
 							TenderProfile: tpp,
-							ChatId:        *chatId,
+							ChatId:        chatId,
 						}); err != nil {
 							fmt.Printf("failed to send group message: %v\n", err)
 						}
@@ -167,13 +158,9 @@ func (f *Feishu) StartWSClient(ctx context.Context) {
 					go func() {
 						ctxx := context.Background()
 						chatId := f.GetSalesChatId(t.Edges.Area)
-						if chatId == nil {
-							fmt.Printf("failed to get sales chat id: %v\n", errors.New("sales chat id is nil"))
-							return
-						}
 						if _, err := f.SendGroupMessage(ctxx, TemplateIdCustomerApproved, &GroupMessageParams{
 							CustomerProfile: cpp,
-							ChatId:          *chatId,
+							ChatId:          chatId,
 						}); err != nil {
 							fmt.Printf("failed to send group message: %v\n", err)
 						}
@@ -214,13 +201,9 @@ func (f *Feishu) StartWSClient(ctx context.Context) {
 					go func() {
 						ctxx := context.Background()
 						chatId := f.GetSalesChatId(cpp.Edges.Customer.Edges.Area)
-						if chatId == nil {
-							fmt.Printf("failed to get sales chat id: %v\n", errors.New("sales chat id is nil"))
-							return
-						}
 						if _, err := f.SendGroupMessage(ctxx, TemplateIdCustomerRejected, &GroupMessageParams{
 							CustomerProfile: cpp,
-							ChatId:          *chatId,
+							ChatId:          chatId,
 						}); err != nil {
 							fmt.Printf("failed to send group message: %v\n", err)
 						}
