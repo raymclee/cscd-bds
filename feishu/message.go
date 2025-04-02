@@ -155,7 +155,7 @@ func (f *Feishu) UpdateGroupMessage(ctx context.Context, msgId string, tender *e
 
 	contentData := map[string]any{
 		"template_id":       TemplateIdTenderApproved,
-		"template_variable": tenderTemplateVars(tender),
+		"template_variable": tenderProfileTemplateVars(tender.Edges.PendingProfile),
 	}
 	content, err := json.Marshal(map[string]any{
 		"type": "template",

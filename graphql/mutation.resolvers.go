@@ -597,11 +597,19 @@ func (r *mutationResolver) CreateTenderV2(ctx context.Context, tenderInput ent.C
 			return
 		}
 		if u.Edges.Leader != nil {
-			go r.feishu.SendChatMessage(ctxx, &feishu.ChatMessageParams{
-				TenderProfile: tpp,
-				TemplateId:    feishu.TemplateIdTenderCreateRequest,
-				ChatId:        u.Edges.Leader.OpenID,
-			})
+			go func() {
+				msgId, err := r.feishu.SendChatMessage(ctxx, &feishu.ChatMessageParams{
+					TenderProfile: tpp,
+					TemplateId:    feishu.TemplateIdTenderCreateRequest,
+					ChatId:        u.Edges.Leader.OpenID,
+				})
+				if err != nil {
+					fmt.Printf("failed to send chat message: %v\n", err)
+				}
+				if err := tpp.Update().SetApprovalMsgID(msgId).Exec(ctxx); err != nil {
+					fmt.Printf("failed to update tender profile: %v\n", err)
+				}
+			}()
 		}
 	}()
 
@@ -709,23 +717,30 @@ func (r *mutationResolver) UpdateTenderV2(ctx context.Context, id xid.ID, tender
 			return
 		}
 
-		var chatId string
 		if t.Edges.ActiveProfile != nil {
-			chatId = r.feishu.GetSalesChatId(tpp.Edges.Tender.Edges.Area)
+			chatId := r.feishu.GetSalesChatId(tpp.Edges.Tender.Edges.Area)
+			if _, err = r.feishu.SendGroupMessage(ctxx, feishu.TemplateIdTenderUpdated, &feishu.GroupMessageParams{
+				TenderProfile: tpp,
+				ChatId:        chatId,
+			}); err != nil {
+				fmt.Printf("failed to send group message: %v\n", err)
+			}
 		} else {
 			u, err := r.store.User.Query().Where(user.ID(xid.ID(sess.UserId))).WithLeader().Only(ctxx)
 			if err != nil {
 				fmt.Printf("failed to get user: %v\n", err)
 				return
 			}
-			chatId = u.Edges.Leader.OpenID
-		}
-
-		if _, err = r.feishu.SendGroupMessage(ctxx, feishu.TemplateIdTenderUpdated, &feishu.GroupMessageParams{
-			TenderProfile: tpp,
-			ChatId:        chatId,
-		}); err != nil {
-			fmt.Printf("failed to send group message: %v\n", err)
+			msgId, err := r.feishu.SendChatMessage(ctxx, &feishu.ChatMessageParams{
+				TenderProfile: tpp,
+				ChatId:        u.Edges.Leader.OpenID,
+			})
+			if err != nil {
+				fmt.Printf("failed to send group message: %v\n", err)
+			}
+			if err := tpp.Update().SetApprovalMsgID(msgId).Exec(ctxx); err != nil {
+				fmt.Printf("failed to update tender profile: %v\n", err)
+			}
 		}
 	}()
 
@@ -994,18 +1009,24 @@ func (r *mutationResolver) ApproveTender(ctx context.Context, id xid.ID) (*ent.T
 	if err != nil {
 		return nil, fmt.Errorf("failed to get session: %w", err)
 	}
-	t, err := r.store.Tender.Query().Where(tender.ID(id)).WithProfiles(func(tpq *ent.TenderProfileQuery) {
-		tpq.Where(tenderprofile.ApprovalStatus(1)).Order(ent.Desc(tenderprofile.FieldCreatedAt)).Limit(1)
-	}).Only(ctx)
+	t, err := r.store.Tender.Query().Where(tender.ID(id)).WithPendingProfile().Only(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get tender: %w", err)
 	}
-	if len(t.Edges.Profiles) == 0 {
-		return nil, fmt.Errorf("tender profile not found")
+	if t.Edges.PendingProfile == nil {
+		return nil, fmt.Errorf("no pending profile found")
 	}
-	activeProfile, err := r.store.TenderProfile.UpdateOneID(t.Edges.Profiles[0].ID).
+
+	if t.ApprovalMsgID != nil {
+		if err := r.feishu.UpdateGroupMessage(ctx, *t.ApprovalMsgID, t); err != nil {
+			fmt.Printf("failed to update group message: %v\n", err)
+		}
+	}
+
+	activeProfile, err := r.store.TenderProfile.UpdateOneID(t.Edges.PendingProfile.ID).
 		SetApprovalStatus(2).
 		SetApproverID(xid.ID(sess.UserId)).
+		ClearApprovalMsgID().
 		Save(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to approve tender profile: %w", err)
@@ -1019,22 +1040,27 @@ func (r *mutationResolver) RejectTender(ctx context.Context, id xid.ID) (*ent.Te
 	if err != nil {
 		return nil, fmt.Errorf("failed to get session: %w", err)
 	}
-	t, err := r.store.Tender.Query().Where(tender.ID(id)).WithProfiles(func(tpq *ent.TenderProfileQuery) {
-		tpq.Where(tenderprofile.ApprovalStatus(1)).Order(ent.Desc(tenderprofile.FieldCreatedAt)).Limit(1)
-	}).Only(ctx)
+	t, err := r.store.Tender.Query().Where(tender.ID(id)).WithPendingProfile().Only(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get tender: %w", err)
 	}
-	if len(t.Edges.Profiles) == 0 {
-		return nil, fmt.Errorf("tender profile not found")
+	if t.Edges.PendingProfile == nil {
+		return nil, fmt.Errorf("no pending profile found")
 	}
-	if err := r.store.TenderProfile.UpdateOneID(t.Edges.Profiles[0].ID).
+
+	if err := t.Edges.PendingProfile.Update().
 		SetApprovalStatus(3).
 		SetApproverID(xid.ID(sess.UserId)).
+		ClearApprovalMsgID().
 		Exec(ctx); err != nil {
 		return nil, fmt.Errorf("failed to reject tender profile: %w", err)
 	}
-	return t, nil
+	if t.Edges.PendingProfile.ApprovalMsgID != nil {
+		if err := r.feishu.UpdateGroupMessage(ctx, *t.Edges.PendingProfile.ApprovalMsgID, t); err != nil {
+			fmt.Printf("failed to update group message: %v\n", err)
+		}
+	}
+	return r.store.Tender.Query().Where(tender.ID(id)).WithPendingProfile().Only(ctx)
 }
 
 // CreatePlot is the resolver for the createPlot field.
