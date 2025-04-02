@@ -24,112 +24,28 @@ type Project struct {
 	UpdatedAt time.Time `json:"updated_at,omitempty"`
 	// Code holds the value of the "code" field.
 	Code string `json:"code,omitempty"`
-	// 地盤經理
-	Manager *string `json:"manager,omitempty"`
-	// Name holds the value of the "name" field.
-	Name *string `json:"name,omitempty"`
-	// 客戶
-	Owner *string `json:"owner,omitempty"`
-	// 建築師
-	Jzs *string `json:"jzs,omitempty"`
-	// 總承包商
-	Mcn *string `json:"mcn,omitempty"`
-	// 幕墻顧問
-	Consultant *string `json:"consultant,omitempty"`
-	// 工程規模
-	Areas *string `json:"areas,omitempty"`
-	// 開工日期
-	StartDate *time.Time `json:"start_date,omitempty"`
-	// 封頂日期
-	FsDate *time.Time `json:"fs_date,omitempty"`
-	// 開始安裝日期
-	OpDate *time.Time `json:"op_date,omitempty"`
-	// 竣工日期
-	EndDate *time.Time `json:"end_date,omitempty"`
-	// 維修保養期
-	Mntyr *string `json:"mntyr,omitempty"`
-	// 中標形式
-	ConType *string `json:"con_type,omitempty"`
 	// 是否完成
 	IsFinished bool `json:"is_finished,omitempty"`
-	// 成交额
-	Cje *float64 `json:"cje,omitempty"`
-	// 营业额
-	Yye *float64 `json:"yye,omitempty"`
-	// 现金流
-	Xjl *float64 `json:"xjl,omitempty"`
-	// 项目管理费预算
-	XmglfYs *float64 `json:"xmglf_ys,omitempty"`
-	// 项目管理费累计
-	XmglfLj *float64 `json:"xmglf_lj,omitempty"`
-	// 项目设计费
-	Xmsjf *float64 `json:"xmsjf,omitempty"`
-	// 项目负责人
-	Xmfzr *string `json:"xmfzr,omitempty"`
-	// 业主申请总额
-	OwnerApplyAmount *float64 `json:"owner_apply_amount,omitempty"`
-	// 业主申请数量
-	OwnerApplyCount *int `json:"owner_apply_count,omitempty"`
-	// 业主批复总额
-	OwnerApproveAmount *float64 `json:"owner_approve_amount,omitempty"`
-	// 业主批复数量
-	OwnerApproveCount *int `json:"owner_approve_count,omitempty"`
-	// 总包申请总额
-	ContractorApplyAmount *float64 `json:"contractor_apply_amount,omitempty"`
-	// 总包申请数量
-	ContractorApplyCount *int `json:"contractor_apply_count,omitempty"`
-	// 总包批复总额
-	ContractorApproveAmount *float64 `json:"contractor_approve_amount,omitempty"`
-	// 总包批复数量
-	ContractorApproveCount *int `json:"contractor_approve_count,omitempty"`
-	// 安装进度
-	InstallProgress *float64 `json:"install_progress,omitempty"`
-	// 有效合同金额
-	EffectiveContractAmount *float64 `json:"effective_contract_amount,omitempty"`
-	// 分判VA申请总额
-	VaApplyAmount *float64 `json:"va_apply_amount,omitempty"`
-	// 分判VA批复总额
-	VaApproveAmount *float64 `json:"va_approve_amount,omitempty"`
-	// 累计法定扣款
-	AccumulatedStatutoryDeductions *float64 `json:"accumulated_statutory_deductions,omitempty"`
-	// 累计非法定扣款
-	AccumulatedNonStatutoryDeductions *float64 `json:"accumulated_non_statutory_deductions,omitempty"`
-	// 本期法定扣款
-	AccumulatedStatutoryDeductionsPeriod *float64 `json:"accumulated_statutory_deductions_period,omitempty"`
-	// 本期非法定扣款
-	AccumulatedNonStatutoryDeductionsPeriod *float64 `json:"accumulated_non_statutory_deductions_period,omitempty"`
-	// 合約总额
-	TotalContractAmount *float64 `json:"total_contract_amount,omitempty"`
-	// 鋁板預算百分比
-	AluminumPlateBudgetPercentage *float64 `json:"aluminum_plate_budget_percentage,omitempty"`
-	// 鋁型材預算百分比
-	AluminumBudgetPercentage *float64 `json:"aluminum_budget_percentage,omitempty"`
-	// 玻璃預算百分比
-	GlassBudgetPercentage *float64 `json:"glass_budget_percentage,omitempty"`
-	// 鐵型材預算百分比
-	IronBudgetPercentage *float64 `json:"iron_budget_percentage,omitempty"`
-	// 里程碑計劃年份
-	MilestonePlanYear *int `json:"milestone_plan_year,omitempty"`
-	// 里程碑計劃月份
-	MilestonePlanMonth *int `json:"milestone_plan_month,omitempty"`
-	// 里程碑完成年份
-	MilestoneDoneYear *int `json:"milestone_done_year,omitempty"`
-	// 里程碑完成月份
-	MilestoneDoneMonth *int `json:"milestone_done_month,omitempty"`
-	// 生产管理面积
-	PmArea *float64 `json:"pm_area,omitempty"`
-	// 生产管理當年累計生產
-	PmYearTarget *float64 `json:"pm_year_target,omitempty"`
-	// 生产管理當月累計生產
-	PmMonthTarget *float64 `json:"pm_month_target,omitempty"`
-	// 生产管理當年實際生產
-	PmYearActual *float64 `json:"pm_year_actual,omitempty"`
-	// 生产管理當月實際生產
-	PmMonthActual *float64 `json:"pm_month_actual,omitempty"`
-	// 生产管理累計生產
-	PmTotal *float64 `json:"pm_total,omitempty"`
-	// 生产管理昨日生產
-	PmYesterday *float64 `json:"pm_yesterday,omitempty"`
+	// 營業額KPI
+	RevenueKpi *float64 `json:"revenue_kpi,omitempty"`
+	// 營業額當年完成
+	RevenueCurrentYearCompleted *float64 `json:"revenue_current_year_completed,omitempty"`
+	// 營業額累計完成
+	RevenueAccumulatedCompleted *float64 `json:"revenue_accumulated_completed,omitempty"`
+	// 糧期
+	PayDate *time.Time `json:"pay_date,omitempty"`
+	// 業主VO數量
+	OwnerVoCount *int `json:"owner_vo_count,omitempty"`
+	// 总包VO數量
+	ContractorVoCount *int `json:"contractor_vo_count,omitempty"`
+	// 累計扣款
+	AccumulateDeduction *float64 `json:"accumulate_deduction,omitempty"`
+	// 分判VA數量
+	SubcontractorVaCount *int `json:"subcontractor_va_count,omitempty"`
+	// 合約补料數量
+	ContractSupplementaryCount *int `json:"contract_supplementary_count,omitempty"`
+	// 执修费
+	RepairFee *float64 `json:"repair_fee,omitempty"`
 	// 單元件庫存累計
 	UnitInventoryTotal *float64 `json:"unit_inventory_total,omitempty"`
 	// 單元件總數
@@ -138,34 +54,12 @@ type Project struct {
 	UnitComponentProduction *float64 `json:"unit_component_production,omitempty"`
 	// 單元件安裝數量
 	UnitComponentInstallation *float64 `json:"unit_component_installation,omitempty"`
-	// 物料損失金額
-	MaterialLoss *float64 `json:"material_loss,omitempty"`
-	// 设计定额重量
-	DesignRatedWeight *float64 `json:"design_rated_weight,omitempty"`
-	// 加工图成型重量
-	ProcessingWeight *float64 `json:"processing_weight,omitempty"`
-	// 項目物料庫存重量
-	ItemStockWeight *float64 `json:"item_stock_weight,omitempty"`
-	// 卡板庫存數量
-	PalletsInStock *float64 `json:"pallets_in_stock,omitempty"`
-	// 散件庫存數量
-	PartsInStock *float64 `json:"parts_in_stock,omitempty"`
-	// 質量得分
-	QualityScore *float64 `json:"quality_score,omitempty"`
-	// 質量排名
-	QualityRanking *float64 `json:"quality_ranking,omitempty"`
 	// 散件總訂貨數量
 	BulkMaterialsTotalOrderQuantity *float64 `json:"bulk_materials_total_order_quantity,omitempty"`
 	// 散件已完成數量
 	BulkMaterialsCompletedQuantity *float64 `json:"bulk_materials_completed_quantity,omitempty"`
 	// 散件未完成數量
 	BulkMaterialsUncompletedQuantity *float64 `json:"bulk_materials_uncompleted_quantity,omitempty"`
-	// 計劃總數
-	PlanTotalCount *int `json:"plan_total_count,omitempty"`
-	// 計劃超期數量
-	PlanOverdueCount *int `json:"plan_overdue_count,omitempty"`
-	// 當月計劃超期數量
-	PlanOverdueMonthCount *int `json:"plan_overdue_month_count,omitempty"`
 	// BD圖紙完成數量
 	DiagramBdFinishCount *int `json:"diagram_bd_finish_count,omitempty"`
 	// BD圖紙總數
@@ -190,45 +84,21 @@ type Project struct {
 
 // ProjectEdges holds the relations/edges for other nodes in the graph.
 type ProjectEdges struct {
-	// Vos holds the value of the vos edge.
-	Vos []*ProjectVO `json:"vos,omitempty"`
-	// ProjectStaffs holds the value of the project_staffs edge.
-	ProjectStaffs []*ProjectStaff `json:"project_staffs,omitempty"`
 	// Users holds the value of the users edge.
 	Users []*User `json:"users,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [3]bool
+	loadedTypes [1]bool
 	// totalCount holds the count of the edges above.
-	totalCount [3]map[string]int
+	totalCount [1]map[string]int
 
-	namedVos           map[string][]*ProjectVO
-	namedProjectStaffs map[string][]*ProjectStaff
-	namedUsers         map[string][]*User
-}
-
-// VosOrErr returns the Vos value or an error if the edge
-// was not loaded in eager-loading.
-func (e ProjectEdges) VosOrErr() ([]*ProjectVO, error) {
-	if e.loadedTypes[0] {
-		return e.Vos, nil
-	}
-	return nil, &NotLoadedError{edge: "vos"}
-}
-
-// ProjectStaffsOrErr returns the ProjectStaffs value or an error if the edge
-// was not loaded in eager-loading.
-func (e ProjectEdges) ProjectStaffsOrErr() ([]*ProjectStaff, error) {
-	if e.loadedTypes[1] {
-		return e.ProjectStaffs, nil
-	}
-	return nil, &NotLoadedError{edge: "project_staffs"}
+	namedUsers map[string][]*User
 }
 
 // UsersOrErr returns the Users value or an error if the edge
 // was not loaded in eager-loading.
 func (e ProjectEdges) UsersOrErr() ([]*User, error) {
-	if e.loadedTypes[2] {
+	if e.loadedTypes[0] {
 		return e.Users, nil
 	}
 	return nil, &NotLoadedError{edge: "users"}
@@ -241,13 +111,13 @@ func (*Project) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case project.FieldIsFinished:
 			values[i] = new(sql.NullBool)
-		case project.FieldCje, project.FieldYye, project.FieldXjl, project.FieldXmglfYs, project.FieldXmglfLj, project.FieldXmsjf, project.FieldOwnerApplyAmount, project.FieldOwnerApproveAmount, project.FieldContractorApplyAmount, project.FieldContractorApproveAmount, project.FieldInstallProgress, project.FieldEffectiveContractAmount, project.FieldVaApplyAmount, project.FieldVaApproveAmount, project.FieldAccumulatedStatutoryDeductions, project.FieldAccumulatedNonStatutoryDeductions, project.FieldAccumulatedStatutoryDeductionsPeriod, project.FieldAccumulatedNonStatutoryDeductionsPeriod, project.FieldTotalContractAmount, project.FieldAluminumPlateBudgetPercentage, project.FieldAluminumBudgetPercentage, project.FieldGlassBudgetPercentage, project.FieldIronBudgetPercentage, project.FieldPmArea, project.FieldPmYearTarget, project.FieldPmMonthTarget, project.FieldPmYearActual, project.FieldPmMonthActual, project.FieldPmTotal, project.FieldPmYesterday, project.FieldUnitInventoryTotal, project.FieldUnitComponentTotal, project.FieldUnitComponentProduction, project.FieldUnitComponentInstallation, project.FieldMaterialLoss, project.FieldDesignRatedWeight, project.FieldProcessingWeight, project.FieldItemStockWeight, project.FieldPalletsInStock, project.FieldPartsInStock, project.FieldQualityScore, project.FieldQualityRanking, project.FieldBulkMaterialsTotalOrderQuantity, project.FieldBulkMaterialsCompletedQuantity, project.FieldBulkMaterialsUncompletedQuantity:
+		case project.FieldRevenueKpi, project.FieldRevenueCurrentYearCompleted, project.FieldRevenueAccumulatedCompleted, project.FieldAccumulateDeduction, project.FieldRepairFee, project.FieldUnitInventoryTotal, project.FieldUnitComponentTotal, project.FieldUnitComponentProduction, project.FieldUnitComponentInstallation, project.FieldBulkMaterialsTotalOrderQuantity, project.FieldBulkMaterialsCompletedQuantity, project.FieldBulkMaterialsUncompletedQuantity:
 			values[i] = new(sql.NullFloat64)
-		case project.FieldOwnerApplyCount, project.FieldOwnerApproveCount, project.FieldContractorApplyCount, project.FieldContractorApproveCount, project.FieldMilestonePlanYear, project.FieldMilestonePlanMonth, project.FieldMilestoneDoneYear, project.FieldMilestoneDoneMonth, project.FieldPlanTotalCount, project.FieldPlanOverdueCount, project.FieldPlanOverdueMonthCount, project.FieldDiagramBdFinishCount, project.FieldDiagramBdTotalCount, project.FieldDiagramConstructionFinishCount, project.FieldDiagramConstructionTotalCount, project.FieldDiagramProcessingFinishCount, project.FieldDiagramProcessingTotalCount, project.FieldDiagramCApprovalRatioNumerator, project.FieldDiagramCApprovalRatioDenominator:
+		case project.FieldOwnerVoCount, project.FieldContractorVoCount, project.FieldSubcontractorVaCount, project.FieldContractSupplementaryCount, project.FieldDiagramBdFinishCount, project.FieldDiagramBdTotalCount, project.FieldDiagramConstructionFinishCount, project.FieldDiagramConstructionTotalCount, project.FieldDiagramProcessingFinishCount, project.FieldDiagramProcessingTotalCount, project.FieldDiagramCApprovalRatioNumerator, project.FieldDiagramCApprovalRatioDenominator:
 			values[i] = new(sql.NullInt64)
-		case project.FieldCode, project.FieldManager, project.FieldName, project.FieldOwner, project.FieldJzs, project.FieldMcn, project.FieldConsultant, project.FieldAreas, project.FieldMntyr, project.FieldConType, project.FieldXmfzr:
+		case project.FieldCode:
 			values[i] = new(sql.NullString)
-		case project.FieldCreatedAt, project.FieldUpdatedAt, project.FieldStartDate, project.FieldFsDate, project.FieldOpDate, project.FieldEndDate:
+		case project.FieldCreatedAt, project.FieldUpdatedAt, project.FieldPayDate:
 			values[i] = new(sql.NullTime)
 		case project.FieldID:
 			values[i] = new(xid.ID)
@@ -290,375 +160,81 @@ func (pr *Project) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				pr.Code = value.String
 			}
-		case project.FieldManager:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field manager", values[i])
-			} else if value.Valid {
-				pr.Manager = new(string)
-				*pr.Manager = value.String
-			}
-		case project.FieldName:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field name", values[i])
-			} else if value.Valid {
-				pr.Name = new(string)
-				*pr.Name = value.String
-			}
-		case project.FieldOwner:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field owner", values[i])
-			} else if value.Valid {
-				pr.Owner = new(string)
-				*pr.Owner = value.String
-			}
-		case project.FieldJzs:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field jzs", values[i])
-			} else if value.Valid {
-				pr.Jzs = new(string)
-				*pr.Jzs = value.String
-			}
-		case project.FieldMcn:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field mcn", values[i])
-			} else if value.Valid {
-				pr.Mcn = new(string)
-				*pr.Mcn = value.String
-			}
-		case project.FieldConsultant:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field consultant", values[i])
-			} else if value.Valid {
-				pr.Consultant = new(string)
-				*pr.Consultant = value.String
-			}
-		case project.FieldAreas:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field areas", values[i])
-			} else if value.Valid {
-				pr.Areas = new(string)
-				*pr.Areas = value.String
-			}
-		case project.FieldStartDate:
-			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field start_date", values[i])
-			} else if value.Valid {
-				pr.StartDate = new(time.Time)
-				*pr.StartDate = value.Time
-			}
-		case project.FieldFsDate:
-			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field fs_date", values[i])
-			} else if value.Valid {
-				pr.FsDate = new(time.Time)
-				*pr.FsDate = value.Time
-			}
-		case project.FieldOpDate:
-			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field op_date", values[i])
-			} else if value.Valid {
-				pr.OpDate = new(time.Time)
-				*pr.OpDate = value.Time
-			}
-		case project.FieldEndDate:
-			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field end_date", values[i])
-			} else if value.Valid {
-				pr.EndDate = new(time.Time)
-				*pr.EndDate = value.Time
-			}
-		case project.FieldMntyr:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field mntyr", values[i])
-			} else if value.Valid {
-				pr.Mntyr = new(string)
-				*pr.Mntyr = value.String
-			}
-		case project.FieldConType:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field con_type", values[i])
-			} else if value.Valid {
-				pr.ConType = new(string)
-				*pr.ConType = value.String
-			}
 		case project.FieldIsFinished:
 			if value, ok := values[i].(*sql.NullBool); !ok {
 				return fmt.Errorf("unexpected type %T for field is_finished", values[i])
 			} else if value.Valid {
 				pr.IsFinished = value.Bool
 			}
-		case project.FieldCje:
+		case project.FieldRevenueKpi:
 			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field cje", values[i])
+				return fmt.Errorf("unexpected type %T for field revenue_kpi", values[i])
 			} else if value.Valid {
-				pr.Cje = new(float64)
-				*pr.Cje = value.Float64
+				pr.RevenueKpi = new(float64)
+				*pr.RevenueKpi = value.Float64
 			}
-		case project.FieldYye:
+		case project.FieldRevenueCurrentYearCompleted:
 			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field yye", values[i])
+				return fmt.Errorf("unexpected type %T for field revenue_current_year_completed", values[i])
 			} else if value.Valid {
-				pr.Yye = new(float64)
-				*pr.Yye = value.Float64
+				pr.RevenueCurrentYearCompleted = new(float64)
+				*pr.RevenueCurrentYearCompleted = value.Float64
 			}
-		case project.FieldXjl:
+		case project.FieldRevenueAccumulatedCompleted:
 			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field xjl", values[i])
+				return fmt.Errorf("unexpected type %T for field revenue_accumulated_completed", values[i])
 			} else if value.Valid {
-				pr.Xjl = new(float64)
-				*pr.Xjl = value.Float64
+				pr.RevenueAccumulatedCompleted = new(float64)
+				*pr.RevenueAccumulatedCompleted = value.Float64
 			}
-		case project.FieldXmglfYs:
-			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field xmglf_ys", values[i])
+		case project.FieldPayDate:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field pay_date", values[i])
 			} else if value.Valid {
-				pr.XmglfYs = new(float64)
-				*pr.XmglfYs = value.Float64
+				pr.PayDate = new(time.Time)
+				*pr.PayDate = value.Time
 			}
-		case project.FieldXmglfLj:
-			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field xmglf_lj", values[i])
-			} else if value.Valid {
-				pr.XmglfLj = new(float64)
-				*pr.XmglfLj = value.Float64
-			}
-		case project.FieldXmsjf:
-			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field xmsjf", values[i])
-			} else if value.Valid {
-				pr.Xmsjf = new(float64)
-				*pr.Xmsjf = value.Float64
-			}
-		case project.FieldXmfzr:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field xmfzr", values[i])
-			} else if value.Valid {
-				pr.Xmfzr = new(string)
-				*pr.Xmfzr = value.String
-			}
-		case project.FieldOwnerApplyAmount:
-			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field owner_apply_amount", values[i])
-			} else if value.Valid {
-				pr.OwnerApplyAmount = new(float64)
-				*pr.OwnerApplyAmount = value.Float64
-			}
-		case project.FieldOwnerApplyCount:
+		case project.FieldOwnerVoCount:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field owner_apply_count", values[i])
+				return fmt.Errorf("unexpected type %T for field owner_vo_count", values[i])
 			} else if value.Valid {
-				pr.OwnerApplyCount = new(int)
-				*pr.OwnerApplyCount = int(value.Int64)
+				pr.OwnerVoCount = new(int)
+				*pr.OwnerVoCount = int(value.Int64)
 			}
-		case project.FieldOwnerApproveAmount:
-			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field owner_approve_amount", values[i])
-			} else if value.Valid {
-				pr.OwnerApproveAmount = new(float64)
-				*pr.OwnerApproveAmount = value.Float64
-			}
-		case project.FieldOwnerApproveCount:
+		case project.FieldContractorVoCount:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field owner_approve_count", values[i])
+				return fmt.Errorf("unexpected type %T for field contractor_vo_count", values[i])
 			} else if value.Valid {
-				pr.OwnerApproveCount = new(int)
-				*pr.OwnerApproveCount = int(value.Int64)
+				pr.ContractorVoCount = new(int)
+				*pr.ContractorVoCount = int(value.Int64)
 			}
-		case project.FieldContractorApplyAmount:
+		case project.FieldAccumulateDeduction:
 			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field contractor_apply_amount", values[i])
+				return fmt.Errorf("unexpected type %T for field accumulate_deduction", values[i])
 			} else if value.Valid {
-				pr.ContractorApplyAmount = new(float64)
-				*pr.ContractorApplyAmount = value.Float64
+				pr.AccumulateDeduction = new(float64)
+				*pr.AccumulateDeduction = value.Float64
 			}
-		case project.FieldContractorApplyCount:
+		case project.FieldSubcontractorVaCount:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field contractor_apply_count", values[i])
+				return fmt.Errorf("unexpected type %T for field subcontractor_va_count", values[i])
 			} else if value.Valid {
-				pr.ContractorApplyCount = new(int)
-				*pr.ContractorApplyCount = int(value.Int64)
+				pr.SubcontractorVaCount = new(int)
+				*pr.SubcontractorVaCount = int(value.Int64)
 			}
-		case project.FieldContractorApproveAmount:
-			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field contractor_approve_amount", values[i])
-			} else if value.Valid {
-				pr.ContractorApproveAmount = new(float64)
-				*pr.ContractorApproveAmount = value.Float64
-			}
-		case project.FieldContractorApproveCount:
+		case project.FieldContractSupplementaryCount:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field contractor_approve_count", values[i])
+				return fmt.Errorf("unexpected type %T for field contract_supplementary_count", values[i])
 			} else if value.Valid {
-				pr.ContractorApproveCount = new(int)
-				*pr.ContractorApproveCount = int(value.Int64)
+				pr.ContractSupplementaryCount = new(int)
+				*pr.ContractSupplementaryCount = int(value.Int64)
 			}
-		case project.FieldInstallProgress:
+		case project.FieldRepairFee:
 			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field install_progress", values[i])
+				return fmt.Errorf("unexpected type %T for field repair_fee", values[i])
 			} else if value.Valid {
-				pr.InstallProgress = new(float64)
-				*pr.InstallProgress = value.Float64
-			}
-		case project.FieldEffectiveContractAmount:
-			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field effective_contract_amount", values[i])
-			} else if value.Valid {
-				pr.EffectiveContractAmount = new(float64)
-				*pr.EffectiveContractAmount = value.Float64
-			}
-		case project.FieldVaApplyAmount:
-			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field va_apply_amount", values[i])
-			} else if value.Valid {
-				pr.VaApplyAmount = new(float64)
-				*pr.VaApplyAmount = value.Float64
-			}
-		case project.FieldVaApproveAmount:
-			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field va_approve_amount", values[i])
-			} else if value.Valid {
-				pr.VaApproveAmount = new(float64)
-				*pr.VaApproveAmount = value.Float64
-			}
-		case project.FieldAccumulatedStatutoryDeductions:
-			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field accumulated_statutory_deductions", values[i])
-			} else if value.Valid {
-				pr.AccumulatedStatutoryDeductions = new(float64)
-				*pr.AccumulatedStatutoryDeductions = value.Float64
-			}
-		case project.FieldAccumulatedNonStatutoryDeductions:
-			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field accumulated_non_statutory_deductions", values[i])
-			} else if value.Valid {
-				pr.AccumulatedNonStatutoryDeductions = new(float64)
-				*pr.AccumulatedNonStatutoryDeductions = value.Float64
-			}
-		case project.FieldAccumulatedStatutoryDeductionsPeriod:
-			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field accumulated_statutory_deductions_period", values[i])
-			} else if value.Valid {
-				pr.AccumulatedStatutoryDeductionsPeriod = new(float64)
-				*pr.AccumulatedStatutoryDeductionsPeriod = value.Float64
-			}
-		case project.FieldAccumulatedNonStatutoryDeductionsPeriod:
-			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field accumulated_non_statutory_deductions_period", values[i])
-			} else if value.Valid {
-				pr.AccumulatedNonStatutoryDeductionsPeriod = new(float64)
-				*pr.AccumulatedNonStatutoryDeductionsPeriod = value.Float64
-			}
-		case project.FieldTotalContractAmount:
-			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field total_contract_amount", values[i])
-			} else if value.Valid {
-				pr.TotalContractAmount = new(float64)
-				*pr.TotalContractAmount = value.Float64
-			}
-		case project.FieldAluminumPlateBudgetPercentage:
-			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field aluminum_plate_budget_percentage", values[i])
-			} else if value.Valid {
-				pr.AluminumPlateBudgetPercentage = new(float64)
-				*pr.AluminumPlateBudgetPercentage = value.Float64
-			}
-		case project.FieldAluminumBudgetPercentage:
-			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field aluminum_budget_percentage", values[i])
-			} else if value.Valid {
-				pr.AluminumBudgetPercentage = new(float64)
-				*pr.AluminumBudgetPercentage = value.Float64
-			}
-		case project.FieldGlassBudgetPercentage:
-			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field glass_budget_percentage", values[i])
-			} else if value.Valid {
-				pr.GlassBudgetPercentage = new(float64)
-				*pr.GlassBudgetPercentage = value.Float64
-			}
-		case project.FieldIronBudgetPercentage:
-			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field iron_budget_percentage", values[i])
-			} else if value.Valid {
-				pr.IronBudgetPercentage = new(float64)
-				*pr.IronBudgetPercentage = value.Float64
-			}
-		case project.FieldMilestonePlanYear:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field milestone_plan_year", values[i])
-			} else if value.Valid {
-				pr.MilestonePlanYear = new(int)
-				*pr.MilestonePlanYear = int(value.Int64)
-			}
-		case project.FieldMilestonePlanMonth:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field milestone_plan_month", values[i])
-			} else if value.Valid {
-				pr.MilestonePlanMonth = new(int)
-				*pr.MilestonePlanMonth = int(value.Int64)
-			}
-		case project.FieldMilestoneDoneYear:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field milestone_done_year", values[i])
-			} else if value.Valid {
-				pr.MilestoneDoneYear = new(int)
-				*pr.MilestoneDoneYear = int(value.Int64)
-			}
-		case project.FieldMilestoneDoneMonth:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field milestone_done_month", values[i])
-			} else if value.Valid {
-				pr.MilestoneDoneMonth = new(int)
-				*pr.MilestoneDoneMonth = int(value.Int64)
-			}
-		case project.FieldPmArea:
-			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field pm_area", values[i])
-			} else if value.Valid {
-				pr.PmArea = new(float64)
-				*pr.PmArea = value.Float64
-			}
-		case project.FieldPmYearTarget:
-			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field pm_year_target", values[i])
-			} else if value.Valid {
-				pr.PmYearTarget = new(float64)
-				*pr.PmYearTarget = value.Float64
-			}
-		case project.FieldPmMonthTarget:
-			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field pm_month_target", values[i])
-			} else if value.Valid {
-				pr.PmMonthTarget = new(float64)
-				*pr.PmMonthTarget = value.Float64
-			}
-		case project.FieldPmYearActual:
-			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field pm_year_actual", values[i])
-			} else if value.Valid {
-				pr.PmYearActual = new(float64)
-				*pr.PmYearActual = value.Float64
-			}
-		case project.FieldPmMonthActual:
-			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field pm_month_actual", values[i])
-			} else if value.Valid {
-				pr.PmMonthActual = new(float64)
-				*pr.PmMonthActual = value.Float64
-			}
-		case project.FieldPmTotal:
-			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field pm_total", values[i])
-			} else if value.Valid {
-				pr.PmTotal = new(float64)
-				*pr.PmTotal = value.Float64
-			}
-		case project.FieldPmYesterday:
-			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field pm_yesterday", values[i])
-			} else if value.Valid {
-				pr.PmYesterday = new(float64)
-				*pr.PmYesterday = value.Float64
+				pr.RepairFee = new(float64)
+				*pr.RepairFee = value.Float64
 			}
 		case project.FieldUnitInventoryTotal:
 			if value, ok := values[i].(*sql.NullFloat64); !ok {
@@ -688,62 +264,6 @@ func (pr *Project) assignValues(columns []string, values []any) error {
 				pr.UnitComponentInstallation = new(float64)
 				*pr.UnitComponentInstallation = value.Float64
 			}
-		case project.FieldMaterialLoss:
-			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field material_loss", values[i])
-			} else if value.Valid {
-				pr.MaterialLoss = new(float64)
-				*pr.MaterialLoss = value.Float64
-			}
-		case project.FieldDesignRatedWeight:
-			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field design_rated_weight", values[i])
-			} else if value.Valid {
-				pr.DesignRatedWeight = new(float64)
-				*pr.DesignRatedWeight = value.Float64
-			}
-		case project.FieldProcessingWeight:
-			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field processing_weight", values[i])
-			} else if value.Valid {
-				pr.ProcessingWeight = new(float64)
-				*pr.ProcessingWeight = value.Float64
-			}
-		case project.FieldItemStockWeight:
-			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field item_stock_weight", values[i])
-			} else if value.Valid {
-				pr.ItemStockWeight = new(float64)
-				*pr.ItemStockWeight = value.Float64
-			}
-		case project.FieldPalletsInStock:
-			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field pallets_in_stock", values[i])
-			} else if value.Valid {
-				pr.PalletsInStock = new(float64)
-				*pr.PalletsInStock = value.Float64
-			}
-		case project.FieldPartsInStock:
-			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field parts_in_stock", values[i])
-			} else if value.Valid {
-				pr.PartsInStock = new(float64)
-				*pr.PartsInStock = value.Float64
-			}
-		case project.FieldQualityScore:
-			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field quality_score", values[i])
-			} else if value.Valid {
-				pr.QualityScore = new(float64)
-				*pr.QualityScore = value.Float64
-			}
-		case project.FieldQualityRanking:
-			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field quality_ranking", values[i])
-			} else if value.Valid {
-				pr.QualityRanking = new(float64)
-				*pr.QualityRanking = value.Float64
-			}
 		case project.FieldBulkMaterialsTotalOrderQuantity:
 			if value, ok := values[i].(*sql.NullFloat64); !ok {
 				return fmt.Errorf("unexpected type %T for field bulk_materials_total_order_quantity", values[i])
@@ -764,27 +284,6 @@ func (pr *Project) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				pr.BulkMaterialsUncompletedQuantity = new(float64)
 				*pr.BulkMaterialsUncompletedQuantity = value.Float64
-			}
-		case project.FieldPlanTotalCount:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field plan_total_count", values[i])
-			} else if value.Valid {
-				pr.PlanTotalCount = new(int)
-				*pr.PlanTotalCount = int(value.Int64)
-			}
-		case project.FieldPlanOverdueCount:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field plan_overdue_count", values[i])
-			} else if value.Valid {
-				pr.PlanOverdueCount = new(int)
-				*pr.PlanOverdueCount = int(value.Int64)
-			}
-		case project.FieldPlanOverdueMonthCount:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field plan_overdue_month_count", values[i])
-			} else if value.Valid {
-				pr.PlanOverdueMonthCount = new(int)
-				*pr.PlanOverdueMonthCount = int(value.Int64)
 			}
 		case project.FieldDiagramBdFinishCount:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -855,16 +354,6 @@ func (pr *Project) Value(name string) (ent.Value, error) {
 	return pr.selectValues.Get(name)
 }
 
-// QueryVos queries the "vos" edge of the Project entity.
-func (pr *Project) QueryVos() *ProjectVOQuery {
-	return NewProjectClient(pr.config).QueryVos(pr)
-}
-
-// QueryProjectStaffs queries the "project_staffs" edge of the Project entity.
-func (pr *Project) QueryProjectStaffs() *ProjectStaffQuery {
-	return NewProjectClient(pr.config).QueryProjectStaffs(pr)
-}
-
 // QueryUsers queries the "users" edge of the Project entity.
 func (pr *Project) QueryUsers() *UserQuery {
 	return NewProjectClient(pr.config).QueryUsers(pr)
@@ -902,266 +391,56 @@ func (pr *Project) String() string {
 	builder.WriteString("code=")
 	builder.WriteString(pr.Code)
 	builder.WriteString(", ")
-	if v := pr.Manager; v != nil {
-		builder.WriteString("manager=")
-		builder.WriteString(*v)
-	}
-	builder.WriteString(", ")
-	if v := pr.Name; v != nil {
-		builder.WriteString("name=")
-		builder.WriteString(*v)
-	}
-	builder.WriteString(", ")
-	if v := pr.Owner; v != nil {
-		builder.WriteString("owner=")
-		builder.WriteString(*v)
-	}
-	builder.WriteString(", ")
-	if v := pr.Jzs; v != nil {
-		builder.WriteString("jzs=")
-		builder.WriteString(*v)
-	}
-	builder.WriteString(", ")
-	if v := pr.Mcn; v != nil {
-		builder.WriteString("mcn=")
-		builder.WriteString(*v)
-	}
-	builder.WriteString(", ")
-	if v := pr.Consultant; v != nil {
-		builder.WriteString("consultant=")
-		builder.WriteString(*v)
-	}
-	builder.WriteString(", ")
-	if v := pr.Areas; v != nil {
-		builder.WriteString("areas=")
-		builder.WriteString(*v)
-	}
-	builder.WriteString(", ")
-	if v := pr.StartDate; v != nil {
-		builder.WriteString("start_date=")
-		builder.WriteString(v.Format(time.ANSIC))
-	}
-	builder.WriteString(", ")
-	if v := pr.FsDate; v != nil {
-		builder.WriteString("fs_date=")
-		builder.WriteString(v.Format(time.ANSIC))
-	}
-	builder.WriteString(", ")
-	if v := pr.OpDate; v != nil {
-		builder.WriteString("op_date=")
-		builder.WriteString(v.Format(time.ANSIC))
-	}
-	builder.WriteString(", ")
-	if v := pr.EndDate; v != nil {
-		builder.WriteString("end_date=")
-		builder.WriteString(v.Format(time.ANSIC))
-	}
-	builder.WriteString(", ")
-	if v := pr.Mntyr; v != nil {
-		builder.WriteString("mntyr=")
-		builder.WriteString(*v)
-	}
-	builder.WriteString(", ")
-	if v := pr.ConType; v != nil {
-		builder.WriteString("con_type=")
-		builder.WriteString(*v)
-	}
-	builder.WriteString(", ")
 	builder.WriteString("is_finished=")
 	builder.WriteString(fmt.Sprintf("%v", pr.IsFinished))
 	builder.WriteString(", ")
-	if v := pr.Cje; v != nil {
-		builder.WriteString("cje=")
+	if v := pr.RevenueKpi; v != nil {
+		builder.WriteString("revenue_kpi=")
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteString(", ")
-	if v := pr.Yye; v != nil {
-		builder.WriteString("yye=")
+	if v := pr.RevenueCurrentYearCompleted; v != nil {
+		builder.WriteString("revenue_current_year_completed=")
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteString(", ")
-	if v := pr.Xjl; v != nil {
-		builder.WriteString("xjl=")
+	if v := pr.RevenueAccumulatedCompleted; v != nil {
+		builder.WriteString("revenue_accumulated_completed=")
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteString(", ")
-	if v := pr.XmglfYs; v != nil {
-		builder.WriteString("xmglf_ys=")
+	if v := pr.PayDate; v != nil {
+		builder.WriteString("pay_date=")
+		builder.WriteString(v.Format(time.ANSIC))
+	}
+	builder.WriteString(", ")
+	if v := pr.OwnerVoCount; v != nil {
+		builder.WriteString("owner_vo_count=")
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteString(", ")
-	if v := pr.XmglfLj; v != nil {
-		builder.WriteString("xmglf_lj=")
+	if v := pr.ContractorVoCount; v != nil {
+		builder.WriteString("contractor_vo_count=")
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteString(", ")
-	if v := pr.Xmsjf; v != nil {
-		builder.WriteString("xmsjf=")
+	if v := pr.AccumulateDeduction; v != nil {
+		builder.WriteString("accumulate_deduction=")
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteString(", ")
-	if v := pr.Xmfzr; v != nil {
-		builder.WriteString("xmfzr=")
-		builder.WriteString(*v)
-	}
-	builder.WriteString(", ")
-	if v := pr.OwnerApplyAmount; v != nil {
-		builder.WriteString("owner_apply_amount=")
+	if v := pr.SubcontractorVaCount; v != nil {
+		builder.WriteString("subcontractor_va_count=")
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteString(", ")
-	if v := pr.OwnerApplyCount; v != nil {
-		builder.WriteString("owner_apply_count=")
+	if v := pr.ContractSupplementaryCount; v != nil {
+		builder.WriteString("contract_supplementary_count=")
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteString(", ")
-	if v := pr.OwnerApproveAmount; v != nil {
-		builder.WriteString("owner_approve_amount=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
-	}
-	builder.WriteString(", ")
-	if v := pr.OwnerApproveCount; v != nil {
-		builder.WriteString("owner_approve_count=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
-	}
-	builder.WriteString(", ")
-	if v := pr.ContractorApplyAmount; v != nil {
-		builder.WriteString("contractor_apply_amount=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
-	}
-	builder.WriteString(", ")
-	if v := pr.ContractorApplyCount; v != nil {
-		builder.WriteString("contractor_apply_count=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
-	}
-	builder.WriteString(", ")
-	if v := pr.ContractorApproveAmount; v != nil {
-		builder.WriteString("contractor_approve_amount=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
-	}
-	builder.WriteString(", ")
-	if v := pr.ContractorApproveCount; v != nil {
-		builder.WriteString("contractor_approve_count=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
-	}
-	builder.WriteString(", ")
-	if v := pr.InstallProgress; v != nil {
-		builder.WriteString("install_progress=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
-	}
-	builder.WriteString(", ")
-	if v := pr.EffectiveContractAmount; v != nil {
-		builder.WriteString("effective_contract_amount=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
-	}
-	builder.WriteString(", ")
-	if v := pr.VaApplyAmount; v != nil {
-		builder.WriteString("va_apply_amount=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
-	}
-	builder.WriteString(", ")
-	if v := pr.VaApproveAmount; v != nil {
-		builder.WriteString("va_approve_amount=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
-	}
-	builder.WriteString(", ")
-	if v := pr.AccumulatedStatutoryDeductions; v != nil {
-		builder.WriteString("accumulated_statutory_deductions=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
-	}
-	builder.WriteString(", ")
-	if v := pr.AccumulatedNonStatutoryDeductions; v != nil {
-		builder.WriteString("accumulated_non_statutory_deductions=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
-	}
-	builder.WriteString(", ")
-	if v := pr.AccumulatedStatutoryDeductionsPeriod; v != nil {
-		builder.WriteString("accumulated_statutory_deductions_period=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
-	}
-	builder.WriteString(", ")
-	if v := pr.AccumulatedNonStatutoryDeductionsPeriod; v != nil {
-		builder.WriteString("accumulated_non_statutory_deductions_period=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
-	}
-	builder.WriteString(", ")
-	if v := pr.TotalContractAmount; v != nil {
-		builder.WriteString("total_contract_amount=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
-	}
-	builder.WriteString(", ")
-	if v := pr.AluminumPlateBudgetPercentage; v != nil {
-		builder.WriteString("aluminum_plate_budget_percentage=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
-	}
-	builder.WriteString(", ")
-	if v := pr.AluminumBudgetPercentage; v != nil {
-		builder.WriteString("aluminum_budget_percentage=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
-	}
-	builder.WriteString(", ")
-	if v := pr.GlassBudgetPercentage; v != nil {
-		builder.WriteString("glass_budget_percentage=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
-	}
-	builder.WriteString(", ")
-	if v := pr.IronBudgetPercentage; v != nil {
-		builder.WriteString("iron_budget_percentage=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
-	}
-	builder.WriteString(", ")
-	if v := pr.MilestonePlanYear; v != nil {
-		builder.WriteString("milestone_plan_year=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
-	}
-	builder.WriteString(", ")
-	if v := pr.MilestonePlanMonth; v != nil {
-		builder.WriteString("milestone_plan_month=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
-	}
-	builder.WriteString(", ")
-	if v := pr.MilestoneDoneYear; v != nil {
-		builder.WriteString("milestone_done_year=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
-	}
-	builder.WriteString(", ")
-	if v := pr.MilestoneDoneMonth; v != nil {
-		builder.WriteString("milestone_done_month=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
-	}
-	builder.WriteString(", ")
-	if v := pr.PmArea; v != nil {
-		builder.WriteString("pm_area=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
-	}
-	builder.WriteString(", ")
-	if v := pr.PmYearTarget; v != nil {
-		builder.WriteString("pm_year_target=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
-	}
-	builder.WriteString(", ")
-	if v := pr.PmMonthTarget; v != nil {
-		builder.WriteString("pm_month_target=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
-	}
-	builder.WriteString(", ")
-	if v := pr.PmYearActual; v != nil {
-		builder.WriteString("pm_year_actual=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
-	}
-	builder.WriteString(", ")
-	if v := pr.PmMonthActual; v != nil {
-		builder.WriteString("pm_month_actual=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
-	}
-	builder.WriteString(", ")
-	if v := pr.PmTotal; v != nil {
-		builder.WriteString("pm_total=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
-	}
-	builder.WriteString(", ")
-	if v := pr.PmYesterday; v != nil {
-		builder.WriteString("pm_yesterday=")
+	if v := pr.RepairFee; v != nil {
+		builder.WriteString("repair_fee=")
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteString(", ")
@@ -1185,46 +464,6 @@ func (pr *Project) String() string {
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteString(", ")
-	if v := pr.MaterialLoss; v != nil {
-		builder.WriteString("material_loss=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
-	}
-	builder.WriteString(", ")
-	if v := pr.DesignRatedWeight; v != nil {
-		builder.WriteString("design_rated_weight=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
-	}
-	builder.WriteString(", ")
-	if v := pr.ProcessingWeight; v != nil {
-		builder.WriteString("processing_weight=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
-	}
-	builder.WriteString(", ")
-	if v := pr.ItemStockWeight; v != nil {
-		builder.WriteString("item_stock_weight=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
-	}
-	builder.WriteString(", ")
-	if v := pr.PalletsInStock; v != nil {
-		builder.WriteString("pallets_in_stock=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
-	}
-	builder.WriteString(", ")
-	if v := pr.PartsInStock; v != nil {
-		builder.WriteString("parts_in_stock=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
-	}
-	builder.WriteString(", ")
-	if v := pr.QualityScore; v != nil {
-		builder.WriteString("quality_score=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
-	}
-	builder.WriteString(", ")
-	if v := pr.QualityRanking; v != nil {
-		builder.WriteString("quality_ranking=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
-	}
-	builder.WriteString(", ")
 	if v := pr.BulkMaterialsTotalOrderQuantity; v != nil {
 		builder.WriteString("bulk_materials_total_order_quantity=")
 		builder.WriteString(fmt.Sprintf("%v", *v))
@@ -1237,21 +476,6 @@ func (pr *Project) String() string {
 	builder.WriteString(", ")
 	if v := pr.BulkMaterialsUncompletedQuantity; v != nil {
 		builder.WriteString("bulk_materials_uncompleted_quantity=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
-	}
-	builder.WriteString(", ")
-	if v := pr.PlanTotalCount; v != nil {
-		builder.WriteString("plan_total_count=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
-	}
-	builder.WriteString(", ")
-	if v := pr.PlanOverdueCount; v != nil {
-		builder.WriteString("plan_overdue_count=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
-	}
-	builder.WriteString(", ")
-	if v := pr.PlanOverdueMonthCount; v != nil {
-		builder.WriteString("plan_overdue_month_count=")
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteString(", ")
@@ -1296,54 +520,6 @@ func (pr *Project) String() string {
 	}
 	builder.WriteByte(')')
 	return builder.String()
-}
-
-// NamedVos returns the Vos named value or an error if the edge was not
-// loaded in eager-loading with this name.
-func (pr *Project) NamedVos(name string) ([]*ProjectVO, error) {
-	if pr.Edges.namedVos == nil {
-		return nil, &NotLoadedError{edge: name}
-	}
-	nodes, ok := pr.Edges.namedVos[name]
-	if !ok {
-		return nil, &NotLoadedError{edge: name}
-	}
-	return nodes, nil
-}
-
-func (pr *Project) appendNamedVos(name string, edges ...*ProjectVO) {
-	if pr.Edges.namedVos == nil {
-		pr.Edges.namedVos = make(map[string][]*ProjectVO)
-	}
-	if len(edges) == 0 {
-		pr.Edges.namedVos[name] = []*ProjectVO{}
-	} else {
-		pr.Edges.namedVos[name] = append(pr.Edges.namedVos[name], edges...)
-	}
-}
-
-// NamedProjectStaffs returns the ProjectStaffs named value or an error if the edge was not
-// loaded in eager-loading with this name.
-func (pr *Project) NamedProjectStaffs(name string) ([]*ProjectStaff, error) {
-	if pr.Edges.namedProjectStaffs == nil {
-		return nil, &NotLoadedError{edge: name}
-	}
-	nodes, ok := pr.Edges.namedProjectStaffs[name]
-	if !ok {
-		return nil, &NotLoadedError{edge: name}
-	}
-	return nodes, nil
-}
-
-func (pr *Project) appendNamedProjectStaffs(name string, edges ...*ProjectStaff) {
-	if pr.Edges.namedProjectStaffs == nil {
-		pr.Edges.namedProjectStaffs = make(map[string][]*ProjectStaff)
-	}
-	if len(edges) == 0 {
-		pr.Edges.namedProjectStaffs[name] = []*ProjectStaff{}
-	} else {
-		pr.Edges.namedProjectStaffs[name] = append(pr.Edges.namedProjectStaffs[name], edges...)
-	}
 }
 
 // NamedUsers returns the Users named value or an error if the edge was not

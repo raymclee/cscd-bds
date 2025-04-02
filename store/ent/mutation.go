@@ -16,8 +16,6 @@ import (
 	"cscd-bds/store/ent/potentialtender"
 	"cscd-bds/store/ent/predicate"
 	"cscd-bds/store/ent/project"
-	"cscd-bds/store/ent/projectstaff"
-	"cscd-bds/store/ent/projectvo"
 	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/schema/geo"
 	"cscd-bds/store/ent/schema/model"
@@ -57,8 +55,6 @@ const (
 	TypePlot             = "Plot"
 	TypePotentialTender  = "PotentialTender"
 	TypeProject          = "Project"
-	TypeProjectStaff     = "ProjectStaff"
-	TypeProjectVO        = "ProjectVO"
 	TypeProvince         = "Province"
 	TypeTender           = "Tender"
 	TypeTenderCompetitor = "TenderCompetitor"
@@ -11860,168 +11856,69 @@ func (m *PotentialTenderMutation) ResetEdge(name string) error {
 // ProjectMutation represents an operation that mutates the Project nodes in the graph.
 type ProjectMutation struct {
 	config
-	op                                             Op
-	typ                                            string
-	id                                             *xid.ID
-	created_at                                     *time.Time
-	updated_at                                     *time.Time
-	code                                           *string
-	manager                                        *string
-	name                                           *string
-	owner                                          *string
-	jzs                                            *string
-	mcn                                            *string
-	consultant                                     *string
-	areas                                          *string
-	start_date                                     *time.Time
-	fs_date                                        *time.Time
-	op_date                                        *time.Time
-	end_date                                       *time.Time
-	mntyr                                          *string
-	con_type                                       *string
-	is_finished                                    *bool
-	cje                                            *float64
-	addcje                                         *float64
-	yye                                            *float64
-	addyye                                         *float64
-	xjl                                            *float64
-	addxjl                                         *float64
-	xmglf_ys                                       *float64
-	addxmglf_ys                                    *float64
-	xmglf_lj                                       *float64
-	addxmglf_lj                                    *float64
-	xmsjf                                          *float64
-	addxmsjf                                       *float64
-	xmfzr                                          *string
-	owner_apply_amount                             *float64
-	addowner_apply_amount                          *float64
-	owner_apply_count                              *int
-	addowner_apply_count                           *int
-	owner_approve_amount                           *float64
-	addowner_approve_amount                        *float64
-	owner_approve_count                            *int
-	addowner_approve_count                         *int
-	contractor_apply_amount                        *float64
-	addcontractor_apply_amount                     *float64
-	contractor_apply_count                         *int
-	addcontractor_apply_count                      *int
-	contractor_approve_amount                      *float64
-	addcontractor_approve_amount                   *float64
-	contractor_approve_count                       *int
-	addcontractor_approve_count                    *int
-	install_progress                               *float64
-	addinstall_progress                            *float64
-	effective_contract_amount                      *float64
-	addeffective_contract_amount                   *float64
-	va_apply_amount                                *float64
-	addva_apply_amount                             *float64
-	va_approve_amount                              *float64
-	addva_approve_amount                           *float64
-	accumulated_statutory_deductions               *float64
-	addaccumulated_statutory_deductions            *float64
-	accumulated_non_statutory_deductions           *float64
-	addaccumulated_non_statutory_deductions        *float64
-	accumulated_statutory_deductions_period        *float64
-	addaccumulated_statutory_deductions_period     *float64
-	accumulated_non_statutory_deductions_period    *float64
-	addaccumulated_non_statutory_deductions_period *float64
-	total_contract_amount                          *float64
-	addtotal_contract_amount                       *float64
-	aluminum_plate_budget_percentage               *float64
-	addaluminum_plate_budget_percentage            *float64
-	aluminum_budget_percentage                     *float64
-	addaluminum_budget_percentage                  *float64
-	glass_budget_percentage                        *float64
-	addglass_budget_percentage                     *float64
-	iron_budget_percentage                         *float64
-	addiron_budget_percentage                      *float64
-	milestone_plan_year                            *int
-	addmilestone_plan_year                         *int
-	milestone_plan_month                           *int
-	addmilestone_plan_month                        *int
-	milestone_done_year                            *int
-	addmilestone_done_year                         *int
-	milestone_done_month                           *int
-	addmilestone_done_month                        *int
-	pm_area                                        *float64
-	addpm_area                                     *float64
-	pm_year_target                                 *float64
-	addpm_year_target                              *float64
-	pm_month_target                                *float64
-	addpm_month_target                             *float64
-	pm_year_actual                                 *float64
-	addpm_year_actual                              *float64
-	pm_month_actual                                *float64
-	addpm_month_actual                             *float64
-	pm_total                                       *float64
-	addpm_total                                    *float64
-	pm_yesterday                                   *float64
-	addpm_yesterday                                *float64
-	unit_inventory_total                           *float64
-	addunit_inventory_total                        *float64
-	unit_component_total                           *float64
-	addunit_component_total                        *float64
-	unit_component_production                      *float64
-	addunit_component_production                   *float64
-	unit_component_installation                    *float64
-	addunit_component_installation                 *float64
-	material_loss                                  *float64
-	addmaterial_loss                               *float64
-	design_rated_weight                            *float64
-	adddesign_rated_weight                         *float64
-	processing_weight                              *float64
-	addprocessing_weight                           *float64
-	item_stock_weight                              *float64
-	additem_stock_weight                           *float64
-	pallets_in_stock                               *float64
-	addpallets_in_stock                            *float64
-	parts_in_stock                                 *float64
-	addparts_in_stock                              *float64
-	quality_score                                  *float64
-	addquality_score                               *float64
-	quality_ranking                                *float64
-	addquality_ranking                             *float64
-	bulk_materials_total_order_quantity            *float64
-	addbulk_materials_total_order_quantity         *float64
-	bulk_materials_completed_quantity              *float64
-	addbulk_materials_completed_quantity           *float64
-	bulk_materials_uncompleted_quantity            *float64
-	addbulk_materials_uncompleted_quantity         *float64
-	plan_total_count                               *int
-	addplan_total_count                            *int
-	plan_overdue_count                             *int
-	addplan_overdue_count                          *int
-	plan_overdue_month_count                       *int
-	addplan_overdue_month_count                    *int
-	diagram_bd_finish_count                        *int
-	adddiagram_bd_finish_count                     *int
-	diagram_bd_total_count                         *int
-	adddiagram_bd_total_count                      *int
-	diagram_construction_finish_count              *int
-	adddiagram_construction_finish_count           *int
-	diagram_construction_total_count               *int
-	adddiagram_construction_total_count            *int
-	diagram_processing_finish_count                *int
-	adddiagram_processing_finish_count             *int
-	diagram_processing_total_count                 *int
-	adddiagram_processing_total_count              *int
-	diagram_c_approval_ratio_numerator             *int
-	adddiagram_c_approval_ratio_numerator          *int
-	diagram_c_approval_ratio_denominator           *int
-	adddiagram_c_approval_ratio_denominator        *int
-	clearedFields                                  map[string]struct{}
-	vos                                            map[xid.ID]struct{}
-	removedvos                                     map[xid.ID]struct{}
-	clearedvos                                     bool
-	project_staffs                                 map[xid.ID]struct{}
-	removedproject_staffs                          map[xid.ID]struct{}
-	clearedproject_staffs                          bool
-	users                                          map[xid.ID]struct{}
-	removedusers                                   map[xid.ID]struct{}
-	clearedusers                                   bool
-	done                                           bool
-	oldValue                                       func(context.Context) (*Project, error)
-	predicates                                     []predicate.Project
+	op                                      Op
+	typ                                     string
+	id                                      *xid.ID
+	created_at                              *time.Time
+	updated_at                              *time.Time
+	code                                    *string
+	is_finished                             *bool
+	revenue_kpi                             *float64
+	addrevenue_kpi                          *float64
+	revenue_current_year_completed          *float64
+	addrevenue_current_year_completed       *float64
+	revenue_accumulated_completed           *float64
+	addrevenue_accumulated_completed        *float64
+	pay_date                                *time.Time
+	owner_vo_count                          *int
+	addowner_vo_count                       *int
+	contractor_vo_count                     *int
+	addcontractor_vo_count                  *int
+	accumulate_deduction                    *float64
+	addaccumulate_deduction                 *float64
+	subcontractor_va_count                  *int
+	addsubcontractor_va_count               *int
+	contract_supplementary_count            *int
+	addcontract_supplementary_count         *int
+	repair_fee                              *float64
+	addrepair_fee                           *float64
+	unit_inventory_total                    *float64
+	addunit_inventory_total                 *float64
+	unit_component_total                    *float64
+	addunit_component_total                 *float64
+	unit_component_production               *float64
+	addunit_component_production            *float64
+	unit_component_installation             *float64
+	addunit_component_installation          *float64
+	bulk_materials_total_order_quantity     *float64
+	addbulk_materials_total_order_quantity  *float64
+	bulk_materials_completed_quantity       *float64
+	addbulk_materials_completed_quantity    *float64
+	bulk_materials_uncompleted_quantity     *float64
+	addbulk_materials_uncompleted_quantity  *float64
+	diagram_bd_finish_count                 *int
+	adddiagram_bd_finish_count              *int
+	diagram_bd_total_count                  *int
+	adddiagram_bd_total_count               *int
+	diagram_construction_finish_count       *int
+	adddiagram_construction_finish_count    *int
+	diagram_construction_total_count        *int
+	adddiagram_construction_total_count     *int
+	diagram_processing_finish_count         *int
+	adddiagram_processing_finish_count      *int
+	diagram_processing_total_count          *int
+	adddiagram_processing_total_count       *int
+	diagram_c_approval_ratio_numerator      *int
+	adddiagram_c_approval_ratio_numerator   *int
+	diagram_c_approval_ratio_denominator    *int
+	adddiagram_c_approval_ratio_denominator *int
+	clearedFields                           map[string]struct{}
+	users                                   map[xid.ID]struct{}
+	removedusers                            map[xid.ID]struct{}
+	clearedusers                            bool
+	done                                    bool
+	oldValue                                func(context.Context) (*Project, error)
+	predicates                              []predicate.Project
 }
 
 var _ ent.Mutation = (*ProjectMutation)(nil)
@@ -12236,643 +12133,6 @@ func (m *ProjectMutation) ResetCode() {
 	m.code = nil
 }
 
-// SetManager sets the "manager" field.
-func (m *ProjectMutation) SetManager(s string) {
-	m.manager = &s
-}
-
-// Manager returns the value of the "manager" field in the mutation.
-func (m *ProjectMutation) Manager() (r string, exists bool) {
-	v := m.manager
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldManager returns the old "manager" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldManager(ctx context.Context) (v *string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldManager is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldManager requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldManager: %w", err)
-	}
-	return oldValue.Manager, nil
-}
-
-// ClearManager clears the value of the "manager" field.
-func (m *ProjectMutation) ClearManager() {
-	m.manager = nil
-	m.clearedFields[project.FieldManager] = struct{}{}
-}
-
-// ManagerCleared returns if the "manager" field was cleared in this mutation.
-func (m *ProjectMutation) ManagerCleared() bool {
-	_, ok := m.clearedFields[project.FieldManager]
-	return ok
-}
-
-// ResetManager resets all changes to the "manager" field.
-func (m *ProjectMutation) ResetManager() {
-	m.manager = nil
-	delete(m.clearedFields, project.FieldManager)
-}
-
-// SetName sets the "name" field.
-func (m *ProjectMutation) SetName(s string) {
-	m.name = &s
-}
-
-// Name returns the value of the "name" field in the mutation.
-func (m *ProjectMutation) Name() (r string, exists bool) {
-	v := m.name
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldName returns the old "name" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldName(ctx context.Context) (v *string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldName is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldName requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldName: %w", err)
-	}
-	return oldValue.Name, nil
-}
-
-// ClearName clears the value of the "name" field.
-func (m *ProjectMutation) ClearName() {
-	m.name = nil
-	m.clearedFields[project.FieldName] = struct{}{}
-}
-
-// NameCleared returns if the "name" field was cleared in this mutation.
-func (m *ProjectMutation) NameCleared() bool {
-	_, ok := m.clearedFields[project.FieldName]
-	return ok
-}
-
-// ResetName resets all changes to the "name" field.
-func (m *ProjectMutation) ResetName() {
-	m.name = nil
-	delete(m.clearedFields, project.FieldName)
-}
-
-// SetOwner sets the "owner" field.
-func (m *ProjectMutation) SetOwner(s string) {
-	m.owner = &s
-}
-
-// Owner returns the value of the "owner" field in the mutation.
-func (m *ProjectMutation) Owner() (r string, exists bool) {
-	v := m.owner
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldOwner returns the old "owner" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldOwner(ctx context.Context) (v *string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldOwner is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldOwner requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldOwner: %w", err)
-	}
-	return oldValue.Owner, nil
-}
-
-// ClearOwner clears the value of the "owner" field.
-func (m *ProjectMutation) ClearOwner() {
-	m.owner = nil
-	m.clearedFields[project.FieldOwner] = struct{}{}
-}
-
-// OwnerCleared returns if the "owner" field was cleared in this mutation.
-func (m *ProjectMutation) OwnerCleared() bool {
-	_, ok := m.clearedFields[project.FieldOwner]
-	return ok
-}
-
-// ResetOwner resets all changes to the "owner" field.
-func (m *ProjectMutation) ResetOwner() {
-	m.owner = nil
-	delete(m.clearedFields, project.FieldOwner)
-}
-
-// SetJzs sets the "jzs" field.
-func (m *ProjectMutation) SetJzs(s string) {
-	m.jzs = &s
-}
-
-// Jzs returns the value of the "jzs" field in the mutation.
-func (m *ProjectMutation) Jzs() (r string, exists bool) {
-	v := m.jzs
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldJzs returns the old "jzs" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldJzs(ctx context.Context) (v *string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldJzs is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldJzs requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldJzs: %w", err)
-	}
-	return oldValue.Jzs, nil
-}
-
-// ClearJzs clears the value of the "jzs" field.
-func (m *ProjectMutation) ClearJzs() {
-	m.jzs = nil
-	m.clearedFields[project.FieldJzs] = struct{}{}
-}
-
-// JzsCleared returns if the "jzs" field was cleared in this mutation.
-func (m *ProjectMutation) JzsCleared() bool {
-	_, ok := m.clearedFields[project.FieldJzs]
-	return ok
-}
-
-// ResetJzs resets all changes to the "jzs" field.
-func (m *ProjectMutation) ResetJzs() {
-	m.jzs = nil
-	delete(m.clearedFields, project.FieldJzs)
-}
-
-// SetMcn sets the "mcn" field.
-func (m *ProjectMutation) SetMcn(s string) {
-	m.mcn = &s
-}
-
-// Mcn returns the value of the "mcn" field in the mutation.
-func (m *ProjectMutation) Mcn() (r string, exists bool) {
-	v := m.mcn
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldMcn returns the old "mcn" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldMcn(ctx context.Context) (v *string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldMcn is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldMcn requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldMcn: %w", err)
-	}
-	return oldValue.Mcn, nil
-}
-
-// ClearMcn clears the value of the "mcn" field.
-func (m *ProjectMutation) ClearMcn() {
-	m.mcn = nil
-	m.clearedFields[project.FieldMcn] = struct{}{}
-}
-
-// McnCleared returns if the "mcn" field was cleared in this mutation.
-func (m *ProjectMutation) McnCleared() bool {
-	_, ok := m.clearedFields[project.FieldMcn]
-	return ok
-}
-
-// ResetMcn resets all changes to the "mcn" field.
-func (m *ProjectMutation) ResetMcn() {
-	m.mcn = nil
-	delete(m.clearedFields, project.FieldMcn)
-}
-
-// SetConsultant sets the "consultant" field.
-func (m *ProjectMutation) SetConsultant(s string) {
-	m.consultant = &s
-}
-
-// Consultant returns the value of the "consultant" field in the mutation.
-func (m *ProjectMutation) Consultant() (r string, exists bool) {
-	v := m.consultant
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldConsultant returns the old "consultant" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldConsultant(ctx context.Context) (v *string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldConsultant is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldConsultant requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldConsultant: %w", err)
-	}
-	return oldValue.Consultant, nil
-}
-
-// ClearConsultant clears the value of the "consultant" field.
-func (m *ProjectMutation) ClearConsultant() {
-	m.consultant = nil
-	m.clearedFields[project.FieldConsultant] = struct{}{}
-}
-
-// ConsultantCleared returns if the "consultant" field was cleared in this mutation.
-func (m *ProjectMutation) ConsultantCleared() bool {
-	_, ok := m.clearedFields[project.FieldConsultant]
-	return ok
-}
-
-// ResetConsultant resets all changes to the "consultant" field.
-func (m *ProjectMutation) ResetConsultant() {
-	m.consultant = nil
-	delete(m.clearedFields, project.FieldConsultant)
-}
-
-// SetAreas sets the "areas" field.
-func (m *ProjectMutation) SetAreas(s string) {
-	m.areas = &s
-}
-
-// Areas returns the value of the "areas" field in the mutation.
-func (m *ProjectMutation) Areas() (r string, exists bool) {
-	v := m.areas
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldAreas returns the old "areas" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldAreas(ctx context.Context) (v *string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldAreas is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldAreas requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldAreas: %w", err)
-	}
-	return oldValue.Areas, nil
-}
-
-// ClearAreas clears the value of the "areas" field.
-func (m *ProjectMutation) ClearAreas() {
-	m.areas = nil
-	m.clearedFields[project.FieldAreas] = struct{}{}
-}
-
-// AreasCleared returns if the "areas" field was cleared in this mutation.
-func (m *ProjectMutation) AreasCleared() bool {
-	_, ok := m.clearedFields[project.FieldAreas]
-	return ok
-}
-
-// ResetAreas resets all changes to the "areas" field.
-func (m *ProjectMutation) ResetAreas() {
-	m.areas = nil
-	delete(m.clearedFields, project.FieldAreas)
-}
-
-// SetStartDate sets the "start_date" field.
-func (m *ProjectMutation) SetStartDate(t time.Time) {
-	m.start_date = &t
-}
-
-// StartDate returns the value of the "start_date" field in the mutation.
-func (m *ProjectMutation) StartDate() (r time.Time, exists bool) {
-	v := m.start_date
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldStartDate returns the old "start_date" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldStartDate(ctx context.Context) (v *time.Time, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldStartDate is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldStartDate requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldStartDate: %w", err)
-	}
-	return oldValue.StartDate, nil
-}
-
-// ClearStartDate clears the value of the "start_date" field.
-func (m *ProjectMutation) ClearStartDate() {
-	m.start_date = nil
-	m.clearedFields[project.FieldStartDate] = struct{}{}
-}
-
-// StartDateCleared returns if the "start_date" field was cleared in this mutation.
-func (m *ProjectMutation) StartDateCleared() bool {
-	_, ok := m.clearedFields[project.FieldStartDate]
-	return ok
-}
-
-// ResetStartDate resets all changes to the "start_date" field.
-func (m *ProjectMutation) ResetStartDate() {
-	m.start_date = nil
-	delete(m.clearedFields, project.FieldStartDate)
-}
-
-// SetFsDate sets the "fs_date" field.
-func (m *ProjectMutation) SetFsDate(t time.Time) {
-	m.fs_date = &t
-}
-
-// FsDate returns the value of the "fs_date" field in the mutation.
-func (m *ProjectMutation) FsDate() (r time.Time, exists bool) {
-	v := m.fs_date
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldFsDate returns the old "fs_date" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldFsDate(ctx context.Context) (v *time.Time, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldFsDate is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldFsDate requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldFsDate: %w", err)
-	}
-	return oldValue.FsDate, nil
-}
-
-// ClearFsDate clears the value of the "fs_date" field.
-func (m *ProjectMutation) ClearFsDate() {
-	m.fs_date = nil
-	m.clearedFields[project.FieldFsDate] = struct{}{}
-}
-
-// FsDateCleared returns if the "fs_date" field was cleared in this mutation.
-func (m *ProjectMutation) FsDateCleared() bool {
-	_, ok := m.clearedFields[project.FieldFsDate]
-	return ok
-}
-
-// ResetFsDate resets all changes to the "fs_date" field.
-func (m *ProjectMutation) ResetFsDate() {
-	m.fs_date = nil
-	delete(m.clearedFields, project.FieldFsDate)
-}
-
-// SetOpDate sets the "op_date" field.
-func (m *ProjectMutation) SetOpDate(t time.Time) {
-	m.op_date = &t
-}
-
-// OpDate returns the value of the "op_date" field in the mutation.
-func (m *ProjectMutation) OpDate() (r time.Time, exists bool) {
-	v := m.op_date
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldOpDate returns the old "op_date" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldOpDate(ctx context.Context) (v *time.Time, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldOpDate is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldOpDate requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldOpDate: %w", err)
-	}
-	return oldValue.OpDate, nil
-}
-
-// ClearOpDate clears the value of the "op_date" field.
-func (m *ProjectMutation) ClearOpDate() {
-	m.op_date = nil
-	m.clearedFields[project.FieldOpDate] = struct{}{}
-}
-
-// OpDateCleared returns if the "op_date" field was cleared in this mutation.
-func (m *ProjectMutation) OpDateCleared() bool {
-	_, ok := m.clearedFields[project.FieldOpDate]
-	return ok
-}
-
-// ResetOpDate resets all changes to the "op_date" field.
-func (m *ProjectMutation) ResetOpDate() {
-	m.op_date = nil
-	delete(m.clearedFields, project.FieldOpDate)
-}
-
-// SetEndDate sets the "end_date" field.
-func (m *ProjectMutation) SetEndDate(t time.Time) {
-	m.end_date = &t
-}
-
-// EndDate returns the value of the "end_date" field in the mutation.
-func (m *ProjectMutation) EndDate() (r time.Time, exists bool) {
-	v := m.end_date
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldEndDate returns the old "end_date" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldEndDate(ctx context.Context) (v *time.Time, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldEndDate is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldEndDate requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldEndDate: %w", err)
-	}
-	return oldValue.EndDate, nil
-}
-
-// ClearEndDate clears the value of the "end_date" field.
-func (m *ProjectMutation) ClearEndDate() {
-	m.end_date = nil
-	m.clearedFields[project.FieldEndDate] = struct{}{}
-}
-
-// EndDateCleared returns if the "end_date" field was cleared in this mutation.
-func (m *ProjectMutation) EndDateCleared() bool {
-	_, ok := m.clearedFields[project.FieldEndDate]
-	return ok
-}
-
-// ResetEndDate resets all changes to the "end_date" field.
-func (m *ProjectMutation) ResetEndDate() {
-	m.end_date = nil
-	delete(m.clearedFields, project.FieldEndDate)
-}
-
-// SetMntyr sets the "mntyr" field.
-func (m *ProjectMutation) SetMntyr(s string) {
-	m.mntyr = &s
-}
-
-// Mntyr returns the value of the "mntyr" field in the mutation.
-func (m *ProjectMutation) Mntyr() (r string, exists bool) {
-	v := m.mntyr
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldMntyr returns the old "mntyr" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldMntyr(ctx context.Context) (v *string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldMntyr is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldMntyr requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldMntyr: %w", err)
-	}
-	return oldValue.Mntyr, nil
-}
-
-// ClearMntyr clears the value of the "mntyr" field.
-func (m *ProjectMutation) ClearMntyr() {
-	m.mntyr = nil
-	m.clearedFields[project.FieldMntyr] = struct{}{}
-}
-
-// MntyrCleared returns if the "mntyr" field was cleared in this mutation.
-func (m *ProjectMutation) MntyrCleared() bool {
-	_, ok := m.clearedFields[project.FieldMntyr]
-	return ok
-}
-
-// ResetMntyr resets all changes to the "mntyr" field.
-func (m *ProjectMutation) ResetMntyr() {
-	m.mntyr = nil
-	delete(m.clearedFields, project.FieldMntyr)
-}
-
-// SetConType sets the "con_type" field.
-func (m *ProjectMutation) SetConType(s string) {
-	m.con_type = &s
-}
-
-// ConType returns the value of the "con_type" field in the mutation.
-func (m *ProjectMutation) ConType() (r string, exists bool) {
-	v := m.con_type
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldConType returns the old "con_type" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldConType(ctx context.Context) (v *string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldConType is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldConType requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldConType: %w", err)
-	}
-	return oldValue.ConType, nil
-}
-
-// ClearConType clears the value of the "con_type" field.
-func (m *ProjectMutation) ClearConType() {
-	m.con_type = nil
-	m.clearedFields[project.FieldConType] = struct{}{}
-}
-
-// ConTypeCleared returns if the "con_type" field was cleared in this mutation.
-func (m *ProjectMutation) ConTypeCleared() bool {
-	_, ok := m.clearedFields[project.FieldConType]
-	return ok
-}
-
-// ResetConType resets all changes to the "con_type" field.
-func (m *ProjectMutation) ResetConType() {
-	m.con_type = nil
-	delete(m.clearedFields, project.FieldConType)
-}
-
 // SetIsFinished sets the "is_finished" field.
 func (m *ProjectMutation) SetIsFinished(b bool) {
 	m.is_finished = &b
@@ -12909,2713 +12169,683 @@ func (m *ProjectMutation) ResetIsFinished() {
 	m.is_finished = nil
 }
 
-// SetCje sets the "cje" field.
-func (m *ProjectMutation) SetCje(f float64) {
-	m.cje = &f
-	m.addcje = nil
+// SetRevenueKpi sets the "revenue_kpi" field.
+func (m *ProjectMutation) SetRevenueKpi(f float64) {
+	m.revenue_kpi = &f
+	m.addrevenue_kpi = nil
 }
 
-// Cje returns the value of the "cje" field in the mutation.
-func (m *ProjectMutation) Cje() (r float64, exists bool) {
-	v := m.cje
+// RevenueKpi returns the value of the "revenue_kpi" field in the mutation.
+func (m *ProjectMutation) RevenueKpi() (r float64, exists bool) {
+	v := m.revenue_kpi
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCje returns the old "cje" field's value of the Project entity.
+// OldRevenueKpi returns the old "revenue_kpi" field's value of the Project entity.
 // If the Project object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldCje(ctx context.Context) (v *float64, err error) {
+func (m *ProjectMutation) OldRevenueKpi(ctx context.Context) (v *float64, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldCje is only allowed on UpdateOne operations")
+		return v, errors.New("OldRevenueKpi is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldCje requires an ID field in the mutation")
+		return v, errors.New("OldRevenueKpi requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldCje: %w", err)
+		return v, fmt.Errorf("querying old value for OldRevenueKpi: %w", err)
 	}
-	return oldValue.Cje, nil
+	return oldValue.RevenueKpi, nil
 }
 
-// AddCje adds f to the "cje" field.
-func (m *ProjectMutation) AddCje(f float64) {
-	if m.addcje != nil {
-		*m.addcje += f
+// AddRevenueKpi adds f to the "revenue_kpi" field.
+func (m *ProjectMutation) AddRevenueKpi(f float64) {
+	if m.addrevenue_kpi != nil {
+		*m.addrevenue_kpi += f
 	} else {
-		m.addcje = &f
+		m.addrevenue_kpi = &f
 	}
 }
 
-// AddedCje returns the value that was added to the "cje" field in this mutation.
-func (m *ProjectMutation) AddedCje() (r float64, exists bool) {
-	v := m.addcje
+// AddedRevenueKpi returns the value that was added to the "revenue_kpi" field in this mutation.
+func (m *ProjectMutation) AddedRevenueKpi() (r float64, exists bool) {
+	v := m.addrevenue_kpi
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// ClearCje clears the value of the "cje" field.
-func (m *ProjectMutation) ClearCje() {
-	m.cje = nil
-	m.addcje = nil
-	m.clearedFields[project.FieldCje] = struct{}{}
+// ClearRevenueKpi clears the value of the "revenue_kpi" field.
+func (m *ProjectMutation) ClearRevenueKpi() {
+	m.revenue_kpi = nil
+	m.addrevenue_kpi = nil
+	m.clearedFields[project.FieldRevenueKpi] = struct{}{}
 }
 
-// CjeCleared returns if the "cje" field was cleared in this mutation.
-func (m *ProjectMutation) CjeCleared() bool {
-	_, ok := m.clearedFields[project.FieldCje]
+// RevenueKpiCleared returns if the "revenue_kpi" field was cleared in this mutation.
+func (m *ProjectMutation) RevenueKpiCleared() bool {
+	_, ok := m.clearedFields[project.FieldRevenueKpi]
 	return ok
 }
 
-// ResetCje resets all changes to the "cje" field.
-func (m *ProjectMutation) ResetCje() {
-	m.cje = nil
-	m.addcje = nil
-	delete(m.clearedFields, project.FieldCje)
+// ResetRevenueKpi resets all changes to the "revenue_kpi" field.
+func (m *ProjectMutation) ResetRevenueKpi() {
+	m.revenue_kpi = nil
+	m.addrevenue_kpi = nil
+	delete(m.clearedFields, project.FieldRevenueKpi)
 }
 
-// SetYye sets the "yye" field.
-func (m *ProjectMutation) SetYye(f float64) {
-	m.yye = &f
-	m.addyye = nil
+// SetRevenueCurrentYearCompleted sets the "revenue_current_year_completed" field.
+func (m *ProjectMutation) SetRevenueCurrentYearCompleted(f float64) {
+	m.revenue_current_year_completed = &f
+	m.addrevenue_current_year_completed = nil
 }
 
-// Yye returns the value of the "yye" field in the mutation.
-func (m *ProjectMutation) Yye() (r float64, exists bool) {
-	v := m.yye
+// RevenueCurrentYearCompleted returns the value of the "revenue_current_year_completed" field in the mutation.
+func (m *ProjectMutation) RevenueCurrentYearCompleted() (r float64, exists bool) {
+	v := m.revenue_current_year_completed
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldYye returns the old "yye" field's value of the Project entity.
+// OldRevenueCurrentYearCompleted returns the old "revenue_current_year_completed" field's value of the Project entity.
 // If the Project object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldYye(ctx context.Context) (v *float64, err error) {
+func (m *ProjectMutation) OldRevenueCurrentYearCompleted(ctx context.Context) (v *float64, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldYye is only allowed on UpdateOne operations")
+		return v, errors.New("OldRevenueCurrentYearCompleted is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldYye requires an ID field in the mutation")
+		return v, errors.New("OldRevenueCurrentYearCompleted requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldYye: %w", err)
+		return v, fmt.Errorf("querying old value for OldRevenueCurrentYearCompleted: %w", err)
 	}
-	return oldValue.Yye, nil
+	return oldValue.RevenueCurrentYearCompleted, nil
 }
 
-// AddYye adds f to the "yye" field.
-func (m *ProjectMutation) AddYye(f float64) {
-	if m.addyye != nil {
-		*m.addyye += f
+// AddRevenueCurrentYearCompleted adds f to the "revenue_current_year_completed" field.
+func (m *ProjectMutation) AddRevenueCurrentYearCompleted(f float64) {
+	if m.addrevenue_current_year_completed != nil {
+		*m.addrevenue_current_year_completed += f
 	} else {
-		m.addyye = &f
+		m.addrevenue_current_year_completed = &f
 	}
 }
 
-// AddedYye returns the value that was added to the "yye" field in this mutation.
-func (m *ProjectMutation) AddedYye() (r float64, exists bool) {
-	v := m.addyye
+// AddedRevenueCurrentYearCompleted returns the value that was added to the "revenue_current_year_completed" field in this mutation.
+func (m *ProjectMutation) AddedRevenueCurrentYearCompleted() (r float64, exists bool) {
+	v := m.addrevenue_current_year_completed
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// ClearYye clears the value of the "yye" field.
-func (m *ProjectMutation) ClearYye() {
-	m.yye = nil
-	m.addyye = nil
-	m.clearedFields[project.FieldYye] = struct{}{}
+// ClearRevenueCurrentYearCompleted clears the value of the "revenue_current_year_completed" field.
+func (m *ProjectMutation) ClearRevenueCurrentYearCompleted() {
+	m.revenue_current_year_completed = nil
+	m.addrevenue_current_year_completed = nil
+	m.clearedFields[project.FieldRevenueCurrentYearCompleted] = struct{}{}
 }
 
-// YyeCleared returns if the "yye" field was cleared in this mutation.
-func (m *ProjectMutation) YyeCleared() bool {
-	_, ok := m.clearedFields[project.FieldYye]
+// RevenueCurrentYearCompletedCleared returns if the "revenue_current_year_completed" field was cleared in this mutation.
+func (m *ProjectMutation) RevenueCurrentYearCompletedCleared() bool {
+	_, ok := m.clearedFields[project.FieldRevenueCurrentYearCompleted]
 	return ok
 }
 
-// ResetYye resets all changes to the "yye" field.
-func (m *ProjectMutation) ResetYye() {
-	m.yye = nil
-	m.addyye = nil
-	delete(m.clearedFields, project.FieldYye)
+// ResetRevenueCurrentYearCompleted resets all changes to the "revenue_current_year_completed" field.
+func (m *ProjectMutation) ResetRevenueCurrentYearCompleted() {
+	m.revenue_current_year_completed = nil
+	m.addrevenue_current_year_completed = nil
+	delete(m.clearedFields, project.FieldRevenueCurrentYearCompleted)
 }
 
-// SetXjl sets the "xjl" field.
-func (m *ProjectMutation) SetXjl(f float64) {
-	m.xjl = &f
-	m.addxjl = nil
+// SetRevenueAccumulatedCompleted sets the "revenue_accumulated_completed" field.
+func (m *ProjectMutation) SetRevenueAccumulatedCompleted(f float64) {
+	m.revenue_accumulated_completed = &f
+	m.addrevenue_accumulated_completed = nil
 }
 
-// Xjl returns the value of the "xjl" field in the mutation.
-func (m *ProjectMutation) Xjl() (r float64, exists bool) {
-	v := m.xjl
+// RevenueAccumulatedCompleted returns the value of the "revenue_accumulated_completed" field in the mutation.
+func (m *ProjectMutation) RevenueAccumulatedCompleted() (r float64, exists bool) {
+	v := m.revenue_accumulated_completed
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldXjl returns the old "xjl" field's value of the Project entity.
+// OldRevenueAccumulatedCompleted returns the old "revenue_accumulated_completed" field's value of the Project entity.
 // If the Project object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldXjl(ctx context.Context) (v *float64, err error) {
+func (m *ProjectMutation) OldRevenueAccumulatedCompleted(ctx context.Context) (v *float64, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldXjl is only allowed on UpdateOne operations")
+		return v, errors.New("OldRevenueAccumulatedCompleted is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldXjl requires an ID field in the mutation")
+		return v, errors.New("OldRevenueAccumulatedCompleted requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldXjl: %w", err)
+		return v, fmt.Errorf("querying old value for OldRevenueAccumulatedCompleted: %w", err)
 	}
-	return oldValue.Xjl, nil
+	return oldValue.RevenueAccumulatedCompleted, nil
 }
 
-// AddXjl adds f to the "xjl" field.
-func (m *ProjectMutation) AddXjl(f float64) {
-	if m.addxjl != nil {
-		*m.addxjl += f
+// AddRevenueAccumulatedCompleted adds f to the "revenue_accumulated_completed" field.
+func (m *ProjectMutation) AddRevenueAccumulatedCompleted(f float64) {
+	if m.addrevenue_accumulated_completed != nil {
+		*m.addrevenue_accumulated_completed += f
 	} else {
-		m.addxjl = &f
+		m.addrevenue_accumulated_completed = &f
 	}
 }
 
-// AddedXjl returns the value that was added to the "xjl" field in this mutation.
-func (m *ProjectMutation) AddedXjl() (r float64, exists bool) {
-	v := m.addxjl
+// AddedRevenueAccumulatedCompleted returns the value that was added to the "revenue_accumulated_completed" field in this mutation.
+func (m *ProjectMutation) AddedRevenueAccumulatedCompleted() (r float64, exists bool) {
+	v := m.addrevenue_accumulated_completed
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// ClearXjl clears the value of the "xjl" field.
-func (m *ProjectMutation) ClearXjl() {
-	m.xjl = nil
-	m.addxjl = nil
-	m.clearedFields[project.FieldXjl] = struct{}{}
+// ClearRevenueAccumulatedCompleted clears the value of the "revenue_accumulated_completed" field.
+func (m *ProjectMutation) ClearRevenueAccumulatedCompleted() {
+	m.revenue_accumulated_completed = nil
+	m.addrevenue_accumulated_completed = nil
+	m.clearedFields[project.FieldRevenueAccumulatedCompleted] = struct{}{}
 }
 
-// XjlCleared returns if the "xjl" field was cleared in this mutation.
-func (m *ProjectMutation) XjlCleared() bool {
-	_, ok := m.clearedFields[project.FieldXjl]
+// RevenueAccumulatedCompletedCleared returns if the "revenue_accumulated_completed" field was cleared in this mutation.
+func (m *ProjectMutation) RevenueAccumulatedCompletedCleared() bool {
+	_, ok := m.clearedFields[project.FieldRevenueAccumulatedCompleted]
 	return ok
 }
 
-// ResetXjl resets all changes to the "xjl" field.
-func (m *ProjectMutation) ResetXjl() {
-	m.xjl = nil
-	m.addxjl = nil
-	delete(m.clearedFields, project.FieldXjl)
+// ResetRevenueAccumulatedCompleted resets all changes to the "revenue_accumulated_completed" field.
+func (m *ProjectMutation) ResetRevenueAccumulatedCompleted() {
+	m.revenue_accumulated_completed = nil
+	m.addrevenue_accumulated_completed = nil
+	delete(m.clearedFields, project.FieldRevenueAccumulatedCompleted)
 }
 
-// SetXmglfYs sets the "xmglf_ys" field.
-func (m *ProjectMutation) SetXmglfYs(f float64) {
-	m.xmglf_ys = &f
-	m.addxmglf_ys = nil
+// SetPayDate sets the "pay_date" field.
+func (m *ProjectMutation) SetPayDate(t time.Time) {
+	m.pay_date = &t
 }
 
-// XmglfYs returns the value of the "xmglf_ys" field in the mutation.
-func (m *ProjectMutation) XmglfYs() (r float64, exists bool) {
-	v := m.xmglf_ys
+// PayDate returns the value of the "pay_date" field in the mutation.
+func (m *ProjectMutation) PayDate() (r time.Time, exists bool) {
+	v := m.pay_date
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldXmglfYs returns the old "xmglf_ys" field's value of the Project entity.
+// OldPayDate returns the old "pay_date" field's value of the Project entity.
 // If the Project object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldXmglfYs(ctx context.Context) (v *float64, err error) {
+func (m *ProjectMutation) OldPayDate(ctx context.Context) (v *time.Time, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldXmglfYs is only allowed on UpdateOne operations")
+		return v, errors.New("OldPayDate is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldXmglfYs requires an ID field in the mutation")
+		return v, errors.New("OldPayDate requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldXmglfYs: %w", err)
+		return v, fmt.Errorf("querying old value for OldPayDate: %w", err)
 	}
-	return oldValue.XmglfYs, nil
+	return oldValue.PayDate, nil
 }
 
-// AddXmglfYs adds f to the "xmglf_ys" field.
-func (m *ProjectMutation) AddXmglfYs(f float64) {
-	if m.addxmglf_ys != nil {
-		*m.addxmglf_ys += f
+// ClearPayDate clears the value of the "pay_date" field.
+func (m *ProjectMutation) ClearPayDate() {
+	m.pay_date = nil
+	m.clearedFields[project.FieldPayDate] = struct{}{}
+}
+
+// PayDateCleared returns if the "pay_date" field was cleared in this mutation.
+func (m *ProjectMutation) PayDateCleared() bool {
+	_, ok := m.clearedFields[project.FieldPayDate]
+	return ok
+}
+
+// ResetPayDate resets all changes to the "pay_date" field.
+func (m *ProjectMutation) ResetPayDate() {
+	m.pay_date = nil
+	delete(m.clearedFields, project.FieldPayDate)
+}
+
+// SetOwnerVoCount sets the "owner_vo_count" field.
+func (m *ProjectMutation) SetOwnerVoCount(i int) {
+	m.owner_vo_count = &i
+	m.addowner_vo_count = nil
+}
+
+// OwnerVoCount returns the value of the "owner_vo_count" field in the mutation.
+func (m *ProjectMutation) OwnerVoCount() (r int, exists bool) {
+	v := m.owner_vo_count
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldOwnerVoCount returns the old "owner_vo_count" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldOwnerVoCount(ctx context.Context) (v *int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldOwnerVoCount is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldOwnerVoCount requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldOwnerVoCount: %w", err)
+	}
+	return oldValue.OwnerVoCount, nil
+}
+
+// AddOwnerVoCount adds i to the "owner_vo_count" field.
+func (m *ProjectMutation) AddOwnerVoCount(i int) {
+	if m.addowner_vo_count != nil {
+		*m.addowner_vo_count += i
 	} else {
-		m.addxmglf_ys = &f
+		m.addowner_vo_count = &i
 	}
 }
 
-// AddedXmglfYs returns the value that was added to the "xmglf_ys" field in this mutation.
-func (m *ProjectMutation) AddedXmglfYs() (r float64, exists bool) {
-	v := m.addxmglf_ys
+// AddedOwnerVoCount returns the value that was added to the "owner_vo_count" field in this mutation.
+func (m *ProjectMutation) AddedOwnerVoCount() (r int, exists bool) {
+	v := m.addowner_vo_count
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// ClearXmglfYs clears the value of the "xmglf_ys" field.
-func (m *ProjectMutation) ClearXmglfYs() {
-	m.xmglf_ys = nil
-	m.addxmglf_ys = nil
-	m.clearedFields[project.FieldXmglfYs] = struct{}{}
+// ClearOwnerVoCount clears the value of the "owner_vo_count" field.
+func (m *ProjectMutation) ClearOwnerVoCount() {
+	m.owner_vo_count = nil
+	m.addowner_vo_count = nil
+	m.clearedFields[project.FieldOwnerVoCount] = struct{}{}
 }
 
-// XmglfYsCleared returns if the "xmglf_ys" field was cleared in this mutation.
-func (m *ProjectMutation) XmglfYsCleared() bool {
-	_, ok := m.clearedFields[project.FieldXmglfYs]
+// OwnerVoCountCleared returns if the "owner_vo_count" field was cleared in this mutation.
+func (m *ProjectMutation) OwnerVoCountCleared() bool {
+	_, ok := m.clearedFields[project.FieldOwnerVoCount]
 	return ok
 }
 
-// ResetXmglfYs resets all changes to the "xmglf_ys" field.
-func (m *ProjectMutation) ResetXmglfYs() {
-	m.xmglf_ys = nil
-	m.addxmglf_ys = nil
-	delete(m.clearedFields, project.FieldXmglfYs)
+// ResetOwnerVoCount resets all changes to the "owner_vo_count" field.
+func (m *ProjectMutation) ResetOwnerVoCount() {
+	m.owner_vo_count = nil
+	m.addowner_vo_count = nil
+	delete(m.clearedFields, project.FieldOwnerVoCount)
 }
 
-// SetXmglfLj sets the "xmglf_lj" field.
-func (m *ProjectMutation) SetXmglfLj(f float64) {
-	m.xmglf_lj = &f
-	m.addxmglf_lj = nil
+// SetContractorVoCount sets the "contractor_vo_count" field.
+func (m *ProjectMutation) SetContractorVoCount(i int) {
+	m.contractor_vo_count = &i
+	m.addcontractor_vo_count = nil
 }
 
-// XmglfLj returns the value of the "xmglf_lj" field in the mutation.
-func (m *ProjectMutation) XmglfLj() (r float64, exists bool) {
-	v := m.xmglf_lj
+// ContractorVoCount returns the value of the "contractor_vo_count" field in the mutation.
+func (m *ProjectMutation) ContractorVoCount() (r int, exists bool) {
+	v := m.contractor_vo_count
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldXmglfLj returns the old "xmglf_lj" field's value of the Project entity.
+// OldContractorVoCount returns the old "contractor_vo_count" field's value of the Project entity.
 // If the Project object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldXmglfLj(ctx context.Context) (v *float64, err error) {
+func (m *ProjectMutation) OldContractorVoCount(ctx context.Context) (v *int, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldXmglfLj is only allowed on UpdateOne operations")
+		return v, errors.New("OldContractorVoCount is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldXmglfLj requires an ID field in the mutation")
+		return v, errors.New("OldContractorVoCount requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldXmglfLj: %w", err)
+		return v, fmt.Errorf("querying old value for OldContractorVoCount: %w", err)
 	}
-	return oldValue.XmglfLj, nil
+	return oldValue.ContractorVoCount, nil
 }
 
-// AddXmglfLj adds f to the "xmglf_lj" field.
-func (m *ProjectMutation) AddXmglfLj(f float64) {
-	if m.addxmglf_lj != nil {
-		*m.addxmglf_lj += f
+// AddContractorVoCount adds i to the "contractor_vo_count" field.
+func (m *ProjectMutation) AddContractorVoCount(i int) {
+	if m.addcontractor_vo_count != nil {
+		*m.addcontractor_vo_count += i
 	} else {
-		m.addxmglf_lj = &f
+		m.addcontractor_vo_count = &i
 	}
 }
 
-// AddedXmglfLj returns the value that was added to the "xmglf_lj" field in this mutation.
-func (m *ProjectMutation) AddedXmglfLj() (r float64, exists bool) {
-	v := m.addxmglf_lj
+// AddedContractorVoCount returns the value that was added to the "contractor_vo_count" field in this mutation.
+func (m *ProjectMutation) AddedContractorVoCount() (r int, exists bool) {
+	v := m.addcontractor_vo_count
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// ClearXmglfLj clears the value of the "xmglf_lj" field.
-func (m *ProjectMutation) ClearXmglfLj() {
-	m.xmglf_lj = nil
-	m.addxmglf_lj = nil
-	m.clearedFields[project.FieldXmglfLj] = struct{}{}
+// ClearContractorVoCount clears the value of the "contractor_vo_count" field.
+func (m *ProjectMutation) ClearContractorVoCount() {
+	m.contractor_vo_count = nil
+	m.addcontractor_vo_count = nil
+	m.clearedFields[project.FieldContractorVoCount] = struct{}{}
 }
 
-// XmglfLjCleared returns if the "xmglf_lj" field was cleared in this mutation.
-func (m *ProjectMutation) XmglfLjCleared() bool {
-	_, ok := m.clearedFields[project.FieldXmglfLj]
+// ContractorVoCountCleared returns if the "contractor_vo_count" field was cleared in this mutation.
+func (m *ProjectMutation) ContractorVoCountCleared() bool {
+	_, ok := m.clearedFields[project.FieldContractorVoCount]
 	return ok
 }
 
-// ResetXmglfLj resets all changes to the "xmglf_lj" field.
-func (m *ProjectMutation) ResetXmglfLj() {
-	m.xmglf_lj = nil
-	m.addxmglf_lj = nil
-	delete(m.clearedFields, project.FieldXmglfLj)
+// ResetContractorVoCount resets all changes to the "contractor_vo_count" field.
+func (m *ProjectMutation) ResetContractorVoCount() {
+	m.contractor_vo_count = nil
+	m.addcontractor_vo_count = nil
+	delete(m.clearedFields, project.FieldContractorVoCount)
 }
 
-// SetXmsjf sets the "xmsjf" field.
-func (m *ProjectMutation) SetXmsjf(f float64) {
-	m.xmsjf = &f
-	m.addxmsjf = nil
+// SetAccumulateDeduction sets the "accumulate_deduction" field.
+func (m *ProjectMutation) SetAccumulateDeduction(f float64) {
+	m.accumulate_deduction = &f
+	m.addaccumulate_deduction = nil
 }
 
-// Xmsjf returns the value of the "xmsjf" field in the mutation.
-func (m *ProjectMutation) Xmsjf() (r float64, exists bool) {
-	v := m.xmsjf
+// AccumulateDeduction returns the value of the "accumulate_deduction" field in the mutation.
+func (m *ProjectMutation) AccumulateDeduction() (r float64, exists bool) {
+	v := m.accumulate_deduction
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldXmsjf returns the old "xmsjf" field's value of the Project entity.
+// OldAccumulateDeduction returns the old "accumulate_deduction" field's value of the Project entity.
 // If the Project object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldXmsjf(ctx context.Context) (v *float64, err error) {
+func (m *ProjectMutation) OldAccumulateDeduction(ctx context.Context) (v *float64, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldXmsjf is only allowed on UpdateOne operations")
+		return v, errors.New("OldAccumulateDeduction is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldXmsjf requires an ID field in the mutation")
+		return v, errors.New("OldAccumulateDeduction requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldXmsjf: %w", err)
+		return v, fmt.Errorf("querying old value for OldAccumulateDeduction: %w", err)
 	}
-	return oldValue.Xmsjf, nil
+	return oldValue.AccumulateDeduction, nil
 }
 
-// AddXmsjf adds f to the "xmsjf" field.
-func (m *ProjectMutation) AddXmsjf(f float64) {
-	if m.addxmsjf != nil {
-		*m.addxmsjf += f
+// AddAccumulateDeduction adds f to the "accumulate_deduction" field.
+func (m *ProjectMutation) AddAccumulateDeduction(f float64) {
+	if m.addaccumulate_deduction != nil {
+		*m.addaccumulate_deduction += f
 	} else {
-		m.addxmsjf = &f
+		m.addaccumulate_deduction = &f
 	}
 }
 
-// AddedXmsjf returns the value that was added to the "xmsjf" field in this mutation.
-func (m *ProjectMutation) AddedXmsjf() (r float64, exists bool) {
-	v := m.addxmsjf
+// AddedAccumulateDeduction returns the value that was added to the "accumulate_deduction" field in this mutation.
+func (m *ProjectMutation) AddedAccumulateDeduction() (r float64, exists bool) {
+	v := m.addaccumulate_deduction
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// ClearXmsjf clears the value of the "xmsjf" field.
-func (m *ProjectMutation) ClearXmsjf() {
-	m.xmsjf = nil
-	m.addxmsjf = nil
-	m.clearedFields[project.FieldXmsjf] = struct{}{}
+// ClearAccumulateDeduction clears the value of the "accumulate_deduction" field.
+func (m *ProjectMutation) ClearAccumulateDeduction() {
+	m.accumulate_deduction = nil
+	m.addaccumulate_deduction = nil
+	m.clearedFields[project.FieldAccumulateDeduction] = struct{}{}
 }
 
-// XmsjfCleared returns if the "xmsjf" field was cleared in this mutation.
-func (m *ProjectMutation) XmsjfCleared() bool {
-	_, ok := m.clearedFields[project.FieldXmsjf]
+// AccumulateDeductionCleared returns if the "accumulate_deduction" field was cleared in this mutation.
+func (m *ProjectMutation) AccumulateDeductionCleared() bool {
+	_, ok := m.clearedFields[project.FieldAccumulateDeduction]
 	return ok
 }
 
-// ResetXmsjf resets all changes to the "xmsjf" field.
-func (m *ProjectMutation) ResetXmsjf() {
-	m.xmsjf = nil
-	m.addxmsjf = nil
-	delete(m.clearedFields, project.FieldXmsjf)
+// ResetAccumulateDeduction resets all changes to the "accumulate_deduction" field.
+func (m *ProjectMutation) ResetAccumulateDeduction() {
+	m.accumulate_deduction = nil
+	m.addaccumulate_deduction = nil
+	delete(m.clearedFields, project.FieldAccumulateDeduction)
 }
 
-// SetXmfzr sets the "xmfzr" field.
-func (m *ProjectMutation) SetXmfzr(s string) {
-	m.xmfzr = &s
+// SetSubcontractorVaCount sets the "subcontractor_va_count" field.
+func (m *ProjectMutation) SetSubcontractorVaCount(i int) {
+	m.subcontractor_va_count = &i
+	m.addsubcontractor_va_count = nil
 }
 
-// Xmfzr returns the value of the "xmfzr" field in the mutation.
-func (m *ProjectMutation) Xmfzr() (r string, exists bool) {
-	v := m.xmfzr
+// SubcontractorVaCount returns the value of the "subcontractor_va_count" field in the mutation.
+func (m *ProjectMutation) SubcontractorVaCount() (r int, exists bool) {
+	v := m.subcontractor_va_count
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldXmfzr returns the old "xmfzr" field's value of the Project entity.
+// OldSubcontractorVaCount returns the old "subcontractor_va_count" field's value of the Project entity.
 // If the Project object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldXmfzr(ctx context.Context) (v *string, err error) {
+func (m *ProjectMutation) OldSubcontractorVaCount(ctx context.Context) (v *int, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldXmfzr is only allowed on UpdateOne operations")
+		return v, errors.New("OldSubcontractorVaCount is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldXmfzr requires an ID field in the mutation")
+		return v, errors.New("OldSubcontractorVaCount requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldXmfzr: %w", err)
+		return v, fmt.Errorf("querying old value for OldSubcontractorVaCount: %w", err)
 	}
-	return oldValue.Xmfzr, nil
+	return oldValue.SubcontractorVaCount, nil
 }
 
-// ClearXmfzr clears the value of the "xmfzr" field.
-func (m *ProjectMutation) ClearXmfzr() {
-	m.xmfzr = nil
-	m.clearedFields[project.FieldXmfzr] = struct{}{}
-}
-
-// XmfzrCleared returns if the "xmfzr" field was cleared in this mutation.
-func (m *ProjectMutation) XmfzrCleared() bool {
-	_, ok := m.clearedFields[project.FieldXmfzr]
-	return ok
-}
-
-// ResetXmfzr resets all changes to the "xmfzr" field.
-func (m *ProjectMutation) ResetXmfzr() {
-	m.xmfzr = nil
-	delete(m.clearedFields, project.FieldXmfzr)
-}
-
-// SetOwnerApplyAmount sets the "owner_apply_amount" field.
-func (m *ProjectMutation) SetOwnerApplyAmount(f float64) {
-	m.owner_apply_amount = &f
-	m.addowner_apply_amount = nil
-}
-
-// OwnerApplyAmount returns the value of the "owner_apply_amount" field in the mutation.
-func (m *ProjectMutation) OwnerApplyAmount() (r float64, exists bool) {
-	v := m.owner_apply_amount
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldOwnerApplyAmount returns the old "owner_apply_amount" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldOwnerApplyAmount(ctx context.Context) (v *float64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldOwnerApplyAmount is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldOwnerApplyAmount requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldOwnerApplyAmount: %w", err)
-	}
-	return oldValue.OwnerApplyAmount, nil
-}
-
-// AddOwnerApplyAmount adds f to the "owner_apply_amount" field.
-func (m *ProjectMutation) AddOwnerApplyAmount(f float64) {
-	if m.addowner_apply_amount != nil {
-		*m.addowner_apply_amount += f
+// AddSubcontractorVaCount adds i to the "subcontractor_va_count" field.
+func (m *ProjectMutation) AddSubcontractorVaCount(i int) {
+	if m.addsubcontractor_va_count != nil {
+		*m.addsubcontractor_va_count += i
 	} else {
-		m.addowner_apply_amount = &f
+		m.addsubcontractor_va_count = &i
 	}
 }
 
-// AddedOwnerApplyAmount returns the value that was added to the "owner_apply_amount" field in this mutation.
-func (m *ProjectMutation) AddedOwnerApplyAmount() (r float64, exists bool) {
-	v := m.addowner_apply_amount
+// AddedSubcontractorVaCount returns the value that was added to the "subcontractor_va_count" field in this mutation.
+func (m *ProjectMutation) AddedSubcontractorVaCount() (r int, exists bool) {
+	v := m.addsubcontractor_va_count
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// ClearOwnerApplyAmount clears the value of the "owner_apply_amount" field.
-func (m *ProjectMutation) ClearOwnerApplyAmount() {
-	m.owner_apply_amount = nil
-	m.addowner_apply_amount = nil
-	m.clearedFields[project.FieldOwnerApplyAmount] = struct{}{}
+// ClearSubcontractorVaCount clears the value of the "subcontractor_va_count" field.
+func (m *ProjectMutation) ClearSubcontractorVaCount() {
+	m.subcontractor_va_count = nil
+	m.addsubcontractor_va_count = nil
+	m.clearedFields[project.FieldSubcontractorVaCount] = struct{}{}
 }
 
-// OwnerApplyAmountCleared returns if the "owner_apply_amount" field was cleared in this mutation.
-func (m *ProjectMutation) OwnerApplyAmountCleared() bool {
-	_, ok := m.clearedFields[project.FieldOwnerApplyAmount]
+// SubcontractorVaCountCleared returns if the "subcontractor_va_count" field was cleared in this mutation.
+func (m *ProjectMutation) SubcontractorVaCountCleared() bool {
+	_, ok := m.clearedFields[project.FieldSubcontractorVaCount]
 	return ok
 }
 
-// ResetOwnerApplyAmount resets all changes to the "owner_apply_amount" field.
-func (m *ProjectMutation) ResetOwnerApplyAmount() {
-	m.owner_apply_amount = nil
-	m.addowner_apply_amount = nil
-	delete(m.clearedFields, project.FieldOwnerApplyAmount)
+// ResetSubcontractorVaCount resets all changes to the "subcontractor_va_count" field.
+func (m *ProjectMutation) ResetSubcontractorVaCount() {
+	m.subcontractor_va_count = nil
+	m.addsubcontractor_va_count = nil
+	delete(m.clearedFields, project.FieldSubcontractorVaCount)
 }
 
-// SetOwnerApplyCount sets the "owner_apply_count" field.
-func (m *ProjectMutation) SetOwnerApplyCount(i int) {
-	m.owner_apply_count = &i
-	m.addowner_apply_count = nil
+// SetContractSupplementaryCount sets the "contract_supplementary_count" field.
+func (m *ProjectMutation) SetContractSupplementaryCount(i int) {
+	m.contract_supplementary_count = &i
+	m.addcontract_supplementary_count = nil
 }
 
-// OwnerApplyCount returns the value of the "owner_apply_count" field in the mutation.
-func (m *ProjectMutation) OwnerApplyCount() (r int, exists bool) {
-	v := m.owner_apply_count
+// ContractSupplementaryCount returns the value of the "contract_supplementary_count" field in the mutation.
+func (m *ProjectMutation) ContractSupplementaryCount() (r int, exists bool) {
+	v := m.contract_supplementary_count
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldOwnerApplyCount returns the old "owner_apply_count" field's value of the Project entity.
+// OldContractSupplementaryCount returns the old "contract_supplementary_count" field's value of the Project entity.
 // If the Project object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldOwnerApplyCount(ctx context.Context) (v *int, err error) {
+func (m *ProjectMutation) OldContractSupplementaryCount(ctx context.Context) (v *int, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldOwnerApplyCount is only allowed on UpdateOne operations")
+		return v, errors.New("OldContractSupplementaryCount is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldOwnerApplyCount requires an ID field in the mutation")
+		return v, errors.New("OldContractSupplementaryCount requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldOwnerApplyCount: %w", err)
+		return v, fmt.Errorf("querying old value for OldContractSupplementaryCount: %w", err)
 	}
-	return oldValue.OwnerApplyCount, nil
+	return oldValue.ContractSupplementaryCount, nil
 }
 
-// AddOwnerApplyCount adds i to the "owner_apply_count" field.
-func (m *ProjectMutation) AddOwnerApplyCount(i int) {
-	if m.addowner_apply_count != nil {
-		*m.addowner_apply_count += i
+// AddContractSupplementaryCount adds i to the "contract_supplementary_count" field.
+func (m *ProjectMutation) AddContractSupplementaryCount(i int) {
+	if m.addcontract_supplementary_count != nil {
+		*m.addcontract_supplementary_count += i
 	} else {
-		m.addowner_apply_count = &i
+		m.addcontract_supplementary_count = &i
 	}
 }
 
-// AddedOwnerApplyCount returns the value that was added to the "owner_apply_count" field in this mutation.
-func (m *ProjectMutation) AddedOwnerApplyCount() (r int, exists bool) {
-	v := m.addowner_apply_count
+// AddedContractSupplementaryCount returns the value that was added to the "contract_supplementary_count" field in this mutation.
+func (m *ProjectMutation) AddedContractSupplementaryCount() (r int, exists bool) {
+	v := m.addcontract_supplementary_count
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// ClearOwnerApplyCount clears the value of the "owner_apply_count" field.
-func (m *ProjectMutation) ClearOwnerApplyCount() {
-	m.owner_apply_count = nil
-	m.addowner_apply_count = nil
-	m.clearedFields[project.FieldOwnerApplyCount] = struct{}{}
+// ClearContractSupplementaryCount clears the value of the "contract_supplementary_count" field.
+func (m *ProjectMutation) ClearContractSupplementaryCount() {
+	m.contract_supplementary_count = nil
+	m.addcontract_supplementary_count = nil
+	m.clearedFields[project.FieldContractSupplementaryCount] = struct{}{}
 }
 
-// OwnerApplyCountCleared returns if the "owner_apply_count" field was cleared in this mutation.
-func (m *ProjectMutation) OwnerApplyCountCleared() bool {
-	_, ok := m.clearedFields[project.FieldOwnerApplyCount]
+// ContractSupplementaryCountCleared returns if the "contract_supplementary_count" field was cleared in this mutation.
+func (m *ProjectMutation) ContractSupplementaryCountCleared() bool {
+	_, ok := m.clearedFields[project.FieldContractSupplementaryCount]
 	return ok
 }
 
-// ResetOwnerApplyCount resets all changes to the "owner_apply_count" field.
-func (m *ProjectMutation) ResetOwnerApplyCount() {
-	m.owner_apply_count = nil
-	m.addowner_apply_count = nil
-	delete(m.clearedFields, project.FieldOwnerApplyCount)
+// ResetContractSupplementaryCount resets all changes to the "contract_supplementary_count" field.
+func (m *ProjectMutation) ResetContractSupplementaryCount() {
+	m.contract_supplementary_count = nil
+	m.addcontract_supplementary_count = nil
+	delete(m.clearedFields, project.FieldContractSupplementaryCount)
 }
 
-// SetOwnerApproveAmount sets the "owner_approve_amount" field.
-func (m *ProjectMutation) SetOwnerApproveAmount(f float64) {
-	m.owner_approve_amount = &f
-	m.addowner_approve_amount = nil
+// SetRepairFee sets the "repair_fee" field.
+func (m *ProjectMutation) SetRepairFee(f float64) {
+	m.repair_fee = &f
+	m.addrepair_fee = nil
 }
 
-// OwnerApproveAmount returns the value of the "owner_approve_amount" field in the mutation.
-func (m *ProjectMutation) OwnerApproveAmount() (r float64, exists bool) {
-	v := m.owner_approve_amount
+// RepairFee returns the value of the "repair_fee" field in the mutation.
+func (m *ProjectMutation) RepairFee() (r float64, exists bool) {
+	v := m.repair_fee
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldOwnerApproveAmount returns the old "owner_approve_amount" field's value of the Project entity.
+// OldRepairFee returns the old "repair_fee" field's value of the Project entity.
 // If the Project object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldOwnerApproveAmount(ctx context.Context) (v *float64, err error) {
+func (m *ProjectMutation) OldRepairFee(ctx context.Context) (v *float64, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldOwnerApproveAmount is only allowed on UpdateOne operations")
+		return v, errors.New("OldRepairFee is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldOwnerApproveAmount requires an ID field in the mutation")
+		return v, errors.New("OldRepairFee requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldOwnerApproveAmount: %w", err)
+		return v, fmt.Errorf("querying old value for OldRepairFee: %w", err)
 	}
-	return oldValue.OwnerApproveAmount, nil
+	return oldValue.RepairFee, nil
 }
 
-// AddOwnerApproveAmount adds f to the "owner_approve_amount" field.
-func (m *ProjectMutation) AddOwnerApproveAmount(f float64) {
-	if m.addowner_approve_amount != nil {
-		*m.addowner_approve_amount += f
+// AddRepairFee adds f to the "repair_fee" field.
+func (m *ProjectMutation) AddRepairFee(f float64) {
+	if m.addrepair_fee != nil {
+		*m.addrepair_fee += f
 	} else {
-		m.addowner_approve_amount = &f
+		m.addrepair_fee = &f
 	}
 }
 
-// AddedOwnerApproveAmount returns the value that was added to the "owner_approve_amount" field in this mutation.
-func (m *ProjectMutation) AddedOwnerApproveAmount() (r float64, exists bool) {
-	v := m.addowner_approve_amount
+// AddedRepairFee returns the value that was added to the "repair_fee" field in this mutation.
+func (m *ProjectMutation) AddedRepairFee() (r float64, exists bool) {
+	v := m.addrepair_fee
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// ClearOwnerApproveAmount clears the value of the "owner_approve_amount" field.
-func (m *ProjectMutation) ClearOwnerApproveAmount() {
-	m.owner_approve_amount = nil
-	m.addowner_approve_amount = nil
-	m.clearedFields[project.FieldOwnerApproveAmount] = struct{}{}
+// ClearRepairFee clears the value of the "repair_fee" field.
+func (m *ProjectMutation) ClearRepairFee() {
+	m.repair_fee = nil
+	m.addrepair_fee = nil
+	m.clearedFields[project.FieldRepairFee] = struct{}{}
 }
 
-// OwnerApproveAmountCleared returns if the "owner_approve_amount" field was cleared in this mutation.
-func (m *ProjectMutation) OwnerApproveAmountCleared() bool {
-	_, ok := m.clearedFields[project.FieldOwnerApproveAmount]
+// RepairFeeCleared returns if the "repair_fee" field was cleared in this mutation.
+func (m *ProjectMutation) RepairFeeCleared() bool {
+	_, ok := m.clearedFields[project.FieldRepairFee]
 	return ok
 }
 
-// ResetOwnerApproveAmount resets all changes to the "owner_approve_amount" field.
-func (m *ProjectMutation) ResetOwnerApproveAmount() {
-	m.owner_approve_amount = nil
-	m.addowner_approve_amount = nil
-	delete(m.clearedFields, project.FieldOwnerApproveAmount)
-}
-
-// SetOwnerApproveCount sets the "owner_approve_count" field.
-func (m *ProjectMutation) SetOwnerApproveCount(i int) {
-	m.owner_approve_count = &i
-	m.addowner_approve_count = nil
-}
-
-// OwnerApproveCount returns the value of the "owner_approve_count" field in the mutation.
-func (m *ProjectMutation) OwnerApproveCount() (r int, exists bool) {
-	v := m.owner_approve_count
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldOwnerApproveCount returns the old "owner_approve_count" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldOwnerApproveCount(ctx context.Context) (v *int, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldOwnerApproveCount is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldOwnerApproveCount requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldOwnerApproveCount: %w", err)
-	}
-	return oldValue.OwnerApproveCount, nil
-}
-
-// AddOwnerApproveCount adds i to the "owner_approve_count" field.
-func (m *ProjectMutation) AddOwnerApproveCount(i int) {
-	if m.addowner_approve_count != nil {
-		*m.addowner_approve_count += i
-	} else {
-		m.addowner_approve_count = &i
-	}
-}
-
-// AddedOwnerApproveCount returns the value that was added to the "owner_approve_count" field in this mutation.
-func (m *ProjectMutation) AddedOwnerApproveCount() (r int, exists bool) {
-	v := m.addowner_approve_count
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearOwnerApproveCount clears the value of the "owner_approve_count" field.
-func (m *ProjectMutation) ClearOwnerApproveCount() {
-	m.owner_approve_count = nil
-	m.addowner_approve_count = nil
-	m.clearedFields[project.FieldOwnerApproveCount] = struct{}{}
-}
-
-// OwnerApproveCountCleared returns if the "owner_approve_count" field was cleared in this mutation.
-func (m *ProjectMutation) OwnerApproveCountCleared() bool {
-	_, ok := m.clearedFields[project.FieldOwnerApproveCount]
-	return ok
-}
-
-// ResetOwnerApproveCount resets all changes to the "owner_approve_count" field.
-func (m *ProjectMutation) ResetOwnerApproveCount() {
-	m.owner_approve_count = nil
-	m.addowner_approve_count = nil
-	delete(m.clearedFields, project.FieldOwnerApproveCount)
-}
-
-// SetContractorApplyAmount sets the "contractor_apply_amount" field.
-func (m *ProjectMutation) SetContractorApplyAmount(f float64) {
-	m.contractor_apply_amount = &f
-	m.addcontractor_apply_amount = nil
-}
-
-// ContractorApplyAmount returns the value of the "contractor_apply_amount" field in the mutation.
-func (m *ProjectMutation) ContractorApplyAmount() (r float64, exists bool) {
-	v := m.contractor_apply_amount
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldContractorApplyAmount returns the old "contractor_apply_amount" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldContractorApplyAmount(ctx context.Context) (v *float64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldContractorApplyAmount is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldContractorApplyAmount requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldContractorApplyAmount: %w", err)
-	}
-	return oldValue.ContractorApplyAmount, nil
-}
-
-// AddContractorApplyAmount adds f to the "contractor_apply_amount" field.
-func (m *ProjectMutation) AddContractorApplyAmount(f float64) {
-	if m.addcontractor_apply_amount != nil {
-		*m.addcontractor_apply_amount += f
-	} else {
-		m.addcontractor_apply_amount = &f
-	}
-}
-
-// AddedContractorApplyAmount returns the value that was added to the "contractor_apply_amount" field in this mutation.
-func (m *ProjectMutation) AddedContractorApplyAmount() (r float64, exists bool) {
-	v := m.addcontractor_apply_amount
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearContractorApplyAmount clears the value of the "contractor_apply_amount" field.
-func (m *ProjectMutation) ClearContractorApplyAmount() {
-	m.contractor_apply_amount = nil
-	m.addcontractor_apply_amount = nil
-	m.clearedFields[project.FieldContractorApplyAmount] = struct{}{}
-}
-
-// ContractorApplyAmountCleared returns if the "contractor_apply_amount" field was cleared in this mutation.
-func (m *ProjectMutation) ContractorApplyAmountCleared() bool {
-	_, ok := m.clearedFields[project.FieldContractorApplyAmount]
-	return ok
-}
-
-// ResetContractorApplyAmount resets all changes to the "contractor_apply_amount" field.
-func (m *ProjectMutation) ResetContractorApplyAmount() {
-	m.contractor_apply_amount = nil
-	m.addcontractor_apply_amount = nil
-	delete(m.clearedFields, project.FieldContractorApplyAmount)
-}
-
-// SetContractorApplyCount sets the "contractor_apply_count" field.
-func (m *ProjectMutation) SetContractorApplyCount(i int) {
-	m.contractor_apply_count = &i
-	m.addcontractor_apply_count = nil
-}
-
-// ContractorApplyCount returns the value of the "contractor_apply_count" field in the mutation.
-func (m *ProjectMutation) ContractorApplyCount() (r int, exists bool) {
-	v := m.contractor_apply_count
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldContractorApplyCount returns the old "contractor_apply_count" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldContractorApplyCount(ctx context.Context) (v *int, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldContractorApplyCount is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldContractorApplyCount requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldContractorApplyCount: %w", err)
-	}
-	return oldValue.ContractorApplyCount, nil
-}
-
-// AddContractorApplyCount adds i to the "contractor_apply_count" field.
-func (m *ProjectMutation) AddContractorApplyCount(i int) {
-	if m.addcontractor_apply_count != nil {
-		*m.addcontractor_apply_count += i
-	} else {
-		m.addcontractor_apply_count = &i
-	}
-}
-
-// AddedContractorApplyCount returns the value that was added to the "contractor_apply_count" field in this mutation.
-func (m *ProjectMutation) AddedContractorApplyCount() (r int, exists bool) {
-	v := m.addcontractor_apply_count
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearContractorApplyCount clears the value of the "contractor_apply_count" field.
-func (m *ProjectMutation) ClearContractorApplyCount() {
-	m.contractor_apply_count = nil
-	m.addcontractor_apply_count = nil
-	m.clearedFields[project.FieldContractorApplyCount] = struct{}{}
-}
-
-// ContractorApplyCountCleared returns if the "contractor_apply_count" field was cleared in this mutation.
-func (m *ProjectMutation) ContractorApplyCountCleared() bool {
-	_, ok := m.clearedFields[project.FieldContractorApplyCount]
-	return ok
-}
-
-// ResetContractorApplyCount resets all changes to the "contractor_apply_count" field.
-func (m *ProjectMutation) ResetContractorApplyCount() {
-	m.contractor_apply_count = nil
-	m.addcontractor_apply_count = nil
-	delete(m.clearedFields, project.FieldContractorApplyCount)
-}
-
-// SetContractorApproveAmount sets the "contractor_approve_amount" field.
-func (m *ProjectMutation) SetContractorApproveAmount(f float64) {
-	m.contractor_approve_amount = &f
-	m.addcontractor_approve_amount = nil
-}
-
-// ContractorApproveAmount returns the value of the "contractor_approve_amount" field in the mutation.
-func (m *ProjectMutation) ContractorApproveAmount() (r float64, exists bool) {
-	v := m.contractor_approve_amount
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldContractorApproveAmount returns the old "contractor_approve_amount" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldContractorApproveAmount(ctx context.Context) (v *float64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldContractorApproveAmount is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldContractorApproveAmount requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldContractorApproveAmount: %w", err)
-	}
-	return oldValue.ContractorApproveAmount, nil
-}
-
-// AddContractorApproveAmount adds f to the "contractor_approve_amount" field.
-func (m *ProjectMutation) AddContractorApproveAmount(f float64) {
-	if m.addcontractor_approve_amount != nil {
-		*m.addcontractor_approve_amount += f
-	} else {
-		m.addcontractor_approve_amount = &f
-	}
-}
-
-// AddedContractorApproveAmount returns the value that was added to the "contractor_approve_amount" field in this mutation.
-func (m *ProjectMutation) AddedContractorApproveAmount() (r float64, exists bool) {
-	v := m.addcontractor_approve_amount
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearContractorApproveAmount clears the value of the "contractor_approve_amount" field.
-func (m *ProjectMutation) ClearContractorApproveAmount() {
-	m.contractor_approve_amount = nil
-	m.addcontractor_approve_amount = nil
-	m.clearedFields[project.FieldContractorApproveAmount] = struct{}{}
-}
-
-// ContractorApproveAmountCleared returns if the "contractor_approve_amount" field was cleared in this mutation.
-func (m *ProjectMutation) ContractorApproveAmountCleared() bool {
-	_, ok := m.clearedFields[project.FieldContractorApproveAmount]
-	return ok
-}
-
-// ResetContractorApproveAmount resets all changes to the "contractor_approve_amount" field.
-func (m *ProjectMutation) ResetContractorApproveAmount() {
-	m.contractor_approve_amount = nil
-	m.addcontractor_approve_amount = nil
-	delete(m.clearedFields, project.FieldContractorApproveAmount)
-}
-
-// SetContractorApproveCount sets the "contractor_approve_count" field.
-func (m *ProjectMutation) SetContractorApproveCount(i int) {
-	m.contractor_approve_count = &i
-	m.addcontractor_approve_count = nil
-}
-
-// ContractorApproveCount returns the value of the "contractor_approve_count" field in the mutation.
-func (m *ProjectMutation) ContractorApproveCount() (r int, exists bool) {
-	v := m.contractor_approve_count
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldContractorApproveCount returns the old "contractor_approve_count" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldContractorApproveCount(ctx context.Context) (v *int, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldContractorApproveCount is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldContractorApproveCount requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldContractorApproveCount: %w", err)
-	}
-	return oldValue.ContractorApproveCount, nil
-}
-
-// AddContractorApproveCount adds i to the "contractor_approve_count" field.
-func (m *ProjectMutation) AddContractorApproveCount(i int) {
-	if m.addcontractor_approve_count != nil {
-		*m.addcontractor_approve_count += i
-	} else {
-		m.addcontractor_approve_count = &i
-	}
-}
-
-// AddedContractorApproveCount returns the value that was added to the "contractor_approve_count" field in this mutation.
-func (m *ProjectMutation) AddedContractorApproveCount() (r int, exists bool) {
-	v := m.addcontractor_approve_count
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearContractorApproveCount clears the value of the "contractor_approve_count" field.
-func (m *ProjectMutation) ClearContractorApproveCount() {
-	m.contractor_approve_count = nil
-	m.addcontractor_approve_count = nil
-	m.clearedFields[project.FieldContractorApproveCount] = struct{}{}
-}
-
-// ContractorApproveCountCleared returns if the "contractor_approve_count" field was cleared in this mutation.
-func (m *ProjectMutation) ContractorApproveCountCleared() bool {
-	_, ok := m.clearedFields[project.FieldContractorApproveCount]
-	return ok
-}
-
-// ResetContractorApproveCount resets all changes to the "contractor_approve_count" field.
-func (m *ProjectMutation) ResetContractorApproveCount() {
-	m.contractor_approve_count = nil
-	m.addcontractor_approve_count = nil
-	delete(m.clearedFields, project.FieldContractorApproveCount)
-}
-
-// SetInstallProgress sets the "install_progress" field.
-func (m *ProjectMutation) SetInstallProgress(f float64) {
-	m.install_progress = &f
-	m.addinstall_progress = nil
-}
-
-// InstallProgress returns the value of the "install_progress" field in the mutation.
-func (m *ProjectMutation) InstallProgress() (r float64, exists bool) {
-	v := m.install_progress
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldInstallProgress returns the old "install_progress" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldInstallProgress(ctx context.Context) (v *float64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldInstallProgress is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldInstallProgress requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldInstallProgress: %w", err)
-	}
-	return oldValue.InstallProgress, nil
-}
-
-// AddInstallProgress adds f to the "install_progress" field.
-func (m *ProjectMutation) AddInstallProgress(f float64) {
-	if m.addinstall_progress != nil {
-		*m.addinstall_progress += f
-	} else {
-		m.addinstall_progress = &f
-	}
-}
-
-// AddedInstallProgress returns the value that was added to the "install_progress" field in this mutation.
-func (m *ProjectMutation) AddedInstallProgress() (r float64, exists bool) {
-	v := m.addinstall_progress
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearInstallProgress clears the value of the "install_progress" field.
-func (m *ProjectMutation) ClearInstallProgress() {
-	m.install_progress = nil
-	m.addinstall_progress = nil
-	m.clearedFields[project.FieldInstallProgress] = struct{}{}
-}
-
-// InstallProgressCleared returns if the "install_progress" field was cleared in this mutation.
-func (m *ProjectMutation) InstallProgressCleared() bool {
-	_, ok := m.clearedFields[project.FieldInstallProgress]
-	return ok
-}
-
-// ResetInstallProgress resets all changes to the "install_progress" field.
-func (m *ProjectMutation) ResetInstallProgress() {
-	m.install_progress = nil
-	m.addinstall_progress = nil
-	delete(m.clearedFields, project.FieldInstallProgress)
-}
-
-// SetEffectiveContractAmount sets the "effective_contract_amount" field.
-func (m *ProjectMutation) SetEffectiveContractAmount(f float64) {
-	m.effective_contract_amount = &f
-	m.addeffective_contract_amount = nil
-}
-
-// EffectiveContractAmount returns the value of the "effective_contract_amount" field in the mutation.
-func (m *ProjectMutation) EffectiveContractAmount() (r float64, exists bool) {
-	v := m.effective_contract_amount
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldEffectiveContractAmount returns the old "effective_contract_amount" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldEffectiveContractAmount(ctx context.Context) (v *float64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldEffectiveContractAmount is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldEffectiveContractAmount requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldEffectiveContractAmount: %w", err)
-	}
-	return oldValue.EffectiveContractAmount, nil
-}
-
-// AddEffectiveContractAmount adds f to the "effective_contract_amount" field.
-func (m *ProjectMutation) AddEffectiveContractAmount(f float64) {
-	if m.addeffective_contract_amount != nil {
-		*m.addeffective_contract_amount += f
-	} else {
-		m.addeffective_contract_amount = &f
-	}
-}
-
-// AddedEffectiveContractAmount returns the value that was added to the "effective_contract_amount" field in this mutation.
-func (m *ProjectMutation) AddedEffectiveContractAmount() (r float64, exists bool) {
-	v := m.addeffective_contract_amount
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearEffectiveContractAmount clears the value of the "effective_contract_amount" field.
-func (m *ProjectMutation) ClearEffectiveContractAmount() {
-	m.effective_contract_amount = nil
-	m.addeffective_contract_amount = nil
-	m.clearedFields[project.FieldEffectiveContractAmount] = struct{}{}
-}
-
-// EffectiveContractAmountCleared returns if the "effective_contract_amount" field was cleared in this mutation.
-func (m *ProjectMutation) EffectiveContractAmountCleared() bool {
-	_, ok := m.clearedFields[project.FieldEffectiveContractAmount]
-	return ok
-}
-
-// ResetEffectiveContractAmount resets all changes to the "effective_contract_amount" field.
-func (m *ProjectMutation) ResetEffectiveContractAmount() {
-	m.effective_contract_amount = nil
-	m.addeffective_contract_amount = nil
-	delete(m.clearedFields, project.FieldEffectiveContractAmount)
-}
-
-// SetVaApplyAmount sets the "va_apply_amount" field.
-func (m *ProjectMutation) SetVaApplyAmount(f float64) {
-	m.va_apply_amount = &f
-	m.addva_apply_amount = nil
-}
-
-// VaApplyAmount returns the value of the "va_apply_amount" field in the mutation.
-func (m *ProjectMutation) VaApplyAmount() (r float64, exists bool) {
-	v := m.va_apply_amount
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldVaApplyAmount returns the old "va_apply_amount" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldVaApplyAmount(ctx context.Context) (v *float64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldVaApplyAmount is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldVaApplyAmount requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldVaApplyAmount: %w", err)
-	}
-	return oldValue.VaApplyAmount, nil
-}
-
-// AddVaApplyAmount adds f to the "va_apply_amount" field.
-func (m *ProjectMutation) AddVaApplyAmount(f float64) {
-	if m.addva_apply_amount != nil {
-		*m.addva_apply_amount += f
-	} else {
-		m.addva_apply_amount = &f
-	}
-}
-
-// AddedVaApplyAmount returns the value that was added to the "va_apply_amount" field in this mutation.
-func (m *ProjectMutation) AddedVaApplyAmount() (r float64, exists bool) {
-	v := m.addva_apply_amount
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearVaApplyAmount clears the value of the "va_apply_amount" field.
-func (m *ProjectMutation) ClearVaApplyAmount() {
-	m.va_apply_amount = nil
-	m.addva_apply_amount = nil
-	m.clearedFields[project.FieldVaApplyAmount] = struct{}{}
-}
-
-// VaApplyAmountCleared returns if the "va_apply_amount" field was cleared in this mutation.
-func (m *ProjectMutation) VaApplyAmountCleared() bool {
-	_, ok := m.clearedFields[project.FieldVaApplyAmount]
-	return ok
-}
-
-// ResetVaApplyAmount resets all changes to the "va_apply_amount" field.
-func (m *ProjectMutation) ResetVaApplyAmount() {
-	m.va_apply_amount = nil
-	m.addva_apply_amount = nil
-	delete(m.clearedFields, project.FieldVaApplyAmount)
-}
-
-// SetVaApproveAmount sets the "va_approve_amount" field.
-func (m *ProjectMutation) SetVaApproveAmount(f float64) {
-	m.va_approve_amount = &f
-	m.addva_approve_amount = nil
-}
-
-// VaApproveAmount returns the value of the "va_approve_amount" field in the mutation.
-func (m *ProjectMutation) VaApproveAmount() (r float64, exists bool) {
-	v := m.va_approve_amount
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldVaApproveAmount returns the old "va_approve_amount" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldVaApproveAmount(ctx context.Context) (v *float64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldVaApproveAmount is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldVaApproveAmount requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldVaApproveAmount: %w", err)
-	}
-	return oldValue.VaApproveAmount, nil
-}
-
-// AddVaApproveAmount adds f to the "va_approve_amount" field.
-func (m *ProjectMutation) AddVaApproveAmount(f float64) {
-	if m.addva_approve_amount != nil {
-		*m.addva_approve_amount += f
-	} else {
-		m.addva_approve_amount = &f
-	}
-}
-
-// AddedVaApproveAmount returns the value that was added to the "va_approve_amount" field in this mutation.
-func (m *ProjectMutation) AddedVaApproveAmount() (r float64, exists bool) {
-	v := m.addva_approve_amount
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearVaApproveAmount clears the value of the "va_approve_amount" field.
-func (m *ProjectMutation) ClearVaApproveAmount() {
-	m.va_approve_amount = nil
-	m.addva_approve_amount = nil
-	m.clearedFields[project.FieldVaApproveAmount] = struct{}{}
-}
-
-// VaApproveAmountCleared returns if the "va_approve_amount" field was cleared in this mutation.
-func (m *ProjectMutation) VaApproveAmountCleared() bool {
-	_, ok := m.clearedFields[project.FieldVaApproveAmount]
-	return ok
-}
-
-// ResetVaApproveAmount resets all changes to the "va_approve_amount" field.
-func (m *ProjectMutation) ResetVaApproveAmount() {
-	m.va_approve_amount = nil
-	m.addva_approve_amount = nil
-	delete(m.clearedFields, project.FieldVaApproveAmount)
-}
-
-// SetAccumulatedStatutoryDeductions sets the "accumulated_statutory_deductions" field.
-func (m *ProjectMutation) SetAccumulatedStatutoryDeductions(f float64) {
-	m.accumulated_statutory_deductions = &f
-	m.addaccumulated_statutory_deductions = nil
-}
-
-// AccumulatedStatutoryDeductions returns the value of the "accumulated_statutory_deductions" field in the mutation.
-func (m *ProjectMutation) AccumulatedStatutoryDeductions() (r float64, exists bool) {
-	v := m.accumulated_statutory_deductions
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldAccumulatedStatutoryDeductions returns the old "accumulated_statutory_deductions" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldAccumulatedStatutoryDeductions(ctx context.Context) (v *float64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldAccumulatedStatutoryDeductions is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldAccumulatedStatutoryDeductions requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldAccumulatedStatutoryDeductions: %w", err)
-	}
-	return oldValue.AccumulatedStatutoryDeductions, nil
-}
-
-// AddAccumulatedStatutoryDeductions adds f to the "accumulated_statutory_deductions" field.
-func (m *ProjectMutation) AddAccumulatedStatutoryDeductions(f float64) {
-	if m.addaccumulated_statutory_deductions != nil {
-		*m.addaccumulated_statutory_deductions += f
-	} else {
-		m.addaccumulated_statutory_deductions = &f
-	}
-}
-
-// AddedAccumulatedStatutoryDeductions returns the value that was added to the "accumulated_statutory_deductions" field in this mutation.
-func (m *ProjectMutation) AddedAccumulatedStatutoryDeductions() (r float64, exists bool) {
-	v := m.addaccumulated_statutory_deductions
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearAccumulatedStatutoryDeductions clears the value of the "accumulated_statutory_deductions" field.
-func (m *ProjectMutation) ClearAccumulatedStatutoryDeductions() {
-	m.accumulated_statutory_deductions = nil
-	m.addaccumulated_statutory_deductions = nil
-	m.clearedFields[project.FieldAccumulatedStatutoryDeductions] = struct{}{}
-}
-
-// AccumulatedStatutoryDeductionsCleared returns if the "accumulated_statutory_deductions" field was cleared in this mutation.
-func (m *ProjectMutation) AccumulatedStatutoryDeductionsCleared() bool {
-	_, ok := m.clearedFields[project.FieldAccumulatedStatutoryDeductions]
-	return ok
-}
-
-// ResetAccumulatedStatutoryDeductions resets all changes to the "accumulated_statutory_deductions" field.
-func (m *ProjectMutation) ResetAccumulatedStatutoryDeductions() {
-	m.accumulated_statutory_deductions = nil
-	m.addaccumulated_statutory_deductions = nil
-	delete(m.clearedFields, project.FieldAccumulatedStatutoryDeductions)
-}
-
-// SetAccumulatedNonStatutoryDeductions sets the "accumulated_non_statutory_deductions" field.
-func (m *ProjectMutation) SetAccumulatedNonStatutoryDeductions(f float64) {
-	m.accumulated_non_statutory_deductions = &f
-	m.addaccumulated_non_statutory_deductions = nil
-}
-
-// AccumulatedNonStatutoryDeductions returns the value of the "accumulated_non_statutory_deductions" field in the mutation.
-func (m *ProjectMutation) AccumulatedNonStatutoryDeductions() (r float64, exists bool) {
-	v := m.accumulated_non_statutory_deductions
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldAccumulatedNonStatutoryDeductions returns the old "accumulated_non_statutory_deductions" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldAccumulatedNonStatutoryDeductions(ctx context.Context) (v *float64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldAccumulatedNonStatutoryDeductions is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldAccumulatedNonStatutoryDeductions requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldAccumulatedNonStatutoryDeductions: %w", err)
-	}
-	return oldValue.AccumulatedNonStatutoryDeductions, nil
-}
-
-// AddAccumulatedNonStatutoryDeductions adds f to the "accumulated_non_statutory_deductions" field.
-func (m *ProjectMutation) AddAccumulatedNonStatutoryDeductions(f float64) {
-	if m.addaccumulated_non_statutory_deductions != nil {
-		*m.addaccumulated_non_statutory_deductions += f
-	} else {
-		m.addaccumulated_non_statutory_deductions = &f
-	}
-}
-
-// AddedAccumulatedNonStatutoryDeductions returns the value that was added to the "accumulated_non_statutory_deductions" field in this mutation.
-func (m *ProjectMutation) AddedAccumulatedNonStatutoryDeductions() (r float64, exists bool) {
-	v := m.addaccumulated_non_statutory_deductions
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearAccumulatedNonStatutoryDeductions clears the value of the "accumulated_non_statutory_deductions" field.
-func (m *ProjectMutation) ClearAccumulatedNonStatutoryDeductions() {
-	m.accumulated_non_statutory_deductions = nil
-	m.addaccumulated_non_statutory_deductions = nil
-	m.clearedFields[project.FieldAccumulatedNonStatutoryDeductions] = struct{}{}
-}
-
-// AccumulatedNonStatutoryDeductionsCleared returns if the "accumulated_non_statutory_deductions" field was cleared in this mutation.
-func (m *ProjectMutation) AccumulatedNonStatutoryDeductionsCleared() bool {
-	_, ok := m.clearedFields[project.FieldAccumulatedNonStatutoryDeductions]
-	return ok
-}
-
-// ResetAccumulatedNonStatutoryDeductions resets all changes to the "accumulated_non_statutory_deductions" field.
-func (m *ProjectMutation) ResetAccumulatedNonStatutoryDeductions() {
-	m.accumulated_non_statutory_deductions = nil
-	m.addaccumulated_non_statutory_deductions = nil
-	delete(m.clearedFields, project.FieldAccumulatedNonStatutoryDeductions)
-}
-
-// SetAccumulatedStatutoryDeductionsPeriod sets the "accumulated_statutory_deductions_period" field.
-func (m *ProjectMutation) SetAccumulatedStatutoryDeductionsPeriod(f float64) {
-	m.accumulated_statutory_deductions_period = &f
-	m.addaccumulated_statutory_deductions_period = nil
-}
-
-// AccumulatedStatutoryDeductionsPeriod returns the value of the "accumulated_statutory_deductions_period" field in the mutation.
-func (m *ProjectMutation) AccumulatedStatutoryDeductionsPeriod() (r float64, exists bool) {
-	v := m.accumulated_statutory_deductions_period
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldAccumulatedStatutoryDeductionsPeriod returns the old "accumulated_statutory_deductions_period" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldAccumulatedStatutoryDeductionsPeriod(ctx context.Context) (v *float64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldAccumulatedStatutoryDeductionsPeriod is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldAccumulatedStatutoryDeductionsPeriod requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldAccumulatedStatutoryDeductionsPeriod: %w", err)
-	}
-	return oldValue.AccumulatedStatutoryDeductionsPeriod, nil
-}
-
-// AddAccumulatedStatutoryDeductionsPeriod adds f to the "accumulated_statutory_deductions_period" field.
-func (m *ProjectMutation) AddAccumulatedStatutoryDeductionsPeriod(f float64) {
-	if m.addaccumulated_statutory_deductions_period != nil {
-		*m.addaccumulated_statutory_deductions_period += f
-	} else {
-		m.addaccumulated_statutory_deductions_period = &f
-	}
-}
-
-// AddedAccumulatedStatutoryDeductionsPeriod returns the value that was added to the "accumulated_statutory_deductions_period" field in this mutation.
-func (m *ProjectMutation) AddedAccumulatedStatutoryDeductionsPeriod() (r float64, exists bool) {
-	v := m.addaccumulated_statutory_deductions_period
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearAccumulatedStatutoryDeductionsPeriod clears the value of the "accumulated_statutory_deductions_period" field.
-func (m *ProjectMutation) ClearAccumulatedStatutoryDeductionsPeriod() {
-	m.accumulated_statutory_deductions_period = nil
-	m.addaccumulated_statutory_deductions_period = nil
-	m.clearedFields[project.FieldAccumulatedStatutoryDeductionsPeriod] = struct{}{}
-}
-
-// AccumulatedStatutoryDeductionsPeriodCleared returns if the "accumulated_statutory_deductions_period" field was cleared in this mutation.
-func (m *ProjectMutation) AccumulatedStatutoryDeductionsPeriodCleared() bool {
-	_, ok := m.clearedFields[project.FieldAccumulatedStatutoryDeductionsPeriod]
-	return ok
-}
-
-// ResetAccumulatedStatutoryDeductionsPeriod resets all changes to the "accumulated_statutory_deductions_period" field.
-func (m *ProjectMutation) ResetAccumulatedStatutoryDeductionsPeriod() {
-	m.accumulated_statutory_deductions_period = nil
-	m.addaccumulated_statutory_deductions_period = nil
-	delete(m.clearedFields, project.FieldAccumulatedStatutoryDeductionsPeriod)
-}
-
-// SetAccumulatedNonStatutoryDeductionsPeriod sets the "accumulated_non_statutory_deductions_period" field.
-func (m *ProjectMutation) SetAccumulatedNonStatutoryDeductionsPeriod(f float64) {
-	m.accumulated_non_statutory_deductions_period = &f
-	m.addaccumulated_non_statutory_deductions_period = nil
-}
-
-// AccumulatedNonStatutoryDeductionsPeriod returns the value of the "accumulated_non_statutory_deductions_period" field in the mutation.
-func (m *ProjectMutation) AccumulatedNonStatutoryDeductionsPeriod() (r float64, exists bool) {
-	v := m.accumulated_non_statutory_deductions_period
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldAccumulatedNonStatutoryDeductionsPeriod returns the old "accumulated_non_statutory_deductions_period" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldAccumulatedNonStatutoryDeductionsPeriod(ctx context.Context) (v *float64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldAccumulatedNonStatutoryDeductionsPeriod is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldAccumulatedNonStatutoryDeductionsPeriod requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldAccumulatedNonStatutoryDeductionsPeriod: %w", err)
-	}
-	return oldValue.AccumulatedNonStatutoryDeductionsPeriod, nil
-}
-
-// AddAccumulatedNonStatutoryDeductionsPeriod adds f to the "accumulated_non_statutory_deductions_period" field.
-func (m *ProjectMutation) AddAccumulatedNonStatutoryDeductionsPeriod(f float64) {
-	if m.addaccumulated_non_statutory_deductions_period != nil {
-		*m.addaccumulated_non_statutory_deductions_period += f
-	} else {
-		m.addaccumulated_non_statutory_deductions_period = &f
-	}
-}
-
-// AddedAccumulatedNonStatutoryDeductionsPeriod returns the value that was added to the "accumulated_non_statutory_deductions_period" field in this mutation.
-func (m *ProjectMutation) AddedAccumulatedNonStatutoryDeductionsPeriod() (r float64, exists bool) {
-	v := m.addaccumulated_non_statutory_deductions_period
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearAccumulatedNonStatutoryDeductionsPeriod clears the value of the "accumulated_non_statutory_deductions_period" field.
-func (m *ProjectMutation) ClearAccumulatedNonStatutoryDeductionsPeriod() {
-	m.accumulated_non_statutory_deductions_period = nil
-	m.addaccumulated_non_statutory_deductions_period = nil
-	m.clearedFields[project.FieldAccumulatedNonStatutoryDeductionsPeriod] = struct{}{}
-}
-
-// AccumulatedNonStatutoryDeductionsPeriodCleared returns if the "accumulated_non_statutory_deductions_period" field was cleared in this mutation.
-func (m *ProjectMutation) AccumulatedNonStatutoryDeductionsPeriodCleared() bool {
-	_, ok := m.clearedFields[project.FieldAccumulatedNonStatutoryDeductionsPeriod]
-	return ok
-}
-
-// ResetAccumulatedNonStatutoryDeductionsPeriod resets all changes to the "accumulated_non_statutory_deductions_period" field.
-func (m *ProjectMutation) ResetAccumulatedNonStatutoryDeductionsPeriod() {
-	m.accumulated_non_statutory_deductions_period = nil
-	m.addaccumulated_non_statutory_deductions_period = nil
-	delete(m.clearedFields, project.FieldAccumulatedNonStatutoryDeductionsPeriod)
-}
-
-// SetTotalContractAmount sets the "total_contract_amount" field.
-func (m *ProjectMutation) SetTotalContractAmount(f float64) {
-	m.total_contract_amount = &f
-	m.addtotal_contract_amount = nil
-}
-
-// TotalContractAmount returns the value of the "total_contract_amount" field in the mutation.
-func (m *ProjectMutation) TotalContractAmount() (r float64, exists bool) {
-	v := m.total_contract_amount
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldTotalContractAmount returns the old "total_contract_amount" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldTotalContractAmount(ctx context.Context) (v *float64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldTotalContractAmount is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldTotalContractAmount requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldTotalContractAmount: %w", err)
-	}
-	return oldValue.TotalContractAmount, nil
-}
-
-// AddTotalContractAmount adds f to the "total_contract_amount" field.
-func (m *ProjectMutation) AddTotalContractAmount(f float64) {
-	if m.addtotal_contract_amount != nil {
-		*m.addtotal_contract_amount += f
-	} else {
-		m.addtotal_contract_amount = &f
-	}
-}
-
-// AddedTotalContractAmount returns the value that was added to the "total_contract_amount" field in this mutation.
-func (m *ProjectMutation) AddedTotalContractAmount() (r float64, exists bool) {
-	v := m.addtotal_contract_amount
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearTotalContractAmount clears the value of the "total_contract_amount" field.
-func (m *ProjectMutation) ClearTotalContractAmount() {
-	m.total_contract_amount = nil
-	m.addtotal_contract_amount = nil
-	m.clearedFields[project.FieldTotalContractAmount] = struct{}{}
-}
-
-// TotalContractAmountCleared returns if the "total_contract_amount" field was cleared in this mutation.
-func (m *ProjectMutation) TotalContractAmountCleared() bool {
-	_, ok := m.clearedFields[project.FieldTotalContractAmount]
-	return ok
-}
-
-// ResetTotalContractAmount resets all changes to the "total_contract_amount" field.
-func (m *ProjectMutation) ResetTotalContractAmount() {
-	m.total_contract_amount = nil
-	m.addtotal_contract_amount = nil
-	delete(m.clearedFields, project.FieldTotalContractAmount)
-}
-
-// SetAluminumPlateBudgetPercentage sets the "aluminum_plate_budget_percentage" field.
-func (m *ProjectMutation) SetAluminumPlateBudgetPercentage(f float64) {
-	m.aluminum_plate_budget_percentage = &f
-	m.addaluminum_plate_budget_percentage = nil
-}
-
-// AluminumPlateBudgetPercentage returns the value of the "aluminum_plate_budget_percentage" field in the mutation.
-func (m *ProjectMutation) AluminumPlateBudgetPercentage() (r float64, exists bool) {
-	v := m.aluminum_plate_budget_percentage
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldAluminumPlateBudgetPercentage returns the old "aluminum_plate_budget_percentage" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldAluminumPlateBudgetPercentage(ctx context.Context) (v *float64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldAluminumPlateBudgetPercentage is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldAluminumPlateBudgetPercentage requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldAluminumPlateBudgetPercentage: %w", err)
-	}
-	return oldValue.AluminumPlateBudgetPercentage, nil
-}
-
-// AddAluminumPlateBudgetPercentage adds f to the "aluminum_plate_budget_percentage" field.
-func (m *ProjectMutation) AddAluminumPlateBudgetPercentage(f float64) {
-	if m.addaluminum_plate_budget_percentage != nil {
-		*m.addaluminum_plate_budget_percentage += f
-	} else {
-		m.addaluminum_plate_budget_percentage = &f
-	}
-}
-
-// AddedAluminumPlateBudgetPercentage returns the value that was added to the "aluminum_plate_budget_percentage" field in this mutation.
-func (m *ProjectMutation) AddedAluminumPlateBudgetPercentage() (r float64, exists bool) {
-	v := m.addaluminum_plate_budget_percentage
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearAluminumPlateBudgetPercentage clears the value of the "aluminum_plate_budget_percentage" field.
-func (m *ProjectMutation) ClearAluminumPlateBudgetPercentage() {
-	m.aluminum_plate_budget_percentage = nil
-	m.addaluminum_plate_budget_percentage = nil
-	m.clearedFields[project.FieldAluminumPlateBudgetPercentage] = struct{}{}
-}
-
-// AluminumPlateBudgetPercentageCleared returns if the "aluminum_plate_budget_percentage" field was cleared in this mutation.
-func (m *ProjectMutation) AluminumPlateBudgetPercentageCleared() bool {
-	_, ok := m.clearedFields[project.FieldAluminumPlateBudgetPercentage]
-	return ok
-}
-
-// ResetAluminumPlateBudgetPercentage resets all changes to the "aluminum_plate_budget_percentage" field.
-func (m *ProjectMutation) ResetAluminumPlateBudgetPercentage() {
-	m.aluminum_plate_budget_percentage = nil
-	m.addaluminum_plate_budget_percentage = nil
-	delete(m.clearedFields, project.FieldAluminumPlateBudgetPercentage)
-}
-
-// SetAluminumBudgetPercentage sets the "aluminum_budget_percentage" field.
-func (m *ProjectMutation) SetAluminumBudgetPercentage(f float64) {
-	m.aluminum_budget_percentage = &f
-	m.addaluminum_budget_percentage = nil
-}
-
-// AluminumBudgetPercentage returns the value of the "aluminum_budget_percentage" field in the mutation.
-func (m *ProjectMutation) AluminumBudgetPercentage() (r float64, exists bool) {
-	v := m.aluminum_budget_percentage
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldAluminumBudgetPercentage returns the old "aluminum_budget_percentage" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldAluminumBudgetPercentage(ctx context.Context) (v *float64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldAluminumBudgetPercentage is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldAluminumBudgetPercentage requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldAluminumBudgetPercentage: %w", err)
-	}
-	return oldValue.AluminumBudgetPercentage, nil
-}
-
-// AddAluminumBudgetPercentage adds f to the "aluminum_budget_percentage" field.
-func (m *ProjectMutation) AddAluminumBudgetPercentage(f float64) {
-	if m.addaluminum_budget_percentage != nil {
-		*m.addaluminum_budget_percentage += f
-	} else {
-		m.addaluminum_budget_percentage = &f
-	}
-}
-
-// AddedAluminumBudgetPercentage returns the value that was added to the "aluminum_budget_percentage" field in this mutation.
-func (m *ProjectMutation) AddedAluminumBudgetPercentage() (r float64, exists bool) {
-	v := m.addaluminum_budget_percentage
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearAluminumBudgetPercentage clears the value of the "aluminum_budget_percentage" field.
-func (m *ProjectMutation) ClearAluminumBudgetPercentage() {
-	m.aluminum_budget_percentage = nil
-	m.addaluminum_budget_percentage = nil
-	m.clearedFields[project.FieldAluminumBudgetPercentage] = struct{}{}
-}
-
-// AluminumBudgetPercentageCleared returns if the "aluminum_budget_percentage" field was cleared in this mutation.
-func (m *ProjectMutation) AluminumBudgetPercentageCleared() bool {
-	_, ok := m.clearedFields[project.FieldAluminumBudgetPercentage]
-	return ok
-}
-
-// ResetAluminumBudgetPercentage resets all changes to the "aluminum_budget_percentage" field.
-func (m *ProjectMutation) ResetAluminumBudgetPercentage() {
-	m.aluminum_budget_percentage = nil
-	m.addaluminum_budget_percentage = nil
-	delete(m.clearedFields, project.FieldAluminumBudgetPercentage)
-}
-
-// SetGlassBudgetPercentage sets the "glass_budget_percentage" field.
-func (m *ProjectMutation) SetGlassBudgetPercentage(f float64) {
-	m.glass_budget_percentage = &f
-	m.addglass_budget_percentage = nil
-}
-
-// GlassBudgetPercentage returns the value of the "glass_budget_percentage" field in the mutation.
-func (m *ProjectMutation) GlassBudgetPercentage() (r float64, exists bool) {
-	v := m.glass_budget_percentage
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldGlassBudgetPercentage returns the old "glass_budget_percentage" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldGlassBudgetPercentage(ctx context.Context) (v *float64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldGlassBudgetPercentage is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldGlassBudgetPercentage requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldGlassBudgetPercentage: %w", err)
-	}
-	return oldValue.GlassBudgetPercentage, nil
-}
-
-// AddGlassBudgetPercentage adds f to the "glass_budget_percentage" field.
-func (m *ProjectMutation) AddGlassBudgetPercentage(f float64) {
-	if m.addglass_budget_percentage != nil {
-		*m.addglass_budget_percentage += f
-	} else {
-		m.addglass_budget_percentage = &f
-	}
-}
-
-// AddedGlassBudgetPercentage returns the value that was added to the "glass_budget_percentage" field in this mutation.
-func (m *ProjectMutation) AddedGlassBudgetPercentage() (r float64, exists bool) {
-	v := m.addglass_budget_percentage
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearGlassBudgetPercentage clears the value of the "glass_budget_percentage" field.
-func (m *ProjectMutation) ClearGlassBudgetPercentage() {
-	m.glass_budget_percentage = nil
-	m.addglass_budget_percentage = nil
-	m.clearedFields[project.FieldGlassBudgetPercentage] = struct{}{}
-}
-
-// GlassBudgetPercentageCleared returns if the "glass_budget_percentage" field was cleared in this mutation.
-func (m *ProjectMutation) GlassBudgetPercentageCleared() bool {
-	_, ok := m.clearedFields[project.FieldGlassBudgetPercentage]
-	return ok
-}
-
-// ResetGlassBudgetPercentage resets all changes to the "glass_budget_percentage" field.
-func (m *ProjectMutation) ResetGlassBudgetPercentage() {
-	m.glass_budget_percentage = nil
-	m.addglass_budget_percentage = nil
-	delete(m.clearedFields, project.FieldGlassBudgetPercentage)
-}
-
-// SetIronBudgetPercentage sets the "iron_budget_percentage" field.
-func (m *ProjectMutation) SetIronBudgetPercentage(f float64) {
-	m.iron_budget_percentage = &f
-	m.addiron_budget_percentage = nil
-}
-
-// IronBudgetPercentage returns the value of the "iron_budget_percentage" field in the mutation.
-func (m *ProjectMutation) IronBudgetPercentage() (r float64, exists bool) {
-	v := m.iron_budget_percentage
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldIronBudgetPercentage returns the old "iron_budget_percentage" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldIronBudgetPercentage(ctx context.Context) (v *float64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldIronBudgetPercentage is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldIronBudgetPercentage requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldIronBudgetPercentage: %w", err)
-	}
-	return oldValue.IronBudgetPercentage, nil
-}
-
-// AddIronBudgetPercentage adds f to the "iron_budget_percentage" field.
-func (m *ProjectMutation) AddIronBudgetPercentage(f float64) {
-	if m.addiron_budget_percentage != nil {
-		*m.addiron_budget_percentage += f
-	} else {
-		m.addiron_budget_percentage = &f
-	}
-}
-
-// AddedIronBudgetPercentage returns the value that was added to the "iron_budget_percentage" field in this mutation.
-func (m *ProjectMutation) AddedIronBudgetPercentage() (r float64, exists bool) {
-	v := m.addiron_budget_percentage
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearIronBudgetPercentage clears the value of the "iron_budget_percentage" field.
-func (m *ProjectMutation) ClearIronBudgetPercentage() {
-	m.iron_budget_percentage = nil
-	m.addiron_budget_percentage = nil
-	m.clearedFields[project.FieldIronBudgetPercentage] = struct{}{}
-}
-
-// IronBudgetPercentageCleared returns if the "iron_budget_percentage" field was cleared in this mutation.
-func (m *ProjectMutation) IronBudgetPercentageCleared() bool {
-	_, ok := m.clearedFields[project.FieldIronBudgetPercentage]
-	return ok
-}
-
-// ResetIronBudgetPercentage resets all changes to the "iron_budget_percentage" field.
-func (m *ProjectMutation) ResetIronBudgetPercentage() {
-	m.iron_budget_percentage = nil
-	m.addiron_budget_percentage = nil
-	delete(m.clearedFields, project.FieldIronBudgetPercentage)
-}
-
-// SetMilestonePlanYear sets the "milestone_plan_year" field.
-func (m *ProjectMutation) SetMilestonePlanYear(i int) {
-	m.milestone_plan_year = &i
-	m.addmilestone_plan_year = nil
-}
-
-// MilestonePlanYear returns the value of the "milestone_plan_year" field in the mutation.
-func (m *ProjectMutation) MilestonePlanYear() (r int, exists bool) {
-	v := m.milestone_plan_year
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldMilestonePlanYear returns the old "milestone_plan_year" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldMilestonePlanYear(ctx context.Context) (v *int, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldMilestonePlanYear is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldMilestonePlanYear requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldMilestonePlanYear: %w", err)
-	}
-	return oldValue.MilestonePlanYear, nil
-}
-
-// AddMilestonePlanYear adds i to the "milestone_plan_year" field.
-func (m *ProjectMutation) AddMilestonePlanYear(i int) {
-	if m.addmilestone_plan_year != nil {
-		*m.addmilestone_plan_year += i
-	} else {
-		m.addmilestone_plan_year = &i
-	}
-}
-
-// AddedMilestonePlanYear returns the value that was added to the "milestone_plan_year" field in this mutation.
-func (m *ProjectMutation) AddedMilestonePlanYear() (r int, exists bool) {
-	v := m.addmilestone_plan_year
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearMilestonePlanYear clears the value of the "milestone_plan_year" field.
-func (m *ProjectMutation) ClearMilestonePlanYear() {
-	m.milestone_plan_year = nil
-	m.addmilestone_plan_year = nil
-	m.clearedFields[project.FieldMilestonePlanYear] = struct{}{}
-}
-
-// MilestonePlanYearCleared returns if the "milestone_plan_year" field was cleared in this mutation.
-func (m *ProjectMutation) MilestonePlanYearCleared() bool {
-	_, ok := m.clearedFields[project.FieldMilestonePlanYear]
-	return ok
-}
-
-// ResetMilestonePlanYear resets all changes to the "milestone_plan_year" field.
-func (m *ProjectMutation) ResetMilestonePlanYear() {
-	m.milestone_plan_year = nil
-	m.addmilestone_plan_year = nil
-	delete(m.clearedFields, project.FieldMilestonePlanYear)
-}
-
-// SetMilestonePlanMonth sets the "milestone_plan_month" field.
-func (m *ProjectMutation) SetMilestonePlanMonth(i int) {
-	m.milestone_plan_month = &i
-	m.addmilestone_plan_month = nil
-}
-
-// MilestonePlanMonth returns the value of the "milestone_plan_month" field in the mutation.
-func (m *ProjectMutation) MilestonePlanMonth() (r int, exists bool) {
-	v := m.milestone_plan_month
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldMilestonePlanMonth returns the old "milestone_plan_month" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldMilestonePlanMonth(ctx context.Context) (v *int, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldMilestonePlanMonth is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldMilestonePlanMonth requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldMilestonePlanMonth: %w", err)
-	}
-	return oldValue.MilestonePlanMonth, nil
-}
-
-// AddMilestonePlanMonth adds i to the "milestone_plan_month" field.
-func (m *ProjectMutation) AddMilestonePlanMonth(i int) {
-	if m.addmilestone_plan_month != nil {
-		*m.addmilestone_plan_month += i
-	} else {
-		m.addmilestone_plan_month = &i
-	}
-}
-
-// AddedMilestonePlanMonth returns the value that was added to the "milestone_plan_month" field in this mutation.
-func (m *ProjectMutation) AddedMilestonePlanMonth() (r int, exists bool) {
-	v := m.addmilestone_plan_month
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearMilestonePlanMonth clears the value of the "milestone_plan_month" field.
-func (m *ProjectMutation) ClearMilestonePlanMonth() {
-	m.milestone_plan_month = nil
-	m.addmilestone_plan_month = nil
-	m.clearedFields[project.FieldMilestonePlanMonth] = struct{}{}
-}
-
-// MilestonePlanMonthCleared returns if the "milestone_plan_month" field was cleared in this mutation.
-func (m *ProjectMutation) MilestonePlanMonthCleared() bool {
-	_, ok := m.clearedFields[project.FieldMilestonePlanMonth]
-	return ok
-}
-
-// ResetMilestonePlanMonth resets all changes to the "milestone_plan_month" field.
-func (m *ProjectMutation) ResetMilestonePlanMonth() {
-	m.milestone_plan_month = nil
-	m.addmilestone_plan_month = nil
-	delete(m.clearedFields, project.FieldMilestonePlanMonth)
-}
-
-// SetMilestoneDoneYear sets the "milestone_done_year" field.
-func (m *ProjectMutation) SetMilestoneDoneYear(i int) {
-	m.milestone_done_year = &i
-	m.addmilestone_done_year = nil
-}
-
-// MilestoneDoneYear returns the value of the "milestone_done_year" field in the mutation.
-func (m *ProjectMutation) MilestoneDoneYear() (r int, exists bool) {
-	v := m.milestone_done_year
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldMilestoneDoneYear returns the old "milestone_done_year" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldMilestoneDoneYear(ctx context.Context) (v *int, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldMilestoneDoneYear is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldMilestoneDoneYear requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldMilestoneDoneYear: %w", err)
-	}
-	return oldValue.MilestoneDoneYear, nil
-}
-
-// AddMilestoneDoneYear adds i to the "milestone_done_year" field.
-func (m *ProjectMutation) AddMilestoneDoneYear(i int) {
-	if m.addmilestone_done_year != nil {
-		*m.addmilestone_done_year += i
-	} else {
-		m.addmilestone_done_year = &i
-	}
-}
-
-// AddedMilestoneDoneYear returns the value that was added to the "milestone_done_year" field in this mutation.
-func (m *ProjectMutation) AddedMilestoneDoneYear() (r int, exists bool) {
-	v := m.addmilestone_done_year
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearMilestoneDoneYear clears the value of the "milestone_done_year" field.
-func (m *ProjectMutation) ClearMilestoneDoneYear() {
-	m.milestone_done_year = nil
-	m.addmilestone_done_year = nil
-	m.clearedFields[project.FieldMilestoneDoneYear] = struct{}{}
-}
-
-// MilestoneDoneYearCleared returns if the "milestone_done_year" field was cleared in this mutation.
-func (m *ProjectMutation) MilestoneDoneYearCleared() bool {
-	_, ok := m.clearedFields[project.FieldMilestoneDoneYear]
-	return ok
-}
-
-// ResetMilestoneDoneYear resets all changes to the "milestone_done_year" field.
-func (m *ProjectMutation) ResetMilestoneDoneYear() {
-	m.milestone_done_year = nil
-	m.addmilestone_done_year = nil
-	delete(m.clearedFields, project.FieldMilestoneDoneYear)
-}
-
-// SetMilestoneDoneMonth sets the "milestone_done_month" field.
-func (m *ProjectMutation) SetMilestoneDoneMonth(i int) {
-	m.milestone_done_month = &i
-	m.addmilestone_done_month = nil
-}
-
-// MilestoneDoneMonth returns the value of the "milestone_done_month" field in the mutation.
-func (m *ProjectMutation) MilestoneDoneMonth() (r int, exists bool) {
-	v := m.milestone_done_month
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldMilestoneDoneMonth returns the old "milestone_done_month" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldMilestoneDoneMonth(ctx context.Context) (v *int, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldMilestoneDoneMonth is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldMilestoneDoneMonth requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldMilestoneDoneMonth: %w", err)
-	}
-	return oldValue.MilestoneDoneMonth, nil
-}
-
-// AddMilestoneDoneMonth adds i to the "milestone_done_month" field.
-func (m *ProjectMutation) AddMilestoneDoneMonth(i int) {
-	if m.addmilestone_done_month != nil {
-		*m.addmilestone_done_month += i
-	} else {
-		m.addmilestone_done_month = &i
-	}
-}
-
-// AddedMilestoneDoneMonth returns the value that was added to the "milestone_done_month" field in this mutation.
-func (m *ProjectMutation) AddedMilestoneDoneMonth() (r int, exists bool) {
-	v := m.addmilestone_done_month
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearMilestoneDoneMonth clears the value of the "milestone_done_month" field.
-func (m *ProjectMutation) ClearMilestoneDoneMonth() {
-	m.milestone_done_month = nil
-	m.addmilestone_done_month = nil
-	m.clearedFields[project.FieldMilestoneDoneMonth] = struct{}{}
-}
-
-// MilestoneDoneMonthCleared returns if the "milestone_done_month" field was cleared in this mutation.
-func (m *ProjectMutation) MilestoneDoneMonthCleared() bool {
-	_, ok := m.clearedFields[project.FieldMilestoneDoneMonth]
-	return ok
-}
-
-// ResetMilestoneDoneMonth resets all changes to the "milestone_done_month" field.
-func (m *ProjectMutation) ResetMilestoneDoneMonth() {
-	m.milestone_done_month = nil
-	m.addmilestone_done_month = nil
-	delete(m.clearedFields, project.FieldMilestoneDoneMonth)
-}
-
-// SetPmArea sets the "pm_area" field.
-func (m *ProjectMutation) SetPmArea(f float64) {
-	m.pm_area = &f
-	m.addpm_area = nil
-}
-
-// PmArea returns the value of the "pm_area" field in the mutation.
-func (m *ProjectMutation) PmArea() (r float64, exists bool) {
-	v := m.pm_area
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldPmArea returns the old "pm_area" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldPmArea(ctx context.Context) (v *float64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldPmArea is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldPmArea requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldPmArea: %w", err)
-	}
-	return oldValue.PmArea, nil
-}
-
-// AddPmArea adds f to the "pm_area" field.
-func (m *ProjectMutation) AddPmArea(f float64) {
-	if m.addpm_area != nil {
-		*m.addpm_area += f
-	} else {
-		m.addpm_area = &f
-	}
-}
-
-// AddedPmArea returns the value that was added to the "pm_area" field in this mutation.
-func (m *ProjectMutation) AddedPmArea() (r float64, exists bool) {
-	v := m.addpm_area
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearPmArea clears the value of the "pm_area" field.
-func (m *ProjectMutation) ClearPmArea() {
-	m.pm_area = nil
-	m.addpm_area = nil
-	m.clearedFields[project.FieldPmArea] = struct{}{}
-}
-
-// PmAreaCleared returns if the "pm_area" field was cleared in this mutation.
-func (m *ProjectMutation) PmAreaCleared() bool {
-	_, ok := m.clearedFields[project.FieldPmArea]
-	return ok
-}
-
-// ResetPmArea resets all changes to the "pm_area" field.
-func (m *ProjectMutation) ResetPmArea() {
-	m.pm_area = nil
-	m.addpm_area = nil
-	delete(m.clearedFields, project.FieldPmArea)
-}
-
-// SetPmYearTarget sets the "pm_year_target" field.
-func (m *ProjectMutation) SetPmYearTarget(f float64) {
-	m.pm_year_target = &f
-	m.addpm_year_target = nil
-}
-
-// PmYearTarget returns the value of the "pm_year_target" field in the mutation.
-func (m *ProjectMutation) PmYearTarget() (r float64, exists bool) {
-	v := m.pm_year_target
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldPmYearTarget returns the old "pm_year_target" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldPmYearTarget(ctx context.Context) (v *float64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldPmYearTarget is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldPmYearTarget requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldPmYearTarget: %w", err)
-	}
-	return oldValue.PmYearTarget, nil
-}
-
-// AddPmYearTarget adds f to the "pm_year_target" field.
-func (m *ProjectMutation) AddPmYearTarget(f float64) {
-	if m.addpm_year_target != nil {
-		*m.addpm_year_target += f
-	} else {
-		m.addpm_year_target = &f
-	}
-}
-
-// AddedPmYearTarget returns the value that was added to the "pm_year_target" field in this mutation.
-func (m *ProjectMutation) AddedPmYearTarget() (r float64, exists bool) {
-	v := m.addpm_year_target
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearPmYearTarget clears the value of the "pm_year_target" field.
-func (m *ProjectMutation) ClearPmYearTarget() {
-	m.pm_year_target = nil
-	m.addpm_year_target = nil
-	m.clearedFields[project.FieldPmYearTarget] = struct{}{}
-}
-
-// PmYearTargetCleared returns if the "pm_year_target" field was cleared in this mutation.
-func (m *ProjectMutation) PmYearTargetCleared() bool {
-	_, ok := m.clearedFields[project.FieldPmYearTarget]
-	return ok
-}
-
-// ResetPmYearTarget resets all changes to the "pm_year_target" field.
-func (m *ProjectMutation) ResetPmYearTarget() {
-	m.pm_year_target = nil
-	m.addpm_year_target = nil
-	delete(m.clearedFields, project.FieldPmYearTarget)
-}
-
-// SetPmMonthTarget sets the "pm_month_target" field.
-func (m *ProjectMutation) SetPmMonthTarget(f float64) {
-	m.pm_month_target = &f
-	m.addpm_month_target = nil
-}
-
-// PmMonthTarget returns the value of the "pm_month_target" field in the mutation.
-func (m *ProjectMutation) PmMonthTarget() (r float64, exists bool) {
-	v := m.pm_month_target
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldPmMonthTarget returns the old "pm_month_target" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldPmMonthTarget(ctx context.Context) (v *float64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldPmMonthTarget is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldPmMonthTarget requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldPmMonthTarget: %w", err)
-	}
-	return oldValue.PmMonthTarget, nil
-}
-
-// AddPmMonthTarget adds f to the "pm_month_target" field.
-func (m *ProjectMutation) AddPmMonthTarget(f float64) {
-	if m.addpm_month_target != nil {
-		*m.addpm_month_target += f
-	} else {
-		m.addpm_month_target = &f
-	}
-}
-
-// AddedPmMonthTarget returns the value that was added to the "pm_month_target" field in this mutation.
-func (m *ProjectMutation) AddedPmMonthTarget() (r float64, exists bool) {
-	v := m.addpm_month_target
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearPmMonthTarget clears the value of the "pm_month_target" field.
-func (m *ProjectMutation) ClearPmMonthTarget() {
-	m.pm_month_target = nil
-	m.addpm_month_target = nil
-	m.clearedFields[project.FieldPmMonthTarget] = struct{}{}
-}
-
-// PmMonthTargetCleared returns if the "pm_month_target" field was cleared in this mutation.
-func (m *ProjectMutation) PmMonthTargetCleared() bool {
-	_, ok := m.clearedFields[project.FieldPmMonthTarget]
-	return ok
-}
-
-// ResetPmMonthTarget resets all changes to the "pm_month_target" field.
-func (m *ProjectMutation) ResetPmMonthTarget() {
-	m.pm_month_target = nil
-	m.addpm_month_target = nil
-	delete(m.clearedFields, project.FieldPmMonthTarget)
-}
-
-// SetPmYearActual sets the "pm_year_actual" field.
-func (m *ProjectMutation) SetPmYearActual(f float64) {
-	m.pm_year_actual = &f
-	m.addpm_year_actual = nil
-}
-
-// PmYearActual returns the value of the "pm_year_actual" field in the mutation.
-func (m *ProjectMutation) PmYearActual() (r float64, exists bool) {
-	v := m.pm_year_actual
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldPmYearActual returns the old "pm_year_actual" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldPmYearActual(ctx context.Context) (v *float64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldPmYearActual is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldPmYearActual requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldPmYearActual: %w", err)
-	}
-	return oldValue.PmYearActual, nil
-}
-
-// AddPmYearActual adds f to the "pm_year_actual" field.
-func (m *ProjectMutation) AddPmYearActual(f float64) {
-	if m.addpm_year_actual != nil {
-		*m.addpm_year_actual += f
-	} else {
-		m.addpm_year_actual = &f
-	}
-}
-
-// AddedPmYearActual returns the value that was added to the "pm_year_actual" field in this mutation.
-func (m *ProjectMutation) AddedPmYearActual() (r float64, exists bool) {
-	v := m.addpm_year_actual
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearPmYearActual clears the value of the "pm_year_actual" field.
-func (m *ProjectMutation) ClearPmYearActual() {
-	m.pm_year_actual = nil
-	m.addpm_year_actual = nil
-	m.clearedFields[project.FieldPmYearActual] = struct{}{}
-}
-
-// PmYearActualCleared returns if the "pm_year_actual" field was cleared in this mutation.
-func (m *ProjectMutation) PmYearActualCleared() bool {
-	_, ok := m.clearedFields[project.FieldPmYearActual]
-	return ok
-}
-
-// ResetPmYearActual resets all changes to the "pm_year_actual" field.
-func (m *ProjectMutation) ResetPmYearActual() {
-	m.pm_year_actual = nil
-	m.addpm_year_actual = nil
-	delete(m.clearedFields, project.FieldPmYearActual)
-}
-
-// SetPmMonthActual sets the "pm_month_actual" field.
-func (m *ProjectMutation) SetPmMonthActual(f float64) {
-	m.pm_month_actual = &f
-	m.addpm_month_actual = nil
-}
-
-// PmMonthActual returns the value of the "pm_month_actual" field in the mutation.
-func (m *ProjectMutation) PmMonthActual() (r float64, exists bool) {
-	v := m.pm_month_actual
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldPmMonthActual returns the old "pm_month_actual" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldPmMonthActual(ctx context.Context) (v *float64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldPmMonthActual is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldPmMonthActual requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldPmMonthActual: %w", err)
-	}
-	return oldValue.PmMonthActual, nil
-}
-
-// AddPmMonthActual adds f to the "pm_month_actual" field.
-func (m *ProjectMutation) AddPmMonthActual(f float64) {
-	if m.addpm_month_actual != nil {
-		*m.addpm_month_actual += f
-	} else {
-		m.addpm_month_actual = &f
-	}
-}
-
-// AddedPmMonthActual returns the value that was added to the "pm_month_actual" field in this mutation.
-func (m *ProjectMutation) AddedPmMonthActual() (r float64, exists bool) {
-	v := m.addpm_month_actual
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearPmMonthActual clears the value of the "pm_month_actual" field.
-func (m *ProjectMutation) ClearPmMonthActual() {
-	m.pm_month_actual = nil
-	m.addpm_month_actual = nil
-	m.clearedFields[project.FieldPmMonthActual] = struct{}{}
-}
-
-// PmMonthActualCleared returns if the "pm_month_actual" field was cleared in this mutation.
-func (m *ProjectMutation) PmMonthActualCleared() bool {
-	_, ok := m.clearedFields[project.FieldPmMonthActual]
-	return ok
-}
-
-// ResetPmMonthActual resets all changes to the "pm_month_actual" field.
-func (m *ProjectMutation) ResetPmMonthActual() {
-	m.pm_month_actual = nil
-	m.addpm_month_actual = nil
-	delete(m.clearedFields, project.FieldPmMonthActual)
-}
-
-// SetPmTotal sets the "pm_total" field.
-func (m *ProjectMutation) SetPmTotal(f float64) {
-	m.pm_total = &f
-	m.addpm_total = nil
-}
-
-// PmTotal returns the value of the "pm_total" field in the mutation.
-func (m *ProjectMutation) PmTotal() (r float64, exists bool) {
-	v := m.pm_total
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldPmTotal returns the old "pm_total" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldPmTotal(ctx context.Context) (v *float64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldPmTotal is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldPmTotal requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldPmTotal: %w", err)
-	}
-	return oldValue.PmTotal, nil
-}
-
-// AddPmTotal adds f to the "pm_total" field.
-func (m *ProjectMutation) AddPmTotal(f float64) {
-	if m.addpm_total != nil {
-		*m.addpm_total += f
-	} else {
-		m.addpm_total = &f
-	}
-}
-
-// AddedPmTotal returns the value that was added to the "pm_total" field in this mutation.
-func (m *ProjectMutation) AddedPmTotal() (r float64, exists bool) {
-	v := m.addpm_total
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearPmTotal clears the value of the "pm_total" field.
-func (m *ProjectMutation) ClearPmTotal() {
-	m.pm_total = nil
-	m.addpm_total = nil
-	m.clearedFields[project.FieldPmTotal] = struct{}{}
-}
-
-// PmTotalCleared returns if the "pm_total" field was cleared in this mutation.
-func (m *ProjectMutation) PmTotalCleared() bool {
-	_, ok := m.clearedFields[project.FieldPmTotal]
-	return ok
-}
-
-// ResetPmTotal resets all changes to the "pm_total" field.
-func (m *ProjectMutation) ResetPmTotal() {
-	m.pm_total = nil
-	m.addpm_total = nil
-	delete(m.clearedFields, project.FieldPmTotal)
-}
-
-// SetPmYesterday sets the "pm_yesterday" field.
-func (m *ProjectMutation) SetPmYesterday(f float64) {
-	m.pm_yesterday = &f
-	m.addpm_yesterday = nil
-}
-
-// PmYesterday returns the value of the "pm_yesterday" field in the mutation.
-func (m *ProjectMutation) PmYesterday() (r float64, exists bool) {
-	v := m.pm_yesterday
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldPmYesterday returns the old "pm_yesterday" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldPmYesterday(ctx context.Context) (v *float64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldPmYesterday is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldPmYesterday requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldPmYesterday: %w", err)
-	}
-	return oldValue.PmYesterday, nil
-}
-
-// AddPmYesterday adds f to the "pm_yesterday" field.
-func (m *ProjectMutation) AddPmYesterday(f float64) {
-	if m.addpm_yesterday != nil {
-		*m.addpm_yesterday += f
-	} else {
-		m.addpm_yesterday = &f
-	}
-}
-
-// AddedPmYesterday returns the value that was added to the "pm_yesterday" field in this mutation.
-func (m *ProjectMutation) AddedPmYesterday() (r float64, exists bool) {
-	v := m.addpm_yesterday
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearPmYesterday clears the value of the "pm_yesterday" field.
-func (m *ProjectMutation) ClearPmYesterday() {
-	m.pm_yesterday = nil
-	m.addpm_yesterday = nil
-	m.clearedFields[project.FieldPmYesterday] = struct{}{}
-}
-
-// PmYesterdayCleared returns if the "pm_yesterday" field was cleared in this mutation.
-func (m *ProjectMutation) PmYesterdayCleared() bool {
-	_, ok := m.clearedFields[project.FieldPmYesterday]
-	return ok
-}
-
-// ResetPmYesterday resets all changes to the "pm_yesterday" field.
-func (m *ProjectMutation) ResetPmYesterday() {
-	m.pm_yesterday = nil
-	m.addpm_yesterday = nil
-	delete(m.clearedFields, project.FieldPmYesterday)
+// ResetRepairFee resets all changes to the "repair_fee" field.
+func (m *ProjectMutation) ResetRepairFee() {
+	m.repair_fee = nil
+	m.addrepair_fee = nil
+	delete(m.clearedFields, project.FieldRepairFee)
 }
 
 // SetUnitInventoryTotal sets the "unit_inventory_total" field.
@@ -15898,566 +13128,6 @@ func (m *ProjectMutation) ResetUnitComponentInstallation() {
 	delete(m.clearedFields, project.FieldUnitComponentInstallation)
 }
 
-// SetMaterialLoss sets the "material_loss" field.
-func (m *ProjectMutation) SetMaterialLoss(f float64) {
-	m.material_loss = &f
-	m.addmaterial_loss = nil
-}
-
-// MaterialLoss returns the value of the "material_loss" field in the mutation.
-func (m *ProjectMutation) MaterialLoss() (r float64, exists bool) {
-	v := m.material_loss
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldMaterialLoss returns the old "material_loss" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldMaterialLoss(ctx context.Context) (v *float64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldMaterialLoss is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldMaterialLoss requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldMaterialLoss: %w", err)
-	}
-	return oldValue.MaterialLoss, nil
-}
-
-// AddMaterialLoss adds f to the "material_loss" field.
-func (m *ProjectMutation) AddMaterialLoss(f float64) {
-	if m.addmaterial_loss != nil {
-		*m.addmaterial_loss += f
-	} else {
-		m.addmaterial_loss = &f
-	}
-}
-
-// AddedMaterialLoss returns the value that was added to the "material_loss" field in this mutation.
-func (m *ProjectMutation) AddedMaterialLoss() (r float64, exists bool) {
-	v := m.addmaterial_loss
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearMaterialLoss clears the value of the "material_loss" field.
-func (m *ProjectMutation) ClearMaterialLoss() {
-	m.material_loss = nil
-	m.addmaterial_loss = nil
-	m.clearedFields[project.FieldMaterialLoss] = struct{}{}
-}
-
-// MaterialLossCleared returns if the "material_loss" field was cleared in this mutation.
-func (m *ProjectMutation) MaterialLossCleared() bool {
-	_, ok := m.clearedFields[project.FieldMaterialLoss]
-	return ok
-}
-
-// ResetMaterialLoss resets all changes to the "material_loss" field.
-func (m *ProjectMutation) ResetMaterialLoss() {
-	m.material_loss = nil
-	m.addmaterial_loss = nil
-	delete(m.clearedFields, project.FieldMaterialLoss)
-}
-
-// SetDesignRatedWeight sets the "design_rated_weight" field.
-func (m *ProjectMutation) SetDesignRatedWeight(f float64) {
-	m.design_rated_weight = &f
-	m.adddesign_rated_weight = nil
-}
-
-// DesignRatedWeight returns the value of the "design_rated_weight" field in the mutation.
-func (m *ProjectMutation) DesignRatedWeight() (r float64, exists bool) {
-	v := m.design_rated_weight
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldDesignRatedWeight returns the old "design_rated_weight" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldDesignRatedWeight(ctx context.Context) (v *float64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldDesignRatedWeight is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldDesignRatedWeight requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldDesignRatedWeight: %w", err)
-	}
-	return oldValue.DesignRatedWeight, nil
-}
-
-// AddDesignRatedWeight adds f to the "design_rated_weight" field.
-func (m *ProjectMutation) AddDesignRatedWeight(f float64) {
-	if m.adddesign_rated_weight != nil {
-		*m.adddesign_rated_weight += f
-	} else {
-		m.adddesign_rated_weight = &f
-	}
-}
-
-// AddedDesignRatedWeight returns the value that was added to the "design_rated_weight" field in this mutation.
-func (m *ProjectMutation) AddedDesignRatedWeight() (r float64, exists bool) {
-	v := m.adddesign_rated_weight
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearDesignRatedWeight clears the value of the "design_rated_weight" field.
-func (m *ProjectMutation) ClearDesignRatedWeight() {
-	m.design_rated_weight = nil
-	m.adddesign_rated_weight = nil
-	m.clearedFields[project.FieldDesignRatedWeight] = struct{}{}
-}
-
-// DesignRatedWeightCleared returns if the "design_rated_weight" field was cleared in this mutation.
-func (m *ProjectMutation) DesignRatedWeightCleared() bool {
-	_, ok := m.clearedFields[project.FieldDesignRatedWeight]
-	return ok
-}
-
-// ResetDesignRatedWeight resets all changes to the "design_rated_weight" field.
-func (m *ProjectMutation) ResetDesignRatedWeight() {
-	m.design_rated_weight = nil
-	m.adddesign_rated_weight = nil
-	delete(m.clearedFields, project.FieldDesignRatedWeight)
-}
-
-// SetProcessingWeight sets the "processing_weight" field.
-func (m *ProjectMutation) SetProcessingWeight(f float64) {
-	m.processing_weight = &f
-	m.addprocessing_weight = nil
-}
-
-// ProcessingWeight returns the value of the "processing_weight" field in the mutation.
-func (m *ProjectMutation) ProcessingWeight() (r float64, exists bool) {
-	v := m.processing_weight
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldProcessingWeight returns the old "processing_weight" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldProcessingWeight(ctx context.Context) (v *float64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldProcessingWeight is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldProcessingWeight requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldProcessingWeight: %w", err)
-	}
-	return oldValue.ProcessingWeight, nil
-}
-
-// AddProcessingWeight adds f to the "processing_weight" field.
-func (m *ProjectMutation) AddProcessingWeight(f float64) {
-	if m.addprocessing_weight != nil {
-		*m.addprocessing_weight += f
-	} else {
-		m.addprocessing_weight = &f
-	}
-}
-
-// AddedProcessingWeight returns the value that was added to the "processing_weight" field in this mutation.
-func (m *ProjectMutation) AddedProcessingWeight() (r float64, exists bool) {
-	v := m.addprocessing_weight
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearProcessingWeight clears the value of the "processing_weight" field.
-func (m *ProjectMutation) ClearProcessingWeight() {
-	m.processing_weight = nil
-	m.addprocessing_weight = nil
-	m.clearedFields[project.FieldProcessingWeight] = struct{}{}
-}
-
-// ProcessingWeightCleared returns if the "processing_weight" field was cleared in this mutation.
-func (m *ProjectMutation) ProcessingWeightCleared() bool {
-	_, ok := m.clearedFields[project.FieldProcessingWeight]
-	return ok
-}
-
-// ResetProcessingWeight resets all changes to the "processing_weight" field.
-func (m *ProjectMutation) ResetProcessingWeight() {
-	m.processing_weight = nil
-	m.addprocessing_weight = nil
-	delete(m.clearedFields, project.FieldProcessingWeight)
-}
-
-// SetItemStockWeight sets the "item_stock_weight" field.
-func (m *ProjectMutation) SetItemStockWeight(f float64) {
-	m.item_stock_weight = &f
-	m.additem_stock_weight = nil
-}
-
-// ItemStockWeight returns the value of the "item_stock_weight" field in the mutation.
-func (m *ProjectMutation) ItemStockWeight() (r float64, exists bool) {
-	v := m.item_stock_weight
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldItemStockWeight returns the old "item_stock_weight" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldItemStockWeight(ctx context.Context) (v *float64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldItemStockWeight is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldItemStockWeight requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldItemStockWeight: %w", err)
-	}
-	return oldValue.ItemStockWeight, nil
-}
-
-// AddItemStockWeight adds f to the "item_stock_weight" field.
-func (m *ProjectMutation) AddItemStockWeight(f float64) {
-	if m.additem_stock_weight != nil {
-		*m.additem_stock_weight += f
-	} else {
-		m.additem_stock_weight = &f
-	}
-}
-
-// AddedItemStockWeight returns the value that was added to the "item_stock_weight" field in this mutation.
-func (m *ProjectMutation) AddedItemStockWeight() (r float64, exists bool) {
-	v := m.additem_stock_weight
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearItemStockWeight clears the value of the "item_stock_weight" field.
-func (m *ProjectMutation) ClearItemStockWeight() {
-	m.item_stock_weight = nil
-	m.additem_stock_weight = nil
-	m.clearedFields[project.FieldItemStockWeight] = struct{}{}
-}
-
-// ItemStockWeightCleared returns if the "item_stock_weight" field was cleared in this mutation.
-func (m *ProjectMutation) ItemStockWeightCleared() bool {
-	_, ok := m.clearedFields[project.FieldItemStockWeight]
-	return ok
-}
-
-// ResetItemStockWeight resets all changes to the "item_stock_weight" field.
-func (m *ProjectMutation) ResetItemStockWeight() {
-	m.item_stock_weight = nil
-	m.additem_stock_weight = nil
-	delete(m.clearedFields, project.FieldItemStockWeight)
-}
-
-// SetPalletsInStock sets the "pallets_in_stock" field.
-func (m *ProjectMutation) SetPalletsInStock(f float64) {
-	m.pallets_in_stock = &f
-	m.addpallets_in_stock = nil
-}
-
-// PalletsInStock returns the value of the "pallets_in_stock" field in the mutation.
-func (m *ProjectMutation) PalletsInStock() (r float64, exists bool) {
-	v := m.pallets_in_stock
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldPalletsInStock returns the old "pallets_in_stock" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldPalletsInStock(ctx context.Context) (v *float64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldPalletsInStock is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldPalletsInStock requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldPalletsInStock: %w", err)
-	}
-	return oldValue.PalletsInStock, nil
-}
-
-// AddPalletsInStock adds f to the "pallets_in_stock" field.
-func (m *ProjectMutation) AddPalletsInStock(f float64) {
-	if m.addpallets_in_stock != nil {
-		*m.addpallets_in_stock += f
-	} else {
-		m.addpallets_in_stock = &f
-	}
-}
-
-// AddedPalletsInStock returns the value that was added to the "pallets_in_stock" field in this mutation.
-func (m *ProjectMutation) AddedPalletsInStock() (r float64, exists bool) {
-	v := m.addpallets_in_stock
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearPalletsInStock clears the value of the "pallets_in_stock" field.
-func (m *ProjectMutation) ClearPalletsInStock() {
-	m.pallets_in_stock = nil
-	m.addpallets_in_stock = nil
-	m.clearedFields[project.FieldPalletsInStock] = struct{}{}
-}
-
-// PalletsInStockCleared returns if the "pallets_in_stock" field was cleared in this mutation.
-func (m *ProjectMutation) PalletsInStockCleared() bool {
-	_, ok := m.clearedFields[project.FieldPalletsInStock]
-	return ok
-}
-
-// ResetPalletsInStock resets all changes to the "pallets_in_stock" field.
-func (m *ProjectMutation) ResetPalletsInStock() {
-	m.pallets_in_stock = nil
-	m.addpallets_in_stock = nil
-	delete(m.clearedFields, project.FieldPalletsInStock)
-}
-
-// SetPartsInStock sets the "parts_in_stock" field.
-func (m *ProjectMutation) SetPartsInStock(f float64) {
-	m.parts_in_stock = &f
-	m.addparts_in_stock = nil
-}
-
-// PartsInStock returns the value of the "parts_in_stock" field in the mutation.
-func (m *ProjectMutation) PartsInStock() (r float64, exists bool) {
-	v := m.parts_in_stock
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldPartsInStock returns the old "parts_in_stock" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldPartsInStock(ctx context.Context) (v *float64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldPartsInStock is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldPartsInStock requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldPartsInStock: %w", err)
-	}
-	return oldValue.PartsInStock, nil
-}
-
-// AddPartsInStock adds f to the "parts_in_stock" field.
-func (m *ProjectMutation) AddPartsInStock(f float64) {
-	if m.addparts_in_stock != nil {
-		*m.addparts_in_stock += f
-	} else {
-		m.addparts_in_stock = &f
-	}
-}
-
-// AddedPartsInStock returns the value that was added to the "parts_in_stock" field in this mutation.
-func (m *ProjectMutation) AddedPartsInStock() (r float64, exists bool) {
-	v := m.addparts_in_stock
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearPartsInStock clears the value of the "parts_in_stock" field.
-func (m *ProjectMutation) ClearPartsInStock() {
-	m.parts_in_stock = nil
-	m.addparts_in_stock = nil
-	m.clearedFields[project.FieldPartsInStock] = struct{}{}
-}
-
-// PartsInStockCleared returns if the "parts_in_stock" field was cleared in this mutation.
-func (m *ProjectMutation) PartsInStockCleared() bool {
-	_, ok := m.clearedFields[project.FieldPartsInStock]
-	return ok
-}
-
-// ResetPartsInStock resets all changes to the "parts_in_stock" field.
-func (m *ProjectMutation) ResetPartsInStock() {
-	m.parts_in_stock = nil
-	m.addparts_in_stock = nil
-	delete(m.clearedFields, project.FieldPartsInStock)
-}
-
-// SetQualityScore sets the "quality_score" field.
-func (m *ProjectMutation) SetQualityScore(f float64) {
-	m.quality_score = &f
-	m.addquality_score = nil
-}
-
-// QualityScore returns the value of the "quality_score" field in the mutation.
-func (m *ProjectMutation) QualityScore() (r float64, exists bool) {
-	v := m.quality_score
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldQualityScore returns the old "quality_score" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldQualityScore(ctx context.Context) (v *float64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldQualityScore is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldQualityScore requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldQualityScore: %w", err)
-	}
-	return oldValue.QualityScore, nil
-}
-
-// AddQualityScore adds f to the "quality_score" field.
-func (m *ProjectMutation) AddQualityScore(f float64) {
-	if m.addquality_score != nil {
-		*m.addquality_score += f
-	} else {
-		m.addquality_score = &f
-	}
-}
-
-// AddedQualityScore returns the value that was added to the "quality_score" field in this mutation.
-func (m *ProjectMutation) AddedQualityScore() (r float64, exists bool) {
-	v := m.addquality_score
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearQualityScore clears the value of the "quality_score" field.
-func (m *ProjectMutation) ClearQualityScore() {
-	m.quality_score = nil
-	m.addquality_score = nil
-	m.clearedFields[project.FieldQualityScore] = struct{}{}
-}
-
-// QualityScoreCleared returns if the "quality_score" field was cleared in this mutation.
-func (m *ProjectMutation) QualityScoreCleared() bool {
-	_, ok := m.clearedFields[project.FieldQualityScore]
-	return ok
-}
-
-// ResetQualityScore resets all changes to the "quality_score" field.
-func (m *ProjectMutation) ResetQualityScore() {
-	m.quality_score = nil
-	m.addquality_score = nil
-	delete(m.clearedFields, project.FieldQualityScore)
-}
-
-// SetQualityRanking sets the "quality_ranking" field.
-func (m *ProjectMutation) SetQualityRanking(f float64) {
-	m.quality_ranking = &f
-	m.addquality_ranking = nil
-}
-
-// QualityRanking returns the value of the "quality_ranking" field in the mutation.
-func (m *ProjectMutation) QualityRanking() (r float64, exists bool) {
-	v := m.quality_ranking
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldQualityRanking returns the old "quality_ranking" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldQualityRanking(ctx context.Context) (v *float64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldQualityRanking is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldQualityRanking requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldQualityRanking: %w", err)
-	}
-	return oldValue.QualityRanking, nil
-}
-
-// AddQualityRanking adds f to the "quality_ranking" field.
-func (m *ProjectMutation) AddQualityRanking(f float64) {
-	if m.addquality_ranking != nil {
-		*m.addquality_ranking += f
-	} else {
-		m.addquality_ranking = &f
-	}
-}
-
-// AddedQualityRanking returns the value that was added to the "quality_ranking" field in this mutation.
-func (m *ProjectMutation) AddedQualityRanking() (r float64, exists bool) {
-	v := m.addquality_ranking
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearQualityRanking clears the value of the "quality_ranking" field.
-func (m *ProjectMutation) ClearQualityRanking() {
-	m.quality_ranking = nil
-	m.addquality_ranking = nil
-	m.clearedFields[project.FieldQualityRanking] = struct{}{}
-}
-
-// QualityRankingCleared returns if the "quality_ranking" field was cleared in this mutation.
-func (m *ProjectMutation) QualityRankingCleared() bool {
-	_, ok := m.clearedFields[project.FieldQualityRanking]
-	return ok
-}
-
-// ResetQualityRanking resets all changes to the "quality_ranking" field.
-func (m *ProjectMutation) ResetQualityRanking() {
-	m.quality_ranking = nil
-	m.addquality_ranking = nil
-	delete(m.clearedFields, project.FieldQualityRanking)
-}
-
 // SetBulkMaterialsTotalOrderQuantity sets the "bulk_materials_total_order_quantity" field.
 func (m *ProjectMutation) SetBulkMaterialsTotalOrderQuantity(f float64) {
 	m.bulk_materials_total_order_quantity = &f
@@ -16666,216 +13336,6 @@ func (m *ProjectMutation) ResetBulkMaterialsUncompletedQuantity() {
 	m.bulk_materials_uncompleted_quantity = nil
 	m.addbulk_materials_uncompleted_quantity = nil
 	delete(m.clearedFields, project.FieldBulkMaterialsUncompletedQuantity)
-}
-
-// SetPlanTotalCount sets the "plan_total_count" field.
-func (m *ProjectMutation) SetPlanTotalCount(i int) {
-	m.plan_total_count = &i
-	m.addplan_total_count = nil
-}
-
-// PlanTotalCount returns the value of the "plan_total_count" field in the mutation.
-func (m *ProjectMutation) PlanTotalCount() (r int, exists bool) {
-	v := m.plan_total_count
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldPlanTotalCount returns the old "plan_total_count" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldPlanTotalCount(ctx context.Context) (v *int, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldPlanTotalCount is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldPlanTotalCount requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldPlanTotalCount: %w", err)
-	}
-	return oldValue.PlanTotalCount, nil
-}
-
-// AddPlanTotalCount adds i to the "plan_total_count" field.
-func (m *ProjectMutation) AddPlanTotalCount(i int) {
-	if m.addplan_total_count != nil {
-		*m.addplan_total_count += i
-	} else {
-		m.addplan_total_count = &i
-	}
-}
-
-// AddedPlanTotalCount returns the value that was added to the "plan_total_count" field in this mutation.
-func (m *ProjectMutation) AddedPlanTotalCount() (r int, exists bool) {
-	v := m.addplan_total_count
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearPlanTotalCount clears the value of the "plan_total_count" field.
-func (m *ProjectMutation) ClearPlanTotalCount() {
-	m.plan_total_count = nil
-	m.addplan_total_count = nil
-	m.clearedFields[project.FieldPlanTotalCount] = struct{}{}
-}
-
-// PlanTotalCountCleared returns if the "plan_total_count" field was cleared in this mutation.
-func (m *ProjectMutation) PlanTotalCountCleared() bool {
-	_, ok := m.clearedFields[project.FieldPlanTotalCount]
-	return ok
-}
-
-// ResetPlanTotalCount resets all changes to the "plan_total_count" field.
-func (m *ProjectMutation) ResetPlanTotalCount() {
-	m.plan_total_count = nil
-	m.addplan_total_count = nil
-	delete(m.clearedFields, project.FieldPlanTotalCount)
-}
-
-// SetPlanOverdueCount sets the "plan_overdue_count" field.
-func (m *ProjectMutation) SetPlanOverdueCount(i int) {
-	m.plan_overdue_count = &i
-	m.addplan_overdue_count = nil
-}
-
-// PlanOverdueCount returns the value of the "plan_overdue_count" field in the mutation.
-func (m *ProjectMutation) PlanOverdueCount() (r int, exists bool) {
-	v := m.plan_overdue_count
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldPlanOverdueCount returns the old "plan_overdue_count" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldPlanOverdueCount(ctx context.Context) (v *int, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldPlanOverdueCount is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldPlanOverdueCount requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldPlanOverdueCount: %w", err)
-	}
-	return oldValue.PlanOverdueCount, nil
-}
-
-// AddPlanOverdueCount adds i to the "plan_overdue_count" field.
-func (m *ProjectMutation) AddPlanOverdueCount(i int) {
-	if m.addplan_overdue_count != nil {
-		*m.addplan_overdue_count += i
-	} else {
-		m.addplan_overdue_count = &i
-	}
-}
-
-// AddedPlanOverdueCount returns the value that was added to the "plan_overdue_count" field in this mutation.
-func (m *ProjectMutation) AddedPlanOverdueCount() (r int, exists bool) {
-	v := m.addplan_overdue_count
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearPlanOverdueCount clears the value of the "plan_overdue_count" field.
-func (m *ProjectMutation) ClearPlanOverdueCount() {
-	m.plan_overdue_count = nil
-	m.addplan_overdue_count = nil
-	m.clearedFields[project.FieldPlanOverdueCount] = struct{}{}
-}
-
-// PlanOverdueCountCleared returns if the "plan_overdue_count" field was cleared in this mutation.
-func (m *ProjectMutation) PlanOverdueCountCleared() bool {
-	_, ok := m.clearedFields[project.FieldPlanOverdueCount]
-	return ok
-}
-
-// ResetPlanOverdueCount resets all changes to the "plan_overdue_count" field.
-func (m *ProjectMutation) ResetPlanOverdueCount() {
-	m.plan_overdue_count = nil
-	m.addplan_overdue_count = nil
-	delete(m.clearedFields, project.FieldPlanOverdueCount)
-}
-
-// SetPlanOverdueMonthCount sets the "plan_overdue_month_count" field.
-func (m *ProjectMutation) SetPlanOverdueMonthCount(i int) {
-	m.plan_overdue_month_count = &i
-	m.addplan_overdue_month_count = nil
-}
-
-// PlanOverdueMonthCount returns the value of the "plan_overdue_month_count" field in the mutation.
-func (m *ProjectMutation) PlanOverdueMonthCount() (r int, exists bool) {
-	v := m.plan_overdue_month_count
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldPlanOverdueMonthCount returns the old "plan_overdue_month_count" field's value of the Project entity.
-// If the Project object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldPlanOverdueMonthCount(ctx context.Context) (v *int, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldPlanOverdueMonthCount is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldPlanOverdueMonthCount requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldPlanOverdueMonthCount: %w", err)
-	}
-	return oldValue.PlanOverdueMonthCount, nil
-}
-
-// AddPlanOverdueMonthCount adds i to the "plan_overdue_month_count" field.
-func (m *ProjectMutation) AddPlanOverdueMonthCount(i int) {
-	if m.addplan_overdue_month_count != nil {
-		*m.addplan_overdue_month_count += i
-	} else {
-		m.addplan_overdue_month_count = &i
-	}
-}
-
-// AddedPlanOverdueMonthCount returns the value that was added to the "plan_overdue_month_count" field in this mutation.
-func (m *ProjectMutation) AddedPlanOverdueMonthCount() (r int, exists bool) {
-	v := m.addplan_overdue_month_count
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearPlanOverdueMonthCount clears the value of the "plan_overdue_month_count" field.
-func (m *ProjectMutation) ClearPlanOverdueMonthCount() {
-	m.plan_overdue_month_count = nil
-	m.addplan_overdue_month_count = nil
-	m.clearedFields[project.FieldPlanOverdueMonthCount] = struct{}{}
-}
-
-// PlanOverdueMonthCountCleared returns if the "plan_overdue_month_count" field was cleared in this mutation.
-func (m *ProjectMutation) PlanOverdueMonthCountCleared() bool {
-	_, ok := m.clearedFields[project.FieldPlanOverdueMonthCount]
-	return ok
-}
-
-// ResetPlanOverdueMonthCount resets all changes to the "plan_overdue_month_count" field.
-func (m *ProjectMutation) ResetPlanOverdueMonthCount() {
-	m.plan_overdue_month_count = nil
-	m.addplan_overdue_month_count = nil
-	delete(m.clearedFields, project.FieldPlanOverdueMonthCount)
 }
 
 // SetDiagramBdFinishCount sets the "diagram_bd_finish_count" field.
@@ -17438,114 +13898,6 @@ func (m *ProjectMutation) ResetDiagramCApprovalRatioDenominator() {
 	delete(m.clearedFields, project.FieldDiagramCApprovalRatioDenominator)
 }
 
-// AddVoIDs adds the "vos" edge to the ProjectVO entity by ids.
-func (m *ProjectMutation) AddVoIDs(ids ...xid.ID) {
-	if m.vos == nil {
-		m.vos = make(map[xid.ID]struct{})
-	}
-	for i := range ids {
-		m.vos[ids[i]] = struct{}{}
-	}
-}
-
-// ClearVos clears the "vos" edge to the ProjectVO entity.
-func (m *ProjectMutation) ClearVos() {
-	m.clearedvos = true
-}
-
-// VosCleared reports if the "vos" edge to the ProjectVO entity was cleared.
-func (m *ProjectMutation) VosCleared() bool {
-	return m.clearedvos
-}
-
-// RemoveVoIDs removes the "vos" edge to the ProjectVO entity by IDs.
-func (m *ProjectMutation) RemoveVoIDs(ids ...xid.ID) {
-	if m.removedvos == nil {
-		m.removedvos = make(map[xid.ID]struct{})
-	}
-	for i := range ids {
-		delete(m.vos, ids[i])
-		m.removedvos[ids[i]] = struct{}{}
-	}
-}
-
-// RemovedVos returns the removed IDs of the "vos" edge to the ProjectVO entity.
-func (m *ProjectMutation) RemovedVosIDs() (ids []xid.ID) {
-	for id := range m.removedvos {
-		ids = append(ids, id)
-	}
-	return
-}
-
-// VosIDs returns the "vos" edge IDs in the mutation.
-func (m *ProjectMutation) VosIDs() (ids []xid.ID) {
-	for id := range m.vos {
-		ids = append(ids, id)
-	}
-	return
-}
-
-// ResetVos resets all changes to the "vos" edge.
-func (m *ProjectMutation) ResetVos() {
-	m.vos = nil
-	m.clearedvos = false
-	m.removedvos = nil
-}
-
-// AddProjectStaffIDs adds the "project_staffs" edge to the ProjectStaff entity by ids.
-func (m *ProjectMutation) AddProjectStaffIDs(ids ...xid.ID) {
-	if m.project_staffs == nil {
-		m.project_staffs = make(map[xid.ID]struct{})
-	}
-	for i := range ids {
-		m.project_staffs[ids[i]] = struct{}{}
-	}
-}
-
-// ClearProjectStaffs clears the "project_staffs" edge to the ProjectStaff entity.
-func (m *ProjectMutation) ClearProjectStaffs() {
-	m.clearedproject_staffs = true
-}
-
-// ProjectStaffsCleared reports if the "project_staffs" edge to the ProjectStaff entity was cleared.
-func (m *ProjectMutation) ProjectStaffsCleared() bool {
-	return m.clearedproject_staffs
-}
-
-// RemoveProjectStaffIDs removes the "project_staffs" edge to the ProjectStaff entity by IDs.
-func (m *ProjectMutation) RemoveProjectStaffIDs(ids ...xid.ID) {
-	if m.removedproject_staffs == nil {
-		m.removedproject_staffs = make(map[xid.ID]struct{})
-	}
-	for i := range ids {
-		delete(m.project_staffs, ids[i])
-		m.removedproject_staffs[ids[i]] = struct{}{}
-	}
-}
-
-// RemovedProjectStaffs returns the removed IDs of the "project_staffs" edge to the ProjectStaff entity.
-func (m *ProjectMutation) RemovedProjectStaffsIDs() (ids []xid.ID) {
-	for id := range m.removedproject_staffs {
-		ids = append(ids, id)
-	}
-	return
-}
-
-// ProjectStaffsIDs returns the "project_staffs" edge IDs in the mutation.
-func (m *ProjectMutation) ProjectStaffsIDs() (ids []xid.ID) {
-	for id := range m.project_staffs {
-		ids = append(ids, id)
-	}
-	return
-}
-
-// ResetProjectStaffs resets all changes to the "project_staffs" edge.
-func (m *ProjectMutation) ResetProjectStaffs() {
-	m.project_staffs = nil
-	m.clearedproject_staffs = false
-	m.removedproject_staffs = nil
-}
-
 // AddUserIDs adds the "users" edge to the User entity by ids.
 func (m *ProjectMutation) AddUserIDs(ids ...xid.ID) {
 	if m.users == nil {
@@ -17634,7 +13986,7 @@ func (m *ProjectMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *ProjectMutation) Fields() []string {
-	fields := make([]string, 0, 82)
+	fields := make([]string, 0, 29)
 	if m.created_at != nil {
 		fields = append(fields, project.FieldCreatedAt)
 	}
@@ -17644,164 +13996,38 @@ func (m *ProjectMutation) Fields() []string {
 	if m.code != nil {
 		fields = append(fields, project.FieldCode)
 	}
-	if m.manager != nil {
-		fields = append(fields, project.FieldManager)
-	}
-	if m.name != nil {
-		fields = append(fields, project.FieldName)
-	}
-	if m.owner != nil {
-		fields = append(fields, project.FieldOwner)
-	}
-	if m.jzs != nil {
-		fields = append(fields, project.FieldJzs)
-	}
-	if m.mcn != nil {
-		fields = append(fields, project.FieldMcn)
-	}
-	if m.consultant != nil {
-		fields = append(fields, project.FieldConsultant)
-	}
-	if m.areas != nil {
-		fields = append(fields, project.FieldAreas)
-	}
-	if m.start_date != nil {
-		fields = append(fields, project.FieldStartDate)
-	}
-	if m.fs_date != nil {
-		fields = append(fields, project.FieldFsDate)
-	}
-	if m.op_date != nil {
-		fields = append(fields, project.FieldOpDate)
-	}
-	if m.end_date != nil {
-		fields = append(fields, project.FieldEndDate)
-	}
-	if m.mntyr != nil {
-		fields = append(fields, project.FieldMntyr)
-	}
-	if m.con_type != nil {
-		fields = append(fields, project.FieldConType)
-	}
 	if m.is_finished != nil {
 		fields = append(fields, project.FieldIsFinished)
 	}
-	if m.cje != nil {
-		fields = append(fields, project.FieldCje)
+	if m.revenue_kpi != nil {
+		fields = append(fields, project.FieldRevenueKpi)
 	}
-	if m.yye != nil {
-		fields = append(fields, project.FieldYye)
+	if m.revenue_current_year_completed != nil {
+		fields = append(fields, project.FieldRevenueCurrentYearCompleted)
 	}
-	if m.xjl != nil {
-		fields = append(fields, project.FieldXjl)
+	if m.revenue_accumulated_completed != nil {
+		fields = append(fields, project.FieldRevenueAccumulatedCompleted)
 	}
-	if m.xmglf_ys != nil {
-		fields = append(fields, project.FieldXmglfYs)
+	if m.pay_date != nil {
+		fields = append(fields, project.FieldPayDate)
 	}
-	if m.xmglf_lj != nil {
-		fields = append(fields, project.FieldXmglfLj)
+	if m.owner_vo_count != nil {
+		fields = append(fields, project.FieldOwnerVoCount)
 	}
-	if m.xmsjf != nil {
-		fields = append(fields, project.FieldXmsjf)
+	if m.contractor_vo_count != nil {
+		fields = append(fields, project.FieldContractorVoCount)
 	}
-	if m.xmfzr != nil {
-		fields = append(fields, project.FieldXmfzr)
+	if m.accumulate_deduction != nil {
+		fields = append(fields, project.FieldAccumulateDeduction)
 	}
-	if m.owner_apply_amount != nil {
-		fields = append(fields, project.FieldOwnerApplyAmount)
+	if m.subcontractor_va_count != nil {
+		fields = append(fields, project.FieldSubcontractorVaCount)
 	}
-	if m.owner_apply_count != nil {
-		fields = append(fields, project.FieldOwnerApplyCount)
+	if m.contract_supplementary_count != nil {
+		fields = append(fields, project.FieldContractSupplementaryCount)
 	}
-	if m.owner_approve_amount != nil {
-		fields = append(fields, project.FieldOwnerApproveAmount)
-	}
-	if m.owner_approve_count != nil {
-		fields = append(fields, project.FieldOwnerApproveCount)
-	}
-	if m.contractor_apply_amount != nil {
-		fields = append(fields, project.FieldContractorApplyAmount)
-	}
-	if m.contractor_apply_count != nil {
-		fields = append(fields, project.FieldContractorApplyCount)
-	}
-	if m.contractor_approve_amount != nil {
-		fields = append(fields, project.FieldContractorApproveAmount)
-	}
-	if m.contractor_approve_count != nil {
-		fields = append(fields, project.FieldContractorApproveCount)
-	}
-	if m.install_progress != nil {
-		fields = append(fields, project.FieldInstallProgress)
-	}
-	if m.effective_contract_amount != nil {
-		fields = append(fields, project.FieldEffectiveContractAmount)
-	}
-	if m.va_apply_amount != nil {
-		fields = append(fields, project.FieldVaApplyAmount)
-	}
-	if m.va_approve_amount != nil {
-		fields = append(fields, project.FieldVaApproveAmount)
-	}
-	if m.accumulated_statutory_deductions != nil {
-		fields = append(fields, project.FieldAccumulatedStatutoryDeductions)
-	}
-	if m.accumulated_non_statutory_deductions != nil {
-		fields = append(fields, project.FieldAccumulatedNonStatutoryDeductions)
-	}
-	if m.accumulated_statutory_deductions_period != nil {
-		fields = append(fields, project.FieldAccumulatedStatutoryDeductionsPeriod)
-	}
-	if m.accumulated_non_statutory_deductions_period != nil {
-		fields = append(fields, project.FieldAccumulatedNonStatutoryDeductionsPeriod)
-	}
-	if m.total_contract_amount != nil {
-		fields = append(fields, project.FieldTotalContractAmount)
-	}
-	if m.aluminum_plate_budget_percentage != nil {
-		fields = append(fields, project.FieldAluminumPlateBudgetPercentage)
-	}
-	if m.aluminum_budget_percentage != nil {
-		fields = append(fields, project.FieldAluminumBudgetPercentage)
-	}
-	if m.glass_budget_percentage != nil {
-		fields = append(fields, project.FieldGlassBudgetPercentage)
-	}
-	if m.iron_budget_percentage != nil {
-		fields = append(fields, project.FieldIronBudgetPercentage)
-	}
-	if m.milestone_plan_year != nil {
-		fields = append(fields, project.FieldMilestonePlanYear)
-	}
-	if m.milestone_plan_month != nil {
-		fields = append(fields, project.FieldMilestonePlanMonth)
-	}
-	if m.milestone_done_year != nil {
-		fields = append(fields, project.FieldMilestoneDoneYear)
-	}
-	if m.milestone_done_month != nil {
-		fields = append(fields, project.FieldMilestoneDoneMonth)
-	}
-	if m.pm_area != nil {
-		fields = append(fields, project.FieldPmArea)
-	}
-	if m.pm_year_target != nil {
-		fields = append(fields, project.FieldPmYearTarget)
-	}
-	if m.pm_month_target != nil {
-		fields = append(fields, project.FieldPmMonthTarget)
-	}
-	if m.pm_year_actual != nil {
-		fields = append(fields, project.FieldPmYearActual)
-	}
-	if m.pm_month_actual != nil {
-		fields = append(fields, project.FieldPmMonthActual)
-	}
-	if m.pm_total != nil {
-		fields = append(fields, project.FieldPmTotal)
-	}
-	if m.pm_yesterday != nil {
-		fields = append(fields, project.FieldPmYesterday)
+	if m.repair_fee != nil {
+		fields = append(fields, project.FieldRepairFee)
 	}
 	if m.unit_inventory_total != nil {
 		fields = append(fields, project.FieldUnitInventoryTotal)
@@ -17815,30 +14041,6 @@ func (m *ProjectMutation) Fields() []string {
 	if m.unit_component_installation != nil {
 		fields = append(fields, project.FieldUnitComponentInstallation)
 	}
-	if m.material_loss != nil {
-		fields = append(fields, project.FieldMaterialLoss)
-	}
-	if m.design_rated_weight != nil {
-		fields = append(fields, project.FieldDesignRatedWeight)
-	}
-	if m.processing_weight != nil {
-		fields = append(fields, project.FieldProcessingWeight)
-	}
-	if m.item_stock_weight != nil {
-		fields = append(fields, project.FieldItemStockWeight)
-	}
-	if m.pallets_in_stock != nil {
-		fields = append(fields, project.FieldPalletsInStock)
-	}
-	if m.parts_in_stock != nil {
-		fields = append(fields, project.FieldPartsInStock)
-	}
-	if m.quality_score != nil {
-		fields = append(fields, project.FieldQualityScore)
-	}
-	if m.quality_ranking != nil {
-		fields = append(fields, project.FieldQualityRanking)
-	}
 	if m.bulk_materials_total_order_quantity != nil {
 		fields = append(fields, project.FieldBulkMaterialsTotalOrderQuantity)
 	}
@@ -17847,15 +14049,6 @@ func (m *ProjectMutation) Fields() []string {
 	}
 	if m.bulk_materials_uncompleted_quantity != nil {
 		fields = append(fields, project.FieldBulkMaterialsUncompletedQuantity)
-	}
-	if m.plan_total_count != nil {
-		fields = append(fields, project.FieldPlanTotalCount)
-	}
-	if m.plan_overdue_count != nil {
-		fields = append(fields, project.FieldPlanOverdueCount)
-	}
-	if m.plan_overdue_month_count != nil {
-		fields = append(fields, project.FieldPlanOverdueMonthCount)
 	}
 	if m.diagram_bd_finish_count != nil {
 		fields = append(fields, project.FieldDiagramBdFinishCount)
@@ -17895,112 +14088,28 @@ func (m *ProjectMutation) Field(name string) (ent.Value, bool) {
 		return m.UpdatedAt()
 	case project.FieldCode:
 		return m.Code()
-	case project.FieldManager:
-		return m.Manager()
-	case project.FieldName:
-		return m.Name()
-	case project.FieldOwner:
-		return m.Owner()
-	case project.FieldJzs:
-		return m.Jzs()
-	case project.FieldMcn:
-		return m.Mcn()
-	case project.FieldConsultant:
-		return m.Consultant()
-	case project.FieldAreas:
-		return m.Areas()
-	case project.FieldStartDate:
-		return m.StartDate()
-	case project.FieldFsDate:
-		return m.FsDate()
-	case project.FieldOpDate:
-		return m.OpDate()
-	case project.FieldEndDate:
-		return m.EndDate()
-	case project.FieldMntyr:
-		return m.Mntyr()
-	case project.FieldConType:
-		return m.ConType()
 	case project.FieldIsFinished:
 		return m.IsFinished()
-	case project.FieldCje:
-		return m.Cje()
-	case project.FieldYye:
-		return m.Yye()
-	case project.FieldXjl:
-		return m.Xjl()
-	case project.FieldXmglfYs:
-		return m.XmglfYs()
-	case project.FieldXmglfLj:
-		return m.XmglfLj()
-	case project.FieldXmsjf:
-		return m.Xmsjf()
-	case project.FieldXmfzr:
-		return m.Xmfzr()
-	case project.FieldOwnerApplyAmount:
-		return m.OwnerApplyAmount()
-	case project.FieldOwnerApplyCount:
-		return m.OwnerApplyCount()
-	case project.FieldOwnerApproveAmount:
-		return m.OwnerApproveAmount()
-	case project.FieldOwnerApproveCount:
-		return m.OwnerApproveCount()
-	case project.FieldContractorApplyAmount:
-		return m.ContractorApplyAmount()
-	case project.FieldContractorApplyCount:
-		return m.ContractorApplyCount()
-	case project.FieldContractorApproveAmount:
-		return m.ContractorApproveAmount()
-	case project.FieldContractorApproveCount:
-		return m.ContractorApproveCount()
-	case project.FieldInstallProgress:
-		return m.InstallProgress()
-	case project.FieldEffectiveContractAmount:
-		return m.EffectiveContractAmount()
-	case project.FieldVaApplyAmount:
-		return m.VaApplyAmount()
-	case project.FieldVaApproveAmount:
-		return m.VaApproveAmount()
-	case project.FieldAccumulatedStatutoryDeductions:
-		return m.AccumulatedStatutoryDeductions()
-	case project.FieldAccumulatedNonStatutoryDeductions:
-		return m.AccumulatedNonStatutoryDeductions()
-	case project.FieldAccumulatedStatutoryDeductionsPeriod:
-		return m.AccumulatedStatutoryDeductionsPeriod()
-	case project.FieldAccumulatedNonStatutoryDeductionsPeriod:
-		return m.AccumulatedNonStatutoryDeductionsPeriod()
-	case project.FieldTotalContractAmount:
-		return m.TotalContractAmount()
-	case project.FieldAluminumPlateBudgetPercentage:
-		return m.AluminumPlateBudgetPercentage()
-	case project.FieldAluminumBudgetPercentage:
-		return m.AluminumBudgetPercentage()
-	case project.FieldGlassBudgetPercentage:
-		return m.GlassBudgetPercentage()
-	case project.FieldIronBudgetPercentage:
-		return m.IronBudgetPercentage()
-	case project.FieldMilestonePlanYear:
-		return m.MilestonePlanYear()
-	case project.FieldMilestonePlanMonth:
-		return m.MilestonePlanMonth()
-	case project.FieldMilestoneDoneYear:
-		return m.MilestoneDoneYear()
-	case project.FieldMilestoneDoneMonth:
-		return m.MilestoneDoneMonth()
-	case project.FieldPmArea:
-		return m.PmArea()
-	case project.FieldPmYearTarget:
-		return m.PmYearTarget()
-	case project.FieldPmMonthTarget:
-		return m.PmMonthTarget()
-	case project.FieldPmYearActual:
-		return m.PmYearActual()
-	case project.FieldPmMonthActual:
-		return m.PmMonthActual()
-	case project.FieldPmTotal:
-		return m.PmTotal()
-	case project.FieldPmYesterday:
-		return m.PmYesterday()
+	case project.FieldRevenueKpi:
+		return m.RevenueKpi()
+	case project.FieldRevenueCurrentYearCompleted:
+		return m.RevenueCurrentYearCompleted()
+	case project.FieldRevenueAccumulatedCompleted:
+		return m.RevenueAccumulatedCompleted()
+	case project.FieldPayDate:
+		return m.PayDate()
+	case project.FieldOwnerVoCount:
+		return m.OwnerVoCount()
+	case project.FieldContractorVoCount:
+		return m.ContractorVoCount()
+	case project.FieldAccumulateDeduction:
+		return m.AccumulateDeduction()
+	case project.FieldSubcontractorVaCount:
+		return m.SubcontractorVaCount()
+	case project.FieldContractSupplementaryCount:
+		return m.ContractSupplementaryCount()
+	case project.FieldRepairFee:
+		return m.RepairFee()
 	case project.FieldUnitInventoryTotal:
 		return m.UnitInventoryTotal()
 	case project.FieldUnitComponentTotal:
@@ -18009,34 +14118,12 @@ func (m *ProjectMutation) Field(name string) (ent.Value, bool) {
 		return m.UnitComponentProduction()
 	case project.FieldUnitComponentInstallation:
 		return m.UnitComponentInstallation()
-	case project.FieldMaterialLoss:
-		return m.MaterialLoss()
-	case project.FieldDesignRatedWeight:
-		return m.DesignRatedWeight()
-	case project.FieldProcessingWeight:
-		return m.ProcessingWeight()
-	case project.FieldItemStockWeight:
-		return m.ItemStockWeight()
-	case project.FieldPalletsInStock:
-		return m.PalletsInStock()
-	case project.FieldPartsInStock:
-		return m.PartsInStock()
-	case project.FieldQualityScore:
-		return m.QualityScore()
-	case project.FieldQualityRanking:
-		return m.QualityRanking()
 	case project.FieldBulkMaterialsTotalOrderQuantity:
 		return m.BulkMaterialsTotalOrderQuantity()
 	case project.FieldBulkMaterialsCompletedQuantity:
 		return m.BulkMaterialsCompletedQuantity()
 	case project.FieldBulkMaterialsUncompletedQuantity:
 		return m.BulkMaterialsUncompletedQuantity()
-	case project.FieldPlanTotalCount:
-		return m.PlanTotalCount()
-	case project.FieldPlanOverdueCount:
-		return m.PlanOverdueCount()
-	case project.FieldPlanOverdueMonthCount:
-		return m.PlanOverdueMonthCount()
 	case project.FieldDiagramBdFinishCount:
 		return m.DiagramBdFinishCount()
 	case project.FieldDiagramBdTotalCount:
@@ -18068,112 +14155,28 @@ func (m *ProjectMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldUpdatedAt(ctx)
 	case project.FieldCode:
 		return m.OldCode(ctx)
-	case project.FieldManager:
-		return m.OldManager(ctx)
-	case project.FieldName:
-		return m.OldName(ctx)
-	case project.FieldOwner:
-		return m.OldOwner(ctx)
-	case project.FieldJzs:
-		return m.OldJzs(ctx)
-	case project.FieldMcn:
-		return m.OldMcn(ctx)
-	case project.FieldConsultant:
-		return m.OldConsultant(ctx)
-	case project.FieldAreas:
-		return m.OldAreas(ctx)
-	case project.FieldStartDate:
-		return m.OldStartDate(ctx)
-	case project.FieldFsDate:
-		return m.OldFsDate(ctx)
-	case project.FieldOpDate:
-		return m.OldOpDate(ctx)
-	case project.FieldEndDate:
-		return m.OldEndDate(ctx)
-	case project.FieldMntyr:
-		return m.OldMntyr(ctx)
-	case project.FieldConType:
-		return m.OldConType(ctx)
 	case project.FieldIsFinished:
 		return m.OldIsFinished(ctx)
-	case project.FieldCje:
-		return m.OldCje(ctx)
-	case project.FieldYye:
-		return m.OldYye(ctx)
-	case project.FieldXjl:
-		return m.OldXjl(ctx)
-	case project.FieldXmglfYs:
-		return m.OldXmglfYs(ctx)
-	case project.FieldXmglfLj:
-		return m.OldXmglfLj(ctx)
-	case project.FieldXmsjf:
-		return m.OldXmsjf(ctx)
-	case project.FieldXmfzr:
-		return m.OldXmfzr(ctx)
-	case project.FieldOwnerApplyAmount:
-		return m.OldOwnerApplyAmount(ctx)
-	case project.FieldOwnerApplyCount:
-		return m.OldOwnerApplyCount(ctx)
-	case project.FieldOwnerApproveAmount:
-		return m.OldOwnerApproveAmount(ctx)
-	case project.FieldOwnerApproveCount:
-		return m.OldOwnerApproveCount(ctx)
-	case project.FieldContractorApplyAmount:
-		return m.OldContractorApplyAmount(ctx)
-	case project.FieldContractorApplyCount:
-		return m.OldContractorApplyCount(ctx)
-	case project.FieldContractorApproveAmount:
-		return m.OldContractorApproveAmount(ctx)
-	case project.FieldContractorApproveCount:
-		return m.OldContractorApproveCount(ctx)
-	case project.FieldInstallProgress:
-		return m.OldInstallProgress(ctx)
-	case project.FieldEffectiveContractAmount:
-		return m.OldEffectiveContractAmount(ctx)
-	case project.FieldVaApplyAmount:
-		return m.OldVaApplyAmount(ctx)
-	case project.FieldVaApproveAmount:
-		return m.OldVaApproveAmount(ctx)
-	case project.FieldAccumulatedStatutoryDeductions:
-		return m.OldAccumulatedStatutoryDeductions(ctx)
-	case project.FieldAccumulatedNonStatutoryDeductions:
-		return m.OldAccumulatedNonStatutoryDeductions(ctx)
-	case project.FieldAccumulatedStatutoryDeductionsPeriod:
-		return m.OldAccumulatedStatutoryDeductionsPeriod(ctx)
-	case project.FieldAccumulatedNonStatutoryDeductionsPeriod:
-		return m.OldAccumulatedNonStatutoryDeductionsPeriod(ctx)
-	case project.FieldTotalContractAmount:
-		return m.OldTotalContractAmount(ctx)
-	case project.FieldAluminumPlateBudgetPercentage:
-		return m.OldAluminumPlateBudgetPercentage(ctx)
-	case project.FieldAluminumBudgetPercentage:
-		return m.OldAluminumBudgetPercentage(ctx)
-	case project.FieldGlassBudgetPercentage:
-		return m.OldGlassBudgetPercentage(ctx)
-	case project.FieldIronBudgetPercentage:
-		return m.OldIronBudgetPercentage(ctx)
-	case project.FieldMilestonePlanYear:
-		return m.OldMilestonePlanYear(ctx)
-	case project.FieldMilestonePlanMonth:
-		return m.OldMilestonePlanMonth(ctx)
-	case project.FieldMilestoneDoneYear:
-		return m.OldMilestoneDoneYear(ctx)
-	case project.FieldMilestoneDoneMonth:
-		return m.OldMilestoneDoneMonth(ctx)
-	case project.FieldPmArea:
-		return m.OldPmArea(ctx)
-	case project.FieldPmYearTarget:
-		return m.OldPmYearTarget(ctx)
-	case project.FieldPmMonthTarget:
-		return m.OldPmMonthTarget(ctx)
-	case project.FieldPmYearActual:
-		return m.OldPmYearActual(ctx)
-	case project.FieldPmMonthActual:
-		return m.OldPmMonthActual(ctx)
-	case project.FieldPmTotal:
-		return m.OldPmTotal(ctx)
-	case project.FieldPmYesterday:
-		return m.OldPmYesterday(ctx)
+	case project.FieldRevenueKpi:
+		return m.OldRevenueKpi(ctx)
+	case project.FieldRevenueCurrentYearCompleted:
+		return m.OldRevenueCurrentYearCompleted(ctx)
+	case project.FieldRevenueAccumulatedCompleted:
+		return m.OldRevenueAccumulatedCompleted(ctx)
+	case project.FieldPayDate:
+		return m.OldPayDate(ctx)
+	case project.FieldOwnerVoCount:
+		return m.OldOwnerVoCount(ctx)
+	case project.FieldContractorVoCount:
+		return m.OldContractorVoCount(ctx)
+	case project.FieldAccumulateDeduction:
+		return m.OldAccumulateDeduction(ctx)
+	case project.FieldSubcontractorVaCount:
+		return m.OldSubcontractorVaCount(ctx)
+	case project.FieldContractSupplementaryCount:
+		return m.OldContractSupplementaryCount(ctx)
+	case project.FieldRepairFee:
+		return m.OldRepairFee(ctx)
 	case project.FieldUnitInventoryTotal:
 		return m.OldUnitInventoryTotal(ctx)
 	case project.FieldUnitComponentTotal:
@@ -18182,34 +14185,12 @@ func (m *ProjectMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldUnitComponentProduction(ctx)
 	case project.FieldUnitComponentInstallation:
 		return m.OldUnitComponentInstallation(ctx)
-	case project.FieldMaterialLoss:
-		return m.OldMaterialLoss(ctx)
-	case project.FieldDesignRatedWeight:
-		return m.OldDesignRatedWeight(ctx)
-	case project.FieldProcessingWeight:
-		return m.OldProcessingWeight(ctx)
-	case project.FieldItemStockWeight:
-		return m.OldItemStockWeight(ctx)
-	case project.FieldPalletsInStock:
-		return m.OldPalletsInStock(ctx)
-	case project.FieldPartsInStock:
-		return m.OldPartsInStock(ctx)
-	case project.FieldQualityScore:
-		return m.OldQualityScore(ctx)
-	case project.FieldQualityRanking:
-		return m.OldQualityRanking(ctx)
 	case project.FieldBulkMaterialsTotalOrderQuantity:
 		return m.OldBulkMaterialsTotalOrderQuantity(ctx)
 	case project.FieldBulkMaterialsCompletedQuantity:
 		return m.OldBulkMaterialsCompletedQuantity(ctx)
 	case project.FieldBulkMaterialsUncompletedQuantity:
 		return m.OldBulkMaterialsUncompletedQuantity(ctx)
-	case project.FieldPlanTotalCount:
-		return m.OldPlanTotalCount(ctx)
-	case project.FieldPlanOverdueCount:
-		return m.OldPlanOverdueCount(ctx)
-	case project.FieldPlanOverdueMonthCount:
-		return m.OldPlanOverdueMonthCount(ctx)
 	case project.FieldDiagramBdFinishCount:
 		return m.OldDiagramBdFinishCount(ctx)
 	case project.FieldDiagramBdTotalCount:
@@ -18256,97 +14237,6 @@ func (m *ProjectMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetCode(v)
 		return nil
-	case project.FieldManager:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetManager(v)
-		return nil
-	case project.FieldName:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetName(v)
-		return nil
-	case project.FieldOwner:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetOwner(v)
-		return nil
-	case project.FieldJzs:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetJzs(v)
-		return nil
-	case project.FieldMcn:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetMcn(v)
-		return nil
-	case project.FieldConsultant:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetConsultant(v)
-		return nil
-	case project.FieldAreas:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetAreas(v)
-		return nil
-	case project.FieldStartDate:
-		v, ok := value.(time.Time)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetStartDate(v)
-		return nil
-	case project.FieldFsDate:
-		v, ok := value.(time.Time)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetFsDate(v)
-		return nil
-	case project.FieldOpDate:
-		v, ok := value.(time.Time)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetOpDate(v)
-		return nil
-	case project.FieldEndDate:
-		v, ok := value.(time.Time)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetEndDate(v)
-		return nil
-	case project.FieldMntyr:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetMntyr(v)
-		return nil
-	case project.FieldConType:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetConType(v)
-		return nil
 	case project.FieldIsFinished:
 		v, ok := value.(bool)
 		if !ok {
@@ -18354,278 +14244,75 @@ func (m *ProjectMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetIsFinished(v)
 		return nil
-	case project.FieldCje:
+	case project.FieldRevenueKpi:
 		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetCje(v)
+		m.SetRevenueKpi(v)
 		return nil
-	case project.FieldYye:
+	case project.FieldRevenueCurrentYearCompleted:
 		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetYye(v)
+		m.SetRevenueCurrentYearCompleted(v)
 		return nil
-	case project.FieldXjl:
+	case project.FieldRevenueAccumulatedCompleted:
 		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetXjl(v)
+		m.SetRevenueAccumulatedCompleted(v)
 		return nil
-	case project.FieldXmglfYs:
-		v, ok := value.(float64)
+	case project.FieldPayDate:
+		v, ok := value.(time.Time)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetXmglfYs(v)
+		m.SetPayDate(v)
 		return nil
-	case project.FieldXmglfLj:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetXmglfLj(v)
-		return nil
-	case project.FieldXmsjf:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetXmsjf(v)
-		return nil
-	case project.FieldXmfzr:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetXmfzr(v)
-		return nil
-	case project.FieldOwnerApplyAmount:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetOwnerApplyAmount(v)
-		return nil
-	case project.FieldOwnerApplyCount:
+	case project.FieldOwnerVoCount:
 		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetOwnerApplyCount(v)
+		m.SetOwnerVoCount(v)
 		return nil
-	case project.FieldOwnerApproveAmount:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetOwnerApproveAmount(v)
-		return nil
-	case project.FieldOwnerApproveCount:
+	case project.FieldContractorVoCount:
 		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetOwnerApproveCount(v)
+		m.SetContractorVoCount(v)
 		return nil
-	case project.FieldContractorApplyAmount:
+	case project.FieldAccumulateDeduction:
 		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetContractorApplyAmount(v)
+		m.SetAccumulateDeduction(v)
 		return nil
-	case project.FieldContractorApplyCount:
+	case project.FieldSubcontractorVaCount:
 		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetContractorApplyCount(v)
+		m.SetSubcontractorVaCount(v)
 		return nil
-	case project.FieldContractorApproveAmount:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetContractorApproveAmount(v)
-		return nil
-	case project.FieldContractorApproveCount:
+	case project.FieldContractSupplementaryCount:
 		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetContractorApproveCount(v)
+		m.SetContractSupplementaryCount(v)
 		return nil
-	case project.FieldInstallProgress:
+	case project.FieldRepairFee:
 		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetInstallProgress(v)
-		return nil
-	case project.FieldEffectiveContractAmount:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetEffectiveContractAmount(v)
-		return nil
-	case project.FieldVaApplyAmount:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetVaApplyAmount(v)
-		return nil
-	case project.FieldVaApproveAmount:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetVaApproveAmount(v)
-		return nil
-	case project.FieldAccumulatedStatutoryDeductions:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetAccumulatedStatutoryDeductions(v)
-		return nil
-	case project.FieldAccumulatedNonStatutoryDeductions:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetAccumulatedNonStatutoryDeductions(v)
-		return nil
-	case project.FieldAccumulatedStatutoryDeductionsPeriod:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetAccumulatedStatutoryDeductionsPeriod(v)
-		return nil
-	case project.FieldAccumulatedNonStatutoryDeductionsPeriod:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetAccumulatedNonStatutoryDeductionsPeriod(v)
-		return nil
-	case project.FieldTotalContractAmount:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetTotalContractAmount(v)
-		return nil
-	case project.FieldAluminumPlateBudgetPercentage:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetAluminumPlateBudgetPercentage(v)
-		return nil
-	case project.FieldAluminumBudgetPercentage:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetAluminumBudgetPercentage(v)
-		return nil
-	case project.FieldGlassBudgetPercentage:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetGlassBudgetPercentage(v)
-		return nil
-	case project.FieldIronBudgetPercentage:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetIronBudgetPercentage(v)
-		return nil
-	case project.FieldMilestonePlanYear:
-		v, ok := value.(int)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetMilestonePlanYear(v)
-		return nil
-	case project.FieldMilestonePlanMonth:
-		v, ok := value.(int)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetMilestonePlanMonth(v)
-		return nil
-	case project.FieldMilestoneDoneYear:
-		v, ok := value.(int)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetMilestoneDoneYear(v)
-		return nil
-	case project.FieldMilestoneDoneMonth:
-		v, ok := value.(int)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetMilestoneDoneMonth(v)
-		return nil
-	case project.FieldPmArea:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetPmArea(v)
-		return nil
-	case project.FieldPmYearTarget:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetPmYearTarget(v)
-		return nil
-	case project.FieldPmMonthTarget:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetPmMonthTarget(v)
-		return nil
-	case project.FieldPmYearActual:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetPmYearActual(v)
-		return nil
-	case project.FieldPmMonthActual:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetPmMonthActual(v)
-		return nil
-	case project.FieldPmTotal:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetPmTotal(v)
-		return nil
-	case project.FieldPmYesterday:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetPmYesterday(v)
+		m.SetRepairFee(v)
 		return nil
 	case project.FieldUnitInventoryTotal:
 		v, ok := value.(float64)
@@ -18655,62 +14342,6 @@ func (m *ProjectMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetUnitComponentInstallation(v)
 		return nil
-	case project.FieldMaterialLoss:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetMaterialLoss(v)
-		return nil
-	case project.FieldDesignRatedWeight:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetDesignRatedWeight(v)
-		return nil
-	case project.FieldProcessingWeight:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetProcessingWeight(v)
-		return nil
-	case project.FieldItemStockWeight:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetItemStockWeight(v)
-		return nil
-	case project.FieldPalletsInStock:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetPalletsInStock(v)
-		return nil
-	case project.FieldPartsInStock:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetPartsInStock(v)
-		return nil
-	case project.FieldQualityScore:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetQualityScore(v)
-		return nil
-	case project.FieldQualityRanking:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetQualityRanking(v)
-		return nil
 	case project.FieldBulkMaterialsTotalOrderQuantity:
 		v, ok := value.(float64)
 		if !ok {
@@ -18731,27 +14362,6 @@ func (m *ProjectMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetBulkMaterialsUncompletedQuantity(v)
-		return nil
-	case project.FieldPlanTotalCount:
-		v, ok := value.(int)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetPlanTotalCount(v)
-		return nil
-	case project.FieldPlanOverdueCount:
-		v, ok := value.(int)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetPlanOverdueCount(v)
-		return nil
-	case project.FieldPlanOverdueMonthCount:
-		v, ok := value.(int)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetPlanOverdueMonthCount(v)
 		return nil
 	case project.FieldDiagramBdFinishCount:
 		v, ok := value.(int)
@@ -18817,119 +14427,32 @@ func (m *ProjectMutation) SetField(name string, value ent.Value) error {
 // this mutation.
 func (m *ProjectMutation) AddedFields() []string {
 	var fields []string
-	if m.addcje != nil {
-		fields = append(fields, project.FieldCje)
+	if m.addrevenue_kpi != nil {
+		fields = append(fields, project.FieldRevenueKpi)
 	}
-	if m.addyye != nil {
-		fields = append(fields, project.FieldYye)
+	if m.addrevenue_current_year_completed != nil {
+		fields = append(fields, project.FieldRevenueCurrentYearCompleted)
 	}
-	if m.addxjl != nil {
-		fields = append(fields, project.FieldXjl)
+	if m.addrevenue_accumulated_completed != nil {
+		fields = append(fields, project.FieldRevenueAccumulatedCompleted)
 	}
-	if m.addxmglf_ys != nil {
-		fields = append(fields, project.FieldXmglfYs)
+	if m.addowner_vo_count != nil {
+		fields = append(fields, project.FieldOwnerVoCount)
 	}
-	if m.addxmglf_lj != nil {
-		fields = append(fields, project.FieldXmglfLj)
+	if m.addcontractor_vo_count != nil {
+		fields = append(fields, project.FieldContractorVoCount)
 	}
-	if m.addxmsjf != nil {
-		fields = append(fields, project.FieldXmsjf)
+	if m.addaccumulate_deduction != nil {
+		fields = append(fields, project.FieldAccumulateDeduction)
 	}
-	if m.addowner_apply_amount != nil {
-		fields = append(fields, project.FieldOwnerApplyAmount)
+	if m.addsubcontractor_va_count != nil {
+		fields = append(fields, project.FieldSubcontractorVaCount)
 	}
-	if m.addowner_apply_count != nil {
-		fields = append(fields, project.FieldOwnerApplyCount)
+	if m.addcontract_supplementary_count != nil {
+		fields = append(fields, project.FieldContractSupplementaryCount)
 	}
-	if m.addowner_approve_amount != nil {
-		fields = append(fields, project.FieldOwnerApproveAmount)
-	}
-	if m.addowner_approve_count != nil {
-		fields = append(fields, project.FieldOwnerApproveCount)
-	}
-	if m.addcontractor_apply_amount != nil {
-		fields = append(fields, project.FieldContractorApplyAmount)
-	}
-	if m.addcontractor_apply_count != nil {
-		fields = append(fields, project.FieldContractorApplyCount)
-	}
-	if m.addcontractor_approve_amount != nil {
-		fields = append(fields, project.FieldContractorApproveAmount)
-	}
-	if m.addcontractor_approve_count != nil {
-		fields = append(fields, project.FieldContractorApproveCount)
-	}
-	if m.addinstall_progress != nil {
-		fields = append(fields, project.FieldInstallProgress)
-	}
-	if m.addeffective_contract_amount != nil {
-		fields = append(fields, project.FieldEffectiveContractAmount)
-	}
-	if m.addva_apply_amount != nil {
-		fields = append(fields, project.FieldVaApplyAmount)
-	}
-	if m.addva_approve_amount != nil {
-		fields = append(fields, project.FieldVaApproveAmount)
-	}
-	if m.addaccumulated_statutory_deductions != nil {
-		fields = append(fields, project.FieldAccumulatedStatutoryDeductions)
-	}
-	if m.addaccumulated_non_statutory_deductions != nil {
-		fields = append(fields, project.FieldAccumulatedNonStatutoryDeductions)
-	}
-	if m.addaccumulated_statutory_deductions_period != nil {
-		fields = append(fields, project.FieldAccumulatedStatutoryDeductionsPeriod)
-	}
-	if m.addaccumulated_non_statutory_deductions_period != nil {
-		fields = append(fields, project.FieldAccumulatedNonStatutoryDeductionsPeriod)
-	}
-	if m.addtotal_contract_amount != nil {
-		fields = append(fields, project.FieldTotalContractAmount)
-	}
-	if m.addaluminum_plate_budget_percentage != nil {
-		fields = append(fields, project.FieldAluminumPlateBudgetPercentage)
-	}
-	if m.addaluminum_budget_percentage != nil {
-		fields = append(fields, project.FieldAluminumBudgetPercentage)
-	}
-	if m.addglass_budget_percentage != nil {
-		fields = append(fields, project.FieldGlassBudgetPercentage)
-	}
-	if m.addiron_budget_percentage != nil {
-		fields = append(fields, project.FieldIronBudgetPercentage)
-	}
-	if m.addmilestone_plan_year != nil {
-		fields = append(fields, project.FieldMilestonePlanYear)
-	}
-	if m.addmilestone_plan_month != nil {
-		fields = append(fields, project.FieldMilestonePlanMonth)
-	}
-	if m.addmilestone_done_year != nil {
-		fields = append(fields, project.FieldMilestoneDoneYear)
-	}
-	if m.addmilestone_done_month != nil {
-		fields = append(fields, project.FieldMilestoneDoneMonth)
-	}
-	if m.addpm_area != nil {
-		fields = append(fields, project.FieldPmArea)
-	}
-	if m.addpm_year_target != nil {
-		fields = append(fields, project.FieldPmYearTarget)
-	}
-	if m.addpm_month_target != nil {
-		fields = append(fields, project.FieldPmMonthTarget)
-	}
-	if m.addpm_year_actual != nil {
-		fields = append(fields, project.FieldPmYearActual)
-	}
-	if m.addpm_month_actual != nil {
-		fields = append(fields, project.FieldPmMonthActual)
-	}
-	if m.addpm_total != nil {
-		fields = append(fields, project.FieldPmTotal)
-	}
-	if m.addpm_yesterday != nil {
-		fields = append(fields, project.FieldPmYesterday)
+	if m.addrepair_fee != nil {
+		fields = append(fields, project.FieldRepairFee)
 	}
 	if m.addunit_inventory_total != nil {
 		fields = append(fields, project.FieldUnitInventoryTotal)
@@ -18943,30 +14466,6 @@ func (m *ProjectMutation) AddedFields() []string {
 	if m.addunit_component_installation != nil {
 		fields = append(fields, project.FieldUnitComponentInstallation)
 	}
-	if m.addmaterial_loss != nil {
-		fields = append(fields, project.FieldMaterialLoss)
-	}
-	if m.adddesign_rated_weight != nil {
-		fields = append(fields, project.FieldDesignRatedWeight)
-	}
-	if m.addprocessing_weight != nil {
-		fields = append(fields, project.FieldProcessingWeight)
-	}
-	if m.additem_stock_weight != nil {
-		fields = append(fields, project.FieldItemStockWeight)
-	}
-	if m.addpallets_in_stock != nil {
-		fields = append(fields, project.FieldPalletsInStock)
-	}
-	if m.addparts_in_stock != nil {
-		fields = append(fields, project.FieldPartsInStock)
-	}
-	if m.addquality_score != nil {
-		fields = append(fields, project.FieldQualityScore)
-	}
-	if m.addquality_ranking != nil {
-		fields = append(fields, project.FieldQualityRanking)
-	}
 	if m.addbulk_materials_total_order_quantity != nil {
 		fields = append(fields, project.FieldBulkMaterialsTotalOrderQuantity)
 	}
@@ -18975,15 +14474,6 @@ func (m *ProjectMutation) AddedFields() []string {
 	}
 	if m.addbulk_materials_uncompleted_quantity != nil {
 		fields = append(fields, project.FieldBulkMaterialsUncompletedQuantity)
-	}
-	if m.addplan_total_count != nil {
-		fields = append(fields, project.FieldPlanTotalCount)
-	}
-	if m.addplan_overdue_count != nil {
-		fields = append(fields, project.FieldPlanOverdueCount)
-	}
-	if m.addplan_overdue_month_count != nil {
-		fields = append(fields, project.FieldPlanOverdueMonthCount)
 	}
 	if m.adddiagram_bd_finish_count != nil {
 		fields = append(fields, project.FieldDiagramBdFinishCount)
@@ -19017,82 +14507,24 @@ func (m *ProjectMutation) AddedFields() []string {
 // was not set, or was not defined in the schema.
 func (m *ProjectMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
-	case project.FieldCje:
-		return m.AddedCje()
-	case project.FieldYye:
-		return m.AddedYye()
-	case project.FieldXjl:
-		return m.AddedXjl()
-	case project.FieldXmglfYs:
-		return m.AddedXmglfYs()
-	case project.FieldXmglfLj:
-		return m.AddedXmglfLj()
-	case project.FieldXmsjf:
-		return m.AddedXmsjf()
-	case project.FieldOwnerApplyAmount:
-		return m.AddedOwnerApplyAmount()
-	case project.FieldOwnerApplyCount:
-		return m.AddedOwnerApplyCount()
-	case project.FieldOwnerApproveAmount:
-		return m.AddedOwnerApproveAmount()
-	case project.FieldOwnerApproveCount:
-		return m.AddedOwnerApproveCount()
-	case project.FieldContractorApplyAmount:
-		return m.AddedContractorApplyAmount()
-	case project.FieldContractorApplyCount:
-		return m.AddedContractorApplyCount()
-	case project.FieldContractorApproveAmount:
-		return m.AddedContractorApproveAmount()
-	case project.FieldContractorApproveCount:
-		return m.AddedContractorApproveCount()
-	case project.FieldInstallProgress:
-		return m.AddedInstallProgress()
-	case project.FieldEffectiveContractAmount:
-		return m.AddedEffectiveContractAmount()
-	case project.FieldVaApplyAmount:
-		return m.AddedVaApplyAmount()
-	case project.FieldVaApproveAmount:
-		return m.AddedVaApproveAmount()
-	case project.FieldAccumulatedStatutoryDeductions:
-		return m.AddedAccumulatedStatutoryDeductions()
-	case project.FieldAccumulatedNonStatutoryDeductions:
-		return m.AddedAccumulatedNonStatutoryDeductions()
-	case project.FieldAccumulatedStatutoryDeductionsPeriod:
-		return m.AddedAccumulatedStatutoryDeductionsPeriod()
-	case project.FieldAccumulatedNonStatutoryDeductionsPeriod:
-		return m.AddedAccumulatedNonStatutoryDeductionsPeriod()
-	case project.FieldTotalContractAmount:
-		return m.AddedTotalContractAmount()
-	case project.FieldAluminumPlateBudgetPercentage:
-		return m.AddedAluminumPlateBudgetPercentage()
-	case project.FieldAluminumBudgetPercentage:
-		return m.AddedAluminumBudgetPercentage()
-	case project.FieldGlassBudgetPercentage:
-		return m.AddedGlassBudgetPercentage()
-	case project.FieldIronBudgetPercentage:
-		return m.AddedIronBudgetPercentage()
-	case project.FieldMilestonePlanYear:
-		return m.AddedMilestonePlanYear()
-	case project.FieldMilestonePlanMonth:
-		return m.AddedMilestonePlanMonth()
-	case project.FieldMilestoneDoneYear:
-		return m.AddedMilestoneDoneYear()
-	case project.FieldMilestoneDoneMonth:
-		return m.AddedMilestoneDoneMonth()
-	case project.FieldPmArea:
-		return m.AddedPmArea()
-	case project.FieldPmYearTarget:
-		return m.AddedPmYearTarget()
-	case project.FieldPmMonthTarget:
-		return m.AddedPmMonthTarget()
-	case project.FieldPmYearActual:
-		return m.AddedPmYearActual()
-	case project.FieldPmMonthActual:
-		return m.AddedPmMonthActual()
-	case project.FieldPmTotal:
-		return m.AddedPmTotal()
-	case project.FieldPmYesterday:
-		return m.AddedPmYesterday()
+	case project.FieldRevenueKpi:
+		return m.AddedRevenueKpi()
+	case project.FieldRevenueCurrentYearCompleted:
+		return m.AddedRevenueCurrentYearCompleted()
+	case project.FieldRevenueAccumulatedCompleted:
+		return m.AddedRevenueAccumulatedCompleted()
+	case project.FieldOwnerVoCount:
+		return m.AddedOwnerVoCount()
+	case project.FieldContractorVoCount:
+		return m.AddedContractorVoCount()
+	case project.FieldAccumulateDeduction:
+		return m.AddedAccumulateDeduction()
+	case project.FieldSubcontractorVaCount:
+		return m.AddedSubcontractorVaCount()
+	case project.FieldContractSupplementaryCount:
+		return m.AddedContractSupplementaryCount()
+	case project.FieldRepairFee:
+		return m.AddedRepairFee()
 	case project.FieldUnitInventoryTotal:
 		return m.AddedUnitInventoryTotal()
 	case project.FieldUnitComponentTotal:
@@ -19101,34 +14533,12 @@ func (m *ProjectMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedUnitComponentProduction()
 	case project.FieldUnitComponentInstallation:
 		return m.AddedUnitComponentInstallation()
-	case project.FieldMaterialLoss:
-		return m.AddedMaterialLoss()
-	case project.FieldDesignRatedWeight:
-		return m.AddedDesignRatedWeight()
-	case project.FieldProcessingWeight:
-		return m.AddedProcessingWeight()
-	case project.FieldItemStockWeight:
-		return m.AddedItemStockWeight()
-	case project.FieldPalletsInStock:
-		return m.AddedPalletsInStock()
-	case project.FieldPartsInStock:
-		return m.AddedPartsInStock()
-	case project.FieldQualityScore:
-		return m.AddedQualityScore()
-	case project.FieldQualityRanking:
-		return m.AddedQualityRanking()
 	case project.FieldBulkMaterialsTotalOrderQuantity:
 		return m.AddedBulkMaterialsTotalOrderQuantity()
 	case project.FieldBulkMaterialsCompletedQuantity:
 		return m.AddedBulkMaterialsCompletedQuantity()
 	case project.FieldBulkMaterialsUncompletedQuantity:
 		return m.AddedBulkMaterialsUncompletedQuantity()
-	case project.FieldPlanTotalCount:
-		return m.AddedPlanTotalCount()
-	case project.FieldPlanOverdueCount:
-		return m.AddedPlanOverdueCount()
-	case project.FieldPlanOverdueMonthCount:
-		return m.AddedPlanOverdueMonthCount()
 	case project.FieldDiagramBdFinishCount:
 		return m.AddedDiagramBdFinishCount()
 	case project.FieldDiagramBdTotalCount:
@@ -19154,271 +14564,68 @@ func (m *ProjectMutation) AddedField(name string) (ent.Value, bool) {
 // type.
 func (m *ProjectMutation) AddField(name string, value ent.Value) error {
 	switch name {
-	case project.FieldCje:
+	case project.FieldRevenueKpi:
 		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.AddCje(v)
+		m.AddRevenueKpi(v)
 		return nil
-	case project.FieldYye:
+	case project.FieldRevenueCurrentYearCompleted:
 		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.AddYye(v)
+		m.AddRevenueCurrentYearCompleted(v)
 		return nil
-	case project.FieldXjl:
+	case project.FieldRevenueAccumulatedCompleted:
 		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.AddXjl(v)
+		m.AddRevenueAccumulatedCompleted(v)
 		return nil
-	case project.FieldXmglfYs:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddXmglfYs(v)
-		return nil
-	case project.FieldXmglfLj:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddXmglfLj(v)
-		return nil
-	case project.FieldXmsjf:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddXmsjf(v)
-		return nil
-	case project.FieldOwnerApplyAmount:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddOwnerApplyAmount(v)
-		return nil
-	case project.FieldOwnerApplyCount:
+	case project.FieldOwnerVoCount:
 		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.AddOwnerApplyCount(v)
+		m.AddOwnerVoCount(v)
 		return nil
-	case project.FieldOwnerApproveAmount:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddOwnerApproveAmount(v)
-		return nil
-	case project.FieldOwnerApproveCount:
+	case project.FieldContractorVoCount:
 		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.AddOwnerApproveCount(v)
+		m.AddContractorVoCount(v)
 		return nil
-	case project.FieldContractorApplyAmount:
+	case project.FieldAccumulateDeduction:
 		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.AddContractorApplyAmount(v)
+		m.AddAccumulateDeduction(v)
 		return nil
-	case project.FieldContractorApplyCount:
+	case project.FieldSubcontractorVaCount:
 		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.AddContractorApplyCount(v)
+		m.AddSubcontractorVaCount(v)
 		return nil
-	case project.FieldContractorApproveAmount:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddContractorApproveAmount(v)
-		return nil
-	case project.FieldContractorApproveCount:
+	case project.FieldContractSupplementaryCount:
 		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.AddContractorApproveCount(v)
+		m.AddContractSupplementaryCount(v)
 		return nil
-	case project.FieldInstallProgress:
+	case project.FieldRepairFee:
 		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.AddInstallProgress(v)
-		return nil
-	case project.FieldEffectiveContractAmount:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddEffectiveContractAmount(v)
-		return nil
-	case project.FieldVaApplyAmount:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddVaApplyAmount(v)
-		return nil
-	case project.FieldVaApproveAmount:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddVaApproveAmount(v)
-		return nil
-	case project.FieldAccumulatedStatutoryDeductions:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddAccumulatedStatutoryDeductions(v)
-		return nil
-	case project.FieldAccumulatedNonStatutoryDeductions:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddAccumulatedNonStatutoryDeductions(v)
-		return nil
-	case project.FieldAccumulatedStatutoryDeductionsPeriod:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddAccumulatedStatutoryDeductionsPeriod(v)
-		return nil
-	case project.FieldAccumulatedNonStatutoryDeductionsPeriod:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddAccumulatedNonStatutoryDeductionsPeriod(v)
-		return nil
-	case project.FieldTotalContractAmount:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddTotalContractAmount(v)
-		return nil
-	case project.FieldAluminumPlateBudgetPercentage:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddAluminumPlateBudgetPercentage(v)
-		return nil
-	case project.FieldAluminumBudgetPercentage:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddAluminumBudgetPercentage(v)
-		return nil
-	case project.FieldGlassBudgetPercentage:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddGlassBudgetPercentage(v)
-		return nil
-	case project.FieldIronBudgetPercentage:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddIronBudgetPercentage(v)
-		return nil
-	case project.FieldMilestonePlanYear:
-		v, ok := value.(int)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddMilestonePlanYear(v)
-		return nil
-	case project.FieldMilestonePlanMonth:
-		v, ok := value.(int)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddMilestonePlanMonth(v)
-		return nil
-	case project.FieldMilestoneDoneYear:
-		v, ok := value.(int)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddMilestoneDoneYear(v)
-		return nil
-	case project.FieldMilestoneDoneMonth:
-		v, ok := value.(int)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddMilestoneDoneMonth(v)
-		return nil
-	case project.FieldPmArea:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddPmArea(v)
-		return nil
-	case project.FieldPmYearTarget:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddPmYearTarget(v)
-		return nil
-	case project.FieldPmMonthTarget:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddPmMonthTarget(v)
-		return nil
-	case project.FieldPmYearActual:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddPmYearActual(v)
-		return nil
-	case project.FieldPmMonthActual:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddPmMonthActual(v)
-		return nil
-	case project.FieldPmTotal:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddPmTotal(v)
-		return nil
-	case project.FieldPmYesterday:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddPmYesterday(v)
+		m.AddRepairFee(v)
 		return nil
 	case project.FieldUnitInventoryTotal:
 		v, ok := value.(float64)
@@ -19448,62 +14655,6 @@ func (m *ProjectMutation) AddField(name string, value ent.Value) error {
 		}
 		m.AddUnitComponentInstallation(v)
 		return nil
-	case project.FieldMaterialLoss:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddMaterialLoss(v)
-		return nil
-	case project.FieldDesignRatedWeight:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddDesignRatedWeight(v)
-		return nil
-	case project.FieldProcessingWeight:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddProcessingWeight(v)
-		return nil
-	case project.FieldItemStockWeight:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddItemStockWeight(v)
-		return nil
-	case project.FieldPalletsInStock:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddPalletsInStock(v)
-		return nil
-	case project.FieldPartsInStock:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddPartsInStock(v)
-		return nil
-	case project.FieldQualityScore:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddQualityScore(v)
-		return nil
-	case project.FieldQualityRanking:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddQualityRanking(v)
-		return nil
 	case project.FieldBulkMaterialsTotalOrderQuantity:
 		v, ok := value.(float64)
 		if !ok {
@@ -19524,27 +14675,6 @@ func (m *ProjectMutation) AddField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddBulkMaterialsUncompletedQuantity(v)
-		return nil
-	case project.FieldPlanTotalCount:
-		v, ok := value.(int)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddPlanTotalCount(v)
-		return nil
-	case project.FieldPlanOverdueCount:
-		v, ok := value.(int)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddPlanOverdueCount(v)
-		return nil
-	case project.FieldPlanOverdueMonthCount:
-		v, ok := value.(int)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddPlanOverdueMonthCount(v)
 		return nil
 	case project.FieldDiagramBdFinishCount:
 		v, ok := value.(int)
@@ -19610,161 +14740,35 @@ func (m *ProjectMutation) AddField(name string, value ent.Value) error {
 // mutation.
 func (m *ProjectMutation) ClearedFields() []string {
 	var fields []string
-	if m.FieldCleared(project.FieldManager) {
-		fields = append(fields, project.FieldManager)
+	if m.FieldCleared(project.FieldRevenueKpi) {
+		fields = append(fields, project.FieldRevenueKpi)
 	}
-	if m.FieldCleared(project.FieldName) {
-		fields = append(fields, project.FieldName)
+	if m.FieldCleared(project.FieldRevenueCurrentYearCompleted) {
+		fields = append(fields, project.FieldRevenueCurrentYearCompleted)
 	}
-	if m.FieldCleared(project.FieldOwner) {
-		fields = append(fields, project.FieldOwner)
+	if m.FieldCleared(project.FieldRevenueAccumulatedCompleted) {
+		fields = append(fields, project.FieldRevenueAccumulatedCompleted)
 	}
-	if m.FieldCleared(project.FieldJzs) {
-		fields = append(fields, project.FieldJzs)
+	if m.FieldCleared(project.FieldPayDate) {
+		fields = append(fields, project.FieldPayDate)
 	}
-	if m.FieldCleared(project.FieldMcn) {
-		fields = append(fields, project.FieldMcn)
+	if m.FieldCleared(project.FieldOwnerVoCount) {
+		fields = append(fields, project.FieldOwnerVoCount)
 	}
-	if m.FieldCleared(project.FieldConsultant) {
-		fields = append(fields, project.FieldConsultant)
+	if m.FieldCleared(project.FieldContractorVoCount) {
+		fields = append(fields, project.FieldContractorVoCount)
 	}
-	if m.FieldCleared(project.FieldAreas) {
-		fields = append(fields, project.FieldAreas)
+	if m.FieldCleared(project.FieldAccumulateDeduction) {
+		fields = append(fields, project.FieldAccumulateDeduction)
 	}
-	if m.FieldCleared(project.FieldStartDate) {
-		fields = append(fields, project.FieldStartDate)
+	if m.FieldCleared(project.FieldSubcontractorVaCount) {
+		fields = append(fields, project.FieldSubcontractorVaCount)
 	}
-	if m.FieldCleared(project.FieldFsDate) {
-		fields = append(fields, project.FieldFsDate)
+	if m.FieldCleared(project.FieldContractSupplementaryCount) {
+		fields = append(fields, project.FieldContractSupplementaryCount)
 	}
-	if m.FieldCleared(project.FieldOpDate) {
-		fields = append(fields, project.FieldOpDate)
-	}
-	if m.FieldCleared(project.FieldEndDate) {
-		fields = append(fields, project.FieldEndDate)
-	}
-	if m.FieldCleared(project.FieldMntyr) {
-		fields = append(fields, project.FieldMntyr)
-	}
-	if m.FieldCleared(project.FieldConType) {
-		fields = append(fields, project.FieldConType)
-	}
-	if m.FieldCleared(project.FieldCje) {
-		fields = append(fields, project.FieldCje)
-	}
-	if m.FieldCleared(project.FieldYye) {
-		fields = append(fields, project.FieldYye)
-	}
-	if m.FieldCleared(project.FieldXjl) {
-		fields = append(fields, project.FieldXjl)
-	}
-	if m.FieldCleared(project.FieldXmglfYs) {
-		fields = append(fields, project.FieldXmglfYs)
-	}
-	if m.FieldCleared(project.FieldXmglfLj) {
-		fields = append(fields, project.FieldXmglfLj)
-	}
-	if m.FieldCleared(project.FieldXmsjf) {
-		fields = append(fields, project.FieldXmsjf)
-	}
-	if m.FieldCleared(project.FieldXmfzr) {
-		fields = append(fields, project.FieldXmfzr)
-	}
-	if m.FieldCleared(project.FieldOwnerApplyAmount) {
-		fields = append(fields, project.FieldOwnerApplyAmount)
-	}
-	if m.FieldCleared(project.FieldOwnerApplyCount) {
-		fields = append(fields, project.FieldOwnerApplyCount)
-	}
-	if m.FieldCleared(project.FieldOwnerApproveAmount) {
-		fields = append(fields, project.FieldOwnerApproveAmount)
-	}
-	if m.FieldCleared(project.FieldOwnerApproveCount) {
-		fields = append(fields, project.FieldOwnerApproveCount)
-	}
-	if m.FieldCleared(project.FieldContractorApplyAmount) {
-		fields = append(fields, project.FieldContractorApplyAmount)
-	}
-	if m.FieldCleared(project.FieldContractorApplyCount) {
-		fields = append(fields, project.FieldContractorApplyCount)
-	}
-	if m.FieldCleared(project.FieldContractorApproveAmount) {
-		fields = append(fields, project.FieldContractorApproveAmount)
-	}
-	if m.FieldCleared(project.FieldContractorApproveCount) {
-		fields = append(fields, project.FieldContractorApproveCount)
-	}
-	if m.FieldCleared(project.FieldInstallProgress) {
-		fields = append(fields, project.FieldInstallProgress)
-	}
-	if m.FieldCleared(project.FieldEffectiveContractAmount) {
-		fields = append(fields, project.FieldEffectiveContractAmount)
-	}
-	if m.FieldCleared(project.FieldVaApplyAmount) {
-		fields = append(fields, project.FieldVaApplyAmount)
-	}
-	if m.FieldCleared(project.FieldVaApproveAmount) {
-		fields = append(fields, project.FieldVaApproveAmount)
-	}
-	if m.FieldCleared(project.FieldAccumulatedStatutoryDeductions) {
-		fields = append(fields, project.FieldAccumulatedStatutoryDeductions)
-	}
-	if m.FieldCleared(project.FieldAccumulatedNonStatutoryDeductions) {
-		fields = append(fields, project.FieldAccumulatedNonStatutoryDeductions)
-	}
-	if m.FieldCleared(project.FieldAccumulatedStatutoryDeductionsPeriod) {
-		fields = append(fields, project.FieldAccumulatedStatutoryDeductionsPeriod)
-	}
-	if m.FieldCleared(project.FieldAccumulatedNonStatutoryDeductionsPeriod) {
-		fields = append(fields, project.FieldAccumulatedNonStatutoryDeductionsPeriod)
-	}
-	if m.FieldCleared(project.FieldTotalContractAmount) {
-		fields = append(fields, project.FieldTotalContractAmount)
-	}
-	if m.FieldCleared(project.FieldAluminumPlateBudgetPercentage) {
-		fields = append(fields, project.FieldAluminumPlateBudgetPercentage)
-	}
-	if m.FieldCleared(project.FieldAluminumBudgetPercentage) {
-		fields = append(fields, project.FieldAluminumBudgetPercentage)
-	}
-	if m.FieldCleared(project.FieldGlassBudgetPercentage) {
-		fields = append(fields, project.FieldGlassBudgetPercentage)
-	}
-	if m.FieldCleared(project.FieldIronBudgetPercentage) {
-		fields = append(fields, project.FieldIronBudgetPercentage)
-	}
-	if m.FieldCleared(project.FieldMilestonePlanYear) {
-		fields = append(fields, project.FieldMilestonePlanYear)
-	}
-	if m.FieldCleared(project.FieldMilestonePlanMonth) {
-		fields = append(fields, project.FieldMilestonePlanMonth)
-	}
-	if m.FieldCleared(project.FieldMilestoneDoneYear) {
-		fields = append(fields, project.FieldMilestoneDoneYear)
-	}
-	if m.FieldCleared(project.FieldMilestoneDoneMonth) {
-		fields = append(fields, project.FieldMilestoneDoneMonth)
-	}
-	if m.FieldCleared(project.FieldPmArea) {
-		fields = append(fields, project.FieldPmArea)
-	}
-	if m.FieldCleared(project.FieldPmYearTarget) {
-		fields = append(fields, project.FieldPmYearTarget)
-	}
-	if m.FieldCleared(project.FieldPmMonthTarget) {
-		fields = append(fields, project.FieldPmMonthTarget)
-	}
-	if m.FieldCleared(project.FieldPmYearActual) {
-		fields = append(fields, project.FieldPmYearActual)
-	}
-	if m.FieldCleared(project.FieldPmMonthActual) {
-		fields = append(fields, project.FieldPmMonthActual)
-	}
-	if m.FieldCleared(project.FieldPmTotal) {
-		fields = append(fields, project.FieldPmTotal)
-	}
-	if m.FieldCleared(project.FieldPmYesterday) {
-		fields = append(fields, project.FieldPmYesterday)
+	if m.FieldCleared(project.FieldRepairFee) {
+		fields = append(fields, project.FieldRepairFee)
 	}
 	if m.FieldCleared(project.FieldUnitInventoryTotal) {
 		fields = append(fields, project.FieldUnitInventoryTotal)
@@ -19778,30 +14782,6 @@ func (m *ProjectMutation) ClearedFields() []string {
 	if m.FieldCleared(project.FieldUnitComponentInstallation) {
 		fields = append(fields, project.FieldUnitComponentInstallation)
 	}
-	if m.FieldCleared(project.FieldMaterialLoss) {
-		fields = append(fields, project.FieldMaterialLoss)
-	}
-	if m.FieldCleared(project.FieldDesignRatedWeight) {
-		fields = append(fields, project.FieldDesignRatedWeight)
-	}
-	if m.FieldCleared(project.FieldProcessingWeight) {
-		fields = append(fields, project.FieldProcessingWeight)
-	}
-	if m.FieldCleared(project.FieldItemStockWeight) {
-		fields = append(fields, project.FieldItemStockWeight)
-	}
-	if m.FieldCleared(project.FieldPalletsInStock) {
-		fields = append(fields, project.FieldPalletsInStock)
-	}
-	if m.FieldCleared(project.FieldPartsInStock) {
-		fields = append(fields, project.FieldPartsInStock)
-	}
-	if m.FieldCleared(project.FieldQualityScore) {
-		fields = append(fields, project.FieldQualityScore)
-	}
-	if m.FieldCleared(project.FieldQualityRanking) {
-		fields = append(fields, project.FieldQualityRanking)
-	}
 	if m.FieldCleared(project.FieldBulkMaterialsTotalOrderQuantity) {
 		fields = append(fields, project.FieldBulkMaterialsTotalOrderQuantity)
 	}
@@ -19810,15 +14790,6 @@ func (m *ProjectMutation) ClearedFields() []string {
 	}
 	if m.FieldCleared(project.FieldBulkMaterialsUncompletedQuantity) {
 		fields = append(fields, project.FieldBulkMaterialsUncompletedQuantity)
-	}
-	if m.FieldCleared(project.FieldPlanTotalCount) {
-		fields = append(fields, project.FieldPlanTotalCount)
-	}
-	if m.FieldCleared(project.FieldPlanOverdueCount) {
-		fields = append(fields, project.FieldPlanOverdueCount)
-	}
-	if m.FieldCleared(project.FieldPlanOverdueMonthCount) {
-		fields = append(fields, project.FieldPlanOverdueMonthCount)
 	}
 	if m.FieldCleared(project.FieldDiagramBdFinishCount) {
 		fields = append(fields, project.FieldDiagramBdFinishCount)
@@ -19858,161 +14829,35 @@ func (m *ProjectMutation) FieldCleared(name string) bool {
 // error if the field is not defined in the schema.
 func (m *ProjectMutation) ClearField(name string) error {
 	switch name {
-	case project.FieldManager:
-		m.ClearManager()
+	case project.FieldRevenueKpi:
+		m.ClearRevenueKpi()
 		return nil
-	case project.FieldName:
-		m.ClearName()
+	case project.FieldRevenueCurrentYearCompleted:
+		m.ClearRevenueCurrentYearCompleted()
 		return nil
-	case project.FieldOwner:
-		m.ClearOwner()
+	case project.FieldRevenueAccumulatedCompleted:
+		m.ClearRevenueAccumulatedCompleted()
 		return nil
-	case project.FieldJzs:
-		m.ClearJzs()
+	case project.FieldPayDate:
+		m.ClearPayDate()
 		return nil
-	case project.FieldMcn:
-		m.ClearMcn()
+	case project.FieldOwnerVoCount:
+		m.ClearOwnerVoCount()
 		return nil
-	case project.FieldConsultant:
-		m.ClearConsultant()
+	case project.FieldContractorVoCount:
+		m.ClearContractorVoCount()
 		return nil
-	case project.FieldAreas:
-		m.ClearAreas()
+	case project.FieldAccumulateDeduction:
+		m.ClearAccumulateDeduction()
 		return nil
-	case project.FieldStartDate:
-		m.ClearStartDate()
+	case project.FieldSubcontractorVaCount:
+		m.ClearSubcontractorVaCount()
 		return nil
-	case project.FieldFsDate:
-		m.ClearFsDate()
+	case project.FieldContractSupplementaryCount:
+		m.ClearContractSupplementaryCount()
 		return nil
-	case project.FieldOpDate:
-		m.ClearOpDate()
-		return nil
-	case project.FieldEndDate:
-		m.ClearEndDate()
-		return nil
-	case project.FieldMntyr:
-		m.ClearMntyr()
-		return nil
-	case project.FieldConType:
-		m.ClearConType()
-		return nil
-	case project.FieldCje:
-		m.ClearCje()
-		return nil
-	case project.FieldYye:
-		m.ClearYye()
-		return nil
-	case project.FieldXjl:
-		m.ClearXjl()
-		return nil
-	case project.FieldXmglfYs:
-		m.ClearXmglfYs()
-		return nil
-	case project.FieldXmglfLj:
-		m.ClearXmglfLj()
-		return nil
-	case project.FieldXmsjf:
-		m.ClearXmsjf()
-		return nil
-	case project.FieldXmfzr:
-		m.ClearXmfzr()
-		return nil
-	case project.FieldOwnerApplyAmount:
-		m.ClearOwnerApplyAmount()
-		return nil
-	case project.FieldOwnerApplyCount:
-		m.ClearOwnerApplyCount()
-		return nil
-	case project.FieldOwnerApproveAmount:
-		m.ClearOwnerApproveAmount()
-		return nil
-	case project.FieldOwnerApproveCount:
-		m.ClearOwnerApproveCount()
-		return nil
-	case project.FieldContractorApplyAmount:
-		m.ClearContractorApplyAmount()
-		return nil
-	case project.FieldContractorApplyCount:
-		m.ClearContractorApplyCount()
-		return nil
-	case project.FieldContractorApproveAmount:
-		m.ClearContractorApproveAmount()
-		return nil
-	case project.FieldContractorApproveCount:
-		m.ClearContractorApproveCount()
-		return nil
-	case project.FieldInstallProgress:
-		m.ClearInstallProgress()
-		return nil
-	case project.FieldEffectiveContractAmount:
-		m.ClearEffectiveContractAmount()
-		return nil
-	case project.FieldVaApplyAmount:
-		m.ClearVaApplyAmount()
-		return nil
-	case project.FieldVaApproveAmount:
-		m.ClearVaApproveAmount()
-		return nil
-	case project.FieldAccumulatedStatutoryDeductions:
-		m.ClearAccumulatedStatutoryDeductions()
-		return nil
-	case project.FieldAccumulatedNonStatutoryDeductions:
-		m.ClearAccumulatedNonStatutoryDeductions()
-		return nil
-	case project.FieldAccumulatedStatutoryDeductionsPeriod:
-		m.ClearAccumulatedStatutoryDeductionsPeriod()
-		return nil
-	case project.FieldAccumulatedNonStatutoryDeductionsPeriod:
-		m.ClearAccumulatedNonStatutoryDeductionsPeriod()
-		return nil
-	case project.FieldTotalContractAmount:
-		m.ClearTotalContractAmount()
-		return nil
-	case project.FieldAluminumPlateBudgetPercentage:
-		m.ClearAluminumPlateBudgetPercentage()
-		return nil
-	case project.FieldAluminumBudgetPercentage:
-		m.ClearAluminumBudgetPercentage()
-		return nil
-	case project.FieldGlassBudgetPercentage:
-		m.ClearGlassBudgetPercentage()
-		return nil
-	case project.FieldIronBudgetPercentage:
-		m.ClearIronBudgetPercentage()
-		return nil
-	case project.FieldMilestonePlanYear:
-		m.ClearMilestonePlanYear()
-		return nil
-	case project.FieldMilestonePlanMonth:
-		m.ClearMilestonePlanMonth()
-		return nil
-	case project.FieldMilestoneDoneYear:
-		m.ClearMilestoneDoneYear()
-		return nil
-	case project.FieldMilestoneDoneMonth:
-		m.ClearMilestoneDoneMonth()
-		return nil
-	case project.FieldPmArea:
-		m.ClearPmArea()
-		return nil
-	case project.FieldPmYearTarget:
-		m.ClearPmYearTarget()
-		return nil
-	case project.FieldPmMonthTarget:
-		m.ClearPmMonthTarget()
-		return nil
-	case project.FieldPmYearActual:
-		m.ClearPmYearActual()
-		return nil
-	case project.FieldPmMonthActual:
-		m.ClearPmMonthActual()
-		return nil
-	case project.FieldPmTotal:
-		m.ClearPmTotal()
-		return nil
-	case project.FieldPmYesterday:
-		m.ClearPmYesterday()
+	case project.FieldRepairFee:
+		m.ClearRepairFee()
 		return nil
 	case project.FieldUnitInventoryTotal:
 		m.ClearUnitInventoryTotal()
@@ -20026,30 +14871,6 @@ func (m *ProjectMutation) ClearField(name string) error {
 	case project.FieldUnitComponentInstallation:
 		m.ClearUnitComponentInstallation()
 		return nil
-	case project.FieldMaterialLoss:
-		m.ClearMaterialLoss()
-		return nil
-	case project.FieldDesignRatedWeight:
-		m.ClearDesignRatedWeight()
-		return nil
-	case project.FieldProcessingWeight:
-		m.ClearProcessingWeight()
-		return nil
-	case project.FieldItemStockWeight:
-		m.ClearItemStockWeight()
-		return nil
-	case project.FieldPalletsInStock:
-		m.ClearPalletsInStock()
-		return nil
-	case project.FieldPartsInStock:
-		m.ClearPartsInStock()
-		return nil
-	case project.FieldQualityScore:
-		m.ClearQualityScore()
-		return nil
-	case project.FieldQualityRanking:
-		m.ClearQualityRanking()
-		return nil
 	case project.FieldBulkMaterialsTotalOrderQuantity:
 		m.ClearBulkMaterialsTotalOrderQuantity()
 		return nil
@@ -20058,15 +14879,6 @@ func (m *ProjectMutation) ClearField(name string) error {
 		return nil
 	case project.FieldBulkMaterialsUncompletedQuantity:
 		m.ClearBulkMaterialsUncompletedQuantity()
-		return nil
-	case project.FieldPlanTotalCount:
-		m.ClearPlanTotalCount()
-		return nil
-	case project.FieldPlanOverdueCount:
-		m.ClearPlanOverdueCount()
-		return nil
-	case project.FieldPlanOverdueMonthCount:
-		m.ClearPlanOverdueMonthCount()
 		return nil
 	case project.FieldDiagramBdFinishCount:
 		m.ClearDiagramBdFinishCount()
@@ -20109,164 +14921,38 @@ func (m *ProjectMutation) ResetField(name string) error {
 	case project.FieldCode:
 		m.ResetCode()
 		return nil
-	case project.FieldManager:
-		m.ResetManager()
-		return nil
-	case project.FieldName:
-		m.ResetName()
-		return nil
-	case project.FieldOwner:
-		m.ResetOwner()
-		return nil
-	case project.FieldJzs:
-		m.ResetJzs()
-		return nil
-	case project.FieldMcn:
-		m.ResetMcn()
-		return nil
-	case project.FieldConsultant:
-		m.ResetConsultant()
-		return nil
-	case project.FieldAreas:
-		m.ResetAreas()
-		return nil
-	case project.FieldStartDate:
-		m.ResetStartDate()
-		return nil
-	case project.FieldFsDate:
-		m.ResetFsDate()
-		return nil
-	case project.FieldOpDate:
-		m.ResetOpDate()
-		return nil
-	case project.FieldEndDate:
-		m.ResetEndDate()
-		return nil
-	case project.FieldMntyr:
-		m.ResetMntyr()
-		return nil
-	case project.FieldConType:
-		m.ResetConType()
-		return nil
 	case project.FieldIsFinished:
 		m.ResetIsFinished()
 		return nil
-	case project.FieldCje:
-		m.ResetCje()
+	case project.FieldRevenueKpi:
+		m.ResetRevenueKpi()
 		return nil
-	case project.FieldYye:
-		m.ResetYye()
+	case project.FieldRevenueCurrentYearCompleted:
+		m.ResetRevenueCurrentYearCompleted()
 		return nil
-	case project.FieldXjl:
-		m.ResetXjl()
+	case project.FieldRevenueAccumulatedCompleted:
+		m.ResetRevenueAccumulatedCompleted()
 		return nil
-	case project.FieldXmglfYs:
-		m.ResetXmglfYs()
+	case project.FieldPayDate:
+		m.ResetPayDate()
 		return nil
-	case project.FieldXmglfLj:
-		m.ResetXmglfLj()
+	case project.FieldOwnerVoCount:
+		m.ResetOwnerVoCount()
 		return nil
-	case project.FieldXmsjf:
-		m.ResetXmsjf()
+	case project.FieldContractorVoCount:
+		m.ResetContractorVoCount()
 		return nil
-	case project.FieldXmfzr:
-		m.ResetXmfzr()
+	case project.FieldAccumulateDeduction:
+		m.ResetAccumulateDeduction()
 		return nil
-	case project.FieldOwnerApplyAmount:
-		m.ResetOwnerApplyAmount()
+	case project.FieldSubcontractorVaCount:
+		m.ResetSubcontractorVaCount()
 		return nil
-	case project.FieldOwnerApplyCount:
-		m.ResetOwnerApplyCount()
+	case project.FieldContractSupplementaryCount:
+		m.ResetContractSupplementaryCount()
 		return nil
-	case project.FieldOwnerApproveAmount:
-		m.ResetOwnerApproveAmount()
-		return nil
-	case project.FieldOwnerApproveCount:
-		m.ResetOwnerApproveCount()
-		return nil
-	case project.FieldContractorApplyAmount:
-		m.ResetContractorApplyAmount()
-		return nil
-	case project.FieldContractorApplyCount:
-		m.ResetContractorApplyCount()
-		return nil
-	case project.FieldContractorApproveAmount:
-		m.ResetContractorApproveAmount()
-		return nil
-	case project.FieldContractorApproveCount:
-		m.ResetContractorApproveCount()
-		return nil
-	case project.FieldInstallProgress:
-		m.ResetInstallProgress()
-		return nil
-	case project.FieldEffectiveContractAmount:
-		m.ResetEffectiveContractAmount()
-		return nil
-	case project.FieldVaApplyAmount:
-		m.ResetVaApplyAmount()
-		return nil
-	case project.FieldVaApproveAmount:
-		m.ResetVaApproveAmount()
-		return nil
-	case project.FieldAccumulatedStatutoryDeductions:
-		m.ResetAccumulatedStatutoryDeductions()
-		return nil
-	case project.FieldAccumulatedNonStatutoryDeductions:
-		m.ResetAccumulatedNonStatutoryDeductions()
-		return nil
-	case project.FieldAccumulatedStatutoryDeductionsPeriod:
-		m.ResetAccumulatedStatutoryDeductionsPeriod()
-		return nil
-	case project.FieldAccumulatedNonStatutoryDeductionsPeriod:
-		m.ResetAccumulatedNonStatutoryDeductionsPeriod()
-		return nil
-	case project.FieldTotalContractAmount:
-		m.ResetTotalContractAmount()
-		return nil
-	case project.FieldAluminumPlateBudgetPercentage:
-		m.ResetAluminumPlateBudgetPercentage()
-		return nil
-	case project.FieldAluminumBudgetPercentage:
-		m.ResetAluminumBudgetPercentage()
-		return nil
-	case project.FieldGlassBudgetPercentage:
-		m.ResetGlassBudgetPercentage()
-		return nil
-	case project.FieldIronBudgetPercentage:
-		m.ResetIronBudgetPercentage()
-		return nil
-	case project.FieldMilestonePlanYear:
-		m.ResetMilestonePlanYear()
-		return nil
-	case project.FieldMilestonePlanMonth:
-		m.ResetMilestonePlanMonth()
-		return nil
-	case project.FieldMilestoneDoneYear:
-		m.ResetMilestoneDoneYear()
-		return nil
-	case project.FieldMilestoneDoneMonth:
-		m.ResetMilestoneDoneMonth()
-		return nil
-	case project.FieldPmArea:
-		m.ResetPmArea()
-		return nil
-	case project.FieldPmYearTarget:
-		m.ResetPmYearTarget()
-		return nil
-	case project.FieldPmMonthTarget:
-		m.ResetPmMonthTarget()
-		return nil
-	case project.FieldPmYearActual:
-		m.ResetPmYearActual()
-		return nil
-	case project.FieldPmMonthActual:
-		m.ResetPmMonthActual()
-		return nil
-	case project.FieldPmTotal:
-		m.ResetPmTotal()
-		return nil
-	case project.FieldPmYesterday:
-		m.ResetPmYesterday()
+	case project.FieldRepairFee:
+		m.ResetRepairFee()
 		return nil
 	case project.FieldUnitInventoryTotal:
 		m.ResetUnitInventoryTotal()
@@ -20280,30 +14966,6 @@ func (m *ProjectMutation) ResetField(name string) error {
 	case project.FieldUnitComponentInstallation:
 		m.ResetUnitComponentInstallation()
 		return nil
-	case project.FieldMaterialLoss:
-		m.ResetMaterialLoss()
-		return nil
-	case project.FieldDesignRatedWeight:
-		m.ResetDesignRatedWeight()
-		return nil
-	case project.FieldProcessingWeight:
-		m.ResetProcessingWeight()
-		return nil
-	case project.FieldItemStockWeight:
-		m.ResetItemStockWeight()
-		return nil
-	case project.FieldPalletsInStock:
-		m.ResetPalletsInStock()
-		return nil
-	case project.FieldPartsInStock:
-		m.ResetPartsInStock()
-		return nil
-	case project.FieldQualityScore:
-		m.ResetQualityScore()
-		return nil
-	case project.FieldQualityRanking:
-		m.ResetQualityRanking()
-		return nil
 	case project.FieldBulkMaterialsTotalOrderQuantity:
 		m.ResetBulkMaterialsTotalOrderQuantity()
 		return nil
@@ -20312,15 +14974,6 @@ func (m *ProjectMutation) ResetField(name string) error {
 		return nil
 	case project.FieldBulkMaterialsUncompletedQuantity:
 		m.ResetBulkMaterialsUncompletedQuantity()
-		return nil
-	case project.FieldPlanTotalCount:
-		m.ResetPlanTotalCount()
-		return nil
-	case project.FieldPlanOverdueCount:
-		m.ResetPlanOverdueCount()
-		return nil
-	case project.FieldPlanOverdueMonthCount:
-		m.ResetPlanOverdueMonthCount()
 		return nil
 	case project.FieldDiagramBdFinishCount:
 		m.ResetDiagramBdFinishCount()
@@ -20352,13 +15005,7 @@ func (m *ProjectMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *ProjectMutation) AddedEdges() []string {
-	edges := make([]string, 0, 3)
-	if m.vos != nil {
-		edges = append(edges, project.EdgeVos)
-	}
-	if m.project_staffs != nil {
-		edges = append(edges, project.EdgeProjectStaffs)
-	}
+	edges := make([]string, 0, 1)
 	if m.users != nil {
 		edges = append(edges, project.EdgeUsers)
 	}
@@ -20369,18 +15016,6 @@ func (m *ProjectMutation) AddedEdges() []string {
 // name in this mutation.
 func (m *ProjectMutation) AddedIDs(name string) []ent.Value {
 	switch name {
-	case project.EdgeVos:
-		ids := make([]ent.Value, 0, len(m.vos))
-		for id := range m.vos {
-			ids = append(ids, id)
-		}
-		return ids
-	case project.EdgeProjectStaffs:
-		ids := make([]ent.Value, 0, len(m.project_staffs))
-		for id := range m.project_staffs {
-			ids = append(ids, id)
-		}
-		return ids
 	case project.EdgeUsers:
 		ids := make([]ent.Value, 0, len(m.users))
 		for id := range m.users {
@@ -20393,13 +15028,7 @@ func (m *ProjectMutation) AddedIDs(name string) []ent.Value {
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *ProjectMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 3)
-	if m.removedvos != nil {
-		edges = append(edges, project.EdgeVos)
-	}
-	if m.removedproject_staffs != nil {
-		edges = append(edges, project.EdgeProjectStaffs)
-	}
+	edges := make([]string, 0, 1)
 	if m.removedusers != nil {
 		edges = append(edges, project.EdgeUsers)
 	}
@@ -20410,18 +15039,6 @@ func (m *ProjectMutation) RemovedEdges() []string {
 // the given name in this mutation.
 func (m *ProjectMutation) RemovedIDs(name string) []ent.Value {
 	switch name {
-	case project.EdgeVos:
-		ids := make([]ent.Value, 0, len(m.removedvos))
-		for id := range m.removedvos {
-			ids = append(ids, id)
-		}
-		return ids
-	case project.EdgeProjectStaffs:
-		ids := make([]ent.Value, 0, len(m.removedproject_staffs))
-		for id := range m.removedproject_staffs {
-			ids = append(ids, id)
-		}
-		return ids
 	case project.EdgeUsers:
 		ids := make([]ent.Value, 0, len(m.removedusers))
 		for id := range m.removedusers {
@@ -20434,13 +15051,7 @@ func (m *ProjectMutation) RemovedIDs(name string) []ent.Value {
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *ProjectMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 3)
-	if m.clearedvos {
-		edges = append(edges, project.EdgeVos)
-	}
-	if m.clearedproject_staffs {
-		edges = append(edges, project.EdgeProjectStaffs)
-	}
+	edges := make([]string, 0, 1)
 	if m.clearedusers {
 		edges = append(edges, project.EdgeUsers)
 	}
@@ -20451,10 +15062,6 @@ func (m *ProjectMutation) ClearedEdges() []string {
 // was cleared in this mutation.
 func (m *ProjectMutation) EdgeCleared(name string) bool {
 	switch name {
-	case project.EdgeVos:
-		return m.clearedvos
-	case project.EdgeProjectStaffs:
-		return m.clearedproject_staffs
 	case project.EdgeUsers:
 		return m.clearedusers
 	}
@@ -20473,1961 +15080,11 @@ func (m *ProjectMutation) ClearEdge(name string) error {
 // It returns an error if the edge is not defined in the schema.
 func (m *ProjectMutation) ResetEdge(name string) error {
 	switch name {
-	case project.EdgeVos:
-		m.ResetVos()
-		return nil
-	case project.EdgeProjectStaffs:
-		m.ResetProjectStaffs()
-		return nil
 	case project.EdgeUsers:
 		m.ResetUsers()
 		return nil
 	}
 	return fmt.Errorf("unknown Project edge %s", name)
-}
-
-// ProjectStaffMutation represents an operation that mutates the ProjectStaff nodes in the graph.
-type ProjectStaffMutation struct {
-	config
-	op              Op
-	typ             string
-	id              *xid.ID
-	created_at      *time.Time
-	updated_at      *time.Time
-	cym             *string
-	installation    *float64
-	addinstallation *float64
-	management      *float64
-	addmanagement   *float64
-	design          *float64
-	adddesign       *float64
-	clearedFields   map[string]struct{}
-	project         *xid.ID
-	clearedproject  bool
-	done            bool
-	oldValue        func(context.Context) (*ProjectStaff, error)
-	predicates      []predicate.ProjectStaff
-}
-
-var _ ent.Mutation = (*ProjectStaffMutation)(nil)
-
-// projectstaffOption allows management of the mutation configuration using functional options.
-type projectstaffOption func(*ProjectStaffMutation)
-
-// newProjectStaffMutation creates new mutation for the ProjectStaff entity.
-func newProjectStaffMutation(c config, op Op, opts ...projectstaffOption) *ProjectStaffMutation {
-	m := &ProjectStaffMutation{
-		config:        c,
-		op:            op,
-		typ:           TypeProjectStaff,
-		clearedFields: make(map[string]struct{}),
-	}
-	for _, opt := range opts {
-		opt(m)
-	}
-	return m
-}
-
-// withProjectStaffID sets the ID field of the mutation.
-func withProjectStaffID(id xid.ID) projectstaffOption {
-	return func(m *ProjectStaffMutation) {
-		var (
-			err   error
-			once  sync.Once
-			value *ProjectStaff
-		)
-		m.oldValue = func(ctx context.Context) (*ProjectStaff, error) {
-			once.Do(func() {
-				if m.done {
-					err = errors.New("querying old values post mutation is not allowed")
-				} else {
-					value, err = m.Client().ProjectStaff.Get(ctx, id)
-				}
-			})
-			return value, err
-		}
-		m.id = &id
-	}
-}
-
-// withProjectStaff sets the old ProjectStaff of the mutation.
-func withProjectStaff(node *ProjectStaff) projectstaffOption {
-	return func(m *ProjectStaffMutation) {
-		m.oldValue = func(context.Context) (*ProjectStaff, error) {
-			return node, nil
-		}
-		m.id = &node.ID
-	}
-}
-
-// Client returns a new `ent.Client` from the mutation. If the mutation was
-// executed in a transaction (ent.Tx), a transactional client is returned.
-func (m ProjectStaffMutation) Client() *Client {
-	client := &Client{config: m.config}
-	client.init()
-	return client
-}
-
-// Tx returns an `ent.Tx` for mutations that were executed in transactions;
-// it returns an error otherwise.
-func (m ProjectStaffMutation) Tx() (*Tx, error) {
-	if _, ok := m.driver.(*txDriver); !ok {
-		return nil, errors.New("ent: mutation is not running in a transaction")
-	}
-	tx := &Tx{config: m.config}
-	tx.init()
-	return tx, nil
-}
-
-// SetID sets the value of the id field. Note that this
-// operation is only accepted on creation of ProjectStaff entities.
-func (m *ProjectStaffMutation) SetID(id xid.ID) {
-	m.id = &id
-}
-
-// ID returns the ID value in the mutation. Note that the ID is only available
-// if it was provided to the builder or after it was returned from the database.
-func (m *ProjectStaffMutation) ID() (id xid.ID, exists bool) {
-	if m.id == nil {
-		return
-	}
-	return *m.id, true
-}
-
-// IDs queries the database and returns the entity ids that match the mutation's predicate.
-// That means, if the mutation is applied within a transaction with an isolation level such
-// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
-// or updated by the mutation.
-func (m *ProjectStaffMutation) IDs(ctx context.Context) ([]xid.ID, error) {
-	switch {
-	case m.op.Is(OpUpdateOne | OpDeleteOne):
-		id, exists := m.ID()
-		if exists {
-			return []xid.ID{id}, nil
-		}
-		fallthrough
-	case m.op.Is(OpUpdate | OpDelete):
-		return m.Client().ProjectStaff.Query().Where(m.predicates...).IDs(ctx)
-	default:
-		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
-	}
-}
-
-// SetCreatedAt sets the "created_at" field.
-func (m *ProjectStaffMutation) SetCreatedAt(t time.Time) {
-	m.created_at = &t
-}
-
-// CreatedAt returns the value of the "created_at" field in the mutation.
-func (m *ProjectStaffMutation) CreatedAt() (r time.Time, exists bool) {
-	v := m.created_at
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldCreatedAt returns the old "created_at" field's value of the ProjectStaff entity.
-// If the ProjectStaff object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectStaffMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldCreatedAt is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldCreatedAt requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldCreatedAt: %w", err)
-	}
-	return oldValue.CreatedAt, nil
-}
-
-// ResetCreatedAt resets all changes to the "created_at" field.
-func (m *ProjectStaffMutation) ResetCreatedAt() {
-	m.created_at = nil
-}
-
-// SetUpdatedAt sets the "updated_at" field.
-func (m *ProjectStaffMutation) SetUpdatedAt(t time.Time) {
-	m.updated_at = &t
-}
-
-// UpdatedAt returns the value of the "updated_at" field in the mutation.
-func (m *ProjectStaffMutation) UpdatedAt() (r time.Time, exists bool) {
-	v := m.updated_at
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldUpdatedAt returns the old "updated_at" field's value of the ProjectStaff entity.
-// If the ProjectStaff object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectStaffMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldUpdatedAt is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldUpdatedAt requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldUpdatedAt: %w", err)
-	}
-	return oldValue.UpdatedAt, nil
-}
-
-// ResetUpdatedAt resets all changes to the "updated_at" field.
-func (m *ProjectStaffMutation) ResetUpdatedAt() {
-	m.updated_at = nil
-}
-
-// SetCym sets the "cym" field.
-func (m *ProjectStaffMutation) SetCym(s string) {
-	m.cym = &s
-}
-
-// Cym returns the value of the "cym" field in the mutation.
-func (m *ProjectStaffMutation) Cym() (r string, exists bool) {
-	v := m.cym
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldCym returns the old "cym" field's value of the ProjectStaff entity.
-// If the ProjectStaff object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectStaffMutation) OldCym(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldCym is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldCym requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldCym: %w", err)
-	}
-	return oldValue.Cym, nil
-}
-
-// ResetCym resets all changes to the "cym" field.
-func (m *ProjectStaffMutation) ResetCym() {
-	m.cym = nil
-}
-
-// SetInstallation sets the "installation" field.
-func (m *ProjectStaffMutation) SetInstallation(f float64) {
-	m.installation = &f
-	m.addinstallation = nil
-}
-
-// Installation returns the value of the "installation" field in the mutation.
-func (m *ProjectStaffMutation) Installation() (r float64, exists bool) {
-	v := m.installation
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldInstallation returns the old "installation" field's value of the ProjectStaff entity.
-// If the ProjectStaff object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectStaffMutation) OldInstallation(ctx context.Context) (v *float64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldInstallation is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldInstallation requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldInstallation: %w", err)
-	}
-	return oldValue.Installation, nil
-}
-
-// AddInstallation adds f to the "installation" field.
-func (m *ProjectStaffMutation) AddInstallation(f float64) {
-	if m.addinstallation != nil {
-		*m.addinstallation += f
-	} else {
-		m.addinstallation = &f
-	}
-}
-
-// AddedInstallation returns the value that was added to the "installation" field in this mutation.
-func (m *ProjectStaffMutation) AddedInstallation() (r float64, exists bool) {
-	v := m.addinstallation
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearInstallation clears the value of the "installation" field.
-func (m *ProjectStaffMutation) ClearInstallation() {
-	m.installation = nil
-	m.addinstallation = nil
-	m.clearedFields[projectstaff.FieldInstallation] = struct{}{}
-}
-
-// InstallationCleared returns if the "installation" field was cleared in this mutation.
-func (m *ProjectStaffMutation) InstallationCleared() bool {
-	_, ok := m.clearedFields[projectstaff.FieldInstallation]
-	return ok
-}
-
-// ResetInstallation resets all changes to the "installation" field.
-func (m *ProjectStaffMutation) ResetInstallation() {
-	m.installation = nil
-	m.addinstallation = nil
-	delete(m.clearedFields, projectstaff.FieldInstallation)
-}
-
-// SetManagement sets the "management" field.
-func (m *ProjectStaffMutation) SetManagement(f float64) {
-	m.management = &f
-	m.addmanagement = nil
-}
-
-// Management returns the value of the "management" field in the mutation.
-func (m *ProjectStaffMutation) Management() (r float64, exists bool) {
-	v := m.management
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldManagement returns the old "management" field's value of the ProjectStaff entity.
-// If the ProjectStaff object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectStaffMutation) OldManagement(ctx context.Context) (v *float64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldManagement is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldManagement requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldManagement: %w", err)
-	}
-	return oldValue.Management, nil
-}
-
-// AddManagement adds f to the "management" field.
-func (m *ProjectStaffMutation) AddManagement(f float64) {
-	if m.addmanagement != nil {
-		*m.addmanagement += f
-	} else {
-		m.addmanagement = &f
-	}
-}
-
-// AddedManagement returns the value that was added to the "management" field in this mutation.
-func (m *ProjectStaffMutation) AddedManagement() (r float64, exists bool) {
-	v := m.addmanagement
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearManagement clears the value of the "management" field.
-func (m *ProjectStaffMutation) ClearManagement() {
-	m.management = nil
-	m.addmanagement = nil
-	m.clearedFields[projectstaff.FieldManagement] = struct{}{}
-}
-
-// ManagementCleared returns if the "management" field was cleared in this mutation.
-func (m *ProjectStaffMutation) ManagementCleared() bool {
-	_, ok := m.clearedFields[projectstaff.FieldManagement]
-	return ok
-}
-
-// ResetManagement resets all changes to the "management" field.
-func (m *ProjectStaffMutation) ResetManagement() {
-	m.management = nil
-	m.addmanagement = nil
-	delete(m.clearedFields, projectstaff.FieldManagement)
-}
-
-// SetDesign sets the "design" field.
-func (m *ProjectStaffMutation) SetDesign(f float64) {
-	m.design = &f
-	m.adddesign = nil
-}
-
-// Design returns the value of the "design" field in the mutation.
-func (m *ProjectStaffMutation) Design() (r float64, exists bool) {
-	v := m.design
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldDesign returns the old "design" field's value of the ProjectStaff entity.
-// If the ProjectStaff object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectStaffMutation) OldDesign(ctx context.Context) (v *float64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldDesign is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldDesign requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldDesign: %w", err)
-	}
-	return oldValue.Design, nil
-}
-
-// AddDesign adds f to the "design" field.
-func (m *ProjectStaffMutation) AddDesign(f float64) {
-	if m.adddesign != nil {
-		*m.adddesign += f
-	} else {
-		m.adddesign = &f
-	}
-}
-
-// AddedDesign returns the value that was added to the "design" field in this mutation.
-func (m *ProjectStaffMutation) AddedDesign() (r float64, exists bool) {
-	v := m.adddesign
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearDesign clears the value of the "design" field.
-func (m *ProjectStaffMutation) ClearDesign() {
-	m.design = nil
-	m.adddesign = nil
-	m.clearedFields[projectstaff.FieldDesign] = struct{}{}
-}
-
-// DesignCleared returns if the "design" field was cleared in this mutation.
-func (m *ProjectStaffMutation) DesignCleared() bool {
-	_, ok := m.clearedFields[projectstaff.FieldDesign]
-	return ok
-}
-
-// ResetDesign resets all changes to the "design" field.
-func (m *ProjectStaffMutation) ResetDesign() {
-	m.design = nil
-	m.adddesign = nil
-	delete(m.clearedFields, projectstaff.FieldDesign)
-}
-
-// SetProjectID sets the "project_id" field.
-func (m *ProjectStaffMutation) SetProjectID(x xid.ID) {
-	m.project = &x
-}
-
-// ProjectID returns the value of the "project_id" field in the mutation.
-func (m *ProjectStaffMutation) ProjectID() (r xid.ID, exists bool) {
-	v := m.project
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldProjectID returns the old "project_id" field's value of the ProjectStaff entity.
-// If the ProjectStaff object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectStaffMutation) OldProjectID(ctx context.Context) (v xid.ID, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldProjectID is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldProjectID requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldProjectID: %w", err)
-	}
-	return oldValue.ProjectID, nil
-}
-
-// ResetProjectID resets all changes to the "project_id" field.
-func (m *ProjectStaffMutation) ResetProjectID() {
-	m.project = nil
-}
-
-// ClearProject clears the "project" edge to the Project entity.
-func (m *ProjectStaffMutation) ClearProject() {
-	m.clearedproject = true
-	m.clearedFields[projectstaff.FieldProjectID] = struct{}{}
-}
-
-// ProjectCleared reports if the "project" edge to the Project entity was cleared.
-func (m *ProjectStaffMutation) ProjectCleared() bool {
-	return m.clearedproject
-}
-
-// ProjectIDs returns the "project" edge IDs in the mutation.
-// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
-// ProjectID instead. It exists only for internal usage by the builders.
-func (m *ProjectStaffMutation) ProjectIDs() (ids []xid.ID) {
-	if id := m.project; id != nil {
-		ids = append(ids, *id)
-	}
-	return
-}
-
-// ResetProject resets all changes to the "project" edge.
-func (m *ProjectStaffMutation) ResetProject() {
-	m.project = nil
-	m.clearedproject = false
-}
-
-// Where appends a list predicates to the ProjectStaffMutation builder.
-func (m *ProjectStaffMutation) Where(ps ...predicate.ProjectStaff) {
-	m.predicates = append(m.predicates, ps...)
-}
-
-// WhereP appends storage-level predicates to the ProjectStaffMutation builder. Using this method,
-// users can use type-assertion to append predicates that do not depend on any generated package.
-func (m *ProjectStaffMutation) WhereP(ps ...func(*sql.Selector)) {
-	p := make([]predicate.ProjectStaff, len(ps))
-	for i := range ps {
-		p[i] = ps[i]
-	}
-	m.Where(p...)
-}
-
-// Op returns the operation name.
-func (m *ProjectStaffMutation) Op() Op {
-	return m.op
-}
-
-// SetOp allows setting the mutation operation.
-func (m *ProjectStaffMutation) SetOp(op Op) {
-	m.op = op
-}
-
-// Type returns the node type of this mutation (ProjectStaff).
-func (m *ProjectStaffMutation) Type() string {
-	return m.typ
-}
-
-// Fields returns all fields that were changed during this mutation. Note that in
-// order to get all numeric fields that were incremented/decremented, call
-// AddedFields().
-func (m *ProjectStaffMutation) Fields() []string {
-	fields := make([]string, 0, 7)
-	if m.created_at != nil {
-		fields = append(fields, projectstaff.FieldCreatedAt)
-	}
-	if m.updated_at != nil {
-		fields = append(fields, projectstaff.FieldUpdatedAt)
-	}
-	if m.cym != nil {
-		fields = append(fields, projectstaff.FieldCym)
-	}
-	if m.installation != nil {
-		fields = append(fields, projectstaff.FieldInstallation)
-	}
-	if m.management != nil {
-		fields = append(fields, projectstaff.FieldManagement)
-	}
-	if m.design != nil {
-		fields = append(fields, projectstaff.FieldDesign)
-	}
-	if m.project != nil {
-		fields = append(fields, projectstaff.FieldProjectID)
-	}
-	return fields
-}
-
-// Field returns the value of a field with the given name. The second boolean
-// return value indicates that this field was not set, or was not defined in the
-// schema.
-func (m *ProjectStaffMutation) Field(name string) (ent.Value, bool) {
-	switch name {
-	case projectstaff.FieldCreatedAt:
-		return m.CreatedAt()
-	case projectstaff.FieldUpdatedAt:
-		return m.UpdatedAt()
-	case projectstaff.FieldCym:
-		return m.Cym()
-	case projectstaff.FieldInstallation:
-		return m.Installation()
-	case projectstaff.FieldManagement:
-		return m.Management()
-	case projectstaff.FieldDesign:
-		return m.Design()
-	case projectstaff.FieldProjectID:
-		return m.ProjectID()
-	}
-	return nil, false
-}
-
-// OldField returns the old value of the field from the database. An error is
-// returned if the mutation operation is not UpdateOne, or the query to the
-// database failed.
-func (m *ProjectStaffMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
-	switch name {
-	case projectstaff.FieldCreatedAt:
-		return m.OldCreatedAt(ctx)
-	case projectstaff.FieldUpdatedAt:
-		return m.OldUpdatedAt(ctx)
-	case projectstaff.FieldCym:
-		return m.OldCym(ctx)
-	case projectstaff.FieldInstallation:
-		return m.OldInstallation(ctx)
-	case projectstaff.FieldManagement:
-		return m.OldManagement(ctx)
-	case projectstaff.FieldDesign:
-		return m.OldDesign(ctx)
-	case projectstaff.FieldProjectID:
-		return m.OldProjectID(ctx)
-	}
-	return nil, fmt.Errorf("unknown ProjectStaff field %s", name)
-}
-
-// SetField sets the value of a field with the given name. It returns an error if
-// the field is not defined in the schema, or if the type mismatched the field
-// type.
-func (m *ProjectStaffMutation) SetField(name string, value ent.Value) error {
-	switch name {
-	case projectstaff.FieldCreatedAt:
-		v, ok := value.(time.Time)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetCreatedAt(v)
-		return nil
-	case projectstaff.FieldUpdatedAt:
-		v, ok := value.(time.Time)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetUpdatedAt(v)
-		return nil
-	case projectstaff.FieldCym:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetCym(v)
-		return nil
-	case projectstaff.FieldInstallation:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetInstallation(v)
-		return nil
-	case projectstaff.FieldManagement:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetManagement(v)
-		return nil
-	case projectstaff.FieldDesign:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetDesign(v)
-		return nil
-	case projectstaff.FieldProjectID:
-		v, ok := value.(xid.ID)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetProjectID(v)
-		return nil
-	}
-	return fmt.Errorf("unknown ProjectStaff field %s", name)
-}
-
-// AddedFields returns all numeric fields that were incremented/decremented during
-// this mutation.
-func (m *ProjectStaffMutation) AddedFields() []string {
-	var fields []string
-	if m.addinstallation != nil {
-		fields = append(fields, projectstaff.FieldInstallation)
-	}
-	if m.addmanagement != nil {
-		fields = append(fields, projectstaff.FieldManagement)
-	}
-	if m.adddesign != nil {
-		fields = append(fields, projectstaff.FieldDesign)
-	}
-	return fields
-}
-
-// AddedField returns the numeric value that was incremented/decremented on a field
-// with the given name. The second boolean return value indicates that this field
-// was not set, or was not defined in the schema.
-func (m *ProjectStaffMutation) AddedField(name string) (ent.Value, bool) {
-	switch name {
-	case projectstaff.FieldInstallation:
-		return m.AddedInstallation()
-	case projectstaff.FieldManagement:
-		return m.AddedManagement()
-	case projectstaff.FieldDesign:
-		return m.AddedDesign()
-	}
-	return nil, false
-}
-
-// AddField adds the value to the field with the given name. It returns an error if
-// the field is not defined in the schema, or if the type mismatched the field
-// type.
-func (m *ProjectStaffMutation) AddField(name string, value ent.Value) error {
-	switch name {
-	case projectstaff.FieldInstallation:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddInstallation(v)
-		return nil
-	case projectstaff.FieldManagement:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddManagement(v)
-		return nil
-	case projectstaff.FieldDesign:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddDesign(v)
-		return nil
-	}
-	return fmt.Errorf("unknown ProjectStaff numeric field %s", name)
-}
-
-// ClearedFields returns all nullable fields that were cleared during this
-// mutation.
-func (m *ProjectStaffMutation) ClearedFields() []string {
-	var fields []string
-	if m.FieldCleared(projectstaff.FieldInstallation) {
-		fields = append(fields, projectstaff.FieldInstallation)
-	}
-	if m.FieldCleared(projectstaff.FieldManagement) {
-		fields = append(fields, projectstaff.FieldManagement)
-	}
-	if m.FieldCleared(projectstaff.FieldDesign) {
-		fields = append(fields, projectstaff.FieldDesign)
-	}
-	return fields
-}
-
-// FieldCleared returns a boolean indicating if a field with the given name was
-// cleared in this mutation.
-func (m *ProjectStaffMutation) FieldCleared(name string) bool {
-	_, ok := m.clearedFields[name]
-	return ok
-}
-
-// ClearField clears the value of the field with the given name. It returns an
-// error if the field is not defined in the schema.
-func (m *ProjectStaffMutation) ClearField(name string) error {
-	switch name {
-	case projectstaff.FieldInstallation:
-		m.ClearInstallation()
-		return nil
-	case projectstaff.FieldManagement:
-		m.ClearManagement()
-		return nil
-	case projectstaff.FieldDesign:
-		m.ClearDesign()
-		return nil
-	}
-	return fmt.Errorf("unknown ProjectStaff nullable field %s", name)
-}
-
-// ResetField resets all changes in the mutation for the field with the given name.
-// It returns an error if the field is not defined in the schema.
-func (m *ProjectStaffMutation) ResetField(name string) error {
-	switch name {
-	case projectstaff.FieldCreatedAt:
-		m.ResetCreatedAt()
-		return nil
-	case projectstaff.FieldUpdatedAt:
-		m.ResetUpdatedAt()
-		return nil
-	case projectstaff.FieldCym:
-		m.ResetCym()
-		return nil
-	case projectstaff.FieldInstallation:
-		m.ResetInstallation()
-		return nil
-	case projectstaff.FieldManagement:
-		m.ResetManagement()
-		return nil
-	case projectstaff.FieldDesign:
-		m.ResetDesign()
-		return nil
-	case projectstaff.FieldProjectID:
-		m.ResetProjectID()
-		return nil
-	}
-	return fmt.Errorf("unknown ProjectStaff field %s", name)
-}
-
-// AddedEdges returns all edge names that were set/added in this mutation.
-func (m *ProjectStaffMutation) AddedEdges() []string {
-	edges := make([]string, 0, 1)
-	if m.project != nil {
-		edges = append(edges, projectstaff.EdgeProject)
-	}
-	return edges
-}
-
-// AddedIDs returns all IDs (to other nodes) that were added for the given edge
-// name in this mutation.
-func (m *ProjectStaffMutation) AddedIDs(name string) []ent.Value {
-	switch name {
-	case projectstaff.EdgeProject:
-		if id := m.project; id != nil {
-			return []ent.Value{*id}
-		}
-	}
-	return nil
-}
-
-// RemovedEdges returns all edge names that were removed in this mutation.
-func (m *ProjectStaffMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 1)
-	return edges
-}
-
-// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
-// the given name in this mutation.
-func (m *ProjectStaffMutation) RemovedIDs(name string) []ent.Value {
-	return nil
-}
-
-// ClearedEdges returns all edge names that were cleared in this mutation.
-func (m *ProjectStaffMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 1)
-	if m.clearedproject {
-		edges = append(edges, projectstaff.EdgeProject)
-	}
-	return edges
-}
-
-// EdgeCleared returns a boolean which indicates if the edge with the given name
-// was cleared in this mutation.
-func (m *ProjectStaffMutation) EdgeCleared(name string) bool {
-	switch name {
-	case projectstaff.EdgeProject:
-		return m.clearedproject
-	}
-	return false
-}
-
-// ClearEdge clears the value of the edge with the given name. It returns an error
-// if that edge is not defined in the schema.
-func (m *ProjectStaffMutation) ClearEdge(name string) error {
-	switch name {
-	case projectstaff.EdgeProject:
-		m.ClearProject()
-		return nil
-	}
-	return fmt.Errorf("unknown ProjectStaff unique edge %s", name)
-}
-
-// ResetEdge resets all changes to the edge with the given name in this mutation.
-// It returns an error if the edge is not defined in the schema.
-func (m *ProjectStaffMutation) ResetEdge(name string) error {
-	switch name {
-	case projectstaff.EdgeProject:
-		m.ResetProject()
-		return nil
-	}
-	return fmt.Errorf("unknown ProjectStaff edge %s", name)
-}
-
-// ProjectVOMutation represents an operation that mutates the ProjectVO nodes in the graph.
-type ProjectVOMutation struct {
-	config
-	op                Op
-	typ               string
-	id                *xid.ID
-	created_at        *time.Time
-	updated_at        *time.Time
-	change_type       *int
-	addchange_type    *int
-	is_approved       *bool
-	azjd              *float64
-	addazjd           *float64
-	yxhyze            *float64
-	addyxhyze         *float64
-	apply_amount      *float64
-	addapply_amount   *float64
-	approve_amount    *float64
-	addapprove_amount *float64
-	clearedFields     map[string]struct{}
-	project           *xid.ID
-	clearedproject    bool
-	done              bool
-	oldValue          func(context.Context) (*ProjectVO, error)
-	predicates        []predicate.ProjectVO
-}
-
-var _ ent.Mutation = (*ProjectVOMutation)(nil)
-
-// projectvoOption allows management of the mutation configuration using functional options.
-type projectvoOption func(*ProjectVOMutation)
-
-// newProjectVOMutation creates new mutation for the ProjectVO entity.
-func newProjectVOMutation(c config, op Op, opts ...projectvoOption) *ProjectVOMutation {
-	m := &ProjectVOMutation{
-		config:        c,
-		op:            op,
-		typ:           TypeProjectVO,
-		clearedFields: make(map[string]struct{}),
-	}
-	for _, opt := range opts {
-		opt(m)
-	}
-	return m
-}
-
-// withProjectVOID sets the ID field of the mutation.
-func withProjectVOID(id xid.ID) projectvoOption {
-	return func(m *ProjectVOMutation) {
-		var (
-			err   error
-			once  sync.Once
-			value *ProjectVO
-		)
-		m.oldValue = func(ctx context.Context) (*ProjectVO, error) {
-			once.Do(func() {
-				if m.done {
-					err = errors.New("querying old values post mutation is not allowed")
-				} else {
-					value, err = m.Client().ProjectVO.Get(ctx, id)
-				}
-			})
-			return value, err
-		}
-		m.id = &id
-	}
-}
-
-// withProjectVO sets the old ProjectVO of the mutation.
-func withProjectVO(node *ProjectVO) projectvoOption {
-	return func(m *ProjectVOMutation) {
-		m.oldValue = func(context.Context) (*ProjectVO, error) {
-			return node, nil
-		}
-		m.id = &node.ID
-	}
-}
-
-// Client returns a new `ent.Client` from the mutation. If the mutation was
-// executed in a transaction (ent.Tx), a transactional client is returned.
-func (m ProjectVOMutation) Client() *Client {
-	client := &Client{config: m.config}
-	client.init()
-	return client
-}
-
-// Tx returns an `ent.Tx` for mutations that were executed in transactions;
-// it returns an error otherwise.
-func (m ProjectVOMutation) Tx() (*Tx, error) {
-	if _, ok := m.driver.(*txDriver); !ok {
-		return nil, errors.New("ent: mutation is not running in a transaction")
-	}
-	tx := &Tx{config: m.config}
-	tx.init()
-	return tx, nil
-}
-
-// SetID sets the value of the id field. Note that this
-// operation is only accepted on creation of ProjectVO entities.
-func (m *ProjectVOMutation) SetID(id xid.ID) {
-	m.id = &id
-}
-
-// ID returns the ID value in the mutation. Note that the ID is only available
-// if it was provided to the builder or after it was returned from the database.
-func (m *ProjectVOMutation) ID() (id xid.ID, exists bool) {
-	if m.id == nil {
-		return
-	}
-	return *m.id, true
-}
-
-// IDs queries the database and returns the entity ids that match the mutation's predicate.
-// That means, if the mutation is applied within a transaction with an isolation level such
-// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
-// or updated by the mutation.
-func (m *ProjectVOMutation) IDs(ctx context.Context) ([]xid.ID, error) {
-	switch {
-	case m.op.Is(OpUpdateOne | OpDeleteOne):
-		id, exists := m.ID()
-		if exists {
-			return []xid.ID{id}, nil
-		}
-		fallthrough
-	case m.op.Is(OpUpdate | OpDelete):
-		return m.Client().ProjectVO.Query().Where(m.predicates...).IDs(ctx)
-	default:
-		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
-	}
-}
-
-// SetCreatedAt sets the "created_at" field.
-func (m *ProjectVOMutation) SetCreatedAt(t time.Time) {
-	m.created_at = &t
-}
-
-// CreatedAt returns the value of the "created_at" field in the mutation.
-func (m *ProjectVOMutation) CreatedAt() (r time.Time, exists bool) {
-	v := m.created_at
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldCreatedAt returns the old "created_at" field's value of the ProjectVO entity.
-// If the ProjectVO object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectVOMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldCreatedAt is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldCreatedAt requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldCreatedAt: %w", err)
-	}
-	return oldValue.CreatedAt, nil
-}
-
-// ResetCreatedAt resets all changes to the "created_at" field.
-func (m *ProjectVOMutation) ResetCreatedAt() {
-	m.created_at = nil
-}
-
-// SetUpdatedAt sets the "updated_at" field.
-func (m *ProjectVOMutation) SetUpdatedAt(t time.Time) {
-	m.updated_at = &t
-}
-
-// UpdatedAt returns the value of the "updated_at" field in the mutation.
-func (m *ProjectVOMutation) UpdatedAt() (r time.Time, exists bool) {
-	v := m.updated_at
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldUpdatedAt returns the old "updated_at" field's value of the ProjectVO entity.
-// If the ProjectVO object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectVOMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldUpdatedAt is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldUpdatedAt requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldUpdatedAt: %w", err)
-	}
-	return oldValue.UpdatedAt, nil
-}
-
-// ResetUpdatedAt resets all changes to the "updated_at" field.
-func (m *ProjectVOMutation) ResetUpdatedAt() {
-	m.updated_at = nil
-}
-
-// SetProjectID sets the "project_id" field.
-func (m *ProjectVOMutation) SetProjectID(x xid.ID) {
-	m.project = &x
-}
-
-// ProjectID returns the value of the "project_id" field in the mutation.
-func (m *ProjectVOMutation) ProjectID() (r xid.ID, exists bool) {
-	v := m.project
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldProjectID returns the old "project_id" field's value of the ProjectVO entity.
-// If the ProjectVO object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectVOMutation) OldProjectID(ctx context.Context) (v xid.ID, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldProjectID is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldProjectID requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldProjectID: %w", err)
-	}
-	return oldValue.ProjectID, nil
-}
-
-// ResetProjectID resets all changes to the "project_id" field.
-func (m *ProjectVOMutation) ResetProjectID() {
-	m.project = nil
-}
-
-// SetChangeType sets the "change_type" field.
-func (m *ProjectVOMutation) SetChangeType(i int) {
-	m.change_type = &i
-	m.addchange_type = nil
-}
-
-// ChangeType returns the value of the "change_type" field in the mutation.
-func (m *ProjectVOMutation) ChangeType() (r int, exists bool) {
-	v := m.change_type
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldChangeType returns the old "change_type" field's value of the ProjectVO entity.
-// If the ProjectVO object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectVOMutation) OldChangeType(ctx context.Context) (v int, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldChangeType is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldChangeType requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldChangeType: %w", err)
-	}
-	return oldValue.ChangeType, nil
-}
-
-// AddChangeType adds i to the "change_type" field.
-func (m *ProjectVOMutation) AddChangeType(i int) {
-	if m.addchange_type != nil {
-		*m.addchange_type += i
-	} else {
-		m.addchange_type = &i
-	}
-}
-
-// AddedChangeType returns the value that was added to the "change_type" field in this mutation.
-func (m *ProjectVOMutation) AddedChangeType() (r int, exists bool) {
-	v := m.addchange_type
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ResetChangeType resets all changes to the "change_type" field.
-func (m *ProjectVOMutation) ResetChangeType() {
-	m.change_type = nil
-	m.addchange_type = nil
-}
-
-// SetIsApproved sets the "is_approved" field.
-func (m *ProjectVOMutation) SetIsApproved(b bool) {
-	m.is_approved = &b
-}
-
-// IsApproved returns the value of the "is_approved" field in the mutation.
-func (m *ProjectVOMutation) IsApproved() (r bool, exists bool) {
-	v := m.is_approved
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldIsApproved returns the old "is_approved" field's value of the ProjectVO entity.
-// If the ProjectVO object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectVOMutation) OldIsApproved(ctx context.Context) (v bool, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldIsApproved is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldIsApproved requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldIsApproved: %w", err)
-	}
-	return oldValue.IsApproved, nil
-}
-
-// ResetIsApproved resets all changes to the "is_approved" field.
-func (m *ProjectVOMutation) ResetIsApproved() {
-	m.is_approved = nil
-}
-
-// SetAzjd sets the "azjd" field.
-func (m *ProjectVOMutation) SetAzjd(f float64) {
-	m.azjd = &f
-	m.addazjd = nil
-}
-
-// Azjd returns the value of the "azjd" field in the mutation.
-func (m *ProjectVOMutation) Azjd() (r float64, exists bool) {
-	v := m.azjd
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldAzjd returns the old "azjd" field's value of the ProjectVO entity.
-// If the ProjectVO object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectVOMutation) OldAzjd(ctx context.Context) (v *float64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldAzjd is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldAzjd requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldAzjd: %w", err)
-	}
-	return oldValue.Azjd, nil
-}
-
-// AddAzjd adds f to the "azjd" field.
-func (m *ProjectVOMutation) AddAzjd(f float64) {
-	if m.addazjd != nil {
-		*m.addazjd += f
-	} else {
-		m.addazjd = &f
-	}
-}
-
-// AddedAzjd returns the value that was added to the "azjd" field in this mutation.
-func (m *ProjectVOMutation) AddedAzjd() (r float64, exists bool) {
-	v := m.addazjd
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearAzjd clears the value of the "azjd" field.
-func (m *ProjectVOMutation) ClearAzjd() {
-	m.azjd = nil
-	m.addazjd = nil
-	m.clearedFields[projectvo.FieldAzjd] = struct{}{}
-}
-
-// AzjdCleared returns if the "azjd" field was cleared in this mutation.
-func (m *ProjectVOMutation) AzjdCleared() bool {
-	_, ok := m.clearedFields[projectvo.FieldAzjd]
-	return ok
-}
-
-// ResetAzjd resets all changes to the "azjd" field.
-func (m *ProjectVOMutation) ResetAzjd() {
-	m.azjd = nil
-	m.addazjd = nil
-	delete(m.clearedFields, projectvo.FieldAzjd)
-}
-
-// SetYxhyze sets the "yxhyze" field.
-func (m *ProjectVOMutation) SetYxhyze(f float64) {
-	m.yxhyze = &f
-	m.addyxhyze = nil
-}
-
-// Yxhyze returns the value of the "yxhyze" field in the mutation.
-func (m *ProjectVOMutation) Yxhyze() (r float64, exists bool) {
-	v := m.yxhyze
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldYxhyze returns the old "yxhyze" field's value of the ProjectVO entity.
-// If the ProjectVO object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectVOMutation) OldYxhyze(ctx context.Context) (v *float64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldYxhyze is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldYxhyze requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldYxhyze: %w", err)
-	}
-	return oldValue.Yxhyze, nil
-}
-
-// AddYxhyze adds f to the "yxhyze" field.
-func (m *ProjectVOMutation) AddYxhyze(f float64) {
-	if m.addyxhyze != nil {
-		*m.addyxhyze += f
-	} else {
-		m.addyxhyze = &f
-	}
-}
-
-// AddedYxhyze returns the value that was added to the "yxhyze" field in this mutation.
-func (m *ProjectVOMutation) AddedYxhyze() (r float64, exists bool) {
-	v := m.addyxhyze
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearYxhyze clears the value of the "yxhyze" field.
-func (m *ProjectVOMutation) ClearYxhyze() {
-	m.yxhyze = nil
-	m.addyxhyze = nil
-	m.clearedFields[projectvo.FieldYxhyze] = struct{}{}
-}
-
-// YxhyzeCleared returns if the "yxhyze" field was cleared in this mutation.
-func (m *ProjectVOMutation) YxhyzeCleared() bool {
-	_, ok := m.clearedFields[projectvo.FieldYxhyze]
-	return ok
-}
-
-// ResetYxhyze resets all changes to the "yxhyze" field.
-func (m *ProjectVOMutation) ResetYxhyze() {
-	m.yxhyze = nil
-	m.addyxhyze = nil
-	delete(m.clearedFields, projectvo.FieldYxhyze)
-}
-
-// SetApplyAmount sets the "apply_amount" field.
-func (m *ProjectVOMutation) SetApplyAmount(f float64) {
-	m.apply_amount = &f
-	m.addapply_amount = nil
-}
-
-// ApplyAmount returns the value of the "apply_amount" field in the mutation.
-func (m *ProjectVOMutation) ApplyAmount() (r float64, exists bool) {
-	v := m.apply_amount
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldApplyAmount returns the old "apply_amount" field's value of the ProjectVO entity.
-// If the ProjectVO object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectVOMutation) OldApplyAmount(ctx context.Context) (v *float64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldApplyAmount is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldApplyAmount requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldApplyAmount: %w", err)
-	}
-	return oldValue.ApplyAmount, nil
-}
-
-// AddApplyAmount adds f to the "apply_amount" field.
-func (m *ProjectVOMutation) AddApplyAmount(f float64) {
-	if m.addapply_amount != nil {
-		*m.addapply_amount += f
-	} else {
-		m.addapply_amount = &f
-	}
-}
-
-// AddedApplyAmount returns the value that was added to the "apply_amount" field in this mutation.
-func (m *ProjectVOMutation) AddedApplyAmount() (r float64, exists bool) {
-	v := m.addapply_amount
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearApplyAmount clears the value of the "apply_amount" field.
-func (m *ProjectVOMutation) ClearApplyAmount() {
-	m.apply_amount = nil
-	m.addapply_amount = nil
-	m.clearedFields[projectvo.FieldApplyAmount] = struct{}{}
-}
-
-// ApplyAmountCleared returns if the "apply_amount" field was cleared in this mutation.
-func (m *ProjectVOMutation) ApplyAmountCleared() bool {
-	_, ok := m.clearedFields[projectvo.FieldApplyAmount]
-	return ok
-}
-
-// ResetApplyAmount resets all changes to the "apply_amount" field.
-func (m *ProjectVOMutation) ResetApplyAmount() {
-	m.apply_amount = nil
-	m.addapply_amount = nil
-	delete(m.clearedFields, projectvo.FieldApplyAmount)
-}
-
-// SetApproveAmount sets the "approve_amount" field.
-func (m *ProjectVOMutation) SetApproveAmount(f float64) {
-	m.approve_amount = &f
-	m.addapprove_amount = nil
-}
-
-// ApproveAmount returns the value of the "approve_amount" field in the mutation.
-func (m *ProjectVOMutation) ApproveAmount() (r float64, exists bool) {
-	v := m.approve_amount
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldApproveAmount returns the old "approve_amount" field's value of the ProjectVO entity.
-// If the ProjectVO object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectVOMutation) OldApproveAmount(ctx context.Context) (v *float64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldApproveAmount is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldApproveAmount requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldApproveAmount: %w", err)
-	}
-	return oldValue.ApproveAmount, nil
-}
-
-// AddApproveAmount adds f to the "approve_amount" field.
-func (m *ProjectVOMutation) AddApproveAmount(f float64) {
-	if m.addapprove_amount != nil {
-		*m.addapprove_amount += f
-	} else {
-		m.addapprove_amount = &f
-	}
-}
-
-// AddedApproveAmount returns the value that was added to the "approve_amount" field in this mutation.
-func (m *ProjectVOMutation) AddedApproveAmount() (r float64, exists bool) {
-	v := m.addapprove_amount
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearApproveAmount clears the value of the "approve_amount" field.
-func (m *ProjectVOMutation) ClearApproveAmount() {
-	m.approve_amount = nil
-	m.addapprove_amount = nil
-	m.clearedFields[projectvo.FieldApproveAmount] = struct{}{}
-}
-
-// ApproveAmountCleared returns if the "approve_amount" field was cleared in this mutation.
-func (m *ProjectVOMutation) ApproveAmountCleared() bool {
-	_, ok := m.clearedFields[projectvo.FieldApproveAmount]
-	return ok
-}
-
-// ResetApproveAmount resets all changes to the "approve_amount" field.
-func (m *ProjectVOMutation) ResetApproveAmount() {
-	m.approve_amount = nil
-	m.addapprove_amount = nil
-	delete(m.clearedFields, projectvo.FieldApproveAmount)
-}
-
-// ClearProject clears the "project" edge to the Project entity.
-func (m *ProjectVOMutation) ClearProject() {
-	m.clearedproject = true
-	m.clearedFields[projectvo.FieldProjectID] = struct{}{}
-}
-
-// ProjectCleared reports if the "project" edge to the Project entity was cleared.
-func (m *ProjectVOMutation) ProjectCleared() bool {
-	return m.clearedproject
-}
-
-// ProjectIDs returns the "project" edge IDs in the mutation.
-// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
-// ProjectID instead. It exists only for internal usage by the builders.
-func (m *ProjectVOMutation) ProjectIDs() (ids []xid.ID) {
-	if id := m.project; id != nil {
-		ids = append(ids, *id)
-	}
-	return
-}
-
-// ResetProject resets all changes to the "project" edge.
-func (m *ProjectVOMutation) ResetProject() {
-	m.project = nil
-	m.clearedproject = false
-}
-
-// Where appends a list predicates to the ProjectVOMutation builder.
-func (m *ProjectVOMutation) Where(ps ...predicate.ProjectVO) {
-	m.predicates = append(m.predicates, ps...)
-}
-
-// WhereP appends storage-level predicates to the ProjectVOMutation builder. Using this method,
-// users can use type-assertion to append predicates that do not depend on any generated package.
-func (m *ProjectVOMutation) WhereP(ps ...func(*sql.Selector)) {
-	p := make([]predicate.ProjectVO, len(ps))
-	for i := range ps {
-		p[i] = ps[i]
-	}
-	m.Where(p...)
-}
-
-// Op returns the operation name.
-func (m *ProjectVOMutation) Op() Op {
-	return m.op
-}
-
-// SetOp allows setting the mutation operation.
-func (m *ProjectVOMutation) SetOp(op Op) {
-	m.op = op
-}
-
-// Type returns the node type of this mutation (ProjectVO).
-func (m *ProjectVOMutation) Type() string {
-	return m.typ
-}
-
-// Fields returns all fields that were changed during this mutation. Note that in
-// order to get all numeric fields that were incremented/decremented, call
-// AddedFields().
-func (m *ProjectVOMutation) Fields() []string {
-	fields := make([]string, 0, 9)
-	if m.created_at != nil {
-		fields = append(fields, projectvo.FieldCreatedAt)
-	}
-	if m.updated_at != nil {
-		fields = append(fields, projectvo.FieldUpdatedAt)
-	}
-	if m.project != nil {
-		fields = append(fields, projectvo.FieldProjectID)
-	}
-	if m.change_type != nil {
-		fields = append(fields, projectvo.FieldChangeType)
-	}
-	if m.is_approved != nil {
-		fields = append(fields, projectvo.FieldIsApproved)
-	}
-	if m.azjd != nil {
-		fields = append(fields, projectvo.FieldAzjd)
-	}
-	if m.yxhyze != nil {
-		fields = append(fields, projectvo.FieldYxhyze)
-	}
-	if m.apply_amount != nil {
-		fields = append(fields, projectvo.FieldApplyAmount)
-	}
-	if m.approve_amount != nil {
-		fields = append(fields, projectvo.FieldApproveAmount)
-	}
-	return fields
-}
-
-// Field returns the value of a field with the given name. The second boolean
-// return value indicates that this field was not set, or was not defined in the
-// schema.
-func (m *ProjectVOMutation) Field(name string) (ent.Value, bool) {
-	switch name {
-	case projectvo.FieldCreatedAt:
-		return m.CreatedAt()
-	case projectvo.FieldUpdatedAt:
-		return m.UpdatedAt()
-	case projectvo.FieldProjectID:
-		return m.ProjectID()
-	case projectvo.FieldChangeType:
-		return m.ChangeType()
-	case projectvo.FieldIsApproved:
-		return m.IsApproved()
-	case projectvo.FieldAzjd:
-		return m.Azjd()
-	case projectvo.FieldYxhyze:
-		return m.Yxhyze()
-	case projectvo.FieldApplyAmount:
-		return m.ApplyAmount()
-	case projectvo.FieldApproveAmount:
-		return m.ApproveAmount()
-	}
-	return nil, false
-}
-
-// OldField returns the old value of the field from the database. An error is
-// returned if the mutation operation is not UpdateOne, or the query to the
-// database failed.
-func (m *ProjectVOMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
-	switch name {
-	case projectvo.FieldCreatedAt:
-		return m.OldCreatedAt(ctx)
-	case projectvo.FieldUpdatedAt:
-		return m.OldUpdatedAt(ctx)
-	case projectvo.FieldProjectID:
-		return m.OldProjectID(ctx)
-	case projectvo.FieldChangeType:
-		return m.OldChangeType(ctx)
-	case projectvo.FieldIsApproved:
-		return m.OldIsApproved(ctx)
-	case projectvo.FieldAzjd:
-		return m.OldAzjd(ctx)
-	case projectvo.FieldYxhyze:
-		return m.OldYxhyze(ctx)
-	case projectvo.FieldApplyAmount:
-		return m.OldApplyAmount(ctx)
-	case projectvo.FieldApproveAmount:
-		return m.OldApproveAmount(ctx)
-	}
-	return nil, fmt.Errorf("unknown ProjectVO field %s", name)
-}
-
-// SetField sets the value of a field with the given name. It returns an error if
-// the field is not defined in the schema, or if the type mismatched the field
-// type.
-func (m *ProjectVOMutation) SetField(name string, value ent.Value) error {
-	switch name {
-	case projectvo.FieldCreatedAt:
-		v, ok := value.(time.Time)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetCreatedAt(v)
-		return nil
-	case projectvo.FieldUpdatedAt:
-		v, ok := value.(time.Time)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetUpdatedAt(v)
-		return nil
-	case projectvo.FieldProjectID:
-		v, ok := value.(xid.ID)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetProjectID(v)
-		return nil
-	case projectvo.FieldChangeType:
-		v, ok := value.(int)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetChangeType(v)
-		return nil
-	case projectvo.FieldIsApproved:
-		v, ok := value.(bool)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetIsApproved(v)
-		return nil
-	case projectvo.FieldAzjd:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetAzjd(v)
-		return nil
-	case projectvo.FieldYxhyze:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetYxhyze(v)
-		return nil
-	case projectvo.FieldApplyAmount:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetApplyAmount(v)
-		return nil
-	case projectvo.FieldApproveAmount:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetApproveAmount(v)
-		return nil
-	}
-	return fmt.Errorf("unknown ProjectVO field %s", name)
-}
-
-// AddedFields returns all numeric fields that were incremented/decremented during
-// this mutation.
-func (m *ProjectVOMutation) AddedFields() []string {
-	var fields []string
-	if m.addchange_type != nil {
-		fields = append(fields, projectvo.FieldChangeType)
-	}
-	if m.addazjd != nil {
-		fields = append(fields, projectvo.FieldAzjd)
-	}
-	if m.addyxhyze != nil {
-		fields = append(fields, projectvo.FieldYxhyze)
-	}
-	if m.addapply_amount != nil {
-		fields = append(fields, projectvo.FieldApplyAmount)
-	}
-	if m.addapprove_amount != nil {
-		fields = append(fields, projectvo.FieldApproveAmount)
-	}
-	return fields
-}
-
-// AddedField returns the numeric value that was incremented/decremented on a field
-// with the given name. The second boolean return value indicates that this field
-// was not set, or was not defined in the schema.
-func (m *ProjectVOMutation) AddedField(name string) (ent.Value, bool) {
-	switch name {
-	case projectvo.FieldChangeType:
-		return m.AddedChangeType()
-	case projectvo.FieldAzjd:
-		return m.AddedAzjd()
-	case projectvo.FieldYxhyze:
-		return m.AddedYxhyze()
-	case projectvo.FieldApplyAmount:
-		return m.AddedApplyAmount()
-	case projectvo.FieldApproveAmount:
-		return m.AddedApproveAmount()
-	}
-	return nil, false
-}
-
-// AddField adds the value to the field with the given name. It returns an error if
-// the field is not defined in the schema, or if the type mismatched the field
-// type.
-func (m *ProjectVOMutation) AddField(name string, value ent.Value) error {
-	switch name {
-	case projectvo.FieldChangeType:
-		v, ok := value.(int)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddChangeType(v)
-		return nil
-	case projectvo.FieldAzjd:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddAzjd(v)
-		return nil
-	case projectvo.FieldYxhyze:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddYxhyze(v)
-		return nil
-	case projectvo.FieldApplyAmount:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddApplyAmount(v)
-		return nil
-	case projectvo.FieldApproveAmount:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddApproveAmount(v)
-		return nil
-	}
-	return fmt.Errorf("unknown ProjectVO numeric field %s", name)
-}
-
-// ClearedFields returns all nullable fields that were cleared during this
-// mutation.
-func (m *ProjectVOMutation) ClearedFields() []string {
-	var fields []string
-	if m.FieldCleared(projectvo.FieldAzjd) {
-		fields = append(fields, projectvo.FieldAzjd)
-	}
-	if m.FieldCleared(projectvo.FieldYxhyze) {
-		fields = append(fields, projectvo.FieldYxhyze)
-	}
-	if m.FieldCleared(projectvo.FieldApplyAmount) {
-		fields = append(fields, projectvo.FieldApplyAmount)
-	}
-	if m.FieldCleared(projectvo.FieldApproveAmount) {
-		fields = append(fields, projectvo.FieldApproveAmount)
-	}
-	return fields
-}
-
-// FieldCleared returns a boolean indicating if a field with the given name was
-// cleared in this mutation.
-func (m *ProjectVOMutation) FieldCleared(name string) bool {
-	_, ok := m.clearedFields[name]
-	return ok
-}
-
-// ClearField clears the value of the field with the given name. It returns an
-// error if the field is not defined in the schema.
-func (m *ProjectVOMutation) ClearField(name string) error {
-	switch name {
-	case projectvo.FieldAzjd:
-		m.ClearAzjd()
-		return nil
-	case projectvo.FieldYxhyze:
-		m.ClearYxhyze()
-		return nil
-	case projectvo.FieldApplyAmount:
-		m.ClearApplyAmount()
-		return nil
-	case projectvo.FieldApproveAmount:
-		m.ClearApproveAmount()
-		return nil
-	}
-	return fmt.Errorf("unknown ProjectVO nullable field %s", name)
-}
-
-// ResetField resets all changes in the mutation for the field with the given name.
-// It returns an error if the field is not defined in the schema.
-func (m *ProjectVOMutation) ResetField(name string) error {
-	switch name {
-	case projectvo.FieldCreatedAt:
-		m.ResetCreatedAt()
-		return nil
-	case projectvo.FieldUpdatedAt:
-		m.ResetUpdatedAt()
-		return nil
-	case projectvo.FieldProjectID:
-		m.ResetProjectID()
-		return nil
-	case projectvo.FieldChangeType:
-		m.ResetChangeType()
-		return nil
-	case projectvo.FieldIsApproved:
-		m.ResetIsApproved()
-		return nil
-	case projectvo.FieldAzjd:
-		m.ResetAzjd()
-		return nil
-	case projectvo.FieldYxhyze:
-		m.ResetYxhyze()
-		return nil
-	case projectvo.FieldApplyAmount:
-		m.ResetApplyAmount()
-		return nil
-	case projectvo.FieldApproveAmount:
-		m.ResetApproveAmount()
-		return nil
-	}
-	return fmt.Errorf("unknown ProjectVO field %s", name)
-}
-
-// AddedEdges returns all edge names that were set/added in this mutation.
-func (m *ProjectVOMutation) AddedEdges() []string {
-	edges := make([]string, 0, 1)
-	if m.project != nil {
-		edges = append(edges, projectvo.EdgeProject)
-	}
-	return edges
-}
-
-// AddedIDs returns all IDs (to other nodes) that were added for the given edge
-// name in this mutation.
-func (m *ProjectVOMutation) AddedIDs(name string) []ent.Value {
-	switch name {
-	case projectvo.EdgeProject:
-		if id := m.project; id != nil {
-			return []ent.Value{*id}
-		}
-	}
-	return nil
-}
-
-// RemovedEdges returns all edge names that were removed in this mutation.
-func (m *ProjectVOMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 1)
-	return edges
-}
-
-// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
-// the given name in this mutation.
-func (m *ProjectVOMutation) RemovedIDs(name string) []ent.Value {
-	return nil
-}
-
-// ClearedEdges returns all edge names that were cleared in this mutation.
-func (m *ProjectVOMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 1)
-	if m.clearedproject {
-		edges = append(edges, projectvo.EdgeProject)
-	}
-	return edges
-}
-
-// EdgeCleared returns a boolean which indicates if the edge with the given name
-// was cleared in this mutation.
-func (m *ProjectVOMutation) EdgeCleared(name string) bool {
-	switch name {
-	case projectvo.EdgeProject:
-		return m.clearedproject
-	}
-	return false
-}
-
-// ClearEdge clears the value of the edge with the given name. It returns an error
-// if that edge is not defined in the schema.
-func (m *ProjectVOMutation) ClearEdge(name string) error {
-	switch name {
-	case projectvo.EdgeProject:
-		m.ClearProject()
-		return nil
-	}
-	return fmt.Errorf("unknown ProjectVO unique edge %s", name)
-}
-
-// ResetEdge resets all changes to the edge with the given name in this mutation.
-// It returns an error if the edge is not defined in the schema.
-func (m *ProjectVOMutation) ResetEdge(name string) error {
-	switch name {
-	case projectvo.EdgeProject:
-		m.ResetProject()
-		return nil
-	}
-	return fmt.Errorf("unknown ProjectVO edge %s", name)
 }
 
 // ProvinceMutation represents an operation that mutates the Province nodes in the graph.

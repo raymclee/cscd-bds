@@ -15,7 +15,7 @@ function RouteComponent() {
     <>
       {/* Main Content */}
       <div className="py-4 md:px-6">
-        <div className="relative grid grid-cols-1 gap-1 md:grid-cols-2 md:gap-4 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="relative grid grid-cols-1 gap-1 md:grid-cols-2 md:gap-4 xl:grid-cols-[minmax(520px,0.7fr)_2fr]">
           <TenderList />
           <Cards />
           <TenderDetailFrame />

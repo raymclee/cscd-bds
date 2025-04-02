@@ -392,39 +392,6 @@ func (pl *Plot) District(ctx context.Context) (*District, error) {
 	return result, err
 }
 
-func (pr *Project) Vos(ctx context.Context) (result []*ProjectVO, err error) {
-	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
-		result, err = pr.NamedVos(graphql.GetFieldContext(ctx).Field.Alias)
-	} else {
-		result, err = pr.Edges.VosOrErr()
-	}
-	if IsNotLoaded(err) {
-		result, err = pr.QueryVos().All(ctx)
-	}
-	return result, err
-}
-
-func (pr *Project) ProjectStaffs(
-	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy []*ProjectStaffOrder, where *ProjectStaffWhereInput,
-) (*ProjectStaffConnection, error) {
-	opts := []ProjectStaffPaginateOption{
-		WithProjectStaffOrder(orderBy),
-		WithProjectStaffFilter(where.Filter),
-	}
-	alias := graphql.GetFieldContext(ctx).Field.Alias
-	totalCount, hasTotalCount := pr.Edges.totalCount[1][alias]
-	if nodes, err := pr.NamedProjectStaffs(alias); err == nil || hasTotalCount {
-		pager, err := newProjectStaffPager(opts, last != nil)
-		if err != nil {
-			return nil, err
-		}
-		conn := &ProjectStaffConnection{Edges: []*ProjectStaffEdge{}, TotalCount: totalCount}
-		conn.build(nodes, pager, after, first, before, last)
-		return conn, nil
-	}
-	return pr.QueryProjectStaffs().Paginate(ctx, after, first, before, last, opts...)
-}
-
 func (pr *Project) Users(
 	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy *UserOrder, where *UserWhereInput,
 ) (*UserConnection, error) {
@@ -433,7 +400,7 @@ func (pr *Project) Users(
 		WithUserFilter(where.Filter),
 	}
 	alias := graphql.GetFieldContext(ctx).Field.Alias
-	totalCount, hasTotalCount := pr.Edges.totalCount[2][alias]
+	totalCount, hasTotalCount := pr.Edges.totalCount[0][alias]
 	if nodes, err := pr.NamedUsers(alias); err == nil || hasTotalCount {
 		pager, err := newUserPager(opts, last != nil)
 		if err != nil {
@@ -444,22 +411,6 @@ func (pr *Project) Users(
 		return conn, nil
 	}
 	return pr.QueryUsers().Paginate(ctx, after, first, before, last, opts...)
-}
-
-func (ps *ProjectStaff) Project(ctx context.Context) (*Project, error) {
-	result, err := ps.Edges.ProjectOrErr()
-	if IsNotLoaded(err) {
-		result, err = ps.QueryProject().Only(ctx)
-	}
-	return result, err
-}
-
-func (pv *ProjectVO) Project(ctx context.Context) (*Project, error) {
-	result, err := pv.Edges.ProjectOrErr()
-	if IsNotLoaded(err) {
-		result, err = pv.QueryProject().Only(ctx)
-	}
-	return result, err
 }
 
 func (pr *Province) Districts(

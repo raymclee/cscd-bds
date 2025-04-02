@@ -15,8 +15,6 @@ import (
 	"cscd-bds/store/ent/plot"
 	"cscd-bds/store/ent/potentialtender"
 	"cscd-bds/store/ent/project"
-	"cscd-bds/store/ent/projectstaff"
-	"cscd-bds/store/ent/projectvo"
 	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/tender"
@@ -2693,108 +2691,6 @@ func (pr *ProjectQuery) collectField(ctx context.Context, oneNode bool, opCtx *g
 	for _, field := range graphql.CollectFields(opCtx, collected.Selections, satisfies) {
 		switch field.Name {
 
-		case "vos":
-			var (
-				alias = field.Alias
-				path  = append(path, alias)
-				query = (&ProjectVOClient{config: pr.config}).Query()
-			)
-			if err := query.collectField(ctx, false, opCtx, field, path, mayAddCondition(satisfies, projectvoImplementors)...); err != nil {
-				return err
-			}
-			pr.WithNamedVos(alias, func(wq *ProjectVOQuery) {
-				*wq = *query
-			})
-
-		case "projectStaffs":
-			var (
-				alias = field.Alias
-				path  = append(path, alias)
-				query = (&ProjectStaffClient{config: pr.config}).Query()
-			)
-			args := newProjectStaffPaginateArgs(fieldArgs(ctx, new(ProjectStaffWhereInput), path...))
-			if err := validateFirstLast(args.first, args.last); err != nil {
-				return fmt.Errorf("validate first and last in path %q: %w", path, err)
-			}
-			pager, err := newProjectStaffPager(args.opts, args.last != nil)
-			if err != nil {
-				return fmt.Errorf("create new pager in path %q: %w", path, err)
-			}
-			if query, err = pager.applyFilter(query); err != nil {
-				return err
-			}
-			ignoredEdges := !hasCollectedField(ctx, append(path, edgesField)...)
-			if hasCollectedField(ctx, append(path, totalCountField)...) || hasCollectedField(ctx, append(path, pageInfoField)...) {
-				hasPagination := args.after != nil || args.first != nil || args.before != nil || args.last != nil
-				if hasPagination || ignoredEdges {
-					query := query.Clone()
-					pr.loadTotal = append(pr.loadTotal, func(ctx context.Context, nodes []*Project) error {
-						ids := make([]driver.Value, len(nodes))
-						for i := range nodes {
-							ids[i] = nodes[i].ID
-						}
-						var v []struct {
-							NodeID xid.ID `sql:"project_id"`
-							Count  int    `sql:"count"`
-						}
-						query.Where(func(s *sql.Selector) {
-							s.Where(sql.InValues(s.C(project.ProjectStaffsColumn), ids...))
-						})
-						if err := query.GroupBy(project.ProjectStaffsColumn).Aggregate(Count()).Scan(ctx, &v); err != nil {
-							return err
-						}
-						m := make(map[xid.ID]int, len(v))
-						for i := range v {
-							m[v[i].NodeID] = v[i].Count
-						}
-						for i := range nodes {
-							n := m[nodes[i].ID]
-							if nodes[i].Edges.totalCount[1] == nil {
-								nodes[i].Edges.totalCount[1] = make(map[string]int)
-							}
-							nodes[i].Edges.totalCount[1][alias] = n
-						}
-						return nil
-					})
-				} else {
-					pr.loadTotal = append(pr.loadTotal, func(_ context.Context, nodes []*Project) error {
-						for i := range nodes {
-							n := len(nodes[i].Edges.ProjectStaffs)
-							if nodes[i].Edges.totalCount[1] == nil {
-								nodes[i].Edges.totalCount[1] = make(map[string]int)
-							}
-							nodes[i].Edges.totalCount[1][alias] = n
-						}
-						return nil
-					})
-				}
-			}
-			if ignoredEdges || (args.first != nil && *args.first == 0) || (args.last != nil && *args.last == 0) {
-				continue
-			}
-			if query, err = pager.applyCursors(query, args.after, args.before); err != nil {
-				return err
-			}
-			path = append(path, edgesField, nodeField)
-			if field := collectedField(ctx, path...); field != nil {
-				if err := query.collectField(ctx, false, opCtx, *field, path, mayAddCondition(satisfies, projectstaffImplementors)...); err != nil {
-					return err
-				}
-			}
-			if limit := paginateLimit(args.first, args.last); limit > 0 {
-				if oneNode {
-					pager.applyOrder(query.Limit(limit))
-				} else {
-					modify := entgql.LimitPerRow(project.ProjectStaffsColumn, limit, pager.orderExpr(query))
-					query.modifiers = append(query.modifiers, modify)
-				}
-			} else {
-				query = pager.applyOrder(query)
-			}
-			pr.WithNamedProjectStaffs(alias, func(wq *ProjectStaffQuery) {
-				*wq = *query
-			})
-
 		case "users":
 			var (
 				alias = field.Alias
@@ -2842,10 +2738,10 @@ func (pr *ProjectQuery) collectField(ctx context.Context, oneNode bool, opCtx *g
 						}
 						for i := range nodes {
 							n := m[nodes[i].ID]
-							if nodes[i].Edges.totalCount[2] == nil {
-								nodes[i].Edges.totalCount[2] = make(map[string]int)
+							if nodes[i].Edges.totalCount[0] == nil {
+								nodes[i].Edges.totalCount[0] = make(map[string]int)
 							}
-							nodes[i].Edges.totalCount[2][alias] = n
+							nodes[i].Edges.totalCount[0][alias] = n
 						}
 						return nil
 					})
@@ -2853,10 +2749,10 @@ func (pr *ProjectQuery) collectField(ctx context.Context, oneNode bool, opCtx *g
 					pr.loadTotal = append(pr.loadTotal, func(_ context.Context, nodes []*Project) error {
 						for i := range nodes {
 							n := len(nodes[i].Edges.Users)
-							if nodes[i].Edges.totalCount[2] == nil {
-								nodes[i].Edges.totalCount[2] = make(map[string]int)
+							if nodes[i].Edges.totalCount[0] == nil {
+								nodes[i].Edges.totalCount[0] = make(map[string]int)
 							}
-							nodes[i].Edges.totalCount[2][alias] = n
+							nodes[i].Edges.totalCount[0][alias] = n
 						}
 						return nil
 					})
@@ -2902,270 +2798,60 @@ func (pr *ProjectQuery) collectField(ctx context.Context, oneNode bool, opCtx *g
 				selectedFields = append(selectedFields, project.FieldCode)
 				fieldSeen[project.FieldCode] = struct{}{}
 			}
-		case "manager":
-			if _, ok := fieldSeen[project.FieldManager]; !ok {
-				selectedFields = append(selectedFields, project.FieldManager)
-				fieldSeen[project.FieldManager] = struct{}{}
-			}
-		case "name":
-			if _, ok := fieldSeen[project.FieldName]; !ok {
-				selectedFields = append(selectedFields, project.FieldName)
-				fieldSeen[project.FieldName] = struct{}{}
-			}
-		case "owner":
-			if _, ok := fieldSeen[project.FieldOwner]; !ok {
-				selectedFields = append(selectedFields, project.FieldOwner)
-				fieldSeen[project.FieldOwner] = struct{}{}
-			}
-		case "jzs":
-			if _, ok := fieldSeen[project.FieldJzs]; !ok {
-				selectedFields = append(selectedFields, project.FieldJzs)
-				fieldSeen[project.FieldJzs] = struct{}{}
-			}
-		case "mcn":
-			if _, ok := fieldSeen[project.FieldMcn]; !ok {
-				selectedFields = append(selectedFields, project.FieldMcn)
-				fieldSeen[project.FieldMcn] = struct{}{}
-			}
-		case "consultant":
-			if _, ok := fieldSeen[project.FieldConsultant]; !ok {
-				selectedFields = append(selectedFields, project.FieldConsultant)
-				fieldSeen[project.FieldConsultant] = struct{}{}
-			}
-		case "areas":
-			if _, ok := fieldSeen[project.FieldAreas]; !ok {
-				selectedFields = append(selectedFields, project.FieldAreas)
-				fieldSeen[project.FieldAreas] = struct{}{}
-			}
-		case "startDate":
-			if _, ok := fieldSeen[project.FieldStartDate]; !ok {
-				selectedFields = append(selectedFields, project.FieldStartDate)
-				fieldSeen[project.FieldStartDate] = struct{}{}
-			}
-		case "fsDate":
-			if _, ok := fieldSeen[project.FieldFsDate]; !ok {
-				selectedFields = append(selectedFields, project.FieldFsDate)
-				fieldSeen[project.FieldFsDate] = struct{}{}
-			}
-		case "opDate":
-			if _, ok := fieldSeen[project.FieldOpDate]; !ok {
-				selectedFields = append(selectedFields, project.FieldOpDate)
-				fieldSeen[project.FieldOpDate] = struct{}{}
-			}
-		case "endDate":
-			if _, ok := fieldSeen[project.FieldEndDate]; !ok {
-				selectedFields = append(selectedFields, project.FieldEndDate)
-				fieldSeen[project.FieldEndDate] = struct{}{}
-			}
-		case "mntyr":
-			if _, ok := fieldSeen[project.FieldMntyr]; !ok {
-				selectedFields = append(selectedFields, project.FieldMntyr)
-				fieldSeen[project.FieldMntyr] = struct{}{}
-			}
-		case "conType":
-			if _, ok := fieldSeen[project.FieldConType]; !ok {
-				selectedFields = append(selectedFields, project.FieldConType)
-				fieldSeen[project.FieldConType] = struct{}{}
-			}
 		case "isFinished":
 			if _, ok := fieldSeen[project.FieldIsFinished]; !ok {
 				selectedFields = append(selectedFields, project.FieldIsFinished)
 				fieldSeen[project.FieldIsFinished] = struct{}{}
 			}
-		case "cje":
-			if _, ok := fieldSeen[project.FieldCje]; !ok {
-				selectedFields = append(selectedFields, project.FieldCje)
-				fieldSeen[project.FieldCje] = struct{}{}
+		case "revenueKpi":
+			if _, ok := fieldSeen[project.FieldRevenueKpi]; !ok {
+				selectedFields = append(selectedFields, project.FieldRevenueKpi)
+				fieldSeen[project.FieldRevenueKpi] = struct{}{}
 			}
-		case "yye":
-			if _, ok := fieldSeen[project.FieldYye]; !ok {
-				selectedFields = append(selectedFields, project.FieldYye)
-				fieldSeen[project.FieldYye] = struct{}{}
+		case "revenueCurrentYearCompleted":
+			if _, ok := fieldSeen[project.FieldRevenueCurrentYearCompleted]; !ok {
+				selectedFields = append(selectedFields, project.FieldRevenueCurrentYearCompleted)
+				fieldSeen[project.FieldRevenueCurrentYearCompleted] = struct{}{}
 			}
-		case "xjl":
-			if _, ok := fieldSeen[project.FieldXjl]; !ok {
-				selectedFields = append(selectedFields, project.FieldXjl)
-				fieldSeen[project.FieldXjl] = struct{}{}
+		case "revenueAccumulatedCompleted":
+			if _, ok := fieldSeen[project.FieldRevenueAccumulatedCompleted]; !ok {
+				selectedFields = append(selectedFields, project.FieldRevenueAccumulatedCompleted)
+				fieldSeen[project.FieldRevenueAccumulatedCompleted] = struct{}{}
 			}
-		case "xmglfYs":
-			if _, ok := fieldSeen[project.FieldXmglfYs]; !ok {
-				selectedFields = append(selectedFields, project.FieldXmglfYs)
-				fieldSeen[project.FieldXmglfYs] = struct{}{}
+		case "payDate":
+			if _, ok := fieldSeen[project.FieldPayDate]; !ok {
+				selectedFields = append(selectedFields, project.FieldPayDate)
+				fieldSeen[project.FieldPayDate] = struct{}{}
 			}
-		case "xmglfLj":
-			if _, ok := fieldSeen[project.FieldXmglfLj]; !ok {
-				selectedFields = append(selectedFields, project.FieldXmglfLj)
-				fieldSeen[project.FieldXmglfLj] = struct{}{}
+		case "ownerVoCount":
+			if _, ok := fieldSeen[project.FieldOwnerVoCount]; !ok {
+				selectedFields = append(selectedFields, project.FieldOwnerVoCount)
+				fieldSeen[project.FieldOwnerVoCount] = struct{}{}
 			}
-		case "xmsjf":
-			if _, ok := fieldSeen[project.FieldXmsjf]; !ok {
-				selectedFields = append(selectedFields, project.FieldXmsjf)
-				fieldSeen[project.FieldXmsjf] = struct{}{}
+		case "contractorVoCount":
+			if _, ok := fieldSeen[project.FieldContractorVoCount]; !ok {
+				selectedFields = append(selectedFields, project.FieldContractorVoCount)
+				fieldSeen[project.FieldContractorVoCount] = struct{}{}
 			}
-		case "xmfzr":
-			if _, ok := fieldSeen[project.FieldXmfzr]; !ok {
-				selectedFields = append(selectedFields, project.FieldXmfzr)
-				fieldSeen[project.FieldXmfzr] = struct{}{}
+		case "accumulateDeduction":
+			if _, ok := fieldSeen[project.FieldAccumulateDeduction]; !ok {
+				selectedFields = append(selectedFields, project.FieldAccumulateDeduction)
+				fieldSeen[project.FieldAccumulateDeduction] = struct{}{}
 			}
-		case "ownerApplyAmount":
-			if _, ok := fieldSeen[project.FieldOwnerApplyAmount]; !ok {
-				selectedFields = append(selectedFields, project.FieldOwnerApplyAmount)
-				fieldSeen[project.FieldOwnerApplyAmount] = struct{}{}
+		case "subcontractorVaCount":
+			if _, ok := fieldSeen[project.FieldSubcontractorVaCount]; !ok {
+				selectedFields = append(selectedFields, project.FieldSubcontractorVaCount)
+				fieldSeen[project.FieldSubcontractorVaCount] = struct{}{}
 			}
-		case "ownerApplyCount":
-			if _, ok := fieldSeen[project.FieldOwnerApplyCount]; !ok {
-				selectedFields = append(selectedFields, project.FieldOwnerApplyCount)
-				fieldSeen[project.FieldOwnerApplyCount] = struct{}{}
+		case "contractSupplementaryCount":
+			if _, ok := fieldSeen[project.FieldContractSupplementaryCount]; !ok {
+				selectedFields = append(selectedFields, project.FieldContractSupplementaryCount)
+				fieldSeen[project.FieldContractSupplementaryCount] = struct{}{}
 			}
-		case "ownerApproveAmount":
-			if _, ok := fieldSeen[project.FieldOwnerApproveAmount]; !ok {
-				selectedFields = append(selectedFields, project.FieldOwnerApproveAmount)
-				fieldSeen[project.FieldOwnerApproveAmount] = struct{}{}
-			}
-		case "ownerApproveCount":
-			if _, ok := fieldSeen[project.FieldOwnerApproveCount]; !ok {
-				selectedFields = append(selectedFields, project.FieldOwnerApproveCount)
-				fieldSeen[project.FieldOwnerApproveCount] = struct{}{}
-			}
-		case "contractorApplyAmount":
-			if _, ok := fieldSeen[project.FieldContractorApplyAmount]; !ok {
-				selectedFields = append(selectedFields, project.FieldContractorApplyAmount)
-				fieldSeen[project.FieldContractorApplyAmount] = struct{}{}
-			}
-		case "contractorApplyCount":
-			if _, ok := fieldSeen[project.FieldContractorApplyCount]; !ok {
-				selectedFields = append(selectedFields, project.FieldContractorApplyCount)
-				fieldSeen[project.FieldContractorApplyCount] = struct{}{}
-			}
-		case "contractorApproveAmount":
-			if _, ok := fieldSeen[project.FieldContractorApproveAmount]; !ok {
-				selectedFields = append(selectedFields, project.FieldContractorApproveAmount)
-				fieldSeen[project.FieldContractorApproveAmount] = struct{}{}
-			}
-		case "contractorApproveCount":
-			if _, ok := fieldSeen[project.FieldContractorApproveCount]; !ok {
-				selectedFields = append(selectedFields, project.FieldContractorApproveCount)
-				fieldSeen[project.FieldContractorApproveCount] = struct{}{}
-			}
-		case "installProgress":
-			if _, ok := fieldSeen[project.FieldInstallProgress]; !ok {
-				selectedFields = append(selectedFields, project.FieldInstallProgress)
-				fieldSeen[project.FieldInstallProgress] = struct{}{}
-			}
-		case "effectiveContractAmount":
-			if _, ok := fieldSeen[project.FieldEffectiveContractAmount]; !ok {
-				selectedFields = append(selectedFields, project.FieldEffectiveContractAmount)
-				fieldSeen[project.FieldEffectiveContractAmount] = struct{}{}
-			}
-		case "vaApplyAmount":
-			if _, ok := fieldSeen[project.FieldVaApplyAmount]; !ok {
-				selectedFields = append(selectedFields, project.FieldVaApplyAmount)
-				fieldSeen[project.FieldVaApplyAmount] = struct{}{}
-			}
-		case "vaApproveAmount":
-			if _, ok := fieldSeen[project.FieldVaApproveAmount]; !ok {
-				selectedFields = append(selectedFields, project.FieldVaApproveAmount)
-				fieldSeen[project.FieldVaApproveAmount] = struct{}{}
-			}
-		case "accumulatedStatutoryDeductions":
-			if _, ok := fieldSeen[project.FieldAccumulatedStatutoryDeductions]; !ok {
-				selectedFields = append(selectedFields, project.FieldAccumulatedStatutoryDeductions)
-				fieldSeen[project.FieldAccumulatedStatutoryDeductions] = struct{}{}
-			}
-		case "accumulatedNonStatutoryDeductions":
-			if _, ok := fieldSeen[project.FieldAccumulatedNonStatutoryDeductions]; !ok {
-				selectedFields = append(selectedFields, project.FieldAccumulatedNonStatutoryDeductions)
-				fieldSeen[project.FieldAccumulatedNonStatutoryDeductions] = struct{}{}
-			}
-		case "accumulatedStatutoryDeductionsPeriod":
-			if _, ok := fieldSeen[project.FieldAccumulatedStatutoryDeductionsPeriod]; !ok {
-				selectedFields = append(selectedFields, project.FieldAccumulatedStatutoryDeductionsPeriod)
-				fieldSeen[project.FieldAccumulatedStatutoryDeductionsPeriod] = struct{}{}
-			}
-		case "accumulatedNonStatutoryDeductionsPeriod":
-			if _, ok := fieldSeen[project.FieldAccumulatedNonStatutoryDeductionsPeriod]; !ok {
-				selectedFields = append(selectedFields, project.FieldAccumulatedNonStatutoryDeductionsPeriod)
-				fieldSeen[project.FieldAccumulatedNonStatutoryDeductionsPeriod] = struct{}{}
-			}
-		case "totalContractAmount":
-			if _, ok := fieldSeen[project.FieldTotalContractAmount]; !ok {
-				selectedFields = append(selectedFields, project.FieldTotalContractAmount)
-				fieldSeen[project.FieldTotalContractAmount] = struct{}{}
-			}
-		case "aluminumPlateBudgetPercentage":
-			if _, ok := fieldSeen[project.FieldAluminumPlateBudgetPercentage]; !ok {
-				selectedFields = append(selectedFields, project.FieldAluminumPlateBudgetPercentage)
-				fieldSeen[project.FieldAluminumPlateBudgetPercentage] = struct{}{}
-			}
-		case "aluminumBudgetPercentage":
-			if _, ok := fieldSeen[project.FieldAluminumBudgetPercentage]; !ok {
-				selectedFields = append(selectedFields, project.FieldAluminumBudgetPercentage)
-				fieldSeen[project.FieldAluminumBudgetPercentage] = struct{}{}
-			}
-		case "glassBudgetPercentage":
-			if _, ok := fieldSeen[project.FieldGlassBudgetPercentage]; !ok {
-				selectedFields = append(selectedFields, project.FieldGlassBudgetPercentage)
-				fieldSeen[project.FieldGlassBudgetPercentage] = struct{}{}
-			}
-		case "ironBudgetPercentage":
-			if _, ok := fieldSeen[project.FieldIronBudgetPercentage]; !ok {
-				selectedFields = append(selectedFields, project.FieldIronBudgetPercentage)
-				fieldSeen[project.FieldIronBudgetPercentage] = struct{}{}
-			}
-		case "milestonePlanYear":
-			if _, ok := fieldSeen[project.FieldMilestonePlanYear]; !ok {
-				selectedFields = append(selectedFields, project.FieldMilestonePlanYear)
-				fieldSeen[project.FieldMilestonePlanYear] = struct{}{}
-			}
-		case "milestonePlanMonth":
-			if _, ok := fieldSeen[project.FieldMilestonePlanMonth]; !ok {
-				selectedFields = append(selectedFields, project.FieldMilestonePlanMonth)
-				fieldSeen[project.FieldMilestonePlanMonth] = struct{}{}
-			}
-		case "milestoneDoneYear":
-			if _, ok := fieldSeen[project.FieldMilestoneDoneYear]; !ok {
-				selectedFields = append(selectedFields, project.FieldMilestoneDoneYear)
-				fieldSeen[project.FieldMilestoneDoneYear] = struct{}{}
-			}
-		case "milestoneDoneMonth":
-			if _, ok := fieldSeen[project.FieldMilestoneDoneMonth]; !ok {
-				selectedFields = append(selectedFields, project.FieldMilestoneDoneMonth)
-				fieldSeen[project.FieldMilestoneDoneMonth] = struct{}{}
-			}
-		case "pmArea":
-			if _, ok := fieldSeen[project.FieldPmArea]; !ok {
-				selectedFields = append(selectedFields, project.FieldPmArea)
-				fieldSeen[project.FieldPmArea] = struct{}{}
-			}
-		case "pmYearTarget":
-			if _, ok := fieldSeen[project.FieldPmYearTarget]; !ok {
-				selectedFields = append(selectedFields, project.FieldPmYearTarget)
-				fieldSeen[project.FieldPmYearTarget] = struct{}{}
-			}
-		case "pmMonthTarget":
-			if _, ok := fieldSeen[project.FieldPmMonthTarget]; !ok {
-				selectedFields = append(selectedFields, project.FieldPmMonthTarget)
-				fieldSeen[project.FieldPmMonthTarget] = struct{}{}
-			}
-		case "pmYearActual":
-			if _, ok := fieldSeen[project.FieldPmYearActual]; !ok {
-				selectedFields = append(selectedFields, project.FieldPmYearActual)
-				fieldSeen[project.FieldPmYearActual] = struct{}{}
-			}
-		case "pmMonthActual":
-			if _, ok := fieldSeen[project.FieldPmMonthActual]; !ok {
-				selectedFields = append(selectedFields, project.FieldPmMonthActual)
-				fieldSeen[project.FieldPmMonthActual] = struct{}{}
-			}
-		case "pmTotal":
-			if _, ok := fieldSeen[project.FieldPmTotal]; !ok {
-				selectedFields = append(selectedFields, project.FieldPmTotal)
-				fieldSeen[project.FieldPmTotal] = struct{}{}
-			}
-		case "pmYesterday":
-			if _, ok := fieldSeen[project.FieldPmYesterday]; !ok {
-				selectedFields = append(selectedFields, project.FieldPmYesterday)
-				fieldSeen[project.FieldPmYesterday] = struct{}{}
+		case "repairFee":
+			if _, ok := fieldSeen[project.FieldRepairFee]; !ok {
+				selectedFields = append(selectedFields, project.FieldRepairFee)
+				fieldSeen[project.FieldRepairFee] = struct{}{}
 			}
 		case "unitInventoryTotal":
 			if _, ok := fieldSeen[project.FieldUnitInventoryTotal]; !ok {
@@ -3187,46 +2873,6 @@ func (pr *ProjectQuery) collectField(ctx context.Context, oneNode bool, opCtx *g
 				selectedFields = append(selectedFields, project.FieldUnitComponentInstallation)
 				fieldSeen[project.FieldUnitComponentInstallation] = struct{}{}
 			}
-		case "materialLoss":
-			if _, ok := fieldSeen[project.FieldMaterialLoss]; !ok {
-				selectedFields = append(selectedFields, project.FieldMaterialLoss)
-				fieldSeen[project.FieldMaterialLoss] = struct{}{}
-			}
-		case "designRatedWeight":
-			if _, ok := fieldSeen[project.FieldDesignRatedWeight]; !ok {
-				selectedFields = append(selectedFields, project.FieldDesignRatedWeight)
-				fieldSeen[project.FieldDesignRatedWeight] = struct{}{}
-			}
-		case "processingWeight":
-			if _, ok := fieldSeen[project.FieldProcessingWeight]; !ok {
-				selectedFields = append(selectedFields, project.FieldProcessingWeight)
-				fieldSeen[project.FieldProcessingWeight] = struct{}{}
-			}
-		case "itemStockWeight":
-			if _, ok := fieldSeen[project.FieldItemStockWeight]; !ok {
-				selectedFields = append(selectedFields, project.FieldItemStockWeight)
-				fieldSeen[project.FieldItemStockWeight] = struct{}{}
-			}
-		case "palletsInStock":
-			if _, ok := fieldSeen[project.FieldPalletsInStock]; !ok {
-				selectedFields = append(selectedFields, project.FieldPalletsInStock)
-				fieldSeen[project.FieldPalletsInStock] = struct{}{}
-			}
-		case "partsInStock":
-			if _, ok := fieldSeen[project.FieldPartsInStock]; !ok {
-				selectedFields = append(selectedFields, project.FieldPartsInStock)
-				fieldSeen[project.FieldPartsInStock] = struct{}{}
-			}
-		case "qualityScore":
-			if _, ok := fieldSeen[project.FieldQualityScore]; !ok {
-				selectedFields = append(selectedFields, project.FieldQualityScore)
-				fieldSeen[project.FieldQualityScore] = struct{}{}
-			}
-		case "qualityRanking":
-			if _, ok := fieldSeen[project.FieldQualityRanking]; !ok {
-				selectedFields = append(selectedFields, project.FieldQualityRanking)
-				fieldSeen[project.FieldQualityRanking] = struct{}{}
-			}
 		case "bulkMaterialsTotalOrderQuantity":
 			if _, ok := fieldSeen[project.FieldBulkMaterialsTotalOrderQuantity]; !ok {
 				selectedFields = append(selectedFields, project.FieldBulkMaterialsTotalOrderQuantity)
@@ -3241,21 +2887,6 @@ func (pr *ProjectQuery) collectField(ctx context.Context, oneNode bool, opCtx *g
 			if _, ok := fieldSeen[project.FieldBulkMaterialsUncompletedQuantity]; !ok {
 				selectedFields = append(selectedFields, project.FieldBulkMaterialsUncompletedQuantity)
 				fieldSeen[project.FieldBulkMaterialsUncompletedQuantity] = struct{}{}
-			}
-		case "planTotalCount":
-			if _, ok := fieldSeen[project.FieldPlanTotalCount]; !ok {
-				selectedFields = append(selectedFields, project.FieldPlanTotalCount)
-				fieldSeen[project.FieldPlanTotalCount] = struct{}{}
-			}
-		case "planOverdueCount":
-			if _, ok := fieldSeen[project.FieldPlanOverdueCount]; !ok {
-				selectedFields = append(selectedFields, project.FieldPlanOverdueCount)
-				fieldSeen[project.FieldPlanOverdueCount] = struct{}{}
-			}
-		case "planOverdueMonthCount":
-			if _, ok := fieldSeen[project.FieldPlanOverdueMonthCount]; !ok {
-				selectedFields = append(selectedFields, project.FieldPlanOverdueMonthCount)
-				fieldSeen[project.FieldPlanOverdueMonthCount] = struct{}{}
 			}
 		case "diagramBdFinishCount":
 			if _, ok := fieldSeen[project.FieldDiagramBdFinishCount]; !ok {
@@ -3362,290 +2993,6 @@ func newProjectPaginateArgs(rv map[string]any) *projectPaginateArgs {
 	}
 	if v, ok := rv[whereField].(*ProjectWhereInput); ok {
 		args.opts = append(args.opts, WithProjectFilter(v.Filter))
-	}
-	return args
-}
-
-// CollectFields tells the query-builder to eagerly load connected nodes by resolver context.
-func (ps *ProjectStaffQuery) CollectFields(ctx context.Context, satisfies ...string) (*ProjectStaffQuery, error) {
-	fc := graphql.GetFieldContext(ctx)
-	if fc == nil {
-		return ps, nil
-	}
-	if err := ps.collectField(ctx, false, graphql.GetOperationContext(ctx), fc.Field, nil, satisfies...); err != nil {
-		return nil, err
-	}
-	return ps, nil
-}
-
-func (ps *ProjectStaffQuery) collectField(ctx context.Context, oneNode bool, opCtx *graphql.OperationContext, collected graphql.CollectedField, path []string, satisfies ...string) error {
-	path = append([]string(nil), path...)
-	var (
-		unknownSeen    bool
-		fieldSeen      = make(map[string]struct{}, len(projectstaff.Columns))
-		selectedFields = []string{projectstaff.FieldID}
-	)
-	for _, field := range graphql.CollectFields(opCtx, collected.Selections, satisfies) {
-		switch field.Name {
-
-		case "project":
-			var (
-				alias = field.Alias
-				path  = append(path, alias)
-				query = (&ProjectClient{config: ps.config}).Query()
-			)
-			if err := query.collectField(ctx, oneNode, opCtx, field, path, mayAddCondition(satisfies, projectImplementors)...); err != nil {
-				return err
-			}
-			ps.withProject = query
-			if _, ok := fieldSeen[projectstaff.FieldProjectID]; !ok {
-				selectedFields = append(selectedFields, projectstaff.FieldProjectID)
-				fieldSeen[projectstaff.FieldProjectID] = struct{}{}
-			}
-		case "createdAt":
-			if _, ok := fieldSeen[projectstaff.FieldCreatedAt]; !ok {
-				selectedFields = append(selectedFields, projectstaff.FieldCreatedAt)
-				fieldSeen[projectstaff.FieldCreatedAt] = struct{}{}
-			}
-		case "updatedAt":
-			if _, ok := fieldSeen[projectstaff.FieldUpdatedAt]; !ok {
-				selectedFields = append(selectedFields, projectstaff.FieldUpdatedAt)
-				fieldSeen[projectstaff.FieldUpdatedAt] = struct{}{}
-			}
-		case "cym":
-			if _, ok := fieldSeen[projectstaff.FieldCym]; !ok {
-				selectedFields = append(selectedFields, projectstaff.FieldCym)
-				fieldSeen[projectstaff.FieldCym] = struct{}{}
-			}
-		case "installation":
-			if _, ok := fieldSeen[projectstaff.FieldInstallation]; !ok {
-				selectedFields = append(selectedFields, projectstaff.FieldInstallation)
-				fieldSeen[projectstaff.FieldInstallation] = struct{}{}
-			}
-		case "management":
-			if _, ok := fieldSeen[projectstaff.FieldManagement]; !ok {
-				selectedFields = append(selectedFields, projectstaff.FieldManagement)
-				fieldSeen[projectstaff.FieldManagement] = struct{}{}
-			}
-		case "design":
-			if _, ok := fieldSeen[projectstaff.FieldDesign]; !ok {
-				selectedFields = append(selectedFields, projectstaff.FieldDesign)
-				fieldSeen[projectstaff.FieldDesign] = struct{}{}
-			}
-		case "projectID":
-			if _, ok := fieldSeen[projectstaff.FieldProjectID]; !ok {
-				selectedFields = append(selectedFields, projectstaff.FieldProjectID)
-				fieldSeen[projectstaff.FieldProjectID] = struct{}{}
-			}
-		case "id":
-		case "__typename":
-		default:
-			unknownSeen = true
-		}
-	}
-	if !unknownSeen {
-		ps.Select(selectedFields...)
-	}
-	return nil
-}
-
-type projectstaffPaginateArgs struct {
-	first, last   *int
-	after, before *Cursor
-	opts          []ProjectStaffPaginateOption
-}
-
-func newProjectStaffPaginateArgs(rv map[string]any) *projectstaffPaginateArgs {
-	args := &projectstaffPaginateArgs{}
-	if rv == nil {
-		return args
-	}
-	if v := rv[firstField]; v != nil {
-		args.first = v.(*int)
-	}
-	if v := rv[lastField]; v != nil {
-		args.last = v.(*int)
-	}
-	if v := rv[afterField]; v != nil {
-		args.after = v.(*Cursor)
-	}
-	if v := rv[beforeField]; v != nil {
-		args.before = v.(*Cursor)
-	}
-	if v, ok := rv[orderByField]; ok {
-		switch v := v.(type) {
-		case []*ProjectStaffOrder:
-			args.opts = append(args.opts, WithProjectStaffOrder(v))
-		case []any:
-			var orders []*ProjectStaffOrder
-			for i := range v {
-				mv, ok := v[i].(map[string]any)
-				if !ok {
-					continue
-				}
-				var (
-					err1, err2 error
-					order      = &ProjectStaffOrder{Field: &ProjectStaffOrderField{}, Direction: entgql.OrderDirectionAsc}
-				)
-				if d, ok := mv[directionField]; ok {
-					err1 = order.Direction.UnmarshalGQL(d)
-				}
-				if f, ok := mv[fieldField]; ok {
-					err2 = order.Field.UnmarshalGQL(f)
-				}
-				if err1 == nil && err2 == nil {
-					orders = append(orders, order)
-				}
-			}
-			args.opts = append(args.opts, WithProjectStaffOrder(orders))
-		}
-	}
-	if v, ok := rv[whereField].(*ProjectStaffWhereInput); ok {
-		args.opts = append(args.opts, WithProjectStaffFilter(v.Filter))
-	}
-	return args
-}
-
-// CollectFields tells the query-builder to eagerly load connected nodes by resolver context.
-func (pv *ProjectVOQuery) CollectFields(ctx context.Context, satisfies ...string) (*ProjectVOQuery, error) {
-	fc := graphql.GetFieldContext(ctx)
-	if fc == nil {
-		return pv, nil
-	}
-	if err := pv.collectField(ctx, false, graphql.GetOperationContext(ctx), fc.Field, nil, satisfies...); err != nil {
-		return nil, err
-	}
-	return pv, nil
-}
-
-func (pv *ProjectVOQuery) collectField(ctx context.Context, oneNode bool, opCtx *graphql.OperationContext, collected graphql.CollectedField, path []string, satisfies ...string) error {
-	path = append([]string(nil), path...)
-	var (
-		unknownSeen    bool
-		fieldSeen      = make(map[string]struct{}, len(projectvo.Columns))
-		selectedFields = []string{projectvo.FieldID}
-	)
-	for _, field := range graphql.CollectFields(opCtx, collected.Selections, satisfies) {
-		switch field.Name {
-
-		case "project":
-			var (
-				alias = field.Alias
-				path  = append(path, alias)
-				query = (&ProjectClient{config: pv.config}).Query()
-			)
-			if err := query.collectField(ctx, oneNode, opCtx, field, path, mayAddCondition(satisfies, projectImplementors)...); err != nil {
-				return err
-			}
-			pv.withProject = query
-			if _, ok := fieldSeen[projectvo.FieldProjectID]; !ok {
-				selectedFields = append(selectedFields, projectvo.FieldProjectID)
-				fieldSeen[projectvo.FieldProjectID] = struct{}{}
-			}
-		case "createdAt":
-			if _, ok := fieldSeen[projectvo.FieldCreatedAt]; !ok {
-				selectedFields = append(selectedFields, projectvo.FieldCreatedAt)
-				fieldSeen[projectvo.FieldCreatedAt] = struct{}{}
-			}
-		case "updatedAt":
-			if _, ok := fieldSeen[projectvo.FieldUpdatedAt]; !ok {
-				selectedFields = append(selectedFields, projectvo.FieldUpdatedAt)
-				fieldSeen[projectvo.FieldUpdatedAt] = struct{}{}
-			}
-		case "projectID":
-			if _, ok := fieldSeen[projectvo.FieldProjectID]; !ok {
-				selectedFields = append(selectedFields, projectvo.FieldProjectID)
-				fieldSeen[projectvo.FieldProjectID] = struct{}{}
-			}
-		case "changeType":
-			if _, ok := fieldSeen[projectvo.FieldChangeType]; !ok {
-				selectedFields = append(selectedFields, projectvo.FieldChangeType)
-				fieldSeen[projectvo.FieldChangeType] = struct{}{}
-			}
-		case "isApproved":
-			if _, ok := fieldSeen[projectvo.FieldIsApproved]; !ok {
-				selectedFields = append(selectedFields, projectvo.FieldIsApproved)
-				fieldSeen[projectvo.FieldIsApproved] = struct{}{}
-			}
-		case "azjd":
-			if _, ok := fieldSeen[projectvo.FieldAzjd]; !ok {
-				selectedFields = append(selectedFields, projectvo.FieldAzjd)
-				fieldSeen[projectvo.FieldAzjd] = struct{}{}
-			}
-		case "yxhyze":
-			if _, ok := fieldSeen[projectvo.FieldYxhyze]; !ok {
-				selectedFields = append(selectedFields, projectvo.FieldYxhyze)
-				fieldSeen[projectvo.FieldYxhyze] = struct{}{}
-			}
-		case "applyAmount":
-			if _, ok := fieldSeen[projectvo.FieldApplyAmount]; !ok {
-				selectedFields = append(selectedFields, projectvo.FieldApplyAmount)
-				fieldSeen[projectvo.FieldApplyAmount] = struct{}{}
-			}
-		case "approveAmount":
-			if _, ok := fieldSeen[projectvo.FieldApproveAmount]; !ok {
-				selectedFields = append(selectedFields, projectvo.FieldApproveAmount)
-				fieldSeen[projectvo.FieldApproveAmount] = struct{}{}
-			}
-		case "id":
-		case "__typename":
-		default:
-			unknownSeen = true
-		}
-	}
-	if !unknownSeen {
-		pv.Select(selectedFields...)
-	}
-	return nil
-}
-
-type projectvoPaginateArgs struct {
-	first, last   *int
-	after, before *Cursor
-	opts          []ProjectVOPaginateOption
-}
-
-func newProjectVOPaginateArgs(rv map[string]any) *projectvoPaginateArgs {
-	args := &projectvoPaginateArgs{}
-	if rv == nil {
-		return args
-	}
-	if v := rv[firstField]; v != nil {
-		args.first = v.(*int)
-	}
-	if v := rv[lastField]; v != nil {
-		args.last = v.(*int)
-	}
-	if v := rv[afterField]; v != nil {
-		args.after = v.(*Cursor)
-	}
-	if v := rv[beforeField]; v != nil {
-		args.before = v.(*Cursor)
-	}
-	if v, ok := rv[orderByField]; ok {
-		switch v := v.(type) {
-		case map[string]any:
-			var (
-				err1, err2 error
-				order      = &ProjectVOOrder{Field: &ProjectVOOrderField{}, Direction: entgql.OrderDirectionAsc}
-			)
-			if d, ok := v[directionField]; ok {
-				err1 = order.Direction.UnmarshalGQL(d)
-			}
-			if f, ok := v[fieldField]; ok {
-				err2 = order.Field.UnmarshalGQL(f)
-			}
-			if err1 == nil && err2 == nil {
-				args.opts = append(args.opts, WithProjectVOOrder(order))
-			}
-		case *ProjectVOOrder:
-			if v != nil {
-				args.opts = append(args.opts, WithProjectVOOrder(v))
-			}
-		}
-	}
-	if v, ok := rv[whereField].(*ProjectVOWhereInput); ok {
-		args.opts = append(args.opts, WithProjectVOFilter(v.Filter))
 	}
 	return args
 }

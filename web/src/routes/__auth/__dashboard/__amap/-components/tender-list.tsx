@@ -1,4 +1,10 @@
-import { Link, useMatch, useNavigate, useSearch } from "@tanstack/react-router";
+import {
+  Link,
+  useMatch,
+  useNavigate,
+  useRouteContext,
+  useSearch,
+} from "@tanstack/react-router";
 import dayjs from "dayjs";
 import subHeadTenderListSvg from "~/assets/dashboard/svg/sub-head-tender-list.svg";
 import { Input } from "~/components/ui/input";
@@ -22,14 +28,22 @@ import {
 } from "~/components/ui/popover";
 import { Button, buttonVariants } from "~/components/ui/button";
 import { cn } from "~/lib/utils";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { DateRange } from "react-day-picker";
 import { zhCN } from "date-fns/locale";
 import { useDebounceCallback, useWindowSize } from "usehooks-ts";
-import { flushSync } from "react-dom";
 
 export function TenderList() {
   const tenders = useAreaTenders();
+  const { areas } = useMapV2Store.getState();
+  const allTenders = useMemo(() => {
+    return areas?.edges?.flatMap((a) =>
+      a?.node?.tenders?.edges?.map((t) => t?.node),
+    );
+  }, [areas]);
+  const { renderTime } = useRouteContext({
+    from: "/__auth/__dashboard/__amap/",
+  });
 
   const filteredTenders = useSearch({
     from: "/__auth/__dashboard/__amap/",
@@ -101,12 +115,29 @@ export function TenderList() {
           <TenderListFilter />
         </div>
 
-        <div className="flex justify-between px-6 pb-1 pt-2 text-sm text-slate-400">
-          <div>当前显示: {filteredTenders?.length || 0} 个项目</div>
-          <div>总计: {tenders?.length || 0} 个项目</div>
+        <div className="mt-2 flex flex-wrap items-center justify-between gap-1 text-nowrap rounded-lg border border-sky-800/30 bg-sky-950/50 px-4 py-2 text-xs">
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              <span className="text-sky-300">数据更新</span>
+              <span className="text-sky-400">{renderTime}</span>
+            </div>
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              <span className="text-sky-300">显示数量</span>
+              <span className="text-cyan-400">
+                {filteredTenders?.length || 0}
+              </span>
+            </div>
+            <div className="h-4 w-[1px] bg-gradient-to-b from-transparent via-sky-500/30 to-transparent"></div>
+            <div className="flex items-center gap-2">
+              <span className="text-sky-300">总项目数</span>
+              <span className="text-cyan-400">{allTenders?.length || 0}</span>
+            </div>
+          </div>
         </div>
 
-        <div className="mt-0 space-y-1 pb-4">
+        <div className="mt-2 space-y-1 pb-4">
           {filteredTenders.map((tender) => {
             if (!tender) return null;
             return <TenderListItem key={tender.id} tender={tender} />;
@@ -127,6 +158,7 @@ function TenderListFilter() {
     select: (state) => [state.sd, state.ed],
     structuralSharing: true,
   });
+  // const [datepickerOpen, setDatepickerOpen] = useState(false);
   const navigate = useNavigate();
 
   const inputChange = useCallback(
@@ -175,167 +207,247 @@ function TenderListFilter() {
         }),
         resetScroll: false,
       });
+      // if (value?.from && value?.to) {
+      //   setDatepickerOpen(false);
+      // }
     },
     [navigate],
   );
 
+  // const closeDatepicker = useCallback(() => {
+  //   setDatepickerOpen(false);
+  // }, []);
+
+  const filterDateText =
+    startDate && endDate
+      ? dayjs(endDate).diff(dayjs(startDate), "month") == 3
+        ? "三個月內"
+        : dayjs(endDate).diff(dayjs(startDate), "month") == 6
+          ? "半年內"
+          : dayjs(endDate).diff(dayjs(startDate), "month") == 12
+            ? "一年內"
+            : ""
+      : "";
+
+  const showFilter = status || startDate || endDate;
+
   return (
-    <div className="flex gap-2 pt-2 md:pt-0.5">
-      <Input
-        type="search"
-        placeholder="搜索"
-        className="h-8 border-sky-800 bg-transparent focus:ring-sky-500 focus:ring-offset-0 focus-visible:ring-sky-500 focus-visible:ring-offset-0"
-        onChange={inputChange}
-      />
+    <>
+      <div className="flex gap-2 pt-2 md:pt-0.5">
+        <Input
+          type="search"
+          placeholder="搜索"
+          className="h-8 border-sky-800 bg-transparent focus:ring-sky-500 focus:ring-offset-0 focus-visible:ring-sky-500 focus-visible:ring-offset-0"
+          onChange={inputChange}
+        />
 
-      <Select value={String(status)} onValueChange={onStatusChange}>
-        <SelectTrigger className="h-8 w-56 border-sky-800 bg-transparent focus:ring-sky-500 focus:ring-offset-0">
-          <SelectValue placeholder="状态" />
-        </SelectTrigger>
-        <SelectContent className="border-sky-800 bg-sky-950 text-white">
-          <SelectItem
-            value="undefined"
-            className="hover:bg-sky-700 focus:bg-sky-700 focus:text-white"
-          >
-            全部
-          </SelectItem>
-          <SelectItem
-            value="1"
-            className="hover:bg-sky-700 focus:bg-sky-700 focus:text-white"
-          >
-            跟进中
-          </SelectItem>
-          <SelectItem
-            value="2"
-            className="hover:bg-sky-700 focus:bg-sky-700 focus:text-white"
-          >
-            停止跟进
-          </SelectItem>
-          <SelectItem
-            value="5"
-            className="hover:bg-sky-700 focus:bg-sky-700 focus:text-white"
-          >
-            估价
-          </SelectItem>
-          <SelectItem
-            value="6"
-            className="hover:bg-sky-700 focus:bg-sky-700 focus:text-white"
-          >
-            已交标
-          </SelectItem>
-          <SelectItem
-            value="3"
-            className="hover:bg-sky-700 focus:bg-sky-700 focus:text-white"
-          >
-            中标
-          </SelectItem>
-          <SelectItem
-            value="4"
-            className="hover:bg-sky-700 focus:bg-sky-700 focus:text-white"
-          >
-            失标
-          </SelectItem>
-        </SelectContent>
-      </Select>
+        <Select value={String(status)} onValueChange={onStatusChange}>
+          <SelectTrigger className="h-8 w-56 border-sky-800 bg-transparent focus:ring-sky-500 focus:ring-offset-0">
+            <SelectValue placeholder="状态" />
+          </SelectTrigger>
+          <SelectContent className="border-sky-800 bg-sky-950 text-white">
+            <SelectItem
+              value="undefined"
+              className="hover:bg-sky-700 focus:bg-sky-700 focus:text-white"
+            >
+              全部
+            </SelectItem>
+            <SelectItem
+              value="1"
+              className="hover:bg-sky-700 focus:bg-sky-700 focus:text-white"
+            >
+              跟进中
+            </SelectItem>
+            <SelectItem
+              value="2"
+              className="hover:bg-sky-700 focus:bg-sky-700 focus:text-white"
+            >
+              停止跟进
+            </SelectItem>
+            <SelectItem
+              value="5"
+              className="hover:bg-sky-700 focus:bg-sky-700 focus:text-white"
+            >
+              估价
+            </SelectItem>
+            <SelectItem
+              value="6"
+              className="hover:bg-sky-700 focus:bg-sky-700 focus:text-white"
+            >
+              已交标
+            </SelectItem>
+            <SelectItem
+              value="3"
+              className="hover:bg-sky-700 focus:bg-sky-700 focus:text-white"
+            >
+              中标
+            </SelectItem>
+            <SelectItem
+              value="4"
+              className="hover:bg-sky-700 focus:bg-sky-700 focus:text-white"
+            >
+              失标
+            </SelectItem>
+          </SelectContent>
+        </Select>
 
-      <Popover>
-        <PopoverTrigger asChild>
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              variant={"outline"}
+              // className="w-full h-8 bg-transparent border-sky-800 focus:ring-sky-500 focus:ring-offset-0"
+              className="h-8 w-56 border-sky-800 bg-transparent hover:bg-transparent hover:text-white focus:ring-sky-500 focus:ring-offset-0 focus-visible:ring-sky-500 focus-visible:ring-offset-0"
+              // onClick={() => setDatepickerOpen((prev) => !prev)}
+            >
+              <span>投标日期</span>
+              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="dark w-auto p-0" align="center">
+            <Calendar
+              locale={zhCN}
+              mode="range"
+              selected={{
+                from: startDate ? new Date(startDate) : undefined,
+                to: endDate ? new Date(endDate) : undefined,
+              }}
+              onSelect={onDateSelect}
+              className="rounded-lg border border-sky-900 bg-sky-950 font-bold text-white shadow-xl"
+              classNames={{
+                day_today: "bg-sky-700 hover:bg-sky-600",
+                day: cn(
+                  buttonVariants({ variant: "ghost" }),
+                  "h-9 w-9 p-0 font-normal aria-selected:opacity-100 hover:bg-sky-900",
+                ),
+                day_selected: "bg-sky-700 hover:bg-sky-600",
+                day_range_start: "bg-sky-700 hover:bg-sky-600",
+                day_range_end: "bg-sky-700 hover:bg-sky-600",
+                day_range_middle: "bg-slate-800 hover:bg-slate-700",
+              }}
+              footer={
+                <div className="mt-4 flex items-center gap-2 text-sm">
+                  <Link
+                    to="."
+                    search={(prev) => ({
+                      ...prev,
+                      sd: dayjs().subtract(1, "year").format("YYYY-MM-DD"),
+                      ed: dayjs().format("YYYY-MM-DD"),
+                    })}
+                    className="rounded-lg border border-sky-800 px-2 py-1"
+                    replace
+                    resetScroll={false}
+                    // onClick={closeDatepicker}
+                  >
+                    一年內
+                  </Link>
+                  <Link
+                    to="."
+                    search={(prev) => ({
+                      ...prev,
+                      sd: dayjs().subtract(6, "month").format("YYYY-MM-DD"),
+                      ed: dayjs().format("YYYY-MM-DD"),
+                    })}
+                    className="rounded-lg border border-sky-800 px-2 py-1"
+                    replace
+                    resetScroll={false}
+                    // onClick={closeDatepicker}
+                  >
+                    半年內
+                  </Link>
+                  <Link
+                    to="."
+                    search={(prev) => ({
+                      ...prev,
+                      sd: dayjs().subtract(3, "month").format("YYYY-MM-DD"),
+                      ed: dayjs().format("YYYY-MM-DD"),
+                    })}
+                    className="rounded-lg border border-sky-800 px-2 py-1"
+                    replace
+                    resetScroll={false}
+                    // onClick={closeDatepicker}
+                  >
+                    三個月內
+                  </Link>
+                </div>
+              }
+              // disabled={(date) =>
+              //   date > new Date() || date < new Date("1900-01-01")
+              // }
+              // initialFocus
+            />
+          </PopoverContent>
+        </Popover>
+      </div>
+
+      {showFilter && (
+        // <div className="animate-fade-in mt-4 rounded-lg border border-sky-800/30 bg-sky-950/50 p-3">
+        <div
+          className={cn(
+            "animate-fade-in relative mt-4 flex flex-wrap items-center gap-2 text-nowrap text-xs text-slate-400",
+          )}
+        >
+          {/* 科技感装饰线条 */}
+          {/* <div className="absolute left-0 top-0 h-[2px] w-full bg-gradient-to-r from-transparent via-blue-500/50 to-transparent" />
+          <div className="absolute bottom-0 left-0 h-[2px] w-full bg-gradient-to-r from-transparent via-blue-500/50 to-transparent" /> */}
+
+          <div className="relative flex items-center gap-2">
+            <div className="h-2 w-2 animate-pulse rounded-full bg-cyan-400"></div>
+            <span className="animate-typewriter text-cyan-300">筛选中</span>
+          </div>
+
+          <div className="relative flex items-center gap-2">
+            {status && (
+              <>
+                <div className="hidden h-4 w-[1px] animate-pulse bg-gradient-to-b from-transparent via-sky-500/30 to-transparent lg:block"></div>
+                <div className="flex items-center gap-2">
+                  <span className="animate-typewriter">状态：</span>
+                  <span className="animate-typewriter text-cyan-300">
+                    {tenderStatusText(status)}
+                  </span>
+                </div>
+              </>
+            )}
+
+            {(startDate || endDate) && (
+              <>
+                <div className="h-4 w-[1px] animate-pulse"></div>
+                <div className="flex items-center gap-2">
+                  <span className="animate-typewriter">投标日期：</span>
+                  <span className="animate-typewriter text-cyan-300">
+                    {filterDateText
+                      ? filterDateText
+                      : `${dayjs(startDate).format("YYYY-MM-DD")}${endDate ? ` 至 ${dayjs(endDate).format("YYYY-MM-DD")}` : ""}`}
+                  </span>
+                </div>
+              </>
+            )}
+          </div>
+
           <Button
-            variant={"outline"}
-            // className="w-full h-8 bg-transparent border-sky-800 focus:ring-sky-500 focus:ring-offset-0"
-            className="h-8 w-56 border-sky-800 bg-transparent hover:bg-transparent hover:text-white focus:ring-sky-500 focus:ring-offset-0 focus-visible:ring-sky-500 focus-visible:ring-offset-0"
+            variant="outline"
+            size="icon"
+            className="ml-auto h-6 w-auto border-sky-800 bg-transparent px-1 hover:bg-transparent hover:text-white focus:ring-sky-500 focus:ring-offset-0 focus-visible:ring-sky-500 focus-visible:ring-offset-0"
+            onClick={() => {
+              navigate({
+                to: ".",
+                search: (prev) => ({
+                  ...prev,
+                  q: undefined,
+                  status: undefined,
+                  sd: undefined,
+                  ed: undefined,
+                }),
+                resetScroll: false,
+              });
+            }}
           >
-            <span>投标日期</span>
-            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+            <X className="h-3 w-3" />
           </Button>
-        </PopoverTrigger>
-        <PopoverContent className="dark w-auto p-0" align="center">
-          <Calendar
-            locale={zhCN}
-            mode="range"
-            selected={{
-              from: startDate ? new Date(startDate) : undefined,
-              to: endDate ? new Date(endDate) : undefined,
-            }}
-            onSelect={onDateSelect}
-            className="rounded-lg border border-sky-900 bg-sky-950 font-bold text-white shadow-xl"
-            classNames={{
-              day_today: "bg-sky-700 hover:bg-sky-600",
-              day: cn(
-                buttonVariants({ variant: "ghost" }),
-                "h-9 w-9 p-0 font-normal aria-selected:opacity-100 hover:bg-sky-900",
-              ),
-              day_selected: "bg-sky-700 hover:bg-sky-600",
-              day_range_start: "bg-sky-700 hover:bg-sky-600",
-              day_range_end: "bg-sky-700 hover:bg-sky-600",
-              day_range_middle: "bg-slate-800 hover:bg-slate-700",
-            }}
-            footer={
-              <div className="mt-4 flex items-center gap-2 text-sm">
-                <Link
-                  to="."
-                  search={(prev) => ({
-                    ...prev,
-                    sd: dayjs().subtract(1, "year").format("YYYY-MM-DD"),
-                    ed: dayjs().format("YYYY-MM-DD"),
-                  })}
-                  className="rounded-lg border border-sky-800 px-2 py-1"
-                >
-                  一年內
-                </Link>
-                <Link
-                  to="."
-                  search={(prev) => ({
-                    ...prev,
-                    sd: dayjs().subtract(6, "month").format("YYYY-MM-DD"),
-                    ed: dayjs().format("YYYY-MM-DD"),
-                  })}
-                  className="rounded-lg border border-sky-800 px-2 py-1"
-                >
-                  半年內
-                </Link>
-                <Link
-                  to="."
-                  search={(prev) => ({
-                    ...prev,
-                    sd: dayjs().subtract(3, "month").format("YYYY-MM-DD"),
-                    ed: dayjs().format("YYYY-MM-DD"),
-                  })}
-                  className="rounded-lg border border-sky-800 px-2 py-1"
-                >
-                  三個月內
-                </Link>
-              </div>
-            }
-            // disabled={(date) =>
-            //   date > new Date() || date < new Date("1900-01-01")
-            // }
-            // initialFocus
-          />
-        </PopoverContent>
-      </Popover>
+        </div>
 
-      <Button
-        variant="outline"
-        size="icon"
-        className="h-8 border-sky-800 bg-transparent p-2 hover:bg-transparent hover:text-white focus:ring-sky-500 focus:ring-offset-0 focus-visible:ring-sky-500 focus-visible:ring-offset-0"
-        onClick={() => {
-          navigate({
-            to: ".",
-            search: (prev) => ({
-              ...prev,
-              q: undefined,
-              status: undefined,
-              sd: undefined,
-              ed: undefined,
-            }),
-            resetScroll: false,
-          });
-        }}
-      >
-        <X className="h-4 w-4" />
-      </Button>
-    </div>
+        // </div>
+      )}
+    </>
   );
 }
 
@@ -361,8 +473,6 @@ function TenderListItem({ tender }: { tender: Tender }) {
     useMapV2Store.setState({
       selectedArea: selectedArea?.node as Area,
     });
-
-    if (!d) return;
 
     const marker = getMarker(tender?.id);
     if (marker) {
@@ -507,48 +617,6 @@ function TenderListItem({ tender }: { tender: Tender }) {
           </div>
         </div>
       </div>
-      {/* <MarkerEffect /> */}
     </Link>
   );
-}
-
-function MarkerEffect() {
-  const t = useSearch({
-    from: "/__auth/__dashboard/__amap/",
-    select: (state) => state.t,
-  });
-
-  useEffect(() => {
-    if (t) {
-      const marker = useMapV2Store.getState().getMarker(t);
-      console.log(marker);
-      if (marker) {
-        marker.setOptions({
-          zIndex: 13,
-        });
-      }
-      const a = document.querySelector("#marker-" + t);
-      const b = a?.closest(".amap-marker-label");
-      if (b instanceof HTMLElement) {
-        b.classList.add("scale-110");
-      }
-
-      return () => {
-        console.log("unmount");
-        const marker = useMapV2Store.getState().getMarker(t);
-        if (marker) {
-          marker.setOptions({
-            zIndex: 12,
-          });
-        }
-        const a = document.querySelector("#marker-" + t);
-        const b = a?.closest(".amap-marker-label");
-        if (b instanceof HTMLElement) {
-          b.classList.remove("scale-110");
-        }
-      };
-    }
-  }, [t]);
-
-  return null;
 }

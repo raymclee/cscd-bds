@@ -5,8 +5,6 @@ package ent
 import (
 	"context"
 	"cscd-bds/store/ent/project"
-	"cscd-bds/store/ent/projectstaff"
-	"cscd-bds/store/ent/projectvo"
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/user"
 	"errors"
@@ -61,188 +59,6 @@ func (pc *ProjectCreate) SetCode(s string) *ProjectCreate {
 	return pc
 }
 
-// SetManager sets the "manager" field.
-func (pc *ProjectCreate) SetManager(s string) *ProjectCreate {
-	pc.mutation.SetManager(s)
-	return pc
-}
-
-// SetNillableManager sets the "manager" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillableManager(s *string) *ProjectCreate {
-	if s != nil {
-		pc.SetManager(*s)
-	}
-	return pc
-}
-
-// SetName sets the "name" field.
-func (pc *ProjectCreate) SetName(s string) *ProjectCreate {
-	pc.mutation.SetName(s)
-	return pc
-}
-
-// SetNillableName sets the "name" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillableName(s *string) *ProjectCreate {
-	if s != nil {
-		pc.SetName(*s)
-	}
-	return pc
-}
-
-// SetOwner sets the "owner" field.
-func (pc *ProjectCreate) SetOwner(s string) *ProjectCreate {
-	pc.mutation.SetOwner(s)
-	return pc
-}
-
-// SetNillableOwner sets the "owner" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillableOwner(s *string) *ProjectCreate {
-	if s != nil {
-		pc.SetOwner(*s)
-	}
-	return pc
-}
-
-// SetJzs sets the "jzs" field.
-func (pc *ProjectCreate) SetJzs(s string) *ProjectCreate {
-	pc.mutation.SetJzs(s)
-	return pc
-}
-
-// SetNillableJzs sets the "jzs" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillableJzs(s *string) *ProjectCreate {
-	if s != nil {
-		pc.SetJzs(*s)
-	}
-	return pc
-}
-
-// SetMcn sets the "mcn" field.
-func (pc *ProjectCreate) SetMcn(s string) *ProjectCreate {
-	pc.mutation.SetMcn(s)
-	return pc
-}
-
-// SetNillableMcn sets the "mcn" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillableMcn(s *string) *ProjectCreate {
-	if s != nil {
-		pc.SetMcn(*s)
-	}
-	return pc
-}
-
-// SetConsultant sets the "consultant" field.
-func (pc *ProjectCreate) SetConsultant(s string) *ProjectCreate {
-	pc.mutation.SetConsultant(s)
-	return pc
-}
-
-// SetNillableConsultant sets the "consultant" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillableConsultant(s *string) *ProjectCreate {
-	if s != nil {
-		pc.SetConsultant(*s)
-	}
-	return pc
-}
-
-// SetAreas sets the "areas" field.
-func (pc *ProjectCreate) SetAreas(s string) *ProjectCreate {
-	pc.mutation.SetAreas(s)
-	return pc
-}
-
-// SetNillableAreas sets the "areas" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillableAreas(s *string) *ProjectCreate {
-	if s != nil {
-		pc.SetAreas(*s)
-	}
-	return pc
-}
-
-// SetStartDate sets the "start_date" field.
-func (pc *ProjectCreate) SetStartDate(t time.Time) *ProjectCreate {
-	pc.mutation.SetStartDate(t)
-	return pc
-}
-
-// SetNillableStartDate sets the "start_date" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillableStartDate(t *time.Time) *ProjectCreate {
-	if t != nil {
-		pc.SetStartDate(*t)
-	}
-	return pc
-}
-
-// SetFsDate sets the "fs_date" field.
-func (pc *ProjectCreate) SetFsDate(t time.Time) *ProjectCreate {
-	pc.mutation.SetFsDate(t)
-	return pc
-}
-
-// SetNillableFsDate sets the "fs_date" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillableFsDate(t *time.Time) *ProjectCreate {
-	if t != nil {
-		pc.SetFsDate(*t)
-	}
-	return pc
-}
-
-// SetOpDate sets the "op_date" field.
-func (pc *ProjectCreate) SetOpDate(t time.Time) *ProjectCreate {
-	pc.mutation.SetOpDate(t)
-	return pc
-}
-
-// SetNillableOpDate sets the "op_date" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillableOpDate(t *time.Time) *ProjectCreate {
-	if t != nil {
-		pc.SetOpDate(*t)
-	}
-	return pc
-}
-
-// SetEndDate sets the "end_date" field.
-func (pc *ProjectCreate) SetEndDate(t time.Time) *ProjectCreate {
-	pc.mutation.SetEndDate(t)
-	return pc
-}
-
-// SetNillableEndDate sets the "end_date" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillableEndDate(t *time.Time) *ProjectCreate {
-	if t != nil {
-		pc.SetEndDate(*t)
-	}
-	return pc
-}
-
-// SetMntyr sets the "mntyr" field.
-func (pc *ProjectCreate) SetMntyr(s string) *ProjectCreate {
-	pc.mutation.SetMntyr(s)
-	return pc
-}
-
-// SetNillableMntyr sets the "mntyr" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillableMntyr(s *string) *ProjectCreate {
-	if s != nil {
-		pc.SetMntyr(*s)
-	}
-	return pc
-}
-
-// SetConType sets the "con_type" field.
-func (pc *ProjectCreate) SetConType(s string) *ProjectCreate {
-	pc.mutation.SetConType(s)
-	return pc
-}
-
-// SetNillableConType sets the "con_type" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillableConType(s *string) *ProjectCreate {
-	if s != nil {
-		pc.SetConType(*s)
-	}
-	return pc
-}
-
 // SetIsFinished sets the "is_finished" field.
 func (pc *ProjectCreate) SetIsFinished(b bool) *ProjectCreate {
 	pc.mutation.SetIsFinished(b)
@@ -257,548 +73,142 @@ func (pc *ProjectCreate) SetNillableIsFinished(b *bool) *ProjectCreate {
 	return pc
 }
 
-// SetCje sets the "cje" field.
-func (pc *ProjectCreate) SetCje(f float64) *ProjectCreate {
-	pc.mutation.SetCje(f)
+// SetRevenueKpi sets the "revenue_kpi" field.
+func (pc *ProjectCreate) SetRevenueKpi(f float64) *ProjectCreate {
+	pc.mutation.SetRevenueKpi(f)
 	return pc
 }
 
-// SetNillableCje sets the "cje" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillableCje(f *float64) *ProjectCreate {
+// SetNillableRevenueKpi sets the "revenue_kpi" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableRevenueKpi(f *float64) *ProjectCreate {
 	if f != nil {
-		pc.SetCje(*f)
+		pc.SetRevenueKpi(*f)
 	}
 	return pc
 }
 
-// SetYye sets the "yye" field.
-func (pc *ProjectCreate) SetYye(f float64) *ProjectCreate {
-	pc.mutation.SetYye(f)
+// SetRevenueCurrentYearCompleted sets the "revenue_current_year_completed" field.
+func (pc *ProjectCreate) SetRevenueCurrentYearCompleted(f float64) *ProjectCreate {
+	pc.mutation.SetRevenueCurrentYearCompleted(f)
 	return pc
 }
 
-// SetNillableYye sets the "yye" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillableYye(f *float64) *ProjectCreate {
+// SetNillableRevenueCurrentYearCompleted sets the "revenue_current_year_completed" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableRevenueCurrentYearCompleted(f *float64) *ProjectCreate {
 	if f != nil {
-		pc.SetYye(*f)
+		pc.SetRevenueCurrentYearCompleted(*f)
 	}
 	return pc
 }
 
-// SetXjl sets the "xjl" field.
-func (pc *ProjectCreate) SetXjl(f float64) *ProjectCreate {
-	pc.mutation.SetXjl(f)
+// SetRevenueAccumulatedCompleted sets the "revenue_accumulated_completed" field.
+func (pc *ProjectCreate) SetRevenueAccumulatedCompleted(f float64) *ProjectCreate {
+	pc.mutation.SetRevenueAccumulatedCompleted(f)
 	return pc
 }
 
-// SetNillableXjl sets the "xjl" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillableXjl(f *float64) *ProjectCreate {
+// SetNillableRevenueAccumulatedCompleted sets the "revenue_accumulated_completed" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableRevenueAccumulatedCompleted(f *float64) *ProjectCreate {
 	if f != nil {
-		pc.SetXjl(*f)
+		pc.SetRevenueAccumulatedCompleted(*f)
 	}
 	return pc
 }
 
-// SetXmglfYs sets the "xmglf_ys" field.
-func (pc *ProjectCreate) SetXmglfYs(f float64) *ProjectCreate {
-	pc.mutation.SetXmglfYs(f)
+// SetPayDate sets the "pay_date" field.
+func (pc *ProjectCreate) SetPayDate(t time.Time) *ProjectCreate {
+	pc.mutation.SetPayDate(t)
 	return pc
 }
 
-// SetNillableXmglfYs sets the "xmglf_ys" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillableXmglfYs(f *float64) *ProjectCreate {
-	if f != nil {
-		pc.SetXmglfYs(*f)
+// SetNillablePayDate sets the "pay_date" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillablePayDate(t *time.Time) *ProjectCreate {
+	if t != nil {
+		pc.SetPayDate(*t)
 	}
 	return pc
 }
 
-// SetXmglfLj sets the "xmglf_lj" field.
-func (pc *ProjectCreate) SetXmglfLj(f float64) *ProjectCreate {
-	pc.mutation.SetXmglfLj(f)
+// SetOwnerVoCount sets the "owner_vo_count" field.
+func (pc *ProjectCreate) SetOwnerVoCount(i int) *ProjectCreate {
+	pc.mutation.SetOwnerVoCount(i)
 	return pc
 }
 
-// SetNillableXmglfLj sets the "xmglf_lj" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillableXmglfLj(f *float64) *ProjectCreate {
-	if f != nil {
-		pc.SetXmglfLj(*f)
-	}
-	return pc
-}
-
-// SetXmsjf sets the "xmsjf" field.
-func (pc *ProjectCreate) SetXmsjf(f float64) *ProjectCreate {
-	pc.mutation.SetXmsjf(f)
-	return pc
-}
-
-// SetNillableXmsjf sets the "xmsjf" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillableXmsjf(f *float64) *ProjectCreate {
-	if f != nil {
-		pc.SetXmsjf(*f)
-	}
-	return pc
-}
-
-// SetXmfzr sets the "xmfzr" field.
-func (pc *ProjectCreate) SetXmfzr(s string) *ProjectCreate {
-	pc.mutation.SetXmfzr(s)
-	return pc
-}
-
-// SetNillableXmfzr sets the "xmfzr" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillableXmfzr(s *string) *ProjectCreate {
-	if s != nil {
-		pc.SetXmfzr(*s)
-	}
-	return pc
-}
-
-// SetOwnerApplyAmount sets the "owner_apply_amount" field.
-func (pc *ProjectCreate) SetOwnerApplyAmount(f float64) *ProjectCreate {
-	pc.mutation.SetOwnerApplyAmount(f)
-	return pc
-}
-
-// SetNillableOwnerApplyAmount sets the "owner_apply_amount" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillableOwnerApplyAmount(f *float64) *ProjectCreate {
-	if f != nil {
-		pc.SetOwnerApplyAmount(*f)
-	}
-	return pc
-}
-
-// SetOwnerApplyCount sets the "owner_apply_count" field.
-func (pc *ProjectCreate) SetOwnerApplyCount(i int) *ProjectCreate {
-	pc.mutation.SetOwnerApplyCount(i)
-	return pc
-}
-
-// SetNillableOwnerApplyCount sets the "owner_apply_count" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillableOwnerApplyCount(i *int) *ProjectCreate {
+// SetNillableOwnerVoCount sets the "owner_vo_count" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableOwnerVoCount(i *int) *ProjectCreate {
 	if i != nil {
-		pc.SetOwnerApplyCount(*i)
+		pc.SetOwnerVoCount(*i)
 	}
 	return pc
 }
 
-// SetOwnerApproveAmount sets the "owner_approve_amount" field.
-func (pc *ProjectCreate) SetOwnerApproveAmount(f float64) *ProjectCreate {
-	pc.mutation.SetOwnerApproveAmount(f)
+// SetContractorVoCount sets the "contractor_vo_count" field.
+func (pc *ProjectCreate) SetContractorVoCount(i int) *ProjectCreate {
+	pc.mutation.SetContractorVoCount(i)
 	return pc
 }
 
-// SetNillableOwnerApproveAmount sets the "owner_approve_amount" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillableOwnerApproveAmount(f *float64) *ProjectCreate {
-	if f != nil {
-		pc.SetOwnerApproveAmount(*f)
-	}
-	return pc
-}
-
-// SetOwnerApproveCount sets the "owner_approve_count" field.
-func (pc *ProjectCreate) SetOwnerApproveCount(i int) *ProjectCreate {
-	pc.mutation.SetOwnerApproveCount(i)
-	return pc
-}
-
-// SetNillableOwnerApproveCount sets the "owner_approve_count" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillableOwnerApproveCount(i *int) *ProjectCreate {
+// SetNillableContractorVoCount sets the "contractor_vo_count" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableContractorVoCount(i *int) *ProjectCreate {
 	if i != nil {
-		pc.SetOwnerApproveCount(*i)
+		pc.SetContractorVoCount(*i)
 	}
 	return pc
 }
 
-// SetContractorApplyAmount sets the "contractor_apply_amount" field.
-func (pc *ProjectCreate) SetContractorApplyAmount(f float64) *ProjectCreate {
-	pc.mutation.SetContractorApplyAmount(f)
+// SetAccumulateDeduction sets the "accumulate_deduction" field.
+func (pc *ProjectCreate) SetAccumulateDeduction(f float64) *ProjectCreate {
+	pc.mutation.SetAccumulateDeduction(f)
 	return pc
 }
 
-// SetNillableContractorApplyAmount sets the "contractor_apply_amount" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillableContractorApplyAmount(f *float64) *ProjectCreate {
+// SetNillableAccumulateDeduction sets the "accumulate_deduction" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableAccumulateDeduction(f *float64) *ProjectCreate {
 	if f != nil {
-		pc.SetContractorApplyAmount(*f)
+		pc.SetAccumulateDeduction(*f)
 	}
 	return pc
 }
 
-// SetContractorApplyCount sets the "contractor_apply_count" field.
-func (pc *ProjectCreate) SetContractorApplyCount(i int) *ProjectCreate {
-	pc.mutation.SetContractorApplyCount(i)
+// SetSubcontractorVaCount sets the "subcontractor_va_count" field.
+func (pc *ProjectCreate) SetSubcontractorVaCount(i int) *ProjectCreate {
+	pc.mutation.SetSubcontractorVaCount(i)
 	return pc
 }
 
-// SetNillableContractorApplyCount sets the "contractor_apply_count" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillableContractorApplyCount(i *int) *ProjectCreate {
+// SetNillableSubcontractorVaCount sets the "subcontractor_va_count" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableSubcontractorVaCount(i *int) *ProjectCreate {
 	if i != nil {
-		pc.SetContractorApplyCount(*i)
+		pc.SetSubcontractorVaCount(*i)
 	}
 	return pc
 }
 
-// SetContractorApproveAmount sets the "contractor_approve_amount" field.
-func (pc *ProjectCreate) SetContractorApproveAmount(f float64) *ProjectCreate {
-	pc.mutation.SetContractorApproveAmount(f)
+// SetContractSupplementaryCount sets the "contract_supplementary_count" field.
+func (pc *ProjectCreate) SetContractSupplementaryCount(i int) *ProjectCreate {
+	pc.mutation.SetContractSupplementaryCount(i)
 	return pc
 }
 
-// SetNillableContractorApproveAmount sets the "contractor_approve_amount" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillableContractorApproveAmount(f *float64) *ProjectCreate {
-	if f != nil {
-		pc.SetContractorApproveAmount(*f)
-	}
-	return pc
-}
-
-// SetContractorApproveCount sets the "contractor_approve_count" field.
-func (pc *ProjectCreate) SetContractorApproveCount(i int) *ProjectCreate {
-	pc.mutation.SetContractorApproveCount(i)
-	return pc
-}
-
-// SetNillableContractorApproveCount sets the "contractor_approve_count" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillableContractorApproveCount(i *int) *ProjectCreate {
+// SetNillableContractSupplementaryCount sets the "contract_supplementary_count" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableContractSupplementaryCount(i *int) *ProjectCreate {
 	if i != nil {
-		pc.SetContractorApproveCount(*i)
+		pc.SetContractSupplementaryCount(*i)
 	}
 	return pc
 }
 
-// SetInstallProgress sets the "install_progress" field.
-func (pc *ProjectCreate) SetInstallProgress(f float64) *ProjectCreate {
-	pc.mutation.SetInstallProgress(f)
+// SetRepairFee sets the "repair_fee" field.
+func (pc *ProjectCreate) SetRepairFee(f float64) *ProjectCreate {
+	pc.mutation.SetRepairFee(f)
 	return pc
 }
 
-// SetNillableInstallProgress sets the "install_progress" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillableInstallProgress(f *float64) *ProjectCreate {
+// SetNillableRepairFee sets the "repair_fee" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableRepairFee(f *float64) *ProjectCreate {
 	if f != nil {
-		pc.SetInstallProgress(*f)
-	}
-	return pc
-}
-
-// SetEffectiveContractAmount sets the "effective_contract_amount" field.
-func (pc *ProjectCreate) SetEffectiveContractAmount(f float64) *ProjectCreate {
-	pc.mutation.SetEffectiveContractAmount(f)
-	return pc
-}
-
-// SetNillableEffectiveContractAmount sets the "effective_contract_amount" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillableEffectiveContractAmount(f *float64) *ProjectCreate {
-	if f != nil {
-		pc.SetEffectiveContractAmount(*f)
-	}
-	return pc
-}
-
-// SetVaApplyAmount sets the "va_apply_amount" field.
-func (pc *ProjectCreate) SetVaApplyAmount(f float64) *ProjectCreate {
-	pc.mutation.SetVaApplyAmount(f)
-	return pc
-}
-
-// SetNillableVaApplyAmount sets the "va_apply_amount" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillableVaApplyAmount(f *float64) *ProjectCreate {
-	if f != nil {
-		pc.SetVaApplyAmount(*f)
-	}
-	return pc
-}
-
-// SetVaApproveAmount sets the "va_approve_amount" field.
-func (pc *ProjectCreate) SetVaApproveAmount(f float64) *ProjectCreate {
-	pc.mutation.SetVaApproveAmount(f)
-	return pc
-}
-
-// SetNillableVaApproveAmount sets the "va_approve_amount" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillableVaApproveAmount(f *float64) *ProjectCreate {
-	if f != nil {
-		pc.SetVaApproveAmount(*f)
-	}
-	return pc
-}
-
-// SetAccumulatedStatutoryDeductions sets the "accumulated_statutory_deductions" field.
-func (pc *ProjectCreate) SetAccumulatedStatutoryDeductions(f float64) *ProjectCreate {
-	pc.mutation.SetAccumulatedStatutoryDeductions(f)
-	return pc
-}
-
-// SetNillableAccumulatedStatutoryDeductions sets the "accumulated_statutory_deductions" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillableAccumulatedStatutoryDeductions(f *float64) *ProjectCreate {
-	if f != nil {
-		pc.SetAccumulatedStatutoryDeductions(*f)
-	}
-	return pc
-}
-
-// SetAccumulatedNonStatutoryDeductions sets the "accumulated_non_statutory_deductions" field.
-func (pc *ProjectCreate) SetAccumulatedNonStatutoryDeductions(f float64) *ProjectCreate {
-	pc.mutation.SetAccumulatedNonStatutoryDeductions(f)
-	return pc
-}
-
-// SetNillableAccumulatedNonStatutoryDeductions sets the "accumulated_non_statutory_deductions" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillableAccumulatedNonStatutoryDeductions(f *float64) *ProjectCreate {
-	if f != nil {
-		pc.SetAccumulatedNonStatutoryDeductions(*f)
-	}
-	return pc
-}
-
-// SetAccumulatedStatutoryDeductionsPeriod sets the "accumulated_statutory_deductions_period" field.
-func (pc *ProjectCreate) SetAccumulatedStatutoryDeductionsPeriod(f float64) *ProjectCreate {
-	pc.mutation.SetAccumulatedStatutoryDeductionsPeriod(f)
-	return pc
-}
-
-// SetNillableAccumulatedStatutoryDeductionsPeriod sets the "accumulated_statutory_deductions_period" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillableAccumulatedStatutoryDeductionsPeriod(f *float64) *ProjectCreate {
-	if f != nil {
-		pc.SetAccumulatedStatutoryDeductionsPeriod(*f)
-	}
-	return pc
-}
-
-// SetAccumulatedNonStatutoryDeductionsPeriod sets the "accumulated_non_statutory_deductions_period" field.
-func (pc *ProjectCreate) SetAccumulatedNonStatutoryDeductionsPeriod(f float64) *ProjectCreate {
-	pc.mutation.SetAccumulatedNonStatutoryDeductionsPeriod(f)
-	return pc
-}
-
-// SetNillableAccumulatedNonStatutoryDeductionsPeriod sets the "accumulated_non_statutory_deductions_period" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillableAccumulatedNonStatutoryDeductionsPeriod(f *float64) *ProjectCreate {
-	if f != nil {
-		pc.SetAccumulatedNonStatutoryDeductionsPeriod(*f)
-	}
-	return pc
-}
-
-// SetTotalContractAmount sets the "total_contract_amount" field.
-func (pc *ProjectCreate) SetTotalContractAmount(f float64) *ProjectCreate {
-	pc.mutation.SetTotalContractAmount(f)
-	return pc
-}
-
-// SetNillableTotalContractAmount sets the "total_contract_amount" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillableTotalContractAmount(f *float64) *ProjectCreate {
-	if f != nil {
-		pc.SetTotalContractAmount(*f)
-	}
-	return pc
-}
-
-// SetAluminumPlateBudgetPercentage sets the "aluminum_plate_budget_percentage" field.
-func (pc *ProjectCreate) SetAluminumPlateBudgetPercentage(f float64) *ProjectCreate {
-	pc.mutation.SetAluminumPlateBudgetPercentage(f)
-	return pc
-}
-
-// SetNillableAluminumPlateBudgetPercentage sets the "aluminum_plate_budget_percentage" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillableAluminumPlateBudgetPercentage(f *float64) *ProjectCreate {
-	if f != nil {
-		pc.SetAluminumPlateBudgetPercentage(*f)
-	}
-	return pc
-}
-
-// SetAluminumBudgetPercentage sets the "aluminum_budget_percentage" field.
-func (pc *ProjectCreate) SetAluminumBudgetPercentage(f float64) *ProjectCreate {
-	pc.mutation.SetAluminumBudgetPercentage(f)
-	return pc
-}
-
-// SetNillableAluminumBudgetPercentage sets the "aluminum_budget_percentage" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillableAluminumBudgetPercentage(f *float64) *ProjectCreate {
-	if f != nil {
-		pc.SetAluminumBudgetPercentage(*f)
-	}
-	return pc
-}
-
-// SetGlassBudgetPercentage sets the "glass_budget_percentage" field.
-func (pc *ProjectCreate) SetGlassBudgetPercentage(f float64) *ProjectCreate {
-	pc.mutation.SetGlassBudgetPercentage(f)
-	return pc
-}
-
-// SetNillableGlassBudgetPercentage sets the "glass_budget_percentage" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillableGlassBudgetPercentage(f *float64) *ProjectCreate {
-	if f != nil {
-		pc.SetGlassBudgetPercentage(*f)
-	}
-	return pc
-}
-
-// SetIronBudgetPercentage sets the "iron_budget_percentage" field.
-func (pc *ProjectCreate) SetIronBudgetPercentage(f float64) *ProjectCreate {
-	pc.mutation.SetIronBudgetPercentage(f)
-	return pc
-}
-
-// SetNillableIronBudgetPercentage sets the "iron_budget_percentage" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillableIronBudgetPercentage(f *float64) *ProjectCreate {
-	if f != nil {
-		pc.SetIronBudgetPercentage(*f)
-	}
-	return pc
-}
-
-// SetMilestonePlanYear sets the "milestone_plan_year" field.
-func (pc *ProjectCreate) SetMilestonePlanYear(i int) *ProjectCreate {
-	pc.mutation.SetMilestonePlanYear(i)
-	return pc
-}
-
-// SetNillableMilestonePlanYear sets the "milestone_plan_year" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillableMilestonePlanYear(i *int) *ProjectCreate {
-	if i != nil {
-		pc.SetMilestonePlanYear(*i)
-	}
-	return pc
-}
-
-// SetMilestonePlanMonth sets the "milestone_plan_month" field.
-func (pc *ProjectCreate) SetMilestonePlanMonth(i int) *ProjectCreate {
-	pc.mutation.SetMilestonePlanMonth(i)
-	return pc
-}
-
-// SetNillableMilestonePlanMonth sets the "milestone_plan_month" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillableMilestonePlanMonth(i *int) *ProjectCreate {
-	if i != nil {
-		pc.SetMilestonePlanMonth(*i)
-	}
-	return pc
-}
-
-// SetMilestoneDoneYear sets the "milestone_done_year" field.
-func (pc *ProjectCreate) SetMilestoneDoneYear(i int) *ProjectCreate {
-	pc.mutation.SetMilestoneDoneYear(i)
-	return pc
-}
-
-// SetNillableMilestoneDoneYear sets the "milestone_done_year" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillableMilestoneDoneYear(i *int) *ProjectCreate {
-	if i != nil {
-		pc.SetMilestoneDoneYear(*i)
-	}
-	return pc
-}
-
-// SetMilestoneDoneMonth sets the "milestone_done_month" field.
-func (pc *ProjectCreate) SetMilestoneDoneMonth(i int) *ProjectCreate {
-	pc.mutation.SetMilestoneDoneMonth(i)
-	return pc
-}
-
-// SetNillableMilestoneDoneMonth sets the "milestone_done_month" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillableMilestoneDoneMonth(i *int) *ProjectCreate {
-	if i != nil {
-		pc.SetMilestoneDoneMonth(*i)
-	}
-	return pc
-}
-
-// SetPmArea sets the "pm_area" field.
-func (pc *ProjectCreate) SetPmArea(f float64) *ProjectCreate {
-	pc.mutation.SetPmArea(f)
-	return pc
-}
-
-// SetNillablePmArea sets the "pm_area" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillablePmArea(f *float64) *ProjectCreate {
-	if f != nil {
-		pc.SetPmArea(*f)
-	}
-	return pc
-}
-
-// SetPmYearTarget sets the "pm_year_target" field.
-func (pc *ProjectCreate) SetPmYearTarget(f float64) *ProjectCreate {
-	pc.mutation.SetPmYearTarget(f)
-	return pc
-}
-
-// SetNillablePmYearTarget sets the "pm_year_target" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillablePmYearTarget(f *float64) *ProjectCreate {
-	if f != nil {
-		pc.SetPmYearTarget(*f)
-	}
-	return pc
-}
-
-// SetPmMonthTarget sets the "pm_month_target" field.
-func (pc *ProjectCreate) SetPmMonthTarget(f float64) *ProjectCreate {
-	pc.mutation.SetPmMonthTarget(f)
-	return pc
-}
-
-// SetNillablePmMonthTarget sets the "pm_month_target" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillablePmMonthTarget(f *float64) *ProjectCreate {
-	if f != nil {
-		pc.SetPmMonthTarget(*f)
-	}
-	return pc
-}
-
-// SetPmYearActual sets the "pm_year_actual" field.
-func (pc *ProjectCreate) SetPmYearActual(f float64) *ProjectCreate {
-	pc.mutation.SetPmYearActual(f)
-	return pc
-}
-
-// SetNillablePmYearActual sets the "pm_year_actual" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillablePmYearActual(f *float64) *ProjectCreate {
-	if f != nil {
-		pc.SetPmYearActual(*f)
-	}
-	return pc
-}
-
-// SetPmMonthActual sets the "pm_month_actual" field.
-func (pc *ProjectCreate) SetPmMonthActual(f float64) *ProjectCreate {
-	pc.mutation.SetPmMonthActual(f)
-	return pc
-}
-
-// SetNillablePmMonthActual sets the "pm_month_actual" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillablePmMonthActual(f *float64) *ProjectCreate {
-	if f != nil {
-		pc.SetPmMonthActual(*f)
-	}
-	return pc
-}
-
-// SetPmTotal sets the "pm_total" field.
-func (pc *ProjectCreate) SetPmTotal(f float64) *ProjectCreate {
-	pc.mutation.SetPmTotal(f)
-	return pc
-}
-
-// SetNillablePmTotal sets the "pm_total" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillablePmTotal(f *float64) *ProjectCreate {
-	if f != nil {
-		pc.SetPmTotal(*f)
-	}
-	return pc
-}
-
-// SetPmYesterday sets the "pm_yesterday" field.
-func (pc *ProjectCreate) SetPmYesterday(f float64) *ProjectCreate {
-	pc.mutation.SetPmYesterday(f)
-	return pc
-}
-
-// SetNillablePmYesterday sets the "pm_yesterday" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillablePmYesterday(f *float64) *ProjectCreate {
-	if f != nil {
-		pc.SetPmYesterday(*f)
+		pc.SetRepairFee(*f)
 	}
 	return pc
 }
@@ -859,118 +269,6 @@ func (pc *ProjectCreate) SetNillableUnitComponentInstallation(f *float64) *Proje
 	return pc
 }
 
-// SetMaterialLoss sets the "material_loss" field.
-func (pc *ProjectCreate) SetMaterialLoss(f float64) *ProjectCreate {
-	pc.mutation.SetMaterialLoss(f)
-	return pc
-}
-
-// SetNillableMaterialLoss sets the "material_loss" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillableMaterialLoss(f *float64) *ProjectCreate {
-	if f != nil {
-		pc.SetMaterialLoss(*f)
-	}
-	return pc
-}
-
-// SetDesignRatedWeight sets the "design_rated_weight" field.
-func (pc *ProjectCreate) SetDesignRatedWeight(f float64) *ProjectCreate {
-	pc.mutation.SetDesignRatedWeight(f)
-	return pc
-}
-
-// SetNillableDesignRatedWeight sets the "design_rated_weight" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillableDesignRatedWeight(f *float64) *ProjectCreate {
-	if f != nil {
-		pc.SetDesignRatedWeight(*f)
-	}
-	return pc
-}
-
-// SetProcessingWeight sets the "processing_weight" field.
-func (pc *ProjectCreate) SetProcessingWeight(f float64) *ProjectCreate {
-	pc.mutation.SetProcessingWeight(f)
-	return pc
-}
-
-// SetNillableProcessingWeight sets the "processing_weight" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillableProcessingWeight(f *float64) *ProjectCreate {
-	if f != nil {
-		pc.SetProcessingWeight(*f)
-	}
-	return pc
-}
-
-// SetItemStockWeight sets the "item_stock_weight" field.
-func (pc *ProjectCreate) SetItemStockWeight(f float64) *ProjectCreate {
-	pc.mutation.SetItemStockWeight(f)
-	return pc
-}
-
-// SetNillableItemStockWeight sets the "item_stock_weight" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillableItemStockWeight(f *float64) *ProjectCreate {
-	if f != nil {
-		pc.SetItemStockWeight(*f)
-	}
-	return pc
-}
-
-// SetPalletsInStock sets the "pallets_in_stock" field.
-func (pc *ProjectCreate) SetPalletsInStock(f float64) *ProjectCreate {
-	pc.mutation.SetPalletsInStock(f)
-	return pc
-}
-
-// SetNillablePalletsInStock sets the "pallets_in_stock" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillablePalletsInStock(f *float64) *ProjectCreate {
-	if f != nil {
-		pc.SetPalletsInStock(*f)
-	}
-	return pc
-}
-
-// SetPartsInStock sets the "parts_in_stock" field.
-func (pc *ProjectCreate) SetPartsInStock(f float64) *ProjectCreate {
-	pc.mutation.SetPartsInStock(f)
-	return pc
-}
-
-// SetNillablePartsInStock sets the "parts_in_stock" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillablePartsInStock(f *float64) *ProjectCreate {
-	if f != nil {
-		pc.SetPartsInStock(*f)
-	}
-	return pc
-}
-
-// SetQualityScore sets the "quality_score" field.
-func (pc *ProjectCreate) SetQualityScore(f float64) *ProjectCreate {
-	pc.mutation.SetQualityScore(f)
-	return pc
-}
-
-// SetNillableQualityScore sets the "quality_score" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillableQualityScore(f *float64) *ProjectCreate {
-	if f != nil {
-		pc.SetQualityScore(*f)
-	}
-	return pc
-}
-
-// SetQualityRanking sets the "quality_ranking" field.
-func (pc *ProjectCreate) SetQualityRanking(f float64) *ProjectCreate {
-	pc.mutation.SetQualityRanking(f)
-	return pc
-}
-
-// SetNillableQualityRanking sets the "quality_ranking" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillableQualityRanking(f *float64) *ProjectCreate {
-	if f != nil {
-		pc.SetQualityRanking(*f)
-	}
-	return pc
-}
-
 // SetBulkMaterialsTotalOrderQuantity sets the "bulk_materials_total_order_quantity" field.
 func (pc *ProjectCreate) SetBulkMaterialsTotalOrderQuantity(f float64) *ProjectCreate {
 	pc.mutation.SetBulkMaterialsTotalOrderQuantity(f)
@@ -1009,48 +307,6 @@ func (pc *ProjectCreate) SetBulkMaterialsUncompletedQuantity(f float64) *Project
 func (pc *ProjectCreate) SetNillableBulkMaterialsUncompletedQuantity(f *float64) *ProjectCreate {
 	if f != nil {
 		pc.SetBulkMaterialsUncompletedQuantity(*f)
-	}
-	return pc
-}
-
-// SetPlanTotalCount sets the "plan_total_count" field.
-func (pc *ProjectCreate) SetPlanTotalCount(i int) *ProjectCreate {
-	pc.mutation.SetPlanTotalCount(i)
-	return pc
-}
-
-// SetNillablePlanTotalCount sets the "plan_total_count" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillablePlanTotalCount(i *int) *ProjectCreate {
-	if i != nil {
-		pc.SetPlanTotalCount(*i)
-	}
-	return pc
-}
-
-// SetPlanOverdueCount sets the "plan_overdue_count" field.
-func (pc *ProjectCreate) SetPlanOverdueCount(i int) *ProjectCreate {
-	pc.mutation.SetPlanOverdueCount(i)
-	return pc
-}
-
-// SetNillablePlanOverdueCount sets the "plan_overdue_count" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillablePlanOverdueCount(i *int) *ProjectCreate {
-	if i != nil {
-		pc.SetPlanOverdueCount(*i)
-	}
-	return pc
-}
-
-// SetPlanOverdueMonthCount sets the "plan_overdue_month_count" field.
-func (pc *ProjectCreate) SetPlanOverdueMonthCount(i int) *ProjectCreate {
-	pc.mutation.SetPlanOverdueMonthCount(i)
-	return pc
-}
-
-// SetNillablePlanOverdueMonthCount sets the "plan_overdue_month_count" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillablePlanOverdueMonthCount(i *int) *ProjectCreate {
-	if i != nil {
-		pc.SetPlanOverdueMonthCount(*i)
 	}
 	return pc
 }
@@ -1179,36 +435,6 @@ func (pc *ProjectCreate) SetNillableID(x *xid.ID) *ProjectCreate {
 		pc.SetID(*x)
 	}
 	return pc
-}
-
-// AddVoIDs adds the "vos" edge to the ProjectVO entity by IDs.
-func (pc *ProjectCreate) AddVoIDs(ids ...xid.ID) *ProjectCreate {
-	pc.mutation.AddVoIDs(ids...)
-	return pc
-}
-
-// AddVos adds the "vos" edges to the ProjectVO entity.
-func (pc *ProjectCreate) AddVos(p ...*ProjectVO) *ProjectCreate {
-	ids := make([]xid.ID, len(p))
-	for i := range p {
-		ids[i] = p[i].ID
-	}
-	return pc.AddVoIDs(ids...)
-}
-
-// AddProjectStaffIDs adds the "project_staffs" edge to the ProjectStaff entity by IDs.
-func (pc *ProjectCreate) AddProjectStaffIDs(ids ...xid.ID) *ProjectCreate {
-	pc.mutation.AddProjectStaffIDs(ids...)
-	return pc
-}
-
-// AddProjectStaffs adds the "project_staffs" edges to the ProjectStaff entity.
-func (pc *ProjectCreate) AddProjectStaffs(p ...*ProjectStaff) *ProjectCreate {
-	ids := make([]xid.ID, len(p))
-	for i := range p {
-		ids[i] = p[i].ID
-	}
-	return pc.AddProjectStaffIDs(ids...)
 }
 
 // AddUserIDs adds the "users" edge to the User entity by IDs.
@@ -1341,217 +567,49 @@ func (pc *ProjectCreate) createSpec() (*Project, *sqlgraph.CreateSpec) {
 		_spec.SetField(project.FieldCode, field.TypeString, value)
 		_node.Code = value
 	}
-	if value, ok := pc.mutation.Manager(); ok {
-		_spec.SetField(project.FieldManager, field.TypeString, value)
-		_node.Manager = &value
-	}
-	if value, ok := pc.mutation.Name(); ok {
-		_spec.SetField(project.FieldName, field.TypeString, value)
-		_node.Name = &value
-	}
-	if value, ok := pc.mutation.Owner(); ok {
-		_spec.SetField(project.FieldOwner, field.TypeString, value)
-		_node.Owner = &value
-	}
-	if value, ok := pc.mutation.Jzs(); ok {
-		_spec.SetField(project.FieldJzs, field.TypeString, value)
-		_node.Jzs = &value
-	}
-	if value, ok := pc.mutation.Mcn(); ok {
-		_spec.SetField(project.FieldMcn, field.TypeString, value)
-		_node.Mcn = &value
-	}
-	if value, ok := pc.mutation.Consultant(); ok {
-		_spec.SetField(project.FieldConsultant, field.TypeString, value)
-		_node.Consultant = &value
-	}
-	if value, ok := pc.mutation.Areas(); ok {
-		_spec.SetField(project.FieldAreas, field.TypeString, value)
-		_node.Areas = &value
-	}
-	if value, ok := pc.mutation.StartDate(); ok {
-		_spec.SetField(project.FieldStartDate, field.TypeTime, value)
-		_node.StartDate = &value
-	}
-	if value, ok := pc.mutation.FsDate(); ok {
-		_spec.SetField(project.FieldFsDate, field.TypeTime, value)
-		_node.FsDate = &value
-	}
-	if value, ok := pc.mutation.OpDate(); ok {
-		_spec.SetField(project.FieldOpDate, field.TypeTime, value)
-		_node.OpDate = &value
-	}
-	if value, ok := pc.mutation.EndDate(); ok {
-		_spec.SetField(project.FieldEndDate, field.TypeTime, value)
-		_node.EndDate = &value
-	}
-	if value, ok := pc.mutation.Mntyr(); ok {
-		_spec.SetField(project.FieldMntyr, field.TypeString, value)
-		_node.Mntyr = &value
-	}
-	if value, ok := pc.mutation.ConType(); ok {
-		_spec.SetField(project.FieldConType, field.TypeString, value)
-		_node.ConType = &value
-	}
 	if value, ok := pc.mutation.IsFinished(); ok {
 		_spec.SetField(project.FieldIsFinished, field.TypeBool, value)
 		_node.IsFinished = value
 	}
-	if value, ok := pc.mutation.Cje(); ok {
-		_spec.SetField(project.FieldCje, field.TypeFloat64, value)
-		_node.Cje = &value
+	if value, ok := pc.mutation.RevenueKpi(); ok {
+		_spec.SetField(project.FieldRevenueKpi, field.TypeFloat64, value)
+		_node.RevenueKpi = &value
 	}
-	if value, ok := pc.mutation.Yye(); ok {
-		_spec.SetField(project.FieldYye, field.TypeFloat64, value)
-		_node.Yye = &value
+	if value, ok := pc.mutation.RevenueCurrentYearCompleted(); ok {
+		_spec.SetField(project.FieldRevenueCurrentYearCompleted, field.TypeFloat64, value)
+		_node.RevenueCurrentYearCompleted = &value
 	}
-	if value, ok := pc.mutation.Xjl(); ok {
-		_spec.SetField(project.FieldXjl, field.TypeFloat64, value)
-		_node.Xjl = &value
+	if value, ok := pc.mutation.RevenueAccumulatedCompleted(); ok {
+		_spec.SetField(project.FieldRevenueAccumulatedCompleted, field.TypeFloat64, value)
+		_node.RevenueAccumulatedCompleted = &value
 	}
-	if value, ok := pc.mutation.XmglfYs(); ok {
-		_spec.SetField(project.FieldXmglfYs, field.TypeFloat64, value)
-		_node.XmglfYs = &value
+	if value, ok := pc.mutation.PayDate(); ok {
+		_spec.SetField(project.FieldPayDate, field.TypeTime, value)
+		_node.PayDate = &value
 	}
-	if value, ok := pc.mutation.XmglfLj(); ok {
-		_spec.SetField(project.FieldXmglfLj, field.TypeFloat64, value)
-		_node.XmglfLj = &value
+	if value, ok := pc.mutation.OwnerVoCount(); ok {
+		_spec.SetField(project.FieldOwnerVoCount, field.TypeInt, value)
+		_node.OwnerVoCount = &value
 	}
-	if value, ok := pc.mutation.Xmsjf(); ok {
-		_spec.SetField(project.FieldXmsjf, field.TypeFloat64, value)
-		_node.Xmsjf = &value
+	if value, ok := pc.mutation.ContractorVoCount(); ok {
+		_spec.SetField(project.FieldContractorVoCount, field.TypeInt, value)
+		_node.ContractorVoCount = &value
 	}
-	if value, ok := pc.mutation.Xmfzr(); ok {
-		_spec.SetField(project.FieldXmfzr, field.TypeString, value)
-		_node.Xmfzr = &value
+	if value, ok := pc.mutation.AccumulateDeduction(); ok {
+		_spec.SetField(project.FieldAccumulateDeduction, field.TypeFloat64, value)
+		_node.AccumulateDeduction = &value
 	}
-	if value, ok := pc.mutation.OwnerApplyAmount(); ok {
-		_spec.SetField(project.FieldOwnerApplyAmount, field.TypeFloat64, value)
-		_node.OwnerApplyAmount = &value
+	if value, ok := pc.mutation.SubcontractorVaCount(); ok {
+		_spec.SetField(project.FieldSubcontractorVaCount, field.TypeInt, value)
+		_node.SubcontractorVaCount = &value
 	}
-	if value, ok := pc.mutation.OwnerApplyCount(); ok {
-		_spec.SetField(project.FieldOwnerApplyCount, field.TypeInt, value)
-		_node.OwnerApplyCount = &value
+	if value, ok := pc.mutation.ContractSupplementaryCount(); ok {
+		_spec.SetField(project.FieldContractSupplementaryCount, field.TypeInt, value)
+		_node.ContractSupplementaryCount = &value
 	}
-	if value, ok := pc.mutation.OwnerApproveAmount(); ok {
-		_spec.SetField(project.FieldOwnerApproveAmount, field.TypeFloat64, value)
-		_node.OwnerApproveAmount = &value
-	}
-	if value, ok := pc.mutation.OwnerApproveCount(); ok {
-		_spec.SetField(project.FieldOwnerApproveCount, field.TypeInt, value)
-		_node.OwnerApproveCount = &value
-	}
-	if value, ok := pc.mutation.ContractorApplyAmount(); ok {
-		_spec.SetField(project.FieldContractorApplyAmount, field.TypeFloat64, value)
-		_node.ContractorApplyAmount = &value
-	}
-	if value, ok := pc.mutation.ContractorApplyCount(); ok {
-		_spec.SetField(project.FieldContractorApplyCount, field.TypeInt, value)
-		_node.ContractorApplyCount = &value
-	}
-	if value, ok := pc.mutation.ContractorApproveAmount(); ok {
-		_spec.SetField(project.FieldContractorApproveAmount, field.TypeFloat64, value)
-		_node.ContractorApproveAmount = &value
-	}
-	if value, ok := pc.mutation.ContractorApproveCount(); ok {
-		_spec.SetField(project.FieldContractorApproveCount, field.TypeInt, value)
-		_node.ContractorApproveCount = &value
-	}
-	if value, ok := pc.mutation.InstallProgress(); ok {
-		_spec.SetField(project.FieldInstallProgress, field.TypeFloat64, value)
-		_node.InstallProgress = &value
-	}
-	if value, ok := pc.mutation.EffectiveContractAmount(); ok {
-		_spec.SetField(project.FieldEffectiveContractAmount, field.TypeFloat64, value)
-		_node.EffectiveContractAmount = &value
-	}
-	if value, ok := pc.mutation.VaApplyAmount(); ok {
-		_spec.SetField(project.FieldVaApplyAmount, field.TypeFloat64, value)
-		_node.VaApplyAmount = &value
-	}
-	if value, ok := pc.mutation.VaApproveAmount(); ok {
-		_spec.SetField(project.FieldVaApproveAmount, field.TypeFloat64, value)
-		_node.VaApproveAmount = &value
-	}
-	if value, ok := pc.mutation.AccumulatedStatutoryDeductions(); ok {
-		_spec.SetField(project.FieldAccumulatedStatutoryDeductions, field.TypeFloat64, value)
-		_node.AccumulatedStatutoryDeductions = &value
-	}
-	if value, ok := pc.mutation.AccumulatedNonStatutoryDeductions(); ok {
-		_spec.SetField(project.FieldAccumulatedNonStatutoryDeductions, field.TypeFloat64, value)
-		_node.AccumulatedNonStatutoryDeductions = &value
-	}
-	if value, ok := pc.mutation.AccumulatedStatutoryDeductionsPeriod(); ok {
-		_spec.SetField(project.FieldAccumulatedStatutoryDeductionsPeriod, field.TypeFloat64, value)
-		_node.AccumulatedStatutoryDeductionsPeriod = &value
-	}
-	if value, ok := pc.mutation.AccumulatedNonStatutoryDeductionsPeriod(); ok {
-		_spec.SetField(project.FieldAccumulatedNonStatutoryDeductionsPeriod, field.TypeFloat64, value)
-		_node.AccumulatedNonStatutoryDeductionsPeriod = &value
-	}
-	if value, ok := pc.mutation.TotalContractAmount(); ok {
-		_spec.SetField(project.FieldTotalContractAmount, field.TypeFloat64, value)
-		_node.TotalContractAmount = &value
-	}
-	if value, ok := pc.mutation.AluminumPlateBudgetPercentage(); ok {
-		_spec.SetField(project.FieldAluminumPlateBudgetPercentage, field.TypeFloat64, value)
-		_node.AluminumPlateBudgetPercentage = &value
-	}
-	if value, ok := pc.mutation.AluminumBudgetPercentage(); ok {
-		_spec.SetField(project.FieldAluminumBudgetPercentage, field.TypeFloat64, value)
-		_node.AluminumBudgetPercentage = &value
-	}
-	if value, ok := pc.mutation.GlassBudgetPercentage(); ok {
-		_spec.SetField(project.FieldGlassBudgetPercentage, field.TypeFloat64, value)
-		_node.GlassBudgetPercentage = &value
-	}
-	if value, ok := pc.mutation.IronBudgetPercentage(); ok {
-		_spec.SetField(project.FieldIronBudgetPercentage, field.TypeFloat64, value)
-		_node.IronBudgetPercentage = &value
-	}
-	if value, ok := pc.mutation.MilestonePlanYear(); ok {
-		_spec.SetField(project.FieldMilestonePlanYear, field.TypeInt, value)
-		_node.MilestonePlanYear = &value
-	}
-	if value, ok := pc.mutation.MilestonePlanMonth(); ok {
-		_spec.SetField(project.FieldMilestonePlanMonth, field.TypeInt, value)
-		_node.MilestonePlanMonth = &value
-	}
-	if value, ok := pc.mutation.MilestoneDoneYear(); ok {
-		_spec.SetField(project.FieldMilestoneDoneYear, field.TypeInt, value)
-		_node.MilestoneDoneYear = &value
-	}
-	if value, ok := pc.mutation.MilestoneDoneMonth(); ok {
-		_spec.SetField(project.FieldMilestoneDoneMonth, field.TypeInt, value)
-		_node.MilestoneDoneMonth = &value
-	}
-	if value, ok := pc.mutation.PmArea(); ok {
-		_spec.SetField(project.FieldPmArea, field.TypeFloat64, value)
-		_node.PmArea = &value
-	}
-	if value, ok := pc.mutation.PmYearTarget(); ok {
-		_spec.SetField(project.FieldPmYearTarget, field.TypeFloat64, value)
-		_node.PmYearTarget = &value
-	}
-	if value, ok := pc.mutation.PmMonthTarget(); ok {
-		_spec.SetField(project.FieldPmMonthTarget, field.TypeFloat64, value)
-		_node.PmMonthTarget = &value
-	}
-	if value, ok := pc.mutation.PmYearActual(); ok {
-		_spec.SetField(project.FieldPmYearActual, field.TypeFloat64, value)
-		_node.PmYearActual = &value
-	}
-	if value, ok := pc.mutation.PmMonthActual(); ok {
-		_spec.SetField(project.FieldPmMonthActual, field.TypeFloat64, value)
-		_node.PmMonthActual = &value
-	}
-	if value, ok := pc.mutation.PmTotal(); ok {
-		_spec.SetField(project.FieldPmTotal, field.TypeFloat64, value)
-		_node.PmTotal = &value
-	}
-	if value, ok := pc.mutation.PmYesterday(); ok {
-		_spec.SetField(project.FieldPmYesterday, field.TypeFloat64, value)
-		_node.PmYesterday = &value
+	if value, ok := pc.mutation.RepairFee(); ok {
+		_spec.SetField(project.FieldRepairFee, field.TypeFloat64, value)
+		_node.RepairFee = &value
 	}
 	if value, ok := pc.mutation.UnitInventoryTotal(); ok {
 		_spec.SetField(project.FieldUnitInventoryTotal, field.TypeFloat64, value)
@@ -1569,38 +627,6 @@ func (pc *ProjectCreate) createSpec() (*Project, *sqlgraph.CreateSpec) {
 		_spec.SetField(project.FieldUnitComponentInstallation, field.TypeFloat64, value)
 		_node.UnitComponentInstallation = &value
 	}
-	if value, ok := pc.mutation.MaterialLoss(); ok {
-		_spec.SetField(project.FieldMaterialLoss, field.TypeFloat64, value)
-		_node.MaterialLoss = &value
-	}
-	if value, ok := pc.mutation.DesignRatedWeight(); ok {
-		_spec.SetField(project.FieldDesignRatedWeight, field.TypeFloat64, value)
-		_node.DesignRatedWeight = &value
-	}
-	if value, ok := pc.mutation.ProcessingWeight(); ok {
-		_spec.SetField(project.FieldProcessingWeight, field.TypeFloat64, value)
-		_node.ProcessingWeight = &value
-	}
-	if value, ok := pc.mutation.ItemStockWeight(); ok {
-		_spec.SetField(project.FieldItemStockWeight, field.TypeFloat64, value)
-		_node.ItemStockWeight = &value
-	}
-	if value, ok := pc.mutation.PalletsInStock(); ok {
-		_spec.SetField(project.FieldPalletsInStock, field.TypeFloat64, value)
-		_node.PalletsInStock = &value
-	}
-	if value, ok := pc.mutation.PartsInStock(); ok {
-		_spec.SetField(project.FieldPartsInStock, field.TypeFloat64, value)
-		_node.PartsInStock = &value
-	}
-	if value, ok := pc.mutation.QualityScore(); ok {
-		_spec.SetField(project.FieldQualityScore, field.TypeFloat64, value)
-		_node.QualityScore = &value
-	}
-	if value, ok := pc.mutation.QualityRanking(); ok {
-		_spec.SetField(project.FieldQualityRanking, field.TypeFloat64, value)
-		_node.QualityRanking = &value
-	}
 	if value, ok := pc.mutation.BulkMaterialsTotalOrderQuantity(); ok {
 		_spec.SetField(project.FieldBulkMaterialsTotalOrderQuantity, field.TypeFloat64, value)
 		_node.BulkMaterialsTotalOrderQuantity = &value
@@ -1612,18 +638,6 @@ func (pc *ProjectCreate) createSpec() (*Project, *sqlgraph.CreateSpec) {
 	if value, ok := pc.mutation.BulkMaterialsUncompletedQuantity(); ok {
 		_spec.SetField(project.FieldBulkMaterialsUncompletedQuantity, field.TypeFloat64, value)
 		_node.BulkMaterialsUncompletedQuantity = &value
-	}
-	if value, ok := pc.mutation.PlanTotalCount(); ok {
-		_spec.SetField(project.FieldPlanTotalCount, field.TypeInt, value)
-		_node.PlanTotalCount = &value
-	}
-	if value, ok := pc.mutation.PlanOverdueCount(); ok {
-		_spec.SetField(project.FieldPlanOverdueCount, field.TypeInt, value)
-		_node.PlanOverdueCount = &value
-	}
-	if value, ok := pc.mutation.PlanOverdueMonthCount(); ok {
-		_spec.SetField(project.FieldPlanOverdueMonthCount, field.TypeInt, value)
-		_node.PlanOverdueMonthCount = &value
 	}
 	if value, ok := pc.mutation.DiagramBdFinishCount(); ok {
 		_spec.SetField(project.FieldDiagramBdFinishCount, field.TypeInt, value)
@@ -1656,38 +670,6 @@ func (pc *ProjectCreate) createSpec() (*Project, *sqlgraph.CreateSpec) {
 	if value, ok := pc.mutation.DiagramCApprovalRatioDenominator(); ok {
 		_spec.SetField(project.FieldDiagramCApprovalRatioDenominator, field.TypeInt, value)
 		_node.DiagramCApprovalRatioDenominator = &value
-	}
-	if nodes := pc.mutation.VosIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   project.VosTable,
-			Columns: []string{project.VosColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(projectvo.FieldID, field.TypeString),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges = append(_spec.Edges, edge)
-	}
-	if nodes := pc.mutation.ProjectStaffsIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   project.ProjectStaffsTable,
-			Columns: []string{project.ProjectStaffsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(projectstaff.FieldID, field.TypeString),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges = append(_spec.Edges, edge)
 	}
 	if nodes := pc.mutation.UsersIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
@@ -1781,240 +763,6 @@ func (u *ProjectUpsert) UpdateCode() *ProjectUpsert {
 	return u
 }
 
-// SetManager sets the "manager" field.
-func (u *ProjectUpsert) SetManager(v string) *ProjectUpsert {
-	u.Set(project.FieldManager, v)
-	return u
-}
-
-// UpdateManager sets the "manager" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdateManager() *ProjectUpsert {
-	u.SetExcluded(project.FieldManager)
-	return u
-}
-
-// ClearManager clears the value of the "manager" field.
-func (u *ProjectUpsert) ClearManager() *ProjectUpsert {
-	u.SetNull(project.FieldManager)
-	return u
-}
-
-// SetName sets the "name" field.
-func (u *ProjectUpsert) SetName(v string) *ProjectUpsert {
-	u.Set(project.FieldName, v)
-	return u
-}
-
-// UpdateName sets the "name" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdateName() *ProjectUpsert {
-	u.SetExcluded(project.FieldName)
-	return u
-}
-
-// ClearName clears the value of the "name" field.
-func (u *ProjectUpsert) ClearName() *ProjectUpsert {
-	u.SetNull(project.FieldName)
-	return u
-}
-
-// SetOwner sets the "owner" field.
-func (u *ProjectUpsert) SetOwner(v string) *ProjectUpsert {
-	u.Set(project.FieldOwner, v)
-	return u
-}
-
-// UpdateOwner sets the "owner" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdateOwner() *ProjectUpsert {
-	u.SetExcluded(project.FieldOwner)
-	return u
-}
-
-// ClearOwner clears the value of the "owner" field.
-func (u *ProjectUpsert) ClearOwner() *ProjectUpsert {
-	u.SetNull(project.FieldOwner)
-	return u
-}
-
-// SetJzs sets the "jzs" field.
-func (u *ProjectUpsert) SetJzs(v string) *ProjectUpsert {
-	u.Set(project.FieldJzs, v)
-	return u
-}
-
-// UpdateJzs sets the "jzs" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdateJzs() *ProjectUpsert {
-	u.SetExcluded(project.FieldJzs)
-	return u
-}
-
-// ClearJzs clears the value of the "jzs" field.
-func (u *ProjectUpsert) ClearJzs() *ProjectUpsert {
-	u.SetNull(project.FieldJzs)
-	return u
-}
-
-// SetMcn sets the "mcn" field.
-func (u *ProjectUpsert) SetMcn(v string) *ProjectUpsert {
-	u.Set(project.FieldMcn, v)
-	return u
-}
-
-// UpdateMcn sets the "mcn" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdateMcn() *ProjectUpsert {
-	u.SetExcluded(project.FieldMcn)
-	return u
-}
-
-// ClearMcn clears the value of the "mcn" field.
-func (u *ProjectUpsert) ClearMcn() *ProjectUpsert {
-	u.SetNull(project.FieldMcn)
-	return u
-}
-
-// SetConsultant sets the "consultant" field.
-func (u *ProjectUpsert) SetConsultant(v string) *ProjectUpsert {
-	u.Set(project.FieldConsultant, v)
-	return u
-}
-
-// UpdateConsultant sets the "consultant" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdateConsultant() *ProjectUpsert {
-	u.SetExcluded(project.FieldConsultant)
-	return u
-}
-
-// ClearConsultant clears the value of the "consultant" field.
-func (u *ProjectUpsert) ClearConsultant() *ProjectUpsert {
-	u.SetNull(project.FieldConsultant)
-	return u
-}
-
-// SetAreas sets the "areas" field.
-func (u *ProjectUpsert) SetAreas(v string) *ProjectUpsert {
-	u.Set(project.FieldAreas, v)
-	return u
-}
-
-// UpdateAreas sets the "areas" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdateAreas() *ProjectUpsert {
-	u.SetExcluded(project.FieldAreas)
-	return u
-}
-
-// ClearAreas clears the value of the "areas" field.
-func (u *ProjectUpsert) ClearAreas() *ProjectUpsert {
-	u.SetNull(project.FieldAreas)
-	return u
-}
-
-// SetStartDate sets the "start_date" field.
-func (u *ProjectUpsert) SetStartDate(v time.Time) *ProjectUpsert {
-	u.Set(project.FieldStartDate, v)
-	return u
-}
-
-// UpdateStartDate sets the "start_date" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdateStartDate() *ProjectUpsert {
-	u.SetExcluded(project.FieldStartDate)
-	return u
-}
-
-// ClearStartDate clears the value of the "start_date" field.
-func (u *ProjectUpsert) ClearStartDate() *ProjectUpsert {
-	u.SetNull(project.FieldStartDate)
-	return u
-}
-
-// SetFsDate sets the "fs_date" field.
-func (u *ProjectUpsert) SetFsDate(v time.Time) *ProjectUpsert {
-	u.Set(project.FieldFsDate, v)
-	return u
-}
-
-// UpdateFsDate sets the "fs_date" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdateFsDate() *ProjectUpsert {
-	u.SetExcluded(project.FieldFsDate)
-	return u
-}
-
-// ClearFsDate clears the value of the "fs_date" field.
-func (u *ProjectUpsert) ClearFsDate() *ProjectUpsert {
-	u.SetNull(project.FieldFsDate)
-	return u
-}
-
-// SetOpDate sets the "op_date" field.
-func (u *ProjectUpsert) SetOpDate(v time.Time) *ProjectUpsert {
-	u.Set(project.FieldOpDate, v)
-	return u
-}
-
-// UpdateOpDate sets the "op_date" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdateOpDate() *ProjectUpsert {
-	u.SetExcluded(project.FieldOpDate)
-	return u
-}
-
-// ClearOpDate clears the value of the "op_date" field.
-func (u *ProjectUpsert) ClearOpDate() *ProjectUpsert {
-	u.SetNull(project.FieldOpDate)
-	return u
-}
-
-// SetEndDate sets the "end_date" field.
-func (u *ProjectUpsert) SetEndDate(v time.Time) *ProjectUpsert {
-	u.Set(project.FieldEndDate, v)
-	return u
-}
-
-// UpdateEndDate sets the "end_date" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdateEndDate() *ProjectUpsert {
-	u.SetExcluded(project.FieldEndDate)
-	return u
-}
-
-// ClearEndDate clears the value of the "end_date" field.
-func (u *ProjectUpsert) ClearEndDate() *ProjectUpsert {
-	u.SetNull(project.FieldEndDate)
-	return u
-}
-
-// SetMntyr sets the "mntyr" field.
-func (u *ProjectUpsert) SetMntyr(v string) *ProjectUpsert {
-	u.Set(project.FieldMntyr, v)
-	return u
-}
-
-// UpdateMntyr sets the "mntyr" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdateMntyr() *ProjectUpsert {
-	u.SetExcluded(project.FieldMntyr)
-	return u
-}
-
-// ClearMntyr clears the value of the "mntyr" field.
-func (u *ProjectUpsert) ClearMntyr() *ProjectUpsert {
-	u.SetNull(project.FieldMntyr)
-	return u
-}
-
-// SetConType sets the "con_type" field.
-func (u *ProjectUpsert) SetConType(v string) *ProjectUpsert {
-	u.Set(project.FieldConType, v)
-	return u
-}
-
-// UpdateConType sets the "con_type" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdateConType() *ProjectUpsert {
-	u.SetExcluded(project.FieldConType)
-	return u
-}
-
-// ClearConType clears the value of the "con_type" field.
-func (u *ProjectUpsert) ClearConType() *ProjectUpsert {
-	u.SetNull(project.FieldConType)
-	return u
-}
-
 // SetIsFinished sets the "is_finished" field.
 func (u *ProjectUpsert) SetIsFinished(v bool) *ProjectUpsert {
 	u.Set(project.FieldIsFinished, v)
@@ -2027,933 +775,237 @@ func (u *ProjectUpsert) UpdateIsFinished() *ProjectUpsert {
 	return u
 }
 
-// SetCje sets the "cje" field.
-func (u *ProjectUpsert) SetCje(v float64) *ProjectUpsert {
-	u.Set(project.FieldCje, v)
+// SetRevenueKpi sets the "revenue_kpi" field.
+func (u *ProjectUpsert) SetRevenueKpi(v float64) *ProjectUpsert {
+	u.Set(project.FieldRevenueKpi, v)
 	return u
 }
 
-// UpdateCje sets the "cje" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdateCje() *ProjectUpsert {
-	u.SetExcluded(project.FieldCje)
+// UpdateRevenueKpi sets the "revenue_kpi" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateRevenueKpi() *ProjectUpsert {
+	u.SetExcluded(project.FieldRevenueKpi)
 	return u
 }
 
-// AddCje adds v to the "cje" field.
-func (u *ProjectUpsert) AddCje(v float64) *ProjectUpsert {
-	u.Add(project.FieldCje, v)
+// AddRevenueKpi adds v to the "revenue_kpi" field.
+func (u *ProjectUpsert) AddRevenueKpi(v float64) *ProjectUpsert {
+	u.Add(project.FieldRevenueKpi, v)
 	return u
 }
 
-// ClearCje clears the value of the "cje" field.
-func (u *ProjectUpsert) ClearCje() *ProjectUpsert {
-	u.SetNull(project.FieldCje)
+// ClearRevenueKpi clears the value of the "revenue_kpi" field.
+func (u *ProjectUpsert) ClearRevenueKpi() *ProjectUpsert {
+	u.SetNull(project.FieldRevenueKpi)
 	return u
 }
 
-// SetYye sets the "yye" field.
-func (u *ProjectUpsert) SetYye(v float64) *ProjectUpsert {
-	u.Set(project.FieldYye, v)
+// SetRevenueCurrentYearCompleted sets the "revenue_current_year_completed" field.
+func (u *ProjectUpsert) SetRevenueCurrentYearCompleted(v float64) *ProjectUpsert {
+	u.Set(project.FieldRevenueCurrentYearCompleted, v)
 	return u
 }
 
-// UpdateYye sets the "yye" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdateYye() *ProjectUpsert {
-	u.SetExcluded(project.FieldYye)
+// UpdateRevenueCurrentYearCompleted sets the "revenue_current_year_completed" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateRevenueCurrentYearCompleted() *ProjectUpsert {
+	u.SetExcluded(project.FieldRevenueCurrentYearCompleted)
 	return u
 }
 
-// AddYye adds v to the "yye" field.
-func (u *ProjectUpsert) AddYye(v float64) *ProjectUpsert {
-	u.Add(project.FieldYye, v)
+// AddRevenueCurrentYearCompleted adds v to the "revenue_current_year_completed" field.
+func (u *ProjectUpsert) AddRevenueCurrentYearCompleted(v float64) *ProjectUpsert {
+	u.Add(project.FieldRevenueCurrentYearCompleted, v)
 	return u
 }
 
-// ClearYye clears the value of the "yye" field.
-func (u *ProjectUpsert) ClearYye() *ProjectUpsert {
-	u.SetNull(project.FieldYye)
+// ClearRevenueCurrentYearCompleted clears the value of the "revenue_current_year_completed" field.
+func (u *ProjectUpsert) ClearRevenueCurrentYearCompleted() *ProjectUpsert {
+	u.SetNull(project.FieldRevenueCurrentYearCompleted)
 	return u
 }
 
-// SetXjl sets the "xjl" field.
-func (u *ProjectUpsert) SetXjl(v float64) *ProjectUpsert {
-	u.Set(project.FieldXjl, v)
+// SetRevenueAccumulatedCompleted sets the "revenue_accumulated_completed" field.
+func (u *ProjectUpsert) SetRevenueAccumulatedCompleted(v float64) *ProjectUpsert {
+	u.Set(project.FieldRevenueAccumulatedCompleted, v)
 	return u
 }
 
-// UpdateXjl sets the "xjl" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdateXjl() *ProjectUpsert {
-	u.SetExcluded(project.FieldXjl)
+// UpdateRevenueAccumulatedCompleted sets the "revenue_accumulated_completed" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateRevenueAccumulatedCompleted() *ProjectUpsert {
+	u.SetExcluded(project.FieldRevenueAccumulatedCompleted)
 	return u
 }
 
-// AddXjl adds v to the "xjl" field.
-func (u *ProjectUpsert) AddXjl(v float64) *ProjectUpsert {
-	u.Add(project.FieldXjl, v)
+// AddRevenueAccumulatedCompleted adds v to the "revenue_accumulated_completed" field.
+func (u *ProjectUpsert) AddRevenueAccumulatedCompleted(v float64) *ProjectUpsert {
+	u.Add(project.FieldRevenueAccumulatedCompleted, v)
 	return u
 }
 
-// ClearXjl clears the value of the "xjl" field.
-func (u *ProjectUpsert) ClearXjl() *ProjectUpsert {
-	u.SetNull(project.FieldXjl)
+// ClearRevenueAccumulatedCompleted clears the value of the "revenue_accumulated_completed" field.
+func (u *ProjectUpsert) ClearRevenueAccumulatedCompleted() *ProjectUpsert {
+	u.SetNull(project.FieldRevenueAccumulatedCompleted)
 	return u
 }
 
-// SetXmglfYs sets the "xmglf_ys" field.
-func (u *ProjectUpsert) SetXmglfYs(v float64) *ProjectUpsert {
-	u.Set(project.FieldXmglfYs, v)
+// SetPayDate sets the "pay_date" field.
+func (u *ProjectUpsert) SetPayDate(v time.Time) *ProjectUpsert {
+	u.Set(project.FieldPayDate, v)
 	return u
 }
 
-// UpdateXmglfYs sets the "xmglf_ys" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdateXmglfYs() *ProjectUpsert {
-	u.SetExcluded(project.FieldXmglfYs)
+// UpdatePayDate sets the "pay_date" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdatePayDate() *ProjectUpsert {
+	u.SetExcluded(project.FieldPayDate)
 	return u
 }
 
-// AddXmglfYs adds v to the "xmglf_ys" field.
-func (u *ProjectUpsert) AddXmglfYs(v float64) *ProjectUpsert {
-	u.Add(project.FieldXmglfYs, v)
+// ClearPayDate clears the value of the "pay_date" field.
+func (u *ProjectUpsert) ClearPayDate() *ProjectUpsert {
+	u.SetNull(project.FieldPayDate)
 	return u
 }
 
-// ClearXmglfYs clears the value of the "xmglf_ys" field.
-func (u *ProjectUpsert) ClearXmglfYs() *ProjectUpsert {
-	u.SetNull(project.FieldXmglfYs)
+// SetOwnerVoCount sets the "owner_vo_count" field.
+func (u *ProjectUpsert) SetOwnerVoCount(v int) *ProjectUpsert {
+	u.Set(project.FieldOwnerVoCount, v)
 	return u
 }
 
-// SetXmglfLj sets the "xmglf_lj" field.
-func (u *ProjectUpsert) SetXmglfLj(v float64) *ProjectUpsert {
-	u.Set(project.FieldXmglfLj, v)
+// UpdateOwnerVoCount sets the "owner_vo_count" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateOwnerVoCount() *ProjectUpsert {
+	u.SetExcluded(project.FieldOwnerVoCount)
 	return u
 }
 
-// UpdateXmglfLj sets the "xmglf_lj" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdateXmglfLj() *ProjectUpsert {
-	u.SetExcluded(project.FieldXmglfLj)
+// AddOwnerVoCount adds v to the "owner_vo_count" field.
+func (u *ProjectUpsert) AddOwnerVoCount(v int) *ProjectUpsert {
+	u.Add(project.FieldOwnerVoCount, v)
 	return u
 }
 
-// AddXmglfLj adds v to the "xmglf_lj" field.
-func (u *ProjectUpsert) AddXmglfLj(v float64) *ProjectUpsert {
-	u.Add(project.FieldXmglfLj, v)
+// ClearOwnerVoCount clears the value of the "owner_vo_count" field.
+func (u *ProjectUpsert) ClearOwnerVoCount() *ProjectUpsert {
+	u.SetNull(project.FieldOwnerVoCount)
 	return u
 }
 
-// ClearXmglfLj clears the value of the "xmglf_lj" field.
-func (u *ProjectUpsert) ClearXmglfLj() *ProjectUpsert {
-	u.SetNull(project.FieldXmglfLj)
+// SetContractorVoCount sets the "contractor_vo_count" field.
+func (u *ProjectUpsert) SetContractorVoCount(v int) *ProjectUpsert {
+	u.Set(project.FieldContractorVoCount, v)
 	return u
 }
 
-// SetXmsjf sets the "xmsjf" field.
-func (u *ProjectUpsert) SetXmsjf(v float64) *ProjectUpsert {
-	u.Set(project.FieldXmsjf, v)
+// UpdateContractorVoCount sets the "contractor_vo_count" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateContractorVoCount() *ProjectUpsert {
+	u.SetExcluded(project.FieldContractorVoCount)
 	return u
 }
 
-// UpdateXmsjf sets the "xmsjf" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdateXmsjf() *ProjectUpsert {
-	u.SetExcluded(project.FieldXmsjf)
+// AddContractorVoCount adds v to the "contractor_vo_count" field.
+func (u *ProjectUpsert) AddContractorVoCount(v int) *ProjectUpsert {
+	u.Add(project.FieldContractorVoCount, v)
 	return u
 }
 
-// AddXmsjf adds v to the "xmsjf" field.
-func (u *ProjectUpsert) AddXmsjf(v float64) *ProjectUpsert {
-	u.Add(project.FieldXmsjf, v)
+// ClearContractorVoCount clears the value of the "contractor_vo_count" field.
+func (u *ProjectUpsert) ClearContractorVoCount() *ProjectUpsert {
+	u.SetNull(project.FieldContractorVoCount)
 	return u
 }
 
-// ClearXmsjf clears the value of the "xmsjf" field.
-func (u *ProjectUpsert) ClearXmsjf() *ProjectUpsert {
-	u.SetNull(project.FieldXmsjf)
+// SetAccumulateDeduction sets the "accumulate_deduction" field.
+func (u *ProjectUpsert) SetAccumulateDeduction(v float64) *ProjectUpsert {
+	u.Set(project.FieldAccumulateDeduction, v)
 	return u
 }
 
-// SetXmfzr sets the "xmfzr" field.
-func (u *ProjectUpsert) SetXmfzr(v string) *ProjectUpsert {
-	u.Set(project.FieldXmfzr, v)
+// UpdateAccumulateDeduction sets the "accumulate_deduction" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateAccumulateDeduction() *ProjectUpsert {
+	u.SetExcluded(project.FieldAccumulateDeduction)
 	return u
 }
 
-// UpdateXmfzr sets the "xmfzr" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdateXmfzr() *ProjectUpsert {
-	u.SetExcluded(project.FieldXmfzr)
+// AddAccumulateDeduction adds v to the "accumulate_deduction" field.
+func (u *ProjectUpsert) AddAccumulateDeduction(v float64) *ProjectUpsert {
+	u.Add(project.FieldAccumulateDeduction, v)
 	return u
 }
 
-// ClearXmfzr clears the value of the "xmfzr" field.
-func (u *ProjectUpsert) ClearXmfzr() *ProjectUpsert {
-	u.SetNull(project.FieldXmfzr)
+// ClearAccumulateDeduction clears the value of the "accumulate_deduction" field.
+func (u *ProjectUpsert) ClearAccumulateDeduction() *ProjectUpsert {
+	u.SetNull(project.FieldAccumulateDeduction)
 	return u
 }
 
-// SetOwnerApplyAmount sets the "owner_apply_amount" field.
-func (u *ProjectUpsert) SetOwnerApplyAmount(v float64) *ProjectUpsert {
-	u.Set(project.FieldOwnerApplyAmount, v)
+// SetSubcontractorVaCount sets the "subcontractor_va_count" field.
+func (u *ProjectUpsert) SetSubcontractorVaCount(v int) *ProjectUpsert {
+	u.Set(project.FieldSubcontractorVaCount, v)
 	return u
 }
 
-// UpdateOwnerApplyAmount sets the "owner_apply_amount" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdateOwnerApplyAmount() *ProjectUpsert {
-	u.SetExcluded(project.FieldOwnerApplyAmount)
+// UpdateSubcontractorVaCount sets the "subcontractor_va_count" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateSubcontractorVaCount() *ProjectUpsert {
+	u.SetExcluded(project.FieldSubcontractorVaCount)
 	return u
 }
 
-// AddOwnerApplyAmount adds v to the "owner_apply_amount" field.
-func (u *ProjectUpsert) AddOwnerApplyAmount(v float64) *ProjectUpsert {
-	u.Add(project.FieldOwnerApplyAmount, v)
+// AddSubcontractorVaCount adds v to the "subcontractor_va_count" field.
+func (u *ProjectUpsert) AddSubcontractorVaCount(v int) *ProjectUpsert {
+	u.Add(project.FieldSubcontractorVaCount, v)
 	return u
 }
 
-// ClearOwnerApplyAmount clears the value of the "owner_apply_amount" field.
-func (u *ProjectUpsert) ClearOwnerApplyAmount() *ProjectUpsert {
-	u.SetNull(project.FieldOwnerApplyAmount)
+// ClearSubcontractorVaCount clears the value of the "subcontractor_va_count" field.
+func (u *ProjectUpsert) ClearSubcontractorVaCount() *ProjectUpsert {
+	u.SetNull(project.FieldSubcontractorVaCount)
 	return u
 }
 
-// SetOwnerApplyCount sets the "owner_apply_count" field.
-func (u *ProjectUpsert) SetOwnerApplyCount(v int) *ProjectUpsert {
-	u.Set(project.FieldOwnerApplyCount, v)
+// SetContractSupplementaryCount sets the "contract_supplementary_count" field.
+func (u *ProjectUpsert) SetContractSupplementaryCount(v int) *ProjectUpsert {
+	u.Set(project.FieldContractSupplementaryCount, v)
 	return u
 }
 
-// UpdateOwnerApplyCount sets the "owner_apply_count" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdateOwnerApplyCount() *ProjectUpsert {
-	u.SetExcluded(project.FieldOwnerApplyCount)
+// UpdateContractSupplementaryCount sets the "contract_supplementary_count" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateContractSupplementaryCount() *ProjectUpsert {
+	u.SetExcluded(project.FieldContractSupplementaryCount)
 	return u
 }
 
-// AddOwnerApplyCount adds v to the "owner_apply_count" field.
-func (u *ProjectUpsert) AddOwnerApplyCount(v int) *ProjectUpsert {
-	u.Add(project.FieldOwnerApplyCount, v)
+// AddContractSupplementaryCount adds v to the "contract_supplementary_count" field.
+func (u *ProjectUpsert) AddContractSupplementaryCount(v int) *ProjectUpsert {
+	u.Add(project.FieldContractSupplementaryCount, v)
 	return u
 }
 
-// ClearOwnerApplyCount clears the value of the "owner_apply_count" field.
-func (u *ProjectUpsert) ClearOwnerApplyCount() *ProjectUpsert {
-	u.SetNull(project.FieldOwnerApplyCount)
+// ClearContractSupplementaryCount clears the value of the "contract_supplementary_count" field.
+func (u *ProjectUpsert) ClearContractSupplementaryCount() *ProjectUpsert {
+	u.SetNull(project.FieldContractSupplementaryCount)
 	return u
 }
 
-// SetOwnerApproveAmount sets the "owner_approve_amount" field.
-func (u *ProjectUpsert) SetOwnerApproveAmount(v float64) *ProjectUpsert {
-	u.Set(project.FieldOwnerApproveAmount, v)
+// SetRepairFee sets the "repair_fee" field.
+func (u *ProjectUpsert) SetRepairFee(v float64) *ProjectUpsert {
+	u.Set(project.FieldRepairFee, v)
 	return u
 }
 
-// UpdateOwnerApproveAmount sets the "owner_approve_amount" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdateOwnerApproveAmount() *ProjectUpsert {
-	u.SetExcluded(project.FieldOwnerApproveAmount)
+// UpdateRepairFee sets the "repair_fee" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateRepairFee() *ProjectUpsert {
+	u.SetExcluded(project.FieldRepairFee)
 	return u
 }
 
-// AddOwnerApproveAmount adds v to the "owner_approve_amount" field.
-func (u *ProjectUpsert) AddOwnerApproveAmount(v float64) *ProjectUpsert {
-	u.Add(project.FieldOwnerApproveAmount, v)
+// AddRepairFee adds v to the "repair_fee" field.
+func (u *ProjectUpsert) AddRepairFee(v float64) *ProjectUpsert {
+	u.Add(project.FieldRepairFee, v)
 	return u
 }
 
-// ClearOwnerApproveAmount clears the value of the "owner_approve_amount" field.
-func (u *ProjectUpsert) ClearOwnerApproveAmount() *ProjectUpsert {
-	u.SetNull(project.FieldOwnerApproveAmount)
-	return u
-}
-
-// SetOwnerApproveCount sets the "owner_approve_count" field.
-func (u *ProjectUpsert) SetOwnerApproveCount(v int) *ProjectUpsert {
-	u.Set(project.FieldOwnerApproveCount, v)
-	return u
-}
-
-// UpdateOwnerApproveCount sets the "owner_approve_count" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdateOwnerApproveCount() *ProjectUpsert {
-	u.SetExcluded(project.FieldOwnerApproveCount)
-	return u
-}
-
-// AddOwnerApproveCount adds v to the "owner_approve_count" field.
-func (u *ProjectUpsert) AddOwnerApproveCount(v int) *ProjectUpsert {
-	u.Add(project.FieldOwnerApproveCount, v)
-	return u
-}
-
-// ClearOwnerApproveCount clears the value of the "owner_approve_count" field.
-func (u *ProjectUpsert) ClearOwnerApproveCount() *ProjectUpsert {
-	u.SetNull(project.FieldOwnerApproveCount)
-	return u
-}
-
-// SetContractorApplyAmount sets the "contractor_apply_amount" field.
-func (u *ProjectUpsert) SetContractorApplyAmount(v float64) *ProjectUpsert {
-	u.Set(project.FieldContractorApplyAmount, v)
-	return u
-}
-
-// UpdateContractorApplyAmount sets the "contractor_apply_amount" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdateContractorApplyAmount() *ProjectUpsert {
-	u.SetExcluded(project.FieldContractorApplyAmount)
-	return u
-}
-
-// AddContractorApplyAmount adds v to the "contractor_apply_amount" field.
-func (u *ProjectUpsert) AddContractorApplyAmount(v float64) *ProjectUpsert {
-	u.Add(project.FieldContractorApplyAmount, v)
-	return u
-}
-
-// ClearContractorApplyAmount clears the value of the "contractor_apply_amount" field.
-func (u *ProjectUpsert) ClearContractorApplyAmount() *ProjectUpsert {
-	u.SetNull(project.FieldContractorApplyAmount)
-	return u
-}
-
-// SetContractorApplyCount sets the "contractor_apply_count" field.
-func (u *ProjectUpsert) SetContractorApplyCount(v int) *ProjectUpsert {
-	u.Set(project.FieldContractorApplyCount, v)
-	return u
-}
-
-// UpdateContractorApplyCount sets the "contractor_apply_count" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdateContractorApplyCount() *ProjectUpsert {
-	u.SetExcluded(project.FieldContractorApplyCount)
-	return u
-}
-
-// AddContractorApplyCount adds v to the "contractor_apply_count" field.
-func (u *ProjectUpsert) AddContractorApplyCount(v int) *ProjectUpsert {
-	u.Add(project.FieldContractorApplyCount, v)
-	return u
-}
-
-// ClearContractorApplyCount clears the value of the "contractor_apply_count" field.
-func (u *ProjectUpsert) ClearContractorApplyCount() *ProjectUpsert {
-	u.SetNull(project.FieldContractorApplyCount)
-	return u
-}
-
-// SetContractorApproveAmount sets the "contractor_approve_amount" field.
-func (u *ProjectUpsert) SetContractorApproveAmount(v float64) *ProjectUpsert {
-	u.Set(project.FieldContractorApproveAmount, v)
-	return u
-}
-
-// UpdateContractorApproveAmount sets the "contractor_approve_amount" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdateContractorApproveAmount() *ProjectUpsert {
-	u.SetExcluded(project.FieldContractorApproveAmount)
-	return u
-}
-
-// AddContractorApproveAmount adds v to the "contractor_approve_amount" field.
-func (u *ProjectUpsert) AddContractorApproveAmount(v float64) *ProjectUpsert {
-	u.Add(project.FieldContractorApproveAmount, v)
-	return u
-}
-
-// ClearContractorApproveAmount clears the value of the "contractor_approve_amount" field.
-func (u *ProjectUpsert) ClearContractorApproveAmount() *ProjectUpsert {
-	u.SetNull(project.FieldContractorApproveAmount)
-	return u
-}
-
-// SetContractorApproveCount sets the "contractor_approve_count" field.
-func (u *ProjectUpsert) SetContractorApproveCount(v int) *ProjectUpsert {
-	u.Set(project.FieldContractorApproveCount, v)
-	return u
-}
-
-// UpdateContractorApproveCount sets the "contractor_approve_count" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdateContractorApproveCount() *ProjectUpsert {
-	u.SetExcluded(project.FieldContractorApproveCount)
-	return u
-}
-
-// AddContractorApproveCount adds v to the "contractor_approve_count" field.
-func (u *ProjectUpsert) AddContractorApproveCount(v int) *ProjectUpsert {
-	u.Add(project.FieldContractorApproveCount, v)
-	return u
-}
-
-// ClearContractorApproveCount clears the value of the "contractor_approve_count" field.
-func (u *ProjectUpsert) ClearContractorApproveCount() *ProjectUpsert {
-	u.SetNull(project.FieldContractorApproveCount)
-	return u
-}
-
-// SetInstallProgress sets the "install_progress" field.
-func (u *ProjectUpsert) SetInstallProgress(v float64) *ProjectUpsert {
-	u.Set(project.FieldInstallProgress, v)
-	return u
-}
-
-// UpdateInstallProgress sets the "install_progress" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdateInstallProgress() *ProjectUpsert {
-	u.SetExcluded(project.FieldInstallProgress)
-	return u
-}
-
-// AddInstallProgress adds v to the "install_progress" field.
-func (u *ProjectUpsert) AddInstallProgress(v float64) *ProjectUpsert {
-	u.Add(project.FieldInstallProgress, v)
-	return u
-}
-
-// ClearInstallProgress clears the value of the "install_progress" field.
-func (u *ProjectUpsert) ClearInstallProgress() *ProjectUpsert {
-	u.SetNull(project.FieldInstallProgress)
-	return u
-}
-
-// SetEffectiveContractAmount sets the "effective_contract_amount" field.
-func (u *ProjectUpsert) SetEffectiveContractAmount(v float64) *ProjectUpsert {
-	u.Set(project.FieldEffectiveContractAmount, v)
-	return u
-}
-
-// UpdateEffectiveContractAmount sets the "effective_contract_amount" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdateEffectiveContractAmount() *ProjectUpsert {
-	u.SetExcluded(project.FieldEffectiveContractAmount)
-	return u
-}
-
-// AddEffectiveContractAmount adds v to the "effective_contract_amount" field.
-func (u *ProjectUpsert) AddEffectiveContractAmount(v float64) *ProjectUpsert {
-	u.Add(project.FieldEffectiveContractAmount, v)
-	return u
-}
-
-// ClearEffectiveContractAmount clears the value of the "effective_contract_amount" field.
-func (u *ProjectUpsert) ClearEffectiveContractAmount() *ProjectUpsert {
-	u.SetNull(project.FieldEffectiveContractAmount)
-	return u
-}
-
-// SetVaApplyAmount sets the "va_apply_amount" field.
-func (u *ProjectUpsert) SetVaApplyAmount(v float64) *ProjectUpsert {
-	u.Set(project.FieldVaApplyAmount, v)
-	return u
-}
-
-// UpdateVaApplyAmount sets the "va_apply_amount" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdateVaApplyAmount() *ProjectUpsert {
-	u.SetExcluded(project.FieldVaApplyAmount)
-	return u
-}
-
-// AddVaApplyAmount adds v to the "va_apply_amount" field.
-func (u *ProjectUpsert) AddVaApplyAmount(v float64) *ProjectUpsert {
-	u.Add(project.FieldVaApplyAmount, v)
-	return u
-}
-
-// ClearVaApplyAmount clears the value of the "va_apply_amount" field.
-func (u *ProjectUpsert) ClearVaApplyAmount() *ProjectUpsert {
-	u.SetNull(project.FieldVaApplyAmount)
-	return u
-}
-
-// SetVaApproveAmount sets the "va_approve_amount" field.
-func (u *ProjectUpsert) SetVaApproveAmount(v float64) *ProjectUpsert {
-	u.Set(project.FieldVaApproveAmount, v)
-	return u
-}
-
-// UpdateVaApproveAmount sets the "va_approve_amount" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdateVaApproveAmount() *ProjectUpsert {
-	u.SetExcluded(project.FieldVaApproveAmount)
-	return u
-}
-
-// AddVaApproveAmount adds v to the "va_approve_amount" field.
-func (u *ProjectUpsert) AddVaApproveAmount(v float64) *ProjectUpsert {
-	u.Add(project.FieldVaApproveAmount, v)
-	return u
-}
-
-// ClearVaApproveAmount clears the value of the "va_approve_amount" field.
-func (u *ProjectUpsert) ClearVaApproveAmount() *ProjectUpsert {
-	u.SetNull(project.FieldVaApproveAmount)
-	return u
-}
-
-// SetAccumulatedStatutoryDeductions sets the "accumulated_statutory_deductions" field.
-func (u *ProjectUpsert) SetAccumulatedStatutoryDeductions(v float64) *ProjectUpsert {
-	u.Set(project.FieldAccumulatedStatutoryDeductions, v)
-	return u
-}
-
-// UpdateAccumulatedStatutoryDeductions sets the "accumulated_statutory_deductions" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdateAccumulatedStatutoryDeductions() *ProjectUpsert {
-	u.SetExcluded(project.FieldAccumulatedStatutoryDeductions)
-	return u
-}
-
-// AddAccumulatedStatutoryDeductions adds v to the "accumulated_statutory_deductions" field.
-func (u *ProjectUpsert) AddAccumulatedStatutoryDeductions(v float64) *ProjectUpsert {
-	u.Add(project.FieldAccumulatedStatutoryDeductions, v)
-	return u
-}
-
-// ClearAccumulatedStatutoryDeductions clears the value of the "accumulated_statutory_deductions" field.
-func (u *ProjectUpsert) ClearAccumulatedStatutoryDeductions() *ProjectUpsert {
-	u.SetNull(project.FieldAccumulatedStatutoryDeductions)
-	return u
-}
-
-// SetAccumulatedNonStatutoryDeductions sets the "accumulated_non_statutory_deductions" field.
-func (u *ProjectUpsert) SetAccumulatedNonStatutoryDeductions(v float64) *ProjectUpsert {
-	u.Set(project.FieldAccumulatedNonStatutoryDeductions, v)
-	return u
-}
-
-// UpdateAccumulatedNonStatutoryDeductions sets the "accumulated_non_statutory_deductions" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdateAccumulatedNonStatutoryDeductions() *ProjectUpsert {
-	u.SetExcluded(project.FieldAccumulatedNonStatutoryDeductions)
-	return u
-}
-
-// AddAccumulatedNonStatutoryDeductions adds v to the "accumulated_non_statutory_deductions" field.
-func (u *ProjectUpsert) AddAccumulatedNonStatutoryDeductions(v float64) *ProjectUpsert {
-	u.Add(project.FieldAccumulatedNonStatutoryDeductions, v)
-	return u
-}
-
-// ClearAccumulatedNonStatutoryDeductions clears the value of the "accumulated_non_statutory_deductions" field.
-func (u *ProjectUpsert) ClearAccumulatedNonStatutoryDeductions() *ProjectUpsert {
-	u.SetNull(project.FieldAccumulatedNonStatutoryDeductions)
-	return u
-}
-
-// SetAccumulatedStatutoryDeductionsPeriod sets the "accumulated_statutory_deductions_period" field.
-func (u *ProjectUpsert) SetAccumulatedStatutoryDeductionsPeriod(v float64) *ProjectUpsert {
-	u.Set(project.FieldAccumulatedStatutoryDeductionsPeriod, v)
-	return u
-}
-
-// UpdateAccumulatedStatutoryDeductionsPeriod sets the "accumulated_statutory_deductions_period" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdateAccumulatedStatutoryDeductionsPeriod() *ProjectUpsert {
-	u.SetExcluded(project.FieldAccumulatedStatutoryDeductionsPeriod)
-	return u
-}
-
-// AddAccumulatedStatutoryDeductionsPeriod adds v to the "accumulated_statutory_deductions_period" field.
-func (u *ProjectUpsert) AddAccumulatedStatutoryDeductionsPeriod(v float64) *ProjectUpsert {
-	u.Add(project.FieldAccumulatedStatutoryDeductionsPeriod, v)
-	return u
-}
-
-// ClearAccumulatedStatutoryDeductionsPeriod clears the value of the "accumulated_statutory_deductions_period" field.
-func (u *ProjectUpsert) ClearAccumulatedStatutoryDeductionsPeriod() *ProjectUpsert {
-	u.SetNull(project.FieldAccumulatedStatutoryDeductionsPeriod)
-	return u
-}
-
-// SetAccumulatedNonStatutoryDeductionsPeriod sets the "accumulated_non_statutory_deductions_period" field.
-func (u *ProjectUpsert) SetAccumulatedNonStatutoryDeductionsPeriod(v float64) *ProjectUpsert {
-	u.Set(project.FieldAccumulatedNonStatutoryDeductionsPeriod, v)
-	return u
-}
-
-// UpdateAccumulatedNonStatutoryDeductionsPeriod sets the "accumulated_non_statutory_deductions_period" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdateAccumulatedNonStatutoryDeductionsPeriod() *ProjectUpsert {
-	u.SetExcluded(project.FieldAccumulatedNonStatutoryDeductionsPeriod)
-	return u
-}
-
-// AddAccumulatedNonStatutoryDeductionsPeriod adds v to the "accumulated_non_statutory_deductions_period" field.
-func (u *ProjectUpsert) AddAccumulatedNonStatutoryDeductionsPeriod(v float64) *ProjectUpsert {
-	u.Add(project.FieldAccumulatedNonStatutoryDeductionsPeriod, v)
-	return u
-}
-
-// ClearAccumulatedNonStatutoryDeductionsPeriod clears the value of the "accumulated_non_statutory_deductions_period" field.
-func (u *ProjectUpsert) ClearAccumulatedNonStatutoryDeductionsPeriod() *ProjectUpsert {
-	u.SetNull(project.FieldAccumulatedNonStatutoryDeductionsPeriod)
-	return u
-}
-
-// SetTotalContractAmount sets the "total_contract_amount" field.
-func (u *ProjectUpsert) SetTotalContractAmount(v float64) *ProjectUpsert {
-	u.Set(project.FieldTotalContractAmount, v)
-	return u
-}
-
-// UpdateTotalContractAmount sets the "total_contract_amount" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdateTotalContractAmount() *ProjectUpsert {
-	u.SetExcluded(project.FieldTotalContractAmount)
-	return u
-}
-
-// AddTotalContractAmount adds v to the "total_contract_amount" field.
-func (u *ProjectUpsert) AddTotalContractAmount(v float64) *ProjectUpsert {
-	u.Add(project.FieldTotalContractAmount, v)
-	return u
-}
-
-// ClearTotalContractAmount clears the value of the "total_contract_amount" field.
-func (u *ProjectUpsert) ClearTotalContractAmount() *ProjectUpsert {
-	u.SetNull(project.FieldTotalContractAmount)
-	return u
-}
-
-// SetAluminumPlateBudgetPercentage sets the "aluminum_plate_budget_percentage" field.
-func (u *ProjectUpsert) SetAluminumPlateBudgetPercentage(v float64) *ProjectUpsert {
-	u.Set(project.FieldAluminumPlateBudgetPercentage, v)
-	return u
-}
-
-// UpdateAluminumPlateBudgetPercentage sets the "aluminum_plate_budget_percentage" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdateAluminumPlateBudgetPercentage() *ProjectUpsert {
-	u.SetExcluded(project.FieldAluminumPlateBudgetPercentage)
-	return u
-}
-
-// AddAluminumPlateBudgetPercentage adds v to the "aluminum_plate_budget_percentage" field.
-func (u *ProjectUpsert) AddAluminumPlateBudgetPercentage(v float64) *ProjectUpsert {
-	u.Add(project.FieldAluminumPlateBudgetPercentage, v)
-	return u
-}
-
-// ClearAluminumPlateBudgetPercentage clears the value of the "aluminum_plate_budget_percentage" field.
-func (u *ProjectUpsert) ClearAluminumPlateBudgetPercentage() *ProjectUpsert {
-	u.SetNull(project.FieldAluminumPlateBudgetPercentage)
-	return u
-}
-
-// SetAluminumBudgetPercentage sets the "aluminum_budget_percentage" field.
-func (u *ProjectUpsert) SetAluminumBudgetPercentage(v float64) *ProjectUpsert {
-	u.Set(project.FieldAluminumBudgetPercentage, v)
-	return u
-}
-
-// UpdateAluminumBudgetPercentage sets the "aluminum_budget_percentage" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdateAluminumBudgetPercentage() *ProjectUpsert {
-	u.SetExcluded(project.FieldAluminumBudgetPercentage)
-	return u
-}
-
-// AddAluminumBudgetPercentage adds v to the "aluminum_budget_percentage" field.
-func (u *ProjectUpsert) AddAluminumBudgetPercentage(v float64) *ProjectUpsert {
-	u.Add(project.FieldAluminumBudgetPercentage, v)
-	return u
-}
-
-// ClearAluminumBudgetPercentage clears the value of the "aluminum_budget_percentage" field.
-func (u *ProjectUpsert) ClearAluminumBudgetPercentage() *ProjectUpsert {
-	u.SetNull(project.FieldAluminumBudgetPercentage)
-	return u
-}
-
-// SetGlassBudgetPercentage sets the "glass_budget_percentage" field.
-func (u *ProjectUpsert) SetGlassBudgetPercentage(v float64) *ProjectUpsert {
-	u.Set(project.FieldGlassBudgetPercentage, v)
-	return u
-}
-
-// UpdateGlassBudgetPercentage sets the "glass_budget_percentage" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdateGlassBudgetPercentage() *ProjectUpsert {
-	u.SetExcluded(project.FieldGlassBudgetPercentage)
-	return u
-}
-
-// AddGlassBudgetPercentage adds v to the "glass_budget_percentage" field.
-func (u *ProjectUpsert) AddGlassBudgetPercentage(v float64) *ProjectUpsert {
-	u.Add(project.FieldGlassBudgetPercentage, v)
-	return u
-}
-
-// ClearGlassBudgetPercentage clears the value of the "glass_budget_percentage" field.
-func (u *ProjectUpsert) ClearGlassBudgetPercentage() *ProjectUpsert {
-	u.SetNull(project.FieldGlassBudgetPercentage)
-	return u
-}
-
-// SetIronBudgetPercentage sets the "iron_budget_percentage" field.
-func (u *ProjectUpsert) SetIronBudgetPercentage(v float64) *ProjectUpsert {
-	u.Set(project.FieldIronBudgetPercentage, v)
-	return u
-}
-
-// UpdateIronBudgetPercentage sets the "iron_budget_percentage" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdateIronBudgetPercentage() *ProjectUpsert {
-	u.SetExcluded(project.FieldIronBudgetPercentage)
-	return u
-}
-
-// AddIronBudgetPercentage adds v to the "iron_budget_percentage" field.
-func (u *ProjectUpsert) AddIronBudgetPercentage(v float64) *ProjectUpsert {
-	u.Add(project.FieldIronBudgetPercentage, v)
-	return u
-}
-
-// ClearIronBudgetPercentage clears the value of the "iron_budget_percentage" field.
-func (u *ProjectUpsert) ClearIronBudgetPercentage() *ProjectUpsert {
-	u.SetNull(project.FieldIronBudgetPercentage)
-	return u
-}
-
-// SetMilestonePlanYear sets the "milestone_plan_year" field.
-func (u *ProjectUpsert) SetMilestonePlanYear(v int) *ProjectUpsert {
-	u.Set(project.FieldMilestonePlanYear, v)
-	return u
-}
-
-// UpdateMilestonePlanYear sets the "milestone_plan_year" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdateMilestonePlanYear() *ProjectUpsert {
-	u.SetExcluded(project.FieldMilestonePlanYear)
-	return u
-}
-
-// AddMilestonePlanYear adds v to the "milestone_plan_year" field.
-func (u *ProjectUpsert) AddMilestonePlanYear(v int) *ProjectUpsert {
-	u.Add(project.FieldMilestonePlanYear, v)
-	return u
-}
-
-// ClearMilestonePlanYear clears the value of the "milestone_plan_year" field.
-func (u *ProjectUpsert) ClearMilestonePlanYear() *ProjectUpsert {
-	u.SetNull(project.FieldMilestonePlanYear)
-	return u
-}
-
-// SetMilestonePlanMonth sets the "milestone_plan_month" field.
-func (u *ProjectUpsert) SetMilestonePlanMonth(v int) *ProjectUpsert {
-	u.Set(project.FieldMilestonePlanMonth, v)
-	return u
-}
-
-// UpdateMilestonePlanMonth sets the "milestone_plan_month" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdateMilestonePlanMonth() *ProjectUpsert {
-	u.SetExcluded(project.FieldMilestonePlanMonth)
-	return u
-}
-
-// AddMilestonePlanMonth adds v to the "milestone_plan_month" field.
-func (u *ProjectUpsert) AddMilestonePlanMonth(v int) *ProjectUpsert {
-	u.Add(project.FieldMilestonePlanMonth, v)
-	return u
-}
-
-// ClearMilestonePlanMonth clears the value of the "milestone_plan_month" field.
-func (u *ProjectUpsert) ClearMilestonePlanMonth() *ProjectUpsert {
-	u.SetNull(project.FieldMilestonePlanMonth)
-	return u
-}
-
-// SetMilestoneDoneYear sets the "milestone_done_year" field.
-func (u *ProjectUpsert) SetMilestoneDoneYear(v int) *ProjectUpsert {
-	u.Set(project.FieldMilestoneDoneYear, v)
-	return u
-}
-
-// UpdateMilestoneDoneYear sets the "milestone_done_year" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdateMilestoneDoneYear() *ProjectUpsert {
-	u.SetExcluded(project.FieldMilestoneDoneYear)
-	return u
-}
-
-// AddMilestoneDoneYear adds v to the "milestone_done_year" field.
-func (u *ProjectUpsert) AddMilestoneDoneYear(v int) *ProjectUpsert {
-	u.Add(project.FieldMilestoneDoneYear, v)
-	return u
-}
-
-// ClearMilestoneDoneYear clears the value of the "milestone_done_year" field.
-func (u *ProjectUpsert) ClearMilestoneDoneYear() *ProjectUpsert {
-	u.SetNull(project.FieldMilestoneDoneYear)
-	return u
-}
-
-// SetMilestoneDoneMonth sets the "milestone_done_month" field.
-func (u *ProjectUpsert) SetMilestoneDoneMonth(v int) *ProjectUpsert {
-	u.Set(project.FieldMilestoneDoneMonth, v)
-	return u
-}
-
-// UpdateMilestoneDoneMonth sets the "milestone_done_month" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdateMilestoneDoneMonth() *ProjectUpsert {
-	u.SetExcluded(project.FieldMilestoneDoneMonth)
-	return u
-}
-
-// AddMilestoneDoneMonth adds v to the "milestone_done_month" field.
-func (u *ProjectUpsert) AddMilestoneDoneMonth(v int) *ProjectUpsert {
-	u.Add(project.FieldMilestoneDoneMonth, v)
-	return u
-}
-
-// ClearMilestoneDoneMonth clears the value of the "milestone_done_month" field.
-func (u *ProjectUpsert) ClearMilestoneDoneMonth() *ProjectUpsert {
-	u.SetNull(project.FieldMilestoneDoneMonth)
-	return u
-}
-
-// SetPmArea sets the "pm_area" field.
-func (u *ProjectUpsert) SetPmArea(v float64) *ProjectUpsert {
-	u.Set(project.FieldPmArea, v)
-	return u
-}
-
-// UpdatePmArea sets the "pm_area" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdatePmArea() *ProjectUpsert {
-	u.SetExcluded(project.FieldPmArea)
-	return u
-}
-
-// AddPmArea adds v to the "pm_area" field.
-func (u *ProjectUpsert) AddPmArea(v float64) *ProjectUpsert {
-	u.Add(project.FieldPmArea, v)
-	return u
-}
-
-// ClearPmArea clears the value of the "pm_area" field.
-func (u *ProjectUpsert) ClearPmArea() *ProjectUpsert {
-	u.SetNull(project.FieldPmArea)
-	return u
-}
-
-// SetPmYearTarget sets the "pm_year_target" field.
-func (u *ProjectUpsert) SetPmYearTarget(v float64) *ProjectUpsert {
-	u.Set(project.FieldPmYearTarget, v)
-	return u
-}
-
-// UpdatePmYearTarget sets the "pm_year_target" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdatePmYearTarget() *ProjectUpsert {
-	u.SetExcluded(project.FieldPmYearTarget)
-	return u
-}
-
-// AddPmYearTarget adds v to the "pm_year_target" field.
-func (u *ProjectUpsert) AddPmYearTarget(v float64) *ProjectUpsert {
-	u.Add(project.FieldPmYearTarget, v)
-	return u
-}
-
-// ClearPmYearTarget clears the value of the "pm_year_target" field.
-func (u *ProjectUpsert) ClearPmYearTarget() *ProjectUpsert {
-	u.SetNull(project.FieldPmYearTarget)
-	return u
-}
-
-// SetPmMonthTarget sets the "pm_month_target" field.
-func (u *ProjectUpsert) SetPmMonthTarget(v float64) *ProjectUpsert {
-	u.Set(project.FieldPmMonthTarget, v)
-	return u
-}
-
-// UpdatePmMonthTarget sets the "pm_month_target" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdatePmMonthTarget() *ProjectUpsert {
-	u.SetExcluded(project.FieldPmMonthTarget)
-	return u
-}
-
-// AddPmMonthTarget adds v to the "pm_month_target" field.
-func (u *ProjectUpsert) AddPmMonthTarget(v float64) *ProjectUpsert {
-	u.Add(project.FieldPmMonthTarget, v)
-	return u
-}
-
-// ClearPmMonthTarget clears the value of the "pm_month_target" field.
-func (u *ProjectUpsert) ClearPmMonthTarget() *ProjectUpsert {
-	u.SetNull(project.FieldPmMonthTarget)
-	return u
-}
-
-// SetPmYearActual sets the "pm_year_actual" field.
-func (u *ProjectUpsert) SetPmYearActual(v float64) *ProjectUpsert {
-	u.Set(project.FieldPmYearActual, v)
-	return u
-}
-
-// UpdatePmYearActual sets the "pm_year_actual" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdatePmYearActual() *ProjectUpsert {
-	u.SetExcluded(project.FieldPmYearActual)
-	return u
-}
-
-// AddPmYearActual adds v to the "pm_year_actual" field.
-func (u *ProjectUpsert) AddPmYearActual(v float64) *ProjectUpsert {
-	u.Add(project.FieldPmYearActual, v)
-	return u
-}
-
-// ClearPmYearActual clears the value of the "pm_year_actual" field.
-func (u *ProjectUpsert) ClearPmYearActual() *ProjectUpsert {
-	u.SetNull(project.FieldPmYearActual)
-	return u
-}
-
-// SetPmMonthActual sets the "pm_month_actual" field.
-func (u *ProjectUpsert) SetPmMonthActual(v float64) *ProjectUpsert {
-	u.Set(project.FieldPmMonthActual, v)
-	return u
-}
-
-// UpdatePmMonthActual sets the "pm_month_actual" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdatePmMonthActual() *ProjectUpsert {
-	u.SetExcluded(project.FieldPmMonthActual)
-	return u
-}
-
-// AddPmMonthActual adds v to the "pm_month_actual" field.
-func (u *ProjectUpsert) AddPmMonthActual(v float64) *ProjectUpsert {
-	u.Add(project.FieldPmMonthActual, v)
-	return u
-}
-
-// ClearPmMonthActual clears the value of the "pm_month_actual" field.
-func (u *ProjectUpsert) ClearPmMonthActual() *ProjectUpsert {
-	u.SetNull(project.FieldPmMonthActual)
-	return u
-}
-
-// SetPmTotal sets the "pm_total" field.
-func (u *ProjectUpsert) SetPmTotal(v float64) *ProjectUpsert {
-	u.Set(project.FieldPmTotal, v)
-	return u
-}
-
-// UpdatePmTotal sets the "pm_total" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdatePmTotal() *ProjectUpsert {
-	u.SetExcluded(project.FieldPmTotal)
-	return u
-}
-
-// AddPmTotal adds v to the "pm_total" field.
-func (u *ProjectUpsert) AddPmTotal(v float64) *ProjectUpsert {
-	u.Add(project.FieldPmTotal, v)
-	return u
-}
-
-// ClearPmTotal clears the value of the "pm_total" field.
-func (u *ProjectUpsert) ClearPmTotal() *ProjectUpsert {
-	u.SetNull(project.FieldPmTotal)
-	return u
-}
-
-// SetPmYesterday sets the "pm_yesterday" field.
-func (u *ProjectUpsert) SetPmYesterday(v float64) *ProjectUpsert {
-	u.Set(project.FieldPmYesterday, v)
-	return u
-}
-
-// UpdatePmYesterday sets the "pm_yesterday" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdatePmYesterday() *ProjectUpsert {
-	u.SetExcluded(project.FieldPmYesterday)
-	return u
-}
-
-// AddPmYesterday adds v to the "pm_yesterday" field.
-func (u *ProjectUpsert) AddPmYesterday(v float64) *ProjectUpsert {
-	u.Add(project.FieldPmYesterday, v)
-	return u
-}
-
-// ClearPmYesterday clears the value of the "pm_yesterday" field.
-func (u *ProjectUpsert) ClearPmYesterday() *ProjectUpsert {
-	u.SetNull(project.FieldPmYesterday)
+// ClearRepairFee clears the value of the "repair_fee" field.
+func (u *ProjectUpsert) ClearRepairFee() *ProjectUpsert {
+	u.SetNull(project.FieldRepairFee)
 	return u
 }
 
@@ -3053,198 +1105,6 @@ func (u *ProjectUpsert) ClearUnitComponentInstallation() *ProjectUpsert {
 	return u
 }
 
-// SetMaterialLoss sets the "material_loss" field.
-func (u *ProjectUpsert) SetMaterialLoss(v float64) *ProjectUpsert {
-	u.Set(project.FieldMaterialLoss, v)
-	return u
-}
-
-// UpdateMaterialLoss sets the "material_loss" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdateMaterialLoss() *ProjectUpsert {
-	u.SetExcluded(project.FieldMaterialLoss)
-	return u
-}
-
-// AddMaterialLoss adds v to the "material_loss" field.
-func (u *ProjectUpsert) AddMaterialLoss(v float64) *ProjectUpsert {
-	u.Add(project.FieldMaterialLoss, v)
-	return u
-}
-
-// ClearMaterialLoss clears the value of the "material_loss" field.
-func (u *ProjectUpsert) ClearMaterialLoss() *ProjectUpsert {
-	u.SetNull(project.FieldMaterialLoss)
-	return u
-}
-
-// SetDesignRatedWeight sets the "design_rated_weight" field.
-func (u *ProjectUpsert) SetDesignRatedWeight(v float64) *ProjectUpsert {
-	u.Set(project.FieldDesignRatedWeight, v)
-	return u
-}
-
-// UpdateDesignRatedWeight sets the "design_rated_weight" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdateDesignRatedWeight() *ProjectUpsert {
-	u.SetExcluded(project.FieldDesignRatedWeight)
-	return u
-}
-
-// AddDesignRatedWeight adds v to the "design_rated_weight" field.
-func (u *ProjectUpsert) AddDesignRatedWeight(v float64) *ProjectUpsert {
-	u.Add(project.FieldDesignRatedWeight, v)
-	return u
-}
-
-// ClearDesignRatedWeight clears the value of the "design_rated_weight" field.
-func (u *ProjectUpsert) ClearDesignRatedWeight() *ProjectUpsert {
-	u.SetNull(project.FieldDesignRatedWeight)
-	return u
-}
-
-// SetProcessingWeight sets the "processing_weight" field.
-func (u *ProjectUpsert) SetProcessingWeight(v float64) *ProjectUpsert {
-	u.Set(project.FieldProcessingWeight, v)
-	return u
-}
-
-// UpdateProcessingWeight sets the "processing_weight" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdateProcessingWeight() *ProjectUpsert {
-	u.SetExcluded(project.FieldProcessingWeight)
-	return u
-}
-
-// AddProcessingWeight adds v to the "processing_weight" field.
-func (u *ProjectUpsert) AddProcessingWeight(v float64) *ProjectUpsert {
-	u.Add(project.FieldProcessingWeight, v)
-	return u
-}
-
-// ClearProcessingWeight clears the value of the "processing_weight" field.
-func (u *ProjectUpsert) ClearProcessingWeight() *ProjectUpsert {
-	u.SetNull(project.FieldProcessingWeight)
-	return u
-}
-
-// SetItemStockWeight sets the "item_stock_weight" field.
-func (u *ProjectUpsert) SetItemStockWeight(v float64) *ProjectUpsert {
-	u.Set(project.FieldItemStockWeight, v)
-	return u
-}
-
-// UpdateItemStockWeight sets the "item_stock_weight" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdateItemStockWeight() *ProjectUpsert {
-	u.SetExcluded(project.FieldItemStockWeight)
-	return u
-}
-
-// AddItemStockWeight adds v to the "item_stock_weight" field.
-func (u *ProjectUpsert) AddItemStockWeight(v float64) *ProjectUpsert {
-	u.Add(project.FieldItemStockWeight, v)
-	return u
-}
-
-// ClearItemStockWeight clears the value of the "item_stock_weight" field.
-func (u *ProjectUpsert) ClearItemStockWeight() *ProjectUpsert {
-	u.SetNull(project.FieldItemStockWeight)
-	return u
-}
-
-// SetPalletsInStock sets the "pallets_in_stock" field.
-func (u *ProjectUpsert) SetPalletsInStock(v float64) *ProjectUpsert {
-	u.Set(project.FieldPalletsInStock, v)
-	return u
-}
-
-// UpdatePalletsInStock sets the "pallets_in_stock" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdatePalletsInStock() *ProjectUpsert {
-	u.SetExcluded(project.FieldPalletsInStock)
-	return u
-}
-
-// AddPalletsInStock adds v to the "pallets_in_stock" field.
-func (u *ProjectUpsert) AddPalletsInStock(v float64) *ProjectUpsert {
-	u.Add(project.FieldPalletsInStock, v)
-	return u
-}
-
-// ClearPalletsInStock clears the value of the "pallets_in_stock" field.
-func (u *ProjectUpsert) ClearPalletsInStock() *ProjectUpsert {
-	u.SetNull(project.FieldPalletsInStock)
-	return u
-}
-
-// SetPartsInStock sets the "parts_in_stock" field.
-func (u *ProjectUpsert) SetPartsInStock(v float64) *ProjectUpsert {
-	u.Set(project.FieldPartsInStock, v)
-	return u
-}
-
-// UpdatePartsInStock sets the "parts_in_stock" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdatePartsInStock() *ProjectUpsert {
-	u.SetExcluded(project.FieldPartsInStock)
-	return u
-}
-
-// AddPartsInStock adds v to the "parts_in_stock" field.
-func (u *ProjectUpsert) AddPartsInStock(v float64) *ProjectUpsert {
-	u.Add(project.FieldPartsInStock, v)
-	return u
-}
-
-// ClearPartsInStock clears the value of the "parts_in_stock" field.
-func (u *ProjectUpsert) ClearPartsInStock() *ProjectUpsert {
-	u.SetNull(project.FieldPartsInStock)
-	return u
-}
-
-// SetQualityScore sets the "quality_score" field.
-func (u *ProjectUpsert) SetQualityScore(v float64) *ProjectUpsert {
-	u.Set(project.FieldQualityScore, v)
-	return u
-}
-
-// UpdateQualityScore sets the "quality_score" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdateQualityScore() *ProjectUpsert {
-	u.SetExcluded(project.FieldQualityScore)
-	return u
-}
-
-// AddQualityScore adds v to the "quality_score" field.
-func (u *ProjectUpsert) AddQualityScore(v float64) *ProjectUpsert {
-	u.Add(project.FieldQualityScore, v)
-	return u
-}
-
-// ClearQualityScore clears the value of the "quality_score" field.
-func (u *ProjectUpsert) ClearQualityScore() *ProjectUpsert {
-	u.SetNull(project.FieldQualityScore)
-	return u
-}
-
-// SetQualityRanking sets the "quality_ranking" field.
-func (u *ProjectUpsert) SetQualityRanking(v float64) *ProjectUpsert {
-	u.Set(project.FieldQualityRanking, v)
-	return u
-}
-
-// UpdateQualityRanking sets the "quality_ranking" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdateQualityRanking() *ProjectUpsert {
-	u.SetExcluded(project.FieldQualityRanking)
-	return u
-}
-
-// AddQualityRanking adds v to the "quality_ranking" field.
-func (u *ProjectUpsert) AddQualityRanking(v float64) *ProjectUpsert {
-	u.Add(project.FieldQualityRanking, v)
-	return u
-}
-
-// ClearQualityRanking clears the value of the "quality_ranking" field.
-func (u *ProjectUpsert) ClearQualityRanking() *ProjectUpsert {
-	u.SetNull(project.FieldQualityRanking)
-	return u
-}
-
 // SetBulkMaterialsTotalOrderQuantity sets the "bulk_materials_total_order_quantity" field.
 func (u *ProjectUpsert) SetBulkMaterialsTotalOrderQuantity(v float64) *ProjectUpsert {
 	u.Set(project.FieldBulkMaterialsTotalOrderQuantity, v)
@@ -3314,78 +1174,6 @@ func (u *ProjectUpsert) AddBulkMaterialsUncompletedQuantity(v float64) *ProjectU
 // ClearBulkMaterialsUncompletedQuantity clears the value of the "bulk_materials_uncompleted_quantity" field.
 func (u *ProjectUpsert) ClearBulkMaterialsUncompletedQuantity() *ProjectUpsert {
 	u.SetNull(project.FieldBulkMaterialsUncompletedQuantity)
-	return u
-}
-
-// SetPlanTotalCount sets the "plan_total_count" field.
-func (u *ProjectUpsert) SetPlanTotalCount(v int) *ProjectUpsert {
-	u.Set(project.FieldPlanTotalCount, v)
-	return u
-}
-
-// UpdatePlanTotalCount sets the "plan_total_count" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdatePlanTotalCount() *ProjectUpsert {
-	u.SetExcluded(project.FieldPlanTotalCount)
-	return u
-}
-
-// AddPlanTotalCount adds v to the "plan_total_count" field.
-func (u *ProjectUpsert) AddPlanTotalCount(v int) *ProjectUpsert {
-	u.Add(project.FieldPlanTotalCount, v)
-	return u
-}
-
-// ClearPlanTotalCount clears the value of the "plan_total_count" field.
-func (u *ProjectUpsert) ClearPlanTotalCount() *ProjectUpsert {
-	u.SetNull(project.FieldPlanTotalCount)
-	return u
-}
-
-// SetPlanOverdueCount sets the "plan_overdue_count" field.
-func (u *ProjectUpsert) SetPlanOverdueCount(v int) *ProjectUpsert {
-	u.Set(project.FieldPlanOverdueCount, v)
-	return u
-}
-
-// UpdatePlanOverdueCount sets the "plan_overdue_count" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdatePlanOverdueCount() *ProjectUpsert {
-	u.SetExcluded(project.FieldPlanOverdueCount)
-	return u
-}
-
-// AddPlanOverdueCount adds v to the "plan_overdue_count" field.
-func (u *ProjectUpsert) AddPlanOverdueCount(v int) *ProjectUpsert {
-	u.Add(project.FieldPlanOverdueCount, v)
-	return u
-}
-
-// ClearPlanOverdueCount clears the value of the "plan_overdue_count" field.
-func (u *ProjectUpsert) ClearPlanOverdueCount() *ProjectUpsert {
-	u.SetNull(project.FieldPlanOverdueCount)
-	return u
-}
-
-// SetPlanOverdueMonthCount sets the "plan_overdue_month_count" field.
-func (u *ProjectUpsert) SetPlanOverdueMonthCount(v int) *ProjectUpsert {
-	u.Set(project.FieldPlanOverdueMonthCount, v)
-	return u
-}
-
-// UpdatePlanOverdueMonthCount sets the "plan_overdue_month_count" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdatePlanOverdueMonthCount() *ProjectUpsert {
-	u.SetExcluded(project.FieldPlanOverdueMonthCount)
-	return u
-}
-
-// AddPlanOverdueMonthCount adds v to the "plan_overdue_month_count" field.
-func (u *ProjectUpsert) AddPlanOverdueMonthCount(v int) *ProjectUpsert {
-	u.Add(project.FieldPlanOverdueMonthCount, v)
-	return u
-}
-
-// ClearPlanOverdueMonthCount clears the value of the "plan_overdue_month_count" field.
-func (u *ProjectUpsert) ClearPlanOverdueMonthCount() *ProjectUpsert {
-	u.SetNull(project.FieldPlanOverdueMonthCount)
 	return u
 }
 
@@ -3660,279 +1448,6 @@ func (u *ProjectUpsertOne) UpdateCode() *ProjectUpsertOne {
 	})
 }
 
-// SetManager sets the "manager" field.
-func (u *ProjectUpsertOne) SetManager(v string) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetManager(v)
-	})
-}
-
-// UpdateManager sets the "manager" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdateManager() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateManager()
-	})
-}
-
-// ClearManager clears the value of the "manager" field.
-func (u *ProjectUpsertOne) ClearManager() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearManager()
-	})
-}
-
-// SetName sets the "name" field.
-func (u *ProjectUpsertOne) SetName(v string) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetName(v)
-	})
-}
-
-// UpdateName sets the "name" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdateName() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateName()
-	})
-}
-
-// ClearName clears the value of the "name" field.
-func (u *ProjectUpsertOne) ClearName() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearName()
-	})
-}
-
-// SetOwner sets the "owner" field.
-func (u *ProjectUpsertOne) SetOwner(v string) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetOwner(v)
-	})
-}
-
-// UpdateOwner sets the "owner" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdateOwner() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateOwner()
-	})
-}
-
-// ClearOwner clears the value of the "owner" field.
-func (u *ProjectUpsertOne) ClearOwner() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearOwner()
-	})
-}
-
-// SetJzs sets the "jzs" field.
-func (u *ProjectUpsertOne) SetJzs(v string) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetJzs(v)
-	})
-}
-
-// UpdateJzs sets the "jzs" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdateJzs() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateJzs()
-	})
-}
-
-// ClearJzs clears the value of the "jzs" field.
-func (u *ProjectUpsertOne) ClearJzs() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearJzs()
-	})
-}
-
-// SetMcn sets the "mcn" field.
-func (u *ProjectUpsertOne) SetMcn(v string) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetMcn(v)
-	})
-}
-
-// UpdateMcn sets the "mcn" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdateMcn() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateMcn()
-	})
-}
-
-// ClearMcn clears the value of the "mcn" field.
-func (u *ProjectUpsertOne) ClearMcn() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearMcn()
-	})
-}
-
-// SetConsultant sets the "consultant" field.
-func (u *ProjectUpsertOne) SetConsultant(v string) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetConsultant(v)
-	})
-}
-
-// UpdateConsultant sets the "consultant" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdateConsultant() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateConsultant()
-	})
-}
-
-// ClearConsultant clears the value of the "consultant" field.
-func (u *ProjectUpsertOne) ClearConsultant() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearConsultant()
-	})
-}
-
-// SetAreas sets the "areas" field.
-func (u *ProjectUpsertOne) SetAreas(v string) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetAreas(v)
-	})
-}
-
-// UpdateAreas sets the "areas" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdateAreas() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateAreas()
-	})
-}
-
-// ClearAreas clears the value of the "areas" field.
-func (u *ProjectUpsertOne) ClearAreas() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearAreas()
-	})
-}
-
-// SetStartDate sets the "start_date" field.
-func (u *ProjectUpsertOne) SetStartDate(v time.Time) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetStartDate(v)
-	})
-}
-
-// UpdateStartDate sets the "start_date" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdateStartDate() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateStartDate()
-	})
-}
-
-// ClearStartDate clears the value of the "start_date" field.
-func (u *ProjectUpsertOne) ClearStartDate() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearStartDate()
-	})
-}
-
-// SetFsDate sets the "fs_date" field.
-func (u *ProjectUpsertOne) SetFsDate(v time.Time) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetFsDate(v)
-	})
-}
-
-// UpdateFsDate sets the "fs_date" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdateFsDate() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateFsDate()
-	})
-}
-
-// ClearFsDate clears the value of the "fs_date" field.
-func (u *ProjectUpsertOne) ClearFsDate() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearFsDate()
-	})
-}
-
-// SetOpDate sets the "op_date" field.
-func (u *ProjectUpsertOne) SetOpDate(v time.Time) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetOpDate(v)
-	})
-}
-
-// UpdateOpDate sets the "op_date" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdateOpDate() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateOpDate()
-	})
-}
-
-// ClearOpDate clears the value of the "op_date" field.
-func (u *ProjectUpsertOne) ClearOpDate() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearOpDate()
-	})
-}
-
-// SetEndDate sets the "end_date" field.
-func (u *ProjectUpsertOne) SetEndDate(v time.Time) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetEndDate(v)
-	})
-}
-
-// UpdateEndDate sets the "end_date" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdateEndDate() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateEndDate()
-	})
-}
-
-// ClearEndDate clears the value of the "end_date" field.
-func (u *ProjectUpsertOne) ClearEndDate() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearEndDate()
-	})
-}
-
-// SetMntyr sets the "mntyr" field.
-func (u *ProjectUpsertOne) SetMntyr(v string) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetMntyr(v)
-	})
-}
-
-// UpdateMntyr sets the "mntyr" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdateMntyr() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateMntyr()
-	})
-}
-
-// ClearMntyr clears the value of the "mntyr" field.
-func (u *ProjectUpsertOne) ClearMntyr() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearMntyr()
-	})
-}
-
-// SetConType sets the "con_type" field.
-func (u *ProjectUpsertOne) SetConType(v string) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetConType(v)
-	})
-}
-
-// UpdateConType sets the "con_type" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdateConType() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateConType()
-	})
-}
-
-// ClearConType clears the value of the "con_type" field.
-func (u *ProjectUpsertOne) ClearConType() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearConType()
-	})
-}
-
 // SetIsFinished sets the "is_finished" field.
 func (u *ProjectUpsertOne) SetIsFinished(v bool) *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
@@ -3947,1088 +1462,276 @@ func (u *ProjectUpsertOne) UpdateIsFinished() *ProjectUpsertOne {
 	})
 }
 
-// SetCje sets the "cje" field.
-func (u *ProjectUpsertOne) SetCje(v float64) *ProjectUpsertOne {
+// SetRevenueKpi sets the "revenue_kpi" field.
+func (u *ProjectUpsertOne) SetRevenueKpi(v float64) *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
-		s.SetCje(v)
+		s.SetRevenueKpi(v)
 	})
 }
 
-// AddCje adds v to the "cje" field.
-func (u *ProjectUpsertOne) AddCje(v float64) *ProjectUpsertOne {
+// AddRevenueKpi adds v to the "revenue_kpi" field.
+func (u *ProjectUpsertOne) AddRevenueKpi(v float64) *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
-		s.AddCje(v)
+		s.AddRevenueKpi(v)
 	})
 }
 
-// UpdateCje sets the "cje" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdateCje() *ProjectUpsertOne {
+// UpdateRevenueKpi sets the "revenue_kpi" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateRevenueKpi() *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateCje()
+		s.UpdateRevenueKpi()
 	})
 }
 
-// ClearCje clears the value of the "cje" field.
-func (u *ProjectUpsertOne) ClearCje() *ProjectUpsertOne {
+// ClearRevenueKpi clears the value of the "revenue_kpi" field.
+func (u *ProjectUpsertOne) ClearRevenueKpi() *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
-		s.ClearCje()
+		s.ClearRevenueKpi()
 	})
 }
 
-// SetYye sets the "yye" field.
-func (u *ProjectUpsertOne) SetYye(v float64) *ProjectUpsertOne {
+// SetRevenueCurrentYearCompleted sets the "revenue_current_year_completed" field.
+func (u *ProjectUpsertOne) SetRevenueCurrentYearCompleted(v float64) *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
-		s.SetYye(v)
+		s.SetRevenueCurrentYearCompleted(v)
 	})
 }
 
-// AddYye adds v to the "yye" field.
-func (u *ProjectUpsertOne) AddYye(v float64) *ProjectUpsertOne {
+// AddRevenueCurrentYearCompleted adds v to the "revenue_current_year_completed" field.
+func (u *ProjectUpsertOne) AddRevenueCurrentYearCompleted(v float64) *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
-		s.AddYye(v)
+		s.AddRevenueCurrentYearCompleted(v)
 	})
 }
 
-// UpdateYye sets the "yye" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdateYye() *ProjectUpsertOne {
+// UpdateRevenueCurrentYearCompleted sets the "revenue_current_year_completed" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateRevenueCurrentYearCompleted() *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateYye()
+		s.UpdateRevenueCurrentYearCompleted()
 	})
 }
 
-// ClearYye clears the value of the "yye" field.
-func (u *ProjectUpsertOne) ClearYye() *ProjectUpsertOne {
+// ClearRevenueCurrentYearCompleted clears the value of the "revenue_current_year_completed" field.
+func (u *ProjectUpsertOne) ClearRevenueCurrentYearCompleted() *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
-		s.ClearYye()
+		s.ClearRevenueCurrentYearCompleted()
 	})
 }
 
-// SetXjl sets the "xjl" field.
-func (u *ProjectUpsertOne) SetXjl(v float64) *ProjectUpsertOne {
+// SetRevenueAccumulatedCompleted sets the "revenue_accumulated_completed" field.
+func (u *ProjectUpsertOne) SetRevenueAccumulatedCompleted(v float64) *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
-		s.SetXjl(v)
+		s.SetRevenueAccumulatedCompleted(v)
 	})
 }
 
-// AddXjl adds v to the "xjl" field.
-func (u *ProjectUpsertOne) AddXjl(v float64) *ProjectUpsertOne {
+// AddRevenueAccumulatedCompleted adds v to the "revenue_accumulated_completed" field.
+func (u *ProjectUpsertOne) AddRevenueAccumulatedCompleted(v float64) *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
-		s.AddXjl(v)
+		s.AddRevenueAccumulatedCompleted(v)
 	})
 }
 
-// UpdateXjl sets the "xjl" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdateXjl() *ProjectUpsertOne {
+// UpdateRevenueAccumulatedCompleted sets the "revenue_accumulated_completed" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateRevenueAccumulatedCompleted() *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateXjl()
+		s.UpdateRevenueAccumulatedCompleted()
 	})
 }
 
-// ClearXjl clears the value of the "xjl" field.
-func (u *ProjectUpsertOne) ClearXjl() *ProjectUpsertOne {
+// ClearRevenueAccumulatedCompleted clears the value of the "revenue_accumulated_completed" field.
+func (u *ProjectUpsertOne) ClearRevenueAccumulatedCompleted() *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
-		s.ClearXjl()
+		s.ClearRevenueAccumulatedCompleted()
 	})
 }
 
-// SetXmglfYs sets the "xmglf_ys" field.
-func (u *ProjectUpsertOne) SetXmglfYs(v float64) *ProjectUpsertOne {
+// SetPayDate sets the "pay_date" field.
+func (u *ProjectUpsertOne) SetPayDate(v time.Time) *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
-		s.SetXmglfYs(v)
+		s.SetPayDate(v)
 	})
 }
 
-// AddXmglfYs adds v to the "xmglf_ys" field.
-func (u *ProjectUpsertOne) AddXmglfYs(v float64) *ProjectUpsertOne {
+// UpdatePayDate sets the "pay_date" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdatePayDate() *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
-		s.AddXmglfYs(v)
+		s.UpdatePayDate()
 	})
 }
 
-// UpdateXmglfYs sets the "xmglf_ys" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdateXmglfYs() *ProjectUpsertOne {
+// ClearPayDate clears the value of the "pay_date" field.
+func (u *ProjectUpsertOne) ClearPayDate() *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateXmglfYs()
+		s.ClearPayDate()
 	})
 }
 
-// ClearXmglfYs clears the value of the "xmglf_ys" field.
-func (u *ProjectUpsertOne) ClearXmglfYs() *ProjectUpsertOne {
+// SetOwnerVoCount sets the "owner_vo_count" field.
+func (u *ProjectUpsertOne) SetOwnerVoCount(v int) *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
-		s.ClearXmglfYs()
+		s.SetOwnerVoCount(v)
 	})
 }
 
-// SetXmglfLj sets the "xmglf_lj" field.
-func (u *ProjectUpsertOne) SetXmglfLj(v float64) *ProjectUpsertOne {
+// AddOwnerVoCount adds v to the "owner_vo_count" field.
+func (u *ProjectUpsertOne) AddOwnerVoCount(v int) *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
-		s.SetXmglfLj(v)
+		s.AddOwnerVoCount(v)
 	})
 }
 
-// AddXmglfLj adds v to the "xmglf_lj" field.
-func (u *ProjectUpsertOne) AddXmglfLj(v float64) *ProjectUpsertOne {
+// UpdateOwnerVoCount sets the "owner_vo_count" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateOwnerVoCount() *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
-		s.AddXmglfLj(v)
+		s.UpdateOwnerVoCount()
 	})
 }
 
-// UpdateXmglfLj sets the "xmglf_lj" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdateXmglfLj() *ProjectUpsertOne {
+// ClearOwnerVoCount clears the value of the "owner_vo_count" field.
+func (u *ProjectUpsertOne) ClearOwnerVoCount() *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateXmglfLj()
+		s.ClearOwnerVoCount()
 	})
 }
 
-// ClearXmglfLj clears the value of the "xmglf_lj" field.
-func (u *ProjectUpsertOne) ClearXmglfLj() *ProjectUpsertOne {
+// SetContractorVoCount sets the "contractor_vo_count" field.
+func (u *ProjectUpsertOne) SetContractorVoCount(v int) *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
-		s.ClearXmglfLj()
+		s.SetContractorVoCount(v)
 	})
 }
 
-// SetXmsjf sets the "xmsjf" field.
-func (u *ProjectUpsertOne) SetXmsjf(v float64) *ProjectUpsertOne {
+// AddContractorVoCount adds v to the "contractor_vo_count" field.
+func (u *ProjectUpsertOne) AddContractorVoCount(v int) *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
-		s.SetXmsjf(v)
+		s.AddContractorVoCount(v)
 	})
 }
 
-// AddXmsjf adds v to the "xmsjf" field.
-func (u *ProjectUpsertOne) AddXmsjf(v float64) *ProjectUpsertOne {
+// UpdateContractorVoCount sets the "contractor_vo_count" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateContractorVoCount() *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
-		s.AddXmsjf(v)
+		s.UpdateContractorVoCount()
 	})
 }
 
-// UpdateXmsjf sets the "xmsjf" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdateXmsjf() *ProjectUpsertOne {
+// ClearContractorVoCount clears the value of the "contractor_vo_count" field.
+func (u *ProjectUpsertOne) ClearContractorVoCount() *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateXmsjf()
+		s.ClearContractorVoCount()
 	})
 }
 
-// ClearXmsjf clears the value of the "xmsjf" field.
-func (u *ProjectUpsertOne) ClearXmsjf() *ProjectUpsertOne {
+// SetAccumulateDeduction sets the "accumulate_deduction" field.
+func (u *ProjectUpsertOne) SetAccumulateDeduction(v float64) *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
-		s.ClearXmsjf()
+		s.SetAccumulateDeduction(v)
 	})
 }
 
-// SetXmfzr sets the "xmfzr" field.
-func (u *ProjectUpsertOne) SetXmfzr(v string) *ProjectUpsertOne {
+// AddAccumulateDeduction adds v to the "accumulate_deduction" field.
+func (u *ProjectUpsertOne) AddAccumulateDeduction(v float64) *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
-		s.SetXmfzr(v)
+		s.AddAccumulateDeduction(v)
 	})
 }
 
-// UpdateXmfzr sets the "xmfzr" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdateXmfzr() *ProjectUpsertOne {
+// UpdateAccumulateDeduction sets the "accumulate_deduction" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateAccumulateDeduction() *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateXmfzr()
+		s.UpdateAccumulateDeduction()
 	})
 }
 
-// ClearXmfzr clears the value of the "xmfzr" field.
-func (u *ProjectUpsertOne) ClearXmfzr() *ProjectUpsertOne {
+// ClearAccumulateDeduction clears the value of the "accumulate_deduction" field.
+func (u *ProjectUpsertOne) ClearAccumulateDeduction() *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
-		s.ClearXmfzr()
+		s.ClearAccumulateDeduction()
 	})
 }
 
-// SetOwnerApplyAmount sets the "owner_apply_amount" field.
-func (u *ProjectUpsertOne) SetOwnerApplyAmount(v float64) *ProjectUpsertOne {
+// SetSubcontractorVaCount sets the "subcontractor_va_count" field.
+func (u *ProjectUpsertOne) SetSubcontractorVaCount(v int) *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
-		s.SetOwnerApplyAmount(v)
+		s.SetSubcontractorVaCount(v)
 	})
 }
 
-// AddOwnerApplyAmount adds v to the "owner_apply_amount" field.
-func (u *ProjectUpsertOne) AddOwnerApplyAmount(v float64) *ProjectUpsertOne {
+// AddSubcontractorVaCount adds v to the "subcontractor_va_count" field.
+func (u *ProjectUpsertOne) AddSubcontractorVaCount(v int) *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
-		s.AddOwnerApplyAmount(v)
+		s.AddSubcontractorVaCount(v)
 	})
 }
 
-// UpdateOwnerApplyAmount sets the "owner_apply_amount" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdateOwnerApplyAmount() *ProjectUpsertOne {
+// UpdateSubcontractorVaCount sets the "subcontractor_va_count" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateSubcontractorVaCount() *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateOwnerApplyAmount()
+		s.UpdateSubcontractorVaCount()
 	})
 }
 
-// ClearOwnerApplyAmount clears the value of the "owner_apply_amount" field.
-func (u *ProjectUpsertOne) ClearOwnerApplyAmount() *ProjectUpsertOne {
+// ClearSubcontractorVaCount clears the value of the "subcontractor_va_count" field.
+func (u *ProjectUpsertOne) ClearSubcontractorVaCount() *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
-		s.ClearOwnerApplyAmount()
+		s.ClearSubcontractorVaCount()
 	})
 }
 
-// SetOwnerApplyCount sets the "owner_apply_count" field.
-func (u *ProjectUpsertOne) SetOwnerApplyCount(v int) *ProjectUpsertOne {
+// SetContractSupplementaryCount sets the "contract_supplementary_count" field.
+func (u *ProjectUpsertOne) SetContractSupplementaryCount(v int) *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
-		s.SetOwnerApplyCount(v)
+		s.SetContractSupplementaryCount(v)
 	})
 }
 
-// AddOwnerApplyCount adds v to the "owner_apply_count" field.
-func (u *ProjectUpsertOne) AddOwnerApplyCount(v int) *ProjectUpsertOne {
+// AddContractSupplementaryCount adds v to the "contract_supplementary_count" field.
+func (u *ProjectUpsertOne) AddContractSupplementaryCount(v int) *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
-		s.AddOwnerApplyCount(v)
+		s.AddContractSupplementaryCount(v)
 	})
 }
 
-// UpdateOwnerApplyCount sets the "owner_apply_count" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdateOwnerApplyCount() *ProjectUpsertOne {
+// UpdateContractSupplementaryCount sets the "contract_supplementary_count" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateContractSupplementaryCount() *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateOwnerApplyCount()
+		s.UpdateContractSupplementaryCount()
 	})
 }
 
-// ClearOwnerApplyCount clears the value of the "owner_apply_count" field.
-func (u *ProjectUpsertOne) ClearOwnerApplyCount() *ProjectUpsertOne {
+// ClearContractSupplementaryCount clears the value of the "contract_supplementary_count" field.
+func (u *ProjectUpsertOne) ClearContractSupplementaryCount() *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
-		s.ClearOwnerApplyCount()
+		s.ClearContractSupplementaryCount()
 	})
 }
 
-// SetOwnerApproveAmount sets the "owner_approve_amount" field.
-func (u *ProjectUpsertOne) SetOwnerApproveAmount(v float64) *ProjectUpsertOne {
+// SetRepairFee sets the "repair_fee" field.
+func (u *ProjectUpsertOne) SetRepairFee(v float64) *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
-		s.SetOwnerApproveAmount(v)
+		s.SetRepairFee(v)
 	})
 }
 
-// AddOwnerApproveAmount adds v to the "owner_approve_amount" field.
-func (u *ProjectUpsertOne) AddOwnerApproveAmount(v float64) *ProjectUpsertOne {
+// AddRepairFee adds v to the "repair_fee" field.
+func (u *ProjectUpsertOne) AddRepairFee(v float64) *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
-		s.AddOwnerApproveAmount(v)
+		s.AddRepairFee(v)
 	})
 }
 
-// UpdateOwnerApproveAmount sets the "owner_approve_amount" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdateOwnerApproveAmount() *ProjectUpsertOne {
+// UpdateRepairFee sets the "repair_fee" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateRepairFee() *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateOwnerApproveAmount()
+		s.UpdateRepairFee()
 	})
 }
 
-// ClearOwnerApproveAmount clears the value of the "owner_approve_amount" field.
-func (u *ProjectUpsertOne) ClearOwnerApproveAmount() *ProjectUpsertOne {
+// ClearRepairFee clears the value of the "repair_fee" field.
+func (u *ProjectUpsertOne) ClearRepairFee() *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
-		s.ClearOwnerApproveAmount()
-	})
-}
-
-// SetOwnerApproveCount sets the "owner_approve_count" field.
-func (u *ProjectUpsertOne) SetOwnerApproveCount(v int) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetOwnerApproveCount(v)
-	})
-}
-
-// AddOwnerApproveCount adds v to the "owner_approve_count" field.
-func (u *ProjectUpsertOne) AddOwnerApproveCount(v int) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddOwnerApproveCount(v)
-	})
-}
-
-// UpdateOwnerApproveCount sets the "owner_approve_count" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdateOwnerApproveCount() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateOwnerApproveCount()
-	})
-}
-
-// ClearOwnerApproveCount clears the value of the "owner_approve_count" field.
-func (u *ProjectUpsertOne) ClearOwnerApproveCount() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearOwnerApproveCount()
-	})
-}
-
-// SetContractorApplyAmount sets the "contractor_apply_amount" field.
-func (u *ProjectUpsertOne) SetContractorApplyAmount(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetContractorApplyAmount(v)
-	})
-}
-
-// AddContractorApplyAmount adds v to the "contractor_apply_amount" field.
-func (u *ProjectUpsertOne) AddContractorApplyAmount(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddContractorApplyAmount(v)
-	})
-}
-
-// UpdateContractorApplyAmount sets the "contractor_apply_amount" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdateContractorApplyAmount() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateContractorApplyAmount()
-	})
-}
-
-// ClearContractorApplyAmount clears the value of the "contractor_apply_amount" field.
-func (u *ProjectUpsertOne) ClearContractorApplyAmount() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearContractorApplyAmount()
-	})
-}
-
-// SetContractorApplyCount sets the "contractor_apply_count" field.
-func (u *ProjectUpsertOne) SetContractorApplyCount(v int) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetContractorApplyCount(v)
-	})
-}
-
-// AddContractorApplyCount adds v to the "contractor_apply_count" field.
-func (u *ProjectUpsertOne) AddContractorApplyCount(v int) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddContractorApplyCount(v)
-	})
-}
-
-// UpdateContractorApplyCount sets the "contractor_apply_count" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdateContractorApplyCount() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateContractorApplyCount()
-	})
-}
-
-// ClearContractorApplyCount clears the value of the "contractor_apply_count" field.
-func (u *ProjectUpsertOne) ClearContractorApplyCount() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearContractorApplyCount()
-	})
-}
-
-// SetContractorApproveAmount sets the "contractor_approve_amount" field.
-func (u *ProjectUpsertOne) SetContractorApproveAmount(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetContractorApproveAmount(v)
-	})
-}
-
-// AddContractorApproveAmount adds v to the "contractor_approve_amount" field.
-func (u *ProjectUpsertOne) AddContractorApproveAmount(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddContractorApproveAmount(v)
-	})
-}
-
-// UpdateContractorApproveAmount sets the "contractor_approve_amount" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdateContractorApproveAmount() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateContractorApproveAmount()
-	})
-}
-
-// ClearContractorApproveAmount clears the value of the "contractor_approve_amount" field.
-func (u *ProjectUpsertOne) ClearContractorApproveAmount() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearContractorApproveAmount()
-	})
-}
-
-// SetContractorApproveCount sets the "contractor_approve_count" field.
-func (u *ProjectUpsertOne) SetContractorApproveCount(v int) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetContractorApproveCount(v)
-	})
-}
-
-// AddContractorApproveCount adds v to the "contractor_approve_count" field.
-func (u *ProjectUpsertOne) AddContractorApproveCount(v int) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddContractorApproveCount(v)
-	})
-}
-
-// UpdateContractorApproveCount sets the "contractor_approve_count" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdateContractorApproveCount() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateContractorApproveCount()
-	})
-}
-
-// ClearContractorApproveCount clears the value of the "contractor_approve_count" field.
-func (u *ProjectUpsertOne) ClearContractorApproveCount() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearContractorApproveCount()
-	})
-}
-
-// SetInstallProgress sets the "install_progress" field.
-func (u *ProjectUpsertOne) SetInstallProgress(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetInstallProgress(v)
-	})
-}
-
-// AddInstallProgress adds v to the "install_progress" field.
-func (u *ProjectUpsertOne) AddInstallProgress(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddInstallProgress(v)
-	})
-}
-
-// UpdateInstallProgress sets the "install_progress" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdateInstallProgress() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateInstallProgress()
-	})
-}
-
-// ClearInstallProgress clears the value of the "install_progress" field.
-func (u *ProjectUpsertOne) ClearInstallProgress() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearInstallProgress()
-	})
-}
-
-// SetEffectiveContractAmount sets the "effective_contract_amount" field.
-func (u *ProjectUpsertOne) SetEffectiveContractAmount(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetEffectiveContractAmount(v)
-	})
-}
-
-// AddEffectiveContractAmount adds v to the "effective_contract_amount" field.
-func (u *ProjectUpsertOne) AddEffectiveContractAmount(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddEffectiveContractAmount(v)
-	})
-}
-
-// UpdateEffectiveContractAmount sets the "effective_contract_amount" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdateEffectiveContractAmount() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateEffectiveContractAmount()
-	})
-}
-
-// ClearEffectiveContractAmount clears the value of the "effective_contract_amount" field.
-func (u *ProjectUpsertOne) ClearEffectiveContractAmount() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearEffectiveContractAmount()
-	})
-}
-
-// SetVaApplyAmount sets the "va_apply_amount" field.
-func (u *ProjectUpsertOne) SetVaApplyAmount(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetVaApplyAmount(v)
-	})
-}
-
-// AddVaApplyAmount adds v to the "va_apply_amount" field.
-func (u *ProjectUpsertOne) AddVaApplyAmount(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddVaApplyAmount(v)
-	})
-}
-
-// UpdateVaApplyAmount sets the "va_apply_amount" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdateVaApplyAmount() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateVaApplyAmount()
-	})
-}
-
-// ClearVaApplyAmount clears the value of the "va_apply_amount" field.
-func (u *ProjectUpsertOne) ClearVaApplyAmount() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearVaApplyAmount()
-	})
-}
-
-// SetVaApproveAmount sets the "va_approve_amount" field.
-func (u *ProjectUpsertOne) SetVaApproveAmount(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetVaApproveAmount(v)
-	})
-}
-
-// AddVaApproveAmount adds v to the "va_approve_amount" field.
-func (u *ProjectUpsertOne) AddVaApproveAmount(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddVaApproveAmount(v)
-	})
-}
-
-// UpdateVaApproveAmount sets the "va_approve_amount" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdateVaApproveAmount() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateVaApproveAmount()
-	})
-}
-
-// ClearVaApproveAmount clears the value of the "va_approve_amount" field.
-func (u *ProjectUpsertOne) ClearVaApproveAmount() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearVaApproveAmount()
-	})
-}
-
-// SetAccumulatedStatutoryDeductions sets the "accumulated_statutory_deductions" field.
-func (u *ProjectUpsertOne) SetAccumulatedStatutoryDeductions(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetAccumulatedStatutoryDeductions(v)
-	})
-}
-
-// AddAccumulatedStatutoryDeductions adds v to the "accumulated_statutory_deductions" field.
-func (u *ProjectUpsertOne) AddAccumulatedStatutoryDeductions(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddAccumulatedStatutoryDeductions(v)
-	})
-}
-
-// UpdateAccumulatedStatutoryDeductions sets the "accumulated_statutory_deductions" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdateAccumulatedStatutoryDeductions() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateAccumulatedStatutoryDeductions()
-	})
-}
-
-// ClearAccumulatedStatutoryDeductions clears the value of the "accumulated_statutory_deductions" field.
-func (u *ProjectUpsertOne) ClearAccumulatedStatutoryDeductions() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearAccumulatedStatutoryDeductions()
-	})
-}
-
-// SetAccumulatedNonStatutoryDeductions sets the "accumulated_non_statutory_deductions" field.
-func (u *ProjectUpsertOne) SetAccumulatedNonStatutoryDeductions(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetAccumulatedNonStatutoryDeductions(v)
-	})
-}
-
-// AddAccumulatedNonStatutoryDeductions adds v to the "accumulated_non_statutory_deductions" field.
-func (u *ProjectUpsertOne) AddAccumulatedNonStatutoryDeductions(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddAccumulatedNonStatutoryDeductions(v)
-	})
-}
-
-// UpdateAccumulatedNonStatutoryDeductions sets the "accumulated_non_statutory_deductions" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdateAccumulatedNonStatutoryDeductions() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateAccumulatedNonStatutoryDeductions()
-	})
-}
-
-// ClearAccumulatedNonStatutoryDeductions clears the value of the "accumulated_non_statutory_deductions" field.
-func (u *ProjectUpsertOne) ClearAccumulatedNonStatutoryDeductions() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearAccumulatedNonStatutoryDeductions()
-	})
-}
-
-// SetAccumulatedStatutoryDeductionsPeriod sets the "accumulated_statutory_deductions_period" field.
-func (u *ProjectUpsertOne) SetAccumulatedStatutoryDeductionsPeriod(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetAccumulatedStatutoryDeductionsPeriod(v)
-	})
-}
-
-// AddAccumulatedStatutoryDeductionsPeriod adds v to the "accumulated_statutory_deductions_period" field.
-func (u *ProjectUpsertOne) AddAccumulatedStatutoryDeductionsPeriod(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddAccumulatedStatutoryDeductionsPeriod(v)
-	})
-}
-
-// UpdateAccumulatedStatutoryDeductionsPeriod sets the "accumulated_statutory_deductions_period" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdateAccumulatedStatutoryDeductionsPeriod() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateAccumulatedStatutoryDeductionsPeriod()
-	})
-}
-
-// ClearAccumulatedStatutoryDeductionsPeriod clears the value of the "accumulated_statutory_deductions_period" field.
-func (u *ProjectUpsertOne) ClearAccumulatedStatutoryDeductionsPeriod() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearAccumulatedStatutoryDeductionsPeriod()
-	})
-}
-
-// SetAccumulatedNonStatutoryDeductionsPeriod sets the "accumulated_non_statutory_deductions_period" field.
-func (u *ProjectUpsertOne) SetAccumulatedNonStatutoryDeductionsPeriod(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetAccumulatedNonStatutoryDeductionsPeriod(v)
-	})
-}
-
-// AddAccumulatedNonStatutoryDeductionsPeriod adds v to the "accumulated_non_statutory_deductions_period" field.
-func (u *ProjectUpsertOne) AddAccumulatedNonStatutoryDeductionsPeriod(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddAccumulatedNonStatutoryDeductionsPeriod(v)
-	})
-}
-
-// UpdateAccumulatedNonStatutoryDeductionsPeriod sets the "accumulated_non_statutory_deductions_period" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdateAccumulatedNonStatutoryDeductionsPeriod() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateAccumulatedNonStatutoryDeductionsPeriod()
-	})
-}
-
-// ClearAccumulatedNonStatutoryDeductionsPeriod clears the value of the "accumulated_non_statutory_deductions_period" field.
-func (u *ProjectUpsertOne) ClearAccumulatedNonStatutoryDeductionsPeriod() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearAccumulatedNonStatutoryDeductionsPeriod()
-	})
-}
-
-// SetTotalContractAmount sets the "total_contract_amount" field.
-func (u *ProjectUpsertOne) SetTotalContractAmount(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetTotalContractAmount(v)
-	})
-}
-
-// AddTotalContractAmount adds v to the "total_contract_amount" field.
-func (u *ProjectUpsertOne) AddTotalContractAmount(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddTotalContractAmount(v)
-	})
-}
-
-// UpdateTotalContractAmount sets the "total_contract_amount" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdateTotalContractAmount() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateTotalContractAmount()
-	})
-}
-
-// ClearTotalContractAmount clears the value of the "total_contract_amount" field.
-func (u *ProjectUpsertOne) ClearTotalContractAmount() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearTotalContractAmount()
-	})
-}
-
-// SetAluminumPlateBudgetPercentage sets the "aluminum_plate_budget_percentage" field.
-func (u *ProjectUpsertOne) SetAluminumPlateBudgetPercentage(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetAluminumPlateBudgetPercentage(v)
-	})
-}
-
-// AddAluminumPlateBudgetPercentage adds v to the "aluminum_plate_budget_percentage" field.
-func (u *ProjectUpsertOne) AddAluminumPlateBudgetPercentage(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddAluminumPlateBudgetPercentage(v)
-	})
-}
-
-// UpdateAluminumPlateBudgetPercentage sets the "aluminum_plate_budget_percentage" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdateAluminumPlateBudgetPercentage() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateAluminumPlateBudgetPercentage()
-	})
-}
-
-// ClearAluminumPlateBudgetPercentage clears the value of the "aluminum_plate_budget_percentage" field.
-func (u *ProjectUpsertOne) ClearAluminumPlateBudgetPercentage() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearAluminumPlateBudgetPercentage()
-	})
-}
-
-// SetAluminumBudgetPercentage sets the "aluminum_budget_percentage" field.
-func (u *ProjectUpsertOne) SetAluminumBudgetPercentage(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetAluminumBudgetPercentage(v)
-	})
-}
-
-// AddAluminumBudgetPercentage adds v to the "aluminum_budget_percentage" field.
-func (u *ProjectUpsertOne) AddAluminumBudgetPercentage(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddAluminumBudgetPercentage(v)
-	})
-}
-
-// UpdateAluminumBudgetPercentage sets the "aluminum_budget_percentage" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdateAluminumBudgetPercentage() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateAluminumBudgetPercentage()
-	})
-}
-
-// ClearAluminumBudgetPercentage clears the value of the "aluminum_budget_percentage" field.
-func (u *ProjectUpsertOne) ClearAluminumBudgetPercentage() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearAluminumBudgetPercentage()
-	})
-}
-
-// SetGlassBudgetPercentage sets the "glass_budget_percentage" field.
-func (u *ProjectUpsertOne) SetGlassBudgetPercentage(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetGlassBudgetPercentage(v)
-	})
-}
-
-// AddGlassBudgetPercentage adds v to the "glass_budget_percentage" field.
-func (u *ProjectUpsertOne) AddGlassBudgetPercentage(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddGlassBudgetPercentage(v)
-	})
-}
-
-// UpdateGlassBudgetPercentage sets the "glass_budget_percentage" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdateGlassBudgetPercentage() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateGlassBudgetPercentage()
-	})
-}
-
-// ClearGlassBudgetPercentage clears the value of the "glass_budget_percentage" field.
-func (u *ProjectUpsertOne) ClearGlassBudgetPercentage() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearGlassBudgetPercentage()
-	})
-}
-
-// SetIronBudgetPercentage sets the "iron_budget_percentage" field.
-func (u *ProjectUpsertOne) SetIronBudgetPercentage(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetIronBudgetPercentage(v)
-	})
-}
-
-// AddIronBudgetPercentage adds v to the "iron_budget_percentage" field.
-func (u *ProjectUpsertOne) AddIronBudgetPercentage(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddIronBudgetPercentage(v)
-	})
-}
-
-// UpdateIronBudgetPercentage sets the "iron_budget_percentage" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdateIronBudgetPercentage() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateIronBudgetPercentage()
-	})
-}
-
-// ClearIronBudgetPercentage clears the value of the "iron_budget_percentage" field.
-func (u *ProjectUpsertOne) ClearIronBudgetPercentage() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearIronBudgetPercentage()
-	})
-}
-
-// SetMilestonePlanYear sets the "milestone_plan_year" field.
-func (u *ProjectUpsertOne) SetMilestonePlanYear(v int) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetMilestonePlanYear(v)
-	})
-}
-
-// AddMilestonePlanYear adds v to the "milestone_plan_year" field.
-func (u *ProjectUpsertOne) AddMilestonePlanYear(v int) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddMilestonePlanYear(v)
-	})
-}
-
-// UpdateMilestonePlanYear sets the "milestone_plan_year" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdateMilestonePlanYear() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateMilestonePlanYear()
-	})
-}
-
-// ClearMilestonePlanYear clears the value of the "milestone_plan_year" field.
-func (u *ProjectUpsertOne) ClearMilestonePlanYear() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearMilestonePlanYear()
-	})
-}
-
-// SetMilestonePlanMonth sets the "milestone_plan_month" field.
-func (u *ProjectUpsertOne) SetMilestonePlanMonth(v int) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetMilestonePlanMonth(v)
-	})
-}
-
-// AddMilestonePlanMonth adds v to the "milestone_plan_month" field.
-func (u *ProjectUpsertOne) AddMilestonePlanMonth(v int) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddMilestonePlanMonth(v)
-	})
-}
-
-// UpdateMilestonePlanMonth sets the "milestone_plan_month" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdateMilestonePlanMonth() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateMilestonePlanMonth()
-	})
-}
-
-// ClearMilestonePlanMonth clears the value of the "milestone_plan_month" field.
-func (u *ProjectUpsertOne) ClearMilestonePlanMonth() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearMilestonePlanMonth()
-	})
-}
-
-// SetMilestoneDoneYear sets the "milestone_done_year" field.
-func (u *ProjectUpsertOne) SetMilestoneDoneYear(v int) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetMilestoneDoneYear(v)
-	})
-}
-
-// AddMilestoneDoneYear adds v to the "milestone_done_year" field.
-func (u *ProjectUpsertOne) AddMilestoneDoneYear(v int) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddMilestoneDoneYear(v)
-	})
-}
-
-// UpdateMilestoneDoneYear sets the "milestone_done_year" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdateMilestoneDoneYear() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateMilestoneDoneYear()
-	})
-}
-
-// ClearMilestoneDoneYear clears the value of the "milestone_done_year" field.
-func (u *ProjectUpsertOne) ClearMilestoneDoneYear() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearMilestoneDoneYear()
-	})
-}
-
-// SetMilestoneDoneMonth sets the "milestone_done_month" field.
-func (u *ProjectUpsertOne) SetMilestoneDoneMonth(v int) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetMilestoneDoneMonth(v)
-	})
-}
-
-// AddMilestoneDoneMonth adds v to the "milestone_done_month" field.
-func (u *ProjectUpsertOne) AddMilestoneDoneMonth(v int) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddMilestoneDoneMonth(v)
-	})
-}
-
-// UpdateMilestoneDoneMonth sets the "milestone_done_month" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdateMilestoneDoneMonth() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateMilestoneDoneMonth()
-	})
-}
-
-// ClearMilestoneDoneMonth clears the value of the "milestone_done_month" field.
-func (u *ProjectUpsertOne) ClearMilestoneDoneMonth() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearMilestoneDoneMonth()
-	})
-}
-
-// SetPmArea sets the "pm_area" field.
-func (u *ProjectUpsertOne) SetPmArea(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetPmArea(v)
-	})
-}
-
-// AddPmArea adds v to the "pm_area" field.
-func (u *ProjectUpsertOne) AddPmArea(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddPmArea(v)
-	})
-}
-
-// UpdatePmArea sets the "pm_area" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdatePmArea() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdatePmArea()
-	})
-}
-
-// ClearPmArea clears the value of the "pm_area" field.
-func (u *ProjectUpsertOne) ClearPmArea() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearPmArea()
-	})
-}
-
-// SetPmYearTarget sets the "pm_year_target" field.
-func (u *ProjectUpsertOne) SetPmYearTarget(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetPmYearTarget(v)
-	})
-}
-
-// AddPmYearTarget adds v to the "pm_year_target" field.
-func (u *ProjectUpsertOne) AddPmYearTarget(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddPmYearTarget(v)
-	})
-}
-
-// UpdatePmYearTarget sets the "pm_year_target" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdatePmYearTarget() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdatePmYearTarget()
-	})
-}
-
-// ClearPmYearTarget clears the value of the "pm_year_target" field.
-func (u *ProjectUpsertOne) ClearPmYearTarget() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearPmYearTarget()
-	})
-}
-
-// SetPmMonthTarget sets the "pm_month_target" field.
-func (u *ProjectUpsertOne) SetPmMonthTarget(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetPmMonthTarget(v)
-	})
-}
-
-// AddPmMonthTarget adds v to the "pm_month_target" field.
-func (u *ProjectUpsertOne) AddPmMonthTarget(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddPmMonthTarget(v)
-	})
-}
-
-// UpdatePmMonthTarget sets the "pm_month_target" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdatePmMonthTarget() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdatePmMonthTarget()
-	})
-}
-
-// ClearPmMonthTarget clears the value of the "pm_month_target" field.
-func (u *ProjectUpsertOne) ClearPmMonthTarget() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearPmMonthTarget()
-	})
-}
-
-// SetPmYearActual sets the "pm_year_actual" field.
-func (u *ProjectUpsertOne) SetPmYearActual(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetPmYearActual(v)
-	})
-}
-
-// AddPmYearActual adds v to the "pm_year_actual" field.
-func (u *ProjectUpsertOne) AddPmYearActual(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddPmYearActual(v)
-	})
-}
-
-// UpdatePmYearActual sets the "pm_year_actual" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdatePmYearActual() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdatePmYearActual()
-	})
-}
-
-// ClearPmYearActual clears the value of the "pm_year_actual" field.
-func (u *ProjectUpsertOne) ClearPmYearActual() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearPmYearActual()
-	})
-}
-
-// SetPmMonthActual sets the "pm_month_actual" field.
-func (u *ProjectUpsertOne) SetPmMonthActual(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetPmMonthActual(v)
-	})
-}
-
-// AddPmMonthActual adds v to the "pm_month_actual" field.
-func (u *ProjectUpsertOne) AddPmMonthActual(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddPmMonthActual(v)
-	})
-}
-
-// UpdatePmMonthActual sets the "pm_month_actual" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdatePmMonthActual() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdatePmMonthActual()
-	})
-}
-
-// ClearPmMonthActual clears the value of the "pm_month_actual" field.
-func (u *ProjectUpsertOne) ClearPmMonthActual() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearPmMonthActual()
-	})
-}
-
-// SetPmTotal sets the "pm_total" field.
-func (u *ProjectUpsertOne) SetPmTotal(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetPmTotal(v)
-	})
-}
-
-// AddPmTotal adds v to the "pm_total" field.
-func (u *ProjectUpsertOne) AddPmTotal(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddPmTotal(v)
-	})
-}
-
-// UpdatePmTotal sets the "pm_total" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdatePmTotal() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdatePmTotal()
-	})
-}
-
-// ClearPmTotal clears the value of the "pm_total" field.
-func (u *ProjectUpsertOne) ClearPmTotal() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearPmTotal()
-	})
-}
-
-// SetPmYesterday sets the "pm_yesterday" field.
-func (u *ProjectUpsertOne) SetPmYesterday(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetPmYesterday(v)
-	})
-}
-
-// AddPmYesterday adds v to the "pm_yesterday" field.
-func (u *ProjectUpsertOne) AddPmYesterday(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddPmYesterday(v)
-	})
-}
-
-// UpdatePmYesterday sets the "pm_yesterday" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdatePmYesterday() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdatePmYesterday()
-	})
-}
-
-// ClearPmYesterday clears the value of the "pm_yesterday" field.
-func (u *ProjectUpsertOne) ClearPmYesterday() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearPmYesterday()
+		s.ClearRepairFee()
 	})
 }
 
@@ -5144,230 +1847,6 @@ func (u *ProjectUpsertOne) ClearUnitComponentInstallation() *ProjectUpsertOne {
 	})
 }
 
-// SetMaterialLoss sets the "material_loss" field.
-func (u *ProjectUpsertOne) SetMaterialLoss(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetMaterialLoss(v)
-	})
-}
-
-// AddMaterialLoss adds v to the "material_loss" field.
-func (u *ProjectUpsertOne) AddMaterialLoss(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddMaterialLoss(v)
-	})
-}
-
-// UpdateMaterialLoss sets the "material_loss" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdateMaterialLoss() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateMaterialLoss()
-	})
-}
-
-// ClearMaterialLoss clears the value of the "material_loss" field.
-func (u *ProjectUpsertOne) ClearMaterialLoss() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearMaterialLoss()
-	})
-}
-
-// SetDesignRatedWeight sets the "design_rated_weight" field.
-func (u *ProjectUpsertOne) SetDesignRatedWeight(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetDesignRatedWeight(v)
-	})
-}
-
-// AddDesignRatedWeight adds v to the "design_rated_weight" field.
-func (u *ProjectUpsertOne) AddDesignRatedWeight(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddDesignRatedWeight(v)
-	})
-}
-
-// UpdateDesignRatedWeight sets the "design_rated_weight" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdateDesignRatedWeight() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateDesignRatedWeight()
-	})
-}
-
-// ClearDesignRatedWeight clears the value of the "design_rated_weight" field.
-func (u *ProjectUpsertOne) ClearDesignRatedWeight() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearDesignRatedWeight()
-	})
-}
-
-// SetProcessingWeight sets the "processing_weight" field.
-func (u *ProjectUpsertOne) SetProcessingWeight(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetProcessingWeight(v)
-	})
-}
-
-// AddProcessingWeight adds v to the "processing_weight" field.
-func (u *ProjectUpsertOne) AddProcessingWeight(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddProcessingWeight(v)
-	})
-}
-
-// UpdateProcessingWeight sets the "processing_weight" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdateProcessingWeight() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateProcessingWeight()
-	})
-}
-
-// ClearProcessingWeight clears the value of the "processing_weight" field.
-func (u *ProjectUpsertOne) ClearProcessingWeight() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearProcessingWeight()
-	})
-}
-
-// SetItemStockWeight sets the "item_stock_weight" field.
-func (u *ProjectUpsertOne) SetItemStockWeight(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetItemStockWeight(v)
-	})
-}
-
-// AddItemStockWeight adds v to the "item_stock_weight" field.
-func (u *ProjectUpsertOne) AddItemStockWeight(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddItemStockWeight(v)
-	})
-}
-
-// UpdateItemStockWeight sets the "item_stock_weight" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdateItemStockWeight() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateItemStockWeight()
-	})
-}
-
-// ClearItemStockWeight clears the value of the "item_stock_weight" field.
-func (u *ProjectUpsertOne) ClearItemStockWeight() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearItemStockWeight()
-	})
-}
-
-// SetPalletsInStock sets the "pallets_in_stock" field.
-func (u *ProjectUpsertOne) SetPalletsInStock(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetPalletsInStock(v)
-	})
-}
-
-// AddPalletsInStock adds v to the "pallets_in_stock" field.
-func (u *ProjectUpsertOne) AddPalletsInStock(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddPalletsInStock(v)
-	})
-}
-
-// UpdatePalletsInStock sets the "pallets_in_stock" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdatePalletsInStock() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdatePalletsInStock()
-	})
-}
-
-// ClearPalletsInStock clears the value of the "pallets_in_stock" field.
-func (u *ProjectUpsertOne) ClearPalletsInStock() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearPalletsInStock()
-	})
-}
-
-// SetPartsInStock sets the "parts_in_stock" field.
-func (u *ProjectUpsertOne) SetPartsInStock(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetPartsInStock(v)
-	})
-}
-
-// AddPartsInStock adds v to the "parts_in_stock" field.
-func (u *ProjectUpsertOne) AddPartsInStock(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddPartsInStock(v)
-	})
-}
-
-// UpdatePartsInStock sets the "parts_in_stock" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdatePartsInStock() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdatePartsInStock()
-	})
-}
-
-// ClearPartsInStock clears the value of the "parts_in_stock" field.
-func (u *ProjectUpsertOne) ClearPartsInStock() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearPartsInStock()
-	})
-}
-
-// SetQualityScore sets the "quality_score" field.
-func (u *ProjectUpsertOne) SetQualityScore(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetQualityScore(v)
-	})
-}
-
-// AddQualityScore adds v to the "quality_score" field.
-func (u *ProjectUpsertOne) AddQualityScore(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddQualityScore(v)
-	})
-}
-
-// UpdateQualityScore sets the "quality_score" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdateQualityScore() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateQualityScore()
-	})
-}
-
-// ClearQualityScore clears the value of the "quality_score" field.
-func (u *ProjectUpsertOne) ClearQualityScore() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearQualityScore()
-	})
-}
-
-// SetQualityRanking sets the "quality_ranking" field.
-func (u *ProjectUpsertOne) SetQualityRanking(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetQualityRanking(v)
-	})
-}
-
-// AddQualityRanking adds v to the "quality_ranking" field.
-func (u *ProjectUpsertOne) AddQualityRanking(v float64) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddQualityRanking(v)
-	})
-}
-
-// UpdateQualityRanking sets the "quality_ranking" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdateQualityRanking() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateQualityRanking()
-	})
-}
-
-// ClearQualityRanking clears the value of the "quality_ranking" field.
-func (u *ProjectUpsertOne) ClearQualityRanking() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearQualityRanking()
-	})
-}
-
 // SetBulkMaterialsTotalOrderQuantity sets the "bulk_materials_total_order_quantity" field.
 func (u *ProjectUpsertOne) SetBulkMaterialsTotalOrderQuantity(v float64) *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
@@ -5449,90 +1928,6 @@ func (u *ProjectUpsertOne) UpdateBulkMaterialsUncompletedQuantity() *ProjectUpse
 func (u *ProjectUpsertOne) ClearBulkMaterialsUncompletedQuantity() *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
 		s.ClearBulkMaterialsUncompletedQuantity()
-	})
-}
-
-// SetPlanTotalCount sets the "plan_total_count" field.
-func (u *ProjectUpsertOne) SetPlanTotalCount(v int) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetPlanTotalCount(v)
-	})
-}
-
-// AddPlanTotalCount adds v to the "plan_total_count" field.
-func (u *ProjectUpsertOne) AddPlanTotalCount(v int) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddPlanTotalCount(v)
-	})
-}
-
-// UpdatePlanTotalCount sets the "plan_total_count" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdatePlanTotalCount() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdatePlanTotalCount()
-	})
-}
-
-// ClearPlanTotalCount clears the value of the "plan_total_count" field.
-func (u *ProjectUpsertOne) ClearPlanTotalCount() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearPlanTotalCount()
-	})
-}
-
-// SetPlanOverdueCount sets the "plan_overdue_count" field.
-func (u *ProjectUpsertOne) SetPlanOverdueCount(v int) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetPlanOverdueCount(v)
-	})
-}
-
-// AddPlanOverdueCount adds v to the "plan_overdue_count" field.
-func (u *ProjectUpsertOne) AddPlanOverdueCount(v int) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddPlanOverdueCount(v)
-	})
-}
-
-// UpdatePlanOverdueCount sets the "plan_overdue_count" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdatePlanOverdueCount() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdatePlanOverdueCount()
-	})
-}
-
-// ClearPlanOverdueCount clears the value of the "plan_overdue_count" field.
-func (u *ProjectUpsertOne) ClearPlanOverdueCount() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearPlanOverdueCount()
-	})
-}
-
-// SetPlanOverdueMonthCount sets the "plan_overdue_month_count" field.
-func (u *ProjectUpsertOne) SetPlanOverdueMonthCount(v int) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetPlanOverdueMonthCount(v)
-	})
-}
-
-// AddPlanOverdueMonthCount adds v to the "plan_overdue_month_count" field.
-func (u *ProjectUpsertOne) AddPlanOverdueMonthCount(v int) *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddPlanOverdueMonthCount(v)
-	})
-}
-
-// UpdatePlanOverdueMonthCount sets the "plan_overdue_month_count" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdatePlanOverdueMonthCount() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdatePlanOverdueMonthCount()
-	})
-}
-
-// ClearPlanOverdueMonthCount clears the value of the "plan_overdue_month_count" field.
-func (u *ProjectUpsertOne) ClearPlanOverdueMonthCount() *ProjectUpsertOne {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearPlanOverdueMonthCount()
 	})
 }
 
@@ -6006,279 +2401,6 @@ func (u *ProjectUpsertBulk) UpdateCode() *ProjectUpsertBulk {
 	})
 }
 
-// SetManager sets the "manager" field.
-func (u *ProjectUpsertBulk) SetManager(v string) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetManager(v)
-	})
-}
-
-// UpdateManager sets the "manager" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdateManager() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateManager()
-	})
-}
-
-// ClearManager clears the value of the "manager" field.
-func (u *ProjectUpsertBulk) ClearManager() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearManager()
-	})
-}
-
-// SetName sets the "name" field.
-func (u *ProjectUpsertBulk) SetName(v string) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetName(v)
-	})
-}
-
-// UpdateName sets the "name" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdateName() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateName()
-	})
-}
-
-// ClearName clears the value of the "name" field.
-func (u *ProjectUpsertBulk) ClearName() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearName()
-	})
-}
-
-// SetOwner sets the "owner" field.
-func (u *ProjectUpsertBulk) SetOwner(v string) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetOwner(v)
-	})
-}
-
-// UpdateOwner sets the "owner" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdateOwner() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateOwner()
-	})
-}
-
-// ClearOwner clears the value of the "owner" field.
-func (u *ProjectUpsertBulk) ClearOwner() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearOwner()
-	})
-}
-
-// SetJzs sets the "jzs" field.
-func (u *ProjectUpsertBulk) SetJzs(v string) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetJzs(v)
-	})
-}
-
-// UpdateJzs sets the "jzs" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdateJzs() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateJzs()
-	})
-}
-
-// ClearJzs clears the value of the "jzs" field.
-func (u *ProjectUpsertBulk) ClearJzs() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearJzs()
-	})
-}
-
-// SetMcn sets the "mcn" field.
-func (u *ProjectUpsertBulk) SetMcn(v string) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetMcn(v)
-	})
-}
-
-// UpdateMcn sets the "mcn" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdateMcn() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateMcn()
-	})
-}
-
-// ClearMcn clears the value of the "mcn" field.
-func (u *ProjectUpsertBulk) ClearMcn() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearMcn()
-	})
-}
-
-// SetConsultant sets the "consultant" field.
-func (u *ProjectUpsertBulk) SetConsultant(v string) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetConsultant(v)
-	})
-}
-
-// UpdateConsultant sets the "consultant" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdateConsultant() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateConsultant()
-	})
-}
-
-// ClearConsultant clears the value of the "consultant" field.
-func (u *ProjectUpsertBulk) ClearConsultant() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearConsultant()
-	})
-}
-
-// SetAreas sets the "areas" field.
-func (u *ProjectUpsertBulk) SetAreas(v string) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetAreas(v)
-	})
-}
-
-// UpdateAreas sets the "areas" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdateAreas() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateAreas()
-	})
-}
-
-// ClearAreas clears the value of the "areas" field.
-func (u *ProjectUpsertBulk) ClearAreas() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearAreas()
-	})
-}
-
-// SetStartDate sets the "start_date" field.
-func (u *ProjectUpsertBulk) SetStartDate(v time.Time) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetStartDate(v)
-	})
-}
-
-// UpdateStartDate sets the "start_date" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdateStartDate() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateStartDate()
-	})
-}
-
-// ClearStartDate clears the value of the "start_date" field.
-func (u *ProjectUpsertBulk) ClearStartDate() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearStartDate()
-	})
-}
-
-// SetFsDate sets the "fs_date" field.
-func (u *ProjectUpsertBulk) SetFsDate(v time.Time) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetFsDate(v)
-	})
-}
-
-// UpdateFsDate sets the "fs_date" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdateFsDate() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateFsDate()
-	})
-}
-
-// ClearFsDate clears the value of the "fs_date" field.
-func (u *ProjectUpsertBulk) ClearFsDate() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearFsDate()
-	})
-}
-
-// SetOpDate sets the "op_date" field.
-func (u *ProjectUpsertBulk) SetOpDate(v time.Time) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetOpDate(v)
-	})
-}
-
-// UpdateOpDate sets the "op_date" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdateOpDate() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateOpDate()
-	})
-}
-
-// ClearOpDate clears the value of the "op_date" field.
-func (u *ProjectUpsertBulk) ClearOpDate() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearOpDate()
-	})
-}
-
-// SetEndDate sets the "end_date" field.
-func (u *ProjectUpsertBulk) SetEndDate(v time.Time) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetEndDate(v)
-	})
-}
-
-// UpdateEndDate sets the "end_date" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdateEndDate() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateEndDate()
-	})
-}
-
-// ClearEndDate clears the value of the "end_date" field.
-func (u *ProjectUpsertBulk) ClearEndDate() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearEndDate()
-	})
-}
-
-// SetMntyr sets the "mntyr" field.
-func (u *ProjectUpsertBulk) SetMntyr(v string) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetMntyr(v)
-	})
-}
-
-// UpdateMntyr sets the "mntyr" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdateMntyr() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateMntyr()
-	})
-}
-
-// ClearMntyr clears the value of the "mntyr" field.
-func (u *ProjectUpsertBulk) ClearMntyr() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearMntyr()
-	})
-}
-
-// SetConType sets the "con_type" field.
-func (u *ProjectUpsertBulk) SetConType(v string) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetConType(v)
-	})
-}
-
-// UpdateConType sets the "con_type" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdateConType() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateConType()
-	})
-}
-
-// ClearConType clears the value of the "con_type" field.
-func (u *ProjectUpsertBulk) ClearConType() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearConType()
-	})
-}
-
 // SetIsFinished sets the "is_finished" field.
 func (u *ProjectUpsertBulk) SetIsFinished(v bool) *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
@@ -6293,1088 +2415,276 @@ func (u *ProjectUpsertBulk) UpdateIsFinished() *ProjectUpsertBulk {
 	})
 }
 
-// SetCje sets the "cje" field.
-func (u *ProjectUpsertBulk) SetCje(v float64) *ProjectUpsertBulk {
+// SetRevenueKpi sets the "revenue_kpi" field.
+func (u *ProjectUpsertBulk) SetRevenueKpi(v float64) *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
-		s.SetCje(v)
+		s.SetRevenueKpi(v)
 	})
 }
 
-// AddCje adds v to the "cje" field.
-func (u *ProjectUpsertBulk) AddCje(v float64) *ProjectUpsertBulk {
+// AddRevenueKpi adds v to the "revenue_kpi" field.
+func (u *ProjectUpsertBulk) AddRevenueKpi(v float64) *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
-		s.AddCje(v)
+		s.AddRevenueKpi(v)
 	})
 }
 
-// UpdateCje sets the "cje" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdateCje() *ProjectUpsertBulk {
+// UpdateRevenueKpi sets the "revenue_kpi" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateRevenueKpi() *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateCje()
+		s.UpdateRevenueKpi()
 	})
 }
 
-// ClearCje clears the value of the "cje" field.
-func (u *ProjectUpsertBulk) ClearCje() *ProjectUpsertBulk {
+// ClearRevenueKpi clears the value of the "revenue_kpi" field.
+func (u *ProjectUpsertBulk) ClearRevenueKpi() *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
-		s.ClearCje()
+		s.ClearRevenueKpi()
 	})
 }
 
-// SetYye sets the "yye" field.
-func (u *ProjectUpsertBulk) SetYye(v float64) *ProjectUpsertBulk {
+// SetRevenueCurrentYearCompleted sets the "revenue_current_year_completed" field.
+func (u *ProjectUpsertBulk) SetRevenueCurrentYearCompleted(v float64) *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
-		s.SetYye(v)
+		s.SetRevenueCurrentYearCompleted(v)
 	})
 }
 
-// AddYye adds v to the "yye" field.
-func (u *ProjectUpsertBulk) AddYye(v float64) *ProjectUpsertBulk {
+// AddRevenueCurrentYearCompleted adds v to the "revenue_current_year_completed" field.
+func (u *ProjectUpsertBulk) AddRevenueCurrentYearCompleted(v float64) *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
-		s.AddYye(v)
+		s.AddRevenueCurrentYearCompleted(v)
 	})
 }
 
-// UpdateYye sets the "yye" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdateYye() *ProjectUpsertBulk {
+// UpdateRevenueCurrentYearCompleted sets the "revenue_current_year_completed" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateRevenueCurrentYearCompleted() *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateYye()
+		s.UpdateRevenueCurrentYearCompleted()
 	})
 }
 
-// ClearYye clears the value of the "yye" field.
-func (u *ProjectUpsertBulk) ClearYye() *ProjectUpsertBulk {
+// ClearRevenueCurrentYearCompleted clears the value of the "revenue_current_year_completed" field.
+func (u *ProjectUpsertBulk) ClearRevenueCurrentYearCompleted() *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
-		s.ClearYye()
+		s.ClearRevenueCurrentYearCompleted()
 	})
 }
 
-// SetXjl sets the "xjl" field.
-func (u *ProjectUpsertBulk) SetXjl(v float64) *ProjectUpsertBulk {
+// SetRevenueAccumulatedCompleted sets the "revenue_accumulated_completed" field.
+func (u *ProjectUpsertBulk) SetRevenueAccumulatedCompleted(v float64) *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
-		s.SetXjl(v)
+		s.SetRevenueAccumulatedCompleted(v)
 	})
 }
 
-// AddXjl adds v to the "xjl" field.
-func (u *ProjectUpsertBulk) AddXjl(v float64) *ProjectUpsertBulk {
+// AddRevenueAccumulatedCompleted adds v to the "revenue_accumulated_completed" field.
+func (u *ProjectUpsertBulk) AddRevenueAccumulatedCompleted(v float64) *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
-		s.AddXjl(v)
+		s.AddRevenueAccumulatedCompleted(v)
 	})
 }
 
-// UpdateXjl sets the "xjl" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdateXjl() *ProjectUpsertBulk {
+// UpdateRevenueAccumulatedCompleted sets the "revenue_accumulated_completed" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateRevenueAccumulatedCompleted() *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateXjl()
+		s.UpdateRevenueAccumulatedCompleted()
 	})
 }
 
-// ClearXjl clears the value of the "xjl" field.
-func (u *ProjectUpsertBulk) ClearXjl() *ProjectUpsertBulk {
+// ClearRevenueAccumulatedCompleted clears the value of the "revenue_accumulated_completed" field.
+func (u *ProjectUpsertBulk) ClearRevenueAccumulatedCompleted() *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
-		s.ClearXjl()
+		s.ClearRevenueAccumulatedCompleted()
 	})
 }
 
-// SetXmglfYs sets the "xmglf_ys" field.
-func (u *ProjectUpsertBulk) SetXmglfYs(v float64) *ProjectUpsertBulk {
+// SetPayDate sets the "pay_date" field.
+func (u *ProjectUpsertBulk) SetPayDate(v time.Time) *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
-		s.SetXmglfYs(v)
+		s.SetPayDate(v)
 	})
 }
 
-// AddXmglfYs adds v to the "xmglf_ys" field.
-func (u *ProjectUpsertBulk) AddXmglfYs(v float64) *ProjectUpsertBulk {
+// UpdatePayDate sets the "pay_date" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdatePayDate() *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
-		s.AddXmglfYs(v)
+		s.UpdatePayDate()
 	})
 }
 
-// UpdateXmglfYs sets the "xmglf_ys" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdateXmglfYs() *ProjectUpsertBulk {
+// ClearPayDate clears the value of the "pay_date" field.
+func (u *ProjectUpsertBulk) ClearPayDate() *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateXmglfYs()
+		s.ClearPayDate()
 	})
 }
 
-// ClearXmglfYs clears the value of the "xmglf_ys" field.
-func (u *ProjectUpsertBulk) ClearXmglfYs() *ProjectUpsertBulk {
+// SetOwnerVoCount sets the "owner_vo_count" field.
+func (u *ProjectUpsertBulk) SetOwnerVoCount(v int) *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
-		s.ClearXmglfYs()
+		s.SetOwnerVoCount(v)
 	})
 }
 
-// SetXmglfLj sets the "xmglf_lj" field.
-func (u *ProjectUpsertBulk) SetXmglfLj(v float64) *ProjectUpsertBulk {
+// AddOwnerVoCount adds v to the "owner_vo_count" field.
+func (u *ProjectUpsertBulk) AddOwnerVoCount(v int) *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
-		s.SetXmglfLj(v)
+		s.AddOwnerVoCount(v)
 	})
 }
 
-// AddXmglfLj adds v to the "xmglf_lj" field.
-func (u *ProjectUpsertBulk) AddXmglfLj(v float64) *ProjectUpsertBulk {
+// UpdateOwnerVoCount sets the "owner_vo_count" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateOwnerVoCount() *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
-		s.AddXmglfLj(v)
+		s.UpdateOwnerVoCount()
 	})
 }
 
-// UpdateXmglfLj sets the "xmglf_lj" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdateXmglfLj() *ProjectUpsertBulk {
+// ClearOwnerVoCount clears the value of the "owner_vo_count" field.
+func (u *ProjectUpsertBulk) ClearOwnerVoCount() *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateXmglfLj()
+		s.ClearOwnerVoCount()
 	})
 }
 
-// ClearXmglfLj clears the value of the "xmglf_lj" field.
-func (u *ProjectUpsertBulk) ClearXmglfLj() *ProjectUpsertBulk {
+// SetContractorVoCount sets the "contractor_vo_count" field.
+func (u *ProjectUpsertBulk) SetContractorVoCount(v int) *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
-		s.ClearXmglfLj()
+		s.SetContractorVoCount(v)
 	})
 }
 
-// SetXmsjf sets the "xmsjf" field.
-func (u *ProjectUpsertBulk) SetXmsjf(v float64) *ProjectUpsertBulk {
+// AddContractorVoCount adds v to the "contractor_vo_count" field.
+func (u *ProjectUpsertBulk) AddContractorVoCount(v int) *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
-		s.SetXmsjf(v)
+		s.AddContractorVoCount(v)
 	})
 }
 
-// AddXmsjf adds v to the "xmsjf" field.
-func (u *ProjectUpsertBulk) AddXmsjf(v float64) *ProjectUpsertBulk {
+// UpdateContractorVoCount sets the "contractor_vo_count" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateContractorVoCount() *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
-		s.AddXmsjf(v)
+		s.UpdateContractorVoCount()
 	})
 }
 
-// UpdateXmsjf sets the "xmsjf" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdateXmsjf() *ProjectUpsertBulk {
+// ClearContractorVoCount clears the value of the "contractor_vo_count" field.
+func (u *ProjectUpsertBulk) ClearContractorVoCount() *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateXmsjf()
+		s.ClearContractorVoCount()
 	})
 }
 
-// ClearXmsjf clears the value of the "xmsjf" field.
-func (u *ProjectUpsertBulk) ClearXmsjf() *ProjectUpsertBulk {
+// SetAccumulateDeduction sets the "accumulate_deduction" field.
+func (u *ProjectUpsertBulk) SetAccumulateDeduction(v float64) *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
-		s.ClearXmsjf()
+		s.SetAccumulateDeduction(v)
 	})
 }
 
-// SetXmfzr sets the "xmfzr" field.
-func (u *ProjectUpsertBulk) SetXmfzr(v string) *ProjectUpsertBulk {
+// AddAccumulateDeduction adds v to the "accumulate_deduction" field.
+func (u *ProjectUpsertBulk) AddAccumulateDeduction(v float64) *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
-		s.SetXmfzr(v)
+		s.AddAccumulateDeduction(v)
 	})
 }
 
-// UpdateXmfzr sets the "xmfzr" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdateXmfzr() *ProjectUpsertBulk {
+// UpdateAccumulateDeduction sets the "accumulate_deduction" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateAccumulateDeduction() *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateXmfzr()
+		s.UpdateAccumulateDeduction()
 	})
 }
 
-// ClearXmfzr clears the value of the "xmfzr" field.
-func (u *ProjectUpsertBulk) ClearXmfzr() *ProjectUpsertBulk {
+// ClearAccumulateDeduction clears the value of the "accumulate_deduction" field.
+func (u *ProjectUpsertBulk) ClearAccumulateDeduction() *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
-		s.ClearXmfzr()
+		s.ClearAccumulateDeduction()
 	})
 }
 
-// SetOwnerApplyAmount sets the "owner_apply_amount" field.
-func (u *ProjectUpsertBulk) SetOwnerApplyAmount(v float64) *ProjectUpsertBulk {
+// SetSubcontractorVaCount sets the "subcontractor_va_count" field.
+func (u *ProjectUpsertBulk) SetSubcontractorVaCount(v int) *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
-		s.SetOwnerApplyAmount(v)
+		s.SetSubcontractorVaCount(v)
 	})
 }
 
-// AddOwnerApplyAmount adds v to the "owner_apply_amount" field.
-func (u *ProjectUpsertBulk) AddOwnerApplyAmount(v float64) *ProjectUpsertBulk {
+// AddSubcontractorVaCount adds v to the "subcontractor_va_count" field.
+func (u *ProjectUpsertBulk) AddSubcontractorVaCount(v int) *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
-		s.AddOwnerApplyAmount(v)
+		s.AddSubcontractorVaCount(v)
 	})
 }
 
-// UpdateOwnerApplyAmount sets the "owner_apply_amount" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdateOwnerApplyAmount() *ProjectUpsertBulk {
+// UpdateSubcontractorVaCount sets the "subcontractor_va_count" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateSubcontractorVaCount() *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateOwnerApplyAmount()
+		s.UpdateSubcontractorVaCount()
 	})
 }
 
-// ClearOwnerApplyAmount clears the value of the "owner_apply_amount" field.
-func (u *ProjectUpsertBulk) ClearOwnerApplyAmount() *ProjectUpsertBulk {
+// ClearSubcontractorVaCount clears the value of the "subcontractor_va_count" field.
+func (u *ProjectUpsertBulk) ClearSubcontractorVaCount() *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
-		s.ClearOwnerApplyAmount()
+		s.ClearSubcontractorVaCount()
 	})
 }
 
-// SetOwnerApplyCount sets the "owner_apply_count" field.
-func (u *ProjectUpsertBulk) SetOwnerApplyCount(v int) *ProjectUpsertBulk {
+// SetContractSupplementaryCount sets the "contract_supplementary_count" field.
+func (u *ProjectUpsertBulk) SetContractSupplementaryCount(v int) *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
-		s.SetOwnerApplyCount(v)
+		s.SetContractSupplementaryCount(v)
 	})
 }
 
-// AddOwnerApplyCount adds v to the "owner_apply_count" field.
-func (u *ProjectUpsertBulk) AddOwnerApplyCount(v int) *ProjectUpsertBulk {
+// AddContractSupplementaryCount adds v to the "contract_supplementary_count" field.
+func (u *ProjectUpsertBulk) AddContractSupplementaryCount(v int) *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
-		s.AddOwnerApplyCount(v)
+		s.AddContractSupplementaryCount(v)
 	})
 }
 
-// UpdateOwnerApplyCount sets the "owner_apply_count" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdateOwnerApplyCount() *ProjectUpsertBulk {
+// UpdateContractSupplementaryCount sets the "contract_supplementary_count" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateContractSupplementaryCount() *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateOwnerApplyCount()
+		s.UpdateContractSupplementaryCount()
 	})
 }
 
-// ClearOwnerApplyCount clears the value of the "owner_apply_count" field.
-func (u *ProjectUpsertBulk) ClearOwnerApplyCount() *ProjectUpsertBulk {
+// ClearContractSupplementaryCount clears the value of the "contract_supplementary_count" field.
+func (u *ProjectUpsertBulk) ClearContractSupplementaryCount() *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
-		s.ClearOwnerApplyCount()
+		s.ClearContractSupplementaryCount()
 	})
 }
 
-// SetOwnerApproveAmount sets the "owner_approve_amount" field.
-func (u *ProjectUpsertBulk) SetOwnerApproveAmount(v float64) *ProjectUpsertBulk {
+// SetRepairFee sets the "repair_fee" field.
+func (u *ProjectUpsertBulk) SetRepairFee(v float64) *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
-		s.SetOwnerApproveAmount(v)
+		s.SetRepairFee(v)
 	})
 }
 
-// AddOwnerApproveAmount adds v to the "owner_approve_amount" field.
-func (u *ProjectUpsertBulk) AddOwnerApproveAmount(v float64) *ProjectUpsertBulk {
+// AddRepairFee adds v to the "repair_fee" field.
+func (u *ProjectUpsertBulk) AddRepairFee(v float64) *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
-		s.AddOwnerApproveAmount(v)
+		s.AddRepairFee(v)
 	})
 }
 
-// UpdateOwnerApproveAmount sets the "owner_approve_amount" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdateOwnerApproveAmount() *ProjectUpsertBulk {
+// UpdateRepairFee sets the "repair_fee" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateRepairFee() *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateOwnerApproveAmount()
+		s.UpdateRepairFee()
 	})
 }
 
-// ClearOwnerApproveAmount clears the value of the "owner_approve_amount" field.
-func (u *ProjectUpsertBulk) ClearOwnerApproveAmount() *ProjectUpsertBulk {
+// ClearRepairFee clears the value of the "repair_fee" field.
+func (u *ProjectUpsertBulk) ClearRepairFee() *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
-		s.ClearOwnerApproveAmount()
-	})
-}
-
-// SetOwnerApproveCount sets the "owner_approve_count" field.
-func (u *ProjectUpsertBulk) SetOwnerApproveCount(v int) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetOwnerApproveCount(v)
-	})
-}
-
-// AddOwnerApproveCount adds v to the "owner_approve_count" field.
-func (u *ProjectUpsertBulk) AddOwnerApproveCount(v int) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddOwnerApproveCount(v)
-	})
-}
-
-// UpdateOwnerApproveCount sets the "owner_approve_count" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdateOwnerApproveCount() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateOwnerApproveCount()
-	})
-}
-
-// ClearOwnerApproveCount clears the value of the "owner_approve_count" field.
-func (u *ProjectUpsertBulk) ClearOwnerApproveCount() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearOwnerApproveCount()
-	})
-}
-
-// SetContractorApplyAmount sets the "contractor_apply_amount" field.
-func (u *ProjectUpsertBulk) SetContractorApplyAmount(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetContractorApplyAmount(v)
-	})
-}
-
-// AddContractorApplyAmount adds v to the "contractor_apply_amount" field.
-func (u *ProjectUpsertBulk) AddContractorApplyAmount(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddContractorApplyAmount(v)
-	})
-}
-
-// UpdateContractorApplyAmount sets the "contractor_apply_amount" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdateContractorApplyAmount() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateContractorApplyAmount()
-	})
-}
-
-// ClearContractorApplyAmount clears the value of the "contractor_apply_amount" field.
-func (u *ProjectUpsertBulk) ClearContractorApplyAmount() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearContractorApplyAmount()
-	})
-}
-
-// SetContractorApplyCount sets the "contractor_apply_count" field.
-func (u *ProjectUpsertBulk) SetContractorApplyCount(v int) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetContractorApplyCount(v)
-	})
-}
-
-// AddContractorApplyCount adds v to the "contractor_apply_count" field.
-func (u *ProjectUpsertBulk) AddContractorApplyCount(v int) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddContractorApplyCount(v)
-	})
-}
-
-// UpdateContractorApplyCount sets the "contractor_apply_count" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdateContractorApplyCount() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateContractorApplyCount()
-	})
-}
-
-// ClearContractorApplyCount clears the value of the "contractor_apply_count" field.
-func (u *ProjectUpsertBulk) ClearContractorApplyCount() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearContractorApplyCount()
-	})
-}
-
-// SetContractorApproveAmount sets the "contractor_approve_amount" field.
-func (u *ProjectUpsertBulk) SetContractorApproveAmount(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetContractorApproveAmount(v)
-	})
-}
-
-// AddContractorApproveAmount adds v to the "contractor_approve_amount" field.
-func (u *ProjectUpsertBulk) AddContractorApproveAmount(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddContractorApproveAmount(v)
-	})
-}
-
-// UpdateContractorApproveAmount sets the "contractor_approve_amount" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdateContractorApproveAmount() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateContractorApproveAmount()
-	})
-}
-
-// ClearContractorApproveAmount clears the value of the "contractor_approve_amount" field.
-func (u *ProjectUpsertBulk) ClearContractorApproveAmount() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearContractorApproveAmount()
-	})
-}
-
-// SetContractorApproveCount sets the "contractor_approve_count" field.
-func (u *ProjectUpsertBulk) SetContractorApproveCount(v int) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetContractorApproveCount(v)
-	})
-}
-
-// AddContractorApproveCount adds v to the "contractor_approve_count" field.
-func (u *ProjectUpsertBulk) AddContractorApproveCount(v int) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddContractorApproveCount(v)
-	})
-}
-
-// UpdateContractorApproveCount sets the "contractor_approve_count" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdateContractorApproveCount() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateContractorApproveCount()
-	})
-}
-
-// ClearContractorApproveCount clears the value of the "contractor_approve_count" field.
-func (u *ProjectUpsertBulk) ClearContractorApproveCount() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearContractorApproveCount()
-	})
-}
-
-// SetInstallProgress sets the "install_progress" field.
-func (u *ProjectUpsertBulk) SetInstallProgress(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetInstallProgress(v)
-	})
-}
-
-// AddInstallProgress adds v to the "install_progress" field.
-func (u *ProjectUpsertBulk) AddInstallProgress(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddInstallProgress(v)
-	})
-}
-
-// UpdateInstallProgress sets the "install_progress" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdateInstallProgress() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateInstallProgress()
-	})
-}
-
-// ClearInstallProgress clears the value of the "install_progress" field.
-func (u *ProjectUpsertBulk) ClearInstallProgress() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearInstallProgress()
-	})
-}
-
-// SetEffectiveContractAmount sets the "effective_contract_amount" field.
-func (u *ProjectUpsertBulk) SetEffectiveContractAmount(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetEffectiveContractAmount(v)
-	})
-}
-
-// AddEffectiveContractAmount adds v to the "effective_contract_amount" field.
-func (u *ProjectUpsertBulk) AddEffectiveContractAmount(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddEffectiveContractAmount(v)
-	})
-}
-
-// UpdateEffectiveContractAmount sets the "effective_contract_amount" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdateEffectiveContractAmount() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateEffectiveContractAmount()
-	})
-}
-
-// ClearEffectiveContractAmount clears the value of the "effective_contract_amount" field.
-func (u *ProjectUpsertBulk) ClearEffectiveContractAmount() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearEffectiveContractAmount()
-	})
-}
-
-// SetVaApplyAmount sets the "va_apply_amount" field.
-func (u *ProjectUpsertBulk) SetVaApplyAmount(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetVaApplyAmount(v)
-	})
-}
-
-// AddVaApplyAmount adds v to the "va_apply_amount" field.
-func (u *ProjectUpsertBulk) AddVaApplyAmount(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddVaApplyAmount(v)
-	})
-}
-
-// UpdateVaApplyAmount sets the "va_apply_amount" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdateVaApplyAmount() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateVaApplyAmount()
-	})
-}
-
-// ClearVaApplyAmount clears the value of the "va_apply_amount" field.
-func (u *ProjectUpsertBulk) ClearVaApplyAmount() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearVaApplyAmount()
-	})
-}
-
-// SetVaApproveAmount sets the "va_approve_amount" field.
-func (u *ProjectUpsertBulk) SetVaApproveAmount(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetVaApproveAmount(v)
-	})
-}
-
-// AddVaApproveAmount adds v to the "va_approve_amount" field.
-func (u *ProjectUpsertBulk) AddVaApproveAmount(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddVaApproveAmount(v)
-	})
-}
-
-// UpdateVaApproveAmount sets the "va_approve_amount" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdateVaApproveAmount() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateVaApproveAmount()
-	})
-}
-
-// ClearVaApproveAmount clears the value of the "va_approve_amount" field.
-func (u *ProjectUpsertBulk) ClearVaApproveAmount() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearVaApproveAmount()
-	})
-}
-
-// SetAccumulatedStatutoryDeductions sets the "accumulated_statutory_deductions" field.
-func (u *ProjectUpsertBulk) SetAccumulatedStatutoryDeductions(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetAccumulatedStatutoryDeductions(v)
-	})
-}
-
-// AddAccumulatedStatutoryDeductions adds v to the "accumulated_statutory_deductions" field.
-func (u *ProjectUpsertBulk) AddAccumulatedStatutoryDeductions(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddAccumulatedStatutoryDeductions(v)
-	})
-}
-
-// UpdateAccumulatedStatutoryDeductions sets the "accumulated_statutory_deductions" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdateAccumulatedStatutoryDeductions() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateAccumulatedStatutoryDeductions()
-	})
-}
-
-// ClearAccumulatedStatutoryDeductions clears the value of the "accumulated_statutory_deductions" field.
-func (u *ProjectUpsertBulk) ClearAccumulatedStatutoryDeductions() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearAccumulatedStatutoryDeductions()
-	})
-}
-
-// SetAccumulatedNonStatutoryDeductions sets the "accumulated_non_statutory_deductions" field.
-func (u *ProjectUpsertBulk) SetAccumulatedNonStatutoryDeductions(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetAccumulatedNonStatutoryDeductions(v)
-	})
-}
-
-// AddAccumulatedNonStatutoryDeductions adds v to the "accumulated_non_statutory_deductions" field.
-func (u *ProjectUpsertBulk) AddAccumulatedNonStatutoryDeductions(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddAccumulatedNonStatutoryDeductions(v)
-	})
-}
-
-// UpdateAccumulatedNonStatutoryDeductions sets the "accumulated_non_statutory_deductions" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdateAccumulatedNonStatutoryDeductions() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateAccumulatedNonStatutoryDeductions()
-	})
-}
-
-// ClearAccumulatedNonStatutoryDeductions clears the value of the "accumulated_non_statutory_deductions" field.
-func (u *ProjectUpsertBulk) ClearAccumulatedNonStatutoryDeductions() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearAccumulatedNonStatutoryDeductions()
-	})
-}
-
-// SetAccumulatedStatutoryDeductionsPeriod sets the "accumulated_statutory_deductions_period" field.
-func (u *ProjectUpsertBulk) SetAccumulatedStatutoryDeductionsPeriod(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetAccumulatedStatutoryDeductionsPeriod(v)
-	})
-}
-
-// AddAccumulatedStatutoryDeductionsPeriod adds v to the "accumulated_statutory_deductions_period" field.
-func (u *ProjectUpsertBulk) AddAccumulatedStatutoryDeductionsPeriod(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddAccumulatedStatutoryDeductionsPeriod(v)
-	})
-}
-
-// UpdateAccumulatedStatutoryDeductionsPeriod sets the "accumulated_statutory_deductions_period" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdateAccumulatedStatutoryDeductionsPeriod() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateAccumulatedStatutoryDeductionsPeriod()
-	})
-}
-
-// ClearAccumulatedStatutoryDeductionsPeriod clears the value of the "accumulated_statutory_deductions_period" field.
-func (u *ProjectUpsertBulk) ClearAccumulatedStatutoryDeductionsPeriod() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearAccumulatedStatutoryDeductionsPeriod()
-	})
-}
-
-// SetAccumulatedNonStatutoryDeductionsPeriod sets the "accumulated_non_statutory_deductions_period" field.
-func (u *ProjectUpsertBulk) SetAccumulatedNonStatutoryDeductionsPeriod(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetAccumulatedNonStatutoryDeductionsPeriod(v)
-	})
-}
-
-// AddAccumulatedNonStatutoryDeductionsPeriod adds v to the "accumulated_non_statutory_deductions_period" field.
-func (u *ProjectUpsertBulk) AddAccumulatedNonStatutoryDeductionsPeriod(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddAccumulatedNonStatutoryDeductionsPeriod(v)
-	})
-}
-
-// UpdateAccumulatedNonStatutoryDeductionsPeriod sets the "accumulated_non_statutory_deductions_period" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdateAccumulatedNonStatutoryDeductionsPeriod() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateAccumulatedNonStatutoryDeductionsPeriod()
-	})
-}
-
-// ClearAccumulatedNonStatutoryDeductionsPeriod clears the value of the "accumulated_non_statutory_deductions_period" field.
-func (u *ProjectUpsertBulk) ClearAccumulatedNonStatutoryDeductionsPeriod() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearAccumulatedNonStatutoryDeductionsPeriod()
-	})
-}
-
-// SetTotalContractAmount sets the "total_contract_amount" field.
-func (u *ProjectUpsertBulk) SetTotalContractAmount(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetTotalContractAmount(v)
-	})
-}
-
-// AddTotalContractAmount adds v to the "total_contract_amount" field.
-func (u *ProjectUpsertBulk) AddTotalContractAmount(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddTotalContractAmount(v)
-	})
-}
-
-// UpdateTotalContractAmount sets the "total_contract_amount" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdateTotalContractAmount() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateTotalContractAmount()
-	})
-}
-
-// ClearTotalContractAmount clears the value of the "total_contract_amount" field.
-func (u *ProjectUpsertBulk) ClearTotalContractAmount() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearTotalContractAmount()
-	})
-}
-
-// SetAluminumPlateBudgetPercentage sets the "aluminum_plate_budget_percentage" field.
-func (u *ProjectUpsertBulk) SetAluminumPlateBudgetPercentage(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetAluminumPlateBudgetPercentage(v)
-	})
-}
-
-// AddAluminumPlateBudgetPercentage adds v to the "aluminum_plate_budget_percentage" field.
-func (u *ProjectUpsertBulk) AddAluminumPlateBudgetPercentage(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddAluminumPlateBudgetPercentage(v)
-	})
-}
-
-// UpdateAluminumPlateBudgetPercentage sets the "aluminum_plate_budget_percentage" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdateAluminumPlateBudgetPercentage() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateAluminumPlateBudgetPercentage()
-	})
-}
-
-// ClearAluminumPlateBudgetPercentage clears the value of the "aluminum_plate_budget_percentage" field.
-func (u *ProjectUpsertBulk) ClearAluminumPlateBudgetPercentage() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearAluminumPlateBudgetPercentage()
-	})
-}
-
-// SetAluminumBudgetPercentage sets the "aluminum_budget_percentage" field.
-func (u *ProjectUpsertBulk) SetAluminumBudgetPercentage(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetAluminumBudgetPercentage(v)
-	})
-}
-
-// AddAluminumBudgetPercentage adds v to the "aluminum_budget_percentage" field.
-func (u *ProjectUpsertBulk) AddAluminumBudgetPercentage(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddAluminumBudgetPercentage(v)
-	})
-}
-
-// UpdateAluminumBudgetPercentage sets the "aluminum_budget_percentage" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdateAluminumBudgetPercentage() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateAluminumBudgetPercentage()
-	})
-}
-
-// ClearAluminumBudgetPercentage clears the value of the "aluminum_budget_percentage" field.
-func (u *ProjectUpsertBulk) ClearAluminumBudgetPercentage() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearAluminumBudgetPercentage()
-	})
-}
-
-// SetGlassBudgetPercentage sets the "glass_budget_percentage" field.
-func (u *ProjectUpsertBulk) SetGlassBudgetPercentage(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetGlassBudgetPercentage(v)
-	})
-}
-
-// AddGlassBudgetPercentage adds v to the "glass_budget_percentage" field.
-func (u *ProjectUpsertBulk) AddGlassBudgetPercentage(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddGlassBudgetPercentage(v)
-	})
-}
-
-// UpdateGlassBudgetPercentage sets the "glass_budget_percentage" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdateGlassBudgetPercentage() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateGlassBudgetPercentage()
-	})
-}
-
-// ClearGlassBudgetPercentage clears the value of the "glass_budget_percentage" field.
-func (u *ProjectUpsertBulk) ClearGlassBudgetPercentage() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearGlassBudgetPercentage()
-	})
-}
-
-// SetIronBudgetPercentage sets the "iron_budget_percentage" field.
-func (u *ProjectUpsertBulk) SetIronBudgetPercentage(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetIronBudgetPercentage(v)
-	})
-}
-
-// AddIronBudgetPercentage adds v to the "iron_budget_percentage" field.
-func (u *ProjectUpsertBulk) AddIronBudgetPercentage(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddIronBudgetPercentage(v)
-	})
-}
-
-// UpdateIronBudgetPercentage sets the "iron_budget_percentage" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdateIronBudgetPercentage() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateIronBudgetPercentage()
-	})
-}
-
-// ClearIronBudgetPercentage clears the value of the "iron_budget_percentage" field.
-func (u *ProjectUpsertBulk) ClearIronBudgetPercentage() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearIronBudgetPercentage()
-	})
-}
-
-// SetMilestonePlanYear sets the "milestone_plan_year" field.
-func (u *ProjectUpsertBulk) SetMilestonePlanYear(v int) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetMilestonePlanYear(v)
-	})
-}
-
-// AddMilestonePlanYear adds v to the "milestone_plan_year" field.
-func (u *ProjectUpsertBulk) AddMilestonePlanYear(v int) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddMilestonePlanYear(v)
-	})
-}
-
-// UpdateMilestonePlanYear sets the "milestone_plan_year" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdateMilestonePlanYear() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateMilestonePlanYear()
-	})
-}
-
-// ClearMilestonePlanYear clears the value of the "milestone_plan_year" field.
-func (u *ProjectUpsertBulk) ClearMilestonePlanYear() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearMilestonePlanYear()
-	})
-}
-
-// SetMilestonePlanMonth sets the "milestone_plan_month" field.
-func (u *ProjectUpsertBulk) SetMilestonePlanMonth(v int) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetMilestonePlanMonth(v)
-	})
-}
-
-// AddMilestonePlanMonth adds v to the "milestone_plan_month" field.
-func (u *ProjectUpsertBulk) AddMilestonePlanMonth(v int) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddMilestonePlanMonth(v)
-	})
-}
-
-// UpdateMilestonePlanMonth sets the "milestone_plan_month" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdateMilestonePlanMonth() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateMilestonePlanMonth()
-	})
-}
-
-// ClearMilestonePlanMonth clears the value of the "milestone_plan_month" field.
-func (u *ProjectUpsertBulk) ClearMilestonePlanMonth() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearMilestonePlanMonth()
-	})
-}
-
-// SetMilestoneDoneYear sets the "milestone_done_year" field.
-func (u *ProjectUpsertBulk) SetMilestoneDoneYear(v int) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetMilestoneDoneYear(v)
-	})
-}
-
-// AddMilestoneDoneYear adds v to the "milestone_done_year" field.
-func (u *ProjectUpsertBulk) AddMilestoneDoneYear(v int) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddMilestoneDoneYear(v)
-	})
-}
-
-// UpdateMilestoneDoneYear sets the "milestone_done_year" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdateMilestoneDoneYear() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateMilestoneDoneYear()
-	})
-}
-
-// ClearMilestoneDoneYear clears the value of the "milestone_done_year" field.
-func (u *ProjectUpsertBulk) ClearMilestoneDoneYear() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearMilestoneDoneYear()
-	})
-}
-
-// SetMilestoneDoneMonth sets the "milestone_done_month" field.
-func (u *ProjectUpsertBulk) SetMilestoneDoneMonth(v int) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetMilestoneDoneMonth(v)
-	})
-}
-
-// AddMilestoneDoneMonth adds v to the "milestone_done_month" field.
-func (u *ProjectUpsertBulk) AddMilestoneDoneMonth(v int) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddMilestoneDoneMonth(v)
-	})
-}
-
-// UpdateMilestoneDoneMonth sets the "milestone_done_month" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdateMilestoneDoneMonth() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateMilestoneDoneMonth()
-	})
-}
-
-// ClearMilestoneDoneMonth clears the value of the "milestone_done_month" field.
-func (u *ProjectUpsertBulk) ClearMilestoneDoneMonth() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearMilestoneDoneMonth()
-	})
-}
-
-// SetPmArea sets the "pm_area" field.
-func (u *ProjectUpsertBulk) SetPmArea(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetPmArea(v)
-	})
-}
-
-// AddPmArea adds v to the "pm_area" field.
-func (u *ProjectUpsertBulk) AddPmArea(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddPmArea(v)
-	})
-}
-
-// UpdatePmArea sets the "pm_area" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdatePmArea() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdatePmArea()
-	})
-}
-
-// ClearPmArea clears the value of the "pm_area" field.
-func (u *ProjectUpsertBulk) ClearPmArea() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearPmArea()
-	})
-}
-
-// SetPmYearTarget sets the "pm_year_target" field.
-func (u *ProjectUpsertBulk) SetPmYearTarget(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetPmYearTarget(v)
-	})
-}
-
-// AddPmYearTarget adds v to the "pm_year_target" field.
-func (u *ProjectUpsertBulk) AddPmYearTarget(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddPmYearTarget(v)
-	})
-}
-
-// UpdatePmYearTarget sets the "pm_year_target" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdatePmYearTarget() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdatePmYearTarget()
-	})
-}
-
-// ClearPmYearTarget clears the value of the "pm_year_target" field.
-func (u *ProjectUpsertBulk) ClearPmYearTarget() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearPmYearTarget()
-	})
-}
-
-// SetPmMonthTarget sets the "pm_month_target" field.
-func (u *ProjectUpsertBulk) SetPmMonthTarget(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetPmMonthTarget(v)
-	})
-}
-
-// AddPmMonthTarget adds v to the "pm_month_target" field.
-func (u *ProjectUpsertBulk) AddPmMonthTarget(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddPmMonthTarget(v)
-	})
-}
-
-// UpdatePmMonthTarget sets the "pm_month_target" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdatePmMonthTarget() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdatePmMonthTarget()
-	})
-}
-
-// ClearPmMonthTarget clears the value of the "pm_month_target" field.
-func (u *ProjectUpsertBulk) ClearPmMonthTarget() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearPmMonthTarget()
-	})
-}
-
-// SetPmYearActual sets the "pm_year_actual" field.
-func (u *ProjectUpsertBulk) SetPmYearActual(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetPmYearActual(v)
-	})
-}
-
-// AddPmYearActual adds v to the "pm_year_actual" field.
-func (u *ProjectUpsertBulk) AddPmYearActual(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddPmYearActual(v)
-	})
-}
-
-// UpdatePmYearActual sets the "pm_year_actual" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdatePmYearActual() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdatePmYearActual()
-	})
-}
-
-// ClearPmYearActual clears the value of the "pm_year_actual" field.
-func (u *ProjectUpsertBulk) ClearPmYearActual() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearPmYearActual()
-	})
-}
-
-// SetPmMonthActual sets the "pm_month_actual" field.
-func (u *ProjectUpsertBulk) SetPmMonthActual(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetPmMonthActual(v)
-	})
-}
-
-// AddPmMonthActual adds v to the "pm_month_actual" field.
-func (u *ProjectUpsertBulk) AddPmMonthActual(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddPmMonthActual(v)
-	})
-}
-
-// UpdatePmMonthActual sets the "pm_month_actual" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdatePmMonthActual() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdatePmMonthActual()
-	})
-}
-
-// ClearPmMonthActual clears the value of the "pm_month_actual" field.
-func (u *ProjectUpsertBulk) ClearPmMonthActual() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearPmMonthActual()
-	})
-}
-
-// SetPmTotal sets the "pm_total" field.
-func (u *ProjectUpsertBulk) SetPmTotal(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetPmTotal(v)
-	})
-}
-
-// AddPmTotal adds v to the "pm_total" field.
-func (u *ProjectUpsertBulk) AddPmTotal(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddPmTotal(v)
-	})
-}
-
-// UpdatePmTotal sets the "pm_total" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdatePmTotal() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdatePmTotal()
-	})
-}
-
-// ClearPmTotal clears the value of the "pm_total" field.
-func (u *ProjectUpsertBulk) ClearPmTotal() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearPmTotal()
-	})
-}
-
-// SetPmYesterday sets the "pm_yesterday" field.
-func (u *ProjectUpsertBulk) SetPmYesterday(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetPmYesterday(v)
-	})
-}
-
-// AddPmYesterday adds v to the "pm_yesterday" field.
-func (u *ProjectUpsertBulk) AddPmYesterday(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddPmYesterday(v)
-	})
-}
-
-// UpdatePmYesterday sets the "pm_yesterday" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdatePmYesterday() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdatePmYesterday()
-	})
-}
-
-// ClearPmYesterday clears the value of the "pm_yesterday" field.
-func (u *ProjectUpsertBulk) ClearPmYesterday() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearPmYesterday()
+		s.ClearRepairFee()
 	})
 }
 
@@ -7490,230 +2800,6 @@ func (u *ProjectUpsertBulk) ClearUnitComponentInstallation() *ProjectUpsertBulk 
 	})
 }
 
-// SetMaterialLoss sets the "material_loss" field.
-func (u *ProjectUpsertBulk) SetMaterialLoss(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetMaterialLoss(v)
-	})
-}
-
-// AddMaterialLoss adds v to the "material_loss" field.
-func (u *ProjectUpsertBulk) AddMaterialLoss(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddMaterialLoss(v)
-	})
-}
-
-// UpdateMaterialLoss sets the "material_loss" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdateMaterialLoss() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateMaterialLoss()
-	})
-}
-
-// ClearMaterialLoss clears the value of the "material_loss" field.
-func (u *ProjectUpsertBulk) ClearMaterialLoss() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearMaterialLoss()
-	})
-}
-
-// SetDesignRatedWeight sets the "design_rated_weight" field.
-func (u *ProjectUpsertBulk) SetDesignRatedWeight(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetDesignRatedWeight(v)
-	})
-}
-
-// AddDesignRatedWeight adds v to the "design_rated_weight" field.
-func (u *ProjectUpsertBulk) AddDesignRatedWeight(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddDesignRatedWeight(v)
-	})
-}
-
-// UpdateDesignRatedWeight sets the "design_rated_weight" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdateDesignRatedWeight() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateDesignRatedWeight()
-	})
-}
-
-// ClearDesignRatedWeight clears the value of the "design_rated_weight" field.
-func (u *ProjectUpsertBulk) ClearDesignRatedWeight() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearDesignRatedWeight()
-	})
-}
-
-// SetProcessingWeight sets the "processing_weight" field.
-func (u *ProjectUpsertBulk) SetProcessingWeight(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetProcessingWeight(v)
-	})
-}
-
-// AddProcessingWeight adds v to the "processing_weight" field.
-func (u *ProjectUpsertBulk) AddProcessingWeight(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddProcessingWeight(v)
-	})
-}
-
-// UpdateProcessingWeight sets the "processing_weight" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdateProcessingWeight() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateProcessingWeight()
-	})
-}
-
-// ClearProcessingWeight clears the value of the "processing_weight" field.
-func (u *ProjectUpsertBulk) ClearProcessingWeight() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearProcessingWeight()
-	})
-}
-
-// SetItemStockWeight sets the "item_stock_weight" field.
-func (u *ProjectUpsertBulk) SetItemStockWeight(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetItemStockWeight(v)
-	})
-}
-
-// AddItemStockWeight adds v to the "item_stock_weight" field.
-func (u *ProjectUpsertBulk) AddItemStockWeight(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddItemStockWeight(v)
-	})
-}
-
-// UpdateItemStockWeight sets the "item_stock_weight" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdateItemStockWeight() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateItemStockWeight()
-	})
-}
-
-// ClearItemStockWeight clears the value of the "item_stock_weight" field.
-func (u *ProjectUpsertBulk) ClearItemStockWeight() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearItemStockWeight()
-	})
-}
-
-// SetPalletsInStock sets the "pallets_in_stock" field.
-func (u *ProjectUpsertBulk) SetPalletsInStock(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetPalletsInStock(v)
-	})
-}
-
-// AddPalletsInStock adds v to the "pallets_in_stock" field.
-func (u *ProjectUpsertBulk) AddPalletsInStock(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddPalletsInStock(v)
-	})
-}
-
-// UpdatePalletsInStock sets the "pallets_in_stock" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdatePalletsInStock() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdatePalletsInStock()
-	})
-}
-
-// ClearPalletsInStock clears the value of the "pallets_in_stock" field.
-func (u *ProjectUpsertBulk) ClearPalletsInStock() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearPalletsInStock()
-	})
-}
-
-// SetPartsInStock sets the "parts_in_stock" field.
-func (u *ProjectUpsertBulk) SetPartsInStock(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetPartsInStock(v)
-	})
-}
-
-// AddPartsInStock adds v to the "parts_in_stock" field.
-func (u *ProjectUpsertBulk) AddPartsInStock(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddPartsInStock(v)
-	})
-}
-
-// UpdatePartsInStock sets the "parts_in_stock" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdatePartsInStock() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdatePartsInStock()
-	})
-}
-
-// ClearPartsInStock clears the value of the "parts_in_stock" field.
-func (u *ProjectUpsertBulk) ClearPartsInStock() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearPartsInStock()
-	})
-}
-
-// SetQualityScore sets the "quality_score" field.
-func (u *ProjectUpsertBulk) SetQualityScore(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetQualityScore(v)
-	})
-}
-
-// AddQualityScore adds v to the "quality_score" field.
-func (u *ProjectUpsertBulk) AddQualityScore(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddQualityScore(v)
-	})
-}
-
-// UpdateQualityScore sets the "quality_score" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdateQualityScore() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateQualityScore()
-	})
-}
-
-// ClearQualityScore clears the value of the "quality_score" field.
-func (u *ProjectUpsertBulk) ClearQualityScore() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearQualityScore()
-	})
-}
-
-// SetQualityRanking sets the "quality_ranking" field.
-func (u *ProjectUpsertBulk) SetQualityRanking(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetQualityRanking(v)
-	})
-}
-
-// AddQualityRanking adds v to the "quality_ranking" field.
-func (u *ProjectUpsertBulk) AddQualityRanking(v float64) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddQualityRanking(v)
-	})
-}
-
-// UpdateQualityRanking sets the "quality_ranking" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdateQualityRanking() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateQualityRanking()
-	})
-}
-
-// ClearQualityRanking clears the value of the "quality_ranking" field.
-func (u *ProjectUpsertBulk) ClearQualityRanking() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearQualityRanking()
-	})
-}
-
 // SetBulkMaterialsTotalOrderQuantity sets the "bulk_materials_total_order_quantity" field.
 func (u *ProjectUpsertBulk) SetBulkMaterialsTotalOrderQuantity(v float64) *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
@@ -7795,90 +2881,6 @@ func (u *ProjectUpsertBulk) UpdateBulkMaterialsUncompletedQuantity() *ProjectUps
 func (u *ProjectUpsertBulk) ClearBulkMaterialsUncompletedQuantity() *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
 		s.ClearBulkMaterialsUncompletedQuantity()
-	})
-}
-
-// SetPlanTotalCount sets the "plan_total_count" field.
-func (u *ProjectUpsertBulk) SetPlanTotalCount(v int) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetPlanTotalCount(v)
-	})
-}
-
-// AddPlanTotalCount adds v to the "plan_total_count" field.
-func (u *ProjectUpsertBulk) AddPlanTotalCount(v int) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddPlanTotalCount(v)
-	})
-}
-
-// UpdatePlanTotalCount sets the "plan_total_count" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdatePlanTotalCount() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdatePlanTotalCount()
-	})
-}
-
-// ClearPlanTotalCount clears the value of the "plan_total_count" field.
-func (u *ProjectUpsertBulk) ClearPlanTotalCount() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearPlanTotalCount()
-	})
-}
-
-// SetPlanOverdueCount sets the "plan_overdue_count" field.
-func (u *ProjectUpsertBulk) SetPlanOverdueCount(v int) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetPlanOverdueCount(v)
-	})
-}
-
-// AddPlanOverdueCount adds v to the "plan_overdue_count" field.
-func (u *ProjectUpsertBulk) AddPlanOverdueCount(v int) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddPlanOverdueCount(v)
-	})
-}
-
-// UpdatePlanOverdueCount sets the "plan_overdue_count" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdatePlanOverdueCount() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdatePlanOverdueCount()
-	})
-}
-
-// ClearPlanOverdueCount clears the value of the "plan_overdue_count" field.
-func (u *ProjectUpsertBulk) ClearPlanOverdueCount() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearPlanOverdueCount()
-	})
-}
-
-// SetPlanOverdueMonthCount sets the "plan_overdue_month_count" field.
-func (u *ProjectUpsertBulk) SetPlanOverdueMonthCount(v int) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.SetPlanOverdueMonthCount(v)
-	})
-}
-
-// AddPlanOverdueMonthCount adds v to the "plan_overdue_month_count" field.
-func (u *ProjectUpsertBulk) AddPlanOverdueMonthCount(v int) *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.AddPlanOverdueMonthCount(v)
-	})
-}
-
-// UpdatePlanOverdueMonthCount sets the "plan_overdue_month_count" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdatePlanOverdueMonthCount() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.UpdatePlanOverdueMonthCount()
-	})
-}
-
-// ClearPlanOverdueMonthCount clears the value of the "plan_overdue_month_count" field.
-func (u *ProjectUpsertBulk) ClearPlanOverdueMonthCount() *ProjectUpsertBulk {
-	return u.Update(func(s *ProjectUpsert) {
-		s.ClearPlanOverdueMonthCount()
 	})
 }
 

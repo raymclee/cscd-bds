@@ -5674,112 +5674,28 @@ func (ec *executionContext) fieldContext_Mutation_updateProject(ctx context.Cont
 				return ec.fieldContext_Project_updatedAt(ctx, field)
 			case "code":
 				return ec.fieldContext_Project_code(ctx, field)
-			case "manager":
-				return ec.fieldContext_Project_manager(ctx, field)
-			case "name":
-				return ec.fieldContext_Project_name(ctx, field)
-			case "owner":
-				return ec.fieldContext_Project_owner(ctx, field)
-			case "jzs":
-				return ec.fieldContext_Project_jzs(ctx, field)
-			case "mcn":
-				return ec.fieldContext_Project_mcn(ctx, field)
-			case "consultant":
-				return ec.fieldContext_Project_consultant(ctx, field)
-			case "areas":
-				return ec.fieldContext_Project_areas(ctx, field)
-			case "startDate":
-				return ec.fieldContext_Project_startDate(ctx, field)
-			case "fsDate":
-				return ec.fieldContext_Project_fsDate(ctx, field)
-			case "opDate":
-				return ec.fieldContext_Project_opDate(ctx, field)
-			case "endDate":
-				return ec.fieldContext_Project_endDate(ctx, field)
-			case "mntyr":
-				return ec.fieldContext_Project_mntyr(ctx, field)
-			case "conType":
-				return ec.fieldContext_Project_conType(ctx, field)
 			case "isFinished":
 				return ec.fieldContext_Project_isFinished(ctx, field)
-			case "cje":
-				return ec.fieldContext_Project_cje(ctx, field)
-			case "yye":
-				return ec.fieldContext_Project_yye(ctx, field)
-			case "xjl":
-				return ec.fieldContext_Project_xjl(ctx, field)
-			case "xmglfYs":
-				return ec.fieldContext_Project_xmglfYs(ctx, field)
-			case "xmglfLj":
-				return ec.fieldContext_Project_xmglfLj(ctx, field)
-			case "xmsjf":
-				return ec.fieldContext_Project_xmsjf(ctx, field)
-			case "xmfzr":
-				return ec.fieldContext_Project_xmfzr(ctx, field)
-			case "ownerApplyAmount":
-				return ec.fieldContext_Project_ownerApplyAmount(ctx, field)
-			case "ownerApplyCount":
-				return ec.fieldContext_Project_ownerApplyCount(ctx, field)
-			case "ownerApproveAmount":
-				return ec.fieldContext_Project_ownerApproveAmount(ctx, field)
-			case "ownerApproveCount":
-				return ec.fieldContext_Project_ownerApproveCount(ctx, field)
-			case "contractorApplyAmount":
-				return ec.fieldContext_Project_contractorApplyAmount(ctx, field)
-			case "contractorApplyCount":
-				return ec.fieldContext_Project_contractorApplyCount(ctx, field)
-			case "contractorApproveAmount":
-				return ec.fieldContext_Project_contractorApproveAmount(ctx, field)
-			case "contractorApproveCount":
-				return ec.fieldContext_Project_contractorApproveCount(ctx, field)
-			case "installProgress":
-				return ec.fieldContext_Project_installProgress(ctx, field)
-			case "effectiveContractAmount":
-				return ec.fieldContext_Project_effectiveContractAmount(ctx, field)
-			case "vaApplyAmount":
-				return ec.fieldContext_Project_vaApplyAmount(ctx, field)
-			case "vaApproveAmount":
-				return ec.fieldContext_Project_vaApproveAmount(ctx, field)
-			case "accumulatedStatutoryDeductions":
-				return ec.fieldContext_Project_accumulatedStatutoryDeductions(ctx, field)
-			case "accumulatedNonStatutoryDeductions":
-				return ec.fieldContext_Project_accumulatedNonStatutoryDeductions(ctx, field)
-			case "accumulatedStatutoryDeductionsPeriod":
-				return ec.fieldContext_Project_accumulatedStatutoryDeductionsPeriod(ctx, field)
-			case "accumulatedNonStatutoryDeductionsPeriod":
-				return ec.fieldContext_Project_accumulatedNonStatutoryDeductionsPeriod(ctx, field)
-			case "totalContractAmount":
-				return ec.fieldContext_Project_totalContractAmount(ctx, field)
-			case "aluminumPlateBudgetPercentage":
-				return ec.fieldContext_Project_aluminumPlateBudgetPercentage(ctx, field)
-			case "aluminumBudgetPercentage":
-				return ec.fieldContext_Project_aluminumBudgetPercentage(ctx, field)
-			case "glassBudgetPercentage":
-				return ec.fieldContext_Project_glassBudgetPercentage(ctx, field)
-			case "ironBudgetPercentage":
-				return ec.fieldContext_Project_ironBudgetPercentage(ctx, field)
-			case "milestonePlanYear":
-				return ec.fieldContext_Project_milestonePlanYear(ctx, field)
-			case "milestonePlanMonth":
-				return ec.fieldContext_Project_milestonePlanMonth(ctx, field)
-			case "milestoneDoneYear":
-				return ec.fieldContext_Project_milestoneDoneYear(ctx, field)
-			case "milestoneDoneMonth":
-				return ec.fieldContext_Project_milestoneDoneMonth(ctx, field)
-			case "pmArea":
-				return ec.fieldContext_Project_pmArea(ctx, field)
-			case "pmYearTarget":
-				return ec.fieldContext_Project_pmYearTarget(ctx, field)
-			case "pmMonthTarget":
-				return ec.fieldContext_Project_pmMonthTarget(ctx, field)
-			case "pmYearActual":
-				return ec.fieldContext_Project_pmYearActual(ctx, field)
-			case "pmMonthActual":
-				return ec.fieldContext_Project_pmMonthActual(ctx, field)
-			case "pmTotal":
-				return ec.fieldContext_Project_pmTotal(ctx, field)
-			case "pmYesterday":
-				return ec.fieldContext_Project_pmYesterday(ctx, field)
+			case "revenueKpi":
+				return ec.fieldContext_Project_revenueKpi(ctx, field)
+			case "revenueCurrentYearCompleted":
+				return ec.fieldContext_Project_revenueCurrentYearCompleted(ctx, field)
+			case "revenueAccumulatedCompleted":
+				return ec.fieldContext_Project_revenueAccumulatedCompleted(ctx, field)
+			case "payDate":
+				return ec.fieldContext_Project_payDate(ctx, field)
+			case "ownerVoCount":
+				return ec.fieldContext_Project_ownerVoCount(ctx, field)
+			case "contractorVoCount":
+				return ec.fieldContext_Project_contractorVoCount(ctx, field)
+			case "accumulateDeduction":
+				return ec.fieldContext_Project_accumulateDeduction(ctx, field)
+			case "subcontractorVaCount":
+				return ec.fieldContext_Project_subcontractorVaCount(ctx, field)
+			case "contractSupplementaryCount":
+				return ec.fieldContext_Project_contractSupplementaryCount(ctx, field)
+			case "repairFee":
+				return ec.fieldContext_Project_repairFee(ctx, field)
 			case "unitInventoryTotal":
 				return ec.fieldContext_Project_unitInventoryTotal(ctx, field)
 			case "unitComponentTotal":
@@ -5788,34 +5704,12 @@ func (ec *executionContext) fieldContext_Mutation_updateProject(ctx context.Cont
 				return ec.fieldContext_Project_unitComponentProduction(ctx, field)
 			case "unitComponentInstallation":
 				return ec.fieldContext_Project_unitComponentInstallation(ctx, field)
-			case "materialLoss":
-				return ec.fieldContext_Project_materialLoss(ctx, field)
-			case "designRatedWeight":
-				return ec.fieldContext_Project_designRatedWeight(ctx, field)
-			case "processingWeight":
-				return ec.fieldContext_Project_processingWeight(ctx, field)
-			case "itemStockWeight":
-				return ec.fieldContext_Project_itemStockWeight(ctx, field)
-			case "palletsInStock":
-				return ec.fieldContext_Project_palletsInStock(ctx, field)
-			case "partsInStock":
-				return ec.fieldContext_Project_partsInStock(ctx, field)
-			case "qualityScore":
-				return ec.fieldContext_Project_qualityScore(ctx, field)
-			case "qualityRanking":
-				return ec.fieldContext_Project_qualityRanking(ctx, field)
 			case "bulkMaterialsTotalOrderQuantity":
 				return ec.fieldContext_Project_bulkMaterialsTotalOrderQuantity(ctx, field)
 			case "bulkMaterialsCompletedQuantity":
 				return ec.fieldContext_Project_bulkMaterialsCompletedQuantity(ctx, field)
 			case "bulkMaterialsUncompletedQuantity":
 				return ec.fieldContext_Project_bulkMaterialsUncompletedQuantity(ctx, field)
-			case "planTotalCount":
-				return ec.fieldContext_Project_planTotalCount(ctx, field)
-			case "planOverdueCount":
-				return ec.fieldContext_Project_planOverdueCount(ctx, field)
-			case "planOverdueMonthCount":
-				return ec.fieldContext_Project_planOverdueMonthCount(ctx, field)
 			case "diagramBdFinishCount":
 				return ec.fieldContext_Project_diagramBdFinishCount(ctx, field)
 			case "diagramBdTotalCount":
@@ -5832,10 +5726,6 @@ func (ec *executionContext) fieldContext_Mutation_updateProject(ctx context.Cont
 				return ec.fieldContext_Project_diagramCApprovalRatioNumerator(ctx, field)
 			case "diagramCApprovalRatioDenominator":
 				return ec.fieldContext_Project_diagramCApprovalRatioDenominator(ctx, field)
-			case "vos":
-				return ec.fieldContext_Project_vos(ctx, field)
-			case "projectStaffs":
-				return ec.fieldContext_Project_projectStaffs(ctx, field)
 			case "users":
 				return ec.fieldContext_Project_users(ctx, field)
 			}

@@ -79,11 +79,6 @@ func (r *queryResolver) Projects(ctx context.Context, after *entgql.Cursor[xid.I
 	return r.store.Project.Query().Paginate(ctx, after, first, before, last, ent.WithProjectFilter(where.Filter), ent.WithProjectOrder(orderBy))
 }
 
-// ProjectStaffs is the resolver for the projectStaffs field.
-func (r *queryResolver) ProjectStaffs(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.ProjectStaffOrder, where *ent.ProjectStaffWhereInput) (*ent.ProjectStaffConnection, error) {
-	return r.store.ProjectStaff.Query().Paginate(ctx, after, first, before, last, ent.WithProjectStaffFilter(where.Filter), ent.WithProjectStaffOrder(orderBy))
-}
-
 // Provinces is the resolver for the provinces field.
 func (r *queryResolver) Provinces(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.ProvinceOrder, where *ent.ProvinceWhereInput) (*ent.ProvinceConnection, error) {
 	return r.store.Province.Query().Paginate(ctx, after, first, before, last, ent.WithProvinceFilter(where.Filter), ent.WithProvinceOrder(orderBy))

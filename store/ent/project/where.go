@@ -71,269 +71,59 @@ func Code(v string) predicate.Project {
 	return predicate.Project(sql.FieldEQ(FieldCode, v))
 }
 
-// Manager applies equality check predicate on the "manager" field. It's identical to ManagerEQ.
-func Manager(v string) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldManager, v))
-}
-
-// Name applies equality check predicate on the "name" field. It's identical to NameEQ.
-func Name(v string) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldName, v))
-}
-
-// Owner applies equality check predicate on the "owner" field. It's identical to OwnerEQ.
-func Owner(v string) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldOwner, v))
-}
-
-// Jzs applies equality check predicate on the "jzs" field. It's identical to JzsEQ.
-func Jzs(v string) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldJzs, v))
-}
-
-// Mcn applies equality check predicate on the "mcn" field. It's identical to McnEQ.
-func Mcn(v string) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldMcn, v))
-}
-
-// Consultant applies equality check predicate on the "consultant" field. It's identical to ConsultantEQ.
-func Consultant(v string) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldConsultant, v))
-}
-
-// Areas applies equality check predicate on the "areas" field. It's identical to AreasEQ.
-func Areas(v string) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldAreas, v))
-}
-
-// StartDate applies equality check predicate on the "start_date" field. It's identical to StartDateEQ.
-func StartDate(v time.Time) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldStartDate, v))
-}
-
-// FsDate applies equality check predicate on the "fs_date" field. It's identical to FsDateEQ.
-func FsDate(v time.Time) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldFsDate, v))
-}
-
-// OpDate applies equality check predicate on the "op_date" field. It's identical to OpDateEQ.
-func OpDate(v time.Time) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldOpDate, v))
-}
-
-// EndDate applies equality check predicate on the "end_date" field. It's identical to EndDateEQ.
-func EndDate(v time.Time) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldEndDate, v))
-}
-
-// Mntyr applies equality check predicate on the "mntyr" field. It's identical to MntyrEQ.
-func Mntyr(v string) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldMntyr, v))
-}
-
-// ConType applies equality check predicate on the "con_type" field. It's identical to ConTypeEQ.
-func ConType(v string) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldConType, v))
-}
-
 // IsFinished applies equality check predicate on the "is_finished" field. It's identical to IsFinishedEQ.
 func IsFinished(v bool) predicate.Project {
 	return predicate.Project(sql.FieldEQ(FieldIsFinished, v))
 }
 
-// Cje applies equality check predicate on the "cje" field. It's identical to CjeEQ.
-func Cje(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldCje, v))
+// RevenueKpi applies equality check predicate on the "revenue_kpi" field. It's identical to RevenueKpiEQ.
+func RevenueKpi(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldRevenueKpi, v))
 }
 
-// Yye applies equality check predicate on the "yye" field. It's identical to YyeEQ.
-func Yye(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldYye, v))
+// RevenueCurrentYearCompleted applies equality check predicate on the "revenue_current_year_completed" field. It's identical to RevenueCurrentYearCompletedEQ.
+func RevenueCurrentYearCompleted(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldRevenueCurrentYearCompleted, v))
 }
 
-// Xjl applies equality check predicate on the "xjl" field. It's identical to XjlEQ.
-func Xjl(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldXjl, v))
+// RevenueAccumulatedCompleted applies equality check predicate on the "revenue_accumulated_completed" field. It's identical to RevenueAccumulatedCompletedEQ.
+func RevenueAccumulatedCompleted(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldRevenueAccumulatedCompleted, v))
 }
 
-// XmglfYs applies equality check predicate on the "xmglf_ys" field. It's identical to XmglfYsEQ.
-func XmglfYs(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldXmglfYs, v))
+// PayDate applies equality check predicate on the "pay_date" field. It's identical to PayDateEQ.
+func PayDate(v time.Time) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldPayDate, v))
 }
 
-// XmglfLj applies equality check predicate on the "xmglf_lj" field. It's identical to XmglfLjEQ.
-func XmglfLj(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldXmglfLj, v))
+// OwnerVoCount applies equality check predicate on the "owner_vo_count" field. It's identical to OwnerVoCountEQ.
+func OwnerVoCount(v int) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldOwnerVoCount, v))
 }
 
-// Xmsjf applies equality check predicate on the "xmsjf" field. It's identical to XmsjfEQ.
-func Xmsjf(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldXmsjf, v))
+// ContractorVoCount applies equality check predicate on the "contractor_vo_count" field. It's identical to ContractorVoCountEQ.
+func ContractorVoCount(v int) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldContractorVoCount, v))
 }
 
-// Xmfzr applies equality check predicate on the "xmfzr" field. It's identical to XmfzrEQ.
-func Xmfzr(v string) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldXmfzr, v))
+// AccumulateDeduction applies equality check predicate on the "accumulate_deduction" field. It's identical to AccumulateDeductionEQ.
+func AccumulateDeduction(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldAccumulateDeduction, v))
 }
 
-// OwnerApplyAmount applies equality check predicate on the "owner_apply_amount" field. It's identical to OwnerApplyAmountEQ.
-func OwnerApplyAmount(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldOwnerApplyAmount, v))
+// SubcontractorVaCount applies equality check predicate on the "subcontractor_va_count" field. It's identical to SubcontractorVaCountEQ.
+func SubcontractorVaCount(v int) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldSubcontractorVaCount, v))
 }
 
-// OwnerApplyCount applies equality check predicate on the "owner_apply_count" field. It's identical to OwnerApplyCountEQ.
-func OwnerApplyCount(v int) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldOwnerApplyCount, v))
+// ContractSupplementaryCount applies equality check predicate on the "contract_supplementary_count" field. It's identical to ContractSupplementaryCountEQ.
+func ContractSupplementaryCount(v int) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldContractSupplementaryCount, v))
 }
 
-// OwnerApproveAmount applies equality check predicate on the "owner_approve_amount" field. It's identical to OwnerApproveAmountEQ.
-func OwnerApproveAmount(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldOwnerApproveAmount, v))
-}
-
-// OwnerApproveCount applies equality check predicate on the "owner_approve_count" field. It's identical to OwnerApproveCountEQ.
-func OwnerApproveCount(v int) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldOwnerApproveCount, v))
-}
-
-// ContractorApplyAmount applies equality check predicate on the "contractor_apply_amount" field. It's identical to ContractorApplyAmountEQ.
-func ContractorApplyAmount(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldContractorApplyAmount, v))
-}
-
-// ContractorApplyCount applies equality check predicate on the "contractor_apply_count" field. It's identical to ContractorApplyCountEQ.
-func ContractorApplyCount(v int) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldContractorApplyCount, v))
-}
-
-// ContractorApproveAmount applies equality check predicate on the "contractor_approve_amount" field. It's identical to ContractorApproveAmountEQ.
-func ContractorApproveAmount(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldContractorApproveAmount, v))
-}
-
-// ContractorApproveCount applies equality check predicate on the "contractor_approve_count" field. It's identical to ContractorApproveCountEQ.
-func ContractorApproveCount(v int) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldContractorApproveCount, v))
-}
-
-// InstallProgress applies equality check predicate on the "install_progress" field. It's identical to InstallProgressEQ.
-func InstallProgress(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldInstallProgress, v))
-}
-
-// EffectiveContractAmount applies equality check predicate on the "effective_contract_amount" field. It's identical to EffectiveContractAmountEQ.
-func EffectiveContractAmount(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldEffectiveContractAmount, v))
-}
-
-// VaApplyAmount applies equality check predicate on the "va_apply_amount" field. It's identical to VaApplyAmountEQ.
-func VaApplyAmount(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldVaApplyAmount, v))
-}
-
-// VaApproveAmount applies equality check predicate on the "va_approve_amount" field. It's identical to VaApproveAmountEQ.
-func VaApproveAmount(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldVaApproveAmount, v))
-}
-
-// AccumulatedStatutoryDeductions applies equality check predicate on the "accumulated_statutory_deductions" field. It's identical to AccumulatedStatutoryDeductionsEQ.
-func AccumulatedStatutoryDeductions(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldAccumulatedStatutoryDeductions, v))
-}
-
-// AccumulatedNonStatutoryDeductions applies equality check predicate on the "accumulated_non_statutory_deductions" field. It's identical to AccumulatedNonStatutoryDeductionsEQ.
-func AccumulatedNonStatutoryDeductions(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldAccumulatedNonStatutoryDeductions, v))
-}
-
-// AccumulatedStatutoryDeductionsPeriod applies equality check predicate on the "accumulated_statutory_deductions_period" field. It's identical to AccumulatedStatutoryDeductionsPeriodEQ.
-func AccumulatedStatutoryDeductionsPeriod(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldAccumulatedStatutoryDeductionsPeriod, v))
-}
-
-// AccumulatedNonStatutoryDeductionsPeriod applies equality check predicate on the "accumulated_non_statutory_deductions_period" field. It's identical to AccumulatedNonStatutoryDeductionsPeriodEQ.
-func AccumulatedNonStatutoryDeductionsPeriod(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldAccumulatedNonStatutoryDeductionsPeriod, v))
-}
-
-// TotalContractAmount applies equality check predicate on the "total_contract_amount" field. It's identical to TotalContractAmountEQ.
-func TotalContractAmount(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldTotalContractAmount, v))
-}
-
-// AluminumPlateBudgetPercentage applies equality check predicate on the "aluminum_plate_budget_percentage" field. It's identical to AluminumPlateBudgetPercentageEQ.
-func AluminumPlateBudgetPercentage(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldAluminumPlateBudgetPercentage, v))
-}
-
-// AluminumBudgetPercentage applies equality check predicate on the "aluminum_budget_percentage" field. It's identical to AluminumBudgetPercentageEQ.
-func AluminumBudgetPercentage(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldAluminumBudgetPercentage, v))
-}
-
-// GlassBudgetPercentage applies equality check predicate on the "glass_budget_percentage" field. It's identical to GlassBudgetPercentageEQ.
-func GlassBudgetPercentage(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldGlassBudgetPercentage, v))
-}
-
-// IronBudgetPercentage applies equality check predicate on the "iron_budget_percentage" field. It's identical to IronBudgetPercentageEQ.
-func IronBudgetPercentage(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldIronBudgetPercentage, v))
-}
-
-// MilestonePlanYear applies equality check predicate on the "milestone_plan_year" field. It's identical to MilestonePlanYearEQ.
-func MilestonePlanYear(v int) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldMilestonePlanYear, v))
-}
-
-// MilestonePlanMonth applies equality check predicate on the "milestone_plan_month" field. It's identical to MilestonePlanMonthEQ.
-func MilestonePlanMonth(v int) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldMilestonePlanMonth, v))
-}
-
-// MilestoneDoneYear applies equality check predicate on the "milestone_done_year" field. It's identical to MilestoneDoneYearEQ.
-func MilestoneDoneYear(v int) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldMilestoneDoneYear, v))
-}
-
-// MilestoneDoneMonth applies equality check predicate on the "milestone_done_month" field. It's identical to MilestoneDoneMonthEQ.
-func MilestoneDoneMonth(v int) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldMilestoneDoneMonth, v))
-}
-
-// PmArea applies equality check predicate on the "pm_area" field. It's identical to PmAreaEQ.
-func PmArea(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldPmArea, v))
-}
-
-// PmYearTarget applies equality check predicate on the "pm_year_target" field. It's identical to PmYearTargetEQ.
-func PmYearTarget(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldPmYearTarget, v))
-}
-
-// PmMonthTarget applies equality check predicate on the "pm_month_target" field. It's identical to PmMonthTargetEQ.
-func PmMonthTarget(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldPmMonthTarget, v))
-}
-
-// PmYearActual applies equality check predicate on the "pm_year_actual" field. It's identical to PmYearActualEQ.
-func PmYearActual(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldPmYearActual, v))
-}
-
-// PmMonthActual applies equality check predicate on the "pm_month_actual" field. It's identical to PmMonthActualEQ.
-func PmMonthActual(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldPmMonthActual, v))
-}
-
-// PmTotal applies equality check predicate on the "pm_total" field. It's identical to PmTotalEQ.
-func PmTotal(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldPmTotal, v))
-}
-
-// PmYesterday applies equality check predicate on the "pm_yesterday" field. It's identical to PmYesterdayEQ.
-func PmYesterday(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldPmYesterday, v))
+// RepairFee applies equality check predicate on the "repair_fee" field. It's identical to RepairFeeEQ.
+func RepairFee(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldRepairFee, v))
 }
 
 // UnitInventoryTotal applies equality check predicate on the "unit_inventory_total" field. It's identical to UnitInventoryTotalEQ.
@@ -356,46 +146,6 @@ func UnitComponentInstallation(v float64) predicate.Project {
 	return predicate.Project(sql.FieldEQ(FieldUnitComponentInstallation, v))
 }
 
-// MaterialLoss applies equality check predicate on the "material_loss" field. It's identical to MaterialLossEQ.
-func MaterialLoss(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldMaterialLoss, v))
-}
-
-// DesignRatedWeight applies equality check predicate on the "design_rated_weight" field. It's identical to DesignRatedWeightEQ.
-func DesignRatedWeight(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldDesignRatedWeight, v))
-}
-
-// ProcessingWeight applies equality check predicate on the "processing_weight" field. It's identical to ProcessingWeightEQ.
-func ProcessingWeight(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldProcessingWeight, v))
-}
-
-// ItemStockWeight applies equality check predicate on the "item_stock_weight" field. It's identical to ItemStockWeightEQ.
-func ItemStockWeight(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldItemStockWeight, v))
-}
-
-// PalletsInStock applies equality check predicate on the "pallets_in_stock" field. It's identical to PalletsInStockEQ.
-func PalletsInStock(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldPalletsInStock, v))
-}
-
-// PartsInStock applies equality check predicate on the "parts_in_stock" field. It's identical to PartsInStockEQ.
-func PartsInStock(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldPartsInStock, v))
-}
-
-// QualityScore applies equality check predicate on the "quality_score" field. It's identical to QualityScoreEQ.
-func QualityScore(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldQualityScore, v))
-}
-
-// QualityRanking applies equality check predicate on the "quality_ranking" field. It's identical to QualityRankingEQ.
-func QualityRanking(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldQualityRanking, v))
-}
-
 // BulkMaterialsTotalOrderQuantity applies equality check predicate on the "bulk_materials_total_order_quantity" field. It's identical to BulkMaterialsTotalOrderQuantityEQ.
 func BulkMaterialsTotalOrderQuantity(v float64) predicate.Project {
 	return predicate.Project(sql.FieldEQ(FieldBulkMaterialsTotalOrderQuantity, v))
@@ -409,21 +159,6 @@ func BulkMaterialsCompletedQuantity(v float64) predicate.Project {
 // BulkMaterialsUncompletedQuantity applies equality check predicate on the "bulk_materials_uncompleted_quantity" field. It's identical to BulkMaterialsUncompletedQuantityEQ.
 func BulkMaterialsUncompletedQuantity(v float64) predicate.Project {
 	return predicate.Project(sql.FieldEQ(FieldBulkMaterialsUncompletedQuantity, v))
-}
-
-// PlanTotalCount applies equality check predicate on the "plan_total_count" field. It's identical to PlanTotalCountEQ.
-func PlanTotalCount(v int) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldPlanTotalCount, v))
-}
-
-// PlanOverdueCount applies equality check predicate on the "plan_overdue_count" field. It's identical to PlanOverdueCountEQ.
-func PlanOverdueCount(v int) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldPlanOverdueCount, v))
-}
-
-// PlanOverdueMonthCount applies equality check predicate on the "plan_overdue_month_count" field. It's identical to PlanOverdueMonthCountEQ.
-func PlanOverdueMonthCount(v int) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldPlanOverdueMonthCount, v))
 }
 
 // DiagramBdFinishCount applies equality check predicate on the "diagram_bd_finish_count" field. It's identical to DiagramBdFinishCountEQ.
@@ -611,881 +346,6 @@ func CodeContainsFold(v string) predicate.Project {
 	return predicate.Project(sql.FieldContainsFold(FieldCode, v))
 }
 
-// ManagerEQ applies the EQ predicate on the "manager" field.
-func ManagerEQ(v string) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldManager, v))
-}
-
-// ManagerNEQ applies the NEQ predicate on the "manager" field.
-func ManagerNEQ(v string) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldManager, v))
-}
-
-// ManagerIn applies the In predicate on the "manager" field.
-func ManagerIn(vs ...string) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldManager, vs...))
-}
-
-// ManagerNotIn applies the NotIn predicate on the "manager" field.
-func ManagerNotIn(vs ...string) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldManager, vs...))
-}
-
-// ManagerGT applies the GT predicate on the "manager" field.
-func ManagerGT(v string) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldManager, v))
-}
-
-// ManagerGTE applies the GTE predicate on the "manager" field.
-func ManagerGTE(v string) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldManager, v))
-}
-
-// ManagerLT applies the LT predicate on the "manager" field.
-func ManagerLT(v string) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldManager, v))
-}
-
-// ManagerLTE applies the LTE predicate on the "manager" field.
-func ManagerLTE(v string) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldManager, v))
-}
-
-// ManagerContains applies the Contains predicate on the "manager" field.
-func ManagerContains(v string) predicate.Project {
-	return predicate.Project(sql.FieldContains(FieldManager, v))
-}
-
-// ManagerHasPrefix applies the HasPrefix predicate on the "manager" field.
-func ManagerHasPrefix(v string) predicate.Project {
-	return predicate.Project(sql.FieldHasPrefix(FieldManager, v))
-}
-
-// ManagerHasSuffix applies the HasSuffix predicate on the "manager" field.
-func ManagerHasSuffix(v string) predicate.Project {
-	return predicate.Project(sql.FieldHasSuffix(FieldManager, v))
-}
-
-// ManagerIsNil applies the IsNil predicate on the "manager" field.
-func ManagerIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldManager))
-}
-
-// ManagerNotNil applies the NotNil predicate on the "manager" field.
-func ManagerNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldManager))
-}
-
-// ManagerEqualFold applies the EqualFold predicate on the "manager" field.
-func ManagerEqualFold(v string) predicate.Project {
-	return predicate.Project(sql.FieldEqualFold(FieldManager, v))
-}
-
-// ManagerContainsFold applies the ContainsFold predicate on the "manager" field.
-func ManagerContainsFold(v string) predicate.Project {
-	return predicate.Project(sql.FieldContainsFold(FieldManager, v))
-}
-
-// NameEQ applies the EQ predicate on the "name" field.
-func NameEQ(v string) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldName, v))
-}
-
-// NameNEQ applies the NEQ predicate on the "name" field.
-func NameNEQ(v string) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldName, v))
-}
-
-// NameIn applies the In predicate on the "name" field.
-func NameIn(vs ...string) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldName, vs...))
-}
-
-// NameNotIn applies the NotIn predicate on the "name" field.
-func NameNotIn(vs ...string) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldName, vs...))
-}
-
-// NameGT applies the GT predicate on the "name" field.
-func NameGT(v string) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldName, v))
-}
-
-// NameGTE applies the GTE predicate on the "name" field.
-func NameGTE(v string) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldName, v))
-}
-
-// NameLT applies the LT predicate on the "name" field.
-func NameLT(v string) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldName, v))
-}
-
-// NameLTE applies the LTE predicate on the "name" field.
-func NameLTE(v string) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldName, v))
-}
-
-// NameContains applies the Contains predicate on the "name" field.
-func NameContains(v string) predicate.Project {
-	return predicate.Project(sql.FieldContains(FieldName, v))
-}
-
-// NameHasPrefix applies the HasPrefix predicate on the "name" field.
-func NameHasPrefix(v string) predicate.Project {
-	return predicate.Project(sql.FieldHasPrefix(FieldName, v))
-}
-
-// NameHasSuffix applies the HasSuffix predicate on the "name" field.
-func NameHasSuffix(v string) predicate.Project {
-	return predicate.Project(sql.FieldHasSuffix(FieldName, v))
-}
-
-// NameIsNil applies the IsNil predicate on the "name" field.
-func NameIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldName))
-}
-
-// NameNotNil applies the NotNil predicate on the "name" field.
-func NameNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldName))
-}
-
-// NameEqualFold applies the EqualFold predicate on the "name" field.
-func NameEqualFold(v string) predicate.Project {
-	return predicate.Project(sql.FieldEqualFold(FieldName, v))
-}
-
-// NameContainsFold applies the ContainsFold predicate on the "name" field.
-func NameContainsFold(v string) predicate.Project {
-	return predicate.Project(sql.FieldContainsFold(FieldName, v))
-}
-
-// OwnerEQ applies the EQ predicate on the "owner" field.
-func OwnerEQ(v string) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldOwner, v))
-}
-
-// OwnerNEQ applies the NEQ predicate on the "owner" field.
-func OwnerNEQ(v string) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldOwner, v))
-}
-
-// OwnerIn applies the In predicate on the "owner" field.
-func OwnerIn(vs ...string) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldOwner, vs...))
-}
-
-// OwnerNotIn applies the NotIn predicate on the "owner" field.
-func OwnerNotIn(vs ...string) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldOwner, vs...))
-}
-
-// OwnerGT applies the GT predicate on the "owner" field.
-func OwnerGT(v string) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldOwner, v))
-}
-
-// OwnerGTE applies the GTE predicate on the "owner" field.
-func OwnerGTE(v string) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldOwner, v))
-}
-
-// OwnerLT applies the LT predicate on the "owner" field.
-func OwnerLT(v string) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldOwner, v))
-}
-
-// OwnerLTE applies the LTE predicate on the "owner" field.
-func OwnerLTE(v string) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldOwner, v))
-}
-
-// OwnerContains applies the Contains predicate on the "owner" field.
-func OwnerContains(v string) predicate.Project {
-	return predicate.Project(sql.FieldContains(FieldOwner, v))
-}
-
-// OwnerHasPrefix applies the HasPrefix predicate on the "owner" field.
-func OwnerHasPrefix(v string) predicate.Project {
-	return predicate.Project(sql.FieldHasPrefix(FieldOwner, v))
-}
-
-// OwnerHasSuffix applies the HasSuffix predicate on the "owner" field.
-func OwnerHasSuffix(v string) predicate.Project {
-	return predicate.Project(sql.FieldHasSuffix(FieldOwner, v))
-}
-
-// OwnerIsNil applies the IsNil predicate on the "owner" field.
-func OwnerIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldOwner))
-}
-
-// OwnerNotNil applies the NotNil predicate on the "owner" field.
-func OwnerNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldOwner))
-}
-
-// OwnerEqualFold applies the EqualFold predicate on the "owner" field.
-func OwnerEqualFold(v string) predicate.Project {
-	return predicate.Project(sql.FieldEqualFold(FieldOwner, v))
-}
-
-// OwnerContainsFold applies the ContainsFold predicate on the "owner" field.
-func OwnerContainsFold(v string) predicate.Project {
-	return predicate.Project(sql.FieldContainsFold(FieldOwner, v))
-}
-
-// JzsEQ applies the EQ predicate on the "jzs" field.
-func JzsEQ(v string) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldJzs, v))
-}
-
-// JzsNEQ applies the NEQ predicate on the "jzs" field.
-func JzsNEQ(v string) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldJzs, v))
-}
-
-// JzsIn applies the In predicate on the "jzs" field.
-func JzsIn(vs ...string) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldJzs, vs...))
-}
-
-// JzsNotIn applies the NotIn predicate on the "jzs" field.
-func JzsNotIn(vs ...string) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldJzs, vs...))
-}
-
-// JzsGT applies the GT predicate on the "jzs" field.
-func JzsGT(v string) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldJzs, v))
-}
-
-// JzsGTE applies the GTE predicate on the "jzs" field.
-func JzsGTE(v string) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldJzs, v))
-}
-
-// JzsLT applies the LT predicate on the "jzs" field.
-func JzsLT(v string) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldJzs, v))
-}
-
-// JzsLTE applies the LTE predicate on the "jzs" field.
-func JzsLTE(v string) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldJzs, v))
-}
-
-// JzsContains applies the Contains predicate on the "jzs" field.
-func JzsContains(v string) predicate.Project {
-	return predicate.Project(sql.FieldContains(FieldJzs, v))
-}
-
-// JzsHasPrefix applies the HasPrefix predicate on the "jzs" field.
-func JzsHasPrefix(v string) predicate.Project {
-	return predicate.Project(sql.FieldHasPrefix(FieldJzs, v))
-}
-
-// JzsHasSuffix applies the HasSuffix predicate on the "jzs" field.
-func JzsHasSuffix(v string) predicate.Project {
-	return predicate.Project(sql.FieldHasSuffix(FieldJzs, v))
-}
-
-// JzsIsNil applies the IsNil predicate on the "jzs" field.
-func JzsIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldJzs))
-}
-
-// JzsNotNil applies the NotNil predicate on the "jzs" field.
-func JzsNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldJzs))
-}
-
-// JzsEqualFold applies the EqualFold predicate on the "jzs" field.
-func JzsEqualFold(v string) predicate.Project {
-	return predicate.Project(sql.FieldEqualFold(FieldJzs, v))
-}
-
-// JzsContainsFold applies the ContainsFold predicate on the "jzs" field.
-func JzsContainsFold(v string) predicate.Project {
-	return predicate.Project(sql.FieldContainsFold(FieldJzs, v))
-}
-
-// McnEQ applies the EQ predicate on the "mcn" field.
-func McnEQ(v string) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldMcn, v))
-}
-
-// McnNEQ applies the NEQ predicate on the "mcn" field.
-func McnNEQ(v string) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldMcn, v))
-}
-
-// McnIn applies the In predicate on the "mcn" field.
-func McnIn(vs ...string) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldMcn, vs...))
-}
-
-// McnNotIn applies the NotIn predicate on the "mcn" field.
-func McnNotIn(vs ...string) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldMcn, vs...))
-}
-
-// McnGT applies the GT predicate on the "mcn" field.
-func McnGT(v string) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldMcn, v))
-}
-
-// McnGTE applies the GTE predicate on the "mcn" field.
-func McnGTE(v string) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldMcn, v))
-}
-
-// McnLT applies the LT predicate on the "mcn" field.
-func McnLT(v string) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldMcn, v))
-}
-
-// McnLTE applies the LTE predicate on the "mcn" field.
-func McnLTE(v string) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldMcn, v))
-}
-
-// McnContains applies the Contains predicate on the "mcn" field.
-func McnContains(v string) predicate.Project {
-	return predicate.Project(sql.FieldContains(FieldMcn, v))
-}
-
-// McnHasPrefix applies the HasPrefix predicate on the "mcn" field.
-func McnHasPrefix(v string) predicate.Project {
-	return predicate.Project(sql.FieldHasPrefix(FieldMcn, v))
-}
-
-// McnHasSuffix applies the HasSuffix predicate on the "mcn" field.
-func McnHasSuffix(v string) predicate.Project {
-	return predicate.Project(sql.FieldHasSuffix(FieldMcn, v))
-}
-
-// McnIsNil applies the IsNil predicate on the "mcn" field.
-func McnIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldMcn))
-}
-
-// McnNotNil applies the NotNil predicate on the "mcn" field.
-func McnNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldMcn))
-}
-
-// McnEqualFold applies the EqualFold predicate on the "mcn" field.
-func McnEqualFold(v string) predicate.Project {
-	return predicate.Project(sql.FieldEqualFold(FieldMcn, v))
-}
-
-// McnContainsFold applies the ContainsFold predicate on the "mcn" field.
-func McnContainsFold(v string) predicate.Project {
-	return predicate.Project(sql.FieldContainsFold(FieldMcn, v))
-}
-
-// ConsultantEQ applies the EQ predicate on the "consultant" field.
-func ConsultantEQ(v string) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldConsultant, v))
-}
-
-// ConsultantNEQ applies the NEQ predicate on the "consultant" field.
-func ConsultantNEQ(v string) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldConsultant, v))
-}
-
-// ConsultantIn applies the In predicate on the "consultant" field.
-func ConsultantIn(vs ...string) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldConsultant, vs...))
-}
-
-// ConsultantNotIn applies the NotIn predicate on the "consultant" field.
-func ConsultantNotIn(vs ...string) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldConsultant, vs...))
-}
-
-// ConsultantGT applies the GT predicate on the "consultant" field.
-func ConsultantGT(v string) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldConsultant, v))
-}
-
-// ConsultantGTE applies the GTE predicate on the "consultant" field.
-func ConsultantGTE(v string) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldConsultant, v))
-}
-
-// ConsultantLT applies the LT predicate on the "consultant" field.
-func ConsultantLT(v string) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldConsultant, v))
-}
-
-// ConsultantLTE applies the LTE predicate on the "consultant" field.
-func ConsultantLTE(v string) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldConsultant, v))
-}
-
-// ConsultantContains applies the Contains predicate on the "consultant" field.
-func ConsultantContains(v string) predicate.Project {
-	return predicate.Project(sql.FieldContains(FieldConsultant, v))
-}
-
-// ConsultantHasPrefix applies the HasPrefix predicate on the "consultant" field.
-func ConsultantHasPrefix(v string) predicate.Project {
-	return predicate.Project(sql.FieldHasPrefix(FieldConsultant, v))
-}
-
-// ConsultantHasSuffix applies the HasSuffix predicate on the "consultant" field.
-func ConsultantHasSuffix(v string) predicate.Project {
-	return predicate.Project(sql.FieldHasSuffix(FieldConsultant, v))
-}
-
-// ConsultantIsNil applies the IsNil predicate on the "consultant" field.
-func ConsultantIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldConsultant))
-}
-
-// ConsultantNotNil applies the NotNil predicate on the "consultant" field.
-func ConsultantNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldConsultant))
-}
-
-// ConsultantEqualFold applies the EqualFold predicate on the "consultant" field.
-func ConsultantEqualFold(v string) predicate.Project {
-	return predicate.Project(sql.FieldEqualFold(FieldConsultant, v))
-}
-
-// ConsultantContainsFold applies the ContainsFold predicate on the "consultant" field.
-func ConsultantContainsFold(v string) predicate.Project {
-	return predicate.Project(sql.FieldContainsFold(FieldConsultant, v))
-}
-
-// AreasEQ applies the EQ predicate on the "areas" field.
-func AreasEQ(v string) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldAreas, v))
-}
-
-// AreasNEQ applies the NEQ predicate on the "areas" field.
-func AreasNEQ(v string) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldAreas, v))
-}
-
-// AreasIn applies the In predicate on the "areas" field.
-func AreasIn(vs ...string) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldAreas, vs...))
-}
-
-// AreasNotIn applies the NotIn predicate on the "areas" field.
-func AreasNotIn(vs ...string) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldAreas, vs...))
-}
-
-// AreasGT applies the GT predicate on the "areas" field.
-func AreasGT(v string) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldAreas, v))
-}
-
-// AreasGTE applies the GTE predicate on the "areas" field.
-func AreasGTE(v string) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldAreas, v))
-}
-
-// AreasLT applies the LT predicate on the "areas" field.
-func AreasLT(v string) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldAreas, v))
-}
-
-// AreasLTE applies the LTE predicate on the "areas" field.
-func AreasLTE(v string) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldAreas, v))
-}
-
-// AreasContains applies the Contains predicate on the "areas" field.
-func AreasContains(v string) predicate.Project {
-	return predicate.Project(sql.FieldContains(FieldAreas, v))
-}
-
-// AreasHasPrefix applies the HasPrefix predicate on the "areas" field.
-func AreasHasPrefix(v string) predicate.Project {
-	return predicate.Project(sql.FieldHasPrefix(FieldAreas, v))
-}
-
-// AreasHasSuffix applies the HasSuffix predicate on the "areas" field.
-func AreasHasSuffix(v string) predicate.Project {
-	return predicate.Project(sql.FieldHasSuffix(FieldAreas, v))
-}
-
-// AreasIsNil applies the IsNil predicate on the "areas" field.
-func AreasIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldAreas))
-}
-
-// AreasNotNil applies the NotNil predicate on the "areas" field.
-func AreasNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldAreas))
-}
-
-// AreasEqualFold applies the EqualFold predicate on the "areas" field.
-func AreasEqualFold(v string) predicate.Project {
-	return predicate.Project(sql.FieldEqualFold(FieldAreas, v))
-}
-
-// AreasContainsFold applies the ContainsFold predicate on the "areas" field.
-func AreasContainsFold(v string) predicate.Project {
-	return predicate.Project(sql.FieldContainsFold(FieldAreas, v))
-}
-
-// StartDateEQ applies the EQ predicate on the "start_date" field.
-func StartDateEQ(v time.Time) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldStartDate, v))
-}
-
-// StartDateNEQ applies the NEQ predicate on the "start_date" field.
-func StartDateNEQ(v time.Time) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldStartDate, v))
-}
-
-// StartDateIn applies the In predicate on the "start_date" field.
-func StartDateIn(vs ...time.Time) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldStartDate, vs...))
-}
-
-// StartDateNotIn applies the NotIn predicate on the "start_date" field.
-func StartDateNotIn(vs ...time.Time) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldStartDate, vs...))
-}
-
-// StartDateGT applies the GT predicate on the "start_date" field.
-func StartDateGT(v time.Time) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldStartDate, v))
-}
-
-// StartDateGTE applies the GTE predicate on the "start_date" field.
-func StartDateGTE(v time.Time) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldStartDate, v))
-}
-
-// StartDateLT applies the LT predicate on the "start_date" field.
-func StartDateLT(v time.Time) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldStartDate, v))
-}
-
-// StartDateLTE applies the LTE predicate on the "start_date" field.
-func StartDateLTE(v time.Time) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldStartDate, v))
-}
-
-// StartDateIsNil applies the IsNil predicate on the "start_date" field.
-func StartDateIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldStartDate))
-}
-
-// StartDateNotNil applies the NotNil predicate on the "start_date" field.
-func StartDateNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldStartDate))
-}
-
-// FsDateEQ applies the EQ predicate on the "fs_date" field.
-func FsDateEQ(v time.Time) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldFsDate, v))
-}
-
-// FsDateNEQ applies the NEQ predicate on the "fs_date" field.
-func FsDateNEQ(v time.Time) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldFsDate, v))
-}
-
-// FsDateIn applies the In predicate on the "fs_date" field.
-func FsDateIn(vs ...time.Time) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldFsDate, vs...))
-}
-
-// FsDateNotIn applies the NotIn predicate on the "fs_date" field.
-func FsDateNotIn(vs ...time.Time) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldFsDate, vs...))
-}
-
-// FsDateGT applies the GT predicate on the "fs_date" field.
-func FsDateGT(v time.Time) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldFsDate, v))
-}
-
-// FsDateGTE applies the GTE predicate on the "fs_date" field.
-func FsDateGTE(v time.Time) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldFsDate, v))
-}
-
-// FsDateLT applies the LT predicate on the "fs_date" field.
-func FsDateLT(v time.Time) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldFsDate, v))
-}
-
-// FsDateLTE applies the LTE predicate on the "fs_date" field.
-func FsDateLTE(v time.Time) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldFsDate, v))
-}
-
-// FsDateIsNil applies the IsNil predicate on the "fs_date" field.
-func FsDateIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldFsDate))
-}
-
-// FsDateNotNil applies the NotNil predicate on the "fs_date" field.
-func FsDateNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldFsDate))
-}
-
-// OpDateEQ applies the EQ predicate on the "op_date" field.
-func OpDateEQ(v time.Time) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldOpDate, v))
-}
-
-// OpDateNEQ applies the NEQ predicate on the "op_date" field.
-func OpDateNEQ(v time.Time) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldOpDate, v))
-}
-
-// OpDateIn applies the In predicate on the "op_date" field.
-func OpDateIn(vs ...time.Time) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldOpDate, vs...))
-}
-
-// OpDateNotIn applies the NotIn predicate on the "op_date" field.
-func OpDateNotIn(vs ...time.Time) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldOpDate, vs...))
-}
-
-// OpDateGT applies the GT predicate on the "op_date" field.
-func OpDateGT(v time.Time) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldOpDate, v))
-}
-
-// OpDateGTE applies the GTE predicate on the "op_date" field.
-func OpDateGTE(v time.Time) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldOpDate, v))
-}
-
-// OpDateLT applies the LT predicate on the "op_date" field.
-func OpDateLT(v time.Time) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldOpDate, v))
-}
-
-// OpDateLTE applies the LTE predicate on the "op_date" field.
-func OpDateLTE(v time.Time) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldOpDate, v))
-}
-
-// OpDateIsNil applies the IsNil predicate on the "op_date" field.
-func OpDateIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldOpDate))
-}
-
-// OpDateNotNil applies the NotNil predicate on the "op_date" field.
-func OpDateNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldOpDate))
-}
-
-// EndDateEQ applies the EQ predicate on the "end_date" field.
-func EndDateEQ(v time.Time) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldEndDate, v))
-}
-
-// EndDateNEQ applies the NEQ predicate on the "end_date" field.
-func EndDateNEQ(v time.Time) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldEndDate, v))
-}
-
-// EndDateIn applies the In predicate on the "end_date" field.
-func EndDateIn(vs ...time.Time) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldEndDate, vs...))
-}
-
-// EndDateNotIn applies the NotIn predicate on the "end_date" field.
-func EndDateNotIn(vs ...time.Time) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldEndDate, vs...))
-}
-
-// EndDateGT applies the GT predicate on the "end_date" field.
-func EndDateGT(v time.Time) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldEndDate, v))
-}
-
-// EndDateGTE applies the GTE predicate on the "end_date" field.
-func EndDateGTE(v time.Time) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldEndDate, v))
-}
-
-// EndDateLT applies the LT predicate on the "end_date" field.
-func EndDateLT(v time.Time) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldEndDate, v))
-}
-
-// EndDateLTE applies the LTE predicate on the "end_date" field.
-func EndDateLTE(v time.Time) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldEndDate, v))
-}
-
-// EndDateIsNil applies the IsNil predicate on the "end_date" field.
-func EndDateIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldEndDate))
-}
-
-// EndDateNotNil applies the NotNil predicate on the "end_date" field.
-func EndDateNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldEndDate))
-}
-
-// MntyrEQ applies the EQ predicate on the "mntyr" field.
-func MntyrEQ(v string) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldMntyr, v))
-}
-
-// MntyrNEQ applies the NEQ predicate on the "mntyr" field.
-func MntyrNEQ(v string) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldMntyr, v))
-}
-
-// MntyrIn applies the In predicate on the "mntyr" field.
-func MntyrIn(vs ...string) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldMntyr, vs...))
-}
-
-// MntyrNotIn applies the NotIn predicate on the "mntyr" field.
-func MntyrNotIn(vs ...string) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldMntyr, vs...))
-}
-
-// MntyrGT applies the GT predicate on the "mntyr" field.
-func MntyrGT(v string) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldMntyr, v))
-}
-
-// MntyrGTE applies the GTE predicate on the "mntyr" field.
-func MntyrGTE(v string) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldMntyr, v))
-}
-
-// MntyrLT applies the LT predicate on the "mntyr" field.
-func MntyrLT(v string) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldMntyr, v))
-}
-
-// MntyrLTE applies the LTE predicate on the "mntyr" field.
-func MntyrLTE(v string) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldMntyr, v))
-}
-
-// MntyrContains applies the Contains predicate on the "mntyr" field.
-func MntyrContains(v string) predicate.Project {
-	return predicate.Project(sql.FieldContains(FieldMntyr, v))
-}
-
-// MntyrHasPrefix applies the HasPrefix predicate on the "mntyr" field.
-func MntyrHasPrefix(v string) predicate.Project {
-	return predicate.Project(sql.FieldHasPrefix(FieldMntyr, v))
-}
-
-// MntyrHasSuffix applies the HasSuffix predicate on the "mntyr" field.
-func MntyrHasSuffix(v string) predicate.Project {
-	return predicate.Project(sql.FieldHasSuffix(FieldMntyr, v))
-}
-
-// MntyrIsNil applies the IsNil predicate on the "mntyr" field.
-func MntyrIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldMntyr))
-}
-
-// MntyrNotNil applies the NotNil predicate on the "mntyr" field.
-func MntyrNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldMntyr))
-}
-
-// MntyrEqualFold applies the EqualFold predicate on the "mntyr" field.
-func MntyrEqualFold(v string) predicate.Project {
-	return predicate.Project(sql.FieldEqualFold(FieldMntyr, v))
-}
-
-// MntyrContainsFold applies the ContainsFold predicate on the "mntyr" field.
-func MntyrContainsFold(v string) predicate.Project {
-	return predicate.Project(sql.FieldContainsFold(FieldMntyr, v))
-}
-
-// ConTypeEQ applies the EQ predicate on the "con_type" field.
-func ConTypeEQ(v string) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldConType, v))
-}
-
-// ConTypeNEQ applies the NEQ predicate on the "con_type" field.
-func ConTypeNEQ(v string) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldConType, v))
-}
-
-// ConTypeIn applies the In predicate on the "con_type" field.
-func ConTypeIn(vs ...string) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldConType, vs...))
-}
-
-// ConTypeNotIn applies the NotIn predicate on the "con_type" field.
-func ConTypeNotIn(vs ...string) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldConType, vs...))
-}
-
-// ConTypeGT applies the GT predicate on the "con_type" field.
-func ConTypeGT(v string) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldConType, v))
-}
-
-// ConTypeGTE applies the GTE predicate on the "con_type" field.
-func ConTypeGTE(v string) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldConType, v))
-}
-
-// ConTypeLT applies the LT predicate on the "con_type" field.
-func ConTypeLT(v string) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldConType, v))
-}
-
-// ConTypeLTE applies the LTE predicate on the "con_type" field.
-func ConTypeLTE(v string) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldConType, v))
-}
-
-// ConTypeContains applies the Contains predicate on the "con_type" field.
-func ConTypeContains(v string) predicate.Project {
-	return predicate.Project(sql.FieldContains(FieldConType, v))
-}
-
-// ConTypeHasPrefix applies the HasPrefix predicate on the "con_type" field.
-func ConTypeHasPrefix(v string) predicate.Project {
-	return predicate.Project(sql.FieldHasPrefix(FieldConType, v))
-}
-
-// ConTypeHasSuffix applies the HasSuffix predicate on the "con_type" field.
-func ConTypeHasSuffix(v string) predicate.Project {
-	return predicate.Project(sql.FieldHasSuffix(FieldConType, v))
-}
-
-// ConTypeIsNil applies the IsNil predicate on the "con_type" field.
-func ConTypeIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldConType))
-}
-
-// ConTypeNotNil applies the NotNil predicate on the "con_type" field.
-func ConTypeNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldConType))
-}
-
-// ConTypeEqualFold applies the EqualFold predicate on the "con_type" field.
-func ConTypeEqualFold(v string) predicate.Project {
-	return predicate.Project(sql.FieldEqualFold(FieldConType, v))
-}
-
-// ConTypeContainsFold applies the ContainsFold predicate on the "con_type" field.
-func ConTypeContainsFold(v string) predicate.Project {
-	return predicate.Project(sql.FieldContainsFold(FieldConType, v))
-}
-
 // IsFinishedEQ applies the EQ predicate on the "is_finished" field.
 func IsFinishedEQ(v bool) predicate.Project {
 	return predicate.Project(sql.FieldEQ(FieldIsFinished, v))
@@ -1496,1979 +356,504 @@ func IsFinishedNEQ(v bool) predicate.Project {
 	return predicate.Project(sql.FieldNEQ(FieldIsFinished, v))
 }
 
-// CjeEQ applies the EQ predicate on the "cje" field.
-func CjeEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldCje, v))
+// RevenueKpiEQ applies the EQ predicate on the "revenue_kpi" field.
+func RevenueKpiEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldRevenueKpi, v))
 }
 
-// CjeNEQ applies the NEQ predicate on the "cje" field.
-func CjeNEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldCje, v))
+// RevenueKpiNEQ applies the NEQ predicate on the "revenue_kpi" field.
+func RevenueKpiNEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldRevenueKpi, v))
 }
 
-// CjeIn applies the In predicate on the "cje" field.
-func CjeIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldCje, vs...))
+// RevenueKpiIn applies the In predicate on the "revenue_kpi" field.
+func RevenueKpiIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldRevenueKpi, vs...))
 }
 
-// CjeNotIn applies the NotIn predicate on the "cje" field.
-func CjeNotIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldCje, vs...))
+// RevenueKpiNotIn applies the NotIn predicate on the "revenue_kpi" field.
+func RevenueKpiNotIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldRevenueKpi, vs...))
 }
 
-// CjeGT applies the GT predicate on the "cje" field.
-func CjeGT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldCje, v))
+// RevenueKpiGT applies the GT predicate on the "revenue_kpi" field.
+func RevenueKpiGT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldRevenueKpi, v))
 }
 
-// CjeGTE applies the GTE predicate on the "cje" field.
-func CjeGTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldCje, v))
+// RevenueKpiGTE applies the GTE predicate on the "revenue_kpi" field.
+func RevenueKpiGTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldRevenueKpi, v))
 }
 
-// CjeLT applies the LT predicate on the "cje" field.
-func CjeLT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldCje, v))
+// RevenueKpiLT applies the LT predicate on the "revenue_kpi" field.
+func RevenueKpiLT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldRevenueKpi, v))
 }
 
-// CjeLTE applies the LTE predicate on the "cje" field.
-func CjeLTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldCje, v))
+// RevenueKpiLTE applies the LTE predicate on the "revenue_kpi" field.
+func RevenueKpiLTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldRevenueKpi, v))
 }
 
-// CjeIsNil applies the IsNil predicate on the "cje" field.
-func CjeIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldCje))
+// RevenueKpiIsNil applies the IsNil predicate on the "revenue_kpi" field.
+func RevenueKpiIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldRevenueKpi))
 }
 
-// CjeNotNil applies the NotNil predicate on the "cje" field.
-func CjeNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldCje))
+// RevenueKpiNotNil applies the NotNil predicate on the "revenue_kpi" field.
+func RevenueKpiNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldRevenueKpi))
 }
 
-// YyeEQ applies the EQ predicate on the "yye" field.
-func YyeEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldYye, v))
+// RevenueCurrentYearCompletedEQ applies the EQ predicate on the "revenue_current_year_completed" field.
+func RevenueCurrentYearCompletedEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldRevenueCurrentYearCompleted, v))
 }
 
-// YyeNEQ applies the NEQ predicate on the "yye" field.
-func YyeNEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldYye, v))
+// RevenueCurrentYearCompletedNEQ applies the NEQ predicate on the "revenue_current_year_completed" field.
+func RevenueCurrentYearCompletedNEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldRevenueCurrentYearCompleted, v))
 }
 
-// YyeIn applies the In predicate on the "yye" field.
-func YyeIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldYye, vs...))
+// RevenueCurrentYearCompletedIn applies the In predicate on the "revenue_current_year_completed" field.
+func RevenueCurrentYearCompletedIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldRevenueCurrentYearCompleted, vs...))
 }
 
-// YyeNotIn applies the NotIn predicate on the "yye" field.
-func YyeNotIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldYye, vs...))
+// RevenueCurrentYearCompletedNotIn applies the NotIn predicate on the "revenue_current_year_completed" field.
+func RevenueCurrentYearCompletedNotIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldRevenueCurrentYearCompleted, vs...))
 }
 
-// YyeGT applies the GT predicate on the "yye" field.
-func YyeGT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldYye, v))
+// RevenueCurrentYearCompletedGT applies the GT predicate on the "revenue_current_year_completed" field.
+func RevenueCurrentYearCompletedGT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldRevenueCurrentYearCompleted, v))
 }
 
-// YyeGTE applies the GTE predicate on the "yye" field.
-func YyeGTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldYye, v))
+// RevenueCurrentYearCompletedGTE applies the GTE predicate on the "revenue_current_year_completed" field.
+func RevenueCurrentYearCompletedGTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldRevenueCurrentYearCompleted, v))
 }
 
-// YyeLT applies the LT predicate on the "yye" field.
-func YyeLT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldYye, v))
+// RevenueCurrentYearCompletedLT applies the LT predicate on the "revenue_current_year_completed" field.
+func RevenueCurrentYearCompletedLT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldRevenueCurrentYearCompleted, v))
 }
 
-// YyeLTE applies the LTE predicate on the "yye" field.
-func YyeLTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldYye, v))
+// RevenueCurrentYearCompletedLTE applies the LTE predicate on the "revenue_current_year_completed" field.
+func RevenueCurrentYearCompletedLTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldRevenueCurrentYearCompleted, v))
 }
 
-// YyeIsNil applies the IsNil predicate on the "yye" field.
-func YyeIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldYye))
+// RevenueCurrentYearCompletedIsNil applies the IsNil predicate on the "revenue_current_year_completed" field.
+func RevenueCurrentYearCompletedIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldRevenueCurrentYearCompleted))
 }
 
-// YyeNotNil applies the NotNil predicate on the "yye" field.
-func YyeNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldYye))
+// RevenueCurrentYearCompletedNotNil applies the NotNil predicate on the "revenue_current_year_completed" field.
+func RevenueCurrentYearCompletedNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldRevenueCurrentYearCompleted))
 }
 
-// XjlEQ applies the EQ predicate on the "xjl" field.
-func XjlEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldXjl, v))
+// RevenueAccumulatedCompletedEQ applies the EQ predicate on the "revenue_accumulated_completed" field.
+func RevenueAccumulatedCompletedEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldRevenueAccumulatedCompleted, v))
 }
 
-// XjlNEQ applies the NEQ predicate on the "xjl" field.
-func XjlNEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldXjl, v))
+// RevenueAccumulatedCompletedNEQ applies the NEQ predicate on the "revenue_accumulated_completed" field.
+func RevenueAccumulatedCompletedNEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldRevenueAccumulatedCompleted, v))
 }
 
-// XjlIn applies the In predicate on the "xjl" field.
-func XjlIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldXjl, vs...))
+// RevenueAccumulatedCompletedIn applies the In predicate on the "revenue_accumulated_completed" field.
+func RevenueAccumulatedCompletedIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldRevenueAccumulatedCompleted, vs...))
 }
 
-// XjlNotIn applies the NotIn predicate on the "xjl" field.
-func XjlNotIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldXjl, vs...))
+// RevenueAccumulatedCompletedNotIn applies the NotIn predicate on the "revenue_accumulated_completed" field.
+func RevenueAccumulatedCompletedNotIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldRevenueAccumulatedCompleted, vs...))
 }
 
-// XjlGT applies the GT predicate on the "xjl" field.
-func XjlGT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldXjl, v))
+// RevenueAccumulatedCompletedGT applies the GT predicate on the "revenue_accumulated_completed" field.
+func RevenueAccumulatedCompletedGT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldRevenueAccumulatedCompleted, v))
 }
 
-// XjlGTE applies the GTE predicate on the "xjl" field.
-func XjlGTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldXjl, v))
+// RevenueAccumulatedCompletedGTE applies the GTE predicate on the "revenue_accumulated_completed" field.
+func RevenueAccumulatedCompletedGTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldRevenueAccumulatedCompleted, v))
 }
 
-// XjlLT applies the LT predicate on the "xjl" field.
-func XjlLT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldXjl, v))
+// RevenueAccumulatedCompletedLT applies the LT predicate on the "revenue_accumulated_completed" field.
+func RevenueAccumulatedCompletedLT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldRevenueAccumulatedCompleted, v))
 }
 
-// XjlLTE applies the LTE predicate on the "xjl" field.
-func XjlLTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldXjl, v))
+// RevenueAccumulatedCompletedLTE applies the LTE predicate on the "revenue_accumulated_completed" field.
+func RevenueAccumulatedCompletedLTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldRevenueAccumulatedCompleted, v))
 }
 
-// XjlIsNil applies the IsNil predicate on the "xjl" field.
-func XjlIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldXjl))
+// RevenueAccumulatedCompletedIsNil applies the IsNil predicate on the "revenue_accumulated_completed" field.
+func RevenueAccumulatedCompletedIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldRevenueAccumulatedCompleted))
 }
 
-// XjlNotNil applies the NotNil predicate on the "xjl" field.
-func XjlNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldXjl))
+// RevenueAccumulatedCompletedNotNil applies the NotNil predicate on the "revenue_accumulated_completed" field.
+func RevenueAccumulatedCompletedNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldRevenueAccumulatedCompleted))
 }
 
-// XmglfYsEQ applies the EQ predicate on the "xmglf_ys" field.
-func XmglfYsEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldXmglfYs, v))
+// PayDateEQ applies the EQ predicate on the "pay_date" field.
+func PayDateEQ(v time.Time) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldPayDate, v))
 }
 
-// XmglfYsNEQ applies the NEQ predicate on the "xmglf_ys" field.
-func XmglfYsNEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldXmglfYs, v))
+// PayDateNEQ applies the NEQ predicate on the "pay_date" field.
+func PayDateNEQ(v time.Time) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldPayDate, v))
 }
 
-// XmglfYsIn applies the In predicate on the "xmglf_ys" field.
-func XmglfYsIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldXmglfYs, vs...))
+// PayDateIn applies the In predicate on the "pay_date" field.
+func PayDateIn(vs ...time.Time) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldPayDate, vs...))
 }
 
-// XmglfYsNotIn applies the NotIn predicate on the "xmglf_ys" field.
-func XmglfYsNotIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldXmglfYs, vs...))
+// PayDateNotIn applies the NotIn predicate on the "pay_date" field.
+func PayDateNotIn(vs ...time.Time) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldPayDate, vs...))
 }
 
-// XmglfYsGT applies the GT predicate on the "xmglf_ys" field.
-func XmglfYsGT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldXmglfYs, v))
+// PayDateGT applies the GT predicate on the "pay_date" field.
+func PayDateGT(v time.Time) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldPayDate, v))
 }
 
-// XmglfYsGTE applies the GTE predicate on the "xmglf_ys" field.
-func XmglfYsGTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldXmglfYs, v))
+// PayDateGTE applies the GTE predicate on the "pay_date" field.
+func PayDateGTE(v time.Time) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldPayDate, v))
 }
 
-// XmglfYsLT applies the LT predicate on the "xmglf_ys" field.
-func XmglfYsLT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldXmglfYs, v))
+// PayDateLT applies the LT predicate on the "pay_date" field.
+func PayDateLT(v time.Time) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldPayDate, v))
 }
 
-// XmglfYsLTE applies the LTE predicate on the "xmglf_ys" field.
-func XmglfYsLTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldXmglfYs, v))
+// PayDateLTE applies the LTE predicate on the "pay_date" field.
+func PayDateLTE(v time.Time) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldPayDate, v))
 }
 
-// XmglfYsIsNil applies the IsNil predicate on the "xmglf_ys" field.
-func XmglfYsIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldXmglfYs))
+// PayDateIsNil applies the IsNil predicate on the "pay_date" field.
+func PayDateIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldPayDate))
 }
 
-// XmglfYsNotNil applies the NotNil predicate on the "xmglf_ys" field.
-func XmglfYsNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldXmglfYs))
+// PayDateNotNil applies the NotNil predicate on the "pay_date" field.
+func PayDateNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldPayDate))
 }
 
-// XmglfLjEQ applies the EQ predicate on the "xmglf_lj" field.
-func XmglfLjEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldXmglfLj, v))
+// OwnerVoCountEQ applies the EQ predicate on the "owner_vo_count" field.
+func OwnerVoCountEQ(v int) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldOwnerVoCount, v))
 }
 
-// XmglfLjNEQ applies the NEQ predicate on the "xmglf_lj" field.
-func XmglfLjNEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldXmglfLj, v))
+// OwnerVoCountNEQ applies the NEQ predicate on the "owner_vo_count" field.
+func OwnerVoCountNEQ(v int) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldOwnerVoCount, v))
 }
 
-// XmglfLjIn applies the In predicate on the "xmglf_lj" field.
-func XmglfLjIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldXmglfLj, vs...))
+// OwnerVoCountIn applies the In predicate on the "owner_vo_count" field.
+func OwnerVoCountIn(vs ...int) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldOwnerVoCount, vs...))
 }
 
-// XmglfLjNotIn applies the NotIn predicate on the "xmglf_lj" field.
-func XmglfLjNotIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldXmglfLj, vs...))
+// OwnerVoCountNotIn applies the NotIn predicate on the "owner_vo_count" field.
+func OwnerVoCountNotIn(vs ...int) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldOwnerVoCount, vs...))
 }
 
-// XmglfLjGT applies the GT predicate on the "xmglf_lj" field.
-func XmglfLjGT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldXmglfLj, v))
+// OwnerVoCountGT applies the GT predicate on the "owner_vo_count" field.
+func OwnerVoCountGT(v int) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldOwnerVoCount, v))
 }
 
-// XmglfLjGTE applies the GTE predicate on the "xmglf_lj" field.
-func XmglfLjGTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldXmglfLj, v))
+// OwnerVoCountGTE applies the GTE predicate on the "owner_vo_count" field.
+func OwnerVoCountGTE(v int) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldOwnerVoCount, v))
 }
 
-// XmglfLjLT applies the LT predicate on the "xmglf_lj" field.
-func XmglfLjLT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldXmglfLj, v))
+// OwnerVoCountLT applies the LT predicate on the "owner_vo_count" field.
+func OwnerVoCountLT(v int) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldOwnerVoCount, v))
 }
 
-// XmglfLjLTE applies the LTE predicate on the "xmglf_lj" field.
-func XmglfLjLTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldXmglfLj, v))
+// OwnerVoCountLTE applies the LTE predicate on the "owner_vo_count" field.
+func OwnerVoCountLTE(v int) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldOwnerVoCount, v))
 }
 
-// XmglfLjIsNil applies the IsNil predicate on the "xmglf_lj" field.
-func XmglfLjIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldXmglfLj))
+// OwnerVoCountIsNil applies the IsNil predicate on the "owner_vo_count" field.
+func OwnerVoCountIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldOwnerVoCount))
 }
 
-// XmglfLjNotNil applies the NotNil predicate on the "xmglf_lj" field.
-func XmglfLjNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldXmglfLj))
+// OwnerVoCountNotNil applies the NotNil predicate on the "owner_vo_count" field.
+func OwnerVoCountNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldOwnerVoCount))
 }
 
-// XmsjfEQ applies the EQ predicate on the "xmsjf" field.
-func XmsjfEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldXmsjf, v))
+// ContractorVoCountEQ applies the EQ predicate on the "contractor_vo_count" field.
+func ContractorVoCountEQ(v int) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldContractorVoCount, v))
 }
 
-// XmsjfNEQ applies the NEQ predicate on the "xmsjf" field.
-func XmsjfNEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldXmsjf, v))
+// ContractorVoCountNEQ applies the NEQ predicate on the "contractor_vo_count" field.
+func ContractorVoCountNEQ(v int) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldContractorVoCount, v))
 }
 
-// XmsjfIn applies the In predicate on the "xmsjf" field.
-func XmsjfIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldXmsjf, vs...))
+// ContractorVoCountIn applies the In predicate on the "contractor_vo_count" field.
+func ContractorVoCountIn(vs ...int) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldContractorVoCount, vs...))
 }
 
-// XmsjfNotIn applies the NotIn predicate on the "xmsjf" field.
-func XmsjfNotIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldXmsjf, vs...))
+// ContractorVoCountNotIn applies the NotIn predicate on the "contractor_vo_count" field.
+func ContractorVoCountNotIn(vs ...int) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldContractorVoCount, vs...))
 }
 
-// XmsjfGT applies the GT predicate on the "xmsjf" field.
-func XmsjfGT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldXmsjf, v))
+// ContractorVoCountGT applies the GT predicate on the "contractor_vo_count" field.
+func ContractorVoCountGT(v int) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldContractorVoCount, v))
 }
 
-// XmsjfGTE applies the GTE predicate on the "xmsjf" field.
-func XmsjfGTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldXmsjf, v))
+// ContractorVoCountGTE applies the GTE predicate on the "contractor_vo_count" field.
+func ContractorVoCountGTE(v int) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldContractorVoCount, v))
 }
 
-// XmsjfLT applies the LT predicate on the "xmsjf" field.
-func XmsjfLT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldXmsjf, v))
+// ContractorVoCountLT applies the LT predicate on the "contractor_vo_count" field.
+func ContractorVoCountLT(v int) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldContractorVoCount, v))
 }
 
-// XmsjfLTE applies the LTE predicate on the "xmsjf" field.
-func XmsjfLTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldXmsjf, v))
+// ContractorVoCountLTE applies the LTE predicate on the "contractor_vo_count" field.
+func ContractorVoCountLTE(v int) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldContractorVoCount, v))
 }
 
-// XmsjfIsNil applies the IsNil predicate on the "xmsjf" field.
-func XmsjfIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldXmsjf))
+// ContractorVoCountIsNil applies the IsNil predicate on the "contractor_vo_count" field.
+func ContractorVoCountIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldContractorVoCount))
 }
 
-// XmsjfNotNil applies the NotNil predicate on the "xmsjf" field.
-func XmsjfNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldXmsjf))
+// ContractorVoCountNotNil applies the NotNil predicate on the "contractor_vo_count" field.
+func ContractorVoCountNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldContractorVoCount))
 }
 
-// XmfzrEQ applies the EQ predicate on the "xmfzr" field.
-func XmfzrEQ(v string) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldXmfzr, v))
+// AccumulateDeductionEQ applies the EQ predicate on the "accumulate_deduction" field.
+func AccumulateDeductionEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldAccumulateDeduction, v))
 }
 
-// XmfzrNEQ applies the NEQ predicate on the "xmfzr" field.
-func XmfzrNEQ(v string) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldXmfzr, v))
+// AccumulateDeductionNEQ applies the NEQ predicate on the "accumulate_deduction" field.
+func AccumulateDeductionNEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldAccumulateDeduction, v))
 }
 
-// XmfzrIn applies the In predicate on the "xmfzr" field.
-func XmfzrIn(vs ...string) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldXmfzr, vs...))
+// AccumulateDeductionIn applies the In predicate on the "accumulate_deduction" field.
+func AccumulateDeductionIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldAccumulateDeduction, vs...))
 }
 
-// XmfzrNotIn applies the NotIn predicate on the "xmfzr" field.
-func XmfzrNotIn(vs ...string) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldXmfzr, vs...))
+// AccumulateDeductionNotIn applies the NotIn predicate on the "accumulate_deduction" field.
+func AccumulateDeductionNotIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldAccumulateDeduction, vs...))
 }
 
-// XmfzrGT applies the GT predicate on the "xmfzr" field.
-func XmfzrGT(v string) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldXmfzr, v))
+// AccumulateDeductionGT applies the GT predicate on the "accumulate_deduction" field.
+func AccumulateDeductionGT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldAccumulateDeduction, v))
 }
 
-// XmfzrGTE applies the GTE predicate on the "xmfzr" field.
-func XmfzrGTE(v string) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldXmfzr, v))
+// AccumulateDeductionGTE applies the GTE predicate on the "accumulate_deduction" field.
+func AccumulateDeductionGTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldAccumulateDeduction, v))
 }
 
-// XmfzrLT applies the LT predicate on the "xmfzr" field.
-func XmfzrLT(v string) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldXmfzr, v))
+// AccumulateDeductionLT applies the LT predicate on the "accumulate_deduction" field.
+func AccumulateDeductionLT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldAccumulateDeduction, v))
 }
 
-// XmfzrLTE applies the LTE predicate on the "xmfzr" field.
-func XmfzrLTE(v string) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldXmfzr, v))
+// AccumulateDeductionLTE applies the LTE predicate on the "accumulate_deduction" field.
+func AccumulateDeductionLTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldAccumulateDeduction, v))
 }
 
-// XmfzrContains applies the Contains predicate on the "xmfzr" field.
-func XmfzrContains(v string) predicate.Project {
-	return predicate.Project(sql.FieldContains(FieldXmfzr, v))
+// AccumulateDeductionIsNil applies the IsNil predicate on the "accumulate_deduction" field.
+func AccumulateDeductionIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldAccumulateDeduction))
 }
 
-// XmfzrHasPrefix applies the HasPrefix predicate on the "xmfzr" field.
-func XmfzrHasPrefix(v string) predicate.Project {
-	return predicate.Project(sql.FieldHasPrefix(FieldXmfzr, v))
+// AccumulateDeductionNotNil applies the NotNil predicate on the "accumulate_deduction" field.
+func AccumulateDeductionNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldAccumulateDeduction))
 }
 
-// XmfzrHasSuffix applies the HasSuffix predicate on the "xmfzr" field.
-func XmfzrHasSuffix(v string) predicate.Project {
-	return predicate.Project(sql.FieldHasSuffix(FieldXmfzr, v))
+// SubcontractorVaCountEQ applies the EQ predicate on the "subcontractor_va_count" field.
+func SubcontractorVaCountEQ(v int) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldSubcontractorVaCount, v))
 }
 
-// XmfzrIsNil applies the IsNil predicate on the "xmfzr" field.
-func XmfzrIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldXmfzr))
+// SubcontractorVaCountNEQ applies the NEQ predicate on the "subcontractor_va_count" field.
+func SubcontractorVaCountNEQ(v int) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldSubcontractorVaCount, v))
 }
 
-// XmfzrNotNil applies the NotNil predicate on the "xmfzr" field.
-func XmfzrNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldXmfzr))
+// SubcontractorVaCountIn applies the In predicate on the "subcontractor_va_count" field.
+func SubcontractorVaCountIn(vs ...int) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldSubcontractorVaCount, vs...))
 }
 
-// XmfzrEqualFold applies the EqualFold predicate on the "xmfzr" field.
-func XmfzrEqualFold(v string) predicate.Project {
-	return predicate.Project(sql.FieldEqualFold(FieldXmfzr, v))
+// SubcontractorVaCountNotIn applies the NotIn predicate on the "subcontractor_va_count" field.
+func SubcontractorVaCountNotIn(vs ...int) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldSubcontractorVaCount, vs...))
 }
 
-// XmfzrContainsFold applies the ContainsFold predicate on the "xmfzr" field.
-func XmfzrContainsFold(v string) predicate.Project {
-	return predicate.Project(sql.FieldContainsFold(FieldXmfzr, v))
+// SubcontractorVaCountGT applies the GT predicate on the "subcontractor_va_count" field.
+func SubcontractorVaCountGT(v int) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldSubcontractorVaCount, v))
 }
 
-// OwnerApplyAmountEQ applies the EQ predicate on the "owner_apply_amount" field.
-func OwnerApplyAmountEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldOwnerApplyAmount, v))
+// SubcontractorVaCountGTE applies the GTE predicate on the "subcontractor_va_count" field.
+func SubcontractorVaCountGTE(v int) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldSubcontractorVaCount, v))
 }
 
-// OwnerApplyAmountNEQ applies the NEQ predicate on the "owner_apply_amount" field.
-func OwnerApplyAmountNEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldOwnerApplyAmount, v))
+// SubcontractorVaCountLT applies the LT predicate on the "subcontractor_va_count" field.
+func SubcontractorVaCountLT(v int) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldSubcontractorVaCount, v))
 }
 
-// OwnerApplyAmountIn applies the In predicate on the "owner_apply_amount" field.
-func OwnerApplyAmountIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldOwnerApplyAmount, vs...))
+// SubcontractorVaCountLTE applies the LTE predicate on the "subcontractor_va_count" field.
+func SubcontractorVaCountLTE(v int) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldSubcontractorVaCount, v))
 }
 
-// OwnerApplyAmountNotIn applies the NotIn predicate on the "owner_apply_amount" field.
-func OwnerApplyAmountNotIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldOwnerApplyAmount, vs...))
+// SubcontractorVaCountIsNil applies the IsNil predicate on the "subcontractor_va_count" field.
+func SubcontractorVaCountIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldSubcontractorVaCount))
 }
 
-// OwnerApplyAmountGT applies the GT predicate on the "owner_apply_amount" field.
-func OwnerApplyAmountGT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldOwnerApplyAmount, v))
+// SubcontractorVaCountNotNil applies the NotNil predicate on the "subcontractor_va_count" field.
+func SubcontractorVaCountNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldSubcontractorVaCount))
 }
 
-// OwnerApplyAmountGTE applies the GTE predicate on the "owner_apply_amount" field.
-func OwnerApplyAmountGTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldOwnerApplyAmount, v))
+// ContractSupplementaryCountEQ applies the EQ predicate on the "contract_supplementary_count" field.
+func ContractSupplementaryCountEQ(v int) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldContractSupplementaryCount, v))
 }
 
-// OwnerApplyAmountLT applies the LT predicate on the "owner_apply_amount" field.
-func OwnerApplyAmountLT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldOwnerApplyAmount, v))
+// ContractSupplementaryCountNEQ applies the NEQ predicate on the "contract_supplementary_count" field.
+func ContractSupplementaryCountNEQ(v int) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldContractSupplementaryCount, v))
 }
 
-// OwnerApplyAmountLTE applies the LTE predicate on the "owner_apply_amount" field.
-func OwnerApplyAmountLTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldOwnerApplyAmount, v))
+// ContractSupplementaryCountIn applies the In predicate on the "contract_supplementary_count" field.
+func ContractSupplementaryCountIn(vs ...int) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldContractSupplementaryCount, vs...))
 }
 
-// OwnerApplyAmountIsNil applies the IsNil predicate on the "owner_apply_amount" field.
-func OwnerApplyAmountIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldOwnerApplyAmount))
+// ContractSupplementaryCountNotIn applies the NotIn predicate on the "contract_supplementary_count" field.
+func ContractSupplementaryCountNotIn(vs ...int) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldContractSupplementaryCount, vs...))
 }
 
-// OwnerApplyAmountNotNil applies the NotNil predicate on the "owner_apply_amount" field.
-func OwnerApplyAmountNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldOwnerApplyAmount))
+// ContractSupplementaryCountGT applies the GT predicate on the "contract_supplementary_count" field.
+func ContractSupplementaryCountGT(v int) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldContractSupplementaryCount, v))
 }
 
-// OwnerApplyCountEQ applies the EQ predicate on the "owner_apply_count" field.
-func OwnerApplyCountEQ(v int) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldOwnerApplyCount, v))
+// ContractSupplementaryCountGTE applies the GTE predicate on the "contract_supplementary_count" field.
+func ContractSupplementaryCountGTE(v int) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldContractSupplementaryCount, v))
 }
 
-// OwnerApplyCountNEQ applies the NEQ predicate on the "owner_apply_count" field.
-func OwnerApplyCountNEQ(v int) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldOwnerApplyCount, v))
+// ContractSupplementaryCountLT applies the LT predicate on the "contract_supplementary_count" field.
+func ContractSupplementaryCountLT(v int) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldContractSupplementaryCount, v))
 }
 
-// OwnerApplyCountIn applies the In predicate on the "owner_apply_count" field.
-func OwnerApplyCountIn(vs ...int) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldOwnerApplyCount, vs...))
+// ContractSupplementaryCountLTE applies the LTE predicate on the "contract_supplementary_count" field.
+func ContractSupplementaryCountLTE(v int) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldContractSupplementaryCount, v))
 }
 
-// OwnerApplyCountNotIn applies the NotIn predicate on the "owner_apply_count" field.
-func OwnerApplyCountNotIn(vs ...int) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldOwnerApplyCount, vs...))
+// ContractSupplementaryCountIsNil applies the IsNil predicate on the "contract_supplementary_count" field.
+func ContractSupplementaryCountIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldContractSupplementaryCount))
 }
 
-// OwnerApplyCountGT applies the GT predicate on the "owner_apply_count" field.
-func OwnerApplyCountGT(v int) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldOwnerApplyCount, v))
+// ContractSupplementaryCountNotNil applies the NotNil predicate on the "contract_supplementary_count" field.
+func ContractSupplementaryCountNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldContractSupplementaryCount))
 }
 
-// OwnerApplyCountGTE applies the GTE predicate on the "owner_apply_count" field.
-func OwnerApplyCountGTE(v int) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldOwnerApplyCount, v))
+// RepairFeeEQ applies the EQ predicate on the "repair_fee" field.
+func RepairFeeEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldRepairFee, v))
 }
 
-// OwnerApplyCountLT applies the LT predicate on the "owner_apply_count" field.
-func OwnerApplyCountLT(v int) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldOwnerApplyCount, v))
+// RepairFeeNEQ applies the NEQ predicate on the "repair_fee" field.
+func RepairFeeNEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldRepairFee, v))
 }
 
-// OwnerApplyCountLTE applies the LTE predicate on the "owner_apply_count" field.
-func OwnerApplyCountLTE(v int) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldOwnerApplyCount, v))
+// RepairFeeIn applies the In predicate on the "repair_fee" field.
+func RepairFeeIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldRepairFee, vs...))
 }
 
-// OwnerApplyCountIsNil applies the IsNil predicate on the "owner_apply_count" field.
-func OwnerApplyCountIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldOwnerApplyCount))
+// RepairFeeNotIn applies the NotIn predicate on the "repair_fee" field.
+func RepairFeeNotIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldRepairFee, vs...))
 }
 
-// OwnerApplyCountNotNil applies the NotNil predicate on the "owner_apply_count" field.
-func OwnerApplyCountNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldOwnerApplyCount))
+// RepairFeeGT applies the GT predicate on the "repair_fee" field.
+func RepairFeeGT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldRepairFee, v))
 }
 
-// OwnerApproveAmountEQ applies the EQ predicate on the "owner_approve_amount" field.
-func OwnerApproveAmountEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldOwnerApproveAmount, v))
+// RepairFeeGTE applies the GTE predicate on the "repair_fee" field.
+func RepairFeeGTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldRepairFee, v))
 }
 
-// OwnerApproveAmountNEQ applies the NEQ predicate on the "owner_approve_amount" field.
-func OwnerApproveAmountNEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldOwnerApproveAmount, v))
+// RepairFeeLT applies the LT predicate on the "repair_fee" field.
+func RepairFeeLT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldRepairFee, v))
 }
 
-// OwnerApproveAmountIn applies the In predicate on the "owner_approve_amount" field.
-func OwnerApproveAmountIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldOwnerApproveAmount, vs...))
+// RepairFeeLTE applies the LTE predicate on the "repair_fee" field.
+func RepairFeeLTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldRepairFee, v))
 }
 
-// OwnerApproveAmountNotIn applies the NotIn predicate on the "owner_approve_amount" field.
-func OwnerApproveAmountNotIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldOwnerApproveAmount, vs...))
+// RepairFeeIsNil applies the IsNil predicate on the "repair_fee" field.
+func RepairFeeIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldRepairFee))
 }
 
-// OwnerApproveAmountGT applies the GT predicate on the "owner_approve_amount" field.
-func OwnerApproveAmountGT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldOwnerApproveAmount, v))
-}
-
-// OwnerApproveAmountGTE applies the GTE predicate on the "owner_approve_amount" field.
-func OwnerApproveAmountGTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldOwnerApproveAmount, v))
-}
-
-// OwnerApproveAmountLT applies the LT predicate on the "owner_approve_amount" field.
-func OwnerApproveAmountLT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldOwnerApproveAmount, v))
-}
-
-// OwnerApproveAmountLTE applies the LTE predicate on the "owner_approve_amount" field.
-func OwnerApproveAmountLTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldOwnerApproveAmount, v))
-}
-
-// OwnerApproveAmountIsNil applies the IsNil predicate on the "owner_approve_amount" field.
-func OwnerApproveAmountIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldOwnerApproveAmount))
-}
-
-// OwnerApproveAmountNotNil applies the NotNil predicate on the "owner_approve_amount" field.
-func OwnerApproveAmountNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldOwnerApproveAmount))
-}
-
-// OwnerApproveCountEQ applies the EQ predicate on the "owner_approve_count" field.
-func OwnerApproveCountEQ(v int) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldOwnerApproveCount, v))
-}
-
-// OwnerApproveCountNEQ applies the NEQ predicate on the "owner_approve_count" field.
-func OwnerApproveCountNEQ(v int) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldOwnerApproveCount, v))
-}
-
-// OwnerApproveCountIn applies the In predicate on the "owner_approve_count" field.
-func OwnerApproveCountIn(vs ...int) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldOwnerApproveCount, vs...))
-}
-
-// OwnerApproveCountNotIn applies the NotIn predicate on the "owner_approve_count" field.
-func OwnerApproveCountNotIn(vs ...int) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldOwnerApproveCount, vs...))
-}
-
-// OwnerApproveCountGT applies the GT predicate on the "owner_approve_count" field.
-func OwnerApproveCountGT(v int) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldOwnerApproveCount, v))
-}
-
-// OwnerApproveCountGTE applies the GTE predicate on the "owner_approve_count" field.
-func OwnerApproveCountGTE(v int) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldOwnerApproveCount, v))
-}
-
-// OwnerApproveCountLT applies the LT predicate on the "owner_approve_count" field.
-func OwnerApproveCountLT(v int) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldOwnerApproveCount, v))
-}
-
-// OwnerApproveCountLTE applies the LTE predicate on the "owner_approve_count" field.
-func OwnerApproveCountLTE(v int) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldOwnerApproveCount, v))
-}
-
-// OwnerApproveCountIsNil applies the IsNil predicate on the "owner_approve_count" field.
-func OwnerApproveCountIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldOwnerApproveCount))
-}
-
-// OwnerApproveCountNotNil applies the NotNil predicate on the "owner_approve_count" field.
-func OwnerApproveCountNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldOwnerApproveCount))
-}
-
-// ContractorApplyAmountEQ applies the EQ predicate on the "contractor_apply_amount" field.
-func ContractorApplyAmountEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldContractorApplyAmount, v))
-}
-
-// ContractorApplyAmountNEQ applies the NEQ predicate on the "contractor_apply_amount" field.
-func ContractorApplyAmountNEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldContractorApplyAmount, v))
-}
-
-// ContractorApplyAmountIn applies the In predicate on the "contractor_apply_amount" field.
-func ContractorApplyAmountIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldContractorApplyAmount, vs...))
-}
-
-// ContractorApplyAmountNotIn applies the NotIn predicate on the "contractor_apply_amount" field.
-func ContractorApplyAmountNotIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldContractorApplyAmount, vs...))
-}
-
-// ContractorApplyAmountGT applies the GT predicate on the "contractor_apply_amount" field.
-func ContractorApplyAmountGT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldContractorApplyAmount, v))
-}
-
-// ContractorApplyAmountGTE applies the GTE predicate on the "contractor_apply_amount" field.
-func ContractorApplyAmountGTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldContractorApplyAmount, v))
-}
-
-// ContractorApplyAmountLT applies the LT predicate on the "contractor_apply_amount" field.
-func ContractorApplyAmountLT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldContractorApplyAmount, v))
-}
-
-// ContractorApplyAmountLTE applies the LTE predicate on the "contractor_apply_amount" field.
-func ContractorApplyAmountLTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldContractorApplyAmount, v))
-}
-
-// ContractorApplyAmountIsNil applies the IsNil predicate on the "contractor_apply_amount" field.
-func ContractorApplyAmountIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldContractorApplyAmount))
-}
-
-// ContractorApplyAmountNotNil applies the NotNil predicate on the "contractor_apply_amount" field.
-func ContractorApplyAmountNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldContractorApplyAmount))
-}
-
-// ContractorApplyCountEQ applies the EQ predicate on the "contractor_apply_count" field.
-func ContractorApplyCountEQ(v int) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldContractorApplyCount, v))
-}
-
-// ContractorApplyCountNEQ applies the NEQ predicate on the "contractor_apply_count" field.
-func ContractorApplyCountNEQ(v int) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldContractorApplyCount, v))
-}
-
-// ContractorApplyCountIn applies the In predicate on the "contractor_apply_count" field.
-func ContractorApplyCountIn(vs ...int) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldContractorApplyCount, vs...))
-}
-
-// ContractorApplyCountNotIn applies the NotIn predicate on the "contractor_apply_count" field.
-func ContractorApplyCountNotIn(vs ...int) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldContractorApplyCount, vs...))
-}
-
-// ContractorApplyCountGT applies the GT predicate on the "contractor_apply_count" field.
-func ContractorApplyCountGT(v int) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldContractorApplyCount, v))
-}
-
-// ContractorApplyCountGTE applies the GTE predicate on the "contractor_apply_count" field.
-func ContractorApplyCountGTE(v int) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldContractorApplyCount, v))
-}
-
-// ContractorApplyCountLT applies the LT predicate on the "contractor_apply_count" field.
-func ContractorApplyCountLT(v int) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldContractorApplyCount, v))
-}
-
-// ContractorApplyCountLTE applies the LTE predicate on the "contractor_apply_count" field.
-func ContractorApplyCountLTE(v int) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldContractorApplyCount, v))
-}
-
-// ContractorApplyCountIsNil applies the IsNil predicate on the "contractor_apply_count" field.
-func ContractorApplyCountIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldContractorApplyCount))
-}
-
-// ContractorApplyCountNotNil applies the NotNil predicate on the "contractor_apply_count" field.
-func ContractorApplyCountNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldContractorApplyCount))
-}
-
-// ContractorApproveAmountEQ applies the EQ predicate on the "contractor_approve_amount" field.
-func ContractorApproveAmountEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldContractorApproveAmount, v))
-}
-
-// ContractorApproveAmountNEQ applies the NEQ predicate on the "contractor_approve_amount" field.
-func ContractorApproveAmountNEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldContractorApproveAmount, v))
-}
-
-// ContractorApproveAmountIn applies the In predicate on the "contractor_approve_amount" field.
-func ContractorApproveAmountIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldContractorApproveAmount, vs...))
-}
-
-// ContractorApproveAmountNotIn applies the NotIn predicate on the "contractor_approve_amount" field.
-func ContractorApproveAmountNotIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldContractorApproveAmount, vs...))
-}
-
-// ContractorApproveAmountGT applies the GT predicate on the "contractor_approve_amount" field.
-func ContractorApproveAmountGT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldContractorApproveAmount, v))
-}
-
-// ContractorApproveAmountGTE applies the GTE predicate on the "contractor_approve_amount" field.
-func ContractorApproveAmountGTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldContractorApproveAmount, v))
-}
-
-// ContractorApproveAmountLT applies the LT predicate on the "contractor_approve_amount" field.
-func ContractorApproveAmountLT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldContractorApproveAmount, v))
-}
-
-// ContractorApproveAmountLTE applies the LTE predicate on the "contractor_approve_amount" field.
-func ContractorApproveAmountLTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldContractorApproveAmount, v))
-}
-
-// ContractorApproveAmountIsNil applies the IsNil predicate on the "contractor_approve_amount" field.
-func ContractorApproveAmountIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldContractorApproveAmount))
-}
-
-// ContractorApproveAmountNotNil applies the NotNil predicate on the "contractor_approve_amount" field.
-func ContractorApproveAmountNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldContractorApproveAmount))
-}
-
-// ContractorApproveCountEQ applies the EQ predicate on the "contractor_approve_count" field.
-func ContractorApproveCountEQ(v int) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldContractorApproveCount, v))
-}
-
-// ContractorApproveCountNEQ applies the NEQ predicate on the "contractor_approve_count" field.
-func ContractorApproveCountNEQ(v int) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldContractorApproveCount, v))
-}
-
-// ContractorApproveCountIn applies the In predicate on the "contractor_approve_count" field.
-func ContractorApproveCountIn(vs ...int) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldContractorApproveCount, vs...))
-}
-
-// ContractorApproveCountNotIn applies the NotIn predicate on the "contractor_approve_count" field.
-func ContractorApproveCountNotIn(vs ...int) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldContractorApproveCount, vs...))
-}
-
-// ContractorApproveCountGT applies the GT predicate on the "contractor_approve_count" field.
-func ContractorApproveCountGT(v int) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldContractorApproveCount, v))
-}
-
-// ContractorApproveCountGTE applies the GTE predicate on the "contractor_approve_count" field.
-func ContractorApproveCountGTE(v int) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldContractorApproveCount, v))
-}
-
-// ContractorApproveCountLT applies the LT predicate on the "contractor_approve_count" field.
-func ContractorApproveCountLT(v int) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldContractorApproveCount, v))
-}
-
-// ContractorApproveCountLTE applies the LTE predicate on the "contractor_approve_count" field.
-func ContractorApproveCountLTE(v int) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldContractorApproveCount, v))
-}
-
-// ContractorApproveCountIsNil applies the IsNil predicate on the "contractor_approve_count" field.
-func ContractorApproveCountIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldContractorApproveCount))
-}
-
-// ContractorApproveCountNotNil applies the NotNil predicate on the "contractor_approve_count" field.
-func ContractorApproveCountNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldContractorApproveCount))
-}
-
-// InstallProgressEQ applies the EQ predicate on the "install_progress" field.
-func InstallProgressEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldInstallProgress, v))
-}
-
-// InstallProgressNEQ applies the NEQ predicate on the "install_progress" field.
-func InstallProgressNEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldInstallProgress, v))
-}
-
-// InstallProgressIn applies the In predicate on the "install_progress" field.
-func InstallProgressIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldInstallProgress, vs...))
-}
-
-// InstallProgressNotIn applies the NotIn predicate on the "install_progress" field.
-func InstallProgressNotIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldInstallProgress, vs...))
-}
-
-// InstallProgressGT applies the GT predicate on the "install_progress" field.
-func InstallProgressGT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldInstallProgress, v))
-}
-
-// InstallProgressGTE applies the GTE predicate on the "install_progress" field.
-func InstallProgressGTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldInstallProgress, v))
-}
-
-// InstallProgressLT applies the LT predicate on the "install_progress" field.
-func InstallProgressLT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldInstallProgress, v))
-}
-
-// InstallProgressLTE applies the LTE predicate on the "install_progress" field.
-func InstallProgressLTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldInstallProgress, v))
-}
-
-// InstallProgressIsNil applies the IsNil predicate on the "install_progress" field.
-func InstallProgressIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldInstallProgress))
-}
-
-// InstallProgressNotNil applies the NotNil predicate on the "install_progress" field.
-func InstallProgressNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldInstallProgress))
-}
-
-// EffectiveContractAmountEQ applies the EQ predicate on the "effective_contract_amount" field.
-func EffectiveContractAmountEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldEffectiveContractAmount, v))
-}
-
-// EffectiveContractAmountNEQ applies the NEQ predicate on the "effective_contract_amount" field.
-func EffectiveContractAmountNEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldEffectiveContractAmount, v))
-}
-
-// EffectiveContractAmountIn applies the In predicate on the "effective_contract_amount" field.
-func EffectiveContractAmountIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldEffectiveContractAmount, vs...))
-}
-
-// EffectiveContractAmountNotIn applies the NotIn predicate on the "effective_contract_amount" field.
-func EffectiveContractAmountNotIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldEffectiveContractAmount, vs...))
-}
-
-// EffectiveContractAmountGT applies the GT predicate on the "effective_contract_amount" field.
-func EffectiveContractAmountGT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldEffectiveContractAmount, v))
-}
-
-// EffectiveContractAmountGTE applies the GTE predicate on the "effective_contract_amount" field.
-func EffectiveContractAmountGTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldEffectiveContractAmount, v))
-}
-
-// EffectiveContractAmountLT applies the LT predicate on the "effective_contract_amount" field.
-func EffectiveContractAmountLT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldEffectiveContractAmount, v))
-}
-
-// EffectiveContractAmountLTE applies the LTE predicate on the "effective_contract_amount" field.
-func EffectiveContractAmountLTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldEffectiveContractAmount, v))
-}
-
-// EffectiveContractAmountIsNil applies the IsNil predicate on the "effective_contract_amount" field.
-func EffectiveContractAmountIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldEffectiveContractAmount))
-}
-
-// EffectiveContractAmountNotNil applies the NotNil predicate on the "effective_contract_amount" field.
-func EffectiveContractAmountNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldEffectiveContractAmount))
-}
-
-// VaApplyAmountEQ applies the EQ predicate on the "va_apply_amount" field.
-func VaApplyAmountEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldVaApplyAmount, v))
-}
-
-// VaApplyAmountNEQ applies the NEQ predicate on the "va_apply_amount" field.
-func VaApplyAmountNEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldVaApplyAmount, v))
-}
-
-// VaApplyAmountIn applies the In predicate on the "va_apply_amount" field.
-func VaApplyAmountIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldVaApplyAmount, vs...))
-}
-
-// VaApplyAmountNotIn applies the NotIn predicate on the "va_apply_amount" field.
-func VaApplyAmountNotIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldVaApplyAmount, vs...))
-}
-
-// VaApplyAmountGT applies the GT predicate on the "va_apply_amount" field.
-func VaApplyAmountGT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldVaApplyAmount, v))
-}
-
-// VaApplyAmountGTE applies the GTE predicate on the "va_apply_amount" field.
-func VaApplyAmountGTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldVaApplyAmount, v))
-}
-
-// VaApplyAmountLT applies the LT predicate on the "va_apply_amount" field.
-func VaApplyAmountLT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldVaApplyAmount, v))
-}
-
-// VaApplyAmountLTE applies the LTE predicate on the "va_apply_amount" field.
-func VaApplyAmountLTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldVaApplyAmount, v))
-}
-
-// VaApplyAmountIsNil applies the IsNil predicate on the "va_apply_amount" field.
-func VaApplyAmountIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldVaApplyAmount))
-}
-
-// VaApplyAmountNotNil applies the NotNil predicate on the "va_apply_amount" field.
-func VaApplyAmountNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldVaApplyAmount))
-}
-
-// VaApproveAmountEQ applies the EQ predicate on the "va_approve_amount" field.
-func VaApproveAmountEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldVaApproveAmount, v))
-}
-
-// VaApproveAmountNEQ applies the NEQ predicate on the "va_approve_amount" field.
-func VaApproveAmountNEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldVaApproveAmount, v))
-}
-
-// VaApproveAmountIn applies the In predicate on the "va_approve_amount" field.
-func VaApproveAmountIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldVaApproveAmount, vs...))
-}
-
-// VaApproveAmountNotIn applies the NotIn predicate on the "va_approve_amount" field.
-func VaApproveAmountNotIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldVaApproveAmount, vs...))
-}
-
-// VaApproveAmountGT applies the GT predicate on the "va_approve_amount" field.
-func VaApproveAmountGT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldVaApproveAmount, v))
-}
-
-// VaApproveAmountGTE applies the GTE predicate on the "va_approve_amount" field.
-func VaApproveAmountGTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldVaApproveAmount, v))
-}
-
-// VaApproveAmountLT applies the LT predicate on the "va_approve_amount" field.
-func VaApproveAmountLT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldVaApproveAmount, v))
-}
-
-// VaApproveAmountLTE applies the LTE predicate on the "va_approve_amount" field.
-func VaApproveAmountLTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldVaApproveAmount, v))
-}
-
-// VaApproveAmountIsNil applies the IsNil predicate on the "va_approve_amount" field.
-func VaApproveAmountIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldVaApproveAmount))
-}
-
-// VaApproveAmountNotNil applies the NotNil predicate on the "va_approve_amount" field.
-func VaApproveAmountNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldVaApproveAmount))
-}
-
-// AccumulatedStatutoryDeductionsEQ applies the EQ predicate on the "accumulated_statutory_deductions" field.
-func AccumulatedStatutoryDeductionsEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldAccumulatedStatutoryDeductions, v))
-}
-
-// AccumulatedStatutoryDeductionsNEQ applies the NEQ predicate on the "accumulated_statutory_deductions" field.
-func AccumulatedStatutoryDeductionsNEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldAccumulatedStatutoryDeductions, v))
-}
-
-// AccumulatedStatutoryDeductionsIn applies the In predicate on the "accumulated_statutory_deductions" field.
-func AccumulatedStatutoryDeductionsIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldAccumulatedStatutoryDeductions, vs...))
-}
-
-// AccumulatedStatutoryDeductionsNotIn applies the NotIn predicate on the "accumulated_statutory_deductions" field.
-func AccumulatedStatutoryDeductionsNotIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldAccumulatedStatutoryDeductions, vs...))
-}
-
-// AccumulatedStatutoryDeductionsGT applies the GT predicate on the "accumulated_statutory_deductions" field.
-func AccumulatedStatutoryDeductionsGT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldAccumulatedStatutoryDeductions, v))
-}
-
-// AccumulatedStatutoryDeductionsGTE applies the GTE predicate on the "accumulated_statutory_deductions" field.
-func AccumulatedStatutoryDeductionsGTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldAccumulatedStatutoryDeductions, v))
-}
-
-// AccumulatedStatutoryDeductionsLT applies the LT predicate on the "accumulated_statutory_deductions" field.
-func AccumulatedStatutoryDeductionsLT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldAccumulatedStatutoryDeductions, v))
-}
-
-// AccumulatedStatutoryDeductionsLTE applies the LTE predicate on the "accumulated_statutory_deductions" field.
-func AccumulatedStatutoryDeductionsLTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldAccumulatedStatutoryDeductions, v))
-}
-
-// AccumulatedStatutoryDeductionsIsNil applies the IsNil predicate on the "accumulated_statutory_deductions" field.
-func AccumulatedStatutoryDeductionsIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldAccumulatedStatutoryDeductions))
-}
-
-// AccumulatedStatutoryDeductionsNotNil applies the NotNil predicate on the "accumulated_statutory_deductions" field.
-func AccumulatedStatutoryDeductionsNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldAccumulatedStatutoryDeductions))
-}
-
-// AccumulatedNonStatutoryDeductionsEQ applies the EQ predicate on the "accumulated_non_statutory_deductions" field.
-func AccumulatedNonStatutoryDeductionsEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldAccumulatedNonStatutoryDeductions, v))
-}
-
-// AccumulatedNonStatutoryDeductionsNEQ applies the NEQ predicate on the "accumulated_non_statutory_deductions" field.
-func AccumulatedNonStatutoryDeductionsNEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldAccumulatedNonStatutoryDeductions, v))
-}
-
-// AccumulatedNonStatutoryDeductionsIn applies the In predicate on the "accumulated_non_statutory_deductions" field.
-func AccumulatedNonStatutoryDeductionsIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldAccumulatedNonStatutoryDeductions, vs...))
-}
-
-// AccumulatedNonStatutoryDeductionsNotIn applies the NotIn predicate on the "accumulated_non_statutory_deductions" field.
-func AccumulatedNonStatutoryDeductionsNotIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldAccumulatedNonStatutoryDeductions, vs...))
-}
-
-// AccumulatedNonStatutoryDeductionsGT applies the GT predicate on the "accumulated_non_statutory_deductions" field.
-func AccumulatedNonStatutoryDeductionsGT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldAccumulatedNonStatutoryDeductions, v))
-}
-
-// AccumulatedNonStatutoryDeductionsGTE applies the GTE predicate on the "accumulated_non_statutory_deductions" field.
-func AccumulatedNonStatutoryDeductionsGTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldAccumulatedNonStatutoryDeductions, v))
-}
-
-// AccumulatedNonStatutoryDeductionsLT applies the LT predicate on the "accumulated_non_statutory_deductions" field.
-func AccumulatedNonStatutoryDeductionsLT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldAccumulatedNonStatutoryDeductions, v))
-}
-
-// AccumulatedNonStatutoryDeductionsLTE applies the LTE predicate on the "accumulated_non_statutory_deductions" field.
-func AccumulatedNonStatutoryDeductionsLTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldAccumulatedNonStatutoryDeductions, v))
-}
-
-// AccumulatedNonStatutoryDeductionsIsNil applies the IsNil predicate on the "accumulated_non_statutory_deductions" field.
-func AccumulatedNonStatutoryDeductionsIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldAccumulatedNonStatutoryDeductions))
-}
-
-// AccumulatedNonStatutoryDeductionsNotNil applies the NotNil predicate on the "accumulated_non_statutory_deductions" field.
-func AccumulatedNonStatutoryDeductionsNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldAccumulatedNonStatutoryDeductions))
-}
-
-// AccumulatedStatutoryDeductionsPeriodEQ applies the EQ predicate on the "accumulated_statutory_deductions_period" field.
-func AccumulatedStatutoryDeductionsPeriodEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldAccumulatedStatutoryDeductionsPeriod, v))
-}
-
-// AccumulatedStatutoryDeductionsPeriodNEQ applies the NEQ predicate on the "accumulated_statutory_deductions_period" field.
-func AccumulatedStatutoryDeductionsPeriodNEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldAccumulatedStatutoryDeductionsPeriod, v))
-}
-
-// AccumulatedStatutoryDeductionsPeriodIn applies the In predicate on the "accumulated_statutory_deductions_period" field.
-func AccumulatedStatutoryDeductionsPeriodIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldAccumulatedStatutoryDeductionsPeriod, vs...))
-}
-
-// AccumulatedStatutoryDeductionsPeriodNotIn applies the NotIn predicate on the "accumulated_statutory_deductions_period" field.
-func AccumulatedStatutoryDeductionsPeriodNotIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldAccumulatedStatutoryDeductionsPeriod, vs...))
-}
-
-// AccumulatedStatutoryDeductionsPeriodGT applies the GT predicate on the "accumulated_statutory_deductions_period" field.
-func AccumulatedStatutoryDeductionsPeriodGT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldAccumulatedStatutoryDeductionsPeriod, v))
-}
-
-// AccumulatedStatutoryDeductionsPeriodGTE applies the GTE predicate on the "accumulated_statutory_deductions_period" field.
-func AccumulatedStatutoryDeductionsPeriodGTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldAccumulatedStatutoryDeductionsPeriod, v))
-}
-
-// AccumulatedStatutoryDeductionsPeriodLT applies the LT predicate on the "accumulated_statutory_deductions_period" field.
-func AccumulatedStatutoryDeductionsPeriodLT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldAccumulatedStatutoryDeductionsPeriod, v))
-}
-
-// AccumulatedStatutoryDeductionsPeriodLTE applies the LTE predicate on the "accumulated_statutory_deductions_period" field.
-func AccumulatedStatutoryDeductionsPeriodLTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldAccumulatedStatutoryDeductionsPeriod, v))
-}
-
-// AccumulatedStatutoryDeductionsPeriodIsNil applies the IsNil predicate on the "accumulated_statutory_deductions_period" field.
-func AccumulatedStatutoryDeductionsPeriodIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldAccumulatedStatutoryDeductionsPeriod))
-}
-
-// AccumulatedStatutoryDeductionsPeriodNotNil applies the NotNil predicate on the "accumulated_statutory_deductions_period" field.
-func AccumulatedStatutoryDeductionsPeriodNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldAccumulatedStatutoryDeductionsPeriod))
-}
-
-// AccumulatedNonStatutoryDeductionsPeriodEQ applies the EQ predicate on the "accumulated_non_statutory_deductions_period" field.
-func AccumulatedNonStatutoryDeductionsPeriodEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldAccumulatedNonStatutoryDeductionsPeriod, v))
-}
-
-// AccumulatedNonStatutoryDeductionsPeriodNEQ applies the NEQ predicate on the "accumulated_non_statutory_deductions_period" field.
-func AccumulatedNonStatutoryDeductionsPeriodNEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldAccumulatedNonStatutoryDeductionsPeriod, v))
-}
-
-// AccumulatedNonStatutoryDeductionsPeriodIn applies the In predicate on the "accumulated_non_statutory_deductions_period" field.
-func AccumulatedNonStatutoryDeductionsPeriodIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldAccumulatedNonStatutoryDeductionsPeriod, vs...))
-}
-
-// AccumulatedNonStatutoryDeductionsPeriodNotIn applies the NotIn predicate on the "accumulated_non_statutory_deductions_period" field.
-func AccumulatedNonStatutoryDeductionsPeriodNotIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldAccumulatedNonStatutoryDeductionsPeriod, vs...))
-}
-
-// AccumulatedNonStatutoryDeductionsPeriodGT applies the GT predicate on the "accumulated_non_statutory_deductions_period" field.
-func AccumulatedNonStatutoryDeductionsPeriodGT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldAccumulatedNonStatutoryDeductionsPeriod, v))
-}
-
-// AccumulatedNonStatutoryDeductionsPeriodGTE applies the GTE predicate on the "accumulated_non_statutory_deductions_period" field.
-func AccumulatedNonStatutoryDeductionsPeriodGTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldAccumulatedNonStatutoryDeductionsPeriod, v))
-}
-
-// AccumulatedNonStatutoryDeductionsPeriodLT applies the LT predicate on the "accumulated_non_statutory_deductions_period" field.
-func AccumulatedNonStatutoryDeductionsPeriodLT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldAccumulatedNonStatutoryDeductionsPeriod, v))
-}
-
-// AccumulatedNonStatutoryDeductionsPeriodLTE applies the LTE predicate on the "accumulated_non_statutory_deductions_period" field.
-func AccumulatedNonStatutoryDeductionsPeriodLTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldAccumulatedNonStatutoryDeductionsPeriod, v))
-}
-
-// AccumulatedNonStatutoryDeductionsPeriodIsNil applies the IsNil predicate on the "accumulated_non_statutory_deductions_period" field.
-func AccumulatedNonStatutoryDeductionsPeriodIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldAccumulatedNonStatutoryDeductionsPeriod))
-}
-
-// AccumulatedNonStatutoryDeductionsPeriodNotNil applies the NotNil predicate on the "accumulated_non_statutory_deductions_period" field.
-func AccumulatedNonStatutoryDeductionsPeriodNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldAccumulatedNonStatutoryDeductionsPeriod))
-}
-
-// TotalContractAmountEQ applies the EQ predicate on the "total_contract_amount" field.
-func TotalContractAmountEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldTotalContractAmount, v))
-}
-
-// TotalContractAmountNEQ applies the NEQ predicate on the "total_contract_amount" field.
-func TotalContractAmountNEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldTotalContractAmount, v))
-}
-
-// TotalContractAmountIn applies the In predicate on the "total_contract_amount" field.
-func TotalContractAmountIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldTotalContractAmount, vs...))
-}
-
-// TotalContractAmountNotIn applies the NotIn predicate on the "total_contract_amount" field.
-func TotalContractAmountNotIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldTotalContractAmount, vs...))
-}
-
-// TotalContractAmountGT applies the GT predicate on the "total_contract_amount" field.
-func TotalContractAmountGT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldTotalContractAmount, v))
-}
-
-// TotalContractAmountGTE applies the GTE predicate on the "total_contract_amount" field.
-func TotalContractAmountGTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldTotalContractAmount, v))
-}
-
-// TotalContractAmountLT applies the LT predicate on the "total_contract_amount" field.
-func TotalContractAmountLT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldTotalContractAmount, v))
-}
-
-// TotalContractAmountLTE applies the LTE predicate on the "total_contract_amount" field.
-func TotalContractAmountLTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldTotalContractAmount, v))
-}
-
-// TotalContractAmountIsNil applies the IsNil predicate on the "total_contract_amount" field.
-func TotalContractAmountIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldTotalContractAmount))
-}
-
-// TotalContractAmountNotNil applies the NotNil predicate on the "total_contract_amount" field.
-func TotalContractAmountNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldTotalContractAmount))
-}
-
-// AluminumPlateBudgetPercentageEQ applies the EQ predicate on the "aluminum_plate_budget_percentage" field.
-func AluminumPlateBudgetPercentageEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldAluminumPlateBudgetPercentage, v))
-}
-
-// AluminumPlateBudgetPercentageNEQ applies the NEQ predicate on the "aluminum_plate_budget_percentage" field.
-func AluminumPlateBudgetPercentageNEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldAluminumPlateBudgetPercentage, v))
-}
-
-// AluminumPlateBudgetPercentageIn applies the In predicate on the "aluminum_plate_budget_percentage" field.
-func AluminumPlateBudgetPercentageIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldAluminumPlateBudgetPercentage, vs...))
-}
-
-// AluminumPlateBudgetPercentageNotIn applies the NotIn predicate on the "aluminum_plate_budget_percentage" field.
-func AluminumPlateBudgetPercentageNotIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldAluminumPlateBudgetPercentage, vs...))
-}
-
-// AluminumPlateBudgetPercentageGT applies the GT predicate on the "aluminum_plate_budget_percentage" field.
-func AluminumPlateBudgetPercentageGT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldAluminumPlateBudgetPercentage, v))
-}
-
-// AluminumPlateBudgetPercentageGTE applies the GTE predicate on the "aluminum_plate_budget_percentage" field.
-func AluminumPlateBudgetPercentageGTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldAluminumPlateBudgetPercentage, v))
-}
-
-// AluminumPlateBudgetPercentageLT applies the LT predicate on the "aluminum_plate_budget_percentage" field.
-func AluminumPlateBudgetPercentageLT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldAluminumPlateBudgetPercentage, v))
-}
-
-// AluminumPlateBudgetPercentageLTE applies the LTE predicate on the "aluminum_plate_budget_percentage" field.
-func AluminumPlateBudgetPercentageLTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldAluminumPlateBudgetPercentage, v))
-}
-
-// AluminumPlateBudgetPercentageIsNil applies the IsNil predicate on the "aluminum_plate_budget_percentage" field.
-func AluminumPlateBudgetPercentageIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldAluminumPlateBudgetPercentage))
-}
-
-// AluminumPlateBudgetPercentageNotNil applies the NotNil predicate on the "aluminum_plate_budget_percentage" field.
-func AluminumPlateBudgetPercentageNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldAluminumPlateBudgetPercentage))
-}
-
-// AluminumBudgetPercentageEQ applies the EQ predicate on the "aluminum_budget_percentage" field.
-func AluminumBudgetPercentageEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldAluminumBudgetPercentage, v))
-}
-
-// AluminumBudgetPercentageNEQ applies the NEQ predicate on the "aluminum_budget_percentage" field.
-func AluminumBudgetPercentageNEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldAluminumBudgetPercentage, v))
-}
-
-// AluminumBudgetPercentageIn applies the In predicate on the "aluminum_budget_percentage" field.
-func AluminumBudgetPercentageIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldAluminumBudgetPercentage, vs...))
-}
-
-// AluminumBudgetPercentageNotIn applies the NotIn predicate on the "aluminum_budget_percentage" field.
-func AluminumBudgetPercentageNotIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldAluminumBudgetPercentage, vs...))
-}
-
-// AluminumBudgetPercentageGT applies the GT predicate on the "aluminum_budget_percentage" field.
-func AluminumBudgetPercentageGT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldAluminumBudgetPercentage, v))
-}
-
-// AluminumBudgetPercentageGTE applies the GTE predicate on the "aluminum_budget_percentage" field.
-func AluminumBudgetPercentageGTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldAluminumBudgetPercentage, v))
-}
-
-// AluminumBudgetPercentageLT applies the LT predicate on the "aluminum_budget_percentage" field.
-func AluminumBudgetPercentageLT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldAluminumBudgetPercentage, v))
-}
-
-// AluminumBudgetPercentageLTE applies the LTE predicate on the "aluminum_budget_percentage" field.
-func AluminumBudgetPercentageLTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldAluminumBudgetPercentage, v))
-}
-
-// AluminumBudgetPercentageIsNil applies the IsNil predicate on the "aluminum_budget_percentage" field.
-func AluminumBudgetPercentageIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldAluminumBudgetPercentage))
-}
-
-// AluminumBudgetPercentageNotNil applies the NotNil predicate on the "aluminum_budget_percentage" field.
-func AluminumBudgetPercentageNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldAluminumBudgetPercentage))
-}
-
-// GlassBudgetPercentageEQ applies the EQ predicate on the "glass_budget_percentage" field.
-func GlassBudgetPercentageEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldGlassBudgetPercentage, v))
-}
-
-// GlassBudgetPercentageNEQ applies the NEQ predicate on the "glass_budget_percentage" field.
-func GlassBudgetPercentageNEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldGlassBudgetPercentage, v))
-}
-
-// GlassBudgetPercentageIn applies the In predicate on the "glass_budget_percentage" field.
-func GlassBudgetPercentageIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldGlassBudgetPercentage, vs...))
-}
-
-// GlassBudgetPercentageNotIn applies the NotIn predicate on the "glass_budget_percentage" field.
-func GlassBudgetPercentageNotIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldGlassBudgetPercentage, vs...))
-}
-
-// GlassBudgetPercentageGT applies the GT predicate on the "glass_budget_percentage" field.
-func GlassBudgetPercentageGT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldGlassBudgetPercentage, v))
-}
-
-// GlassBudgetPercentageGTE applies the GTE predicate on the "glass_budget_percentage" field.
-func GlassBudgetPercentageGTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldGlassBudgetPercentage, v))
-}
-
-// GlassBudgetPercentageLT applies the LT predicate on the "glass_budget_percentage" field.
-func GlassBudgetPercentageLT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldGlassBudgetPercentage, v))
-}
-
-// GlassBudgetPercentageLTE applies the LTE predicate on the "glass_budget_percentage" field.
-func GlassBudgetPercentageLTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldGlassBudgetPercentage, v))
-}
-
-// GlassBudgetPercentageIsNil applies the IsNil predicate on the "glass_budget_percentage" field.
-func GlassBudgetPercentageIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldGlassBudgetPercentage))
-}
-
-// GlassBudgetPercentageNotNil applies the NotNil predicate on the "glass_budget_percentage" field.
-func GlassBudgetPercentageNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldGlassBudgetPercentage))
-}
-
-// IronBudgetPercentageEQ applies the EQ predicate on the "iron_budget_percentage" field.
-func IronBudgetPercentageEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldIronBudgetPercentage, v))
-}
-
-// IronBudgetPercentageNEQ applies the NEQ predicate on the "iron_budget_percentage" field.
-func IronBudgetPercentageNEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldIronBudgetPercentage, v))
-}
-
-// IronBudgetPercentageIn applies the In predicate on the "iron_budget_percentage" field.
-func IronBudgetPercentageIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldIronBudgetPercentage, vs...))
-}
-
-// IronBudgetPercentageNotIn applies the NotIn predicate on the "iron_budget_percentage" field.
-func IronBudgetPercentageNotIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldIronBudgetPercentage, vs...))
-}
-
-// IronBudgetPercentageGT applies the GT predicate on the "iron_budget_percentage" field.
-func IronBudgetPercentageGT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldIronBudgetPercentage, v))
-}
-
-// IronBudgetPercentageGTE applies the GTE predicate on the "iron_budget_percentage" field.
-func IronBudgetPercentageGTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldIronBudgetPercentage, v))
-}
-
-// IronBudgetPercentageLT applies the LT predicate on the "iron_budget_percentage" field.
-func IronBudgetPercentageLT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldIronBudgetPercentage, v))
-}
-
-// IronBudgetPercentageLTE applies the LTE predicate on the "iron_budget_percentage" field.
-func IronBudgetPercentageLTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldIronBudgetPercentage, v))
-}
-
-// IronBudgetPercentageIsNil applies the IsNil predicate on the "iron_budget_percentage" field.
-func IronBudgetPercentageIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldIronBudgetPercentage))
-}
-
-// IronBudgetPercentageNotNil applies the NotNil predicate on the "iron_budget_percentage" field.
-func IronBudgetPercentageNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldIronBudgetPercentage))
-}
-
-// MilestonePlanYearEQ applies the EQ predicate on the "milestone_plan_year" field.
-func MilestonePlanYearEQ(v int) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldMilestonePlanYear, v))
-}
-
-// MilestonePlanYearNEQ applies the NEQ predicate on the "milestone_plan_year" field.
-func MilestonePlanYearNEQ(v int) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldMilestonePlanYear, v))
-}
-
-// MilestonePlanYearIn applies the In predicate on the "milestone_plan_year" field.
-func MilestonePlanYearIn(vs ...int) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldMilestonePlanYear, vs...))
-}
-
-// MilestonePlanYearNotIn applies the NotIn predicate on the "milestone_plan_year" field.
-func MilestonePlanYearNotIn(vs ...int) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldMilestonePlanYear, vs...))
-}
-
-// MilestonePlanYearGT applies the GT predicate on the "milestone_plan_year" field.
-func MilestonePlanYearGT(v int) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldMilestonePlanYear, v))
-}
-
-// MilestonePlanYearGTE applies the GTE predicate on the "milestone_plan_year" field.
-func MilestonePlanYearGTE(v int) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldMilestonePlanYear, v))
-}
-
-// MilestonePlanYearLT applies the LT predicate on the "milestone_plan_year" field.
-func MilestonePlanYearLT(v int) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldMilestonePlanYear, v))
-}
-
-// MilestonePlanYearLTE applies the LTE predicate on the "milestone_plan_year" field.
-func MilestonePlanYearLTE(v int) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldMilestonePlanYear, v))
-}
-
-// MilestonePlanYearIsNil applies the IsNil predicate on the "milestone_plan_year" field.
-func MilestonePlanYearIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldMilestonePlanYear))
-}
-
-// MilestonePlanYearNotNil applies the NotNil predicate on the "milestone_plan_year" field.
-func MilestonePlanYearNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldMilestonePlanYear))
-}
-
-// MilestonePlanMonthEQ applies the EQ predicate on the "milestone_plan_month" field.
-func MilestonePlanMonthEQ(v int) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldMilestonePlanMonth, v))
-}
-
-// MilestonePlanMonthNEQ applies the NEQ predicate on the "milestone_plan_month" field.
-func MilestonePlanMonthNEQ(v int) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldMilestonePlanMonth, v))
-}
-
-// MilestonePlanMonthIn applies the In predicate on the "milestone_plan_month" field.
-func MilestonePlanMonthIn(vs ...int) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldMilestonePlanMonth, vs...))
-}
-
-// MilestonePlanMonthNotIn applies the NotIn predicate on the "milestone_plan_month" field.
-func MilestonePlanMonthNotIn(vs ...int) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldMilestonePlanMonth, vs...))
-}
-
-// MilestonePlanMonthGT applies the GT predicate on the "milestone_plan_month" field.
-func MilestonePlanMonthGT(v int) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldMilestonePlanMonth, v))
-}
-
-// MilestonePlanMonthGTE applies the GTE predicate on the "milestone_plan_month" field.
-func MilestonePlanMonthGTE(v int) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldMilestonePlanMonth, v))
-}
-
-// MilestonePlanMonthLT applies the LT predicate on the "milestone_plan_month" field.
-func MilestonePlanMonthLT(v int) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldMilestonePlanMonth, v))
-}
-
-// MilestonePlanMonthLTE applies the LTE predicate on the "milestone_plan_month" field.
-func MilestonePlanMonthLTE(v int) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldMilestonePlanMonth, v))
-}
-
-// MilestonePlanMonthIsNil applies the IsNil predicate on the "milestone_plan_month" field.
-func MilestonePlanMonthIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldMilestonePlanMonth))
-}
-
-// MilestonePlanMonthNotNil applies the NotNil predicate on the "milestone_plan_month" field.
-func MilestonePlanMonthNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldMilestonePlanMonth))
-}
-
-// MilestoneDoneYearEQ applies the EQ predicate on the "milestone_done_year" field.
-func MilestoneDoneYearEQ(v int) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldMilestoneDoneYear, v))
-}
-
-// MilestoneDoneYearNEQ applies the NEQ predicate on the "milestone_done_year" field.
-func MilestoneDoneYearNEQ(v int) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldMilestoneDoneYear, v))
-}
-
-// MilestoneDoneYearIn applies the In predicate on the "milestone_done_year" field.
-func MilestoneDoneYearIn(vs ...int) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldMilestoneDoneYear, vs...))
-}
-
-// MilestoneDoneYearNotIn applies the NotIn predicate on the "milestone_done_year" field.
-func MilestoneDoneYearNotIn(vs ...int) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldMilestoneDoneYear, vs...))
-}
-
-// MilestoneDoneYearGT applies the GT predicate on the "milestone_done_year" field.
-func MilestoneDoneYearGT(v int) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldMilestoneDoneYear, v))
-}
-
-// MilestoneDoneYearGTE applies the GTE predicate on the "milestone_done_year" field.
-func MilestoneDoneYearGTE(v int) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldMilestoneDoneYear, v))
-}
-
-// MilestoneDoneYearLT applies the LT predicate on the "milestone_done_year" field.
-func MilestoneDoneYearLT(v int) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldMilestoneDoneYear, v))
-}
-
-// MilestoneDoneYearLTE applies the LTE predicate on the "milestone_done_year" field.
-func MilestoneDoneYearLTE(v int) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldMilestoneDoneYear, v))
-}
-
-// MilestoneDoneYearIsNil applies the IsNil predicate on the "milestone_done_year" field.
-func MilestoneDoneYearIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldMilestoneDoneYear))
-}
-
-// MilestoneDoneYearNotNil applies the NotNil predicate on the "milestone_done_year" field.
-func MilestoneDoneYearNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldMilestoneDoneYear))
-}
-
-// MilestoneDoneMonthEQ applies the EQ predicate on the "milestone_done_month" field.
-func MilestoneDoneMonthEQ(v int) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldMilestoneDoneMonth, v))
-}
-
-// MilestoneDoneMonthNEQ applies the NEQ predicate on the "milestone_done_month" field.
-func MilestoneDoneMonthNEQ(v int) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldMilestoneDoneMonth, v))
-}
-
-// MilestoneDoneMonthIn applies the In predicate on the "milestone_done_month" field.
-func MilestoneDoneMonthIn(vs ...int) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldMilestoneDoneMonth, vs...))
-}
-
-// MilestoneDoneMonthNotIn applies the NotIn predicate on the "milestone_done_month" field.
-func MilestoneDoneMonthNotIn(vs ...int) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldMilestoneDoneMonth, vs...))
-}
-
-// MilestoneDoneMonthGT applies the GT predicate on the "milestone_done_month" field.
-func MilestoneDoneMonthGT(v int) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldMilestoneDoneMonth, v))
-}
-
-// MilestoneDoneMonthGTE applies the GTE predicate on the "milestone_done_month" field.
-func MilestoneDoneMonthGTE(v int) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldMilestoneDoneMonth, v))
-}
-
-// MilestoneDoneMonthLT applies the LT predicate on the "milestone_done_month" field.
-func MilestoneDoneMonthLT(v int) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldMilestoneDoneMonth, v))
-}
-
-// MilestoneDoneMonthLTE applies the LTE predicate on the "milestone_done_month" field.
-func MilestoneDoneMonthLTE(v int) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldMilestoneDoneMonth, v))
-}
-
-// MilestoneDoneMonthIsNil applies the IsNil predicate on the "milestone_done_month" field.
-func MilestoneDoneMonthIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldMilestoneDoneMonth))
-}
-
-// MilestoneDoneMonthNotNil applies the NotNil predicate on the "milestone_done_month" field.
-func MilestoneDoneMonthNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldMilestoneDoneMonth))
-}
-
-// PmAreaEQ applies the EQ predicate on the "pm_area" field.
-func PmAreaEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldPmArea, v))
-}
-
-// PmAreaNEQ applies the NEQ predicate on the "pm_area" field.
-func PmAreaNEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldPmArea, v))
-}
-
-// PmAreaIn applies the In predicate on the "pm_area" field.
-func PmAreaIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldPmArea, vs...))
-}
-
-// PmAreaNotIn applies the NotIn predicate on the "pm_area" field.
-func PmAreaNotIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldPmArea, vs...))
-}
-
-// PmAreaGT applies the GT predicate on the "pm_area" field.
-func PmAreaGT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldPmArea, v))
-}
-
-// PmAreaGTE applies the GTE predicate on the "pm_area" field.
-func PmAreaGTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldPmArea, v))
-}
-
-// PmAreaLT applies the LT predicate on the "pm_area" field.
-func PmAreaLT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldPmArea, v))
-}
-
-// PmAreaLTE applies the LTE predicate on the "pm_area" field.
-func PmAreaLTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldPmArea, v))
-}
-
-// PmAreaIsNil applies the IsNil predicate on the "pm_area" field.
-func PmAreaIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldPmArea))
-}
-
-// PmAreaNotNil applies the NotNil predicate on the "pm_area" field.
-func PmAreaNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldPmArea))
-}
-
-// PmYearTargetEQ applies the EQ predicate on the "pm_year_target" field.
-func PmYearTargetEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldPmYearTarget, v))
-}
-
-// PmYearTargetNEQ applies the NEQ predicate on the "pm_year_target" field.
-func PmYearTargetNEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldPmYearTarget, v))
-}
-
-// PmYearTargetIn applies the In predicate on the "pm_year_target" field.
-func PmYearTargetIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldPmYearTarget, vs...))
-}
-
-// PmYearTargetNotIn applies the NotIn predicate on the "pm_year_target" field.
-func PmYearTargetNotIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldPmYearTarget, vs...))
-}
-
-// PmYearTargetGT applies the GT predicate on the "pm_year_target" field.
-func PmYearTargetGT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldPmYearTarget, v))
-}
-
-// PmYearTargetGTE applies the GTE predicate on the "pm_year_target" field.
-func PmYearTargetGTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldPmYearTarget, v))
-}
-
-// PmYearTargetLT applies the LT predicate on the "pm_year_target" field.
-func PmYearTargetLT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldPmYearTarget, v))
-}
-
-// PmYearTargetLTE applies the LTE predicate on the "pm_year_target" field.
-func PmYearTargetLTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldPmYearTarget, v))
-}
-
-// PmYearTargetIsNil applies the IsNil predicate on the "pm_year_target" field.
-func PmYearTargetIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldPmYearTarget))
-}
-
-// PmYearTargetNotNil applies the NotNil predicate on the "pm_year_target" field.
-func PmYearTargetNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldPmYearTarget))
-}
-
-// PmMonthTargetEQ applies the EQ predicate on the "pm_month_target" field.
-func PmMonthTargetEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldPmMonthTarget, v))
-}
-
-// PmMonthTargetNEQ applies the NEQ predicate on the "pm_month_target" field.
-func PmMonthTargetNEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldPmMonthTarget, v))
-}
-
-// PmMonthTargetIn applies the In predicate on the "pm_month_target" field.
-func PmMonthTargetIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldPmMonthTarget, vs...))
-}
-
-// PmMonthTargetNotIn applies the NotIn predicate on the "pm_month_target" field.
-func PmMonthTargetNotIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldPmMonthTarget, vs...))
-}
-
-// PmMonthTargetGT applies the GT predicate on the "pm_month_target" field.
-func PmMonthTargetGT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldPmMonthTarget, v))
-}
-
-// PmMonthTargetGTE applies the GTE predicate on the "pm_month_target" field.
-func PmMonthTargetGTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldPmMonthTarget, v))
-}
-
-// PmMonthTargetLT applies the LT predicate on the "pm_month_target" field.
-func PmMonthTargetLT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldPmMonthTarget, v))
-}
-
-// PmMonthTargetLTE applies the LTE predicate on the "pm_month_target" field.
-func PmMonthTargetLTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldPmMonthTarget, v))
-}
-
-// PmMonthTargetIsNil applies the IsNil predicate on the "pm_month_target" field.
-func PmMonthTargetIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldPmMonthTarget))
-}
-
-// PmMonthTargetNotNil applies the NotNil predicate on the "pm_month_target" field.
-func PmMonthTargetNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldPmMonthTarget))
-}
-
-// PmYearActualEQ applies the EQ predicate on the "pm_year_actual" field.
-func PmYearActualEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldPmYearActual, v))
-}
-
-// PmYearActualNEQ applies the NEQ predicate on the "pm_year_actual" field.
-func PmYearActualNEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldPmYearActual, v))
-}
-
-// PmYearActualIn applies the In predicate on the "pm_year_actual" field.
-func PmYearActualIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldPmYearActual, vs...))
-}
-
-// PmYearActualNotIn applies the NotIn predicate on the "pm_year_actual" field.
-func PmYearActualNotIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldPmYearActual, vs...))
-}
-
-// PmYearActualGT applies the GT predicate on the "pm_year_actual" field.
-func PmYearActualGT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldPmYearActual, v))
-}
-
-// PmYearActualGTE applies the GTE predicate on the "pm_year_actual" field.
-func PmYearActualGTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldPmYearActual, v))
-}
-
-// PmYearActualLT applies the LT predicate on the "pm_year_actual" field.
-func PmYearActualLT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldPmYearActual, v))
-}
-
-// PmYearActualLTE applies the LTE predicate on the "pm_year_actual" field.
-func PmYearActualLTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldPmYearActual, v))
-}
-
-// PmYearActualIsNil applies the IsNil predicate on the "pm_year_actual" field.
-func PmYearActualIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldPmYearActual))
-}
-
-// PmYearActualNotNil applies the NotNil predicate on the "pm_year_actual" field.
-func PmYearActualNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldPmYearActual))
-}
-
-// PmMonthActualEQ applies the EQ predicate on the "pm_month_actual" field.
-func PmMonthActualEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldPmMonthActual, v))
-}
-
-// PmMonthActualNEQ applies the NEQ predicate on the "pm_month_actual" field.
-func PmMonthActualNEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldPmMonthActual, v))
-}
-
-// PmMonthActualIn applies the In predicate on the "pm_month_actual" field.
-func PmMonthActualIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldPmMonthActual, vs...))
-}
-
-// PmMonthActualNotIn applies the NotIn predicate on the "pm_month_actual" field.
-func PmMonthActualNotIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldPmMonthActual, vs...))
-}
-
-// PmMonthActualGT applies the GT predicate on the "pm_month_actual" field.
-func PmMonthActualGT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldPmMonthActual, v))
-}
-
-// PmMonthActualGTE applies the GTE predicate on the "pm_month_actual" field.
-func PmMonthActualGTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldPmMonthActual, v))
-}
-
-// PmMonthActualLT applies the LT predicate on the "pm_month_actual" field.
-func PmMonthActualLT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldPmMonthActual, v))
-}
-
-// PmMonthActualLTE applies the LTE predicate on the "pm_month_actual" field.
-func PmMonthActualLTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldPmMonthActual, v))
-}
-
-// PmMonthActualIsNil applies the IsNil predicate on the "pm_month_actual" field.
-func PmMonthActualIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldPmMonthActual))
-}
-
-// PmMonthActualNotNil applies the NotNil predicate on the "pm_month_actual" field.
-func PmMonthActualNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldPmMonthActual))
-}
-
-// PmTotalEQ applies the EQ predicate on the "pm_total" field.
-func PmTotalEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldPmTotal, v))
-}
-
-// PmTotalNEQ applies the NEQ predicate on the "pm_total" field.
-func PmTotalNEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldPmTotal, v))
-}
-
-// PmTotalIn applies the In predicate on the "pm_total" field.
-func PmTotalIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldPmTotal, vs...))
-}
-
-// PmTotalNotIn applies the NotIn predicate on the "pm_total" field.
-func PmTotalNotIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldPmTotal, vs...))
-}
-
-// PmTotalGT applies the GT predicate on the "pm_total" field.
-func PmTotalGT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldPmTotal, v))
-}
-
-// PmTotalGTE applies the GTE predicate on the "pm_total" field.
-func PmTotalGTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldPmTotal, v))
-}
-
-// PmTotalLT applies the LT predicate on the "pm_total" field.
-func PmTotalLT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldPmTotal, v))
-}
-
-// PmTotalLTE applies the LTE predicate on the "pm_total" field.
-func PmTotalLTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldPmTotal, v))
-}
-
-// PmTotalIsNil applies the IsNil predicate on the "pm_total" field.
-func PmTotalIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldPmTotal))
-}
-
-// PmTotalNotNil applies the NotNil predicate on the "pm_total" field.
-func PmTotalNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldPmTotal))
-}
-
-// PmYesterdayEQ applies the EQ predicate on the "pm_yesterday" field.
-func PmYesterdayEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldPmYesterday, v))
-}
-
-// PmYesterdayNEQ applies the NEQ predicate on the "pm_yesterday" field.
-func PmYesterdayNEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldPmYesterday, v))
-}
-
-// PmYesterdayIn applies the In predicate on the "pm_yesterday" field.
-func PmYesterdayIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldPmYesterday, vs...))
-}
-
-// PmYesterdayNotIn applies the NotIn predicate on the "pm_yesterday" field.
-func PmYesterdayNotIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldPmYesterday, vs...))
-}
-
-// PmYesterdayGT applies the GT predicate on the "pm_yesterday" field.
-func PmYesterdayGT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldPmYesterday, v))
-}
-
-// PmYesterdayGTE applies the GTE predicate on the "pm_yesterday" field.
-func PmYesterdayGTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldPmYesterday, v))
-}
-
-// PmYesterdayLT applies the LT predicate on the "pm_yesterday" field.
-func PmYesterdayLT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldPmYesterday, v))
-}
-
-// PmYesterdayLTE applies the LTE predicate on the "pm_yesterday" field.
-func PmYesterdayLTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldPmYesterday, v))
-}
-
-// PmYesterdayIsNil applies the IsNil predicate on the "pm_yesterday" field.
-func PmYesterdayIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldPmYesterday))
-}
-
-// PmYesterdayNotNil applies the NotNil predicate on the "pm_yesterday" field.
-func PmYesterdayNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldPmYesterday))
+// RepairFeeNotNil applies the NotNil predicate on the "repair_fee" field.
+func RepairFeeNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldRepairFee))
 }
 
 // UnitInventoryTotalEQ applies the EQ predicate on the "unit_inventory_total" field.
@@ -3671,406 +1056,6 @@ func UnitComponentInstallationNotNil() predicate.Project {
 	return predicate.Project(sql.FieldNotNull(FieldUnitComponentInstallation))
 }
 
-// MaterialLossEQ applies the EQ predicate on the "material_loss" field.
-func MaterialLossEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldMaterialLoss, v))
-}
-
-// MaterialLossNEQ applies the NEQ predicate on the "material_loss" field.
-func MaterialLossNEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldMaterialLoss, v))
-}
-
-// MaterialLossIn applies the In predicate on the "material_loss" field.
-func MaterialLossIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldMaterialLoss, vs...))
-}
-
-// MaterialLossNotIn applies the NotIn predicate on the "material_loss" field.
-func MaterialLossNotIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldMaterialLoss, vs...))
-}
-
-// MaterialLossGT applies the GT predicate on the "material_loss" field.
-func MaterialLossGT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldMaterialLoss, v))
-}
-
-// MaterialLossGTE applies the GTE predicate on the "material_loss" field.
-func MaterialLossGTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldMaterialLoss, v))
-}
-
-// MaterialLossLT applies the LT predicate on the "material_loss" field.
-func MaterialLossLT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldMaterialLoss, v))
-}
-
-// MaterialLossLTE applies the LTE predicate on the "material_loss" field.
-func MaterialLossLTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldMaterialLoss, v))
-}
-
-// MaterialLossIsNil applies the IsNil predicate on the "material_loss" field.
-func MaterialLossIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldMaterialLoss))
-}
-
-// MaterialLossNotNil applies the NotNil predicate on the "material_loss" field.
-func MaterialLossNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldMaterialLoss))
-}
-
-// DesignRatedWeightEQ applies the EQ predicate on the "design_rated_weight" field.
-func DesignRatedWeightEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldDesignRatedWeight, v))
-}
-
-// DesignRatedWeightNEQ applies the NEQ predicate on the "design_rated_weight" field.
-func DesignRatedWeightNEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldDesignRatedWeight, v))
-}
-
-// DesignRatedWeightIn applies the In predicate on the "design_rated_weight" field.
-func DesignRatedWeightIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldDesignRatedWeight, vs...))
-}
-
-// DesignRatedWeightNotIn applies the NotIn predicate on the "design_rated_weight" field.
-func DesignRatedWeightNotIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldDesignRatedWeight, vs...))
-}
-
-// DesignRatedWeightGT applies the GT predicate on the "design_rated_weight" field.
-func DesignRatedWeightGT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldDesignRatedWeight, v))
-}
-
-// DesignRatedWeightGTE applies the GTE predicate on the "design_rated_weight" field.
-func DesignRatedWeightGTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldDesignRatedWeight, v))
-}
-
-// DesignRatedWeightLT applies the LT predicate on the "design_rated_weight" field.
-func DesignRatedWeightLT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldDesignRatedWeight, v))
-}
-
-// DesignRatedWeightLTE applies the LTE predicate on the "design_rated_weight" field.
-func DesignRatedWeightLTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldDesignRatedWeight, v))
-}
-
-// DesignRatedWeightIsNil applies the IsNil predicate on the "design_rated_weight" field.
-func DesignRatedWeightIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldDesignRatedWeight))
-}
-
-// DesignRatedWeightNotNil applies the NotNil predicate on the "design_rated_weight" field.
-func DesignRatedWeightNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldDesignRatedWeight))
-}
-
-// ProcessingWeightEQ applies the EQ predicate on the "processing_weight" field.
-func ProcessingWeightEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldProcessingWeight, v))
-}
-
-// ProcessingWeightNEQ applies the NEQ predicate on the "processing_weight" field.
-func ProcessingWeightNEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldProcessingWeight, v))
-}
-
-// ProcessingWeightIn applies the In predicate on the "processing_weight" field.
-func ProcessingWeightIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldProcessingWeight, vs...))
-}
-
-// ProcessingWeightNotIn applies the NotIn predicate on the "processing_weight" field.
-func ProcessingWeightNotIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldProcessingWeight, vs...))
-}
-
-// ProcessingWeightGT applies the GT predicate on the "processing_weight" field.
-func ProcessingWeightGT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldProcessingWeight, v))
-}
-
-// ProcessingWeightGTE applies the GTE predicate on the "processing_weight" field.
-func ProcessingWeightGTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldProcessingWeight, v))
-}
-
-// ProcessingWeightLT applies the LT predicate on the "processing_weight" field.
-func ProcessingWeightLT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldProcessingWeight, v))
-}
-
-// ProcessingWeightLTE applies the LTE predicate on the "processing_weight" field.
-func ProcessingWeightLTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldProcessingWeight, v))
-}
-
-// ProcessingWeightIsNil applies the IsNil predicate on the "processing_weight" field.
-func ProcessingWeightIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldProcessingWeight))
-}
-
-// ProcessingWeightNotNil applies the NotNil predicate on the "processing_weight" field.
-func ProcessingWeightNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldProcessingWeight))
-}
-
-// ItemStockWeightEQ applies the EQ predicate on the "item_stock_weight" field.
-func ItemStockWeightEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldItemStockWeight, v))
-}
-
-// ItemStockWeightNEQ applies the NEQ predicate on the "item_stock_weight" field.
-func ItemStockWeightNEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldItemStockWeight, v))
-}
-
-// ItemStockWeightIn applies the In predicate on the "item_stock_weight" field.
-func ItemStockWeightIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldItemStockWeight, vs...))
-}
-
-// ItemStockWeightNotIn applies the NotIn predicate on the "item_stock_weight" field.
-func ItemStockWeightNotIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldItemStockWeight, vs...))
-}
-
-// ItemStockWeightGT applies the GT predicate on the "item_stock_weight" field.
-func ItemStockWeightGT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldItemStockWeight, v))
-}
-
-// ItemStockWeightGTE applies the GTE predicate on the "item_stock_weight" field.
-func ItemStockWeightGTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldItemStockWeight, v))
-}
-
-// ItemStockWeightLT applies the LT predicate on the "item_stock_weight" field.
-func ItemStockWeightLT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldItemStockWeight, v))
-}
-
-// ItemStockWeightLTE applies the LTE predicate on the "item_stock_weight" field.
-func ItemStockWeightLTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldItemStockWeight, v))
-}
-
-// ItemStockWeightIsNil applies the IsNil predicate on the "item_stock_weight" field.
-func ItemStockWeightIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldItemStockWeight))
-}
-
-// ItemStockWeightNotNil applies the NotNil predicate on the "item_stock_weight" field.
-func ItemStockWeightNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldItemStockWeight))
-}
-
-// PalletsInStockEQ applies the EQ predicate on the "pallets_in_stock" field.
-func PalletsInStockEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldPalletsInStock, v))
-}
-
-// PalletsInStockNEQ applies the NEQ predicate on the "pallets_in_stock" field.
-func PalletsInStockNEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldPalletsInStock, v))
-}
-
-// PalletsInStockIn applies the In predicate on the "pallets_in_stock" field.
-func PalletsInStockIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldPalletsInStock, vs...))
-}
-
-// PalletsInStockNotIn applies the NotIn predicate on the "pallets_in_stock" field.
-func PalletsInStockNotIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldPalletsInStock, vs...))
-}
-
-// PalletsInStockGT applies the GT predicate on the "pallets_in_stock" field.
-func PalletsInStockGT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldPalletsInStock, v))
-}
-
-// PalletsInStockGTE applies the GTE predicate on the "pallets_in_stock" field.
-func PalletsInStockGTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldPalletsInStock, v))
-}
-
-// PalletsInStockLT applies the LT predicate on the "pallets_in_stock" field.
-func PalletsInStockLT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldPalletsInStock, v))
-}
-
-// PalletsInStockLTE applies the LTE predicate on the "pallets_in_stock" field.
-func PalletsInStockLTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldPalletsInStock, v))
-}
-
-// PalletsInStockIsNil applies the IsNil predicate on the "pallets_in_stock" field.
-func PalletsInStockIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldPalletsInStock))
-}
-
-// PalletsInStockNotNil applies the NotNil predicate on the "pallets_in_stock" field.
-func PalletsInStockNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldPalletsInStock))
-}
-
-// PartsInStockEQ applies the EQ predicate on the "parts_in_stock" field.
-func PartsInStockEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldPartsInStock, v))
-}
-
-// PartsInStockNEQ applies the NEQ predicate on the "parts_in_stock" field.
-func PartsInStockNEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldPartsInStock, v))
-}
-
-// PartsInStockIn applies the In predicate on the "parts_in_stock" field.
-func PartsInStockIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldPartsInStock, vs...))
-}
-
-// PartsInStockNotIn applies the NotIn predicate on the "parts_in_stock" field.
-func PartsInStockNotIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldPartsInStock, vs...))
-}
-
-// PartsInStockGT applies the GT predicate on the "parts_in_stock" field.
-func PartsInStockGT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldPartsInStock, v))
-}
-
-// PartsInStockGTE applies the GTE predicate on the "parts_in_stock" field.
-func PartsInStockGTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldPartsInStock, v))
-}
-
-// PartsInStockLT applies the LT predicate on the "parts_in_stock" field.
-func PartsInStockLT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldPartsInStock, v))
-}
-
-// PartsInStockLTE applies the LTE predicate on the "parts_in_stock" field.
-func PartsInStockLTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldPartsInStock, v))
-}
-
-// PartsInStockIsNil applies the IsNil predicate on the "parts_in_stock" field.
-func PartsInStockIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldPartsInStock))
-}
-
-// PartsInStockNotNil applies the NotNil predicate on the "parts_in_stock" field.
-func PartsInStockNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldPartsInStock))
-}
-
-// QualityScoreEQ applies the EQ predicate on the "quality_score" field.
-func QualityScoreEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldQualityScore, v))
-}
-
-// QualityScoreNEQ applies the NEQ predicate on the "quality_score" field.
-func QualityScoreNEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldQualityScore, v))
-}
-
-// QualityScoreIn applies the In predicate on the "quality_score" field.
-func QualityScoreIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldQualityScore, vs...))
-}
-
-// QualityScoreNotIn applies the NotIn predicate on the "quality_score" field.
-func QualityScoreNotIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldQualityScore, vs...))
-}
-
-// QualityScoreGT applies the GT predicate on the "quality_score" field.
-func QualityScoreGT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldQualityScore, v))
-}
-
-// QualityScoreGTE applies the GTE predicate on the "quality_score" field.
-func QualityScoreGTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldQualityScore, v))
-}
-
-// QualityScoreLT applies the LT predicate on the "quality_score" field.
-func QualityScoreLT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldQualityScore, v))
-}
-
-// QualityScoreLTE applies the LTE predicate on the "quality_score" field.
-func QualityScoreLTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldQualityScore, v))
-}
-
-// QualityScoreIsNil applies the IsNil predicate on the "quality_score" field.
-func QualityScoreIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldQualityScore))
-}
-
-// QualityScoreNotNil applies the NotNil predicate on the "quality_score" field.
-func QualityScoreNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldQualityScore))
-}
-
-// QualityRankingEQ applies the EQ predicate on the "quality_ranking" field.
-func QualityRankingEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldQualityRanking, v))
-}
-
-// QualityRankingNEQ applies the NEQ predicate on the "quality_ranking" field.
-func QualityRankingNEQ(v float64) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldQualityRanking, v))
-}
-
-// QualityRankingIn applies the In predicate on the "quality_ranking" field.
-func QualityRankingIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldQualityRanking, vs...))
-}
-
-// QualityRankingNotIn applies the NotIn predicate on the "quality_ranking" field.
-func QualityRankingNotIn(vs ...float64) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldQualityRanking, vs...))
-}
-
-// QualityRankingGT applies the GT predicate on the "quality_ranking" field.
-func QualityRankingGT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldQualityRanking, v))
-}
-
-// QualityRankingGTE applies the GTE predicate on the "quality_ranking" field.
-func QualityRankingGTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldQualityRanking, v))
-}
-
-// QualityRankingLT applies the LT predicate on the "quality_ranking" field.
-func QualityRankingLT(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldQualityRanking, v))
-}
-
-// QualityRankingLTE applies the LTE predicate on the "quality_ranking" field.
-func QualityRankingLTE(v float64) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldQualityRanking, v))
-}
-
-// QualityRankingIsNil applies the IsNil predicate on the "quality_ranking" field.
-func QualityRankingIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldQualityRanking))
-}
-
-// QualityRankingNotNil applies the NotNil predicate on the "quality_ranking" field.
-func QualityRankingNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldQualityRanking))
-}
-
 // BulkMaterialsTotalOrderQuantityEQ applies the EQ predicate on the "bulk_materials_total_order_quantity" field.
 func BulkMaterialsTotalOrderQuantityEQ(v float64) predicate.Project {
 	return predicate.Project(sql.FieldEQ(FieldBulkMaterialsTotalOrderQuantity, v))
@@ -4219,156 +1204,6 @@ func BulkMaterialsUncompletedQuantityIsNil() predicate.Project {
 // BulkMaterialsUncompletedQuantityNotNil applies the NotNil predicate on the "bulk_materials_uncompleted_quantity" field.
 func BulkMaterialsUncompletedQuantityNotNil() predicate.Project {
 	return predicate.Project(sql.FieldNotNull(FieldBulkMaterialsUncompletedQuantity))
-}
-
-// PlanTotalCountEQ applies the EQ predicate on the "plan_total_count" field.
-func PlanTotalCountEQ(v int) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldPlanTotalCount, v))
-}
-
-// PlanTotalCountNEQ applies the NEQ predicate on the "plan_total_count" field.
-func PlanTotalCountNEQ(v int) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldPlanTotalCount, v))
-}
-
-// PlanTotalCountIn applies the In predicate on the "plan_total_count" field.
-func PlanTotalCountIn(vs ...int) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldPlanTotalCount, vs...))
-}
-
-// PlanTotalCountNotIn applies the NotIn predicate on the "plan_total_count" field.
-func PlanTotalCountNotIn(vs ...int) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldPlanTotalCount, vs...))
-}
-
-// PlanTotalCountGT applies the GT predicate on the "plan_total_count" field.
-func PlanTotalCountGT(v int) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldPlanTotalCount, v))
-}
-
-// PlanTotalCountGTE applies the GTE predicate on the "plan_total_count" field.
-func PlanTotalCountGTE(v int) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldPlanTotalCount, v))
-}
-
-// PlanTotalCountLT applies the LT predicate on the "plan_total_count" field.
-func PlanTotalCountLT(v int) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldPlanTotalCount, v))
-}
-
-// PlanTotalCountLTE applies the LTE predicate on the "plan_total_count" field.
-func PlanTotalCountLTE(v int) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldPlanTotalCount, v))
-}
-
-// PlanTotalCountIsNil applies the IsNil predicate on the "plan_total_count" field.
-func PlanTotalCountIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldPlanTotalCount))
-}
-
-// PlanTotalCountNotNil applies the NotNil predicate on the "plan_total_count" field.
-func PlanTotalCountNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldPlanTotalCount))
-}
-
-// PlanOverdueCountEQ applies the EQ predicate on the "plan_overdue_count" field.
-func PlanOverdueCountEQ(v int) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldPlanOverdueCount, v))
-}
-
-// PlanOverdueCountNEQ applies the NEQ predicate on the "plan_overdue_count" field.
-func PlanOverdueCountNEQ(v int) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldPlanOverdueCount, v))
-}
-
-// PlanOverdueCountIn applies the In predicate on the "plan_overdue_count" field.
-func PlanOverdueCountIn(vs ...int) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldPlanOverdueCount, vs...))
-}
-
-// PlanOverdueCountNotIn applies the NotIn predicate on the "plan_overdue_count" field.
-func PlanOverdueCountNotIn(vs ...int) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldPlanOverdueCount, vs...))
-}
-
-// PlanOverdueCountGT applies the GT predicate on the "plan_overdue_count" field.
-func PlanOverdueCountGT(v int) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldPlanOverdueCount, v))
-}
-
-// PlanOverdueCountGTE applies the GTE predicate on the "plan_overdue_count" field.
-func PlanOverdueCountGTE(v int) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldPlanOverdueCount, v))
-}
-
-// PlanOverdueCountLT applies the LT predicate on the "plan_overdue_count" field.
-func PlanOverdueCountLT(v int) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldPlanOverdueCount, v))
-}
-
-// PlanOverdueCountLTE applies the LTE predicate on the "plan_overdue_count" field.
-func PlanOverdueCountLTE(v int) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldPlanOverdueCount, v))
-}
-
-// PlanOverdueCountIsNil applies the IsNil predicate on the "plan_overdue_count" field.
-func PlanOverdueCountIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldPlanOverdueCount))
-}
-
-// PlanOverdueCountNotNil applies the NotNil predicate on the "plan_overdue_count" field.
-func PlanOverdueCountNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldPlanOverdueCount))
-}
-
-// PlanOverdueMonthCountEQ applies the EQ predicate on the "plan_overdue_month_count" field.
-func PlanOverdueMonthCountEQ(v int) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldPlanOverdueMonthCount, v))
-}
-
-// PlanOverdueMonthCountNEQ applies the NEQ predicate on the "plan_overdue_month_count" field.
-func PlanOverdueMonthCountNEQ(v int) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldPlanOverdueMonthCount, v))
-}
-
-// PlanOverdueMonthCountIn applies the In predicate on the "plan_overdue_month_count" field.
-func PlanOverdueMonthCountIn(vs ...int) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldPlanOverdueMonthCount, vs...))
-}
-
-// PlanOverdueMonthCountNotIn applies the NotIn predicate on the "plan_overdue_month_count" field.
-func PlanOverdueMonthCountNotIn(vs ...int) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldPlanOverdueMonthCount, vs...))
-}
-
-// PlanOverdueMonthCountGT applies the GT predicate on the "plan_overdue_month_count" field.
-func PlanOverdueMonthCountGT(v int) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldPlanOverdueMonthCount, v))
-}
-
-// PlanOverdueMonthCountGTE applies the GTE predicate on the "plan_overdue_month_count" field.
-func PlanOverdueMonthCountGTE(v int) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldPlanOverdueMonthCount, v))
-}
-
-// PlanOverdueMonthCountLT applies the LT predicate on the "plan_overdue_month_count" field.
-func PlanOverdueMonthCountLT(v int) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldPlanOverdueMonthCount, v))
-}
-
-// PlanOverdueMonthCountLTE applies the LTE predicate on the "plan_overdue_month_count" field.
-func PlanOverdueMonthCountLTE(v int) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldPlanOverdueMonthCount, v))
-}
-
-// PlanOverdueMonthCountIsNil applies the IsNil predicate on the "plan_overdue_month_count" field.
-func PlanOverdueMonthCountIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldPlanOverdueMonthCount))
-}
-
-// PlanOverdueMonthCountNotNil applies the NotNil predicate on the "plan_overdue_month_count" field.
-func PlanOverdueMonthCountNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldPlanOverdueMonthCount))
 }
 
 // DiagramBdFinishCountEQ applies the EQ predicate on the "diagram_bd_finish_count" field.
@@ -4769,52 +1604,6 @@ func DiagramCApprovalRatioDenominatorIsNil() predicate.Project {
 // DiagramCApprovalRatioDenominatorNotNil applies the NotNil predicate on the "diagram_c_approval_ratio_denominator" field.
 func DiagramCApprovalRatioDenominatorNotNil() predicate.Project {
 	return predicate.Project(sql.FieldNotNull(FieldDiagramCApprovalRatioDenominator))
-}
-
-// HasVos applies the HasEdge predicate on the "vos" edge.
-func HasVos() predicate.Project {
-	return predicate.Project(func(s *sql.Selector) {
-		step := sqlgraph.NewStep(
-			sqlgraph.From(Table, FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, VosTable, VosColumn),
-		)
-		sqlgraph.HasNeighbors(s, step)
-	})
-}
-
-// HasVosWith applies the HasEdge predicate on the "vos" edge with a given conditions (other predicates).
-func HasVosWith(preds ...predicate.ProjectVO) predicate.Project {
-	return predicate.Project(func(s *sql.Selector) {
-		step := newVosStep()
-		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
-			for _, p := range preds {
-				p(s)
-			}
-		})
-	})
-}
-
-// HasProjectStaffs applies the HasEdge predicate on the "project_staffs" edge.
-func HasProjectStaffs() predicate.Project {
-	return predicate.Project(func(s *sql.Selector) {
-		step := sqlgraph.NewStep(
-			sqlgraph.From(Table, FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, ProjectStaffsTable, ProjectStaffsColumn),
-		)
-		sqlgraph.HasNeighbors(s, step)
-	})
-}
-
-// HasProjectStaffsWith applies the HasEdge predicate on the "project_staffs" edge with a given conditions (other predicates).
-func HasProjectStaffsWith(preds ...predicate.ProjectStaff) predicate.Project {
-	return predicate.Project(func(s *sql.Selector) {
-		step := newProjectStaffsStep()
-		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
-			for _, p := range preds {
-				p(s)
-			}
-		})
-	})
 }
 
 // HasUsers applies the HasEdge predicate on the "users" edge.

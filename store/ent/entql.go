@@ -15,8 +15,6 @@ import (
 	"cscd-bds/store/ent/potentialtender"
 	"cscd-bds/store/ent/predicate"
 	"cscd-bds/store/ent/project"
-	"cscd-bds/store/ent/projectstaff"
-	"cscd-bds/store/ent/projectvo"
 	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/tendercompetitor"
@@ -32,7 +30,7 @@ import (
 
 // schemaGraph holds a representation of ent/schema at runtime.
 var schemaGraph = func() *sqlgraph.Schema {
-	graph := &sqlgraph.Schema{Nodes: make([]*sqlgraph.Node, 19)}
+	graph := &sqlgraph.Schema{Nodes: make([]*sqlgraph.Node, 17)}
 	graph.Nodes[0] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   area.Table,
@@ -274,133 +272,38 @@ var schemaGraph = func() *sqlgraph.Schema {
 		},
 		Type: "Project",
 		Fields: map[string]*sqlgraph.FieldSpec{
-			project.FieldCreatedAt:                               {Type: field.TypeTime, Column: project.FieldCreatedAt},
-			project.FieldUpdatedAt:                               {Type: field.TypeTime, Column: project.FieldUpdatedAt},
-			project.FieldCode:                                    {Type: field.TypeString, Column: project.FieldCode},
-			project.FieldManager:                                 {Type: field.TypeString, Column: project.FieldManager},
-			project.FieldName:                                    {Type: field.TypeString, Column: project.FieldName},
-			project.FieldOwner:                                   {Type: field.TypeString, Column: project.FieldOwner},
-			project.FieldJzs:                                     {Type: field.TypeString, Column: project.FieldJzs},
-			project.FieldMcn:                                     {Type: field.TypeString, Column: project.FieldMcn},
-			project.FieldConsultant:                              {Type: field.TypeString, Column: project.FieldConsultant},
-			project.FieldAreas:                                   {Type: field.TypeString, Column: project.FieldAreas},
-			project.FieldStartDate:                               {Type: field.TypeTime, Column: project.FieldStartDate},
-			project.FieldFsDate:                                  {Type: field.TypeTime, Column: project.FieldFsDate},
-			project.FieldOpDate:                                  {Type: field.TypeTime, Column: project.FieldOpDate},
-			project.FieldEndDate:                                 {Type: field.TypeTime, Column: project.FieldEndDate},
-			project.FieldMntyr:                                   {Type: field.TypeString, Column: project.FieldMntyr},
-			project.FieldConType:                                 {Type: field.TypeString, Column: project.FieldConType},
-			project.FieldIsFinished:                              {Type: field.TypeBool, Column: project.FieldIsFinished},
-			project.FieldCje:                                     {Type: field.TypeFloat64, Column: project.FieldCje},
-			project.FieldYye:                                     {Type: field.TypeFloat64, Column: project.FieldYye},
-			project.FieldXjl:                                     {Type: field.TypeFloat64, Column: project.FieldXjl},
-			project.FieldXmglfYs:                                 {Type: field.TypeFloat64, Column: project.FieldXmglfYs},
-			project.FieldXmglfLj:                                 {Type: field.TypeFloat64, Column: project.FieldXmglfLj},
-			project.FieldXmsjf:                                   {Type: field.TypeFloat64, Column: project.FieldXmsjf},
-			project.FieldXmfzr:                                   {Type: field.TypeString, Column: project.FieldXmfzr},
-			project.FieldOwnerApplyAmount:                        {Type: field.TypeFloat64, Column: project.FieldOwnerApplyAmount},
-			project.FieldOwnerApplyCount:                         {Type: field.TypeInt, Column: project.FieldOwnerApplyCount},
-			project.FieldOwnerApproveAmount:                      {Type: field.TypeFloat64, Column: project.FieldOwnerApproveAmount},
-			project.FieldOwnerApproveCount:                       {Type: field.TypeInt, Column: project.FieldOwnerApproveCount},
-			project.FieldContractorApplyAmount:                   {Type: field.TypeFloat64, Column: project.FieldContractorApplyAmount},
-			project.FieldContractorApplyCount:                    {Type: field.TypeInt, Column: project.FieldContractorApplyCount},
-			project.FieldContractorApproveAmount:                 {Type: field.TypeFloat64, Column: project.FieldContractorApproveAmount},
-			project.FieldContractorApproveCount:                  {Type: field.TypeInt, Column: project.FieldContractorApproveCount},
-			project.FieldInstallProgress:                         {Type: field.TypeFloat64, Column: project.FieldInstallProgress},
-			project.FieldEffectiveContractAmount:                 {Type: field.TypeFloat64, Column: project.FieldEffectiveContractAmount},
-			project.FieldVaApplyAmount:                           {Type: field.TypeFloat64, Column: project.FieldVaApplyAmount},
-			project.FieldVaApproveAmount:                         {Type: field.TypeFloat64, Column: project.FieldVaApproveAmount},
-			project.FieldAccumulatedStatutoryDeductions:          {Type: field.TypeFloat64, Column: project.FieldAccumulatedStatutoryDeductions},
-			project.FieldAccumulatedNonStatutoryDeductions:       {Type: field.TypeFloat64, Column: project.FieldAccumulatedNonStatutoryDeductions},
-			project.FieldAccumulatedStatutoryDeductionsPeriod:    {Type: field.TypeFloat64, Column: project.FieldAccumulatedStatutoryDeductionsPeriod},
-			project.FieldAccumulatedNonStatutoryDeductionsPeriod: {Type: field.TypeFloat64, Column: project.FieldAccumulatedNonStatutoryDeductionsPeriod},
-			project.FieldTotalContractAmount:                     {Type: field.TypeFloat64, Column: project.FieldTotalContractAmount},
-			project.FieldAluminumPlateBudgetPercentage:           {Type: field.TypeFloat64, Column: project.FieldAluminumPlateBudgetPercentage},
-			project.FieldAluminumBudgetPercentage:                {Type: field.TypeFloat64, Column: project.FieldAluminumBudgetPercentage},
-			project.FieldGlassBudgetPercentage:                   {Type: field.TypeFloat64, Column: project.FieldGlassBudgetPercentage},
-			project.FieldIronBudgetPercentage:                    {Type: field.TypeFloat64, Column: project.FieldIronBudgetPercentage},
-			project.FieldMilestonePlanYear:                       {Type: field.TypeInt, Column: project.FieldMilestonePlanYear},
-			project.FieldMilestonePlanMonth:                      {Type: field.TypeInt, Column: project.FieldMilestonePlanMonth},
-			project.FieldMilestoneDoneYear:                       {Type: field.TypeInt, Column: project.FieldMilestoneDoneYear},
-			project.FieldMilestoneDoneMonth:                      {Type: field.TypeInt, Column: project.FieldMilestoneDoneMonth},
-			project.FieldPmArea:                                  {Type: field.TypeFloat64, Column: project.FieldPmArea},
-			project.FieldPmYearTarget:                            {Type: field.TypeFloat64, Column: project.FieldPmYearTarget},
-			project.FieldPmMonthTarget:                           {Type: field.TypeFloat64, Column: project.FieldPmMonthTarget},
-			project.FieldPmYearActual:                            {Type: field.TypeFloat64, Column: project.FieldPmYearActual},
-			project.FieldPmMonthActual:                           {Type: field.TypeFloat64, Column: project.FieldPmMonthActual},
-			project.FieldPmTotal:                                 {Type: field.TypeFloat64, Column: project.FieldPmTotal},
-			project.FieldPmYesterday:                             {Type: field.TypeFloat64, Column: project.FieldPmYesterday},
-			project.FieldUnitInventoryTotal:                      {Type: field.TypeFloat64, Column: project.FieldUnitInventoryTotal},
-			project.FieldUnitComponentTotal:                      {Type: field.TypeFloat64, Column: project.FieldUnitComponentTotal},
-			project.FieldUnitComponentProduction:                 {Type: field.TypeFloat64, Column: project.FieldUnitComponentProduction},
-			project.FieldUnitComponentInstallation:               {Type: field.TypeFloat64, Column: project.FieldUnitComponentInstallation},
-			project.FieldMaterialLoss:                            {Type: field.TypeFloat64, Column: project.FieldMaterialLoss},
-			project.FieldDesignRatedWeight:                       {Type: field.TypeFloat64, Column: project.FieldDesignRatedWeight},
-			project.FieldProcessingWeight:                        {Type: field.TypeFloat64, Column: project.FieldProcessingWeight},
-			project.FieldItemStockWeight:                         {Type: field.TypeFloat64, Column: project.FieldItemStockWeight},
-			project.FieldPalletsInStock:                          {Type: field.TypeFloat64, Column: project.FieldPalletsInStock},
-			project.FieldPartsInStock:                            {Type: field.TypeFloat64, Column: project.FieldPartsInStock},
-			project.FieldQualityScore:                            {Type: field.TypeFloat64, Column: project.FieldQualityScore},
-			project.FieldQualityRanking:                          {Type: field.TypeFloat64, Column: project.FieldQualityRanking},
-			project.FieldBulkMaterialsTotalOrderQuantity:         {Type: field.TypeFloat64, Column: project.FieldBulkMaterialsTotalOrderQuantity},
-			project.FieldBulkMaterialsCompletedQuantity:          {Type: field.TypeFloat64, Column: project.FieldBulkMaterialsCompletedQuantity},
-			project.FieldBulkMaterialsUncompletedQuantity:        {Type: field.TypeFloat64, Column: project.FieldBulkMaterialsUncompletedQuantity},
-			project.FieldPlanTotalCount:                          {Type: field.TypeInt, Column: project.FieldPlanTotalCount},
-			project.FieldPlanOverdueCount:                        {Type: field.TypeInt, Column: project.FieldPlanOverdueCount},
-			project.FieldPlanOverdueMonthCount:                   {Type: field.TypeInt, Column: project.FieldPlanOverdueMonthCount},
-			project.FieldDiagramBdFinishCount:                    {Type: field.TypeInt, Column: project.FieldDiagramBdFinishCount},
-			project.FieldDiagramBdTotalCount:                     {Type: field.TypeInt, Column: project.FieldDiagramBdTotalCount},
-			project.FieldDiagramConstructionFinishCount:          {Type: field.TypeInt, Column: project.FieldDiagramConstructionFinishCount},
-			project.FieldDiagramConstructionTotalCount:           {Type: field.TypeInt, Column: project.FieldDiagramConstructionTotalCount},
-			project.FieldDiagramProcessingFinishCount:            {Type: field.TypeInt, Column: project.FieldDiagramProcessingFinishCount},
-			project.FieldDiagramProcessingTotalCount:             {Type: field.TypeInt, Column: project.FieldDiagramProcessingTotalCount},
-			project.FieldDiagramCApprovalRatioNumerator:          {Type: field.TypeInt, Column: project.FieldDiagramCApprovalRatioNumerator},
-			project.FieldDiagramCApprovalRatioDenominator:        {Type: field.TypeInt, Column: project.FieldDiagramCApprovalRatioDenominator},
+			project.FieldCreatedAt:                        {Type: field.TypeTime, Column: project.FieldCreatedAt},
+			project.FieldUpdatedAt:                        {Type: field.TypeTime, Column: project.FieldUpdatedAt},
+			project.FieldCode:                             {Type: field.TypeString, Column: project.FieldCode},
+			project.FieldIsFinished:                       {Type: field.TypeBool, Column: project.FieldIsFinished},
+			project.FieldRevenueKpi:                       {Type: field.TypeFloat64, Column: project.FieldRevenueKpi},
+			project.FieldRevenueCurrentYearCompleted:      {Type: field.TypeFloat64, Column: project.FieldRevenueCurrentYearCompleted},
+			project.FieldRevenueAccumulatedCompleted:      {Type: field.TypeFloat64, Column: project.FieldRevenueAccumulatedCompleted},
+			project.FieldPayDate:                          {Type: field.TypeTime, Column: project.FieldPayDate},
+			project.FieldOwnerVoCount:                     {Type: field.TypeInt, Column: project.FieldOwnerVoCount},
+			project.FieldContractorVoCount:                {Type: field.TypeInt, Column: project.FieldContractorVoCount},
+			project.FieldAccumulateDeduction:              {Type: field.TypeFloat64, Column: project.FieldAccumulateDeduction},
+			project.FieldSubcontractorVaCount:             {Type: field.TypeInt, Column: project.FieldSubcontractorVaCount},
+			project.FieldContractSupplementaryCount:       {Type: field.TypeInt, Column: project.FieldContractSupplementaryCount},
+			project.FieldRepairFee:                        {Type: field.TypeFloat64, Column: project.FieldRepairFee},
+			project.FieldUnitInventoryTotal:               {Type: field.TypeFloat64, Column: project.FieldUnitInventoryTotal},
+			project.FieldUnitComponentTotal:               {Type: field.TypeFloat64, Column: project.FieldUnitComponentTotal},
+			project.FieldUnitComponentProduction:          {Type: field.TypeFloat64, Column: project.FieldUnitComponentProduction},
+			project.FieldUnitComponentInstallation:        {Type: field.TypeFloat64, Column: project.FieldUnitComponentInstallation},
+			project.FieldBulkMaterialsTotalOrderQuantity:  {Type: field.TypeFloat64, Column: project.FieldBulkMaterialsTotalOrderQuantity},
+			project.FieldBulkMaterialsCompletedQuantity:   {Type: field.TypeFloat64, Column: project.FieldBulkMaterialsCompletedQuantity},
+			project.FieldBulkMaterialsUncompletedQuantity: {Type: field.TypeFloat64, Column: project.FieldBulkMaterialsUncompletedQuantity},
+			project.FieldDiagramBdFinishCount:             {Type: field.TypeInt, Column: project.FieldDiagramBdFinishCount},
+			project.FieldDiagramBdTotalCount:              {Type: field.TypeInt, Column: project.FieldDiagramBdTotalCount},
+			project.FieldDiagramConstructionFinishCount:   {Type: field.TypeInt, Column: project.FieldDiagramConstructionFinishCount},
+			project.FieldDiagramConstructionTotalCount:    {Type: field.TypeInt, Column: project.FieldDiagramConstructionTotalCount},
+			project.FieldDiagramProcessingFinishCount:     {Type: field.TypeInt, Column: project.FieldDiagramProcessingFinishCount},
+			project.FieldDiagramProcessingTotalCount:      {Type: field.TypeInt, Column: project.FieldDiagramProcessingTotalCount},
+			project.FieldDiagramCApprovalRatioNumerator:   {Type: field.TypeInt, Column: project.FieldDiagramCApprovalRatioNumerator},
+			project.FieldDiagramCApprovalRatioDenominator: {Type: field.TypeInt, Column: project.FieldDiagramCApprovalRatioDenominator},
 		},
 	}
 	graph.Nodes[11] = &sqlgraph.Node{
-		NodeSpec: sqlgraph.NodeSpec{
-			Table:   projectstaff.Table,
-			Columns: projectstaff.Columns,
-			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeString,
-				Column: projectstaff.FieldID,
-			},
-		},
-		Type: "ProjectStaff",
-		Fields: map[string]*sqlgraph.FieldSpec{
-			projectstaff.FieldCreatedAt:    {Type: field.TypeTime, Column: projectstaff.FieldCreatedAt},
-			projectstaff.FieldUpdatedAt:    {Type: field.TypeTime, Column: projectstaff.FieldUpdatedAt},
-			projectstaff.FieldCym:          {Type: field.TypeString, Column: projectstaff.FieldCym},
-			projectstaff.FieldInstallation: {Type: field.TypeFloat64, Column: projectstaff.FieldInstallation},
-			projectstaff.FieldManagement:   {Type: field.TypeFloat64, Column: projectstaff.FieldManagement},
-			projectstaff.FieldDesign:       {Type: field.TypeFloat64, Column: projectstaff.FieldDesign},
-			projectstaff.FieldProjectID:    {Type: field.TypeString, Column: projectstaff.FieldProjectID},
-		},
-	}
-	graph.Nodes[12] = &sqlgraph.Node{
-		NodeSpec: sqlgraph.NodeSpec{
-			Table:   projectvo.Table,
-			Columns: projectvo.Columns,
-			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeString,
-				Column: projectvo.FieldID,
-			},
-		},
-		Type: "ProjectVO",
-		Fields: map[string]*sqlgraph.FieldSpec{
-			projectvo.FieldCreatedAt:     {Type: field.TypeTime, Column: projectvo.FieldCreatedAt},
-			projectvo.FieldUpdatedAt:     {Type: field.TypeTime, Column: projectvo.FieldUpdatedAt},
-			projectvo.FieldProjectID:     {Type: field.TypeString, Column: projectvo.FieldProjectID},
-			projectvo.FieldChangeType:    {Type: field.TypeInt, Column: projectvo.FieldChangeType},
-			projectvo.FieldIsApproved:    {Type: field.TypeBool, Column: projectvo.FieldIsApproved},
-			projectvo.FieldAzjd:          {Type: field.TypeFloat64, Column: projectvo.FieldAzjd},
-			projectvo.FieldYxhyze:        {Type: field.TypeFloat64, Column: projectvo.FieldYxhyze},
-			projectvo.FieldApplyAmount:   {Type: field.TypeFloat64, Column: projectvo.FieldApplyAmount},
-			projectvo.FieldApproveAmount: {Type: field.TypeFloat64, Column: projectvo.FieldApproveAmount},
-		},
-	}
-	graph.Nodes[13] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   province.Table,
 			Columns: province.Columns,
@@ -420,7 +323,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			province.FieldAreaID:    {Type: field.TypeString, Column: province.FieldAreaID},
 		},
 	}
-	graph.Nodes[14] = &sqlgraph.Node{
+	graph.Nodes[12] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   tender.Table,
 			Columns: tender.Columns,
@@ -503,7 +406,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			tender.FieldPendingProfileID:                     {Type: field.TypeString, Column: tender.FieldPendingProfileID},
 		},
 	}
-	graph.Nodes[15] = &sqlgraph.Node{
+	graph.Nodes[13] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   tendercompetitor.Table,
 			Columns: tendercompetitor.Columns,
@@ -522,7 +425,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			tendercompetitor.FieldResult:       {Type: field.TypeBool, Column: tendercompetitor.FieldResult},
 		},
 	}
-	graph.Nodes[16] = &sqlgraph.Node{
+	graph.Nodes[14] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   tenderprofile.Table,
 			Columns: tenderprofile.Columns,
@@ -602,7 +505,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			tenderprofile.FieldApproverID:                           {Type: field.TypeString, Column: tenderprofile.FieldApproverID},
 		},
 	}
-	graph.Nodes[17] = &sqlgraph.Node{
+	graph.Nodes[15] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   user.Table,
 			Columns: user.Columns,
@@ -629,7 +532,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			user.FieldLeaderID:      {Type: field.TypeString, Column: user.FieldLeaderID},
 		},
 	}
-	graph.Nodes[18] = &sqlgraph.Node{
+	graph.Nodes[16] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   visitrecord.Table,
 			Columns: visitrecord.Columns,
@@ -988,30 +891,6 @@ var schemaGraph = func() *sqlgraph.Schema {
 		"District",
 	)
 	graph.MustAddE(
-		"vos",
-		&sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   project.VosTable,
-			Columns: []string{project.VosColumn},
-			Bidi:    false,
-		},
-		"Project",
-		"ProjectVO",
-	)
-	graph.MustAddE(
-		"project_staffs",
-		&sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   project.ProjectStaffsTable,
-			Columns: []string{project.ProjectStaffsColumn},
-			Bidi:    false,
-		},
-		"Project",
-		"ProjectStaff",
-	)
-	graph.MustAddE(
 		"users",
 		&sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2M,
@@ -1022,30 +901,6 @@ var schemaGraph = func() *sqlgraph.Schema {
 		},
 		"Project",
 		"User",
-	)
-	graph.MustAddE(
-		"project",
-		&sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   projectstaff.ProjectTable,
-			Columns: []string{projectstaff.ProjectColumn},
-			Bidi:    false,
-		},
-		"ProjectStaff",
-		"Project",
-	)
-	graph.MustAddE(
-		"project",
-		&sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   projectvo.ProjectTable,
-			Columns: []string{projectvo.ProjectColumn},
-			Bidi:    false,
-		},
-		"ProjectVO",
-		"Project",
 	)
 	graph.MustAddE(
 		"districts",
@@ -2871,269 +2726,59 @@ func (f *ProjectFilter) WhereCode(p entql.StringP) {
 	f.Where(p.Field(project.FieldCode))
 }
 
-// WhereManager applies the entql string predicate on the manager field.
-func (f *ProjectFilter) WhereManager(p entql.StringP) {
-	f.Where(p.Field(project.FieldManager))
-}
-
-// WhereName applies the entql string predicate on the name field.
-func (f *ProjectFilter) WhereName(p entql.StringP) {
-	f.Where(p.Field(project.FieldName))
-}
-
-// WhereOwner applies the entql string predicate on the owner field.
-func (f *ProjectFilter) WhereOwner(p entql.StringP) {
-	f.Where(p.Field(project.FieldOwner))
-}
-
-// WhereJzs applies the entql string predicate on the jzs field.
-func (f *ProjectFilter) WhereJzs(p entql.StringP) {
-	f.Where(p.Field(project.FieldJzs))
-}
-
-// WhereMcn applies the entql string predicate on the mcn field.
-func (f *ProjectFilter) WhereMcn(p entql.StringP) {
-	f.Where(p.Field(project.FieldMcn))
-}
-
-// WhereConsultant applies the entql string predicate on the consultant field.
-func (f *ProjectFilter) WhereConsultant(p entql.StringP) {
-	f.Where(p.Field(project.FieldConsultant))
-}
-
-// WhereAreas applies the entql string predicate on the areas field.
-func (f *ProjectFilter) WhereAreas(p entql.StringP) {
-	f.Where(p.Field(project.FieldAreas))
-}
-
-// WhereStartDate applies the entql time.Time predicate on the start_date field.
-func (f *ProjectFilter) WhereStartDate(p entql.TimeP) {
-	f.Where(p.Field(project.FieldStartDate))
-}
-
-// WhereFsDate applies the entql time.Time predicate on the fs_date field.
-func (f *ProjectFilter) WhereFsDate(p entql.TimeP) {
-	f.Where(p.Field(project.FieldFsDate))
-}
-
-// WhereOpDate applies the entql time.Time predicate on the op_date field.
-func (f *ProjectFilter) WhereOpDate(p entql.TimeP) {
-	f.Where(p.Field(project.FieldOpDate))
-}
-
-// WhereEndDate applies the entql time.Time predicate on the end_date field.
-func (f *ProjectFilter) WhereEndDate(p entql.TimeP) {
-	f.Where(p.Field(project.FieldEndDate))
-}
-
-// WhereMntyr applies the entql string predicate on the mntyr field.
-func (f *ProjectFilter) WhereMntyr(p entql.StringP) {
-	f.Where(p.Field(project.FieldMntyr))
-}
-
-// WhereConType applies the entql string predicate on the con_type field.
-func (f *ProjectFilter) WhereConType(p entql.StringP) {
-	f.Where(p.Field(project.FieldConType))
-}
-
 // WhereIsFinished applies the entql bool predicate on the is_finished field.
 func (f *ProjectFilter) WhereIsFinished(p entql.BoolP) {
 	f.Where(p.Field(project.FieldIsFinished))
 }
 
-// WhereCje applies the entql float64 predicate on the cje field.
-func (f *ProjectFilter) WhereCje(p entql.Float64P) {
-	f.Where(p.Field(project.FieldCje))
+// WhereRevenueKpi applies the entql float64 predicate on the revenue_kpi field.
+func (f *ProjectFilter) WhereRevenueKpi(p entql.Float64P) {
+	f.Where(p.Field(project.FieldRevenueKpi))
 }
 
-// WhereYye applies the entql float64 predicate on the yye field.
-func (f *ProjectFilter) WhereYye(p entql.Float64P) {
-	f.Where(p.Field(project.FieldYye))
+// WhereRevenueCurrentYearCompleted applies the entql float64 predicate on the revenue_current_year_completed field.
+func (f *ProjectFilter) WhereRevenueCurrentYearCompleted(p entql.Float64P) {
+	f.Where(p.Field(project.FieldRevenueCurrentYearCompleted))
 }
 
-// WhereXjl applies the entql float64 predicate on the xjl field.
-func (f *ProjectFilter) WhereXjl(p entql.Float64P) {
-	f.Where(p.Field(project.FieldXjl))
+// WhereRevenueAccumulatedCompleted applies the entql float64 predicate on the revenue_accumulated_completed field.
+func (f *ProjectFilter) WhereRevenueAccumulatedCompleted(p entql.Float64P) {
+	f.Where(p.Field(project.FieldRevenueAccumulatedCompleted))
 }
 
-// WhereXmglfYs applies the entql float64 predicate on the xmglf_ys field.
-func (f *ProjectFilter) WhereXmglfYs(p entql.Float64P) {
-	f.Where(p.Field(project.FieldXmglfYs))
+// WherePayDate applies the entql time.Time predicate on the pay_date field.
+func (f *ProjectFilter) WherePayDate(p entql.TimeP) {
+	f.Where(p.Field(project.FieldPayDate))
 }
 
-// WhereXmglfLj applies the entql float64 predicate on the xmglf_lj field.
-func (f *ProjectFilter) WhereXmglfLj(p entql.Float64P) {
-	f.Where(p.Field(project.FieldXmglfLj))
+// WhereOwnerVoCount applies the entql int predicate on the owner_vo_count field.
+func (f *ProjectFilter) WhereOwnerVoCount(p entql.IntP) {
+	f.Where(p.Field(project.FieldOwnerVoCount))
 }
 
-// WhereXmsjf applies the entql float64 predicate on the xmsjf field.
-func (f *ProjectFilter) WhereXmsjf(p entql.Float64P) {
-	f.Where(p.Field(project.FieldXmsjf))
+// WhereContractorVoCount applies the entql int predicate on the contractor_vo_count field.
+func (f *ProjectFilter) WhereContractorVoCount(p entql.IntP) {
+	f.Where(p.Field(project.FieldContractorVoCount))
 }
 
-// WhereXmfzr applies the entql string predicate on the xmfzr field.
-func (f *ProjectFilter) WhereXmfzr(p entql.StringP) {
-	f.Where(p.Field(project.FieldXmfzr))
+// WhereAccumulateDeduction applies the entql float64 predicate on the accumulate_deduction field.
+func (f *ProjectFilter) WhereAccumulateDeduction(p entql.Float64P) {
+	f.Where(p.Field(project.FieldAccumulateDeduction))
 }
 
-// WhereOwnerApplyAmount applies the entql float64 predicate on the owner_apply_amount field.
-func (f *ProjectFilter) WhereOwnerApplyAmount(p entql.Float64P) {
-	f.Where(p.Field(project.FieldOwnerApplyAmount))
+// WhereSubcontractorVaCount applies the entql int predicate on the subcontractor_va_count field.
+func (f *ProjectFilter) WhereSubcontractorVaCount(p entql.IntP) {
+	f.Where(p.Field(project.FieldSubcontractorVaCount))
 }
 
-// WhereOwnerApplyCount applies the entql int predicate on the owner_apply_count field.
-func (f *ProjectFilter) WhereOwnerApplyCount(p entql.IntP) {
-	f.Where(p.Field(project.FieldOwnerApplyCount))
+// WhereContractSupplementaryCount applies the entql int predicate on the contract_supplementary_count field.
+func (f *ProjectFilter) WhereContractSupplementaryCount(p entql.IntP) {
+	f.Where(p.Field(project.FieldContractSupplementaryCount))
 }
 
-// WhereOwnerApproveAmount applies the entql float64 predicate on the owner_approve_amount field.
-func (f *ProjectFilter) WhereOwnerApproveAmount(p entql.Float64P) {
-	f.Where(p.Field(project.FieldOwnerApproveAmount))
-}
-
-// WhereOwnerApproveCount applies the entql int predicate on the owner_approve_count field.
-func (f *ProjectFilter) WhereOwnerApproveCount(p entql.IntP) {
-	f.Where(p.Field(project.FieldOwnerApproveCount))
-}
-
-// WhereContractorApplyAmount applies the entql float64 predicate on the contractor_apply_amount field.
-func (f *ProjectFilter) WhereContractorApplyAmount(p entql.Float64P) {
-	f.Where(p.Field(project.FieldContractorApplyAmount))
-}
-
-// WhereContractorApplyCount applies the entql int predicate on the contractor_apply_count field.
-func (f *ProjectFilter) WhereContractorApplyCount(p entql.IntP) {
-	f.Where(p.Field(project.FieldContractorApplyCount))
-}
-
-// WhereContractorApproveAmount applies the entql float64 predicate on the contractor_approve_amount field.
-func (f *ProjectFilter) WhereContractorApproveAmount(p entql.Float64P) {
-	f.Where(p.Field(project.FieldContractorApproveAmount))
-}
-
-// WhereContractorApproveCount applies the entql int predicate on the contractor_approve_count field.
-func (f *ProjectFilter) WhereContractorApproveCount(p entql.IntP) {
-	f.Where(p.Field(project.FieldContractorApproveCount))
-}
-
-// WhereInstallProgress applies the entql float64 predicate on the install_progress field.
-func (f *ProjectFilter) WhereInstallProgress(p entql.Float64P) {
-	f.Where(p.Field(project.FieldInstallProgress))
-}
-
-// WhereEffectiveContractAmount applies the entql float64 predicate on the effective_contract_amount field.
-func (f *ProjectFilter) WhereEffectiveContractAmount(p entql.Float64P) {
-	f.Where(p.Field(project.FieldEffectiveContractAmount))
-}
-
-// WhereVaApplyAmount applies the entql float64 predicate on the va_apply_amount field.
-func (f *ProjectFilter) WhereVaApplyAmount(p entql.Float64P) {
-	f.Where(p.Field(project.FieldVaApplyAmount))
-}
-
-// WhereVaApproveAmount applies the entql float64 predicate on the va_approve_amount field.
-func (f *ProjectFilter) WhereVaApproveAmount(p entql.Float64P) {
-	f.Where(p.Field(project.FieldVaApproveAmount))
-}
-
-// WhereAccumulatedStatutoryDeductions applies the entql float64 predicate on the accumulated_statutory_deductions field.
-func (f *ProjectFilter) WhereAccumulatedStatutoryDeductions(p entql.Float64P) {
-	f.Where(p.Field(project.FieldAccumulatedStatutoryDeductions))
-}
-
-// WhereAccumulatedNonStatutoryDeductions applies the entql float64 predicate on the accumulated_non_statutory_deductions field.
-func (f *ProjectFilter) WhereAccumulatedNonStatutoryDeductions(p entql.Float64P) {
-	f.Where(p.Field(project.FieldAccumulatedNonStatutoryDeductions))
-}
-
-// WhereAccumulatedStatutoryDeductionsPeriod applies the entql float64 predicate on the accumulated_statutory_deductions_period field.
-func (f *ProjectFilter) WhereAccumulatedStatutoryDeductionsPeriod(p entql.Float64P) {
-	f.Where(p.Field(project.FieldAccumulatedStatutoryDeductionsPeriod))
-}
-
-// WhereAccumulatedNonStatutoryDeductionsPeriod applies the entql float64 predicate on the accumulated_non_statutory_deductions_period field.
-func (f *ProjectFilter) WhereAccumulatedNonStatutoryDeductionsPeriod(p entql.Float64P) {
-	f.Where(p.Field(project.FieldAccumulatedNonStatutoryDeductionsPeriod))
-}
-
-// WhereTotalContractAmount applies the entql float64 predicate on the total_contract_amount field.
-func (f *ProjectFilter) WhereTotalContractAmount(p entql.Float64P) {
-	f.Where(p.Field(project.FieldTotalContractAmount))
-}
-
-// WhereAluminumPlateBudgetPercentage applies the entql float64 predicate on the aluminum_plate_budget_percentage field.
-func (f *ProjectFilter) WhereAluminumPlateBudgetPercentage(p entql.Float64P) {
-	f.Where(p.Field(project.FieldAluminumPlateBudgetPercentage))
-}
-
-// WhereAluminumBudgetPercentage applies the entql float64 predicate on the aluminum_budget_percentage field.
-func (f *ProjectFilter) WhereAluminumBudgetPercentage(p entql.Float64P) {
-	f.Where(p.Field(project.FieldAluminumBudgetPercentage))
-}
-
-// WhereGlassBudgetPercentage applies the entql float64 predicate on the glass_budget_percentage field.
-func (f *ProjectFilter) WhereGlassBudgetPercentage(p entql.Float64P) {
-	f.Where(p.Field(project.FieldGlassBudgetPercentage))
-}
-
-// WhereIronBudgetPercentage applies the entql float64 predicate on the iron_budget_percentage field.
-func (f *ProjectFilter) WhereIronBudgetPercentage(p entql.Float64P) {
-	f.Where(p.Field(project.FieldIronBudgetPercentage))
-}
-
-// WhereMilestonePlanYear applies the entql int predicate on the milestone_plan_year field.
-func (f *ProjectFilter) WhereMilestonePlanYear(p entql.IntP) {
-	f.Where(p.Field(project.FieldMilestonePlanYear))
-}
-
-// WhereMilestonePlanMonth applies the entql int predicate on the milestone_plan_month field.
-func (f *ProjectFilter) WhereMilestonePlanMonth(p entql.IntP) {
-	f.Where(p.Field(project.FieldMilestonePlanMonth))
-}
-
-// WhereMilestoneDoneYear applies the entql int predicate on the milestone_done_year field.
-func (f *ProjectFilter) WhereMilestoneDoneYear(p entql.IntP) {
-	f.Where(p.Field(project.FieldMilestoneDoneYear))
-}
-
-// WhereMilestoneDoneMonth applies the entql int predicate on the milestone_done_month field.
-func (f *ProjectFilter) WhereMilestoneDoneMonth(p entql.IntP) {
-	f.Where(p.Field(project.FieldMilestoneDoneMonth))
-}
-
-// WherePmArea applies the entql float64 predicate on the pm_area field.
-func (f *ProjectFilter) WherePmArea(p entql.Float64P) {
-	f.Where(p.Field(project.FieldPmArea))
-}
-
-// WherePmYearTarget applies the entql float64 predicate on the pm_year_target field.
-func (f *ProjectFilter) WherePmYearTarget(p entql.Float64P) {
-	f.Where(p.Field(project.FieldPmYearTarget))
-}
-
-// WherePmMonthTarget applies the entql float64 predicate on the pm_month_target field.
-func (f *ProjectFilter) WherePmMonthTarget(p entql.Float64P) {
-	f.Where(p.Field(project.FieldPmMonthTarget))
-}
-
-// WherePmYearActual applies the entql float64 predicate on the pm_year_actual field.
-func (f *ProjectFilter) WherePmYearActual(p entql.Float64P) {
-	f.Where(p.Field(project.FieldPmYearActual))
-}
-
-// WherePmMonthActual applies the entql float64 predicate on the pm_month_actual field.
-func (f *ProjectFilter) WherePmMonthActual(p entql.Float64P) {
-	f.Where(p.Field(project.FieldPmMonthActual))
-}
-
-// WherePmTotal applies the entql float64 predicate on the pm_total field.
-func (f *ProjectFilter) WherePmTotal(p entql.Float64P) {
-	f.Where(p.Field(project.FieldPmTotal))
-}
-
-// WherePmYesterday applies the entql float64 predicate on the pm_yesterday field.
-func (f *ProjectFilter) WherePmYesterday(p entql.Float64P) {
-	f.Where(p.Field(project.FieldPmYesterday))
+// WhereRepairFee applies the entql float64 predicate on the repair_fee field.
+func (f *ProjectFilter) WhereRepairFee(p entql.Float64P) {
+	f.Where(p.Field(project.FieldRepairFee))
 }
 
 // WhereUnitInventoryTotal applies the entql float64 predicate on the unit_inventory_total field.
@@ -3156,46 +2801,6 @@ func (f *ProjectFilter) WhereUnitComponentInstallation(p entql.Float64P) {
 	f.Where(p.Field(project.FieldUnitComponentInstallation))
 }
 
-// WhereMaterialLoss applies the entql float64 predicate on the material_loss field.
-func (f *ProjectFilter) WhereMaterialLoss(p entql.Float64P) {
-	f.Where(p.Field(project.FieldMaterialLoss))
-}
-
-// WhereDesignRatedWeight applies the entql float64 predicate on the design_rated_weight field.
-func (f *ProjectFilter) WhereDesignRatedWeight(p entql.Float64P) {
-	f.Where(p.Field(project.FieldDesignRatedWeight))
-}
-
-// WhereProcessingWeight applies the entql float64 predicate on the processing_weight field.
-func (f *ProjectFilter) WhereProcessingWeight(p entql.Float64P) {
-	f.Where(p.Field(project.FieldProcessingWeight))
-}
-
-// WhereItemStockWeight applies the entql float64 predicate on the item_stock_weight field.
-func (f *ProjectFilter) WhereItemStockWeight(p entql.Float64P) {
-	f.Where(p.Field(project.FieldItemStockWeight))
-}
-
-// WherePalletsInStock applies the entql float64 predicate on the pallets_in_stock field.
-func (f *ProjectFilter) WherePalletsInStock(p entql.Float64P) {
-	f.Where(p.Field(project.FieldPalletsInStock))
-}
-
-// WherePartsInStock applies the entql float64 predicate on the parts_in_stock field.
-func (f *ProjectFilter) WherePartsInStock(p entql.Float64P) {
-	f.Where(p.Field(project.FieldPartsInStock))
-}
-
-// WhereQualityScore applies the entql float64 predicate on the quality_score field.
-func (f *ProjectFilter) WhereQualityScore(p entql.Float64P) {
-	f.Where(p.Field(project.FieldQualityScore))
-}
-
-// WhereQualityRanking applies the entql float64 predicate on the quality_ranking field.
-func (f *ProjectFilter) WhereQualityRanking(p entql.Float64P) {
-	f.Where(p.Field(project.FieldQualityRanking))
-}
-
 // WhereBulkMaterialsTotalOrderQuantity applies the entql float64 predicate on the bulk_materials_total_order_quantity field.
 func (f *ProjectFilter) WhereBulkMaterialsTotalOrderQuantity(p entql.Float64P) {
 	f.Where(p.Field(project.FieldBulkMaterialsTotalOrderQuantity))
@@ -3209,21 +2814,6 @@ func (f *ProjectFilter) WhereBulkMaterialsCompletedQuantity(p entql.Float64P) {
 // WhereBulkMaterialsUncompletedQuantity applies the entql float64 predicate on the bulk_materials_uncompleted_quantity field.
 func (f *ProjectFilter) WhereBulkMaterialsUncompletedQuantity(p entql.Float64P) {
 	f.Where(p.Field(project.FieldBulkMaterialsUncompletedQuantity))
-}
-
-// WherePlanTotalCount applies the entql int predicate on the plan_total_count field.
-func (f *ProjectFilter) WherePlanTotalCount(p entql.IntP) {
-	f.Where(p.Field(project.FieldPlanTotalCount))
-}
-
-// WherePlanOverdueCount applies the entql int predicate on the plan_overdue_count field.
-func (f *ProjectFilter) WherePlanOverdueCount(p entql.IntP) {
-	f.Where(p.Field(project.FieldPlanOverdueCount))
-}
-
-// WherePlanOverdueMonthCount applies the entql int predicate on the plan_overdue_month_count field.
-func (f *ProjectFilter) WherePlanOverdueMonthCount(p entql.IntP) {
-	f.Where(p.Field(project.FieldPlanOverdueMonthCount))
 }
 
 // WhereDiagramBdFinishCount applies the entql int predicate on the diagram_bd_finish_count field.
@@ -3266,34 +2856,6 @@ func (f *ProjectFilter) WhereDiagramCApprovalRatioDenominator(p entql.IntP) {
 	f.Where(p.Field(project.FieldDiagramCApprovalRatioDenominator))
 }
 
-// WhereHasVos applies a predicate to check if query has an edge vos.
-func (f *ProjectFilter) WhereHasVos() {
-	f.Where(entql.HasEdge("vos"))
-}
-
-// WhereHasVosWith applies a predicate to check if query has an edge vos with a given conditions (other predicates).
-func (f *ProjectFilter) WhereHasVosWith(preds ...predicate.ProjectVO) {
-	f.Where(entql.HasEdgeWith("vos", sqlgraph.WrapFunc(func(s *sql.Selector) {
-		for _, p := range preds {
-			p(s)
-		}
-	})))
-}
-
-// WhereHasProjectStaffs applies a predicate to check if query has an edge project_staffs.
-func (f *ProjectFilter) WhereHasProjectStaffs() {
-	f.Where(entql.HasEdge("project_staffs"))
-}
-
-// WhereHasProjectStaffsWith applies a predicate to check if query has an edge project_staffs with a given conditions (other predicates).
-func (f *ProjectFilter) WhereHasProjectStaffsWith(preds ...predicate.ProjectStaff) {
-	f.Where(entql.HasEdgeWith("project_staffs", sqlgraph.WrapFunc(func(s *sql.Selector) {
-		for _, p := range preds {
-			p(s)
-		}
-	})))
-}
-
 // WhereHasUsers applies a predicate to check if query has an edge users.
 func (f *ProjectFilter) WhereHasUsers() {
 	f.Where(entql.HasEdge("users"))
@@ -3302,194 +2864,6 @@ func (f *ProjectFilter) WhereHasUsers() {
 // WhereHasUsersWith applies a predicate to check if query has an edge users with a given conditions (other predicates).
 func (f *ProjectFilter) WhereHasUsersWith(preds ...predicate.User) {
 	f.Where(entql.HasEdgeWith("users", sqlgraph.WrapFunc(func(s *sql.Selector) {
-		for _, p := range preds {
-			p(s)
-		}
-	})))
-}
-
-// addPredicate implements the predicateAdder interface.
-func (psq *ProjectStaffQuery) addPredicate(pred func(s *sql.Selector)) {
-	psq.predicates = append(psq.predicates, pred)
-}
-
-// Filter returns a Filter implementation to apply filters on the ProjectStaffQuery builder.
-func (psq *ProjectStaffQuery) Filter() *ProjectStaffFilter {
-	return &ProjectStaffFilter{config: psq.config, predicateAdder: psq}
-}
-
-// addPredicate implements the predicateAdder interface.
-func (m *ProjectStaffMutation) addPredicate(pred func(s *sql.Selector)) {
-	m.predicates = append(m.predicates, pred)
-}
-
-// Filter returns an entql.Where implementation to apply filters on the ProjectStaffMutation builder.
-func (m *ProjectStaffMutation) Filter() *ProjectStaffFilter {
-	return &ProjectStaffFilter{config: m.config, predicateAdder: m}
-}
-
-// ProjectStaffFilter provides a generic filtering capability at runtime for ProjectStaffQuery.
-type ProjectStaffFilter struct {
-	predicateAdder
-	config
-}
-
-// Where applies the entql predicate on the query filter.
-func (f *ProjectStaffFilter) Where(p entql.P) {
-	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[11].Type, p, s); err != nil {
-			s.AddError(err)
-		}
-	})
-}
-
-// WhereID applies the entql string predicate on the id field.
-func (f *ProjectStaffFilter) WhereID(p entql.StringP) {
-	f.Where(p.Field(projectstaff.FieldID))
-}
-
-// WhereCreatedAt applies the entql time.Time predicate on the created_at field.
-func (f *ProjectStaffFilter) WhereCreatedAt(p entql.TimeP) {
-	f.Where(p.Field(projectstaff.FieldCreatedAt))
-}
-
-// WhereUpdatedAt applies the entql time.Time predicate on the updated_at field.
-func (f *ProjectStaffFilter) WhereUpdatedAt(p entql.TimeP) {
-	f.Where(p.Field(projectstaff.FieldUpdatedAt))
-}
-
-// WhereCym applies the entql string predicate on the cym field.
-func (f *ProjectStaffFilter) WhereCym(p entql.StringP) {
-	f.Where(p.Field(projectstaff.FieldCym))
-}
-
-// WhereInstallation applies the entql float64 predicate on the installation field.
-func (f *ProjectStaffFilter) WhereInstallation(p entql.Float64P) {
-	f.Where(p.Field(projectstaff.FieldInstallation))
-}
-
-// WhereManagement applies the entql float64 predicate on the management field.
-func (f *ProjectStaffFilter) WhereManagement(p entql.Float64P) {
-	f.Where(p.Field(projectstaff.FieldManagement))
-}
-
-// WhereDesign applies the entql float64 predicate on the design field.
-func (f *ProjectStaffFilter) WhereDesign(p entql.Float64P) {
-	f.Where(p.Field(projectstaff.FieldDesign))
-}
-
-// WhereProjectID applies the entql string predicate on the project_id field.
-func (f *ProjectStaffFilter) WhereProjectID(p entql.StringP) {
-	f.Where(p.Field(projectstaff.FieldProjectID))
-}
-
-// WhereHasProject applies a predicate to check if query has an edge project.
-func (f *ProjectStaffFilter) WhereHasProject() {
-	f.Where(entql.HasEdge("project"))
-}
-
-// WhereHasProjectWith applies a predicate to check if query has an edge project with a given conditions (other predicates).
-func (f *ProjectStaffFilter) WhereHasProjectWith(preds ...predicate.Project) {
-	f.Where(entql.HasEdgeWith("project", sqlgraph.WrapFunc(func(s *sql.Selector) {
-		for _, p := range preds {
-			p(s)
-		}
-	})))
-}
-
-// addPredicate implements the predicateAdder interface.
-func (pvq *ProjectVOQuery) addPredicate(pred func(s *sql.Selector)) {
-	pvq.predicates = append(pvq.predicates, pred)
-}
-
-// Filter returns a Filter implementation to apply filters on the ProjectVOQuery builder.
-func (pvq *ProjectVOQuery) Filter() *ProjectVOFilter {
-	return &ProjectVOFilter{config: pvq.config, predicateAdder: pvq}
-}
-
-// addPredicate implements the predicateAdder interface.
-func (m *ProjectVOMutation) addPredicate(pred func(s *sql.Selector)) {
-	m.predicates = append(m.predicates, pred)
-}
-
-// Filter returns an entql.Where implementation to apply filters on the ProjectVOMutation builder.
-func (m *ProjectVOMutation) Filter() *ProjectVOFilter {
-	return &ProjectVOFilter{config: m.config, predicateAdder: m}
-}
-
-// ProjectVOFilter provides a generic filtering capability at runtime for ProjectVOQuery.
-type ProjectVOFilter struct {
-	predicateAdder
-	config
-}
-
-// Where applies the entql predicate on the query filter.
-func (f *ProjectVOFilter) Where(p entql.P) {
-	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[12].Type, p, s); err != nil {
-			s.AddError(err)
-		}
-	})
-}
-
-// WhereID applies the entql string predicate on the id field.
-func (f *ProjectVOFilter) WhereID(p entql.StringP) {
-	f.Where(p.Field(projectvo.FieldID))
-}
-
-// WhereCreatedAt applies the entql time.Time predicate on the created_at field.
-func (f *ProjectVOFilter) WhereCreatedAt(p entql.TimeP) {
-	f.Where(p.Field(projectvo.FieldCreatedAt))
-}
-
-// WhereUpdatedAt applies the entql time.Time predicate on the updated_at field.
-func (f *ProjectVOFilter) WhereUpdatedAt(p entql.TimeP) {
-	f.Where(p.Field(projectvo.FieldUpdatedAt))
-}
-
-// WhereProjectID applies the entql string predicate on the project_id field.
-func (f *ProjectVOFilter) WhereProjectID(p entql.StringP) {
-	f.Where(p.Field(projectvo.FieldProjectID))
-}
-
-// WhereChangeType applies the entql int predicate on the change_type field.
-func (f *ProjectVOFilter) WhereChangeType(p entql.IntP) {
-	f.Where(p.Field(projectvo.FieldChangeType))
-}
-
-// WhereIsApproved applies the entql bool predicate on the is_approved field.
-func (f *ProjectVOFilter) WhereIsApproved(p entql.BoolP) {
-	f.Where(p.Field(projectvo.FieldIsApproved))
-}
-
-// WhereAzjd applies the entql float64 predicate on the azjd field.
-func (f *ProjectVOFilter) WhereAzjd(p entql.Float64P) {
-	f.Where(p.Field(projectvo.FieldAzjd))
-}
-
-// WhereYxhyze applies the entql float64 predicate on the yxhyze field.
-func (f *ProjectVOFilter) WhereYxhyze(p entql.Float64P) {
-	f.Where(p.Field(projectvo.FieldYxhyze))
-}
-
-// WhereApplyAmount applies the entql float64 predicate on the apply_amount field.
-func (f *ProjectVOFilter) WhereApplyAmount(p entql.Float64P) {
-	f.Where(p.Field(projectvo.FieldApplyAmount))
-}
-
-// WhereApproveAmount applies the entql float64 predicate on the approve_amount field.
-func (f *ProjectVOFilter) WhereApproveAmount(p entql.Float64P) {
-	f.Where(p.Field(projectvo.FieldApproveAmount))
-}
-
-// WhereHasProject applies a predicate to check if query has an edge project.
-func (f *ProjectVOFilter) WhereHasProject() {
-	f.Where(entql.HasEdge("project"))
-}
-
-// WhereHasProjectWith applies a predicate to check if query has an edge project with a given conditions (other predicates).
-func (f *ProjectVOFilter) WhereHasProjectWith(preds ...predicate.Project) {
-	f.Where(entql.HasEdgeWith("project", sqlgraph.WrapFunc(func(s *sql.Selector) {
 		for _, p := range preds {
 			p(s)
 		}
@@ -3525,7 +2899,7 @@ type ProvinceFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *ProvinceFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[13].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[11].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
@@ -3670,7 +3044,7 @@ type TenderFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *TenderFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[14].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[12].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
@@ -4256,7 +3630,7 @@ type TenderCompetitorFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *TenderCompetitorFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[15].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[13].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
@@ -4354,7 +3728,7 @@ type TenderProfileFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *TenderProfileFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[16].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[14].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
@@ -4841,7 +4215,7 @@ type UserFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *UserFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[17].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[15].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
@@ -5049,7 +4423,7 @@ type VisitRecordFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *VisitRecordFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[18].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[16].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})

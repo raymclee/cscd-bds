@@ -68,6 +68,9 @@ type Session struct {
 	HasEditAccess bool   `json:"hasEditAccess"`
 }
 
+type Subscription struct {
+}
+
 type TopCompetitor struct {
 	ID        xid.ID  `json:"id"`
 	Name      string  `json:"name"`

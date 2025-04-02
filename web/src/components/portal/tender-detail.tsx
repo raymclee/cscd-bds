@@ -472,7 +472,8 @@ function SHTender({
     select: (state) => state.p,
   });
   const { session } = useRouteContext({ from: "/__auth" });
-  const { id, followingSales, area, profiles, activeProfile } = tender;
+  const { id, followingSales, area, profiles, activeProfile, pendingProfile } =
+    tender;
   const {
     name,
     status,
@@ -520,7 +521,7 @@ function SHTender({
   } = selectedProfileId
     ? (profiles?.edges?.find((e) => e?.node?.id === selectedProfileId)?.node ??
       {})
-    : activeProfile || {};
+    : pendingProfile || activeProfile || {};
 
   return (
     <div className="!space-y-4 lg:col-span-2 xl:col-span-3">

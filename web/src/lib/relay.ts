@@ -4,6 +4,9 @@ import {
   RecordSource,
   Store,
   FetchFunction,
+  Observable,
+  RequestParameters,
+  Variables,
 } from "relay-runtime";
 
 const HTTP_ENDPOINT = "/graphql";

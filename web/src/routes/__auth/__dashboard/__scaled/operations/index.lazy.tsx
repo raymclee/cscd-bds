@@ -1,7 +1,7 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
 
 import { useEffect } from "react";
-import { graphql, usePreloadedQuery } from "react-relay";
+import { graphql, usePreloadedQuery, useSubscription } from "react-relay";
 import { ProjectSelect } from "~/components/dashboard/project-select";
 
 import top from "~/assets/svg/top.png";
@@ -41,94 +41,6 @@ function RouteComponent() {
                   id
                   name
                   code
-                  manager
-                  owner
-                  jzs
-                  mcn
-                  consultant
-                  areas
-                  fsDate
-                  opDate
-                  startDate
-                  endDate
-                  mntyr
-                  conType
-                  cje
-                  yye
-                  xjl
-                  xmglfYs
-                  xmglfLj
-                  xmsjf
-                  ownerApplyCount
-                  ownerApplyAmount
-                  ownerApproveCount
-                  ownerApproveAmount
-                  contractorApplyCount
-                  contractorApplyAmount
-                  contractorApproveCount
-                  contractorApproveAmount
-                  installProgress
-                  effectiveContractAmount
-                  vaApplyAmount
-                  vaApproveAmount
-                  accumulatedStatutoryDeductions
-                  accumulatedNonStatutoryDeductions
-                  accumulatedNonStatutoryDeductionsPeriod
-                  totalContractAmount
-                  aluminumPlateBudgetPercentage
-                  aluminumBudgetPercentage
-                  glassBudgetPercentage
-                  ironBudgetPercentage
-                  milestonePlanYear
-                  milestonePlanMonth
-                  milestoneDoneYear
-                  milestoneDoneMonth
-                  pmArea
-                  pmYearTarget
-                  pmMonthTarget
-                  pmYearActual
-                  pmMonthActual
-                  pmTotal
-                  pmYesterday
-                  unitInventoryTotal
-                  unitComponentTotal
-                  unitComponentProduction
-                  unitComponentInstallation
-                  materialLoss
-                  designRatedWeight
-                  processingWeight
-                  itemStockWeight
-                  palletsInStock
-                  partsInStock
-                  qualityScore
-                  qualityRanking
-                  bulkMaterialsTotalOrderQuantity
-                  bulkMaterialsCompletedQuantity
-                  bulkMaterialsUncompletedQuantity
-                  planTotalCount
-                  planOverdueCount
-                  planOverdueMonthCount
-                  diagramBdTotalCount
-                  diagramBdFinishCount
-                  diagramConstructionTotalCount
-                  diagramConstructionFinishCount
-                  diagramProcessingFinishCount
-                  diagramProcessingTotalCount
-                  diagramCApprovalRatioNumerator
-                  diagramCApprovalRatioDenominator
-                  projectStaffs(
-                    first: 3
-                    orderBy: { field: CREATED_AT, direction: DESC }
-                  ) {
-                    edges {
-                      node {
-                        installation
-                        management
-                        design
-                        createdAt
-                      }
-                    }
-                  }
                 }
               }
             }

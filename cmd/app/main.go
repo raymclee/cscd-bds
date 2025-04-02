@@ -11,8 +11,7 @@ import (
 	"cscd-bds/session"
 	"cscd-bds/store"
 	"cscd-bds/web"
-	"database/sql"
-	"fmt"
+	"log"
 	"net/http"
 	"net/url"
 
@@ -54,19 +53,19 @@ func main() {
 	sh := sap.New()
 	amap := amap.New("28982eb1a6a3cd956e0e0614c2fb131b")
 
-	// if config.IsProd || config.IsUat {
-	go f.StartWSClient(ctx)
-	// }
-
-	stgDb, err := sql.Open("sqlserver", fmt.Sprintf("sqlserver://%s:%s@%s:%d?database=%s&connection+timeout=30", STG_USER, STG_PASSWORD, STG_HOST, STG_PORT, STG_DATABASE))
-	if err != nil {
-		fmt.Println(err)
-		panic(err)
+	if config.IsProd {
+		go f.StartWSClient(ctx)
 	}
-	defer stgDb.Close()
+
+	// stgDb, err := sql.Open("sqlserver", fmt.Sprintf("sqlserver://%s:%s@%s:%d?database=%s&connection+timeout=30", STG_USER, STG_PASSWORD, STG_HOST, STG_PORT, STG_DATABASE))
+	// if err != nil {
+	// 	fmt.Println(err)
+	// 	panic(err)
+	// }
+	// defer stgDb.Close()
 
 	h := handler.NewHandler(s, f, sm, sh, amap)
-	gs := gqlHandler.NewDefaultServer(graphql.NewSchema(s, stgDb, f, sm, sh, amap))
+	gs := gqlHandler.NewDefaultServer(graphql.NewSchema(s, f, sm, sh, amap))
 	gs.Use(entgql.Transactioner{TxOpener: s.Client})
 	ph := playground.Handler("远东幕墙市场拓展地图", "/graphql")
 
@@ -106,7 +105,6 @@ func main() {
 		}),
 	}))
 
-	e.Static("/3dm", "3dm")
 	// if config.IsProd || config.IsUat {
 	e.Use(middleware.Secure())
 	e.Use(
@@ -127,7 +125,7 @@ func main() {
 	} else if config.IsUat {
 		port = ":3001"
 	} else {
-		port = ":3000"
+		port = ":8000"
 	}
-	e.Start(port)
+	log.Fatal(e.Start(port))
 }

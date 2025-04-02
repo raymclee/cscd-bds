@@ -375,54 +375,6 @@ func (f ProjectMutationRuleFunc) EvalMutation(ctx context.Context, m ent.Mutatio
 	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.ProjectMutation", m)
 }
 
-// The ProjectStaffQueryRuleFunc type is an adapter to allow the use of ordinary
-// functions as a query rule.
-type ProjectStaffQueryRuleFunc func(context.Context, *ent.ProjectStaffQuery) error
-
-// EvalQuery return f(ctx, q).
-func (f ProjectStaffQueryRuleFunc) EvalQuery(ctx context.Context, q ent.Query) error {
-	if q, ok := q.(*ent.ProjectStaffQuery); ok {
-		return f(ctx, q)
-	}
-	return Denyf("ent/privacy: unexpected query type %T, expect *ent.ProjectStaffQuery", q)
-}
-
-// The ProjectStaffMutationRuleFunc type is an adapter to allow the use of ordinary
-// functions as a mutation rule.
-type ProjectStaffMutationRuleFunc func(context.Context, *ent.ProjectStaffMutation) error
-
-// EvalMutation calls f(ctx, m).
-func (f ProjectStaffMutationRuleFunc) EvalMutation(ctx context.Context, m ent.Mutation) error {
-	if m, ok := m.(*ent.ProjectStaffMutation); ok {
-		return f(ctx, m)
-	}
-	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.ProjectStaffMutation", m)
-}
-
-// The ProjectVOQueryRuleFunc type is an adapter to allow the use of ordinary
-// functions as a query rule.
-type ProjectVOQueryRuleFunc func(context.Context, *ent.ProjectVOQuery) error
-
-// EvalQuery return f(ctx, q).
-func (f ProjectVOQueryRuleFunc) EvalQuery(ctx context.Context, q ent.Query) error {
-	if q, ok := q.(*ent.ProjectVOQuery); ok {
-		return f(ctx, q)
-	}
-	return Denyf("ent/privacy: unexpected query type %T, expect *ent.ProjectVOQuery", q)
-}
-
-// The ProjectVOMutationRuleFunc type is an adapter to allow the use of ordinary
-// functions as a mutation rule.
-type ProjectVOMutationRuleFunc func(context.Context, *ent.ProjectVOMutation) error
-
-// EvalMutation calls f(ctx, m).
-func (f ProjectVOMutationRuleFunc) EvalMutation(ctx context.Context, m ent.Mutation) error {
-	if m, ok := m.(*ent.ProjectVOMutation); ok {
-		return f(ctx, m)
-	}
-	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.ProjectVOMutation", m)
-}
-
 // The ProvinceQueryRuleFunc type is an adapter to allow the use of ordinary
 // functions as a query rule.
 type ProvinceQueryRuleFunc func(context.Context, *ent.ProvinceQuery) error
@@ -624,10 +576,6 @@ func queryFilter(q ent.Query) (Filter, error) {
 		return q.Filter(), nil
 	case *ent.ProjectQuery:
 		return q.Filter(), nil
-	case *ent.ProjectStaffQuery:
-		return q.Filter(), nil
-	case *ent.ProjectVOQuery:
-		return q.Filter(), nil
 	case *ent.ProvinceQuery:
 		return q.Filter(), nil
 	case *ent.TenderQuery:
@@ -668,10 +616,6 @@ func mutationFilter(m ent.Mutation) (Filter, error) {
 	case *ent.PotentialTenderMutation:
 		return m.Filter(), nil
 	case *ent.ProjectMutation:
-		return m.Filter(), nil
-	case *ent.ProjectStaffMutation:
-		return m.Filter(), nil
-	case *ent.ProjectVOMutation:
 		return m.Filter(), nil
 	case *ent.ProvinceMutation:
 		return m.Filter(), nil

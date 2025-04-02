@@ -15,8 +15,6 @@ import (
 	"cscd-bds/store/ent/plot"
 	"cscd-bds/store/ent/potentialtender"
 	"cscd-bds/store/ent/project"
-	"cscd-bds/store/ent/projectstaff"
-	"cscd-bds/store/ent/projectvo"
 	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/tendercompetitor"
@@ -102,8 +100,6 @@ func checkColumn(table, column string) error {
 			plot.Table:             plot.ValidColumn,
 			potentialtender.Table:  potentialtender.ValidColumn,
 			project.Table:          project.ValidColumn,
-			projectstaff.Table:     projectstaff.ValidColumn,
-			projectvo.Table:        projectvo.ValidColumn,
 			province.Table:         province.ValidColumn,
 			tender.Table:           tender.ValidColumn,
 			tendercompetitor.Table: tendercompetitor.ValidColumn,

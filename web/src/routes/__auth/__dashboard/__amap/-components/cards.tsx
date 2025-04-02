@@ -33,7 +33,7 @@ export function Cards() {
     <>
       <div
         className={cn(
-          "sticky mb-6 w-full flex-1 self-start md:top-[4.5rem] lg:col-span-2 xl:col-span-3",
+          "sticky mb-6 w-full flex-1 self-start overflow-hidden md:top-[4.5rem]",
           show ? "z-auto" : "z-[11]",
         )}
       >
@@ -53,7 +53,7 @@ export function Cards() {
               <Carousel
                 plugins={[]}
                 opts={{ loop: true }}
-                className="px-8 2xl:px-0"
+                className="large-screen::px-0 px-8"
               >
                 <CarouselContent>
                   {[
@@ -64,7 +64,7 @@ export function Cards() {
                   ].map((card, index) => (
                     <CarouselItem
                       key={index}
-                      className="lg:basis-1/2 xl:basis-1/3 2xl:basis-1/4"
+                      className="lg:basis-[65%] xl:basis-[40%] 2xl:basis-1/3 large-screen:basis-1/4"
                       // initial={{ opacity: 0, y: 20 }}
                       // animate={{
                       //   opacity: 1,
@@ -90,8 +90,8 @@ export function Cards() {
                     </CarouselItem>
                   ))}
                 </CarouselContent>
-                <CarouselPrevious className="-left-0 h-full w-6 rounded border-none bg-slate-950/30 hover:bg-slate-950/50 hover:text-white 2xl:hidden" />
-                <CarouselNext className="-right-0 h-full w-6 rounded border-none bg-slate-950/30 hover:bg-slate-950/50 hover:text-white 2xl:hidden" />
+                <CarouselPrevious className="large-screen::hidden -left-0 h-full w-6 rounded border-none bg-slate-950/30 hover:bg-slate-950/50 hover:text-white" />
+                <CarouselNext className="large-screen::hidden -right-0 h-full w-6 rounded border-none bg-slate-950/30 hover:bg-slate-950/50 hover:text-white" />
               </Carousel>
             </motion.div>
           )}

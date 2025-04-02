@@ -141,9 +141,9 @@ type Tender struct {
 	TenderClosingDate time.Time `json:"tender_closing_date,omitempty"`
 	// 施工面積，只限港澳
 	ConstructionArea string `json:"construction_area,omitempty"`
-	// 得標日期，只限港澳
+	// 中標日期，只限港澳
 	TenderWinDate time.Time `json:"tender_win_date,omitempty"`
-	// 得標金額
+	// 中標金額
 	TenderWinAmount float64 `json:"tender_win_amount,omitempty"`
 	// 最後一次投標金額，只限港澳
 	LastTenderAmount float64 `json:"last_tender_amount,omitempty"`

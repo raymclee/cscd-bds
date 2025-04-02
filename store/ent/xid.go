@@ -15,8 +15,6 @@ import (
 	"cscd-bds/store/ent/plot"
 	"cscd-bds/store/ent/potentialtender"
 	"cscd-bds/store/ent/project"
-	"cscd-bds/store/ent/projectstaff"
-	"cscd-bds/store/ent/projectvo"
 	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/tender"
@@ -40,8 +38,6 @@ var prefixMap = map[xid.ID]string{
 	"PL": plot.Table,
 	"PT": potentialtender.Table,
 	"PJ": project.Table,
-	"PS": projectstaff.Table,
-	"PV": projectvo.Table,
 	"PR": province.Table,
 	"TE": tender.Table,
 	"TC": tendercompetitor.Table,

@@ -7,7 +7,6 @@ import (
 	"cscd-bds/sap"
 	"cscd-bds/session"
 	"cscd-bds/store"
-	"database/sql"
 
 	"github.com/99designs/gqlgen/graphql"
 )
@@ -22,10 +21,16 @@ type Resolver struct {
 	session *session.Session
 	sap     *sap.Sap
 	amap    *amap.AMap
-	stgDb   *sql.DB
+	// stgDb   *sql.DB
 }
 
-func NewSchema(store *store.Store, stgDb *sql.DB, f *feishu.Feishu, session *session.Session, sap *sap.Sap, amap *amap.AMap) graphql.ExecutableSchema {
+func NewSchema(
+	store *store.Store,
+	//  stgDb *sql.DB,
+	f *feishu.Feishu,
+	session *session.Session,
+	sap *sap.Sap,
+	amap *amap.AMap) graphql.ExecutableSchema {
 	return generated.NewExecutableSchema(generated.Config{
 		Resolvers: &Resolver{
 			store:   store,
@@ -33,7 +38,7 @@ func NewSchema(store *store.Store, stgDb *sql.DB, f *feishu.Feishu, session *ses
 			session: session,
 			sap:     sap,
 			amap:    amap,
-			stgDb:   stgDb,
+			// stgDb:   stgDb,
 		},
 	})
 }

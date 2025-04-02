@@ -1143,174 +1143,62 @@ func (c *PotentialTenderUpdateOne) SetInput(i UpdatePotentialTenderInput) *Poten
 
 // UpdateProjectInput represents a mutation input for updating projects.
 type UpdateProjectInput struct {
-	UpdatedAt                                    *time.Time
-	Code                                         *string
-	ClearManager                                 bool
-	Manager                                      *string
-	ClearName                                    bool
-	Name                                         *string
-	ClearOwner                                   bool
-	Owner                                        *string
-	ClearJzs                                     bool
-	Jzs                                          *string
-	ClearMcn                                     bool
-	Mcn                                          *string
-	ClearConsultant                              bool
-	Consultant                                   *string
-	ClearAreas                                   bool
-	Areas                                        *string
-	ClearStartDate                               bool
-	StartDate                                    *time.Time
-	ClearFsDate                                  bool
-	FsDate                                       *time.Time
-	ClearOpDate                                  bool
-	OpDate                                       *time.Time
-	ClearEndDate                                 bool
-	EndDate                                      *time.Time
-	ClearMntyr                                   bool
-	Mntyr                                        *string
-	ClearConType                                 bool
-	ConType                                      *string
-	IsFinished                                   *bool
-	ClearCje                                     bool
-	Cje                                          *float64
-	ClearYye                                     bool
-	Yye                                          *float64
-	ClearXjl                                     bool
-	Xjl                                          *float64
-	ClearXmglfYs                                 bool
-	XmglfYs                                      *float64
-	ClearXmglfLj                                 bool
-	XmglfLj                                      *float64
-	ClearXmsjf                                   bool
-	Xmsjf                                        *float64
-	ClearXmfzr                                   bool
-	Xmfzr                                        *string
-	ClearOwnerApplyAmount                        bool
-	OwnerApplyAmount                             *float64
-	ClearOwnerApplyCount                         bool
-	OwnerApplyCount                              *int
-	ClearOwnerApproveAmount                      bool
-	OwnerApproveAmount                           *float64
-	ClearOwnerApproveCount                       bool
-	OwnerApproveCount                            *int
-	ClearContractorApplyAmount                   bool
-	ContractorApplyAmount                        *float64
-	ClearContractorApplyCount                    bool
-	ContractorApplyCount                         *int
-	ClearContractorApproveAmount                 bool
-	ContractorApproveAmount                      *float64
-	ClearContractorApproveCount                  bool
-	ContractorApproveCount                       *int
-	ClearInstallProgress                         bool
-	InstallProgress                              *float64
-	ClearEffectiveContractAmount                 bool
-	EffectiveContractAmount                      *float64
-	ClearVaApplyAmount                           bool
-	VaApplyAmount                                *float64
-	ClearVaApproveAmount                         bool
-	VaApproveAmount                              *float64
-	ClearAccumulatedStatutoryDeductions          bool
-	AccumulatedStatutoryDeductions               *float64
-	ClearAccumulatedNonStatutoryDeductions       bool
-	AccumulatedNonStatutoryDeductions            *float64
-	ClearAccumulatedStatutoryDeductionsPeriod    bool
-	AccumulatedStatutoryDeductionsPeriod         *float64
-	ClearAccumulatedNonStatutoryDeductionsPeriod bool
-	AccumulatedNonStatutoryDeductionsPeriod      *float64
-	ClearTotalContractAmount                     bool
-	TotalContractAmount                          *float64
-	ClearAluminumPlateBudgetPercentage           bool
-	AluminumPlateBudgetPercentage                *float64
-	ClearAluminumBudgetPercentage                bool
-	AluminumBudgetPercentage                     *float64
-	ClearGlassBudgetPercentage                   bool
-	GlassBudgetPercentage                        *float64
-	ClearIronBudgetPercentage                    bool
-	IronBudgetPercentage                         *float64
-	ClearMilestonePlanYear                       bool
-	MilestonePlanYear                            *int
-	ClearMilestonePlanMonth                      bool
-	MilestonePlanMonth                           *int
-	ClearMilestoneDoneYear                       bool
-	MilestoneDoneYear                            *int
-	ClearMilestoneDoneMonth                      bool
-	MilestoneDoneMonth                           *int
-	ClearPmArea                                  bool
-	PmArea                                       *float64
-	ClearPmYearTarget                            bool
-	PmYearTarget                                 *float64
-	ClearPmMonthTarget                           bool
-	PmMonthTarget                                *float64
-	ClearPmYearActual                            bool
-	PmYearActual                                 *float64
-	ClearPmMonthActual                           bool
-	PmMonthActual                                *float64
-	ClearPmTotal                                 bool
-	PmTotal                                      *float64
-	ClearPmYesterday                             bool
-	PmYesterday                                  *float64
-	ClearUnitInventoryTotal                      bool
-	UnitInventoryTotal                           *float64
-	ClearUnitComponentTotal                      bool
-	UnitComponentTotal                           *float64
-	ClearUnitComponentProduction                 bool
-	UnitComponentProduction                      *float64
-	ClearUnitComponentInstallation               bool
-	UnitComponentInstallation                    *float64
-	ClearMaterialLoss                            bool
-	MaterialLoss                                 *float64
-	ClearDesignRatedWeight                       bool
-	DesignRatedWeight                            *float64
-	ClearProcessingWeight                        bool
-	ProcessingWeight                             *float64
-	ClearItemStockWeight                         bool
-	ItemStockWeight                              *float64
-	ClearPalletsInStock                          bool
-	PalletsInStock                               *float64
-	ClearPartsInStock                            bool
-	PartsInStock                                 *float64
-	ClearQualityScore                            bool
-	QualityScore                                 *float64
-	ClearQualityRanking                          bool
-	QualityRanking                               *float64
-	ClearBulkMaterialsTotalOrderQuantity         bool
-	BulkMaterialsTotalOrderQuantity              *float64
-	ClearBulkMaterialsCompletedQuantity          bool
-	BulkMaterialsCompletedQuantity               *float64
-	ClearBulkMaterialsUncompletedQuantity        bool
-	BulkMaterialsUncompletedQuantity             *float64
-	ClearPlanTotalCount                          bool
-	PlanTotalCount                               *int
-	ClearPlanOverdueCount                        bool
-	PlanOverdueCount                             *int
-	ClearPlanOverdueMonthCount                   bool
-	PlanOverdueMonthCount                        *int
-	ClearDiagramBdFinishCount                    bool
-	DiagramBdFinishCount                         *int
-	ClearDiagramBdTotalCount                     bool
-	DiagramBdTotalCount                          *int
-	ClearDiagramConstructionFinishCount          bool
-	DiagramConstructionFinishCount               *int
-	ClearDiagramConstructionTotalCount           bool
-	DiagramConstructionTotalCount                *int
-	ClearDiagramProcessingFinishCount            bool
-	DiagramProcessingFinishCount                 *int
-	ClearDiagramProcessingTotalCount             bool
-	DiagramProcessingTotalCount                  *int
-	ClearDiagramCApprovalRatioNumerator          bool
-	DiagramCApprovalRatioNumerator               *int
-	ClearDiagramCApprovalRatioDenominator        bool
-	DiagramCApprovalRatioDenominator             *int
-	ClearVos                                     bool
-	AddVoIDs                                     []xid.ID
-	RemoveVoIDs                                  []xid.ID
-	ClearProjectStaffs                           bool
-	AddProjectStaffIDs                           []xid.ID
-	RemoveProjectStaffIDs                        []xid.ID
-	ClearUsers                                   bool
-	AddUserIDs                                   []xid.ID
-	RemoveUserIDs                                []xid.ID
+	UpdatedAt                             *time.Time
+	Code                                  *string
+	IsFinished                            *bool
+	ClearRevenueKpi                       bool
+	RevenueKpi                            *float64
+	ClearRevenueCurrentYearCompleted      bool
+	RevenueCurrentYearCompleted           *float64
+	ClearRevenueAccumulatedCompleted      bool
+	RevenueAccumulatedCompleted           *float64
+	ClearPayDate                          bool
+	PayDate                               *time.Time
+	ClearOwnerVoCount                     bool
+	OwnerVoCount                          *int
+	ClearContractorVoCount                bool
+	ContractorVoCount                     *int
+	ClearAccumulateDeduction              bool
+	AccumulateDeduction                   *float64
+	ClearSubcontractorVaCount             bool
+	SubcontractorVaCount                  *int
+	ClearContractSupplementaryCount       bool
+	ContractSupplementaryCount            *int
+	ClearRepairFee                        bool
+	RepairFee                             *float64
+	ClearUnitInventoryTotal               bool
+	UnitInventoryTotal                    *float64
+	ClearUnitComponentTotal               bool
+	UnitComponentTotal                    *float64
+	ClearUnitComponentProduction          bool
+	UnitComponentProduction               *float64
+	ClearUnitComponentInstallation        bool
+	UnitComponentInstallation             *float64
+	ClearBulkMaterialsTotalOrderQuantity  bool
+	BulkMaterialsTotalOrderQuantity       *float64
+	ClearBulkMaterialsCompletedQuantity   bool
+	BulkMaterialsCompletedQuantity        *float64
+	ClearBulkMaterialsUncompletedQuantity bool
+	BulkMaterialsUncompletedQuantity      *float64
+	ClearDiagramBdFinishCount             bool
+	DiagramBdFinishCount                  *int
+	ClearDiagramBdTotalCount              bool
+	DiagramBdTotalCount                   *int
+	ClearDiagramConstructionFinishCount   bool
+	DiagramConstructionFinishCount        *int
+	ClearDiagramConstructionTotalCount    bool
+	DiagramConstructionTotalCount         *int
+	ClearDiagramProcessingFinishCount     bool
+	DiagramProcessingFinishCount          *int
+	ClearDiagramProcessingTotalCount      bool
+	DiagramProcessingTotalCount           *int
+	ClearDiagramCApprovalRatioNumerator   bool
+	DiagramCApprovalRatioNumerator        *int
+	ClearDiagramCApprovalRatioDenominator bool
+	DiagramCApprovalRatioDenominator      *int
+	ClearUsers                            bool
+	AddUserIDs                            []xid.ID
+	RemoveUserIDs                         []xid.ID
 }
 
 // Mutate applies the UpdateProjectInput on the ProjectMutation builder.
@@ -1321,320 +1209,68 @@ func (i *UpdateProjectInput) Mutate(m *ProjectMutation) {
 	if v := i.Code; v != nil {
 		m.SetCode(*v)
 	}
-	if i.ClearManager {
-		m.ClearManager()
-	}
-	if v := i.Manager; v != nil {
-		m.SetManager(*v)
-	}
-	if i.ClearName {
-		m.ClearName()
-	}
-	if v := i.Name; v != nil {
-		m.SetName(*v)
-	}
-	if i.ClearOwner {
-		m.ClearOwner()
-	}
-	if v := i.Owner; v != nil {
-		m.SetOwner(*v)
-	}
-	if i.ClearJzs {
-		m.ClearJzs()
-	}
-	if v := i.Jzs; v != nil {
-		m.SetJzs(*v)
-	}
-	if i.ClearMcn {
-		m.ClearMcn()
-	}
-	if v := i.Mcn; v != nil {
-		m.SetMcn(*v)
-	}
-	if i.ClearConsultant {
-		m.ClearConsultant()
-	}
-	if v := i.Consultant; v != nil {
-		m.SetConsultant(*v)
-	}
-	if i.ClearAreas {
-		m.ClearAreas()
-	}
-	if v := i.Areas; v != nil {
-		m.SetAreas(*v)
-	}
-	if i.ClearStartDate {
-		m.ClearStartDate()
-	}
-	if v := i.StartDate; v != nil {
-		m.SetStartDate(*v)
-	}
-	if i.ClearFsDate {
-		m.ClearFsDate()
-	}
-	if v := i.FsDate; v != nil {
-		m.SetFsDate(*v)
-	}
-	if i.ClearOpDate {
-		m.ClearOpDate()
-	}
-	if v := i.OpDate; v != nil {
-		m.SetOpDate(*v)
-	}
-	if i.ClearEndDate {
-		m.ClearEndDate()
-	}
-	if v := i.EndDate; v != nil {
-		m.SetEndDate(*v)
-	}
-	if i.ClearMntyr {
-		m.ClearMntyr()
-	}
-	if v := i.Mntyr; v != nil {
-		m.SetMntyr(*v)
-	}
-	if i.ClearConType {
-		m.ClearConType()
-	}
-	if v := i.ConType; v != nil {
-		m.SetConType(*v)
-	}
 	if v := i.IsFinished; v != nil {
 		m.SetIsFinished(*v)
 	}
-	if i.ClearCje {
-		m.ClearCje()
+	if i.ClearRevenueKpi {
+		m.ClearRevenueKpi()
 	}
-	if v := i.Cje; v != nil {
-		m.SetCje(*v)
+	if v := i.RevenueKpi; v != nil {
+		m.SetRevenueKpi(*v)
 	}
-	if i.ClearYye {
-		m.ClearYye()
+	if i.ClearRevenueCurrentYearCompleted {
+		m.ClearRevenueCurrentYearCompleted()
 	}
-	if v := i.Yye; v != nil {
-		m.SetYye(*v)
+	if v := i.RevenueCurrentYearCompleted; v != nil {
+		m.SetRevenueCurrentYearCompleted(*v)
 	}
-	if i.ClearXjl {
-		m.ClearXjl()
+	if i.ClearRevenueAccumulatedCompleted {
+		m.ClearRevenueAccumulatedCompleted()
 	}
-	if v := i.Xjl; v != nil {
-		m.SetXjl(*v)
+	if v := i.RevenueAccumulatedCompleted; v != nil {
+		m.SetRevenueAccumulatedCompleted(*v)
 	}
-	if i.ClearXmglfYs {
-		m.ClearXmglfYs()
+	if i.ClearPayDate {
+		m.ClearPayDate()
 	}
-	if v := i.XmglfYs; v != nil {
-		m.SetXmglfYs(*v)
+	if v := i.PayDate; v != nil {
+		m.SetPayDate(*v)
 	}
-	if i.ClearXmglfLj {
-		m.ClearXmglfLj()
+	if i.ClearOwnerVoCount {
+		m.ClearOwnerVoCount()
 	}
-	if v := i.XmglfLj; v != nil {
-		m.SetXmglfLj(*v)
+	if v := i.OwnerVoCount; v != nil {
+		m.SetOwnerVoCount(*v)
 	}
-	if i.ClearXmsjf {
-		m.ClearXmsjf()
+	if i.ClearContractorVoCount {
+		m.ClearContractorVoCount()
 	}
-	if v := i.Xmsjf; v != nil {
-		m.SetXmsjf(*v)
+	if v := i.ContractorVoCount; v != nil {
+		m.SetContractorVoCount(*v)
 	}
-	if i.ClearXmfzr {
-		m.ClearXmfzr()
+	if i.ClearAccumulateDeduction {
+		m.ClearAccumulateDeduction()
 	}
-	if v := i.Xmfzr; v != nil {
-		m.SetXmfzr(*v)
+	if v := i.AccumulateDeduction; v != nil {
+		m.SetAccumulateDeduction(*v)
 	}
-	if i.ClearOwnerApplyAmount {
-		m.ClearOwnerApplyAmount()
+	if i.ClearSubcontractorVaCount {
+		m.ClearSubcontractorVaCount()
 	}
-	if v := i.OwnerApplyAmount; v != nil {
-		m.SetOwnerApplyAmount(*v)
+	if v := i.SubcontractorVaCount; v != nil {
+		m.SetSubcontractorVaCount(*v)
 	}
-	if i.ClearOwnerApplyCount {
-		m.ClearOwnerApplyCount()
+	if i.ClearContractSupplementaryCount {
+		m.ClearContractSupplementaryCount()
 	}
-	if v := i.OwnerApplyCount; v != nil {
-		m.SetOwnerApplyCount(*v)
+	if v := i.ContractSupplementaryCount; v != nil {
+		m.SetContractSupplementaryCount(*v)
 	}
-	if i.ClearOwnerApproveAmount {
-		m.ClearOwnerApproveAmount()
+	if i.ClearRepairFee {
+		m.ClearRepairFee()
 	}
-	if v := i.OwnerApproveAmount; v != nil {
-		m.SetOwnerApproveAmount(*v)
-	}
-	if i.ClearOwnerApproveCount {
-		m.ClearOwnerApproveCount()
-	}
-	if v := i.OwnerApproveCount; v != nil {
-		m.SetOwnerApproveCount(*v)
-	}
-	if i.ClearContractorApplyAmount {
-		m.ClearContractorApplyAmount()
-	}
-	if v := i.ContractorApplyAmount; v != nil {
-		m.SetContractorApplyAmount(*v)
-	}
-	if i.ClearContractorApplyCount {
-		m.ClearContractorApplyCount()
-	}
-	if v := i.ContractorApplyCount; v != nil {
-		m.SetContractorApplyCount(*v)
-	}
-	if i.ClearContractorApproveAmount {
-		m.ClearContractorApproveAmount()
-	}
-	if v := i.ContractorApproveAmount; v != nil {
-		m.SetContractorApproveAmount(*v)
-	}
-	if i.ClearContractorApproveCount {
-		m.ClearContractorApproveCount()
-	}
-	if v := i.ContractorApproveCount; v != nil {
-		m.SetContractorApproveCount(*v)
-	}
-	if i.ClearInstallProgress {
-		m.ClearInstallProgress()
-	}
-	if v := i.InstallProgress; v != nil {
-		m.SetInstallProgress(*v)
-	}
-	if i.ClearEffectiveContractAmount {
-		m.ClearEffectiveContractAmount()
-	}
-	if v := i.EffectiveContractAmount; v != nil {
-		m.SetEffectiveContractAmount(*v)
-	}
-	if i.ClearVaApplyAmount {
-		m.ClearVaApplyAmount()
-	}
-	if v := i.VaApplyAmount; v != nil {
-		m.SetVaApplyAmount(*v)
-	}
-	if i.ClearVaApproveAmount {
-		m.ClearVaApproveAmount()
-	}
-	if v := i.VaApproveAmount; v != nil {
-		m.SetVaApproveAmount(*v)
-	}
-	if i.ClearAccumulatedStatutoryDeductions {
-		m.ClearAccumulatedStatutoryDeductions()
-	}
-	if v := i.AccumulatedStatutoryDeductions; v != nil {
-		m.SetAccumulatedStatutoryDeductions(*v)
-	}
-	if i.ClearAccumulatedNonStatutoryDeductions {
-		m.ClearAccumulatedNonStatutoryDeductions()
-	}
-	if v := i.AccumulatedNonStatutoryDeductions; v != nil {
-		m.SetAccumulatedNonStatutoryDeductions(*v)
-	}
-	if i.ClearAccumulatedStatutoryDeductionsPeriod {
-		m.ClearAccumulatedStatutoryDeductionsPeriod()
-	}
-	if v := i.AccumulatedStatutoryDeductionsPeriod; v != nil {
-		m.SetAccumulatedStatutoryDeductionsPeriod(*v)
-	}
-	if i.ClearAccumulatedNonStatutoryDeductionsPeriod {
-		m.ClearAccumulatedNonStatutoryDeductionsPeriod()
-	}
-	if v := i.AccumulatedNonStatutoryDeductionsPeriod; v != nil {
-		m.SetAccumulatedNonStatutoryDeductionsPeriod(*v)
-	}
-	if i.ClearTotalContractAmount {
-		m.ClearTotalContractAmount()
-	}
-	if v := i.TotalContractAmount; v != nil {
-		m.SetTotalContractAmount(*v)
-	}
-	if i.ClearAluminumPlateBudgetPercentage {
-		m.ClearAluminumPlateBudgetPercentage()
-	}
-	if v := i.AluminumPlateBudgetPercentage; v != nil {
-		m.SetAluminumPlateBudgetPercentage(*v)
-	}
-	if i.ClearAluminumBudgetPercentage {
-		m.ClearAluminumBudgetPercentage()
-	}
-	if v := i.AluminumBudgetPercentage; v != nil {
-		m.SetAluminumBudgetPercentage(*v)
-	}
-	if i.ClearGlassBudgetPercentage {
-		m.ClearGlassBudgetPercentage()
-	}
-	if v := i.GlassBudgetPercentage; v != nil {
-		m.SetGlassBudgetPercentage(*v)
-	}
-	if i.ClearIronBudgetPercentage {
-		m.ClearIronBudgetPercentage()
-	}
-	if v := i.IronBudgetPercentage; v != nil {
-		m.SetIronBudgetPercentage(*v)
-	}
-	if i.ClearMilestonePlanYear {
-		m.ClearMilestonePlanYear()
-	}
-	if v := i.MilestonePlanYear; v != nil {
-		m.SetMilestonePlanYear(*v)
-	}
-	if i.ClearMilestonePlanMonth {
-		m.ClearMilestonePlanMonth()
-	}
-	if v := i.MilestonePlanMonth; v != nil {
-		m.SetMilestonePlanMonth(*v)
-	}
-	if i.ClearMilestoneDoneYear {
-		m.ClearMilestoneDoneYear()
-	}
-	if v := i.MilestoneDoneYear; v != nil {
-		m.SetMilestoneDoneYear(*v)
-	}
-	if i.ClearMilestoneDoneMonth {
-		m.ClearMilestoneDoneMonth()
-	}
-	if v := i.MilestoneDoneMonth; v != nil {
-		m.SetMilestoneDoneMonth(*v)
-	}
-	if i.ClearPmArea {
-		m.ClearPmArea()
-	}
-	if v := i.PmArea; v != nil {
-		m.SetPmArea(*v)
-	}
-	if i.ClearPmYearTarget {
-		m.ClearPmYearTarget()
-	}
-	if v := i.PmYearTarget; v != nil {
-		m.SetPmYearTarget(*v)
-	}
-	if i.ClearPmMonthTarget {
-		m.ClearPmMonthTarget()
-	}
-	if v := i.PmMonthTarget; v != nil {
-		m.SetPmMonthTarget(*v)
-	}
-	if i.ClearPmYearActual {
-		m.ClearPmYearActual()
-	}
-	if v := i.PmYearActual; v != nil {
-		m.SetPmYearActual(*v)
-	}
-	if i.ClearPmMonthActual {
-		m.ClearPmMonthActual()
-	}
-	if v := i.PmMonthActual; v != nil {
-		m.SetPmMonthActual(*v)
-	}
-	if i.ClearPmTotal {
-		m.ClearPmTotal()
-	}
-	if v := i.PmTotal; v != nil {
-		m.SetPmTotal(*v)
-	}
-	if i.ClearPmYesterday {
-		m.ClearPmYesterday()
-	}
-	if v := i.PmYesterday; v != nil {
-		m.SetPmYesterday(*v)
+	if v := i.RepairFee; v != nil {
+		m.SetRepairFee(*v)
 	}
 	if i.ClearUnitInventoryTotal {
 		m.ClearUnitInventoryTotal()
@@ -1660,54 +1296,6 @@ func (i *UpdateProjectInput) Mutate(m *ProjectMutation) {
 	if v := i.UnitComponentInstallation; v != nil {
 		m.SetUnitComponentInstallation(*v)
 	}
-	if i.ClearMaterialLoss {
-		m.ClearMaterialLoss()
-	}
-	if v := i.MaterialLoss; v != nil {
-		m.SetMaterialLoss(*v)
-	}
-	if i.ClearDesignRatedWeight {
-		m.ClearDesignRatedWeight()
-	}
-	if v := i.DesignRatedWeight; v != nil {
-		m.SetDesignRatedWeight(*v)
-	}
-	if i.ClearProcessingWeight {
-		m.ClearProcessingWeight()
-	}
-	if v := i.ProcessingWeight; v != nil {
-		m.SetProcessingWeight(*v)
-	}
-	if i.ClearItemStockWeight {
-		m.ClearItemStockWeight()
-	}
-	if v := i.ItemStockWeight; v != nil {
-		m.SetItemStockWeight(*v)
-	}
-	if i.ClearPalletsInStock {
-		m.ClearPalletsInStock()
-	}
-	if v := i.PalletsInStock; v != nil {
-		m.SetPalletsInStock(*v)
-	}
-	if i.ClearPartsInStock {
-		m.ClearPartsInStock()
-	}
-	if v := i.PartsInStock; v != nil {
-		m.SetPartsInStock(*v)
-	}
-	if i.ClearQualityScore {
-		m.ClearQualityScore()
-	}
-	if v := i.QualityScore; v != nil {
-		m.SetQualityScore(*v)
-	}
-	if i.ClearQualityRanking {
-		m.ClearQualityRanking()
-	}
-	if v := i.QualityRanking; v != nil {
-		m.SetQualityRanking(*v)
-	}
 	if i.ClearBulkMaterialsTotalOrderQuantity {
 		m.ClearBulkMaterialsTotalOrderQuantity()
 	}
@@ -1725,24 +1313,6 @@ func (i *UpdateProjectInput) Mutate(m *ProjectMutation) {
 	}
 	if v := i.BulkMaterialsUncompletedQuantity; v != nil {
 		m.SetBulkMaterialsUncompletedQuantity(*v)
-	}
-	if i.ClearPlanTotalCount {
-		m.ClearPlanTotalCount()
-	}
-	if v := i.PlanTotalCount; v != nil {
-		m.SetPlanTotalCount(*v)
-	}
-	if i.ClearPlanOverdueCount {
-		m.ClearPlanOverdueCount()
-	}
-	if v := i.PlanOverdueCount; v != nil {
-		m.SetPlanOverdueCount(*v)
-	}
-	if i.ClearPlanOverdueMonthCount {
-		m.ClearPlanOverdueMonthCount()
-	}
-	if v := i.PlanOverdueMonthCount; v != nil {
-		m.SetPlanOverdueMonthCount(*v)
 	}
 	if i.ClearDiagramBdFinishCount {
 		m.ClearDiagramBdFinishCount()
@@ -1791,24 +1361,6 @@ func (i *UpdateProjectInput) Mutate(m *ProjectMutation) {
 	}
 	if v := i.DiagramCApprovalRatioDenominator; v != nil {
 		m.SetDiagramCApprovalRatioDenominator(*v)
-	}
-	if i.ClearVos {
-		m.ClearVos()
-	}
-	if v := i.AddVoIDs; len(v) > 0 {
-		m.AddVoIDs(v...)
-	}
-	if v := i.RemoveVoIDs; len(v) > 0 {
-		m.RemoveVoIDs(v...)
-	}
-	if i.ClearProjectStaffs {
-		m.ClearProjectStaffs()
-	}
-	if v := i.AddProjectStaffIDs; len(v) > 0 {
-		m.AddProjectStaffIDs(v...)
-	}
-	if v := i.RemoveProjectStaffIDs; len(v) > 0 {
-		m.RemoveProjectStaffIDs(v...)
 	}
 	if i.ClearUsers {
 		m.ClearUsers()

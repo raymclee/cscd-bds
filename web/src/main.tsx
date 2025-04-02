@@ -33,6 +33,7 @@ const router = createRouter({
   defaultPreload: "intent",
   context: {
     RelayEnvironment,
+    renderTime: dayjs().format("YYYY-MM-DD HH:mm:ss"),
   },
   scrollRestoration: true,
   defaultPreloadStaleTime: 0,

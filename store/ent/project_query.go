@@ -6,8 +6,6 @@ import (
 	"context"
 	"cscd-bds/store/ent/predicate"
 	"cscd-bds/store/ent/project"
-	"cscd-bds/store/ent/projectstaff"
-	"cscd-bds/store/ent/projectvo"
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/user"
 	"database/sql/driver"
@@ -23,18 +21,14 @@ import (
 // ProjectQuery is the builder for querying Project entities.
 type ProjectQuery struct {
 	config
-	ctx                    *QueryContext
-	order                  []project.OrderOption
-	inters                 []Interceptor
-	predicates             []predicate.Project
-	withVos                *ProjectVOQuery
-	withProjectStaffs      *ProjectStaffQuery
-	withUsers              *UserQuery
-	modifiers              []func(*sql.Selector)
-	loadTotal              []func(context.Context, []*Project) error
-	withNamedVos           map[string]*ProjectVOQuery
-	withNamedProjectStaffs map[string]*ProjectStaffQuery
-	withNamedUsers         map[string]*UserQuery
+	ctx            *QueryContext
+	order          []project.OrderOption
+	inters         []Interceptor
+	predicates     []predicate.Project
+	withUsers      *UserQuery
+	modifiers      []func(*sql.Selector)
+	loadTotal      []func(context.Context, []*Project) error
+	withNamedUsers map[string]*UserQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -69,50 +63,6 @@ func (pq *ProjectQuery) Unique(unique bool) *ProjectQuery {
 func (pq *ProjectQuery) Order(o ...project.OrderOption) *ProjectQuery {
 	pq.order = append(pq.order, o...)
 	return pq
-}
-
-// QueryVos chains the current query on the "vos" edge.
-func (pq *ProjectQuery) QueryVos() *ProjectVOQuery {
-	query := (&ProjectVOClient{config: pq.config}).Query()
-	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
-		if err := pq.prepareQuery(ctx); err != nil {
-			return nil, err
-		}
-		selector := pq.sqlQuery(ctx)
-		if err := selector.Err(); err != nil {
-			return nil, err
-		}
-		step := sqlgraph.NewStep(
-			sqlgraph.From(project.Table, project.FieldID, selector),
-			sqlgraph.To(projectvo.Table, projectvo.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, project.VosTable, project.VosColumn),
-		)
-		fromU = sqlgraph.SetNeighbors(pq.driver.Dialect(), step)
-		return fromU, nil
-	}
-	return query
-}
-
-// QueryProjectStaffs chains the current query on the "project_staffs" edge.
-func (pq *ProjectQuery) QueryProjectStaffs() *ProjectStaffQuery {
-	query := (&ProjectStaffClient{config: pq.config}).Query()
-	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
-		if err := pq.prepareQuery(ctx); err != nil {
-			return nil, err
-		}
-		selector := pq.sqlQuery(ctx)
-		if err := selector.Err(); err != nil {
-			return nil, err
-		}
-		step := sqlgraph.NewStep(
-			sqlgraph.From(project.Table, project.FieldID, selector),
-			sqlgraph.To(projectstaff.Table, projectstaff.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, project.ProjectStaffsTable, project.ProjectStaffsColumn),
-		)
-		fromU = sqlgraph.SetNeighbors(pq.driver.Dialect(), step)
-		return fromU, nil
-	}
-	return query
 }
 
 // QueryUsers chains the current query on the "users" edge.
@@ -324,40 +274,16 @@ func (pq *ProjectQuery) Clone() *ProjectQuery {
 		return nil
 	}
 	return &ProjectQuery{
-		config:            pq.config,
-		ctx:               pq.ctx.Clone(),
-		order:             append([]project.OrderOption{}, pq.order...),
-		inters:            append([]Interceptor{}, pq.inters...),
-		predicates:        append([]predicate.Project{}, pq.predicates...),
-		withVos:           pq.withVos.Clone(),
-		withProjectStaffs: pq.withProjectStaffs.Clone(),
-		withUsers:         pq.withUsers.Clone(),
+		config:     pq.config,
+		ctx:        pq.ctx.Clone(),
+		order:      append([]project.OrderOption{}, pq.order...),
+		inters:     append([]Interceptor{}, pq.inters...),
+		predicates: append([]predicate.Project{}, pq.predicates...),
+		withUsers:  pq.withUsers.Clone(),
 		// clone intermediate query.
 		sql:  pq.sql.Clone(),
 		path: pq.path,
 	}
-}
-
-// WithVos tells the query-builder to eager-load the nodes that are connected to
-// the "vos" edge. The optional arguments are used to configure the query builder of the edge.
-func (pq *ProjectQuery) WithVos(opts ...func(*ProjectVOQuery)) *ProjectQuery {
-	query := (&ProjectVOClient{config: pq.config}).Query()
-	for _, opt := range opts {
-		opt(query)
-	}
-	pq.withVos = query
-	return pq
-}
-
-// WithProjectStaffs tells the query-builder to eager-load the nodes that are connected to
-// the "project_staffs" edge. The optional arguments are used to configure the query builder of the edge.
-func (pq *ProjectQuery) WithProjectStaffs(opts ...func(*ProjectStaffQuery)) *ProjectQuery {
-	query := (&ProjectStaffClient{config: pq.config}).Query()
-	for _, opt := range opts {
-		opt(query)
-	}
-	pq.withProjectStaffs = query
-	return pq
 }
 
 // WithUsers tells the query-builder to eager-load the nodes that are connected to
@@ -449,9 +375,7 @@ func (pq *ProjectQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Proj
 	var (
 		nodes       = []*Project{}
 		_spec       = pq.querySpec()
-		loadedTypes = [3]bool{
-			pq.withVos != nil,
-			pq.withProjectStaffs != nil,
+		loadedTypes = [1]bool{
 			pq.withUsers != nil,
 		}
 	)
@@ -476,38 +400,10 @@ func (pq *ProjectQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Proj
 	if len(nodes) == 0 {
 		return nodes, nil
 	}
-	if query := pq.withVos; query != nil {
-		if err := pq.loadVos(ctx, query, nodes,
-			func(n *Project) { n.Edges.Vos = []*ProjectVO{} },
-			func(n *Project, e *ProjectVO) { n.Edges.Vos = append(n.Edges.Vos, e) }); err != nil {
-			return nil, err
-		}
-	}
-	if query := pq.withProjectStaffs; query != nil {
-		if err := pq.loadProjectStaffs(ctx, query, nodes,
-			func(n *Project) { n.Edges.ProjectStaffs = []*ProjectStaff{} },
-			func(n *Project, e *ProjectStaff) { n.Edges.ProjectStaffs = append(n.Edges.ProjectStaffs, e) }); err != nil {
-			return nil, err
-		}
-	}
 	if query := pq.withUsers; query != nil {
 		if err := pq.loadUsers(ctx, query, nodes,
 			func(n *Project) { n.Edges.Users = []*User{} },
 			func(n *Project, e *User) { n.Edges.Users = append(n.Edges.Users, e) }); err != nil {
-			return nil, err
-		}
-	}
-	for name, query := range pq.withNamedVos {
-		if err := pq.loadVos(ctx, query, nodes,
-			func(n *Project) { n.appendNamedVos(name) },
-			func(n *Project, e *ProjectVO) { n.appendNamedVos(name, e) }); err != nil {
-			return nil, err
-		}
-	}
-	for name, query := range pq.withNamedProjectStaffs {
-		if err := pq.loadProjectStaffs(ctx, query, nodes,
-			func(n *Project) { n.appendNamedProjectStaffs(name) },
-			func(n *Project, e *ProjectStaff) { n.appendNamedProjectStaffs(name, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -526,66 +422,6 @@ func (pq *ProjectQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Proj
 	return nodes, nil
 }
 
-func (pq *ProjectQuery) loadVos(ctx context.Context, query *ProjectVOQuery, nodes []*Project, init func(*Project), assign func(*Project, *ProjectVO)) error {
-	fks := make([]driver.Value, 0, len(nodes))
-	nodeids := make(map[xid.ID]*Project)
-	for i := range nodes {
-		fks = append(fks, nodes[i].ID)
-		nodeids[nodes[i].ID] = nodes[i]
-		if init != nil {
-			init(nodes[i])
-		}
-	}
-	if len(query.ctx.Fields) > 0 {
-		query.ctx.AppendFieldOnce(projectvo.FieldProjectID)
-	}
-	query.Where(predicate.ProjectVO(func(s *sql.Selector) {
-		s.Where(sql.InValues(s.C(project.VosColumn), fks...))
-	}))
-	neighbors, err := query.All(ctx)
-	if err != nil {
-		return err
-	}
-	for _, n := range neighbors {
-		fk := n.ProjectID
-		node, ok := nodeids[fk]
-		if !ok {
-			return fmt.Errorf(`unexpected referenced foreign-key "project_id" returned %v for node %v`, fk, n.ID)
-		}
-		assign(node, n)
-	}
-	return nil
-}
-func (pq *ProjectQuery) loadProjectStaffs(ctx context.Context, query *ProjectStaffQuery, nodes []*Project, init func(*Project), assign func(*Project, *ProjectStaff)) error {
-	fks := make([]driver.Value, 0, len(nodes))
-	nodeids := make(map[xid.ID]*Project)
-	for i := range nodes {
-		fks = append(fks, nodes[i].ID)
-		nodeids[nodes[i].ID] = nodes[i]
-		if init != nil {
-			init(nodes[i])
-		}
-	}
-	if len(query.ctx.Fields) > 0 {
-		query.ctx.AppendFieldOnce(projectstaff.FieldProjectID)
-	}
-	query.Where(predicate.ProjectStaff(func(s *sql.Selector) {
-		s.Where(sql.InValues(s.C(project.ProjectStaffsColumn), fks...))
-	}))
-	neighbors, err := query.All(ctx)
-	if err != nil {
-		return err
-	}
-	for _, n := range neighbors {
-		fk := n.ProjectID
-		node, ok := nodeids[fk]
-		if !ok {
-			return fmt.Errorf(`unexpected referenced foreign-key "project_id" returned %v for node %v`, fk, n.ID)
-		}
-		assign(node, n)
-	}
-	return nil
-}
 func (pq *ProjectQuery) loadUsers(ctx context.Context, query *UserQuery, nodes []*Project, init func(*Project), assign func(*Project, *User)) error {
 	edgeIDs := make([]driver.Value, len(nodes))
 	byID := make(map[xid.ID]*Project)
@@ -730,34 +566,6 @@ func (pq *ProjectQuery) sqlQuery(ctx context.Context) *sql.Selector {
 		selector.Limit(*limit)
 	}
 	return selector
-}
-
-// WithNamedVos tells the query-builder to eager-load the nodes that are connected to the "vos"
-// edge with the given name. The optional arguments are used to configure the query builder of the edge.
-func (pq *ProjectQuery) WithNamedVos(name string, opts ...func(*ProjectVOQuery)) *ProjectQuery {
-	query := (&ProjectVOClient{config: pq.config}).Query()
-	for _, opt := range opts {
-		opt(query)
-	}
-	if pq.withNamedVos == nil {
-		pq.withNamedVos = make(map[string]*ProjectVOQuery)
-	}
-	pq.withNamedVos[name] = query
-	return pq
-}
-
-// WithNamedProjectStaffs tells the query-builder to eager-load the nodes that are connected to the "project_staffs"
-// edge with the given name. The optional arguments are used to configure the query builder of the edge.
-func (pq *ProjectQuery) WithNamedProjectStaffs(name string, opts ...func(*ProjectStaffQuery)) *ProjectQuery {
-	query := (&ProjectStaffClient{config: pq.config}).Query()
-	for _, opt := range opts {
-		opt(query)
-	}
-	if pq.withNamedProjectStaffs == nil {
-		pq.withNamedProjectStaffs = make(map[string]*ProjectStaffQuery)
-	}
-	pq.withNamedProjectStaffs[name] = query
-	return pq
 }
 
 // WithNamedUsers tells the query-builder to eager-load the nodes that are connected to the "users"

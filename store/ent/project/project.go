@@ -21,112 +21,28 @@ const (
 	FieldUpdatedAt = "updated_at"
 	// FieldCode holds the string denoting the code field in the database.
 	FieldCode = "code"
-	// FieldManager holds the string denoting the manager field in the database.
-	FieldManager = "manager"
-	// FieldName holds the string denoting the name field in the database.
-	FieldName = "name"
-	// FieldOwner holds the string denoting the owner field in the database.
-	FieldOwner = "owner"
-	// FieldJzs holds the string denoting the jzs field in the database.
-	FieldJzs = "jzs"
-	// FieldMcn holds the string denoting the mcn field in the database.
-	FieldMcn = "mcn"
-	// FieldConsultant holds the string denoting the consultant field in the database.
-	FieldConsultant = "consultant"
-	// FieldAreas holds the string denoting the areas field in the database.
-	FieldAreas = "areas"
-	// FieldStartDate holds the string denoting the start_date field in the database.
-	FieldStartDate = "start_date"
-	// FieldFsDate holds the string denoting the fs_date field in the database.
-	FieldFsDate = "fs_date"
-	// FieldOpDate holds the string denoting the op_date field in the database.
-	FieldOpDate = "op_date"
-	// FieldEndDate holds the string denoting the end_date field in the database.
-	FieldEndDate = "end_date"
-	// FieldMntyr holds the string denoting the mntyr field in the database.
-	FieldMntyr = "mntyr"
-	// FieldConType holds the string denoting the con_type field in the database.
-	FieldConType = "con_type"
 	// FieldIsFinished holds the string denoting the is_finished field in the database.
 	FieldIsFinished = "is_finished"
-	// FieldCje holds the string denoting the cje field in the database.
-	FieldCje = "cje"
-	// FieldYye holds the string denoting the yye field in the database.
-	FieldYye = "yye"
-	// FieldXjl holds the string denoting the xjl field in the database.
-	FieldXjl = "xjl"
-	// FieldXmglfYs holds the string denoting the xmglf_ys field in the database.
-	FieldXmglfYs = "xmglf_ys"
-	// FieldXmglfLj holds the string denoting the xmglf_lj field in the database.
-	FieldXmglfLj = "xmglf_lj"
-	// FieldXmsjf holds the string denoting the xmsjf field in the database.
-	FieldXmsjf = "xmsjf"
-	// FieldXmfzr holds the string denoting the xmfzr field in the database.
-	FieldXmfzr = "xmfzr"
-	// FieldOwnerApplyAmount holds the string denoting the owner_apply_amount field in the database.
-	FieldOwnerApplyAmount = "owner_apply_amount"
-	// FieldOwnerApplyCount holds the string denoting the owner_apply_count field in the database.
-	FieldOwnerApplyCount = "owner_apply_count"
-	// FieldOwnerApproveAmount holds the string denoting the owner_approve_amount field in the database.
-	FieldOwnerApproveAmount = "owner_approve_amount"
-	// FieldOwnerApproveCount holds the string denoting the owner_approve_count field in the database.
-	FieldOwnerApproveCount = "owner_approve_count"
-	// FieldContractorApplyAmount holds the string denoting the contractor_apply_amount field in the database.
-	FieldContractorApplyAmount = "contractor_apply_amount"
-	// FieldContractorApplyCount holds the string denoting the contractor_apply_count field in the database.
-	FieldContractorApplyCount = "contractor_apply_count"
-	// FieldContractorApproveAmount holds the string denoting the contractor_approve_amount field in the database.
-	FieldContractorApproveAmount = "contractor_approve_amount"
-	// FieldContractorApproveCount holds the string denoting the contractor_approve_count field in the database.
-	FieldContractorApproveCount = "contractor_approve_count"
-	// FieldInstallProgress holds the string denoting the install_progress field in the database.
-	FieldInstallProgress = "install_progress"
-	// FieldEffectiveContractAmount holds the string denoting the effective_contract_amount field in the database.
-	FieldEffectiveContractAmount = "effective_contract_amount"
-	// FieldVaApplyAmount holds the string denoting the va_apply_amount field in the database.
-	FieldVaApplyAmount = "va_apply_amount"
-	// FieldVaApproveAmount holds the string denoting the va_approve_amount field in the database.
-	FieldVaApproveAmount = "va_approve_amount"
-	// FieldAccumulatedStatutoryDeductions holds the string denoting the accumulated_statutory_deductions field in the database.
-	FieldAccumulatedStatutoryDeductions = "accumulated_statutory_deductions"
-	// FieldAccumulatedNonStatutoryDeductions holds the string denoting the accumulated_non_statutory_deductions field in the database.
-	FieldAccumulatedNonStatutoryDeductions = "accumulated_non_statutory_deductions"
-	// FieldAccumulatedStatutoryDeductionsPeriod holds the string denoting the accumulated_statutory_deductions_period field in the database.
-	FieldAccumulatedStatutoryDeductionsPeriod = "accumulated_statutory_deductions_period"
-	// FieldAccumulatedNonStatutoryDeductionsPeriod holds the string denoting the accumulated_non_statutory_deductions_period field in the database.
-	FieldAccumulatedNonStatutoryDeductionsPeriod = "accumulated_non_statutory_deductions_period"
-	// FieldTotalContractAmount holds the string denoting the total_contract_amount field in the database.
-	FieldTotalContractAmount = "total_contract_amount"
-	// FieldAluminumPlateBudgetPercentage holds the string denoting the aluminum_plate_budget_percentage field in the database.
-	FieldAluminumPlateBudgetPercentage = "aluminum_plate_budget_percentage"
-	// FieldAluminumBudgetPercentage holds the string denoting the aluminum_budget_percentage field in the database.
-	FieldAluminumBudgetPercentage = "aluminum_budget_percentage"
-	// FieldGlassBudgetPercentage holds the string denoting the glass_budget_percentage field in the database.
-	FieldGlassBudgetPercentage = "glass_budget_percentage"
-	// FieldIronBudgetPercentage holds the string denoting the iron_budget_percentage field in the database.
-	FieldIronBudgetPercentage = "iron_budget_percentage"
-	// FieldMilestonePlanYear holds the string denoting the milestone_plan_year field in the database.
-	FieldMilestonePlanYear = "milestone_plan_year"
-	// FieldMilestonePlanMonth holds the string denoting the milestone_plan_month field in the database.
-	FieldMilestonePlanMonth = "milestone_plan_month"
-	// FieldMilestoneDoneYear holds the string denoting the milestone_done_year field in the database.
-	FieldMilestoneDoneYear = "milestone_done_year"
-	// FieldMilestoneDoneMonth holds the string denoting the milestone_done_month field in the database.
-	FieldMilestoneDoneMonth = "milestone_done_month"
-	// FieldPmArea holds the string denoting the pm_area field in the database.
-	FieldPmArea = "pm_area"
-	// FieldPmYearTarget holds the string denoting the pm_year_target field in the database.
-	FieldPmYearTarget = "pm_year_target"
-	// FieldPmMonthTarget holds the string denoting the pm_month_target field in the database.
-	FieldPmMonthTarget = "pm_month_target"
-	// FieldPmYearActual holds the string denoting the pm_year_actual field in the database.
-	FieldPmYearActual = "pm_year_actual"
-	// FieldPmMonthActual holds the string denoting the pm_month_actual field in the database.
-	FieldPmMonthActual = "pm_month_actual"
-	// FieldPmTotal holds the string denoting the pm_total field in the database.
-	FieldPmTotal = "pm_total"
-	// FieldPmYesterday holds the string denoting the pm_yesterday field in the database.
-	FieldPmYesterday = "pm_yesterday"
+	// FieldRevenueKpi holds the string denoting the revenue_kpi field in the database.
+	FieldRevenueKpi = "revenue_kpi"
+	// FieldRevenueCurrentYearCompleted holds the string denoting the revenue_current_year_completed field in the database.
+	FieldRevenueCurrentYearCompleted = "revenue_current_year_completed"
+	// FieldRevenueAccumulatedCompleted holds the string denoting the revenue_accumulated_completed field in the database.
+	FieldRevenueAccumulatedCompleted = "revenue_accumulated_completed"
+	// FieldPayDate holds the string denoting the pay_date field in the database.
+	FieldPayDate = "pay_date"
+	// FieldOwnerVoCount holds the string denoting the owner_vo_count field in the database.
+	FieldOwnerVoCount = "owner_vo_count"
+	// FieldContractorVoCount holds the string denoting the contractor_vo_count field in the database.
+	FieldContractorVoCount = "contractor_vo_count"
+	// FieldAccumulateDeduction holds the string denoting the accumulate_deduction field in the database.
+	FieldAccumulateDeduction = "accumulate_deduction"
+	// FieldSubcontractorVaCount holds the string denoting the subcontractor_va_count field in the database.
+	FieldSubcontractorVaCount = "subcontractor_va_count"
+	// FieldContractSupplementaryCount holds the string denoting the contract_supplementary_count field in the database.
+	FieldContractSupplementaryCount = "contract_supplementary_count"
+	// FieldRepairFee holds the string denoting the repair_fee field in the database.
+	FieldRepairFee = "repair_fee"
 	// FieldUnitInventoryTotal holds the string denoting the unit_inventory_total field in the database.
 	FieldUnitInventoryTotal = "unit_inventory_total"
 	// FieldUnitComponentTotal holds the string denoting the unit_component_total field in the database.
@@ -135,34 +51,12 @@ const (
 	FieldUnitComponentProduction = "unit_component_production"
 	// FieldUnitComponentInstallation holds the string denoting the unit_component_installation field in the database.
 	FieldUnitComponentInstallation = "unit_component_installation"
-	// FieldMaterialLoss holds the string denoting the material_loss field in the database.
-	FieldMaterialLoss = "material_loss"
-	// FieldDesignRatedWeight holds the string denoting the design_rated_weight field in the database.
-	FieldDesignRatedWeight = "design_rated_weight"
-	// FieldProcessingWeight holds the string denoting the processing_weight field in the database.
-	FieldProcessingWeight = "processing_weight"
-	// FieldItemStockWeight holds the string denoting the item_stock_weight field in the database.
-	FieldItemStockWeight = "item_stock_weight"
-	// FieldPalletsInStock holds the string denoting the pallets_in_stock field in the database.
-	FieldPalletsInStock = "pallets_in_stock"
-	// FieldPartsInStock holds the string denoting the parts_in_stock field in the database.
-	FieldPartsInStock = "parts_in_stock"
-	// FieldQualityScore holds the string denoting the quality_score field in the database.
-	FieldQualityScore = "quality_score"
-	// FieldQualityRanking holds the string denoting the quality_ranking field in the database.
-	FieldQualityRanking = "quality_ranking"
 	// FieldBulkMaterialsTotalOrderQuantity holds the string denoting the bulk_materials_total_order_quantity field in the database.
 	FieldBulkMaterialsTotalOrderQuantity = "bulk_materials_total_order_quantity"
 	// FieldBulkMaterialsCompletedQuantity holds the string denoting the bulk_materials_completed_quantity field in the database.
 	FieldBulkMaterialsCompletedQuantity = "bulk_materials_completed_quantity"
 	// FieldBulkMaterialsUncompletedQuantity holds the string denoting the bulk_materials_uncompleted_quantity field in the database.
 	FieldBulkMaterialsUncompletedQuantity = "bulk_materials_uncompleted_quantity"
-	// FieldPlanTotalCount holds the string denoting the plan_total_count field in the database.
-	FieldPlanTotalCount = "plan_total_count"
-	// FieldPlanOverdueCount holds the string denoting the plan_overdue_count field in the database.
-	FieldPlanOverdueCount = "plan_overdue_count"
-	// FieldPlanOverdueMonthCount holds the string denoting the plan_overdue_month_count field in the database.
-	FieldPlanOverdueMonthCount = "plan_overdue_month_count"
 	// FieldDiagramBdFinishCount holds the string denoting the diagram_bd_finish_count field in the database.
 	FieldDiagramBdFinishCount = "diagram_bd_finish_count"
 	// FieldDiagramBdTotalCount holds the string denoting the diagram_bd_total_count field in the database.
@@ -179,28 +73,10 @@ const (
 	FieldDiagramCApprovalRatioNumerator = "diagram_c_approval_ratio_numerator"
 	// FieldDiagramCApprovalRatioDenominator holds the string denoting the diagram_c_approval_ratio_denominator field in the database.
 	FieldDiagramCApprovalRatioDenominator = "diagram_c_approval_ratio_denominator"
-	// EdgeVos holds the string denoting the vos edge name in mutations.
-	EdgeVos = "vos"
-	// EdgeProjectStaffs holds the string denoting the project_staffs edge name in mutations.
-	EdgeProjectStaffs = "project_staffs"
 	// EdgeUsers holds the string denoting the users edge name in mutations.
 	EdgeUsers = "users"
 	// Table holds the table name of the project in the database.
 	Table = "projects"
-	// VosTable is the table that holds the vos relation/edge.
-	VosTable = "project_vos"
-	// VosInverseTable is the table name for the ProjectVO entity.
-	// It exists in this package in order to avoid circular dependency with the "projectvo" package.
-	VosInverseTable = "project_vos"
-	// VosColumn is the table column denoting the vos relation/edge.
-	VosColumn = "project_id"
-	// ProjectStaffsTable is the table that holds the project_staffs relation/edge.
-	ProjectStaffsTable = "project_staffs"
-	// ProjectStaffsInverseTable is the table name for the ProjectStaff entity.
-	// It exists in this package in order to avoid circular dependency with the "projectstaff" package.
-	ProjectStaffsInverseTable = "project_staffs"
-	// ProjectStaffsColumn is the table column denoting the project_staffs relation/edge.
-	ProjectStaffsColumn = "project_id"
 	// UsersTable is the table that holds the users relation/edge. The primary key declared below.
 	UsersTable = "project_users"
 	// UsersInverseTable is the table name for the User entity.
@@ -214,77 +90,24 @@ var Columns = []string{
 	FieldCreatedAt,
 	FieldUpdatedAt,
 	FieldCode,
-	FieldManager,
-	FieldName,
-	FieldOwner,
-	FieldJzs,
-	FieldMcn,
-	FieldConsultant,
-	FieldAreas,
-	FieldStartDate,
-	FieldFsDate,
-	FieldOpDate,
-	FieldEndDate,
-	FieldMntyr,
-	FieldConType,
 	FieldIsFinished,
-	FieldCje,
-	FieldYye,
-	FieldXjl,
-	FieldXmglfYs,
-	FieldXmglfLj,
-	FieldXmsjf,
-	FieldXmfzr,
-	FieldOwnerApplyAmount,
-	FieldOwnerApplyCount,
-	FieldOwnerApproveAmount,
-	FieldOwnerApproveCount,
-	FieldContractorApplyAmount,
-	FieldContractorApplyCount,
-	FieldContractorApproveAmount,
-	FieldContractorApproveCount,
-	FieldInstallProgress,
-	FieldEffectiveContractAmount,
-	FieldVaApplyAmount,
-	FieldVaApproveAmount,
-	FieldAccumulatedStatutoryDeductions,
-	FieldAccumulatedNonStatutoryDeductions,
-	FieldAccumulatedStatutoryDeductionsPeriod,
-	FieldAccumulatedNonStatutoryDeductionsPeriod,
-	FieldTotalContractAmount,
-	FieldAluminumPlateBudgetPercentage,
-	FieldAluminumBudgetPercentage,
-	FieldGlassBudgetPercentage,
-	FieldIronBudgetPercentage,
-	FieldMilestonePlanYear,
-	FieldMilestonePlanMonth,
-	FieldMilestoneDoneYear,
-	FieldMilestoneDoneMonth,
-	FieldPmArea,
-	FieldPmYearTarget,
-	FieldPmMonthTarget,
-	FieldPmYearActual,
-	FieldPmMonthActual,
-	FieldPmTotal,
-	FieldPmYesterday,
+	FieldRevenueKpi,
+	FieldRevenueCurrentYearCompleted,
+	FieldRevenueAccumulatedCompleted,
+	FieldPayDate,
+	FieldOwnerVoCount,
+	FieldContractorVoCount,
+	FieldAccumulateDeduction,
+	FieldSubcontractorVaCount,
+	FieldContractSupplementaryCount,
+	FieldRepairFee,
 	FieldUnitInventoryTotal,
 	FieldUnitComponentTotal,
 	FieldUnitComponentProduction,
 	FieldUnitComponentInstallation,
-	FieldMaterialLoss,
-	FieldDesignRatedWeight,
-	FieldProcessingWeight,
-	FieldItemStockWeight,
-	FieldPalletsInStock,
-	FieldPartsInStock,
-	FieldQualityScore,
-	FieldQualityRanking,
 	FieldBulkMaterialsTotalOrderQuantity,
 	FieldBulkMaterialsCompletedQuantity,
 	FieldBulkMaterialsUncompletedQuantity,
-	FieldPlanTotalCount,
-	FieldPlanOverdueCount,
-	FieldPlanOverdueMonthCount,
 	FieldDiagramBdFinishCount,
 	FieldDiagramBdTotalCount,
 	FieldDiagramConstructionFinishCount,
@@ -347,269 +170,59 @@ func ByCode(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCode, opts...).ToFunc()
 }
 
-// ByManager orders the results by the manager field.
-func ByManager(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldManager, opts...).ToFunc()
-}
-
-// ByName orders the results by the name field.
-func ByName(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldName, opts...).ToFunc()
-}
-
-// ByOwner orders the results by the owner field.
-func ByOwner(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldOwner, opts...).ToFunc()
-}
-
-// ByJzs orders the results by the jzs field.
-func ByJzs(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldJzs, opts...).ToFunc()
-}
-
-// ByMcn orders the results by the mcn field.
-func ByMcn(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldMcn, opts...).ToFunc()
-}
-
-// ByConsultant orders the results by the consultant field.
-func ByConsultant(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldConsultant, opts...).ToFunc()
-}
-
-// ByAreas orders the results by the areas field.
-func ByAreas(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldAreas, opts...).ToFunc()
-}
-
-// ByStartDate orders the results by the start_date field.
-func ByStartDate(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldStartDate, opts...).ToFunc()
-}
-
-// ByFsDate orders the results by the fs_date field.
-func ByFsDate(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldFsDate, opts...).ToFunc()
-}
-
-// ByOpDate orders the results by the op_date field.
-func ByOpDate(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldOpDate, opts...).ToFunc()
-}
-
-// ByEndDate orders the results by the end_date field.
-func ByEndDate(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldEndDate, opts...).ToFunc()
-}
-
-// ByMntyr orders the results by the mntyr field.
-func ByMntyr(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldMntyr, opts...).ToFunc()
-}
-
-// ByConType orders the results by the con_type field.
-func ByConType(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldConType, opts...).ToFunc()
-}
-
 // ByIsFinished orders the results by the is_finished field.
 func ByIsFinished(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldIsFinished, opts...).ToFunc()
 }
 
-// ByCje orders the results by the cje field.
-func ByCje(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldCje, opts...).ToFunc()
+// ByRevenueKpi orders the results by the revenue_kpi field.
+func ByRevenueKpi(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldRevenueKpi, opts...).ToFunc()
 }
 
-// ByYye orders the results by the yye field.
-func ByYye(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldYye, opts...).ToFunc()
+// ByRevenueCurrentYearCompleted orders the results by the revenue_current_year_completed field.
+func ByRevenueCurrentYearCompleted(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldRevenueCurrentYearCompleted, opts...).ToFunc()
 }
 
-// ByXjl orders the results by the xjl field.
-func ByXjl(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldXjl, opts...).ToFunc()
+// ByRevenueAccumulatedCompleted orders the results by the revenue_accumulated_completed field.
+func ByRevenueAccumulatedCompleted(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldRevenueAccumulatedCompleted, opts...).ToFunc()
 }
 
-// ByXmglfYs orders the results by the xmglf_ys field.
-func ByXmglfYs(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldXmglfYs, opts...).ToFunc()
+// ByPayDate orders the results by the pay_date field.
+func ByPayDate(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldPayDate, opts...).ToFunc()
 }
 
-// ByXmglfLj orders the results by the xmglf_lj field.
-func ByXmglfLj(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldXmglfLj, opts...).ToFunc()
+// ByOwnerVoCount orders the results by the owner_vo_count field.
+func ByOwnerVoCount(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldOwnerVoCount, opts...).ToFunc()
 }
 
-// ByXmsjf orders the results by the xmsjf field.
-func ByXmsjf(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldXmsjf, opts...).ToFunc()
+// ByContractorVoCount orders the results by the contractor_vo_count field.
+func ByContractorVoCount(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldContractorVoCount, opts...).ToFunc()
 }
 
-// ByXmfzr orders the results by the xmfzr field.
-func ByXmfzr(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldXmfzr, opts...).ToFunc()
+// ByAccumulateDeduction orders the results by the accumulate_deduction field.
+func ByAccumulateDeduction(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldAccumulateDeduction, opts...).ToFunc()
 }
 
-// ByOwnerApplyAmount orders the results by the owner_apply_amount field.
-func ByOwnerApplyAmount(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldOwnerApplyAmount, opts...).ToFunc()
+// BySubcontractorVaCount orders the results by the subcontractor_va_count field.
+func BySubcontractorVaCount(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldSubcontractorVaCount, opts...).ToFunc()
 }
 
-// ByOwnerApplyCount orders the results by the owner_apply_count field.
-func ByOwnerApplyCount(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldOwnerApplyCount, opts...).ToFunc()
+// ByContractSupplementaryCount orders the results by the contract_supplementary_count field.
+func ByContractSupplementaryCount(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldContractSupplementaryCount, opts...).ToFunc()
 }
 
-// ByOwnerApproveAmount orders the results by the owner_approve_amount field.
-func ByOwnerApproveAmount(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldOwnerApproveAmount, opts...).ToFunc()
-}
-
-// ByOwnerApproveCount orders the results by the owner_approve_count field.
-func ByOwnerApproveCount(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldOwnerApproveCount, opts...).ToFunc()
-}
-
-// ByContractorApplyAmount orders the results by the contractor_apply_amount field.
-func ByContractorApplyAmount(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldContractorApplyAmount, opts...).ToFunc()
-}
-
-// ByContractorApplyCount orders the results by the contractor_apply_count field.
-func ByContractorApplyCount(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldContractorApplyCount, opts...).ToFunc()
-}
-
-// ByContractorApproveAmount orders the results by the contractor_approve_amount field.
-func ByContractorApproveAmount(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldContractorApproveAmount, opts...).ToFunc()
-}
-
-// ByContractorApproveCount orders the results by the contractor_approve_count field.
-func ByContractorApproveCount(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldContractorApproveCount, opts...).ToFunc()
-}
-
-// ByInstallProgress orders the results by the install_progress field.
-func ByInstallProgress(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldInstallProgress, opts...).ToFunc()
-}
-
-// ByEffectiveContractAmount orders the results by the effective_contract_amount field.
-func ByEffectiveContractAmount(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldEffectiveContractAmount, opts...).ToFunc()
-}
-
-// ByVaApplyAmount orders the results by the va_apply_amount field.
-func ByVaApplyAmount(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldVaApplyAmount, opts...).ToFunc()
-}
-
-// ByVaApproveAmount orders the results by the va_approve_amount field.
-func ByVaApproveAmount(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldVaApproveAmount, opts...).ToFunc()
-}
-
-// ByAccumulatedStatutoryDeductions orders the results by the accumulated_statutory_deductions field.
-func ByAccumulatedStatutoryDeductions(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldAccumulatedStatutoryDeductions, opts...).ToFunc()
-}
-
-// ByAccumulatedNonStatutoryDeductions orders the results by the accumulated_non_statutory_deductions field.
-func ByAccumulatedNonStatutoryDeductions(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldAccumulatedNonStatutoryDeductions, opts...).ToFunc()
-}
-
-// ByAccumulatedStatutoryDeductionsPeriod orders the results by the accumulated_statutory_deductions_period field.
-func ByAccumulatedStatutoryDeductionsPeriod(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldAccumulatedStatutoryDeductionsPeriod, opts...).ToFunc()
-}
-
-// ByAccumulatedNonStatutoryDeductionsPeriod orders the results by the accumulated_non_statutory_deductions_period field.
-func ByAccumulatedNonStatutoryDeductionsPeriod(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldAccumulatedNonStatutoryDeductionsPeriod, opts...).ToFunc()
-}
-
-// ByTotalContractAmount orders the results by the total_contract_amount field.
-func ByTotalContractAmount(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldTotalContractAmount, opts...).ToFunc()
-}
-
-// ByAluminumPlateBudgetPercentage orders the results by the aluminum_plate_budget_percentage field.
-func ByAluminumPlateBudgetPercentage(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldAluminumPlateBudgetPercentage, opts...).ToFunc()
-}
-
-// ByAluminumBudgetPercentage orders the results by the aluminum_budget_percentage field.
-func ByAluminumBudgetPercentage(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldAluminumBudgetPercentage, opts...).ToFunc()
-}
-
-// ByGlassBudgetPercentage orders the results by the glass_budget_percentage field.
-func ByGlassBudgetPercentage(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldGlassBudgetPercentage, opts...).ToFunc()
-}
-
-// ByIronBudgetPercentage orders the results by the iron_budget_percentage field.
-func ByIronBudgetPercentage(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldIronBudgetPercentage, opts...).ToFunc()
-}
-
-// ByMilestonePlanYear orders the results by the milestone_plan_year field.
-func ByMilestonePlanYear(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldMilestonePlanYear, opts...).ToFunc()
-}
-
-// ByMilestonePlanMonth orders the results by the milestone_plan_month field.
-func ByMilestonePlanMonth(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldMilestonePlanMonth, opts...).ToFunc()
-}
-
-// ByMilestoneDoneYear orders the results by the milestone_done_year field.
-func ByMilestoneDoneYear(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldMilestoneDoneYear, opts...).ToFunc()
-}
-
-// ByMilestoneDoneMonth orders the results by the milestone_done_month field.
-func ByMilestoneDoneMonth(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldMilestoneDoneMonth, opts...).ToFunc()
-}
-
-// ByPmArea orders the results by the pm_area field.
-func ByPmArea(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldPmArea, opts...).ToFunc()
-}
-
-// ByPmYearTarget orders the results by the pm_year_target field.
-func ByPmYearTarget(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldPmYearTarget, opts...).ToFunc()
-}
-
-// ByPmMonthTarget orders the results by the pm_month_target field.
-func ByPmMonthTarget(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldPmMonthTarget, opts...).ToFunc()
-}
-
-// ByPmYearActual orders the results by the pm_year_actual field.
-func ByPmYearActual(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldPmYearActual, opts...).ToFunc()
-}
-
-// ByPmMonthActual orders the results by the pm_month_actual field.
-func ByPmMonthActual(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldPmMonthActual, opts...).ToFunc()
-}
-
-// ByPmTotal orders the results by the pm_total field.
-func ByPmTotal(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldPmTotal, opts...).ToFunc()
-}
-
-// ByPmYesterday orders the results by the pm_yesterday field.
-func ByPmYesterday(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldPmYesterday, opts...).ToFunc()
+// ByRepairFee orders the results by the repair_fee field.
+func ByRepairFee(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldRepairFee, opts...).ToFunc()
 }
 
 // ByUnitInventoryTotal orders the results by the unit_inventory_total field.
@@ -632,46 +245,6 @@ func ByUnitComponentInstallation(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldUnitComponentInstallation, opts...).ToFunc()
 }
 
-// ByMaterialLoss orders the results by the material_loss field.
-func ByMaterialLoss(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldMaterialLoss, opts...).ToFunc()
-}
-
-// ByDesignRatedWeight orders the results by the design_rated_weight field.
-func ByDesignRatedWeight(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldDesignRatedWeight, opts...).ToFunc()
-}
-
-// ByProcessingWeight orders the results by the processing_weight field.
-func ByProcessingWeight(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldProcessingWeight, opts...).ToFunc()
-}
-
-// ByItemStockWeight orders the results by the item_stock_weight field.
-func ByItemStockWeight(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldItemStockWeight, opts...).ToFunc()
-}
-
-// ByPalletsInStock orders the results by the pallets_in_stock field.
-func ByPalletsInStock(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldPalletsInStock, opts...).ToFunc()
-}
-
-// ByPartsInStock orders the results by the parts_in_stock field.
-func ByPartsInStock(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldPartsInStock, opts...).ToFunc()
-}
-
-// ByQualityScore orders the results by the quality_score field.
-func ByQualityScore(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldQualityScore, opts...).ToFunc()
-}
-
-// ByQualityRanking orders the results by the quality_ranking field.
-func ByQualityRanking(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldQualityRanking, opts...).ToFunc()
-}
-
 // ByBulkMaterialsTotalOrderQuantity orders the results by the bulk_materials_total_order_quantity field.
 func ByBulkMaterialsTotalOrderQuantity(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldBulkMaterialsTotalOrderQuantity, opts...).ToFunc()
@@ -685,21 +258,6 @@ func ByBulkMaterialsCompletedQuantity(opts ...sql.OrderTermOption) OrderOption {
 // ByBulkMaterialsUncompletedQuantity orders the results by the bulk_materials_uncompleted_quantity field.
 func ByBulkMaterialsUncompletedQuantity(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldBulkMaterialsUncompletedQuantity, opts...).ToFunc()
-}
-
-// ByPlanTotalCount orders the results by the plan_total_count field.
-func ByPlanTotalCount(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldPlanTotalCount, opts...).ToFunc()
-}
-
-// ByPlanOverdueCount orders the results by the plan_overdue_count field.
-func ByPlanOverdueCount(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldPlanOverdueCount, opts...).ToFunc()
-}
-
-// ByPlanOverdueMonthCount orders the results by the plan_overdue_month_count field.
-func ByPlanOverdueMonthCount(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldPlanOverdueMonthCount, opts...).ToFunc()
 }
 
 // ByDiagramBdFinishCount orders the results by the diagram_bd_finish_count field.
@@ -742,34 +300,6 @@ func ByDiagramCApprovalRatioDenominator(opts ...sql.OrderTermOption) OrderOption
 	return sql.OrderByField(FieldDiagramCApprovalRatioDenominator, opts...).ToFunc()
 }
 
-// ByVosCount orders the results by vos count.
-func ByVosCount(opts ...sql.OrderTermOption) OrderOption {
-	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborsCount(s, newVosStep(), opts...)
-	}
-}
-
-// ByVos orders the results by vos terms.
-func ByVos(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
-	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newVosStep(), append([]sql.OrderTerm{term}, terms...)...)
-	}
-}
-
-// ByProjectStaffsCount orders the results by project_staffs count.
-func ByProjectStaffsCount(opts ...sql.OrderTermOption) OrderOption {
-	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborsCount(s, newProjectStaffsStep(), opts...)
-	}
-}
-
-// ByProjectStaffs orders the results by project_staffs terms.
-func ByProjectStaffs(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
-	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newProjectStaffsStep(), append([]sql.OrderTerm{term}, terms...)...)
-	}
-}
-
 // ByUsersCount orders the results by users count.
 func ByUsersCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
@@ -782,20 +312,6 @@ func ByUsers(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborTerms(s, newUsersStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
-}
-func newVosStep() *sqlgraph.Step {
-	return sqlgraph.NewStep(
-		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(VosInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.O2M, false, VosTable, VosColumn),
-	)
-}
-func newProjectStaffsStep() *sqlgraph.Step {
-	return sqlgraph.NewStep(
-		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(ProjectStaffsInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.O2M, false, ProjectStaffsTable, ProjectStaffsColumn),
-	)
 }
 func newUsersStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(

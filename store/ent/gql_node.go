@@ -15,8 +15,6 @@ import (
 	"cscd-bds/store/ent/plot"
 	"cscd-bds/store/ent/potentialtender"
 	"cscd-bds/store/ent/project"
-	"cscd-bds/store/ent/projectstaff"
-	"cscd-bds/store/ent/projectvo"
 	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/tender"
@@ -90,16 +88,6 @@ var projectImplementors = []string{"Project", "Node"}
 
 // IsNode implements the Node interface check for GQLGen.
 func (*Project) IsNode() {}
-
-var projectstaffImplementors = []string{"ProjectStaff", "Node"}
-
-// IsNode implements the Node interface check for GQLGen.
-func (*ProjectStaff) IsNode() {}
-
-var projectvoImplementors = []string{"ProjectVO", "Node"}
-
-// IsNode implements the Node interface check for GQLGen.
-func (*ProjectVO) IsNode() {}
 
 var provinceImplementors = []string{"Province", "Node"}
 
@@ -328,32 +316,6 @@ func (c *Client) noder(ctx context.Context, table string, id xid.ID) (Noder, err
 			Where(project.ID(uid))
 		if fc := graphql.GetFieldContext(ctx); fc != nil {
 			if err := query.collectField(ctx, true, graphql.GetOperationContext(ctx), fc.Field, nil, projectImplementors...); err != nil {
-				return nil, err
-			}
-		}
-		return query.Only(ctx)
-	case projectstaff.Table:
-		var uid xid.ID
-		if err := uid.UnmarshalGQL(id); err != nil {
-			return nil, err
-		}
-		query := c.ProjectStaff.Query().
-			Where(projectstaff.ID(uid))
-		if fc := graphql.GetFieldContext(ctx); fc != nil {
-			if err := query.collectField(ctx, true, graphql.GetOperationContext(ctx), fc.Field, nil, projectstaffImplementors...); err != nil {
-				return nil, err
-			}
-		}
-		return query.Only(ctx)
-	case projectvo.Table:
-		var uid xid.ID
-		if err := uid.UnmarshalGQL(id); err != nil {
-			return nil, err
-		}
-		query := c.ProjectVO.Query().
-			Where(projectvo.ID(uid))
-		if fc := graphql.GetFieldContext(ctx); fc != nil {
-			if err := query.collectField(ctx, true, graphql.GetOperationContext(ctx), fc.Field, nil, projectvoImplementors...); err != nil {
 				return nil, err
 			}
 		}
@@ -673,38 +635,6 @@ func (c *Client) noders(ctx context.Context, table string, ids []xid.ID) ([]Node
 		query := c.Project.Query().
 			Where(project.IDIn(ids...))
 		query, err := query.CollectFields(ctx, projectImplementors...)
-		if err != nil {
-			return nil, err
-		}
-		nodes, err := query.All(ctx)
-		if err != nil {
-			return nil, err
-		}
-		for _, node := range nodes {
-			for _, noder := range idmap[node.ID] {
-				*noder = node
-			}
-		}
-	case projectstaff.Table:
-		query := c.ProjectStaff.Query().
-			Where(projectstaff.IDIn(ids...))
-		query, err := query.CollectFields(ctx, projectstaffImplementors...)
-		if err != nil {
-			return nil, err
-		}
-		nodes, err := query.All(ctx)
-		if err != nil {
-			return nil, err
-		}
-		for _, node := range nodes {
-			for _, noder := range idmap[node.ID] {
-				*noder = node
-			}
-		}
-	case projectvo.Table:
-		query := c.ProjectVO.Query().
-			Where(projectvo.IDIn(ids...))
-		query, err := query.CollectFields(ctx, projectvoImplementors...)
 		if err != nil {
 			return nil, err
 		}

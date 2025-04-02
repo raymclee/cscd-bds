@@ -479,14 +479,15 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
             iconStyle: AMapUI.SimpleMarker.getBuiltInIconStyles("default"),
             label: {
               content: `
-            <div class="w-[10rem] rounded-lg px-1 py-0.5 line-clamp-2">
-              <div class="text-sm font-medium text-center text-wrap">${plot?.name}</div>
-            </div>
-            `,
-              offset: new AMap.Pixel(-100, 30),
+                <div class="w-[10rem] rounded-lg px-1 py-0.5 line-clamp-2">
+                  <div class="text-sm font-medium text-center text-wrap">${plot?.name}</div>
+                </div>
+                `,
+              offset: new AMap.Pixel(-210, -10),
             },
             map,
             position: polygon.getBounds()?.getCenter(),
+            zooms: [10, 20],
           });
 
           mapCircles.push(polygon);

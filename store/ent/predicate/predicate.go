@@ -39,12 +39,6 @@ type PotentialTender func(*sql.Selector)
 // Project is the predicate function for project builders.
 type Project func(*sql.Selector)
 
-// ProjectStaff is the predicate function for projectstaff builders.
-type ProjectStaff func(*sql.Selector)
-
-// ProjectVO is the predicate function for projectvo builders.
-type ProjectVO func(*sql.Selector)
-
 // Province is the predicate function for province builders.
 type Province func(*sql.Selector)
 

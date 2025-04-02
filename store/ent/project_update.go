@@ -6,8 +6,6 @@ import (
 	"context"
 	"cscd-bds/store/ent/predicate"
 	"cscd-bds/store/ent/project"
-	"cscd-bds/store/ent/projectstaff"
-	"cscd-bds/store/ent/projectvo"
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/user"
 	"errors"
@@ -52,266 +50,6 @@ func (pu *ProjectUpdate) SetNillableCode(s *string) *ProjectUpdate {
 	return pu
 }
 
-// SetManager sets the "manager" field.
-func (pu *ProjectUpdate) SetManager(s string) *ProjectUpdate {
-	pu.mutation.SetManager(s)
-	return pu
-}
-
-// SetNillableManager sets the "manager" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableManager(s *string) *ProjectUpdate {
-	if s != nil {
-		pu.SetManager(*s)
-	}
-	return pu
-}
-
-// ClearManager clears the value of the "manager" field.
-func (pu *ProjectUpdate) ClearManager() *ProjectUpdate {
-	pu.mutation.ClearManager()
-	return pu
-}
-
-// SetName sets the "name" field.
-func (pu *ProjectUpdate) SetName(s string) *ProjectUpdate {
-	pu.mutation.SetName(s)
-	return pu
-}
-
-// SetNillableName sets the "name" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableName(s *string) *ProjectUpdate {
-	if s != nil {
-		pu.SetName(*s)
-	}
-	return pu
-}
-
-// ClearName clears the value of the "name" field.
-func (pu *ProjectUpdate) ClearName() *ProjectUpdate {
-	pu.mutation.ClearName()
-	return pu
-}
-
-// SetOwner sets the "owner" field.
-func (pu *ProjectUpdate) SetOwner(s string) *ProjectUpdate {
-	pu.mutation.SetOwner(s)
-	return pu
-}
-
-// SetNillableOwner sets the "owner" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableOwner(s *string) *ProjectUpdate {
-	if s != nil {
-		pu.SetOwner(*s)
-	}
-	return pu
-}
-
-// ClearOwner clears the value of the "owner" field.
-func (pu *ProjectUpdate) ClearOwner() *ProjectUpdate {
-	pu.mutation.ClearOwner()
-	return pu
-}
-
-// SetJzs sets the "jzs" field.
-func (pu *ProjectUpdate) SetJzs(s string) *ProjectUpdate {
-	pu.mutation.SetJzs(s)
-	return pu
-}
-
-// SetNillableJzs sets the "jzs" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableJzs(s *string) *ProjectUpdate {
-	if s != nil {
-		pu.SetJzs(*s)
-	}
-	return pu
-}
-
-// ClearJzs clears the value of the "jzs" field.
-func (pu *ProjectUpdate) ClearJzs() *ProjectUpdate {
-	pu.mutation.ClearJzs()
-	return pu
-}
-
-// SetMcn sets the "mcn" field.
-func (pu *ProjectUpdate) SetMcn(s string) *ProjectUpdate {
-	pu.mutation.SetMcn(s)
-	return pu
-}
-
-// SetNillableMcn sets the "mcn" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableMcn(s *string) *ProjectUpdate {
-	if s != nil {
-		pu.SetMcn(*s)
-	}
-	return pu
-}
-
-// ClearMcn clears the value of the "mcn" field.
-func (pu *ProjectUpdate) ClearMcn() *ProjectUpdate {
-	pu.mutation.ClearMcn()
-	return pu
-}
-
-// SetConsultant sets the "consultant" field.
-func (pu *ProjectUpdate) SetConsultant(s string) *ProjectUpdate {
-	pu.mutation.SetConsultant(s)
-	return pu
-}
-
-// SetNillableConsultant sets the "consultant" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableConsultant(s *string) *ProjectUpdate {
-	if s != nil {
-		pu.SetConsultant(*s)
-	}
-	return pu
-}
-
-// ClearConsultant clears the value of the "consultant" field.
-func (pu *ProjectUpdate) ClearConsultant() *ProjectUpdate {
-	pu.mutation.ClearConsultant()
-	return pu
-}
-
-// SetAreas sets the "areas" field.
-func (pu *ProjectUpdate) SetAreas(s string) *ProjectUpdate {
-	pu.mutation.SetAreas(s)
-	return pu
-}
-
-// SetNillableAreas sets the "areas" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableAreas(s *string) *ProjectUpdate {
-	if s != nil {
-		pu.SetAreas(*s)
-	}
-	return pu
-}
-
-// ClearAreas clears the value of the "areas" field.
-func (pu *ProjectUpdate) ClearAreas() *ProjectUpdate {
-	pu.mutation.ClearAreas()
-	return pu
-}
-
-// SetStartDate sets the "start_date" field.
-func (pu *ProjectUpdate) SetStartDate(t time.Time) *ProjectUpdate {
-	pu.mutation.SetStartDate(t)
-	return pu
-}
-
-// SetNillableStartDate sets the "start_date" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableStartDate(t *time.Time) *ProjectUpdate {
-	if t != nil {
-		pu.SetStartDate(*t)
-	}
-	return pu
-}
-
-// ClearStartDate clears the value of the "start_date" field.
-func (pu *ProjectUpdate) ClearStartDate() *ProjectUpdate {
-	pu.mutation.ClearStartDate()
-	return pu
-}
-
-// SetFsDate sets the "fs_date" field.
-func (pu *ProjectUpdate) SetFsDate(t time.Time) *ProjectUpdate {
-	pu.mutation.SetFsDate(t)
-	return pu
-}
-
-// SetNillableFsDate sets the "fs_date" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableFsDate(t *time.Time) *ProjectUpdate {
-	if t != nil {
-		pu.SetFsDate(*t)
-	}
-	return pu
-}
-
-// ClearFsDate clears the value of the "fs_date" field.
-func (pu *ProjectUpdate) ClearFsDate() *ProjectUpdate {
-	pu.mutation.ClearFsDate()
-	return pu
-}
-
-// SetOpDate sets the "op_date" field.
-func (pu *ProjectUpdate) SetOpDate(t time.Time) *ProjectUpdate {
-	pu.mutation.SetOpDate(t)
-	return pu
-}
-
-// SetNillableOpDate sets the "op_date" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableOpDate(t *time.Time) *ProjectUpdate {
-	if t != nil {
-		pu.SetOpDate(*t)
-	}
-	return pu
-}
-
-// ClearOpDate clears the value of the "op_date" field.
-func (pu *ProjectUpdate) ClearOpDate() *ProjectUpdate {
-	pu.mutation.ClearOpDate()
-	return pu
-}
-
-// SetEndDate sets the "end_date" field.
-func (pu *ProjectUpdate) SetEndDate(t time.Time) *ProjectUpdate {
-	pu.mutation.SetEndDate(t)
-	return pu
-}
-
-// SetNillableEndDate sets the "end_date" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableEndDate(t *time.Time) *ProjectUpdate {
-	if t != nil {
-		pu.SetEndDate(*t)
-	}
-	return pu
-}
-
-// ClearEndDate clears the value of the "end_date" field.
-func (pu *ProjectUpdate) ClearEndDate() *ProjectUpdate {
-	pu.mutation.ClearEndDate()
-	return pu
-}
-
-// SetMntyr sets the "mntyr" field.
-func (pu *ProjectUpdate) SetMntyr(s string) *ProjectUpdate {
-	pu.mutation.SetMntyr(s)
-	return pu
-}
-
-// SetNillableMntyr sets the "mntyr" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableMntyr(s *string) *ProjectUpdate {
-	if s != nil {
-		pu.SetMntyr(*s)
-	}
-	return pu
-}
-
-// ClearMntyr clears the value of the "mntyr" field.
-func (pu *ProjectUpdate) ClearMntyr() *ProjectUpdate {
-	pu.mutation.ClearMntyr()
-	return pu
-}
-
-// SetConType sets the "con_type" field.
-func (pu *ProjectUpdate) SetConType(s string) *ProjectUpdate {
-	pu.mutation.SetConType(s)
-	return pu
-}
-
-// SetNillableConType sets the "con_type" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableConType(s *string) *ProjectUpdate {
-	if s != nil {
-		pu.SetConType(*s)
-	}
-	return pu
-}
-
-// ClearConType clears the value of the "con_type" field.
-func (pu *ProjectUpdate) ClearConType() *ProjectUpdate {
-	pu.mutation.ClearConType()
-	return pu
-}
-
 // SetIsFinished sets the "is_finished" field.
 func (pu *ProjectUpdate) SetIsFinished(b bool) *ProjectUpdate {
 	pu.mutation.SetIsFinished(b)
@@ -326,1049 +64,266 @@ func (pu *ProjectUpdate) SetNillableIsFinished(b *bool) *ProjectUpdate {
 	return pu
 }
 
-// SetCje sets the "cje" field.
-func (pu *ProjectUpdate) SetCje(f float64) *ProjectUpdate {
-	pu.mutation.ResetCje()
-	pu.mutation.SetCje(f)
+// SetRevenueKpi sets the "revenue_kpi" field.
+func (pu *ProjectUpdate) SetRevenueKpi(f float64) *ProjectUpdate {
+	pu.mutation.ResetRevenueKpi()
+	pu.mutation.SetRevenueKpi(f)
 	return pu
 }
 
-// SetNillableCje sets the "cje" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableCje(f *float64) *ProjectUpdate {
+// SetNillableRevenueKpi sets the "revenue_kpi" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableRevenueKpi(f *float64) *ProjectUpdate {
 	if f != nil {
-		pu.SetCje(*f)
+		pu.SetRevenueKpi(*f)
 	}
 	return pu
 }
 
-// AddCje adds f to the "cje" field.
-func (pu *ProjectUpdate) AddCje(f float64) *ProjectUpdate {
-	pu.mutation.AddCje(f)
+// AddRevenueKpi adds f to the "revenue_kpi" field.
+func (pu *ProjectUpdate) AddRevenueKpi(f float64) *ProjectUpdate {
+	pu.mutation.AddRevenueKpi(f)
 	return pu
 }
 
-// ClearCje clears the value of the "cje" field.
-func (pu *ProjectUpdate) ClearCje() *ProjectUpdate {
-	pu.mutation.ClearCje()
+// ClearRevenueKpi clears the value of the "revenue_kpi" field.
+func (pu *ProjectUpdate) ClearRevenueKpi() *ProjectUpdate {
+	pu.mutation.ClearRevenueKpi()
 	return pu
 }
 
-// SetYye sets the "yye" field.
-func (pu *ProjectUpdate) SetYye(f float64) *ProjectUpdate {
-	pu.mutation.ResetYye()
-	pu.mutation.SetYye(f)
+// SetRevenueCurrentYearCompleted sets the "revenue_current_year_completed" field.
+func (pu *ProjectUpdate) SetRevenueCurrentYearCompleted(f float64) *ProjectUpdate {
+	pu.mutation.ResetRevenueCurrentYearCompleted()
+	pu.mutation.SetRevenueCurrentYearCompleted(f)
 	return pu
 }
 
-// SetNillableYye sets the "yye" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableYye(f *float64) *ProjectUpdate {
+// SetNillableRevenueCurrentYearCompleted sets the "revenue_current_year_completed" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableRevenueCurrentYearCompleted(f *float64) *ProjectUpdate {
 	if f != nil {
-		pu.SetYye(*f)
+		pu.SetRevenueCurrentYearCompleted(*f)
 	}
 	return pu
 }
 
-// AddYye adds f to the "yye" field.
-func (pu *ProjectUpdate) AddYye(f float64) *ProjectUpdate {
-	pu.mutation.AddYye(f)
+// AddRevenueCurrentYearCompleted adds f to the "revenue_current_year_completed" field.
+func (pu *ProjectUpdate) AddRevenueCurrentYearCompleted(f float64) *ProjectUpdate {
+	pu.mutation.AddRevenueCurrentYearCompleted(f)
 	return pu
 }
 
-// ClearYye clears the value of the "yye" field.
-func (pu *ProjectUpdate) ClearYye() *ProjectUpdate {
-	pu.mutation.ClearYye()
+// ClearRevenueCurrentYearCompleted clears the value of the "revenue_current_year_completed" field.
+func (pu *ProjectUpdate) ClearRevenueCurrentYearCompleted() *ProjectUpdate {
+	pu.mutation.ClearRevenueCurrentYearCompleted()
 	return pu
 }
 
-// SetXjl sets the "xjl" field.
-func (pu *ProjectUpdate) SetXjl(f float64) *ProjectUpdate {
-	pu.mutation.ResetXjl()
-	pu.mutation.SetXjl(f)
+// SetRevenueAccumulatedCompleted sets the "revenue_accumulated_completed" field.
+func (pu *ProjectUpdate) SetRevenueAccumulatedCompleted(f float64) *ProjectUpdate {
+	pu.mutation.ResetRevenueAccumulatedCompleted()
+	pu.mutation.SetRevenueAccumulatedCompleted(f)
 	return pu
 }
 
-// SetNillableXjl sets the "xjl" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableXjl(f *float64) *ProjectUpdate {
+// SetNillableRevenueAccumulatedCompleted sets the "revenue_accumulated_completed" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableRevenueAccumulatedCompleted(f *float64) *ProjectUpdate {
 	if f != nil {
-		pu.SetXjl(*f)
+		pu.SetRevenueAccumulatedCompleted(*f)
 	}
 	return pu
 }
 
-// AddXjl adds f to the "xjl" field.
-func (pu *ProjectUpdate) AddXjl(f float64) *ProjectUpdate {
-	pu.mutation.AddXjl(f)
+// AddRevenueAccumulatedCompleted adds f to the "revenue_accumulated_completed" field.
+func (pu *ProjectUpdate) AddRevenueAccumulatedCompleted(f float64) *ProjectUpdate {
+	pu.mutation.AddRevenueAccumulatedCompleted(f)
 	return pu
 }
 
-// ClearXjl clears the value of the "xjl" field.
-func (pu *ProjectUpdate) ClearXjl() *ProjectUpdate {
-	pu.mutation.ClearXjl()
+// ClearRevenueAccumulatedCompleted clears the value of the "revenue_accumulated_completed" field.
+func (pu *ProjectUpdate) ClearRevenueAccumulatedCompleted() *ProjectUpdate {
+	pu.mutation.ClearRevenueAccumulatedCompleted()
 	return pu
 }
 
-// SetXmglfYs sets the "xmglf_ys" field.
-func (pu *ProjectUpdate) SetXmglfYs(f float64) *ProjectUpdate {
-	pu.mutation.ResetXmglfYs()
-	pu.mutation.SetXmglfYs(f)
+// SetPayDate sets the "pay_date" field.
+func (pu *ProjectUpdate) SetPayDate(t time.Time) *ProjectUpdate {
+	pu.mutation.SetPayDate(t)
 	return pu
 }
 
-// SetNillableXmglfYs sets the "xmglf_ys" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableXmglfYs(f *float64) *ProjectUpdate {
-	if f != nil {
-		pu.SetXmglfYs(*f)
+// SetNillablePayDate sets the "pay_date" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillablePayDate(t *time.Time) *ProjectUpdate {
+	if t != nil {
+		pu.SetPayDate(*t)
 	}
 	return pu
 }
 
-// AddXmglfYs adds f to the "xmglf_ys" field.
-func (pu *ProjectUpdate) AddXmglfYs(f float64) *ProjectUpdate {
-	pu.mutation.AddXmglfYs(f)
+// ClearPayDate clears the value of the "pay_date" field.
+func (pu *ProjectUpdate) ClearPayDate() *ProjectUpdate {
+	pu.mutation.ClearPayDate()
 	return pu
 }
 
-// ClearXmglfYs clears the value of the "xmglf_ys" field.
-func (pu *ProjectUpdate) ClearXmglfYs() *ProjectUpdate {
-	pu.mutation.ClearXmglfYs()
+// SetOwnerVoCount sets the "owner_vo_count" field.
+func (pu *ProjectUpdate) SetOwnerVoCount(i int) *ProjectUpdate {
+	pu.mutation.ResetOwnerVoCount()
+	pu.mutation.SetOwnerVoCount(i)
 	return pu
 }
 
-// SetXmglfLj sets the "xmglf_lj" field.
-func (pu *ProjectUpdate) SetXmglfLj(f float64) *ProjectUpdate {
-	pu.mutation.ResetXmglfLj()
-	pu.mutation.SetXmglfLj(f)
-	return pu
-}
-
-// SetNillableXmglfLj sets the "xmglf_lj" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableXmglfLj(f *float64) *ProjectUpdate {
-	if f != nil {
-		pu.SetXmglfLj(*f)
-	}
-	return pu
-}
-
-// AddXmglfLj adds f to the "xmglf_lj" field.
-func (pu *ProjectUpdate) AddXmglfLj(f float64) *ProjectUpdate {
-	pu.mutation.AddXmglfLj(f)
-	return pu
-}
-
-// ClearXmglfLj clears the value of the "xmglf_lj" field.
-func (pu *ProjectUpdate) ClearXmglfLj() *ProjectUpdate {
-	pu.mutation.ClearXmglfLj()
-	return pu
-}
-
-// SetXmsjf sets the "xmsjf" field.
-func (pu *ProjectUpdate) SetXmsjf(f float64) *ProjectUpdate {
-	pu.mutation.ResetXmsjf()
-	pu.mutation.SetXmsjf(f)
-	return pu
-}
-
-// SetNillableXmsjf sets the "xmsjf" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableXmsjf(f *float64) *ProjectUpdate {
-	if f != nil {
-		pu.SetXmsjf(*f)
-	}
-	return pu
-}
-
-// AddXmsjf adds f to the "xmsjf" field.
-func (pu *ProjectUpdate) AddXmsjf(f float64) *ProjectUpdate {
-	pu.mutation.AddXmsjf(f)
-	return pu
-}
-
-// ClearXmsjf clears the value of the "xmsjf" field.
-func (pu *ProjectUpdate) ClearXmsjf() *ProjectUpdate {
-	pu.mutation.ClearXmsjf()
-	return pu
-}
-
-// SetXmfzr sets the "xmfzr" field.
-func (pu *ProjectUpdate) SetXmfzr(s string) *ProjectUpdate {
-	pu.mutation.SetXmfzr(s)
-	return pu
-}
-
-// SetNillableXmfzr sets the "xmfzr" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableXmfzr(s *string) *ProjectUpdate {
-	if s != nil {
-		pu.SetXmfzr(*s)
-	}
-	return pu
-}
-
-// ClearXmfzr clears the value of the "xmfzr" field.
-func (pu *ProjectUpdate) ClearXmfzr() *ProjectUpdate {
-	pu.mutation.ClearXmfzr()
-	return pu
-}
-
-// SetOwnerApplyAmount sets the "owner_apply_amount" field.
-func (pu *ProjectUpdate) SetOwnerApplyAmount(f float64) *ProjectUpdate {
-	pu.mutation.ResetOwnerApplyAmount()
-	pu.mutation.SetOwnerApplyAmount(f)
-	return pu
-}
-
-// SetNillableOwnerApplyAmount sets the "owner_apply_amount" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableOwnerApplyAmount(f *float64) *ProjectUpdate {
-	if f != nil {
-		pu.SetOwnerApplyAmount(*f)
-	}
-	return pu
-}
-
-// AddOwnerApplyAmount adds f to the "owner_apply_amount" field.
-func (pu *ProjectUpdate) AddOwnerApplyAmount(f float64) *ProjectUpdate {
-	pu.mutation.AddOwnerApplyAmount(f)
-	return pu
-}
-
-// ClearOwnerApplyAmount clears the value of the "owner_apply_amount" field.
-func (pu *ProjectUpdate) ClearOwnerApplyAmount() *ProjectUpdate {
-	pu.mutation.ClearOwnerApplyAmount()
-	return pu
-}
-
-// SetOwnerApplyCount sets the "owner_apply_count" field.
-func (pu *ProjectUpdate) SetOwnerApplyCount(i int) *ProjectUpdate {
-	pu.mutation.ResetOwnerApplyCount()
-	pu.mutation.SetOwnerApplyCount(i)
-	return pu
-}
-
-// SetNillableOwnerApplyCount sets the "owner_apply_count" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableOwnerApplyCount(i *int) *ProjectUpdate {
+// SetNillableOwnerVoCount sets the "owner_vo_count" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableOwnerVoCount(i *int) *ProjectUpdate {
 	if i != nil {
-		pu.SetOwnerApplyCount(*i)
+		pu.SetOwnerVoCount(*i)
 	}
 	return pu
 }
 
-// AddOwnerApplyCount adds i to the "owner_apply_count" field.
-func (pu *ProjectUpdate) AddOwnerApplyCount(i int) *ProjectUpdate {
-	pu.mutation.AddOwnerApplyCount(i)
+// AddOwnerVoCount adds i to the "owner_vo_count" field.
+func (pu *ProjectUpdate) AddOwnerVoCount(i int) *ProjectUpdate {
+	pu.mutation.AddOwnerVoCount(i)
 	return pu
 }
 
-// ClearOwnerApplyCount clears the value of the "owner_apply_count" field.
-func (pu *ProjectUpdate) ClearOwnerApplyCount() *ProjectUpdate {
-	pu.mutation.ClearOwnerApplyCount()
+// ClearOwnerVoCount clears the value of the "owner_vo_count" field.
+func (pu *ProjectUpdate) ClearOwnerVoCount() *ProjectUpdate {
+	pu.mutation.ClearOwnerVoCount()
 	return pu
 }
 
-// SetOwnerApproveAmount sets the "owner_approve_amount" field.
-func (pu *ProjectUpdate) SetOwnerApproveAmount(f float64) *ProjectUpdate {
-	pu.mutation.ResetOwnerApproveAmount()
-	pu.mutation.SetOwnerApproveAmount(f)
+// SetContractorVoCount sets the "contractor_vo_count" field.
+func (pu *ProjectUpdate) SetContractorVoCount(i int) *ProjectUpdate {
+	pu.mutation.ResetContractorVoCount()
+	pu.mutation.SetContractorVoCount(i)
 	return pu
 }
 
-// SetNillableOwnerApproveAmount sets the "owner_approve_amount" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableOwnerApproveAmount(f *float64) *ProjectUpdate {
-	if f != nil {
-		pu.SetOwnerApproveAmount(*f)
-	}
-	return pu
-}
-
-// AddOwnerApproveAmount adds f to the "owner_approve_amount" field.
-func (pu *ProjectUpdate) AddOwnerApproveAmount(f float64) *ProjectUpdate {
-	pu.mutation.AddOwnerApproveAmount(f)
-	return pu
-}
-
-// ClearOwnerApproveAmount clears the value of the "owner_approve_amount" field.
-func (pu *ProjectUpdate) ClearOwnerApproveAmount() *ProjectUpdate {
-	pu.mutation.ClearOwnerApproveAmount()
-	return pu
-}
-
-// SetOwnerApproveCount sets the "owner_approve_count" field.
-func (pu *ProjectUpdate) SetOwnerApproveCount(i int) *ProjectUpdate {
-	pu.mutation.ResetOwnerApproveCount()
-	pu.mutation.SetOwnerApproveCount(i)
-	return pu
-}
-
-// SetNillableOwnerApproveCount sets the "owner_approve_count" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableOwnerApproveCount(i *int) *ProjectUpdate {
+// SetNillableContractorVoCount sets the "contractor_vo_count" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableContractorVoCount(i *int) *ProjectUpdate {
 	if i != nil {
-		pu.SetOwnerApproveCount(*i)
+		pu.SetContractorVoCount(*i)
 	}
 	return pu
 }
 
-// AddOwnerApproveCount adds i to the "owner_approve_count" field.
-func (pu *ProjectUpdate) AddOwnerApproveCount(i int) *ProjectUpdate {
-	pu.mutation.AddOwnerApproveCount(i)
+// AddContractorVoCount adds i to the "contractor_vo_count" field.
+func (pu *ProjectUpdate) AddContractorVoCount(i int) *ProjectUpdate {
+	pu.mutation.AddContractorVoCount(i)
 	return pu
 }
 
-// ClearOwnerApproveCount clears the value of the "owner_approve_count" field.
-func (pu *ProjectUpdate) ClearOwnerApproveCount() *ProjectUpdate {
-	pu.mutation.ClearOwnerApproveCount()
+// ClearContractorVoCount clears the value of the "contractor_vo_count" field.
+func (pu *ProjectUpdate) ClearContractorVoCount() *ProjectUpdate {
+	pu.mutation.ClearContractorVoCount()
 	return pu
 }
 
-// SetContractorApplyAmount sets the "contractor_apply_amount" field.
-func (pu *ProjectUpdate) SetContractorApplyAmount(f float64) *ProjectUpdate {
-	pu.mutation.ResetContractorApplyAmount()
-	pu.mutation.SetContractorApplyAmount(f)
+// SetAccumulateDeduction sets the "accumulate_deduction" field.
+func (pu *ProjectUpdate) SetAccumulateDeduction(f float64) *ProjectUpdate {
+	pu.mutation.ResetAccumulateDeduction()
+	pu.mutation.SetAccumulateDeduction(f)
 	return pu
 }
 
-// SetNillableContractorApplyAmount sets the "contractor_apply_amount" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableContractorApplyAmount(f *float64) *ProjectUpdate {
+// SetNillableAccumulateDeduction sets the "accumulate_deduction" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableAccumulateDeduction(f *float64) *ProjectUpdate {
 	if f != nil {
-		pu.SetContractorApplyAmount(*f)
+		pu.SetAccumulateDeduction(*f)
 	}
 	return pu
 }
 
-// AddContractorApplyAmount adds f to the "contractor_apply_amount" field.
-func (pu *ProjectUpdate) AddContractorApplyAmount(f float64) *ProjectUpdate {
-	pu.mutation.AddContractorApplyAmount(f)
+// AddAccumulateDeduction adds f to the "accumulate_deduction" field.
+func (pu *ProjectUpdate) AddAccumulateDeduction(f float64) *ProjectUpdate {
+	pu.mutation.AddAccumulateDeduction(f)
 	return pu
 }
 
-// ClearContractorApplyAmount clears the value of the "contractor_apply_amount" field.
-func (pu *ProjectUpdate) ClearContractorApplyAmount() *ProjectUpdate {
-	pu.mutation.ClearContractorApplyAmount()
+// ClearAccumulateDeduction clears the value of the "accumulate_deduction" field.
+func (pu *ProjectUpdate) ClearAccumulateDeduction() *ProjectUpdate {
+	pu.mutation.ClearAccumulateDeduction()
 	return pu
 }
 
-// SetContractorApplyCount sets the "contractor_apply_count" field.
-func (pu *ProjectUpdate) SetContractorApplyCount(i int) *ProjectUpdate {
-	pu.mutation.ResetContractorApplyCount()
-	pu.mutation.SetContractorApplyCount(i)
+// SetSubcontractorVaCount sets the "subcontractor_va_count" field.
+func (pu *ProjectUpdate) SetSubcontractorVaCount(i int) *ProjectUpdate {
+	pu.mutation.ResetSubcontractorVaCount()
+	pu.mutation.SetSubcontractorVaCount(i)
 	return pu
 }
 
-// SetNillableContractorApplyCount sets the "contractor_apply_count" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableContractorApplyCount(i *int) *ProjectUpdate {
+// SetNillableSubcontractorVaCount sets the "subcontractor_va_count" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableSubcontractorVaCount(i *int) *ProjectUpdate {
 	if i != nil {
-		pu.SetContractorApplyCount(*i)
+		pu.SetSubcontractorVaCount(*i)
 	}
 	return pu
 }
 
-// AddContractorApplyCount adds i to the "contractor_apply_count" field.
-func (pu *ProjectUpdate) AddContractorApplyCount(i int) *ProjectUpdate {
-	pu.mutation.AddContractorApplyCount(i)
+// AddSubcontractorVaCount adds i to the "subcontractor_va_count" field.
+func (pu *ProjectUpdate) AddSubcontractorVaCount(i int) *ProjectUpdate {
+	pu.mutation.AddSubcontractorVaCount(i)
 	return pu
 }
 
-// ClearContractorApplyCount clears the value of the "contractor_apply_count" field.
-func (pu *ProjectUpdate) ClearContractorApplyCount() *ProjectUpdate {
-	pu.mutation.ClearContractorApplyCount()
+// ClearSubcontractorVaCount clears the value of the "subcontractor_va_count" field.
+func (pu *ProjectUpdate) ClearSubcontractorVaCount() *ProjectUpdate {
+	pu.mutation.ClearSubcontractorVaCount()
 	return pu
 }
 
-// SetContractorApproveAmount sets the "contractor_approve_amount" field.
-func (pu *ProjectUpdate) SetContractorApproveAmount(f float64) *ProjectUpdate {
-	pu.mutation.ResetContractorApproveAmount()
-	pu.mutation.SetContractorApproveAmount(f)
+// SetContractSupplementaryCount sets the "contract_supplementary_count" field.
+func (pu *ProjectUpdate) SetContractSupplementaryCount(i int) *ProjectUpdate {
+	pu.mutation.ResetContractSupplementaryCount()
+	pu.mutation.SetContractSupplementaryCount(i)
 	return pu
 }
 
-// SetNillableContractorApproveAmount sets the "contractor_approve_amount" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableContractorApproveAmount(f *float64) *ProjectUpdate {
-	if f != nil {
-		pu.SetContractorApproveAmount(*f)
-	}
-	return pu
-}
-
-// AddContractorApproveAmount adds f to the "contractor_approve_amount" field.
-func (pu *ProjectUpdate) AddContractorApproveAmount(f float64) *ProjectUpdate {
-	pu.mutation.AddContractorApproveAmount(f)
-	return pu
-}
-
-// ClearContractorApproveAmount clears the value of the "contractor_approve_amount" field.
-func (pu *ProjectUpdate) ClearContractorApproveAmount() *ProjectUpdate {
-	pu.mutation.ClearContractorApproveAmount()
-	return pu
-}
-
-// SetContractorApproveCount sets the "contractor_approve_count" field.
-func (pu *ProjectUpdate) SetContractorApproveCount(i int) *ProjectUpdate {
-	pu.mutation.ResetContractorApproveCount()
-	pu.mutation.SetContractorApproveCount(i)
-	return pu
-}
-
-// SetNillableContractorApproveCount sets the "contractor_approve_count" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableContractorApproveCount(i *int) *ProjectUpdate {
+// SetNillableContractSupplementaryCount sets the "contract_supplementary_count" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableContractSupplementaryCount(i *int) *ProjectUpdate {
 	if i != nil {
-		pu.SetContractorApproveCount(*i)
+		pu.SetContractSupplementaryCount(*i)
 	}
 	return pu
 }
 
-// AddContractorApproveCount adds i to the "contractor_approve_count" field.
-func (pu *ProjectUpdate) AddContractorApproveCount(i int) *ProjectUpdate {
-	pu.mutation.AddContractorApproveCount(i)
+// AddContractSupplementaryCount adds i to the "contract_supplementary_count" field.
+func (pu *ProjectUpdate) AddContractSupplementaryCount(i int) *ProjectUpdate {
+	pu.mutation.AddContractSupplementaryCount(i)
 	return pu
 }
 
-// ClearContractorApproveCount clears the value of the "contractor_approve_count" field.
-func (pu *ProjectUpdate) ClearContractorApproveCount() *ProjectUpdate {
-	pu.mutation.ClearContractorApproveCount()
+// ClearContractSupplementaryCount clears the value of the "contract_supplementary_count" field.
+func (pu *ProjectUpdate) ClearContractSupplementaryCount() *ProjectUpdate {
+	pu.mutation.ClearContractSupplementaryCount()
 	return pu
 }
 
-// SetInstallProgress sets the "install_progress" field.
-func (pu *ProjectUpdate) SetInstallProgress(f float64) *ProjectUpdate {
-	pu.mutation.ResetInstallProgress()
-	pu.mutation.SetInstallProgress(f)
+// SetRepairFee sets the "repair_fee" field.
+func (pu *ProjectUpdate) SetRepairFee(f float64) *ProjectUpdate {
+	pu.mutation.ResetRepairFee()
+	pu.mutation.SetRepairFee(f)
 	return pu
 }
 
-// SetNillableInstallProgress sets the "install_progress" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableInstallProgress(f *float64) *ProjectUpdate {
+// SetNillableRepairFee sets the "repair_fee" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableRepairFee(f *float64) *ProjectUpdate {
 	if f != nil {
-		pu.SetInstallProgress(*f)
+		pu.SetRepairFee(*f)
 	}
 	return pu
 }
 
-// AddInstallProgress adds f to the "install_progress" field.
-func (pu *ProjectUpdate) AddInstallProgress(f float64) *ProjectUpdate {
-	pu.mutation.AddInstallProgress(f)
+// AddRepairFee adds f to the "repair_fee" field.
+func (pu *ProjectUpdate) AddRepairFee(f float64) *ProjectUpdate {
+	pu.mutation.AddRepairFee(f)
 	return pu
 }
 
-// ClearInstallProgress clears the value of the "install_progress" field.
-func (pu *ProjectUpdate) ClearInstallProgress() *ProjectUpdate {
-	pu.mutation.ClearInstallProgress()
-	return pu
-}
-
-// SetEffectiveContractAmount sets the "effective_contract_amount" field.
-func (pu *ProjectUpdate) SetEffectiveContractAmount(f float64) *ProjectUpdate {
-	pu.mutation.ResetEffectiveContractAmount()
-	pu.mutation.SetEffectiveContractAmount(f)
-	return pu
-}
-
-// SetNillableEffectiveContractAmount sets the "effective_contract_amount" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableEffectiveContractAmount(f *float64) *ProjectUpdate {
-	if f != nil {
-		pu.SetEffectiveContractAmount(*f)
-	}
-	return pu
-}
-
-// AddEffectiveContractAmount adds f to the "effective_contract_amount" field.
-func (pu *ProjectUpdate) AddEffectiveContractAmount(f float64) *ProjectUpdate {
-	pu.mutation.AddEffectiveContractAmount(f)
-	return pu
-}
-
-// ClearEffectiveContractAmount clears the value of the "effective_contract_amount" field.
-func (pu *ProjectUpdate) ClearEffectiveContractAmount() *ProjectUpdate {
-	pu.mutation.ClearEffectiveContractAmount()
-	return pu
-}
-
-// SetVaApplyAmount sets the "va_apply_amount" field.
-func (pu *ProjectUpdate) SetVaApplyAmount(f float64) *ProjectUpdate {
-	pu.mutation.ResetVaApplyAmount()
-	pu.mutation.SetVaApplyAmount(f)
-	return pu
-}
-
-// SetNillableVaApplyAmount sets the "va_apply_amount" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableVaApplyAmount(f *float64) *ProjectUpdate {
-	if f != nil {
-		pu.SetVaApplyAmount(*f)
-	}
-	return pu
-}
-
-// AddVaApplyAmount adds f to the "va_apply_amount" field.
-func (pu *ProjectUpdate) AddVaApplyAmount(f float64) *ProjectUpdate {
-	pu.mutation.AddVaApplyAmount(f)
-	return pu
-}
-
-// ClearVaApplyAmount clears the value of the "va_apply_amount" field.
-func (pu *ProjectUpdate) ClearVaApplyAmount() *ProjectUpdate {
-	pu.mutation.ClearVaApplyAmount()
-	return pu
-}
-
-// SetVaApproveAmount sets the "va_approve_amount" field.
-func (pu *ProjectUpdate) SetVaApproveAmount(f float64) *ProjectUpdate {
-	pu.mutation.ResetVaApproveAmount()
-	pu.mutation.SetVaApproveAmount(f)
-	return pu
-}
-
-// SetNillableVaApproveAmount sets the "va_approve_amount" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableVaApproveAmount(f *float64) *ProjectUpdate {
-	if f != nil {
-		pu.SetVaApproveAmount(*f)
-	}
-	return pu
-}
-
-// AddVaApproveAmount adds f to the "va_approve_amount" field.
-func (pu *ProjectUpdate) AddVaApproveAmount(f float64) *ProjectUpdate {
-	pu.mutation.AddVaApproveAmount(f)
-	return pu
-}
-
-// ClearVaApproveAmount clears the value of the "va_approve_amount" field.
-func (pu *ProjectUpdate) ClearVaApproveAmount() *ProjectUpdate {
-	pu.mutation.ClearVaApproveAmount()
-	return pu
-}
-
-// SetAccumulatedStatutoryDeductions sets the "accumulated_statutory_deductions" field.
-func (pu *ProjectUpdate) SetAccumulatedStatutoryDeductions(f float64) *ProjectUpdate {
-	pu.mutation.ResetAccumulatedStatutoryDeductions()
-	pu.mutation.SetAccumulatedStatutoryDeductions(f)
-	return pu
-}
-
-// SetNillableAccumulatedStatutoryDeductions sets the "accumulated_statutory_deductions" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableAccumulatedStatutoryDeductions(f *float64) *ProjectUpdate {
-	if f != nil {
-		pu.SetAccumulatedStatutoryDeductions(*f)
-	}
-	return pu
-}
-
-// AddAccumulatedStatutoryDeductions adds f to the "accumulated_statutory_deductions" field.
-func (pu *ProjectUpdate) AddAccumulatedStatutoryDeductions(f float64) *ProjectUpdate {
-	pu.mutation.AddAccumulatedStatutoryDeductions(f)
-	return pu
-}
-
-// ClearAccumulatedStatutoryDeductions clears the value of the "accumulated_statutory_deductions" field.
-func (pu *ProjectUpdate) ClearAccumulatedStatutoryDeductions() *ProjectUpdate {
-	pu.mutation.ClearAccumulatedStatutoryDeductions()
-	return pu
-}
-
-// SetAccumulatedNonStatutoryDeductions sets the "accumulated_non_statutory_deductions" field.
-func (pu *ProjectUpdate) SetAccumulatedNonStatutoryDeductions(f float64) *ProjectUpdate {
-	pu.mutation.ResetAccumulatedNonStatutoryDeductions()
-	pu.mutation.SetAccumulatedNonStatutoryDeductions(f)
-	return pu
-}
-
-// SetNillableAccumulatedNonStatutoryDeductions sets the "accumulated_non_statutory_deductions" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableAccumulatedNonStatutoryDeductions(f *float64) *ProjectUpdate {
-	if f != nil {
-		pu.SetAccumulatedNonStatutoryDeductions(*f)
-	}
-	return pu
-}
-
-// AddAccumulatedNonStatutoryDeductions adds f to the "accumulated_non_statutory_deductions" field.
-func (pu *ProjectUpdate) AddAccumulatedNonStatutoryDeductions(f float64) *ProjectUpdate {
-	pu.mutation.AddAccumulatedNonStatutoryDeductions(f)
-	return pu
-}
-
-// ClearAccumulatedNonStatutoryDeductions clears the value of the "accumulated_non_statutory_deductions" field.
-func (pu *ProjectUpdate) ClearAccumulatedNonStatutoryDeductions() *ProjectUpdate {
-	pu.mutation.ClearAccumulatedNonStatutoryDeductions()
-	return pu
-}
-
-// SetAccumulatedStatutoryDeductionsPeriod sets the "accumulated_statutory_deductions_period" field.
-func (pu *ProjectUpdate) SetAccumulatedStatutoryDeductionsPeriod(f float64) *ProjectUpdate {
-	pu.mutation.ResetAccumulatedStatutoryDeductionsPeriod()
-	pu.mutation.SetAccumulatedStatutoryDeductionsPeriod(f)
-	return pu
-}
-
-// SetNillableAccumulatedStatutoryDeductionsPeriod sets the "accumulated_statutory_deductions_period" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableAccumulatedStatutoryDeductionsPeriod(f *float64) *ProjectUpdate {
-	if f != nil {
-		pu.SetAccumulatedStatutoryDeductionsPeriod(*f)
-	}
-	return pu
-}
-
-// AddAccumulatedStatutoryDeductionsPeriod adds f to the "accumulated_statutory_deductions_period" field.
-func (pu *ProjectUpdate) AddAccumulatedStatutoryDeductionsPeriod(f float64) *ProjectUpdate {
-	pu.mutation.AddAccumulatedStatutoryDeductionsPeriod(f)
-	return pu
-}
-
-// ClearAccumulatedStatutoryDeductionsPeriod clears the value of the "accumulated_statutory_deductions_period" field.
-func (pu *ProjectUpdate) ClearAccumulatedStatutoryDeductionsPeriod() *ProjectUpdate {
-	pu.mutation.ClearAccumulatedStatutoryDeductionsPeriod()
-	return pu
-}
-
-// SetAccumulatedNonStatutoryDeductionsPeriod sets the "accumulated_non_statutory_deductions_period" field.
-func (pu *ProjectUpdate) SetAccumulatedNonStatutoryDeductionsPeriod(f float64) *ProjectUpdate {
-	pu.mutation.ResetAccumulatedNonStatutoryDeductionsPeriod()
-	pu.mutation.SetAccumulatedNonStatutoryDeductionsPeriod(f)
-	return pu
-}
-
-// SetNillableAccumulatedNonStatutoryDeductionsPeriod sets the "accumulated_non_statutory_deductions_period" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableAccumulatedNonStatutoryDeductionsPeriod(f *float64) *ProjectUpdate {
-	if f != nil {
-		pu.SetAccumulatedNonStatutoryDeductionsPeriod(*f)
-	}
-	return pu
-}
-
-// AddAccumulatedNonStatutoryDeductionsPeriod adds f to the "accumulated_non_statutory_deductions_period" field.
-func (pu *ProjectUpdate) AddAccumulatedNonStatutoryDeductionsPeriod(f float64) *ProjectUpdate {
-	pu.mutation.AddAccumulatedNonStatutoryDeductionsPeriod(f)
-	return pu
-}
-
-// ClearAccumulatedNonStatutoryDeductionsPeriod clears the value of the "accumulated_non_statutory_deductions_period" field.
-func (pu *ProjectUpdate) ClearAccumulatedNonStatutoryDeductionsPeriod() *ProjectUpdate {
-	pu.mutation.ClearAccumulatedNonStatutoryDeductionsPeriod()
-	return pu
-}
-
-// SetTotalContractAmount sets the "total_contract_amount" field.
-func (pu *ProjectUpdate) SetTotalContractAmount(f float64) *ProjectUpdate {
-	pu.mutation.ResetTotalContractAmount()
-	pu.mutation.SetTotalContractAmount(f)
-	return pu
-}
-
-// SetNillableTotalContractAmount sets the "total_contract_amount" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableTotalContractAmount(f *float64) *ProjectUpdate {
-	if f != nil {
-		pu.SetTotalContractAmount(*f)
-	}
-	return pu
-}
-
-// AddTotalContractAmount adds f to the "total_contract_amount" field.
-func (pu *ProjectUpdate) AddTotalContractAmount(f float64) *ProjectUpdate {
-	pu.mutation.AddTotalContractAmount(f)
-	return pu
-}
-
-// ClearTotalContractAmount clears the value of the "total_contract_amount" field.
-func (pu *ProjectUpdate) ClearTotalContractAmount() *ProjectUpdate {
-	pu.mutation.ClearTotalContractAmount()
-	return pu
-}
-
-// SetAluminumPlateBudgetPercentage sets the "aluminum_plate_budget_percentage" field.
-func (pu *ProjectUpdate) SetAluminumPlateBudgetPercentage(f float64) *ProjectUpdate {
-	pu.mutation.ResetAluminumPlateBudgetPercentage()
-	pu.mutation.SetAluminumPlateBudgetPercentage(f)
-	return pu
-}
-
-// SetNillableAluminumPlateBudgetPercentage sets the "aluminum_plate_budget_percentage" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableAluminumPlateBudgetPercentage(f *float64) *ProjectUpdate {
-	if f != nil {
-		pu.SetAluminumPlateBudgetPercentage(*f)
-	}
-	return pu
-}
-
-// AddAluminumPlateBudgetPercentage adds f to the "aluminum_plate_budget_percentage" field.
-func (pu *ProjectUpdate) AddAluminumPlateBudgetPercentage(f float64) *ProjectUpdate {
-	pu.mutation.AddAluminumPlateBudgetPercentage(f)
-	return pu
-}
-
-// ClearAluminumPlateBudgetPercentage clears the value of the "aluminum_plate_budget_percentage" field.
-func (pu *ProjectUpdate) ClearAluminumPlateBudgetPercentage() *ProjectUpdate {
-	pu.mutation.ClearAluminumPlateBudgetPercentage()
-	return pu
-}
-
-// SetAluminumBudgetPercentage sets the "aluminum_budget_percentage" field.
-func (pu *ProjectUpdate) SetAluminumBudgetPercentage(f float64) *ProjectUpdate {
-	pu.mutation.ResetAluminumBudgetPercentage()
-	pu.mutation.SetAluminumBudgetPercentage(f)
-	return pu
-}
-
-// SetNillableAluminumBudgetPercentage sets the "aluminum_budget_percentage" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableAluminumBudgetPercentage(f *float64) *ProjectUpdate {
-	if f != nil {
-		pu.SetAluminumBudgetPercentage(*f)
-	}
-	return pu
-}
-
-// AddAluminumBudgetPercentage adds f to the "aluminum_budget_percentage" field.
-func (pu *ProjectUpdate) AddAluminumBudgetPercentage(f float64) *ProjectUpdate {
-	pu.mutation.AddAluminumBudgetPercentage(f)
-	return pu
-}
-
-// ClearAluminumBudgetPercentage clears the value of the "aluminum_budget_percentage" field.
-func (pu *ProjectUpdate) ClearAluminumBudgetPercentage() *ProjectUpdate {
-	pu.mutation.ClearAluminumBudgetPercentage()
-	return pu
-}
-
-// SetGlassBudgetPercentage sets the "glass_budget_percentage" field.
-func (pu *ProjectUpdate) SetGlassBudgetPercentage(f float64) *ProjectUpdate {
-	pu.mutation.ResetGlassBudgetPercentage()
-	pu.mutation.SetGlassBudgetPercentage(f)
-	return pu
-}
-
-// SetNillableGlassBudgetPercentage sets the "glass_budget_percentage" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableGlassBudgetPercentage(f *float64) *ProjectUpdate {
-	if f != nil {
-		pu.SetGlassBudgetPercentage(*f)
-	}
-	return pu
-}
-
-// AddGlassBudgetPercentage adds f to the "glass_budget_percentage" field.
-func (pu *ProjectUpdate) AddGlassBudgetPercentage(f float64) *ProjectUpdate {
-	pu.mutation.AddGlassBudgetPercentage(f)
-	return pu
-}
-
-// ClearGlassBudgetPercentage clears the value of the "glass_budget_percentage" field.
-func (pu *ProjectUpdate) ClearGlassBudgetPercentage() *ProjectUpdate {
-	pu.mutation.ClearGlassBudgetPercentage()
-	return pu
-}
-
-// SetIronBudgetPercentage sets the "iron_budget_percentage" field.
-func (pu *ProjectUpdate) SetIronBudgetPercentage(f float64) *ProjectUpdate {
-	pu.mutation.ResetIronBudgetPercentage()
-	pu.mutation.SetIronBudgetPercentage(f)
-	return pu
-}
-
-// SetNillableIronBudgetPercentage sets the "iron_budget_percentage" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableIronBudgetPercentage(f *float64) *ProjectUpdate {
-	if f != nil {
-		pu.SetIronBudgetPercentage(*f)
-	}
-	return pu
-}
-
-// AddIronBudgetPercentage adds f to the "iron_budget_percentage" field.
-func (pu *ProjectUpdate) AddIronBudgetPercentage(f float64) *ProjectUpdate {
-	pu.mutation.AddIronBudgetPercentage(f)
-	return pu
-}
-
-// ClearIronBudgetPercentage clears the value of the "iron_budget_percentage" field.
-func (pu *ProjectUpdate) ClearIronBudgetPercentage() *ProjectUpdate {
-	pu.mutation.ClearIronBudgetPercentage()
-	return pu
-}
-
-// SetMilestonePlanYear sets the "milestone_plan_year" field.
-func (pu *ProjectUpdate) SetMilestonePlanYear(i int) *ProjectUpdate {
-	pu.mutation.ResetMilestonePlanYear()
-	pu.mutation.SetMilestonePlanYear(i)
-	return pu
-}
-
-// SetNillableMilestonePlanYear sets the "milestone_plan_year" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableMilestonePlanYear(i *int) *ProjectUpdate {
-	if i != nil {
-		pu.SetMilestonePlanYear(*i)
-	}
-	return pu
-}
-
-// AddMilestonePlanYear adds i to the "milestone_plan_year" field.
-func (pu *ProjectUpdate) AddMilestonePlanYear(i int) *ProjectUpdate {
-	pu.mutation.AddMilestonePlanYear(i)
-	return pu
-}
-
-// ClearMilestonePlanYear clears the value of the "milestone_plan_year" field.
-func (pu *ProjectUpdate) ClearMilestonePlanYear() *ProjectUpdate {
-	pu.mutation.ClearMilestonePlanYear()
-	return pu
-}
-
-// SetMilestonePlanMonth sets the "milestone_plan_month" field.
-func (pu *ProjectUpdate) SetMilestonePlanMonth(i int) *ProjectUpdate {
-	pu.mutation.ResetMilestonePlanMonth()
-	pu.mutation.SetMilestonePlanMonth(i)
-	return pu
-}
-
-// SetNillableMilestonePlanMonth sets the "milestone_plan_month" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableMilestonePlanMonth(i *int) *ProjectUpdate {
-	if i != nil {
-		pu.SetMilestonePlanMonth(*i)
-	}
-	return pu
-}
-
-// AddMilestonePlanMonth adds i to the "milestone_plan_month" field.
-func (pu *ProjectUpdate) AddMilestonePlanMonth(i int) *ProjectUpdate {
-	pu.mutation.AddMilestonePlanMonth(i)
-	return pu
-}
-
-// ClearMilestonePlanMonth clears the value of the "milestone_plan_month" field.
-func (pu *ProjectUpdate) ClearMilestonePlanMonth() *ProjectUpdate {
-	pu.mutation.ClearMilestonePlanMonth()
-	return pu
-}
-
-// SetMilestoneDoneYear sets the "milestone_done_year" field.
-func (pu *ProjectUpdate) SetMilestoneDoneYear(i int) *ProjectUpdate {
-	pu.mutation.ResetMilestoneDoneYear()
-	pu.mutation.SetMilestoneDoneYear(i)
-	return pu
-}
-
-// SetNillableMilestoneDoneYear sets the "milestone_done_year" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableMilestoneDoneYear(i *int) *ProjectUpdate {
-	if i != nil {
-		pu.SetMilestoneDoneYear(*i)
-	}
-	return pu
-}
-
-// AddMilestoneDoneYear adds i to the "milestone_done_year" field.
-func (pu *ProjectUpdate) AddMilestoneDoneYear(i int) *ProjectUpdate {
-	pu.mutation.AddMilestoneDoneYear(i)
-	return pu
-}
-
-// ClearMilestoneDoneYear clears the value of the "milestone_done_year" field.
-func (pu *ProjectUpdate) ClearMilestoneDoneYear() *ProjectUpdate {
-	pu.mutation.ClearMilestoneDoneYear()
-	return pu
-}
-
-// SetMilestoneDoneMonth sets the "milestone_done_month" field.
-func (pu *ProjectUpdate) SetMilestoneDoneMonth(i int) *ProjectUpdate {
-	pu.mutation.ResetMilestoneDoneMonth()
-	pu.mutation.SetMilestoneDoneMonth(i)
-	return pu
-}
-
-// SetNillableMilestoneDoneMonth sets the "milestone_done_month" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableMilestoneDoneMonth(i *int) *ProjectUpdate {
-	if i != nil {
-		pu.SetMilestoneDoneMonth(*i)
-	}
-	return pu
-}
-
-// AddMilestoneDoneMonth adds i to the "milestone_done_month" field.
-func (pu *ProjectUpdate) AddMilestoneDoneMonth(i int) *ProjectUpdate {
-	pu.mutation.AddMilestoneDoneMonth(i)
-	return pu
-}
-
-// ClearMilestoneDoneMonth clears the value of the "milestone_done_month" field.
-func (pu *ProjectUpdate) ClearMilestoneDoneMonth() *ProjectUpdate {
-	pu.mutation.ClearMilestoneDoneMonth()
-	return pu
-}
-
-// SetPmArea sets the "pm_area" field.
-func (pu *ProjectUpdate) SetPmArea(f float64) *ProjectUpdate {
-	pu.mutation.ResetPmArea()
-	pu.mutation.SetPmArea(f)
-	return pu
-}
-
-// SetNillablePmArea sets the "pm_area" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillablePmArea(f *float64) *ProjectUpdate {
-	if f != nil {
-		pu.SetPmArea(*f)
-	}
-	return pu
-}
-
-// AddPmArea adds f to the "pm_area" field.
-func (pu *ProjectUpdate) AddPmArea(f float64) *ProjectUpdate {
-	pu.mutation.AddPmArea(f)
-	return pu
-}
-
-// ClearPmArea clears the value of the "pm_area" field.
-func (pu *ProjectUpdate) ClearPmArea() *ProjectUpdate {
-	pu.mutation.ClearPmArea()
-	return pu
-}
-
-// SetPmYearTarget sets the "pm_year_target" field.
-func (pu *ProjectUpdate) SetPmYearTarget(f float64) *ProjectUpdate {
-	pu.mutation.ResetPmYearTarget()
-	pu.mutation.SetPmYearTarget(f)
-	return pu
-}
-
-// SetNillablePmYearTarget sets the "pm_year_target" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillablePmYearTarget(f *float64) *ProjectUpdate {
-	if f != nil {
-		pu.SetPmYearTarget(*f)
-	}
-	return pu
-}
-
-// AddPmYearTarget adds f to the "pm_year_target" field.
-func (pu *ProjectUpdate) AddPmYearTarget(f float64) *ProjectUpdate {
-	pu.mutation.AddPmYearTarget(f)
-	return pu
-}
-
-// ClearPmYearTarget clears the value of the "pm_year_target" field.
-func (pu *ProjectUpdate) ClearPmYearTarget() *ProjectUpdate {
-	pu.mutation.ClearPmYearTarget()
-	return pu
-}
-
-// SetPmMonthTarget sets the "pm_month_target" field.
-func (pu *ProjectUpdate) SetPmMonthTarget(f float64) *ProjectUpdate {
-	pu.mutation.ResetPmMonthTarget()
-	pu.mutation.SetPmMonthTarget(f)
-	return pu
-}
-
-// SetNillablePmMonthTarget sets the "pm_month_target" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillablePmMonthTarget(f *float64) *ProjectUpdate {
-	if f != nil {
-		pu.SetPmMonthTarget(*f)
-	}
-	return pu
-}
-
-// AddPmMonthTarget adds f to the "pm_month_target" field.
-func (pu *ProjectUpdate) AddPmMonthTarget(f float64) *ProjectUpdate {
-	pu.mutation.AddPmMonthTarget(f)
-	return pu
-}
-
-// ClearPmMonthTarget clears the value of the "pm_month_target" field.
-func (pu *ProjectUpdate) ClearPmMonthTarget() *ProjectUpdate {
-	pu.mutation.ClearPmMonthTarget()
-	return pu
-}
-
-// SetPmYearActual sets the "pm_year_actual" field.
-func (pu *ProjectUpdate) SetPmYearActual(f float64) *ProjectUpdate {
-	pu.mutation.ResetPmYearActual()
-	pu.mutation.SetPmYearActual(f)
-	return pu
-}
-
-// SetNillablePmYearActual sets the "pm_year_actual" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillablePmYearActual(f *float64) *ProjectUpdate {
-	if f != nil {
-		pu.SetPmYearActual(*f)
-	}
-	return pu
-}
-
-// AddPmYearActual adds f to the "pm_year_actual" field.
-func (pu *ProjectUpdate) AddPmYearActual(f float64) *ProjectUpdate {
-	pu.mutation.AddPmYearActual(f)
-	return pu
-}
-
-// ClearPmYearActual clears the value of the "pm_year_actual" field.
-func (pu *ProjectUpdate) ClearPmYearActual() *ProjectUpdate {
-	pu.mutation.ClearPmYearActual()
-	return pu
-}
-
-// SetPmMonthActual sets the "pm_month_actual" field.
-func (pu *ProjectUpdate) SetPmMonthActual(f float64) *ProjectUpdate {
-	pu.mutation.ResetPmMonthActual()
-	pu.mutation.SetPmMonthActual(f)
-	return pu
-}
-
-// SetNillablePmMonthActual sets the "pm_month_actual" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillablePmMonthActual(f *float64) *ProjectUpdate {
-	if f != nil {
-		pu.SetPmMonthActual(*f)
-	}
-	return pu
-}
-
-// AddPmMonthActual adds f to the "pm_month_actual" field.
-func (pu *ProjectUpdate) AddPmMonthActual(f float64) *ProjectUpdate {
-	pu.mutation.AddPmMonthActual(f)
-	return pu
-}
-
-// ClearPmMonthActual clears the value of the "pm_month_actual" field.
-func (pu *ProjectUpdate) ClearPmMonthActual() *ProjectUpdate {
-	pu.mutation.ClearPmMonthActual()
-	return pu
-}
-
-// SetPmTotal sets the "pm_total" field.
-func (pu *ProjectUpdate) SetPmTotal(f float64) *ProjectUpdate {
-	pu.mutation.ResetPmTotal()
-	pu.mutation.SetPmTotal(f)
-	return pu
-}
-
-// SetNillablePmTotal sets the "pm_total" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillablePmTotal(f *float64) *ProjectUpdate {
-	if f != nil {
-		pu.SetPmTotal(*f)
-	}
-	return pu
-}
-
-// AddPmTotal adds f to the "pm_total" field.
-func (pu *ProjectUpdate) AddPmTotal(f float64) *ProjectUpdate {
-	pu.mutation.AddPmTotal(f)
-	return pu
-}
-
-// ClearPmTotal clears the value of the "pm_total" field.
-func (pu *ProjectUpdate) ClearPmTotal() *ProjectUpdate {
-	pu.mutation.ClearPmTotal()
-	return pu
-}
-
-// SetPmYesterday sets the "pm_yesterday" field.
-func (pu *ProjectUpdate) SetPmYesterday(f float64) *ProjectUpdate {
-	pu.mutation.ResetPmYesterday()
-	pu.mutation.SetPmYesterday(f)
-	return pu
-}
-
-// SetNillablePmYesterday sets the "pm_yesterday" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillablePmYesterday(f *float64) *ProjectUpdate {
-	if f != nil {
-		pu.SetPmYesterday(*f)
-	}
-	return pu
-}
-
-// AddPmYesterday adds f to the "pm_yesterday" field.
-func (pu *ProjectUpdate) AddPmYesterday(f float64) *ProjectUpdate {
-	pu.mutation.AddPmYesterday(f)
-	return pu
-}
-
-// ClearPmYesterday clears the value of the "pm_yesterday" field.
-func (pu *ProjectUpdate) ClearPmYesterday() *ProjectUpdate {
-	pu.mutation.ClearPmYesterday()
+// ClearRepairFee clears the value of the "repair_fee" field.
+func (pu *ProjectUpdate) ClearRepairFee() *ProjectUpdate {
+	pu.mutation.ClearRepairFee()
 	return pu
 }
 
@@ -1480,222 +435,6 @@ func (pu *ProjectUpdate) ClearUnitComponentInstallation() *ProjectUpdate {
 	return pu
 }
 
-// SetMaterialLoss sets the "material_loss" field.
-func (pu *ProjectUpdate) SetMaterialLoss(f float64) *ProjectUpdate {
-	pu.mutation.ResetMaterialLoss()
-	pu.mutation.SetMaterialLoss(f)
-	return pu
-}
-
-// SetNillableMaterialLoss sets the "material_loss" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableMaterialLoss(f *float64) *ProjectUpdate {
-	if f != nil {
-		pu.SetMaterialLoss(*f)
-	}
-	return pu
-}
-
-// AddMaterialLoss adds f to the "material_loss" field.
-func (pu *ProjectUpdate) AddMaterialLoss(f float64) *ProjectUpdate {
-	pu.mutation.AddMaterialLoss(f)
-	return pu
-}
-
-// ClearMaterialLoss clears the value of the "material_loss" field.
-func (pu *ProjectUpdate) ClearMaterialLoss() *ProjectUpdate {
-	pu.mutation.ClearMaterialLoss()
-	return pu
-}
-
-// SetDesignRatedWeight sets the "design_rated_weight" field.
-func (pu *ProjectUpdate) SetDesignRatedWeight(f float64) *ProjectUpdate {
-	pu.mutation.ResetDesignRatedWeight()
-	pu.mutation.SetDesignRatedWeight(f)
-	return pu
-}
-
-// SetNillableDesignRatedWeight sets the "design_rated_weight" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableDesignRatedWeight(f *float64) *ProjectUpdate {
-	if f != nil {
-		pu.SetDesignRatedWeight(*f)
-	}
-	return pu
-}
-
-// AddDesignRatedWeight adds f to the "design_rated_weight" field.
-func (pu *ProjectUpdate) AddDesignRatedWeight(f float64) *ProjectUpdate {
-	pu.mutation.AddDesignRatedWeight(f)
-	return pu
-}
-
-// ClearDesignRatedWeight clears the value of the "design_rated_weight" field.
-func (pu *ProjectUpdate) ClearDesignRatedWeight() *ProjectUpdate {
-	pu.mutation.ClearDesignRatedWeight()
-	return pu
-}
-
-// SetProcessingWeight sets the "processing_weight" field.
-func (pu *ProjectUpdate) SetProcessingWeight(f float64) *ProjectUpdate {
-	pu.mutation.ResetProcessingWeight()
-	pu.mutation.SetProcessingWeight(f)
-	return pu
-}
-
-// SetNillableProcessingWeight sets the "processing_weight" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableProcessingWeight(f *float64) *ProjectUpdate {
-	if f != nil {
-		pu.SetProcessingWeight(*f)
-	}
-	return pu
-}
-
-// AddProcessingWeight adds f to the "processing_weight" field.
-func (pu *ProjectUpdate) AddProcessingWeight(f float64) *ProjectUpdate {
-	pu.mutation.AddProcessingWeight(f)
-	return pu
-}
-
-// ClearProcessingWeight clears the value of the "processing_weight" field.
-func (pu *ProjectUpdate) ClearProcessingWeight() *ProjectUpdate {
-	pu.mutation.ClearProcessingWeight()
-	return pu
-}
-
-// SetItemStockWeight sets the "item_stock_weight" field.
-func (pu *ProjectUpdate) SetItemStockWeight(f float64) *ProjectUpdate {
-	pu.mutation.ResetItemStockWeight()
-	pu.mutation.SetItemStockWeight(f)
-	return pu
-}
-
-// SetNillableItemStockWeight sets the "item_stock_weight" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableItemStockWeight(f *float64) *ProjectUpdate {
-	if f != nil {
-		pu.SetItemStockWeight(*f)
-	}
-	return pu
-}
-
-// AddItemStockWeight adds f to the "item_stock_weight" field.
-func (pu *ProjectUpdate) AddItemStockWeight(f float64) *ProjectUpdate {
-	pu.mutation.AddItemStockWeight(f)
-	return pu
-}
-
-// ClearItemStockWeight clears the value of the "item_stock_weight" field.
-func (pu *ProjectUpdate) ClearItemStockWeight() *ProjectUpdate {
-	pu.mutation.ClearItemStockWeight()
-	return pu
-}
-
-// SetPalletsInStock sets the "pallets_in_stock" field.
-func (pu *ProjectUpdate) SetPalletsInStock(f float64) *ProjectUpdate {
-	pu.mutation.ResetPalletsInStock()
-	pu.mutation.SetPalletsInStock(f)
-	return pu
-}
-
-// SetNillablePalletsInStock sets the "pallets_in_stock" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillablePalletsInStock(f *float64) *ProjectUpdate {
-	if f != nil {
-		pu.SetPalletsInStock(*f)
-	}
-	return pu
-}
-
-// AddPalletsInStock adds f to the "pallets_in_stock" field.
-func (pu *ProjectUpdate) AddPalletsInStock(f float64) *ProjectUpdate {
-	pu.mutation.AddPalletsInStock(f)
-	return pu
-}
-
-// ClearPalletsInStock clears the value of the "pallets_in_stock" field.
-func (pu *ProjectUpdate) ClearPalletsInStock() *ProjectUpdate {
-	pu.mutation.ClearPalletsInStock()
-	return pu
-}
-
-// SetPartsInStock sets the "parts_in_stock" field.
-func (pu *ProjectUpdate) SetPartsInStock(f float64) *ProjectUpdate {
-	pu.mutation.ResetPartsInStock()
-	pu.mutation.SetPartsInStock(f)
-	return pu
-}
-
-// SetNillablePartsInStock sets the "parts_in_stock" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillablePartsInStock(f *float64) *ProjectUpdate {
-	if f != nil {
-		pu.SetPartsInStock(*f)
-	}
-	return pu
-}
-
-// AddPartsInStock adds f to the "parts_in_stock" field.
-func (pu *ProjectUpdate) AddPartsInStock(f float64) *ProjectUpdate {
-	pu.mutation.AddPartsInStock(f)
-	return pu
-}
-
-// ClearPartsInStock clears the value of the "parts_in_stock" field.
-func (pu *ProjectUpdate) ClearPartsInStock() *ProjectUpdate {
-	pu.mutation.ClearPartsInStock()
-	return pu
-}
-
-// SetQualityScore sets the "quality_score" field.
-func (pu *ProjectUpdate) SetQualityScore(f float64) *ProjectUpdate {
-	pu.mutation.ResetQualityScore()
-	pu.mutation.SetQualityScore(f)
-	return pu
-}
-
-// SetNillableQualityScore sets the "quality_score" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableQualityScore(f *float64) *ProjectUpdate {
-	if f != nil {
-		pu.SetQualityScore(*f)
-	}
-	return pu
-}
-
-// AddQualityScore adds f to the "quality_score" field.
-func (pu *ProjectUpdate) AddQualityScore(f float64) *ProjectUpdate {
-	pu.mutation.AddQualityScore(f)
-	return pu
-}
-
-// ClearQualityScore clears the value of the "quality_score" field.
-func (pu *ProjectUpdate) ClearQualityScore() *ProjectUpdate {
-	pu.mutation.ClearQualityScore()
-	return pu
-}
-
-// SetQualityRanking sets the "quality_ranking" field.
-func (pu *ProjectUpdate) SetQualityRanking(f float64) *ProjectUpdate {
-	pu.mutation.ResetQualityRanking()
-	pu.mutation.SetQualityRanking(f)
-	return pu
-}
-
-// SetNillableQualityRanking sets the "quality_ranking" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableQualityRanking(f *float64) *ProjectUpdate {
-	if f != nil {
-		pu.SetQualityRanking(*f)
-	}
-	return pu
-}
-
-// AddQualityRanking adds f to the "quality_ranking" field.
-func (pu *ProjectUpdate) AddQualityRanking(f float64) *ProjectUpdate {
-	pu.mutation.AddQualityRanking(f)
-	return pu
-}
-
-// ClearQualityRanking clears the value of the "quality_ranking" field.
-func (pu *ProjectUpdate) ClearQualityRanking() *ProjectUpdate {
-	pu.mutation.ClearQualityRanking()
-	return pu
-}
-
 // SetBulkMaterialsTotalOrderQuantity sets the "bulk_materials_total_order_quantity" field.
 func (pu *ProjectUpdate) SetBulkMaterialsTotalOrderQuantity(f float64) *ProjectUpdate {
 	pu.mutation.ResetBulkMaterialsTotalOrderQuantity()
@@ -1774,87 +513,6 @@ func (pu *ProjectUpdate) AddBulkMaterialsUncompletedQuantity(f float64) *Project
 // ClearBulkMaterialsUncompletedQuantity clears the value of the "bulk_materials_uncompleted_quantity" field.
 func (pu *ProjectUpdate) ClearBulkMaterialsUncompletedQuantity() *ProjectUpdate {
 	pu.mutation.ClearBulkMaterialsUncompletedQuantity()
-	return pu
-}
-
-// SetPlanTotalCount sets the "plan_total_count" field.
-func (pu *ProjectUpdate) SetPlanTotalCount(i int) *ProjectUpdate {
-	pu.mutation.ResetPlanTotalCount()
-	pu.mutation.SetPlanTotalCount(i)
-	return pu
-}
-
-// SetNillablePlanTotalCount sets the "plan_total_count" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillablePlanTotalCount(i *int) *ProjectUpdate {
-	if i != nil {
-		pu.SetPlanTotalCount(*i)
-	}
-	return pu
-}
-
-// AddPlanTotalCount adds i to the "plan_total_count" field.
-func (pu *ProjectUpdate) AddPlanTotalCount(i int) *ProjectUpdate {
-	pu.mutation.AddPlanTotalCount(i)
-	return pu
-}
-
-// ClearPlanTotalCount clears the value of the "plan_total_count" field.
-func (pu *ProjectUpdate) ClearPlanTotalCount() *ProjectUpdate {
-	pu.mutation.ClearPlanTotalCount()
-	return pu
-}
-
-// SetPlanOverdueCount sets the "plan_overdue_count" field.
-func (pu *ProjectUpdate) SetPlanOverdueCount(i int) *ProjectUpdate {
-	pu.mutation.ResetPlanOverdueCount()
-	pu.mutation.SetPlanOverdueCount(i)
-	return pu
-}
-
-// SetNillablePlanOverdueCount sets the "plan_overdue_count" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillablePlanOverdueCount(i *int) *ProjectUpdate {
-	if i != nil {
-		pu.SetPlanOverdueCount(*i)
-	}
-	return pu
-}
-
-// AddPlanOverdueCount adds i to the "plan_overdue_count" field.
-func (pu *ProjectUpdate) AddPlanOverdueCount(i int) *ProjectUpdate {
-	pu.mutation.AddPlanOverdueCount(i)
-	return pu
-}
-
-// ClearPlanOverdueCount clears the value of the "plan_overdue_count" field.
-func (pu *ProjectUpdate) ClearPlanOverdueCount() *ProjectUpdate {
-	pu.mutation.ClearPlanOverdueCount()
-	return pu
-}
-
-// SetPlanOverdueMonthCount sets the "plan_overdue_month_count" field.
-func (pu *ProjectUpdate) SetPlanOverdueMonthCount(i int) *ProjectUpdate {
-	pu.mutation.ResetPlanOverdueMonthCount()
-	pu.mutation.SetPlanOverdueMonthCount(i)
-	return pu
-}
-
-// SetNillablePlanOverdueMonthCount sets the "plan_overdue_month_count" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillablePlanOverdueMonthCount(i *int) *ProjectUpdate {
-	if i != nil {
-		pu.SetPlanOverdueMonthCount(*i)
-	}
-	return pu
-}
-
-// AddPlanOverdueMonthCount adds i to the "plan_overdue_month_count" field.
-func (pu *ProjectUpdate) AddPlanOverdueMonthCount(i int) *ProjectUpdate {
-	pu.mutation.AddPlanOverdueMonthCount(i)
-	return pu
-}
-
-// ClearPlanOverdueMonthCount clears the value of the "plan_overdue_month_count" field.
-func (pu *ProjectUpdate) ClearPlanOverdueMonthCount() *ProjectUpdate {
-	pu.mutation.ClearPlanOverdueMonthCount()
 	return pu
 }
 
@@ -2074,36 +732,6 @@ func (pu *ProjectUpdate) ClearDiagramCApprovalRatioDenominator() *ProjectUpdate 
 	return pu
 }
 
-// AddVoIDs adds the "vos" edge to the ProjectVO entity by IDs.
-func (pu *ProjectUpdate) AddVoIDs(ids ...xid.ID) *ProjectUpdate {
-	pu.mutation.AddVoIDs(ids...)
-	return pu
-}
-
-// AddVos adds the "vos" edges to the ProjectVO entity.
-func (pu *ProjectUpdate) AddVos(p ...*ProjectVO) *ProjectUpdate {
-	ids := make([]xid.ID, len(p))
-	for i := range p {
-		ids[i] = p[i].ID
-	}
-	return pu.AddVoIDs(ids...)
-}
-
-// AddProjectStaffIDs adds the "project_staffs" edge to the ProjectStaff entity by IDs.
-func (pu *ProjectUpdate) AddProjectStaffIDs(ids ...xid.ID) *ProjectUpdate {
-	pu.mutation.AddProjectStaffIDs(ids...)
-	return pu
-}
-
-// AddProjectStaffs adds the "project_staffs" edges to the ProjectStaff entity.
-func (pu *ProjectUpdate) AddProjectStaffs(p ...*ProjectStaff) *ProjectUpdate {
-	ids := make([]xid.ID, len(p))
-	for i := range p {
-		ids[i] = p[i].ID
-	}
-	return pu.AddProjectStaffIDs(ids...)
-}
-
 // AddUserIDs adds the "users" edge to the User entity by IDs.
 func (pu *ProjectUpdate) AddUserIDs(ids ...xid.ID) *ProjectUpdate {
 	pu.mutation.AddUserIDs(ids...)
@@ -2122,48 +750,6 @@ func (pu *ProjectUpdate) AddUsers(u ...*User) *ProjectUpdate {
 // Mutation returns the ProjectMutation object of the builder.
 func (pu *ProjectUpdate) Mutation() *ProjectMutation {
 	return pu.mutation
-}
-
-// ClearVos clears all "vos" edges to the ProjectVO entity.
-func (pu *ProjectUpdate) ClearVos() *ProjectUpdate {
-	pu.mutation.ClearVos()
-	return pu
-}
-
-// RemoveVoIDs removes the "vos" edge to ProjectVO entities by IDs.
-func (pu *ProjectUpdate) RemoveVoIDs(ids ...xid.ID) *ProjectUpdate {
-	pu.mutation.RemoveVoIDs(ids...)
-	return pu
-}
-
-// RemoveVos removes "vos" edges to ProjectVO entities.
-func (pu *ProjectUpdate) RemoveVos(p ...*ProjectVO) *ProjectUpdate {
-	ids := make([]xid.ID, len(p))
-	for i := range p {
-		ids[i] = p[i].ID
-	}
-	return pu.RemoveVoIDs(ids...)
-}
-
-// ClearProjectStaffs clears all "project_staffs" edges to the ProjectStaff entity.
-func (pu *ProjectUpdate) ClearProjectStaffs() *ProjectUpdate {
-	pu.mutation.ClearProjectStaffs()
-	return pu
-}
-
-// RemoveProjectStaffIDs removes the "project_staffs" edge to ProjectStaff entities by IDs.
-func (pu *ProjectUpdate) RemoveProjectStaffIDs(ids ...xid.ID) *ProjectUpdate {
-	pu.mutation.RemoveProjectStaffIDs(ids...)
-	return pu
-}
-
-// RemoveProjectStaffs removes "project_staffs" edges to ProjectStaff entities.
-func (pu *ProjectUpdate) RemoveProjectStaffs(p ...*ProjectStaff) *ProjectUpdate {
-	ids := make([]xid.ID, len(p))
-	for i := range p {
-		ids[i] = p[i].ID
-	}
-	return pu.RemoveProjectStaffIDs(ids...)
 }
 
 // ClearUsers clears all "users" edges to the User entity.
@@ -2238,434 +824,95 @@ func (pu *ProjectUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := pu.mutation.Code(); ok {
 		_spec.SetField(project.FieldCode, field.TypeString, value)
 	}
-	if value, ok := pu.mutation.Manager(); ok {
-		_spec.SetField(project.FieldManager, field.TypeString, value)
-	}
-	if pu.mutation.ManagerCleared() {
-		_spec.ClearField(project.FieldManager, field.TypeString)
-	}
-	if value, ok := pu.mutation.Name(); ok {
-		_spec.SetField(project.FieldName, field.TypeString, value)
-	}
-	if pu.mutation.NameCleared() {
-		_spec.ClearField(project.FieldName, field.TypeString)
-	}
-	if value, ok := pu.mutation.Owner(); ok {
-		_spec.SetField(project.FieldOwner, field.TypeString, value)
-	}
-	if pu.mutation.OwnerCleared() {
-		_spec.ClearField(project.FieldOwner, field.TypeString)
-	}
-	if value, ok := pu.mutation.Jzs(); ok {
-		_spec.SetField(project.FieldJzs, field.TypeString, value)
-	}
-	if pu.mutation.JzsCleared() {
-		_spec.ClearField(project.FieldJzs, field.TypeString)
-	}
-	if value, ok := pu.mutation.Mcn(); ok {
-		_spec.SetField(project.FieldMcn, field.TypeString, value)
-	}
-	if pu.mutation.McnCleared() {
-		_spec.ClearField(project.FieldMcn, field.TypeString)
-	}
-	if value, ok := pu.mutation.Consultant(); ok {
-		_spec.SetField(project.FieldConsultant, field.TypeString, value)
-	}
-	if pu.mutation.ConsultantCleared() {
-		_spec.ClearField(project.FieldConsultant, field.TypeString)
-	}
-	if value, ok := pu.mutation.Areas(); ok {
-		_spec.SetField(project.FieldAreas, field.TypeString, value)
-	}
-	if pu.mutation.AreasCleared() {
-		_spec.ClearField(project.FieldAreas, field.TypeString)
-	}
-	if value, ok := pu.mutation.StartDate(); ok {
-		_spec.SetField(project.FieldStartDate, field.TypeTime, value)
-	}
-	if pu.mutation.StartDateCleared() {
-		_spec.ClearField(project.FieldStartDate, field.TypeTime)
-	}
-	if value, ok := pu.mutation.FsDate(); ok {
-		_spec.SetField(project.FieldFsDate, field.TypeTime, value)
-	}
-	if pu.mutation.FsDateCleared() {
-		_spec.ClearField(project.FieldFsDate, field.TypeTime)
-	}
-	if value, ok := pu.mutation.OpDate(); ok {
-		_spec.SetField(project.FieldOpDate, field.TypeTime, value)
-	}
-	if pu.mutation.OpDateCleared() {
-		_spec.ClearField(project.FieldOpDate, field.TypeTime)
-	}
-	if value, ok := pu.mutation.EndDate(); ok {
-		_spec.SetField(project.FieldEndDate, field.TypeTime, value)
-	}
-	if pu.mutation.EndDateCleared() {
-		_spec.ClearField(project.FieldEndDate, field.TypeTime)
-	}
-	if value, ok := pu.mutation.Mntyr(); ok {
-		_spec.SetField(project.FieldMntyr, field.TypeString, value)
-	}
-	if pu.mutation.MntyrCleared() {
-		_spec.ClearField(project.FieldMntyr, field.TypeString)
-	}
-	if value, ok := pu.mutation.ConType(); ok {
-		_spec.SetField(project.FieldConType, field.TypeString, value)
-	}
-	if pu.mutation.ConTypeCleared() {
-		_spec.ClearField(project.FieldConType, field.TypeString)
-	}
 	if value, ok := pu.mutation.IsFinished(); ok {
 		_spec.SetField(project.FieldIsFinished, field.TypeBool, value)
 	}
-	if value, ok := pu.mutation.Cje(); ok {
-		_spec.SetField(project.FieldCje, field.TypeFloat64, value)
+	if value, ok := pu.mutation.RevenueKpi(); ok {
+		_spec.SetField(project.FieldRevenueKpi, field.TypeFloat64, value)
 	}
-	if value, ok := pu.mutation.AddedCje(); ok {
-		_spec.AddField(project.FieldCje, field.TypeFloat64, value)
+	if value, ok := pu.mutation.AddedRevenueKpi(); ok {
+		_spec.AddField(project.FieldRevenueKpi, field.TypeFloat64, value)
 	}
-	if pu.mutation.CjeCleared() {
-		_spec.ClearField(project.FieldCje, field.TypeFloat64)
+	if pu.mutation.RevenueKpiCleared() {
+		_spec.ClearField(project.FieldRevenueKpi, field.TypeFloat64)
 	}
-	if value, ok := pu.mutation.Yye(); ok {
-		_spec.SetField(project.FieldYye, field.TypeFloat64, value)
+	if value, ok := pu.mutation.RevenueCurrentYearCompleted(); ok {
+		_spec.SetField(project.FieldRevenueCurrentYearCompleted, field.TypeFloat64, value)
 	}
-	if value, ok := pu.mutation.AddedYye(); ok {
-		_spec.AddField(project.FieldYye, field.TypeFloat64, value)
+	if value, ok := pu.mutation.AddedRevenueCurrentYearCompleted(); ok {
+		_spec.AddField(project.FieldRevenueCurrentYearCompleted, field.TypeFloat64, value)
 	}
-	if pu.mutation.YyeCleared() {
-		_spec.ClearField(project.FieldYye, field.TypeFloat64)
+	if pu.mutation.RevenueCurrentYearCompletedCleared() {
+		_spec.ClearField(project.FieldRevenueCurrentYearCompleted, field.TypeFloat64)
 	}
-	if value, ok := pu.mutation.Xjl(); ok {
-		_spec.SetField(project.FieldXjl, field.TypeFloat64, value)
+	if value, ok := pu.mutation.RevenueAccumulatedCompleted(); ok {
+		_spec.SetField(project.FieldRevenueAccumulatedCompleted, field.TypeFloat64, value)
 	}
-	if value, ok := pu.mutation.AddedXjl(); ok {
-		_spec.AddField(project.FieldXjl, field.TypeFloat64, value)
+	if value, ok := pu.mutation.AddedRevenueAccumulatedCompleted(); ok {
+		_spec.AddField(project.FieldRevenueAccumulatedCompleted, field.TypeFloat64, value)
 	}
-	if pu.mutation.XjlCleared() {
-		_spec.ClearField(project.FieldXjl, field.TypeFloat64)
+	if pu.mutation.RevenueAccumulatedCompletedCleared() {
+		_spec.ClearField(project.FieldRevenueAccumulatedCompleted, field.TypeFloat64)
 	}
-	if value, ok := pu.mutation.XmglfYs(); ok {
-		_spec.SetField(project.FieldXmglfYs, field.TypeFloat64, value)
+	if value, ok := pu.mutation.PayDate(); ok {
+		_spec.SetField(project.FieldPayDate, field.TypeTime, value)
 	}
-	if value, ok := pu.mutation.AddedXmglfYs(); ok {
-		_spec.AddField(project.FieldXmglfYs, field.TypeFloat64, value)
+	if pu.mutation.PayDateCleared() {
+		_spec.ClearField(project.FieldPayDate, field.TypeTime)
 	}
-	if pu.mutation.XmglfYsCleared() {
-		_spec.ClearField(project.FieldXmglfYs, field.TypeFloat64)
+	if value, ok := pu.mutation.OwnerVoCount(); ok {
+		_spec.SetField(project.FieldOwnerVoCount, field.TypeInt, value)
 	}
-	if value, ok := pu.mutation.XmglfLj(); ok {
-		_spec.SetField(project.FieldXmglfLj, field.TypeFloat64, value)
+	if value, ok := pu.mutation.AddedOwnerVoCount(); ok {
+		_spec.AddField(project.FieldOwnerVoCount, field.TypeInt, value)
 	}
-	if value, ok := pu.mutation.AddedXmglfLj(); ok {
-		_spec.AddField(project.FieldXmglfLj, field.TypeFloat64, value)
+	if pu.mutation.OwnerVoCountCleared() {
+		_spec.ClearField(project.FieldOwnerVoCount, field.TypeInt)
 	}
-	if pu.mutation.XmglfLjCleared() {
-		_spec.ClearField(project.FieldXmglfLj, field.TypeFloat64)
+	if value, ok := pu.mutation.ContractorVoCount(); ok {
+		_spec.SetField(project.FieldContractorVoCount, field.TypeInt, value)
 	}
-	if value, ok := pu.mutation.Xmsjf(); ok {
-		_spec.SetField(project.FieldXmsjf, field.TypeFloat64, value)
+	if value, ok := pu.mutation.AddedContractorVoCount(); ok {
+		_spec.AddField(project.FieldContractorVoCount, field.TypeInt, value)
 	}
-	if value, ok := pu.mutation.AddedXmsjf(); ok {
-		_spec.AddField(project.FieldXmsjf, field.TypeFloat64, value)
+	if pu.mutation.ContractorVoCountCleared() {
+		_spec.ClearField(project.FieldContractorVoCount, field.TypeInt)
 	}
-	if pu.mutation.XmsjfCleared() {
-		_spec.ClearField(project.FieldXmsjf, field.TypeFloat64)
+	if value, ok := pu.mutation.AccumulateDeduction(); ok {
+		_spec.SetField(project.FieldAccumulateDeduction, field.TypeFloat64, value)
 	}
-	if value, ok := pu.mutation.Xmfzr(); ok {
-		_spec.SetField(project.FieldXmfzr, field.TypeString, value)
+	if value, ok := pu.mutation.AddedAccumulateDeduction(); ok {
+		_spec.AddField(project.FieldAccumulateDeduction, field.TypeFloat64, value)
 	}
-	if pu.mutation.XmfzrCleared() {
-		_spec.ClearField(project.FieldXmfzr, field.TypeString)
+	if pu.mutation.AccumulateDeductionCleared() {
+		_spec.ClearField(project.FieldAccumulateDeduction, field.TypeFloat64)
 	}
-	if value, ok := pu.mutation.OwnerApplyAmount(); ok {
-		_spec.SetField(project.FieldOwnerApplyAmount, field.TypeFloat64, value)
+	if value, ok := pu.mutation.SubcontractorVaCount(); ok {
+		_spec.SetField(project.FieldSubcontractorVaCount, field.TypeInt, value)
 	}
-	if value, ok := pu.mutation.AddedOwnerApplyAmount(); ok {
-		_spec.AddField(project.FieldOwnerApplyAmount, field.TypeFloat64, value)
+	if value, ok := pu.mutation.AddedSubcontractorVaCount(); ok {
+		_spec.AddField(project.FieldSubcontractorVaCount, field.TypeInt, value)
 	}
-	if pu.mutation.OwnerApplyAmountCleared() {
-		_spec.ClearField(project.FieldOwnerApplyAmount, field.TypeFloat64)
+	if pu.mutation.SubcontractorVaCountCleared() {
+		_spec.ClearField(project.FieldSubcontractorVaCount, field.TypeInt)
 	}
-	if value, ok := pu.mutation.OwnerApplyCount(); ok {
-		_spec.SetField(project.FieldOwnerApplyCount, field.TypeInt, value)
+	if value, ok := pu.mutation.ContractSupplementaryCount(); ok {
+		_spec.SetField(project.FieldContractSupplementaryCount, field.TypeInt, value)
 	}
-	if value, ok := pu.mutation.AddedOwnerApplyCount(); ok {
-		_spec.AddField(project.FieldOwnerApplyCount, field.TypeInt, value)
+	if value, ok := pu.mutation.AddedContractSupplementaryCount(); ok {
+		_spec.AddField(project.FieldContractSupplementaryCount, field.TypeInt, value)
 	}
-	if pu.mutation.OwnerApplyCountCleared() {
-		_spec.ClearField(project.FieldOwnerApplyCount, field.TypeInt)
+	if pu.mutation.ContractSupplementaryCountCleared() {
+		_spec.ClearField(project.FieldContractSupplementaryCount, field.TypeInt)
 	}
-	if value, ok := pu.mutation.OwnerApproveAmount(); ok {
-		_spec.SetField(project.FieldOwnerApproveAmount, field.TypeFloat64, value)
+	if value, ok := pu.mutation.RepairFee(); ok {
+		_spec.SetField(project.FieldRepairFee, field.TypeFloat64, value)
 	}
-	if value, ok := pu.mutation.AddedOwnerApproveAmount(); ok {
-		_spec.AddField(project.FieldOwnerApproveAmount, field.TypeFloat64, value)
+	if value, ok := pu.mutation.AddedRepairFee(); ok {
+		_spec.AddField(project.FieldRepairFee, field.TypeFloat64, value)
 	}
-	if pu.mutation.OwnerApproveAmountCleared() {
-		_spec.ClearField(project.FieldOwnerApproveAmount, field.TypeFloat64)
-	}
-	if value, ok := pu.mutation.OwnerApproveCount(); ok {
-		_spec.SetField(project.FieldOwnerApproveCount, field.TypeInt, value)
-	}
-	if value, ok := pu.mutation.AddedOwnerApproveCount(); ok {
-		_spec.AddField(project.FieldOwnerApproveCount, field.TypeInt, value)
-	}
-	if pu.mutation.OwnerApproveCountCleared() {
-		_spec.ClearField(project.FieldOwnerApproveCount, field.TypeInt)
-	}
-	if value, ok := pu.mutation.ContractorApplyAmount(); ok {
-		_spec.SetField(project.FieldContractorApplyAmount, field.TypeFloat64, value)
-	}
-	if value, ok := pu.mutation.AddedContractorApplyAmount(); ok {
-		_spec.AddField(project.FieldContractorApplyAmount, field.TypeFloat64, value)
-	}
-	if pu.mutation.ContractorApplyAmountCleared() {
-		_spec.ClearField(project.FieldContractorApplyAmount, field.TypeFloat64)
-	}
-	if value, ok := pu.mutation.ContractorApplyCount(); ok {
-		_spec.SetField(project.FieldContractorApplyCount, field.TypeInt, value)
-	}
-	if value, ok := pu.mutation.AddedContractorApplyCount(); ok {
-		_spec.AddField(project.FieldContractorApplyCount, field.TypeInt, value)
-	}
-	if pu.mutation.ContractorApplyCountCleared() {
-		_spec.ClearField(project.FieldContractorApplyCount, field.TypeInt)
-	}
-	if value, ok := pu.mutation.ContractorApproveAmount(); ok {
-		_spec.SetField(project.FieldContractorApproveAmount, field.TypeFloat64, value)
-	}
-	if value, ok := pu.mutation.AddedContractorApproveAmount(); ok {
-		_spec.AddField(project.FieldContractorApproveAmount, field.TypeFloat64, value)
-	}
-	if pu.mutation.ContractorApproveAmountCleared() {
-		_spec.ClearField(project.FieldContractorApproveAmount, field.TypeFloat64)
-	}
-	if value, ok := pu.mutation.ContractorApproveCount(); ok {
-		_spec.SetField(project.FieldContractorApproveCount, field.TypeInt, value)
-	}
-	if value, ok := pu.mutation.AddedContractorApproveCount(); ok {
-		_spec.AddField(project.FieldContractorApproveCount, field.TypeInt, value)
-	}
-	if pu.mutation.ContractorApproveCountCleared() {
-		_spec.ClearField(project.FieldContractorApproveCount, field.TypeInt)
-	}
-	if value, ok := pu.mutation.InstallProgress(); ok {
-		_spec.SetField(project.FieldInstallProgress, field.TypeFloat64, value)
-	}
-	if value, ok := pu.mutation.AddedInstallProgress(); ok {
-		_spec.AddField(project.FieldInstallProgress, field.TypeFloat64, value)
-	}
-	if pu.mutation.InstallProgressCleared() {
-		_spec.ClearField(project.FieldInstallProgress, field.TypeFloat64)
-	}
-	if value, ok := pu.mutation.EffectiveContractAmount(); ok {
-		_spec.SetField(project.FieldEffectiveContractAmount, field.TypeFloat64, value)
-	}
-	if value, ok := pu.mutation.AddedEffectiveContractAmount(); ok {
-		_spec.AddField(project.FieldEffectiveContractAmount, field.TypeFloat64, value)
-	}
-	if pu.mutation.EffectiveContractAmountCleared() {
-		_spec.ClearField(project.FieldEffectiveContractAmount, field.TypeFloat64)
-	}
-	if value, ok := pu.mutation.VaApplyAmount(); ok {
-		_spec.SetField(project.FieldVaApplyAmount, field.TypeFloat64, value)
-	}
-	if value, ok := pu.mutation.AddedVaApplyAmount(); ok {
-		_spec.AddField(project.FieldVaApplyAmount, field.TypeFloat64, value)
-	}
-	if pu.mutation.VaApplyAmountCleared() {
-		_spec.ClearField(project.FieldVaApplyAmount, field.TypeFloat64)
-	}
-	if value, ok := pu.mutation.VaApproveAmount(); ok {
-		_spec.SetField(project.FieldVaApproveAmount, field.TypeFloat64, value)
-	}
-	if value, ok := pu.mutation.AddedVaApproveAmount(); ok {
-		_spec.AddField(project.FieldVaApproveAmount, field.TypeFloat64, value)
-	}
-	if pu.mutation.VaApproveAmountCleared() {
-		_spec.ClearField(project.FieldVaApproveAmount, field.TypeFloat64)
-	}
-	if value, ok := pu.mutation.AccumulatedStatutoryDeductions(); ok {
-		_spec.SetField(project.FieldAccumulatedStatutoryDeductions, field.TypeFloat64, value)
-	}
-	if value, ok := pu.mutation.AddedAccumulatedStatutoryDeductions(); ok {
-		_spec.AddField(project.FieldAccumulatedStatutoryDeductions, field.TypeFloat64, value)
-	}
-	if pu.mutation.AccumulatedStatutoryDeductionsCleared() {
-		_spec.ClearField(project.FieldAccumulatedStatutoryDeductions, field.TypeFloat64)
-	}
-	if value, ok := pu.mutation.AccumulatedNonStatutoryDeductions(); ok {
-		_spec.SetField(project.FieldAccumulatedNonStatutoryDeductions, field.TypeFloat64, value)
-	}
-	if value, ok := pu.mutation.AddedAccumulatedNonStatutoryDeductions(); ok {
-		_spec.AddField(project.FieldAccumulatedNonStatutoryDeductions, field.TypeFloat64, value)
-	}
-	if pu.mutation.AccumulatedNonStatutoryDeductionsCleared() {
-		_spec.ClearField(project.FieldAccumulatedNonStatutoryDeductions, field.TypeFloat64)
-	}
-	if value, ok := pu.mutation.AccumulatedStatutoryDeductionsPeriod(); ok {
-		_spec.SetField(project.FieldAccumulatedStatutoryDeductionsPeriod, field.TypeFloat64, value)
-	}
-	if value, ok := pu.mutation.AddedAccumulatedStatutoryDeductionsPeriod(); ok {
-		_spec.AddField(project.FieldAccumulatedStatutoryDeductionsPeriod, field.TypeFloat64, value)
-	}
-	if pu.mutation.AccumulatedStatutoryDeductionsPeriodCleared() {
-		_spec.ClearField(project.FieldAccumulatedStatutoryDeductionsPeriod, field.TypeFloat64)
-	}
-	if value, ok := pu.mutation.AccumulatedNonStatutoryDeductionsPeriod(); ok {
-		_spec.SetField(project.FieldAccumulatedNonStatutoryDeductionsPeriod, field.TypeFloat64, value)
-	}
-	if value, ok := pu.mutation.AddedAccumulatedNonStatutoryDeductionsPeriod(); ok {
-		_spec.AddField(project.FieldAccumulatedNonStatutoryDeductionsPeriod, field.TypeFloat64, value)
-	}
-	if pu.mutation.AccumulatedNonStatutoryDeductionsPeriodCleared() {
-		_spec.ClearField(project.FieldAccumulatedNonStatutoryDeductionsPeriod, field.TypeFloat64)
-	}
-	if value, ok := pu.mutation.TotalContractAmount(); ok {
-		_spec.SetField(project.FieldTotalContractAmount, field.TypeFloat64, value)
-	}
-	if value, ok := pu.mutation.AddedTotalContractAmount(); ok {
-		_spec.AddField(project.FieldTotalContractAmount, field.TypeFloat64, value)
-	}
-	if pu.mutation.TotalContractAmountCleared() {
-		_spec.ClearField(project.FieldTotalContractAmount, field.TypeFloat64)
-	}
-	if value, ok := pu.mutation.AluminumPlateBudgetPercentage(); ok {
-		_spec.SetField(project.FieldAluminumPlateBudgetPercentage, field.TypeFloat64, value)
-	}
-	if value, ok := pu.mutation.AddedAluminumPlateBudgetPercentage(); ok {
-		_spec.AddField(project.FieldAluminumPlateBudgetPercentage, field.TypeFloat64, value)
-	}
-	if pu.mutation.AluminumPlateBudgetPercentageCleared() {
-		_spec.ClearField(project.FieldAluminumPlateBudgetPercentage, field.TypeFloat64)
-	}
-	if value, ok := pu.mutation.AluminumBudgetPercentage(); ok {
-		_spec.SetField(project.FieldAluminumBudgetPercentage, field.TypeFloat64, value)
-	}
-	if value, ok := pu.mutation.AddedAluminumBudgetPercentage(); ok {
-		_spec.AddField(project.FieldAluminumBudgetPercentage, field.TypeFloat64, value)
-	}
-	if pu.mutation.AluminumBudgetPercentageCleared() {
-		_spec.ClearField(project.FieldAluminumBudgetPercentage, field.TypeFloat64)
-	}
-	if value, ok := pu.mutation.GlassBudgetPercentage(); ok {
-		_spec.SetField(project.FieldGlassBudgetPercentage, field.TypeFloat64, value)
-	}
-	if value, ok := pu.mutation.AddedGlassBudgetPercentage(); ok {
-		_spec.AddField(project.FieldGlassBudgetPercentage, field.TypeFloat64, value)
-	}
-	if pu.mutation.GlassBudgetPercentageCleared() {
-		_spec.ClearField(project.FieldGlassBudgetPercentage, field.TypeFloat64)
-	}
-	if value, ok := pu.mutation.IronBudgetPercentage(); ok {
-		_spec.SetField(project.FieldIronBudgetPercentage, field.TypeFloat64, value)
-	}
-	if value, ok := pu.mutation.AddedIronBudgetPercentage(); ok {
-		_spec.AddField(project.FieldIronBudgetPercentage, field.TypeFloat64, value)
-	}
-	if pu.mutation.IronBudgetPercentageCleared() {
-		_spec.ClearField(project.FieldIronBudgetPercentage, field.TypeFloat64)
-	}
-	if value, ok := pu.mutation.MilestonePlanYear(); ok {
-		_spec.SetField(project.FieldMilestonePlanYear, field.TypeInt, value)
-	}
-	if value, ok := pu.mutation.AddedMilestonePlanYear(); ok {
-		_spec.AddField(project.FieldMilestonePlanYear, field.TypeInt, value)
-	}
-	if pu.mutation.MilestonePlanYearCleared() {
-		_spec.ClearField(project.FieldMilestonePlanYear, field.TypeInt)
-	}
-	if value, ok := pu.mutation.MilestonePlanMonth(); ok {
-		_spec.SetField(project.FieldMilestonePlanMonth, field.TypeInt, value)
-	}
-	if value, ok := pu.mutation.AddedMilestonePlanMonth(); ok {
-		_spec.AddField(project.FieldMilestonePlanMonth, field.TypeInt, value)
-	}
-	if pu.mutation.MilestonePlanMonthCleared() {
-		_spec.ClearField(project.FieldMilestonePlanMonth, field.TypeInt)
-	}
-	if value, ok := pu.mutation.MilestoneDoneYear(); ok {
-		_spec.SetField(project.FieldMilestoneDoneYear, field.TypeInt, value)
-	}
-	if value, ok := pu.mutation.AddedMilestoneDoneYear(); ok {
-		_spec.AddField(project.FieldMilestoneDoneYear, field.TypeInt, value)
-	}
-	if pu.mutation.MilestoneDoneYearCleared() {
-		_spec.ClearField(project.FieldMilestoneDoneYear, field.TypeInt)
-	}
-	if value, ok := pu.mutation.MilestoneDoneMonth(); ok {
-		_spec.SetField(project.FieldMilestoneDoneMonth, field.TypeInt, value)
-	}
-	if value, ok := pu.mutation.AddedMilestoneDoneMonth(); ok {
-		_spec.AddField(project.FieldMilestoneDoneMonth, field.TypeInt, value)
-	}
-	if pu.mutation.MilestoneDoneMonthCleared() {
-		_spec.ClearField(project.FieldMilestoneDoneMonth, field.TypeInt)
-	}
-	if value, ok := pu.mutation.PmArea(); ok {
-		_spec.SetField(project.FieldPmArea, field.TypeFloat64, value)
-	}
-	if value, ok := pu.mutation.AddedPmArea(); ok {
-		_spec.AddField(project.FieldPmArea, field.TypeFloat64, value)
-	}
-	if pu.mutation.PmAreaCleared() {
-		_spec.ClearField(project.FieldPmArea, field.TypeFloat64)
-	}
-	if value, ok := pu.mutation.PmYearTarget(); ok {
-		_spec.SetField(project.FieldPmYearTarget, field.TypeFloat64, value)
-	}
-	if value, ok := pu.mutation.AddedPmYearTarget(); ok {
-		_spec.AddField(project.FieldPmYearTarget, field.TypeFloat64, value)
-	}
-	if pu.mutation.PmYearTargetCleared() {
-		_spec.ClearField(project.FieldPmYearTarget, field.TypeFloat64)
-	}
-	if value, ok := pu.mutation.PmMonthTarget(); ok {
-		_spec.SetField(project.FieldPmMonthTarget, field.TypeFloat64, value)
-	}
-	if value, ok := pu.mutation.AddedPmMonthTarget(); ok {
-		_spec.AddField(project.FieldPmMonthTarget, field.TypeFloat64, value)
-	}
-	if pu.mutation.PmMonthTargetCleared() {
-		_spec.ClearField(project.FieldPmMonthTarget, field.TypeFloat64)
-	}
-	if value, ok := pu.mutation.PmYearActual(); ok {
-		_spec.SetField(project.FieldPmYearActual, field.TypeFloat64, value)
-	}
-	if value, ok := pu.mutation.AddedPmYearActual(); ok {
-		_spec.AddField(project.FieldPmYearActual, field.TypeFloat64, value)
-	}
-	if pu.mutation.PmYearActualCleared() {
-		_spec.ClearField(project.FieldPmYearActual, field.TypeFloat64)
-	}
-	if value, ok := pu.mutation.PmMonthActual(); ok {
-		_spec.SetField(project.FieldPmMonthActual, field.TypeFloat64, value)
-	}
-	if value, ok := pu.mutation.AddedPmMonthActual(); ok {
-		_spec.AddField(project.FieldPmMonthActual, field.TypeFloat64, value)
-	}
-	if pu.mutation.PmMonthActualCleared() {
-		_spec.ClearField(project.FieldPmMonthActual, field.TypeFloat64)
-	}
-	if value, ok := pu.mutation.PmTotal(); ok {
-		_spec.SetField(project.FieldPmTotal, field.TypeFloat64, value)
-	}
-	if value, ok := pu.mutation.AddedPmTotal(); ok {
-		_spec.AddField(project.FieldPmTotal, field.TypeFloat64, value)
-	}
-	if pu.mutation.PmTotalCleared() {
-		_spec.ClearField(project.FieldPmTotal, field.TypeFloat64)
-	}
-	if value, ok := pu.mutation.PmYesterday(); ok {
-		_spec.SetField(project.FieldPmYesterday, field.TypeFloat64, value)
-	}
-	if value, ok := pu.mutation.AddedPmYesterday(); ok {
-		_spec.AddField(project.FieldPmYesterday, field.TypeFloat64, value)
-	}
-	if pu.mutation.PmYesterdayCleared() {
-		_spec.ClearField(project.FieldPmYesterday, field.TypeFloat64)
+	if pu.mutation.RepairFeeCleared() {
+		_spec.ClearField(project.FieldRepairFee, field.TypeFloat64)
 	}
 	if value, ok := pu.mutation.UnitInventoryTotal(); ok {
 		_spec.SetField(project.FieldUnitInventoryTotal, field.TypeFloat64, value)
@@ -2703,78 +950,6 @@ func (pu *ProjectUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if pu.mutation.UnitComponentInstallationCleared() {
 		_spec.ClearField(project.FieldUnitComponentInstallation, field.TypeFloat64)
 	}
-	if value, ok := pu.mutation.MaterialLoss(); ok {
-		_spec.SetField(project.FieldMaterialLoss, field.TypeFloat64, value)
-	}
-	if value, ok := pu.mutation.AddedMaterialLoss(); ok {
-		_spec.AddField(project.FieldMaterialLoss, field.TypeFloat64, value)
-	}
-	if pu.mutation.MaterialLossCleared() {
-		_spec.ClearField(project.FieldMaterialLoss, field.TypeFloat64)
-	}
-	if value, ok := pu.mutation.DesignRatedWeight(); ok {
-		_spec.SetField(project.FieldDesignRatedWeight, field.TypeFloat64, value)
-	}
-	if value, ok := pu.mutation.AddedDesignRatedWeight(); ok {
-		_spec.AddField(project.FieldDesignRatedWeight, field.TypeFloat64, value)
-	}
-	if pu.mutation.DesignRatedWeightCleared() {
-		_spec.ClearField(project.FieldDesignRatedWeight, field.TypeFloat64)
-	}
-	if value, ok := pu.mutation.ProcessingWeight(); ok {
-		_spec.SetField(project.FieldProcessingWeight, field.TypeFloat64, value)
-	}
-	if value, ok := pu.mutation.AddedProcessingWeight(); ok {
-		_spec.AddField(project.FieldProcessingWeight, field.TypeFloat64, value)
-	}
-	if pu.mutation.ProcessingWeightCleared() {
-		_spec.ClearField(project.FieldProcessingWeight, field.TypeFloat64)
-	}
-	if value, ok := pu.mutation.ItemStockWeight(); ok {
-		_spec.SetField(project.FieldItemStockWeight, field.TypeFloat64, value)
-	}
-	if value, ok := pu.mutation.AddedItemStockWeight(); ok {
-		_spec.AddField(project.FieldItemStockWeight, field.TypeFloat64, value)
-	}
-	if pu.mutation.ItemStockWeightCleared() {
-		_spec.ClearField(project.FieldItemStockWeight, field.TypeFloat64)
-	}
-	if value, ok := pu.mutation.PalletsInStock(); ok {
-		_spec.SetField(project.FieldPalletsInStock, field.TypeFloat64, value)
-	}
-	if value, ok := pu.mutation.AddedPalletsInStock(); ok {
-		_spec.AddField(project.FieldPalletsInStock, field.TypeFloat64, value)
-	}
-	if pu.mutation.PalletsInStockCleared() {
-		_spec.ClearField(project.FieldPalletsInStock, field.TypeFloat64)
-	}
-	if value, ok := pu.mutation.PartsInStock(); ok {
-		_spec.SetField(project.FieldPartsInStock, field.TypeFloat64, value)
-	}
-	if value, ok := pu.mutation.AddedPartsInStock(); ok {
-		_spec.AddField(project.FieldPartsInStock, field.TypeFloat64, value)
-	}
-	if pu.mutation.PartsInStockCleared() {
-		_spec.ClearField(project.FieldPartsInStock, field.TypeFloat64)
-	}
-	if value, ok := pu.mutation.QualityScore(); ok {
-		_spec.SetField(project.FieldQualityScore, field.TypeFloat64, value)
-	}
-	if value, ok := pu.mutation.AddedQualityScore(); ok {
-		_spec.AddField(project.FieldQualityScore, field.TypeFloat64, value)
-	}
-	if pu.mutation.QualityScoreCleared() {
-		_spec.ClearField(project.FieldQualityScore, field.TypeFloat64)
-	}
-	if value, ok := pu.mutation.QualityRanking(); ok {
-		_spec.SetField(project.FieldQualityRanking, field.TypeFloat64, value)
-	}
-	if value, ok := pu.mutation.AddedQualityRanking(); ok {
-		_spec.AddField(project.FieldQualityRanking, field.TypeFloat64, value)
-	}
-	if pu.mutation.QualityRankingCleared() {
-		_spec.ClearField(project.FieldQualityRanking, field.TypeFloat64)
-	}
 	if value, ok := pu.mutation.BulkMaterialsTotalOrderQuantity(); ok {
 		_spec.SetField(project.FieldBulkMaterialsTotalOrderQuantity, field.TypeFloat64, value)
 	}
@@ -2801,33 +976,6 @@ func (pu *ProjectUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if pu.mutation.BulkMaterialsUncompletedQuantityCleared() {
 		_spec.ClearField(project.FieldBulkMaterialsUncompletedQuantity, field.TypeFloat64)
-	}
-	if value, ok := pu.mutation.PlanTotalCount(); ok {
-		_spec.SetField(project.FieldPlanTotalCount, field.TypeInt, value)
-	}
-	if value, ok := pu.mutation.AddedPlanTotalCount(); ok {
-		_spec.AddField(project.FieldPlanTotalCount, field.TypeInt, value)
-	}
-	if pu.mutation.PlanTotalCountCleared() {
-		_spec.ClearField(project.FieldPlanTotalCount, field.TypeInt)
-	}
-	if value, ok := pu.mutation.PlanOverdueCount(); ok {
-		_spec.SetField(project.FieldPlanOverdueCount, field.TypeInt, value)
-	}
-	if value, ok := pu.mutation.AddedPlanOverdueCount(); ok {
-		_spec.AddField(project.FieldPlanOverdueCount, field.TypeInt, value)
-	}
-	if pu.mutation.PlanOverdueCountCleared() {
-		_spec.ClearField(project.FieldPlanOverdueCount, field.TypeInt)
-	}
-	if value, ok := pu.mutation.PlanOverdueMonthCount(); ok {
-		_spec.SetField(project.FieldPlanOverdueMonthCount, field.TypeInt, value)
-	}
-	if value, ok := pu.mutation.AddedPlanOverdueMonthCount(); ok {
-		_spec.AddField(project.FieldPlanOverdueMonthCount, field.TypeInt, value)
-	}
-	if pu.mutation.PlanOverdueMonthCountCleared() {
-		_spec.ClearField(project.FieldPlanOverdueMonthCount, field.TypeInt)
 	}
 	if value, ok := pu.mutation.DiagramBdFinishCount(); ok {
 		_spec.SetField(project.FieldDiagramBdFinishCount, field.TypeInt, value)
@@ -2900,96 +1048,6 @@ func (pu *ProjectUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if pu.mutation.DiagramCApprovalRatioDenominatorCleared() {
 		_spec.ClearField(project.FieldDiagramCApprovalRatioDenominator, field.TypeInt)
-	}
-	if pu.mutation.VosCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   project.VosTable,
-			Columns: []string{project.VosColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(projectvo.FieldID, field.TypeString),
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := pu.mutation.RemovedVosIDs(); len(nodes) > 0 && !pu.mutation.VosCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   project.VosTable,
-			Columns: []string{project.VosColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(projectvo.FieldID, field.TypeString),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := pu.mutation.VosIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   project.VosTable,
-			Columns: []string{project.VosColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(projectvo.FieldID, field.TypeString),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
-	}
-	if pu.mutation.ProjectStaffsCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   project.ProjectStaffsTable,
-			Columns: []string{project.ProjectStaffsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(projectstaff.FieldID, field.TypeString),
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := pu.mutation.RemovedProjectStaffsIDs(); len(nodes) > 0 && !pu.mutation.ProjectStaffsCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   project.ProjectStaffsTable,
-			Columns: []string{project.ProjectStaffsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(projectstaff.FieldID, field.TypeString),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := pu.mutation.ProjectStaffsIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   project.ProjectStaffsTable,
-			Columns: []string{project.ProjectStaffsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(projectstaff.FieldID, field.TypeString),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	if pu.mutation.UsersCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -3076,266 +1134,6 @@ func (puo *ProjectUpdateOne) SetNillableCode(s *string) *ProjectUpdateOne {
 	return puo
 }
 
-// SetManager sets the "manager" field.
-func (puo *ProjectUpdateOne) SetManager(s string) *ProjectUpdateOne {
-	puo.mutation.SetManager(s)
-	return puo
-}
-
-// SetNillableManager sets the "manager" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableManager(s *string) *ProjectUpdateOne {
-	if s != nil {
-		puo.SetManager(*s)
-	}
-	return puo
-}
-
-// ClearManager clears the value of the "manager" field.
-func (puo *ProjectUpdateOne) ClearManager() *ProjectUpdateOne {
-	puo.mutation.ClearManager()
-	return puo
-}
-
-// SetName sets the "name" field.
-func (puo *ProjectUpdateOne) SetName(s string) *ProjectUpdateOne {
-	puo.mutation.SetName(s)
-	return puo
-}
-
-// SetNillableName sets the "name" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableName(s *string) *ProjectUpdateOne {
-	if s != nil {
-		puo.SetName(*s)
-	}
-	return puo
-}
-
-// ClearName clears the value of the "name" field.
-func (puo *ProjectUpdateOne) ClearName() *ProjectUpdateOne {
-	puo.mutation.ClearName()
-	return puo
-}
-
-// SetOwner sets the "owner" field.
-func (puo *ProjectUpdateOne) SetOwner(s string) *ProjectUpdateOne {
-	puo.mutation.SetOwner(s)
-	return puo
-}
-
-// SetNillableOwner sets the "owner" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableOwner(s *string) *ProjectUpdateOne {
-	if s != nil {
-		puo.SetOwner(*s)
-	}
-	return puo
-}
-
-// ClearOwner clears the value of the "owner" field.
-func (puo *ProjectUpdateOne) ClearOwner() *ProjectUpdateOne {
-	puo.mutation.ClearOwner()
-	return puo
-}
-
-// SetJzs sets the "jzs" field.
-func (puo *ProjectUpdateOne) SetJzs(s string) *ProjectUpdateOne {
-	puo.mutation.SetJzs(s)
-	return puo
-}
-
-// SetNillableJzs sets the "jzs" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableJzs(s *string) *ProjectUpdateOne {
-	if s != nil {
-		puo.SetJzs(*s)
-	}
-	return puo
-}
-
-// ClearJzs clears the value of the "jzs" field.
-func (puo *ProjectUpdateOne) ClearJzs() *ProjectUpdateOne {
-	puo.mutation.ClearJzs()
-	return puo
-}
-
-// SetMcn sets the "mcn" field.
-func (puo *ProjectUpdateOne) SetMcn(s string) *ProjectUpdateOne {
-	puo.mutation.SetMcn(s)
-	return puo
-}
-
-// SetNillableMcn sets the "mcn" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableMcn(s *string) *ProjectUpdateOne {
-	if s != nil {
-		puo.SetMcn(*s)
-	}
-	return puo
-}
-
-// ClearMcn clears the value of the "mcn" field.
-func (puo *ProjectUpdateOne) ClearMcn() *ProjectUpdateOne {
-	puo.mutation.ClearMcn()
-	return puo
-}
-
-// SetConsultant sets the "consultant" field.
-func (puo *ProjectUpdateOne) SetConsultant(s string) *ProjectUpdateOne {
-	puo.mutation.SetConsultant(s)
-	return puo
-}
-
-// SetNillableConsultant sets the "consultant" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableConsultant(s *string) *ProjectUpdateOne {
-	if s != nil {
-		puo.SetConsultant(*s)
-	}
-	return puo
-}
-
-// ClearConsultant clears the value of the "consultant" field.
-func (puo *ProjectUpdateOne) ClearConsultant() *ProjectUpdateOne {
-	puo.mutation.ClearConsultant()
-	return puo
-}
-
-// SetAreas sets the "areas" field.
-func (puo *ProjectUpdateOne) SetAreas(s string) *ProjectUpdateOne {
-	puo.mutation.SetAreas(s)
-	return puo
-}
-
-// SetNillableAreas sets the "areas" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableAreas(s *string) *ProjectUpdateOne {
-	if s != nil {
-		puo.SetAreas(*s)
-	}
-	return puo
-}
-
-// ClearAreas clears the value of the "areas" field.
-func (puo *ProjectUpdateOne) ClearAreas() *ProjectUpdateOne {
-	puo.mutation.ClearAreas()
-	return puo
-}
-
-// SetStartDate sets the "start_date" field.
-func (puo *ProjectUpdateOne) SetStartDate(t time.Time) *ProjectUpdateOne {
-	puo.mutation.SetStartDate(t)
-	return puo
-}
-
-// SetNillableStartDate sets the "start_date" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableStartDate(t *time.Time) *ProjectUpdateOne {
-	if t != nil {
-		puo.SetStartDate(*t)
-	}
-	return puo
-}
-
-// ClearStartDate clears the value of the "start_date" field.
-func (puo *ProjectUpdateOne) ClearStartDate() *ProjectUpdateOne {
-	puo.mutation.ClearStartDate()
-	return puo
-}
-
-// SetFsDate sets the "fs_date" field.
-func (puo *ProjectUpdateOne) SetFsDate(t time.Time) *ProjectUpdateOne {
-	puo.mutation.SetFsDate(t)
-	return puo
-}
-
-// SetNillableFsDate sets the "fs_date" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableFsDate(t *time.Time) *ProjectUpdateOne {
-	if t != nil {
-		puo.SetFsDate(*t)
-	}
-	return puo
-}
-
-// ClearFsDate clears the value of the "fs_date" field.
-func (puo *ProjectUpdateOne) ClearFsDate() *ProjectUpdateOne {
-	puo.mutation.ClearFsDate()
-	return puo
-}
-
-// SetOpDate sets the "op_date" field.
-func (puo *ProjectUpdateOne) SetOpDate(t time.Time) *ProjectUpdateOne {
-	puo.mutation.SetOpDate(t)
-	return puo
-}
-
-// SetNillableOpDate sets the "op_date" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableOpDate(t *time.Time) *ProjectUpdateOne {
-	if t != nil {
-		puo.SetOpDate(*t)
-	}
-	return puo
-}
-
-// ClearOpDate clears the value of the "op_date" field.
-func (puo *ProjectUpdateOne) ClearOpDate() *ProjectUpdateOne {
-	puo.mutation.ClearOpDate()
-	return puo
-}
-
-// SetEndDate sets the "end_date" field.
-func (puo *ProjectUpdateOne) SetEndDate(t time.Time) *ProjectUpdateOne {
-	puo.mutation.SetEndDate(t)
-	return puo
-}
-
-// SetNillableEndDate sets the "end_date" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableEndDate(t *time.Time) *ProjectUpdateOne {
-	if t != nil {
-		puo.SetEndDate(*t)
-	}
-	return puo
-}
-
-// ClearEndDate clears the value of the "end_date" field.
-func (puo *ProjectUpdateOne) ClearEndDate() *ProjectUpdateOne {
-	puo.mutation.ClearEndDate()
-	return puo
-}
-
-// SetMntyr sets the "mntyr" field.
-func (puo *ProjectUpdateOne) SetMntyr(s string) *ProjectUpdateOne {
-	puo.mutation.SetMntyr(s)
-	return puo
-}
-
-// SetNillableMntyr sets the "mntyr" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableMntyr(s *string) *ProjectUpdateOne {
-	if s != nil {
-		puo.SetMntyr(*s)
-	}
-	return puo
-}
-
-// ClearMntyr clears the value of the "mntyr" field.
-func (puo *ProjectUpdateOne) ClearMntyr() *ProjectUpdateOne {
-	puo.mutation.ClearMntyr()
-	return puo
-}
-
-// SetConType sets the "con_type" field.
-func (puo *ProjectUpdateOne) SetConType(s string) *ProjectUpdateOne {
-	puo.mutation.SetConType(s)
-	return puo
-}
-
-// SetNillableConType sets the "con_type" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableConType(s *string) *ProjectUpdateOne {
-	if s != nil {
-		puo.SetConType(*s)
-	}
-	return puo
-}
-
-// ClearConType clears the value of the "con_type" field.
-func (puo *ProjectUpdateOne) ClearConType() *ProjectUpdateOne {
-	puo.mutation.ClearConType()
-	return puo
-}
-
 // SetIsFinished sets the "is_finished" field.
 func (puo *ProjectUpdateOne) SetIsFinished(b bool) *ProjectUpdateOne {
 	puo.mutation.SetIsFinished(b)
@@ -3350,1049 +1148,266 @@ func (puo *ProjectUpdateOne) SetNillableIsFinished(b *bool) *ProjectUpdateOne {
 	return puo
 }
 
-// SetCje sets the "cje" field.
-func (puo *ProjectUpdateOne) SetCje(f float64) *ProjectUpdateOne {
-	puo.mutation.ResetCje()
-	puo.mutation.SetCje(f)
+// SetRevenueKpi sets the "revenue_kpi" field.
+func (puo *ProjectUpdateOne) SetRevenueKpi(f float64) *ProjectUpdateOne {
+	puo.mutation.ResetRevenueKpi()
+	puo.mutation.SetRevenueKpi(f)
 	return puo
 }
 
-// SetNillableCje sets the "cje" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableCje(f *float64) *ProjectUpdateOne {
+// SetNillableRevenueKpi sets the "revenue_kpi" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableRevenueKpi(f *float64) *ProjectUpdateOne {
 	if f != nil {
-		puo.SetCje(*f)
+		puo.SetRevenueKpi(*f)
 	}
 	return puo
 }
 
-// AddCje adds f to the "cje" field.
-func (puo *ProjectUpdateOne) AddCje(f float64) *ProjectUpdateOne {
-	puo.mutation.AddCje(f)
+// AddRevenueKpi adds f to the "revenue_kpi" field.
+func (puo *ProjectUpdateOne) AddRevenueKpi(f float64) *ProjectUpdateOne {
+	puo.mutation.AddRevenueKpi(f)
 	return puo
 }
 
-// ClearCje clears the value of the "cje" field.
-func (puo *ProjectUpdateOne) ClearCje() *ProjectUpdateOne {
-	puo.mutation.ClearCje()
+// ClearRevenueKpi clears the value of the "revenue_kpi" field.
+func (puo *ProjectUpdateOne) ClearRevenueKpi() *ProjectUpdateOne {
+	puo.mutation.ClearRevenueKpi()
 	return puo
 }
 
-// SetYye sets the "yye" field.
-func (puo *ProjectUpdateOne) SetYye(f float64) *ProjectUpdateOne {
-	puo.mutation.ResetYye()
-	puo.mutation.SetYye(f)
+// SetRevenueCurrentYearCompleted sets the "revenue_current_year_completed" field.
+func (puo *ProjectUpdateOne) SetRevenueCurrentYearCompleted(f float64) *ProjectUpdateOne {
+	puo.mutation.ResetRevenueCurrentYearCompleted()
+	puo.mutation.SetRevenueCurrentYearCompleted(f)
 	return puo
 }
 
-// SetNillableYye sets the "yye" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableYye(f *float64) *ProjectUpdateOne {
+// SetNillableRevenueCurrentYearCompleted sets the "revenue_current_year_completed" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableRevenueCurrentYearCompleted(f *float64) *ProjectUpdateOne {
 	if f != nil {
-		puo.SetYye(*f)
+		puo.SetRevenueCurrentYearCompleted(*f)
 	}
 	return puo
 }
 
-// AddYye adds f to the "yye" field.
-func (puo *ProjectUpdateOne) AddYye(f float64) *ProjectUpdateOne {
-	puo.mutation.AddYye(f)
+// AddRevenueCurrentYearCompleted adds f to the "revenue_current_year_completed" field.
+func (puo *ProjectUpdateOne) AddRevenueCurrentYearCompleted(f float64) *ProjectUpdateOne {
+	puo.mutation.AddRevenueCurrentYearCompleted(f)
 	return puo
 }
 
-// ClearYye clears the value of the "yye" field.
-func (puo *ProjectUpdateOne) ClearYye() *ProjectUpdateOne {
-	puo.mutation.ClearYye()
+// ClearRevenueCurrentYearCompleted clears the value of the "revenue_current_year_completed" field.
+func (puo *ProjectUpdateOne) ClearRevenueCurrentYearCompleted() *ProjectUpdateOne {
+	puo.mutation.ClearRevenueCurrentYearCompleted()
 	return puo
 }
 
-// SetXjl sets the "xjl" field.
-func (puo *ProjectUpdateOne) SetXjl(f float64) *ProjectUpdateOne {
-	puo.mutation.ResetXjl()
-	puo.mutation.SetXjl(f)
+// SetRevenueAccumulatedCompleted sets the "revenue_accumulated_completed" field.
+func (puo *ProjectUpdateOne) SetRevenueAccumulatedCompleted(f float64) *ProjectUpdateOne {
+	puo.mutation.ResetRevenueAccumulatedCompleted()
+	puo.mutation.SetRevenueAccumulatedCompleted(f)
 	return puo
 }
 
-// SetNillableXjl sets the "xjl" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableXjl(f *float64) *ProjectUpdateOne {
+// SetNillableRevenueAccumulatedCompleted sets the "revenue_accumulated_completed" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableRevenueAccumulatedCompleted(f *float64) *ProjectUpdateOne {
 	if f != nil {
-		puo.SetXjl(*f)
+		puo.SetRevenueAccumulatedCompleted(*f)
 	}
 	return puo
 }
 
-// AddXjl adds f to the "xjl" field.
-func (puo *ProjectUpdateOne) AddXjl(f float64) *ProjectUpdateOne {
-	puo.mutation.AddXjl(f)
+// AddRevenueAccumulatedCompleted adds f to the "revenue_accumulated_completed" field.
+func (puo *ProjectUpdateOne) AddRevenueAccumulatedCompleted(f float64) *ProjectUpdateOne {
+	puo.mutation.AddRevenueAccumulatedCompleted(f)
 	return puo
 }
 
-// ClearXjl clears the value of the "xjl" field.
-func (puo *ProjectUpdateOne) ClearXjl() *ProjectUpdateOne {
-	puo.mutation.ClearXjl()
+// ClearRevenueAccumulatedCompleted clears the value of the "revenue_accumulated_completed" field.
+func (puo *ProjectUpdateOne) ClearRevenueAccumulatedCompleted() *ProjectUpdateOne {
+	puo.mutation.ClearRevenueAccumulatedCompleted()
 	return puo
 }
 
-// SetXmglfYs sets the "xmglf_ys" field.
-func (puo *ProjectUpdateOne) SetXmglfYs(f float64) *ProjectUpdateOne {
-	puo.mutation.ResetXmglfYs()
-	puo.mutation.SetXmglfYs(f)
+// SetPayDate sets the "pay_date" field.
+func (puo *ProjectUpdateOne) SetPayDate(t time.Time) *ProjectUpdateOne {
+	puo.mutation.SetPayDate(t)
 	return puo
 }
 
-// SetNillableXmglfYs sets the "xmglf_ys" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableXmglfYs(f *float64) *ProjectUpdateOne {
-	if f != nil {
-		puo.SetXmglfYs(*f)
+// SetNillablePayDate sets the "pay_date" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillablePayDate(t *time.Time) *ProjectUpdateOne {
+	if t != nil {
+		puo.SetPayDate(*t)
 	}
 	return puo
 }
 
-// AddXmglfYs adds f to the "xmglf_ys" field.
-func (puo *ProjectUpdateOne) AddXmglfYs(f float64) *ProjectUpdateOne {
-	puo.mutation.AddXmglfYs(f)
+// ClearPayDate clears the value of the "pay_date" field.
+func (puo *ProjectUpdateOne) ClearPayDate() *ProjectUpdateOne {
+	puo.mutation.ClearPayDate()
 	return puo
 }
 
-// ClearXmglfYs clears the value of the "xmglf_ys" field.
-func (puo *ProjectUpdateOne) ClearXmglfYs() *ProjectUpdateOne {
-	puo.mutation.ClearXmglfYs()
+// SetOwnerVoCount sets the "owner_vo_count" field.
+func (puo *ProjectUpdateOne) SetOwnerVoCount(i int) *ProjectUpdateOne {
+	puo.mutation.ResetOwnerVoCount()
+	puo.mutation.SetOwnerVoCount(i)
 	return puo
 }
 
-// SetXmglfLj sets the "xmglf_lj" field.
-func (puo *ProjectUpdateOne) SetXmglfLj(f float64) *ProjectUpdateOne {
-	puo.mutation.ResetXmglfLj()
-	puo.mutation.SetXmglfLj(f)
-	return puo
-}
-
-// SetNillableXmglfLj sets the "xmglf_lj" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableXmglfLj(f *float64) *ProjectUpdateOne {
-	if f != nil {
-		puo.SetXmglfLj(*f)
-	}
-	return puo
-}
-
-// AddXmglfLj adds f to the "xmglf_lj" field.
-func (puo *ProjectUpdateOne) AddXmglfLj(f float64) *ProjectUpdateOne {
-	puo.mutation.AddXmglfLj(f)
-	return puo
-}
-
-// ClearXmglfLj clears the value of the "xmglf_lj" field.
-func (puo *ProjectUpdateOne) ClearXmglfLj() *ProjectUpdateOne {
-	puo.mutation.ClearXmglfLj()
-	return puo
-}
-
-// SetXmsjf sets the "xmsjf" field.
-func (puo *ProjectUpdateOne) SetXmsjf(f float64) *ProjectUpdateOne {
-	puo.mutation.ResetXmsjf()
-	puo.mutation.SetXmsjf(f)
-	return puo
-}
-
-// SetNillableXmsjf sets the "xmsjf" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableXmsjf(f *float64) *ProjectUpdateOne {
-	if f != nil {
-		puo.SetXmsjf(*f)
-	}
-	return puo
-}
-
-// AddXmsjf adds f to the "xmsjf" field.
-func (puo *ProjectUpdateOne) AddXmsjf(f float64) *ProjectUpdateOne {
-	puo.mutation.AddXmsjf(f)
-	return puo
-}
-
-// ClearXmsjf clears the value of the "xmsjf" field.
-func (puo *ProjectUpdateOne) ClearXmsjf() *ProjectUpdateOne {
-	puo.mutation.ClearXmsjf()
-	return puo
-}
-
-// SetXmfzr sets the "xmfzr" field.
-func (puo *ProjectUpdateOne) SetXmfzr(s string) *ProjectUpdateOne {
-	puo.mutation.SetXmfzr(s)
-	return puo
-}
-
-// SetNillableXmfzr sets the "xmfzr" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableXmfzr(s *string) *ProjectUpdateOne {
-	if s != nil {
-		puo.SetXmfzr(*s)
-	}
-	return puo
-}
-
-// ClearXmfzr clears the value of the "xmfzr" field.
-func (puo *ProjectUpdateOne) ClearXmfzr() *ProjectUpdateOne {
-	puo.mutation.ClearXmfzr()
-	return puo
-}
-
-// SetOwnerApplyAmount sets the "owner_apply_amount" field.
-func (puo *ProjectUpdateOne) SetOwnerApplyAmount(f float64) *ProjectUpdateOne {
-	puo.mutation.ResetOwnerApplyAmount()
-	puo.mutation.SetOwnerApplyAmount(f)
-	return puo
-}
-
-// SetNillableOwnerApplyAmount sets the "owner_apply_amount" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableOwnerApplyAmount(f *float64) *ProjectUpdateOne {
-	if f != nil {
-		puo.SetOwnerApplyAmount(*f)
-	}
-	return puo
-}
-
-// AddOwnerApplyAmount adds f to the "owner_apply_amount" field.
-func (puo *ProjectUpdateOne) AddOwnerApplyAmount(f float64) *ProjectUpdateOne {
-	puo.mutation.AddOwnerApplyAmount(f)
-	return puo
-}
-
-// ClearOwnerApplyAmount clears the value of the "owner_apply_amount" field.
-func (puo *ProjectUpdateOne) ClearOwnerApplyAmount() *ProjectUpdateOne {
-	puo.mutation.ClearOwnerApplyAmount()
-	return puo
-}
-
-// SetOwnerApplyCount sets the "owner_apply_count" field.
-func (puo *ProjectUpdateOne) SetOwnerApplyCount(i int) *ProjectUpdateOne {
-	puo.mutation.ResetOwnerApplyCount()
-	puo.mutation.SetOwnerApplyCount(i)
-	return puo
-}
-
-// SetNillableOwnerApplyCount sets the "owner_apply_count" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableOwnerApplyCount(i *int) *ProjectUpdateOne {
+// SetNillableOwnerVoCount sets the "owner_vo_count" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableOwnerVoCount(i *int) *ProjectUpdateOne {
 	if i != nil {
-		puo.SetOwnerApplyCount(*i)
+		puo.SetOwnerVoCount(*i)
 	}
 	return puo
 }
 
-// AddOwnerApplyCount adds i to the "owner_apply_count" field.
-func (puo *ProjectUpdateOne) AddOwnerApplyCount(i int) *ProjectUpdateOne {
-	puo.mutation.AddOwnerApplyCount(i)
+// AddOwnerVoCount adds i to the "owner_vo_count" field.
+func (puo *ProjectUpdateOne) AddOwnerVoCount(i int) *ProjectUpdateOne {
+	puo.mutation.AddOwnerVoCount(i)
 	return puo
 }
 
-// ClearOwnerApplyCount clears the value of the "owner_apply_count" field.
-func (puo *ProjectUpdateOne) ClearOwnerApplyCount() *ProjectUpdateOne {
-	puo.mutation.ClearOwnerApplyCount()
+// ClearOwnerVoCount clears the value of the "owner_vo_count" field.
+func (puo *ProjectUpdateOne) ClearOwnerVoCount() *ProjectUpdateOne {
+	puo.mutation.ClearOwnerVoCount()
 	return puo
 }
 
-// SetOwnerApproveAmount sets the "owner_approve_amount" field.
-func (puo *ProjectUpdateOne) SetOwnerApproveAmount(f float64) *ProjectUpdateOne {
-	puo.mutation.ResetOwnerApproveAmount()
-	puo.mutation.SetOwnerApproveAmount(f)
+// SetContractorVoCount sets the "contractor_vo_count" field.
+func (puo *ProjectUpdateOne) SetContractorVoCount(i int) *ProjectUpdateOne {
+	puo.mutation.ResetContractorVoCount()
+	puo.mutation.SetContractorVoCount(i)
 	return puo
 }
 
-// SetNillableOwnerApproveAmount sets the "owner_approve_amount" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableOwnerApproveAmount(f *float64) *ProjectUpdateOne {
-	if f != nil {
-		puo.SetOwnerApproveAmount(*f)
-	}
-	return puo
-}
-
-// AddOwnerApproveAmount adds f to the "owner_approve_amount" field.
-func (puo *ProjectUpdateOne) AddOwnerApproveAmount(f float64) *ProjectUpdateOne {
-	puo.mutation.AddOwnerApproveAmount(f)
-	return puo
-}
-
-// ClearOwnerApproveAmount clears the value of the "owner_approve_amount" field.
-func (puo *ProjectUpdateOne) ClearOwnerApproveAmount() *ProjectUpdateOne {
-	puo.mutation.ClearOwnerApproveAmount()
-	return puo
-}
-
-// SetOwnerApproveCount sets the "owner_approve_count" field.
-func (puo *ProjectUpdateOne) SetOwnerApproveCount(i int) *ProjectUpdateOne {
-	puo.mutation.ResetOwnerApproveCount()
-	puo.mutation.SetOwnerApproveCount(i)
-	return puo
-}
-
-// SetNillableOwnerApproveCount sets the "owner_approve_count" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableOwnerApproveCount(i *int) *ProjectUpdateOne {
+// SetNillableContractorVoCount sets the "contractor_vo_count" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableContractorVoCount(i *int) *ProjectUpdateOne {
 	if i != nil {
-		puo.SetOwnerApproveCount(*i)
+		puo.SetContractorVoCount(*i)
 	}
 	return puo
 }
 
-// AddOwnerApproveCount adds i to the "owner_approve_count" field.
-func (puo *ProjectUpdateOne) AddOwnerApproveCount(i int) *ProjectUpdateOne {
-	puo.mutation.AddOwnerApproveCount(i)
+// AddContractorVoCount adds i to the "contractor_vo_count" field.
+func (puo *ProjectUpdateOne) AddContractorVoCount(i int) *ProjectUpdateOne {
+	puo.mutation.AddContractorVoCount(i)
 	return puo
 }
 
-// ClearOwnerApproveCount clears the value of the "owner_approve_count" field.
-func (puo *ProjectUpdateOne) ClearOwnerApproveCount() *ProjectUpdateOne {
-	puo.mutation.ClearOwnerApproveCount()
+// ClearContractorVoCount clears the value of the "contractor_vo_count" field.
+func (puo *ProjectUpdateOne) ClearContractorVoCount() *ProjectUpdateOne {
+	puo.mutation.ClearContractorVoCount()
 	return puo
 }
 
-// SetContractorApplyAmount sets the "contractor_apply_amount" field.
-func (puo *ProjectUpdateOne) SetContractorApplyAmount(f float64) *ProjectUpdateOne {
-	puo.mutation.ResetContractorApplyAmount()
-	puo.mutation.SetContractorApplyAmount(f)
+// SetAccumulateDeduction sets the "accumulate_deduction" field.
+func (puo *ProjectUpdateOne) SetAccumulateDeduction(f float64) *ProjectUpdateOne {
+	puo.mutation.ResetAccumulateDeduction()
+	puo.mutation.SetAccumulateDeduction(f)
 	return puo
 }
 
-// SetNillableContractorApplyAmount sets the "contractor_apply_amount" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableContractorApplyAmount(f *float64) *ProjectUpdateOne {
+// SetNillableAccumulateDeduction sets the "accumulate_deduction" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableAccumulateDeduction(f *float64) *ProjectUpdateOne {
 	if f != nil {
-		puo.SetContractorApplyAmount(*f)
+		puo.SetAccumulateDeduction(*f)
 	}
 	return puo
 }
 
-// AddContractorApplyAmount adds f to the "contractor_apply_amount" field.
-func (puo *ProjectUpdateOne) AddContractorApplyAmount(f float64) *ProjectUpdateOne {
-	puo.mutation.AddContractorApplyAmount(f)
+// AddAccumulateDeduction adds f to the "accumulate_deduction" field.
+func (puo *ProjectUpdateOne) AddAccumulateDeduction(f float64) *ProjectUpdateOne {
+	puo.mutation.AddAccumulateDeduction(f)
 	return puo
 }
 
-// ClearContractorApplyAmount clears the value of the "contractor_apply_amount" field.
-func (puo *ProjectUpdateOne) ClearContractorApplyAmount() *ProjectUpdateOne {
-	puo.mutation.ClearContractorApplyAmount()
+// ClearAccumulateDeduction clears the value of the "accumulate_deduction" field.
+func (puo *ProjectUpdateOne) ClearAccumulateDeduction() *ProjectUpdateOne {
+	puo.mutation.ClearAccumulateDeduction()
 	return puo
 }
 
-// SetContractorApplyCount sets the "contractor_apply_count" field.
-func (puo *ProjectUpdateOne) SetContractorApplyCount(i int) *ProjectUpdateOne {
-	puo.mutation.ResetContractorApplyCount()
-	puo.mutation.SetContractorApplyCount(i)
+// SetSubcontractorVaCount sets the "subcontractor_va_count" field.
+func (puo *ProjectUpdateOne) SetSubcontractorVaCount(i int) *ProjectUpdateOne {
+	puo.mutation.ResetSubcontractorVaCount()
+	puo.mutation.SetSubcontractorVaCount(i)
 	return puo
 }
 
-// SetNillableContractorApplyCount sets the "contractor_apply_count" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableContractorApplyCount(i *int) *ProjectUpdateOne {
+// SetNillableSubcontractorVaCount sets the "subcontractor_va_count" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableSubcontractorVaCount(i *int) *ProjectUpdateOne {
 	if i != nil {
-		puo.SetContractorApplyCount(*i)
+		puo.SetSubcontractorVaCount(*i)
 	}
 	return puo
 }
 
-// AddContractorApplyCount adds i to the "contractor_apply_count" field.
-func (puo *ProjectUpdateOne) AddContractorApplyCount(i int) *ProjectUpdateOne {
-	puo.mutation.AddContractorApplyCount(i)
+// AddSubcontractorVaCount adds i to the "subcontractor_va_count" field.
+func (puo *ProjectUpdateOne) AddSubcontractorVaCount(i int) *ProjectUpdateOne {
+	puo.mutation.AddSubcontractorVaCount(i)
 	return puo
 }
 
-// ClearContractorApplyCount clears the value of the "contractor_apply_count" field.
-func (puo *ProjectUpdateOne) ClearContractorApplyCount() *ProjectUpdateOne {
-	puo.mutation.ClearContractorApplyCount()
+// ClearSubcontractorVaCount clears the value of the "subcontractor_va_count" field.
+func (puo *ProjectUpdateOne) ClearSubcontractorVaCount() *ProjectUpdateOne {
+	puo.mutation.ClearSubcontractorVaCount()
 	return puo
 }
 
-// SetContractorApproveAmount sets the "contractor_approve_amount" field.
-func (puo *ProjectUpdateOne) SetContractorApproveAmount(f float64) *ProjectUpdateOne {
-	puo.mutation.ResetContractorApproveAmount()
-	puo.mutation.SetContractorApproveAmount(f)
+// SetContractSupplementaryCount sets the "contract_supplementary_count" field.
+func (puo *ProjectUpdateOne) SetContractSupplementaryCount(i int) *ProjectUpdateOne {
+	puo.mutation.ResetContractSupplementaryCount()
+	puo.mutation.SetContractSupplementaryCount(i)
 	return puo
 }
 
-// SetNillableContractorApproveAmount sets the "contractor_approve_amount" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableContractorApproveAmount(f *float64) *ProjectUpdateOne {
-	if f != nil {
-		puo.SetContractorApproveAmount(*f)
-	}
-	return puo
-}
-
-// AddContractorApproveAmount adds f to the "contractor_approve_amount" field.
-func (puo *ProjectUpdateOne) AddContractorApproveAmount(f float64) *ProjectUpdateOne {
-	puo.mutation.AddContractorApproveAmount(f)
-	return puo
-}
-
-// ClearContractorApproveAmount clears the value of the "contractor_approve_amount" field.
-func (puo *ProjectUpdateOne) ClearContractorApproveAmount() *ProjectUpdateOne {
-	puo.mutation.ClearContractorApproveAmount()
-	return puo
-}
-
-// SetContractorApproveCount sets the "contractor_approve_count" field.
-func (puo *ProjectUpdateOne) SetContractorApproveCount(i int) *ProjectUpdateOne {
-	puo.mutation.ResetContractorApproveCount()
-	puo.mutation.SetContractorApproveCount(i)
-	return puo
-}
-
-// SetNillableContractorApproveCount sets the "contractor_approve_count" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableContractorApproveCount(i *int) *ProjectUpdateOne {
+// SetNillableContractSupplementaryCount sets the "contract_supplementary_count" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableContractSupplementaryCount(i *int) *ProjectUpdateOne {
 	if i != nil {
-		puo.SetContractorApproveCount(*i)
+		puo.SetContractSupplementaryCount(*i)
 	}
 	return puo
 }
 
-// AddContractorApproveCount adds i to the "contractor_approve_count" field.
-func (puo *ProjectUpdateOne) AddContractorApproveCount(i int) *ProjectUpdateOne {
-	puo.mutation.AddContractorApproveCount(i)
+// AddContractSupplementaryCount adds i to the "contract_supplementary_count" field.
+func (puo *ProjectUpdateOne) AddContractSupplementaryCount(i int) *ProjectUpdateOne {
+	puo.mutation.AddContractSupplementaryCount(i)
 	return puo
 }
 
-// ClearContractorApproveCount clears the value of the "contractor_approve_count" field.
-func (puo *ProjectUpdateOne) ClearContractorApproveCount() *ProjectUpdateOne {
-	puo.mutation.ClearContractorApproveCount()
+// ClearContractSupplementaryCount clears the value of the "contract_supplementary_count" field.
+func (puo *ProjectUpdateOne) ClearContractSupplementaryCount() *ProjectUpdateOne {
+	puo.mutation.ClearContractSupplementaryCount()
 	return puo
 }
 
-// SetInstallProgress sets the "install_progress" field.
-func (puo *ProjectUpdateOne) SetInstallProgress(f float64) *ProjectUpdateOne {
-	puo.mutation.ResetInstallProgress()
-	puo.mutation.SetInstallProgress(f)
+// SetRepairFee sets the "repair_fee" field.
+func (puo *ProjectUpdateOne) SetRepairFee(f float64) *ProjectUpdateOne {
+	puo.mutation.ResetRepairFee()
+	puo.mutation.SetRepairFee(f)
 	return puo
 }
 
-// SetNillableInstallProgress sets the "install_progress" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableInstallProgress(f *float64) *ProjectUpdateOne {
+// SetNillableRepairFee sets the "repair_fee" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableRepairFee(f *float64) *ProjectUpdateOne {
 	if f != nil {
-		puo.SetInstallProgress(*f)
+		puo.SetRepairFee(*f)
 	}
 	return puo
 }
 
-// AddInstallProgress adds f to the "install_progress" field.
-func (puo *ProjectUpdateOne) AddInstallProgress(f float64) *ProjectUpdateOne {
-	puo.mutation.AddInstallProgress(f)
+// AddRepairFee adds f to the "repair_fee" field.
+func (puo *ProjectUpdateOne) AddRepairFee(f float64) *ProjectUpdateOne {
+	puo.mutation.AddRepairFee(f)
 	return puo
 }
 
-// ClearInstallProgress clears the value of the "install_progress" field.
-func (puo *ProjectUpdateOne) ClearInstallProgress() *ProjectUpdateOne {
-	puo.mutation.ClearInstallProgress()
-	return puo
-}
-
-// SetEffectiveContractAmount sets the "effective_contract_amount" field.
-func (puo *ProjectUpdateOne) SetEffectiveContractAmount(f float64) *ProjectUpdateOne {
-	puo.mutation.ResetEffectiveContractAmount()
-	puo.mutation.SetEffectiveContractAmount(f)
-	return puo
-}
-
-// SetNillableEffectiveContractAmount sets the "effective_contract_amount" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableEffectiveContractAmount(f *float64) *ProjectUpdateOne {
-	if f != nil {
-		puo.SetEffectiveContractAmount(*f)
-	}
-	return puo
-}
-
-// AddEffectiveContractAmount adds f to the "effective_contract_amount" field.
-func (puo *ProjectUpdateOne) AddEffectiveContractAmount(f float64) *ProjectUpdateOne {
-	puo.mutation.AddEffectiveContractAmount(f)
-	return puo
-}
-
-// ClearEffectiveContractAmount clears the value of the "effective_contract_amount" field.
-func (puo *ProjectUpdateOne) ClearEffectiveContractAmount() *ProjectUpdateOne {
-	puo.mutation.ClearEffectiveContractAmount()
-	return puo
-}
-
-// SetVaApplyAmount sets the "va_apply_amount" field.
-func (puo *ProjectUpdateOne) SetVaApplyAmount(f float64) *ProjectUpdateOne {
-	puo.mutation.ResetVaApplyAmount()
-	puo.mutation.SetVaApplyAmount(f)
-	return puo
-}
-
-// SetNillableVaApplyAmount sets the "va_apply_amount" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableVaApplyAmount(f *float64) *ProjectUpdateOne {
-	if f != nil {
-		puo.SetVaApplyAmount(*f)
-	}
-	return puo
-}
-
-// AddVaApplyAmount adds f to the "va_apply_amount" field.
-func (puo *ProjectUpdateOne) AddVaApplyAmount(f float64) *ProjectUpdateOne {
-	puo.mutation.AddVaApplyAmount(f)
-	return puo
-}
-
-// ClearVaApplyAmount clears the value of the "va_apply_amount" field.
-func (puo *ProjectUpdateOne) ClearVaApplyAmount() *ProjectUpdateOne {
-	puo.mutation.ClearVaApplyAmount()
-	return puo
-}
-
-// SetVaApproveAmount sets the "va_approve_amount" field.
-func (puo *ProjectUpdateOne) SetVaApproveAmount(f float64) *ProjectUpdateOne {
-	puo.mutation.ResetVaApproveAmount()
-	puo.mutation.SetVaApproveAmount(f)
-	return puo
-}
-
-// SetNillableVaApproveAmount sets the "va_approve_amount" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableVaApproveAmount(f *float64) *ProjectUpdateOne {
-	if f != nil {
-		puo.SetVaApproveAmount(*f)
-	}
-	return puo
-}
-
-// AddVaApproveAmount adds f to the "va_approve_amount" field.
-func (puo *ProjectUpdateOne) AddVaApproveAmount(f float64) *ProjectUpdateOne {
-	puo.mutation.AddVaApproveAmount(f)
-	return puo
-}
-
-// ClearVaApproveAmount clears the value of the "va_approve_amount" field.
-func (puo *ProjectUpdateOne) ClearVaApproveAmount() *ProjectUpdateOne {
-	puo.mutation.ClearVaApproveAmount()
-	return puo
-}
-
-// SetAccumulatedStatutoryDeductions sets the "accumulated_statutory_deductions" field.
-func (puo *ProjectUpdateOne) SetAccumulatedStatutoryDeductions(f float64) *ProjectUpdateOne {
-	puo.mutation.ResetAccumulatedStatutoryDeductions()
-	puo.mutation.SetAccumulatedStatutoryDeductions(f)
-	return puo
-}
-
-// SetNillableAccumulatedStatutoryDeductions sets the "accumulated_statutory_deductions" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableAccumulatedStatutoryDeductions(f *float64) *ProjectUpdateOne {
-	if f != nil {
-		puo.SetAccumulatedStatutoryDeductions(*f)
-	}
-	return puo
-}
-
-// AddAccumulatedStatutoryDeductions adds f to the "accumulated_statutory_deductions" field.
-func (puo *ProjectUpdateOne) AddAccumulatedStatutoryDeductions(f float64) *ProjectUpdateOne {
-	puo.mutation.AddAccumulatedStatutoryDeductions(f)
-	return puo
-}
-
-// ClearAccumulatedStatutoryDeductions clears the value of the "accumulated_statutory_deductions" field.
-func (puo *ProjectUpdateOne) ClearAccumulatedStatutoryDeductions() *ProjectUpdateOne {
-	puo.mutation.ClearAccumulatedStatutoryDeductions()
-	return puo
-}
-
-// SetAccumulatedNonStatutoryDeductions sets the "accumulated_non_statutory_deductions" field.
-func (puo *ProjectUpdateOne) SetAccumulatedNonStatutoryDeductions(f float64) *ProjectUpdateOne {
-	puo.mutation.ResetAccumulatedNonStatutoryDeductions()
-	puo.mutation.SetAccumulatedNonStatutoryDeductions(f)
-	return puo
-}
-
-// SetNillableAccumulatedNonStatutoryDeductions sets the "accumulated_non_statutory_deductions" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableAccumulatedNonStatutoryDeductions(f *float64) *ProjectUpdateOne {
-	if f != nil {
-		puo.SetAccumulatedNonStatutoryDeductions(*f)
-	}
-	return puo
-}
-
-// AddAccumulatedNonStatutoryDeductions adds f to the "accumulated_non_statutory_deductions" field.
-func (puo *ProjectUpdateOne) AddAccumulatedNonStatutoryDeductions(f float64) *ProjectUpdateOne {
-	puo.mutation.AddAccumulatedNonStatutoryDeductions(f)
-	return puo
-}
-
-// ClearAccumulatedNonStatutoryDeductions clears the value of the "accumulated_non_statutory_deductions" field.
-func (puo *ProjectUpdateOne) ClearAccumulatedNonStatutoryDeductions() *ProjectUpdateOne {
-	puo.mutation.ClearAccumulatedNonStatutoryDeductions()
-	return puo
-}
-
-// SetAccumulatedStatutoryDeductionsPeriod sets the "accumulated_statutory_deductions_period" field.
-func (puo *ProjectUpdateOne) SetAccumulatedStatutoryDeductionsPeriod(f float64) *ProjectUpdateOne {
-	puo.mutation.ResetAccumulatedStatutoryDeductionsPeriod()
-	puo.mutation.SetAccumulatedStatutoryDeductionsPeriod(f)
-	return puo
-}
-
-// SetNillableAccumulatedStatutoryDeductionsPeriod sets the "accumulated_statutory_deductions_period" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableAccumulatedStatutoryDeductionsPeriod(f *float64) *ProjectUpdateOne {
-	if f != nil {
-		puo.SetAccumulatedStatutoryDeductionsPeriod(*f)
-	}
-	return puo
-}
-
-// AddAccumulatedStatutoryDeductionsPeriod adds f to the "accumulated_statutory_deductions_period" field.
-func (puo *ProjectUpdateOne) AddAccumulatedStatutoryDeductionsPeriod(f float64) *ProjectUpdateOne {
-	puo.mutation.AddAccumulatedStatutoryDeductionsPeriod(f)
-	return puo
-}
-
-// ClearAccumulatedStatutoryDeductionsPeriod clears the value of the "accumulated_statutory_deductions_period" field.
-func (puo *ProjectUpdateOne) ClearAccumulatedStatutoryDeductionsPeriod() *ProjectUpdateOne {
-	puo.mutation.ClearAccumulatedStatutoryDeductionsPeriod()
-	return puo
-}
-
-// SetAccumulatedNonStatutoryDeductionsPeriod sets the "accumulated_non_statutory_deductions_period" field.
-func (puo *ProjectUpdateOne) SetAccumulatedNonStatutoryDeductionsPeriod(f float64) *ProjectUpdateOne {
-	puo.mutation.ResetAccumulatedNonStatutoryDeductionsPeriod()
-	puo.mutation.SetAccumulatedNonStatutoryDeductionsPeriod(f)
-	return puo
-}
-
-// SetNillableAccumulatedNonStatutoryDeductionsPeriod sets the "accumulated_non_statutory_deductions_period" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableAccumulatedNonStatutoryDeductionsPeriod(f *float64) *ProjectUpdateOne {
-	if f != nil {
-		puo.SetAccumulatedNonStatutoryDeductionsPeriod(*f)
-	}
-	return puo
-}
-
-// AddAccumulatedNonStatutoryDeductionsPeriod adds f to the "accumulated_non_statutory_deductions_period" field.
-func (puo *ProjectUpdateOne) AddAccumulatedNonStatutoryDeductionsPeriod(f float64) *ProjectUpdateOne {
-	puo.mutation.AddAccumulatedNonStatutoryDeductionsPeriod(f)
-	return puo
-}
-
-// ClearAccumulatedNonStatutoryDeductionsPeriod clears the value of the "accumulated_non_statutory_deductions_period" field.
-func (puo *ProjectUpdateOne) ClearAccumulatedNonStatutoryDeductionsPeriod() *ProjectUpdateOne {
-	puo.mutation.ClearAccumulatedNonStatutoryDeductionsPeriod()
-	return puo
-}
-
-// SetTotalContractAmount sets the "total_contract_amount" field.
-func (puo *ProjectUpdateOne) SetTotalContractAmount(f float64) *ProjectUpdateOne {
-	puo.mutation.ResetTotalContractAmount()
-	puo.mutation.SetTotalContractAmount(f)
-	return puo
-}
-
-// SetNillableTotalContractAmount sets the "total_contract_amount" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableTotalContractAmount(f *float64) *ProjectUpdateOne {
-	if f != nil {
-		puo.SetTotalContractAmount(*f)
-	}
-	return puo
-}
-
-// AddTotalContractAmount adds f to the "total_contract_amount" field.
-func (puo *ProjectUpdateOne) AddTotalContractAmount(f float64) *ProjectUpdateOne {
-	puo.mutation.AddTotalContractAmount(f)
-	return puo
-}
-
-// ClearTotalContractAmount clears the value of the "total_contract_amount" field.
-func (puo *ProjectUpdateOne) ClearTotalContractAmount() *ProjectUpdateOne {
-	puo.mutation.ClearTotalContractAmount()
-	return puo
-}
-
-// SetAluminumPlateBudgetPercentage sets the "aluminum_plate_budget_percentage" field.
-func (puo *ProjectUpdateOne) SetAluminumPlateBudgetPercentage(f float64) *ProjectUpdateOne {
-	puo.mutation.ResetAluminumPlateBudgetPercentage()
-	puo.mutation.SetAluminumPlateBudgetPercentage(f)
-	return puo
-}
-
-// SetNillableAluminumPlateBudgetPercentage sets the "aluminum_plate_budget_percentage" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableAluminumPlateBudgetPercentage(f *float64) *ProjectUpdateOne {
-	if f != nil {
-		puo.SetAluminumPlateBudgetPercentage(*f)
-	}
-	return puo
-}
-
-// AddAluminumPlateBudgetPercentage adds f to the "aluminum_plate_budget_percentage" field.
-func (puo *ProjectUpdateOne) AddAluminumPlateBudgetPercentage(f float64) *ProjectUpdateOne {
-	puo.mutation.AddAluminumPlateBudgetPercentage(f)
-	return puo
-}
-
-// ClearAluminumPlateBudgetPercentage clears the value of the "aluminum_plate_budget_percentage" field.
-func (puo *ProjectUpdateOne) ClearAluminumPlateBudgetPercentage() *ProjectUpdateOne {
-	puo.mutation.ClearAluminumPlateBudgetPercentage()
-	return puo
-}
-
-// SetAluminumBudgetPercentage sets the "aluminum_budget_percentage" field.
-func (puo *ProjectUpdateOne) SetAluminumBudgetPercentage(f float64) *ProjectUpdateOne {
-	puo.mutation.ResetAluminumBudgetPercentage()
-	puo.mutation.SetAluminumBudgetPercentage(f)
-	return puo
-}
-
-// SetNillableAluminumBudgetPercentage sets the "aluminum_budget_percentage" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableAluminumBudgetPercentage(f *float64) *ProjectUpdateOne {
-	if f != nil {
-		puo.SetAluminumBudgetPercentage(*f)
-	}
-	return puo
-}
-
-// AddAluminumBudgetPercentage adds f to the "aluminum_budget_percentage" field.
-func (puo *ProjectUpdateOne) AddAluminumBudgetPercentage(f float64) *ProjectUpdateOne {
-	puo.mutation.AddAluminumBudgetPercentage(f)
-	return puo
-}
-
-// ClearAluminumBudgetPercentage clears the value of the "aluminum_budget_percentage" field.
-func (puo *ProjectUpdateOne) ClearAluminumBudgetPercentage() *ProjectUpdateOne {
-	puo.mutation.ClearAluminumBudgetPercentage()
-	return puo
-}
-
-// SetGlassBudgetPercentage sets the "glass_budget_percentage" field.
-func (puo *ProjectUpdateOne) SetGlassBudgetPercentage(f float64) *ProjectUpdateOne {
-	puo.mutation.ResetGlassBudgetPercentage()
-	puo.mutation.SetGlassBudgetPercentage(f)
-	return puo
-}
-
-// SetNillableGlassBudgetPercentage sets the "glass_budget_percentage" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableGlassBudgetPercentage(f *float64) *ProjectUpdateOne {
-	if f != nil {
-		puo.SetGlassBudgetPercentage(*f)
-	}
-	return puo
-}
-
-// AddGlassBudgetPercentage adds f to the "glass_budget_percentage" field.
-func (puo *ProjectUpdateOne) AddGlassBudgetPercentage(f float64) *ProjectUpdateOne {
-	puo.mutation.AddGlassBudgetPercentage(f)
-	return puo
-}
-
-// ClearGlassBudgetPercentage clears the value of the "glass_budget_percentage" field.
-func (puo *ProjectUpdateOne) ClearGlassBudgetPercentage() *ProjectUpdateOne {
-	puo.mutation.ClearGlassBudgetPercentage()
-	return puo
-}
-
-// SetIronBudgetPercentage sets the "iron_budget_percentage" field.
-func (puo *ProjectUpdateOne) SetIronBudgetPercentage(f float64) *ProjectUpdateOne {
-	puo.mutation.ResetIronBudgetPercentage()
-	puo.mutation.SetIronBudgetPercentage(f)
-	return puo
-}
-
-// SetNillableIronBudgetPercentage sets the "iron_budget_percentage" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableIronBudgetPercentage(f *float64) *ProjectUpdateOne {
-	if f != nil {
-		puo.SetIronBudgetPercentage(*f)
-	}
-	return puo
-}
-
-// AddIronBudgetPercentage adds f to the "iron_budget_percentage" field.
-func (puo *ProjectUpdateOne) AddIronBudgetPercentage(f float64) *ProjectUpdateOne {
-	puo.mutation.AddIronBudgetPercentage(f)
-	return puo
-}
-
-// ClearIronBudgetPercentage clears the value of the "iron_budget_percentage" field.
-func (puo *ProjectUpdateOne) ClearIronBudgetPercentage() *ProjectUpdateOne {
-	puo.mutation.ClearIronBudgetPercentage()
-	return puo
-}
-
-// SetMilestonePlanYear sets the "milestone_plan_year" field.
-func (puo *ProjectUpdateOne) SetMilestonePlanYear(i int) *ProjectUpdateOne {
-	puo.mutation.ResetMilestonePlanYear()
-	puo.mutation.SetMilestonePlanYear(i)
-	return puo
-}
-
-// SetNillableMilestonePlanYear sets the "milestone_plan_year" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableMilestonePlanYear(i *int) *ProjectUpdateOne {
-	if i != nil {
-		puo.SetMilestonePlanYear(*i)
-	}
-	return puo
-}
-
-// AddMilestonePlanYear adds i to the "milestone_plan_year" field.
-func (puo *ProjectUpdateOne) AddMilestonePlanYear(i int) *ProjectUpdateOne {
-	puo.mutation.AddMilestonePlanYear(i)
-	return puo
-}
-
-// ClearMilestonePlanYear clears the value of the "milestone_plan_year" field.
-func (puo *ProjectUpdateOne) ClearMilestonePlanYear() *ProjectUpdateOne {
-	puo.mutation.ClearMilestonePlanYear()
-	return puo
-}
-
-// SetMilestonePlanMonth sets the "milestone_plan_month" field.
-func (puo *ProjectUpdateOne) SetMilestonePlanMonth(i int) *ProjectUpdateOne {
-	puo.mutation.ResetMilestonePlanMonth()
-	puo.mutation.SetMilestonePlanMonth(i)
-	return puo
-}
-
-// SetNillableMilestonePlanMonth sets the "milestone_plan_month" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableMilestonePlanMonth(i *int) *ProjectUpdateOne {
-	if i != nil {
-		puo.SetMilestonePlanMonth(*i)
-	}
-	return puo
-}
-
-// AddMilestonePlanMonth adds i to the "milestone_plan_month" field.
-func (puo *ProjectUpdateOne) AddMilestonePlanMonth(i int) *ProjectUpdateOne {
-	puo.mutation.AddMilestonePlanMonth(i)
-	return puo
-}
-
-// ClearMilestonePlanMonth clears the value of the "milestone_plan_month" field.
-func (puo *ProjectUpdateOne) ClearMilestonePlanMonth() *ProjectUpdateOne {
-	puo.mutation.ClearMilestonePlanMonth()
-	return puo
-}
-
-// SetMilestoneDoneYear sets the "milestone_done_year" field.
-func (puo *ProjectUpdateOne) SetMilestoneDoneYear(i int) *ProjectUpdateOne {
-	puo.mutation.ResetMilestoneDoneYear()
-	puo.mutation.SetMilestoneDoneYear(i)
-	return puo
-}
-
-// SetNillableMilestoneDoneYear sets the "milestone_done_year" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableMilestoneDoneYear(i *int) *ProjectUpdateOne {
-	if i != nil {
-		puo.SetMilestoneDoneYear(*i)
-	}
-	return puo
-}
-
-// AddMilestoneDoneYear adds i to the "milestone_done_year" field.
-func (puo *ProjectUpdateOne) AddMilestoneDoneYear(i int) *ProjectUpdateOne {
-	puo.mutation.AddMilestoneDoneYear(i)
-	return puo
-}
-
-// ClearMilestoneDoneYear clears the value of the "milestone_done_year" field.
-func (puo *ProjectUpdateOne) ClearMilestoneDoneYear() *ProjectUpdateOne {
-	puo.mutation.ClearMilestoneDoneYear()
-	return puo
-}
-
-// SetMilestoneDoneMonth sets the "milestone_done_month" field.
-func (puo *ProjectUpdateOne) SetMilestoneDoneMonth(i int) *ProjectUpdateOne {
-	puo.mutation.ResetMilestoneDoneMonth()
-	puo.mutation.SetMilestoneDoneMonth(i)
-	return puo
-}
-
-// SetNillableMilestoneDoneMonth sets the "milestone_done_month" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableMilestoneDoneMonth(i *int) *ProjectUpdateOne {
-	if i != nil {
-		puo.SetMilestoneDoneMonth(*i)
-	}
-	return puo
-}
-
-// AddMilestoneDoneMonth adds i to the "milestone_done_month" field.
-func (puo *ProjectUpdateOne) AddMilestoneDoneMonth(i int) *ProjectUpdateOne {
-	puo.mutation.AddMilestoneDoneMonth(i)
-	return puo
-}
-
-// ClearMilestoneDoneMonth clears the value of the "milestone_done_month" field.
-func (puo *ProjectUpdateOne) ClearMilestoneDoneMonth() *ProjectUpdateOne {
-	puo.mutation.ClearMilestoneDoneMonth()
-	return puo
-}
-
-// SetPmArea sets the "pm_area" field.
-func (puo *ProjectUpdateOne) SetPmArea(f float64) *ProjectUpdateOne {
-	puo.mutation.ResetPmArea()
-	puo.mutation.SetPmArea(f)
-	return puo
-}
-
-// SetNillablePmArea sets the "pm_area" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillablePmArea(f *float64) *ProjectUpdateOne {
-	if f != nil {
-		puo.SetPmArea(*f)
-	}
-	return puo
-}
-
-// AddPmArea adds f to the "pm_area" field.
-func (puo *ProjectUpdateOne) AddPmArea(f float64) *ProjectUpdateOne {
-	puo.mutation.AddPmArea(f)
-	return puo
-}
-
-// ClearPmArea clears the value of the "pm_area" field.
-func (puo *ProjectUpdateOne) ClearPmArea() *ProjectUpdateOne {
-	puo.mutation.ClearPmArea()
-	return puo
-}
-
-// SetPmYearTarget sets the "pm_year_target" field.
-func (puo *ProjectUpdateOne) SetPmYearTarget(f float64) *ProjectUpdateOne {
-	puo.mutation.ResetPmYearTarget()
-	puo.mutation.SetPmYearTarget(f)
-	return puo
-}
-
-// SetNillablePmYearTarget sets the "pm_year_target" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillablePmYearTarget(f *float64) *ProjectUpdateOne {
-	if f != nil {
-		puo.SetPmYearTarget(*f)
-	}
-	return puo
-}
-
-// AddPmYearTarget adds f to the "pm_year_target" field.
-func (puo *ProjectUpdateOne) AddPmYearTarget(f float64) *ProjectUpdateOne {
-	puo.mutation.AddPmYearTarget(f)
-	return puo
-}
-
-// ClearPmYearTarget clears the value of the "pm_year_target" field.
-func (puo *ProjectUpdateOne) ClearPmYearTarget() *ProjectUpdateOne {
-	puo.mutation.ClearPmYearTarget()
-	return puo
-}
-
-// SetPmMonthTarget sets the "pm_month_target" field.
-func (puo *ProjectUpdateOne) SetPmMonthTarget(f float64) *ProjectUpdateOne {
-	puo.mutation.ResetPmMonthTarget()
-	puo.mutation.SetPmMonthTarget(f)
-	return puo
-}
-
-// SetNillablePmMonthTarget sets the "pm_month_target" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillablePmMonthTarget(f *float64) *ProjectUpdateOne {
-	if f != nil {
-		puo.SetPmMonthTarget(*f)
-	}
-	return puo
-}
-
-// AddPmMonthTarget adds f to the "pm_month_target" field.
-func (puo *ProjectUpdateOne) AddPmMonthTarget(f float64) *ProjectUpdateOne {
-	puo.mutation.AddPmMonthTarget(f)
-	return puo
-}
-
-// ClearPmMonthTarget clears the value of the "pm_month_target" field.
-func (puo *ProjectUpdateOne) ClearPmMonthTarget() *ProjectUpdateOne {
-	puo.mutation.ClearPmMonthTarget()
-	return puo
-}
-
-// SetPmYearActual sets the "pm_year_actual" field.
-func (puo *ProjectUpdateOne) SetPmYearActual(f float64) *ProjectUpdateOne {
-	puo.mutation.ResetPmYearActual()
-	puo.mutation.SetPmYearActual(f)
-	return puo
-}
-
-// SetNillablePmYearActual sets the "pm_year_actual" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillablePmYearActual(f *float64) *ProjectUpdateOne {
-	if f != nil {
-		puo.SetPmYearActual(*f)
-	}
-	return puo
-}
-
-// AddPmYearActual adds f to the "pm_year_actual" field.
-func (puo *ProjectUpdateOne) AddPmYearActual(f float64) *ProjectUpdateOne {
-	puo.mutation.AddPmYearActual(f)
-	return puo
-}
-
-// ClearPmYearActual clears the value of the "pm_year_actual" field.
-func (puo *ProjectUpdateOne) ClearPmYearActual() *ProjectUpdateOne {
-	puo.mutation.ClearPmYearActual()
-	return puo
-}
-
-// SetPmMonthActual sets the "pm_month_actual" field.
-func (puo *ProjectUpdateOne) SetPmMonthActual(f float64) *ProjectUpdateOne {
-	puo.mutation.ResetPmMonthActual()
-	puo.mutation.SetPmMonthActual(f)
-	return puo
-}
-
-// SetNillablePmMonthActual sets the "pm_month_actual" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillablePmMonthActual(f *float64) *ProjectUpdateOne {
-	if f != nil {
-		puo.SetPmMonthActual(*f)
-	}
-	return puo
-}
-
-// AddPmMonthActual adds f to the "pm_month_actual" field.
-func (puo *ProjectUpdateOne) AddPmMonthActual(f float64) *ProjectUpdateOne {
-	puo.mutation.AddPmMonthActual(f)
-	return puo
-}
-
-// ClearPmMonthActual clears the value of the "pm_month_actual" field.
-func (puo *ProjectUpdateOne) ClearPmMonthActual() *ProjectUpdateOne {
-	puo.mutation.ClearPmMonthActual()
-	return puo
-}
-
-// SetPmTotal sets the "pm_total" field.
-func (puo *ProjectUpdateOne) SetPmTotal(f float64) *ProjectUpdateOne {
-	puo.mutation.ResetPmTotal()
-	puo.mutation.SetPmTotal(f)
-	return puo
-}
-
-// SetNillablePmTotal sets the "pm_total" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillablePmTotal(f *float64) *ProjectUpdateOne {
-	if f != nil {
-		puo.SetPmTotal(*f)
-	}
-	return puo
-}
-
-// AddPmTotal adds f to the "pm_total" field.
-func (puo *ProjectUpdateOne) AddPmTotal(f float64) *ProjectUpdateOne {
-	puo.mutation.AddPmTotal(f)
-	return puo
-}
-
-// ClearPmTotal clears the value of the "pm_total" field.
-func (puo *ProjectUpdateOne) ClearPmTotal() *ProjectUpdateOne {
-	puo.mutation.ClearPmTotal()
-	return puo
-}
-
-// SetPmYesterday sets the "pm_yesterday" field.
-func (puo *ProjectUpdateOne) SetPmYesterday(f float64) *ProjectUpdateOne {
-	puo.mutation.ResetPmYesterday()
-	puo.mutation.SetPmYesterday(f)
-	return puo
-}
-
-// SetNillablePmYesterday sets the "pm_yesterday" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillablePmYesterday(f *float64) *ProjectUpdateOne {
-	if f != nil {
-		puo.SetPmYesterday(*f)
-	}
-	return puo
-}
-
-// AddPmYesterday adds f to the "pm_yesterday" field.
-func (puo *ProjectUpdateOne) AddPmYesterday(f float64) *ProjectUpdateOne {
-	puo.mutation.AddPmYesterday(f)
-	return puo
-}
-
-// ClearPmYesterday clears the value of the "pm_yesterday" field.
-func (puo *ProjectUpdateOne) ClearPmYesterday() *ProjectUpdateOne {
-	puo.mutation.ClearPmYesterday()
+// ClearRepairFee clears the value of the "repair_fee" field.
+func (puo *ProjectUpdateOne) ClearRepairFee() *ProjectUpdateOne {
+	puo.mutation.ClearRepairFee()
 	return puo
 }
 
@@ -4504,222 +1519,6 @@ func (puo *ProjectUpdateOne) ClearUnitComponentInstallation() *ProjectUpdateOne 
 	return puo
 }
 
-// SetMaterialLoss sets the "material_loss" field.
-func (puo *ProjectUpdateOne) SetMaterialLoss(f float64) *ProjectUpdateOne {
-	puo.mutation.ResetMaterialLoss()
-	puo.mutation.SetMaterialLoss(f)
-	return puo
-}
-
-// SetNillableMaterialLoss sets the "material_loss" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableMaterialLoss(f *float64) *ProjectUpdateOne {
-	if f != nil {
-		puo.SetMaterialLoss(*f)
-	}
-	return puo
-}
-
-// AddMaterialLoss adds f to the "material_loss" field.
-func (puo *ProjectUpdateOne) AddMaterialLoss(f float64) *ProjectUpdateOne {
-	puo.mutation.AddMaterialLoss(f)
-	return puo
-}
-
-// ClearMaterialLoss clears the value of the "material_loss" field.
-func (puo *ProjectUpdateOne) ClearMaterialLoss() *ProjectUpdateOne {
-	puo.mutation.ClearMaterialLoss()
-	return puo
-}
-
-// SetDesignRatedWeight sets the "design_rated_weight" field.
-func (puo *ProjectUpdateOne) SetDesignRatedWeight(f float64) *ProjectUpdateOne {
-	puo.mutation.ResetDesignRatedWeight()
-	puo.mutation.SetDesignRatedWeight(f)
-	return puo
-}
-
-// SetNillableDesignRatedWeight sets the "design_rated_weight" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableDesignRatedWeight(f *float64) *ProjectUpdateOne {
-	if f != nil {
-		puo.SetDesignRatedWeight(*f)
-	}
-	return puo
-}
-
-// AddDesignRatedWeight adds f to the "design_rated_weight" field.
-func (puo *ProjectUpdateOne) AddDesignRatedWeight(f float64) *ProjectUpdateOne {
-	puo.mutation.AddDesignRatedWeight(f)
-	return puo
-}
-
-// ClearDesignRatedWeight clears the value of the "design_rated_weight" field.
-func (puo *ProjectUpdateOne) ClearDesignRatedWeight() *ProjectUpdateOne {
-	puo.mutation.ClearDesignRatedWeight()
-	return puo
-}
-
-// SetProcessingWeight sets the "processing_weight" field.
-func (puo *ProjectUpdateOne) SetProcessingWeight(f float64) *ProjectUpdateOne {
-	puo.mutation.ResetProcessingWeight()
-	puo.mutation.SetProcessingWeight(f)
-	return puo
-}
-
-// SetNillableProcessingWeight sets the "processing_weight" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableProcessingWeight(f *float64) *ProjectUpdateOne {
-	if f != nil {
-		puo.SetProcessingWeight(*f)
-	}
-	return puo
-}
-
-// AddProcessingWeight adds f to the "processing_weight" field.
-func (puo *ProjectUpdateOne) AddProcessingWeight(f float64) *ProjectUpdateOne {
-	puo.mutation.AddProcessingWeight(f)
-	return puo
-}
-
-// ClearProcessingWeight clears the value of the "processing_weight" field.
-func (puo *ProjectUpdateOne) ClearProcessingWeight() *ProjectUpdateOne {
-	puo.mutation.ClearProcessingWeight()
-	return puo
-}
-
-// SetItemStockWeight sets the "item_stock_weight" field.
-func (puo *ProjectUpdateOne) SetItemStockWeight(f float64) *ProjectUpdateOne {
-	puo.mutation.ResetItemStockWeight()
-	puo.mutation.SetItemStockWeight(f)
-	return puo
-}
-
-// SetNillableItemStockWeight sets the "item_stock_weight" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableItemStockWeight(f *float64) *ProjectUpdateOne {
-	if f != nil {
-		puo.SetItemStockWeight(*f)
-	}
-	return puo
-}
-
-// AddItemStockWeight adds f to the "item_stock_weight" field.
-func (puo *ProjectUpdateOne) AddItemStockWeight(f float64) *ProjectUpdateOne {
-	puo.mutation.AddItemStockWeight(f)
-	return puo
-}
-
-// ClearItemStockWeight clears the value of the "item_stock_weight" field.
-func (puo *ProjectUpdateOne) ClearItemStockWeight() *ProjectUpdateOne {
-	puo.mutation.ClearItemStockWeight()
-	return puo
-}
-
-// SetPalletsInStock sets the "pallets_in_stock" field.
-func (puo *ProjectUpdateOne) SetPalletsInStock(f float64) *ProjectUpdateOne {
-	puo.mutation.ResetPalletsInStock()
-	puo.mutation.SetPalletsInStock(f)
-	return puo
-}
-
-// SetNillablePalletsInStock sets the "pallets_in_stock" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillablePalletsInStock(f *float64) *ProjectUpdateOne {
-	if f != nil {
-		puo.SetPalletsInStock(*f)
-	}
-	return puo
-}
-
-// AddPalletsInStock adds f to the "pallets_in_stock" field.
-func (puo *ProjectUpdateOne) AddPalletsInStock(f float64) *ProjectUpdateOne {
-	puo.mutation.AddPalletsInStock(f)
-	return puo
-}
-
-// ClearPalletsInStock clears the value of the "pallets_in_stock" field.
-func (puo *ProjectUpdateOne) ClearPalletsInStock() *ProjectUpdateOne {
-	puo.mutation.ClearPalletsInStock()
-	return puo
-}
-
-// SetPartsInStock sets the "parts_in_stock" field.
-func (puo *ProjectUpdateOne) SetPartsInStock(f float64) *ProjectUpdateOne {
-	puo.mutation.ResetPartsInStock()
-	puo.mutation.SetPartsInStock(f)
-	return puo
-}
-
-// SetNillablePartsInStock sets the "parts_in_stock" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillablePartsInStock(f *float64) *ProjectUpdateOne {
-	if f != nil {
-		puo.SetPartsInStock(*f)
-	}
-	return puo
-}
-
-// AddPartsInStock adds f to the "parts_in_stock" field.
-func (puo *ProjectUpdateOne) AddPartsInStock(f float64) *ProjectUpdateOne {
-	puo.mutation.AddPartsInStock(f)
-	return puo
-}
-
-// ClearPartsInStock clears the value of the "parts_in_stock" field.
-func (puo *ProjectUpdateOne) ClearPartsInStock() *ProjectUpdateOne {
-	puo.mutation.ClearPartsInStock()
-	return puo
-}
-
-// SetQualityScore sets the "quality_score" field.
-func (puo *ProjectUpdateOne) SetQualityScore(f float64) *ProjectUpdateOne {
-	puo.mutation.ResetQualityScore()
-	puo.mutation.SetQualityScore(f)
-	return puo
-}
-
-// SetNillableQualityScore sets the "quality_score" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableQualityScore(f *float64) *ProjectUpdateOne {
-	if f != nil {
-		puo.SetQualityScore(*f)
-	}
-	return puo
-}
-
-// AddQualityScore adds f to the "quality_score" field.
-func (puo *ProjectUpdateOne) AddQualityScore(f float64) *ProjectUpdateOne {
-	puo.mutation.AddQualityScore(f)
-	return puo
-}
-
-// ClearQualityScore clears the value of the "quality_score" field.
-func (puo *ProjectUpdateOne) ClearQualityScore() *ProjectUpdateOne {
-	puo.mutation.ClearQualityScore()
-	return puo
-}
-
-// SetQualityRanking sets the "quality_ranking" field.
-func (puo *ProjectUpdateOne) SetQualityRanking(f float64) *ProjectUpdateOne {
-	puo.mutation.ResetQualityRanking()
-	puo.mutation.SetQualityRanking(f)
-	return puo
-}
-
-// SetNillableQualityRanking sets the "quality_ranking" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableQualityRanking(f *float64) *ProjectUpdateOne {
-	if f != nil {
-		puo.SetQualityRanking(*f)
-	}
-	return puo
-}
-
-// AddQualityRanking adds f to the "quality_ranking" field.
-func (puo *ProjectUpdateOne) AddQualityRanking(f float64) *ProjectUpdateOne {
-	puo.mutation.AddQualityRanking(f)
-	return puo
-}
-
-// ClearQualityRanking clears the value of the "quality_ranking" field.
-func (puo *ProjectUpdateOne) ClearQualityRanking() *ProjectUpdateOne {
-	puo.mutation.ClearQualityRanking()
-	return puo
-}
-
 // SetBulkMaterialsTotalOrderQuantity sets the "bulk_materials_total_order_quantity" field.
 func (puo *ProjectUpdateOne) SetBulkMaterialsTotalOrderQuantity(f float64) *ProjectUpdateOne {
 	puo.mutation.ResetBulkMaterialsTotalOrderQuantity()
@@ -4798,87 +1597,6 @@ func (puo *ProjectUpdateOne) AddBulkMaterialsUncompletedQuantity(f float64) *Pro
 // ClearBulkMaterialsUncompletedQuantity clears the value of the "bulk_materials_uncompleted_quantity" field.
 func (puo *ProjectUpdateOne) ClearBulkMaterialsUncompletedQuantity() *ProjectUpdateOne {
 	puo.mutation.ClearBulkMaterialsUncompletedQuantity()
-	return puo
-}
-
-// SetPlanTotalCount sets the "plan_total_count" field.
-func (puo *ProjectUpdateOne) SetPlanTotalCount(i int) *ProjectUpdateOne {
-	puo.mutation.ResetPlanTotalCount()
-	puo.mutation.SetPlanTotalCount(i)
-	return puo
-}
-
-// SetNillablePlanTotalCount sets the "plan_total_count" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillablePlanTotalCount(i *int) *ProjectUpdateOne {
-	if i != nil {
-		puo.SetPlanTotalCount(*i)
-	}
-	return puo
-}
-
-// AddPlanTotalCount adds i to the "plan_total_count" field.
-func (puo *ProjectUpdateOne) AddPlanTotalCount(i int) *ProjectUpdateOne {
-	puo.mutation.AddPlanTotalCount(i)
-	return puo
-}
-
-// ClearPlanTotalCount clears the value of the "plan_total_count" field.
-func (puo *ProjectUpdateOne) ClearPlanTotalCount() *ProjectUpdateOne {
-	puo.mutation.ClearPlanTotalCount()
-	return puo
-}
-
-// SetPlanOverdueCount sets the "plan_overdue_count" field.
-func (puo *ProjectUpdateOne) SetPlanOverdueCount(i int) *ProjectUpdateOne {
-	puo.mutation.ResetPlanOverdueCount()
-	puo.mutation.SetPlanOverdueCount(i)
-	return puo
-}
-
-// SetNillablePlanOverdueCount sets the "plan_overdue_count" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillablePlanOverdueCount(i *int) *ProjectUpdateOne {
-	if i != nil {
-		puo.SetPlanOverdueCount(*i)
-	}
-	return puo
-}
-
-// AddPlanOverdueCount adds i to the "plan_overdue_count" field.
-func (puo *ProjectUpdateOne) AddPlanOverdueCount(i int) *ProjectUpdateOne {
-	puo.mutation.AddPlanOverdueCount(i)
-	return puo
-}
-
-// ClearPlanOverdueCount clears the value of the "plan_overdue_count" field.
-func (puo *ProjectUpdateOne) ClearPlanOverdueCount() *ProjectUpdateOne {
-	puo.mutation.ClearPlanOverdueCount()
-	return puo
-}
-
-// SetPlanOverdueMonthCount sets the "plan_overdue_month_count" field.
-func (puo *ProjectUpdateOne) SetPlanOverdueMonthCount(i int) *ProjectUpdateOne {
-	puo.mutation.ResetPlanOverdueMonthCount()
-	puo.mutation.SetPlanOverdueMonthCount(i)
-	return puo
-}
-
-// SetNillablePlanOverdueMonthCount sets the "plan_overdue_month_count" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillablePlanOverdueMonthCount(i *int) *ProjectUpdateOne {
-	if i != nil {
-		puo.SetPlanOverdueMonthCount(*i)
-	}
-	return puo
-}
-
-// AddPlanOverdueMonthCount adds i to the "plan_overdue_month_count" field.
-func (puo *ProjectUpdateOne) AddPlanOverdueMonthCount(i int) *ProjectUpdateOne {
-	puo.mutation.AddPlanOverdueMonthCount(i)
-	return puo
-}
-
-// ClearPlanOverdueMonthCount clears the value of the "plan_overdue_month_count" field.
-func (puo *ProjectUpdateOne) ClearPlanOverdueMonthCount() *ProjectUpdateOne {
-	puo.mutation.ClearPlanOverdueMonthCount()
 	return puo
 }
 
@@ -5098,36 +1816,6 @@ func (puo *ProjectUpdateOne) ClearDiagramCApprovalRatioDenominator() *ProjectUpd
 	return puo
 }
 
-// AddVoIDs adds the "vos" edge to the ProjectVO entity by IDs.
-func (puo *ProjectUpdateOne) AddVoIDs(ids ...xid.ID) *ProjectUpdateOne {
-	puo.mutation.AddVoIDs(ids...)
-	return puo
-}
-
-// AddVos adds the "vos" edges to the ProjectVO entity.
-func (puo *ProjectUpdateOne) AddVos(p ...*ProjectVO) *ProjectUpdateOne {
-	ids := make([]xid.ID, len(p))
-	for i := range p {
-		ids[i] = p[i].ID
-	}
-	return puo.AddVoIDs(ids...)
-}
-
-// AddProjectStaffIDs adds the "project_staffs" edge to the ProjectStaff entity by IDs.
-func (puo *ProjectUpdateOne) AddProjectStaffIDs(ids ...xid.ID) *ProjectUpdateOne {
-	puo.mutation.AddProjectStaffIDs(ids...)
-	return puo
-}
-
-// AddProjectStaffs adds the "project_staffs" edges to the ProjectStaff entity.
-func (puo *ProjectUpdateOne) AddProjectStaffs(p ...*ProjectStaff) *ProjectUpdateOne {
-	ids := make([]xid.ID, len(p))
-	for i := range p {
-		ids[i] = p[i].ID
-	}
-	return puo.AddProjectStaffIDs(ids...)
-}
-
 // AddUserIDs adds the "users" edge to the User entity by IDs.
 func (puo *ProjectUpdateOne) AddUserIDs(ids ...xid.ID) *ProjectUpdateOne {
 	puo.mutation.AddUserIDs(ids...)
@@ -5146,48 +1834,6 @@ func (puo *ProjectUpdateOne) AddUsers(u ...*User) *ProjectUpdateOne {
 // Mutation returns the ProjectMutation object of the builder.
 func (puo *ProjectUpdateOne) Mutation() *ProjectMutation {
 	return puo.mutation
-}
-
-// ClearVos clears all "vos" edges to the ProjectVO entity.
-func (puo *ProjectUpdateOne) ClearVos() *ProjectUpdateOne {
-	puo.mutation.ClearVos()
-	return puo
-}
-
-// RemoveVoIDs removes the "vos" edge to ProjectVO entities by IDs.
-func (puo *ProjectUpdateOne) RemoveVoIDs(ids ...xid.ID) *ProjectUpdateOne {
-	puo.mutation.RemoveVoIDs(ids...)
-	return puo
-}
-
-// RemoveVos removes "vos" edges to ProjectVO entities.
-func (puo *ProjectUpdateOne) RemoveVos(p ...*ProjectVO) *ProjectUpdateOne {
-	ids := make([]xid.ID, len(p))
-	for i := range p {
-		ids[i] = p[i].ID
-	}
-	return puo.RemoveVoIDs(ids...)
-}
-
-// ClearProjectStaffs clears all "project_staffs" edges to the ProjectStaff entity.
-func (puo *ProjectUpdateOne) ClearProjectStaffs() *ProjectUpdateOne {
-	puo.mutation.ClearProjectStaffs()
-	return puo
-}
-
-// RemoveProjectStaffIDs removes the "project_staffs" edge to ProjectStaff entities by IDs.
-func (puo *ProjectUpdateOne) RemoveProjectStaffIDs(ids ...xid.ID) *ProjectUpdateOne {
-	puo.mutation.RemoveProjectStaffIDs(ids...)
-	return puo
-}
-
-// RemoveProjectStaffs removes "project_staffs" edges to ProjectStaff entities.
-func (puo *ProjectUpdateOne) RemoveProjectStaffs(p ...*ProjectStaff) *ProjectUpdateOne {
-	ids := make([]xid.ID, len(p))
-	for i := range p {
-		ids[i] = p[i].ID
-	}
-	return puo.RemoveProjectStaffIDs(ids...)
 }
 
 // ClearUsers clears all "users" edges to the User entity.
@@ -5292,434 +1938,95 @@ func (puo *ProjectUpdateOne) sqlSave(ctx context.Context) (_node *Project, err e
 	if value, ok := puo.mutation.Code(); ok {
 		_spec.SetField(project.FieldCode, field.TypeString, value)
 	}
-	if value, ok := puo.mutation.Manager(); ok {
-		_spec.SetField(project.FieldManager, field.TypeString, value)
-	}
-	if puo.mutation.ManagerCleared() {
-		_spec.ClearField(project.FieldManager, field.TypeString)
-	}
-	if value, ok := puo.mutation.Name(); ok {
-		_spec.SetField(project.FieldName, field.TypeString, value)
-	}
-	if puo.mutation.NameCleared() {
-		_spec.ClearField(project.FieldName, field.TypeString)
-	}
-	if value, ok := puo.mutation.Owner(); ok {
-		_spec.SetField(project.FieldOwner, field.TypeString, value)
-	}
-	if puo.mutation.OwnerCleared() {
-		_spec.ClearField(project.FieldOwner, field.TypeString)
-	}
-	if value, ok := puo.mutation.Jzs(); ok {
-		_spec.SetField(project.FieldJzs, field.TypeString, value)
-	}
-	if puo.mutation.JzsCleared() {
-		_spec.ClearField(project.FieldJzs, field.TypeString)
-	}
-	if value, ok := puo.mutation.Mcn(); ok {
-		_spec.SetField(project.FieldMcn, field.TypeString, value)
-	}
-	if puo.mutation.McnCleared() {
-		_spec.ClearField(project.FieldMcn, field.TypeString)
-	}
-	if value, ok := puo.mutation.Consultant(); ok {
-		_spec.SetField(project.FieldConsultant, field.TypeString, value)
-	}
-	if puo.mutation.ConsultantCleared() {
-		_spec.ClearField(project.FieldConsultant, field.TypeString)
-	}
-	if value, ok := puo.mutation.Areas(); ok {
-		_spec.SetField(project.FieldAreas, field.TypeString, value)
-	}
-	if puo.mutation.AreasCleared() {
-		_spec.ClearField(project.FieldAreas, field.TypeString)
-	}
-	if value, ok := puo.mutation.StartDate(); ok {
-		_spec.SetField(project.FieldStartDate, field.TypeTime, value)
-	}
-	if puo.mutation.StartDateCleared() {
-		_spec.ClearField(project.FieldStartDate, field.TypeTime)
-	}
-	if value, ok := puo.mutation.FsDate(); ok {
-		_spec.SetField(project.FieldFsDate, field.TypeTime, value)
-	}
-	if puo.mutation.FsDateCleared() {
-		_spec.ClearField(project.FieldFsDate, field.TypeTime)
-	}
-	if value, ok := puo.mutation.OpDate(); ok {
-		_spec.SetField(project.FieldOpDate, field.TypeTime, value)
-	}
-	if puo.mutation.OpDateCleared() {
-		_spec.ClearField(project.FieldOpDate, field.TypeTime)
-	}
-	if value, ok := puo.mutation.EndDate(); ok {
-		_spec.SetField(project.FieldEndDate, field.TypeTime, value)
-	}
-	if puo.mutation.EndDateCleared() {
-		_spec.ClearField(project.FieldEndDate, field.TypeTime)
-	}
-	if value, ok := puo.mutation.Mntyr(); ok {
-		_spec.SetField(project.FieldMntyr, field.TypeString, value)
-	}
-	if puo.mutation.MntyrCleared() {
-		_spec.ClearField(project.FieldMntyr, field.TypeString)
-	}
-	if value, ok := puo.mutation.ConType(); ok {
-		_spec.SetField(project.FieldConType, field.TypeString, value)
-	}
-	if puo.mutation.ConTypeCleared() {
-		_spec.ClearField(project.FieldConType, field.TypeString)
-	}
 	if value, ok := puo.mutation.IsFinished(); ok {
 		_spec.SetField(project.FieldIsFinished, field.TypeBool, value)
 	}
-	if value, ok := puo.mutation.Cje(); ok {
-		_spec.SetField(project.FieldCje, field.TypeFloat64, value)
+	if value, ok := puo.mutation.RevenueKpi(); ok {
+		_spec.SetField(project.FieldRevenueKpi, field.TypeFloat64, value)
 	}
-	if value, ok := puo.mutation.AddedCje(); ok {
-		_spec.AddField(project.FieldCje, field.TypeFloat64, value)
+	if value, ok := puo.mutation.AddedRevenueKpi(); ok {
+		_spec.AddField(project.FieldRevenueKpi, field.TypeFloat64, value)
 	}
-	if puo.mutation.CjeCleared() {
-		_spec.ClearField(project.FieldCje, field.TypeFloat64)
+	if puo.mutation.RevenueKpiCleared() {
+		_spec.ClearField(project.FieldRevenueKpi, field.TypeFloat64)
 	}
-	if value, ok := puo.mutation.Yye(); ok {
-		_spec.SetField(project.FieldYye, field.TypeFloat64, value)
+	if value, ok := puo.mutation.RevenueCurrentYearCompleted(); ok {
+		_spec.SetField(project.FieldRevenueCurrentYearCompleted, field.TypeFloat64, value)
 	}
-	if value, ok := puo.mutation.AddedYye(); ok {
-		_spec.AddField(project.FieldYye, field.TypeFloat64, value)
+	if value, ok := puo.mutation.AddedRevenueCurrentYearCompleted(); ok {
+		_spec.AddField(project.FieldRevenueCurrentYearCompleted, field.TypeFloat64, value)
 	}
-	if puo.mutation.YyeCleared() {
-		_spec.ClearField(project.FieldYye, field.TypeFloat64)
+	if puo.mutation.RevenueCurrentYearCompletedCleared() {
+		_spec.ClearField(project.FieldRevenueCurrentYearCompleted, field.TypeFloat64)
 	}
-	if value, ok := puo.mutation.Xjl(); ok {
-		_spec.SetField(project.FieldXjl, field.TypeFloat64, value)
+	if value, ok := puo.mutation.RevenueAccumulatedCompleted(); ok {
+		_spec.SetField(project.FieldRevenueAccumulatedCompleted, field.TypeFloat64, value)
 	}
-	if value, ok := puo.mutation.AddedXjl(); ok {
-		_spec.AddField(project.FieldXjl, field.TypeFloat64, value)
+	if value, ok := puo.mutation.AddedRevenueAccumulatedCompleted(); ok {
+		_spec.AddField(project.FieldRevenueAccumulatedCompleted, field.TypeFloat64, value)
 	}
-	if puo.mutation.XjlCleared() {
-		_spec.ClearField(project.FieldXjl, field.TypeFloat64)
+	if puo.mutation.RevenueAccumulatedCompletedCleared() {
+		_spec.ClearField(project.FieldRevenueAccumulatedCompleted, field.TypeFloat64)
 	}
-	if value, ok := puo.mutation.XmglfYs(); ok {
-		_spec.SetField(project.FieldXmglfYs, field.TypeFloat64, value)
+	if value, ok := puo.mutation.PayDate(); ok {
+		_spec.SetField(project.FieldPayDate, field.TypeTime, value)
 	}
-	if value, ok := puo.mutation.AddedXmglfYs(); ok {
-		_spec.AddField(project.FieldXmglfYs, field.TypeFloat64, value)
+	if puo.mutation.PayDateCleared() {
+		_spec.ClearField(project.FieldPayDate, field.TypeTime)
 	}
-	if puo.mutation.XmglfYsCleared() {
-		_spec.ClearField(project.FieldXmglfYs, field.TypeFloat64)
+	if value, ok := puo.mutation.OwnerVoCount(); ok {
+		_spec.SetField(project.FieldOwnerVoCount, field.TypeInt, value)
 	}
-	if value, ok := puo.mutation.XmglfLj(); ok {
-		_spec.SetField(project.FieldXmglfLj, field.TypeFloat64, value)
+	if value, ok := puo.mutation.AddedOwnerVoCount(); ok {
+		_spec.AddField(project.FieldOwnerVoCount, field.TypeInt, value)
 	}
-	if value, ok := puo.mutation.AddedXmglfLj(); ok {
-		_spec.AddField(project.FieldXmglfLj, field.TypeFloat64, value)
+	if puo.mutation.OwnerVoCountCleared() {
+		_spec.ClearField(project.FieldOwnerVoCount, field.TypeInt)
 	}
-	if puo.mutation.XmglfLjCleared() {
-		_spec.ClearField(project.FieldXmglfLj, field.TypeFloat64)
+	if value, ok := puo.mutation.ContractorVoCount(); ok {
+		_spec.SetField(project.FieldContractorVoCount, field.TypeInt, value)
 	}
-	if value, ok := puo.mutation.Xmsjf(); ok {
-		_spec.SetField(project.FieldXmsjf, field.TypeFloat64, value)
+	if value, ok := puo.mutation.AddedContractorVoCount(); ok {
+		_spec.AddField(project.FieldContractorVoCount, field.TypeInt, value)
 	}
-	if value, ok := puo.mutation.AddedXmsjf(); ok {
-		_spec.AddField(project.FieldXmsjf, field.TypeFloat64, value)
+	if puo.mutation.ContractorVoCountCleared() {
+		_spec.ClearField(project.FieldContractorVoCount, field.TypeInt)
 	}
-	if puo.mutation.XmsjfCleared() {
-		_spec.ClearField(project.FieldXmsjf, field.TypeFloat64)
+	if value, ok := puo.mutation.AccumulateDeduction(); ok {
+		_spec.SetField(project.FieldAccumulateDeduction, field.TypeFloat64, value)
 	}
-	if value, ok := puo.mutation.Xmfzr(); ok {
-		_spec.SetField(project.FieldXmfzr, field.TypeString, value)
+	if value, ok := puo.mutation.AddedAccumulateDeduction(); ok {
+		_spec.AddField(project.FieldAccumulateDeduction, field.TypeFloat64, value)
 	}
-	if puo.mutation.XmfzrCleared() {
-		_spec.ClearField(project.FieldXmfzr, field.TypeString)
+	if puo.mutation.AccumulateDeductionCleared() {
+		_spec.ClearField(project.FieldAccumulateDeduction, field.TypeFloat64)
 	}
-	if value, ok := puo.mutation.OwnerApplyAmount(); ok {
-		_spec.SetField(project.FieldOwnerApplyAmount, field.TypeFloat64, value)
+	if value, ok := puo.mutation.SubcontractorVaCount(); ok {
+		_spec.SetField(project.FieldSubcontractorVaCount, field.TypeInt, value)
 	}
-	if value, ok := puo.mutation.AddedOwnerApplyAmount(); ok {
-		_spec.AddField(project.FieldOwnerApplyAmount, field.TypeFloat64, value)
+	if value, ok := puo.mutation.AddedSubcontractorVaCount(); ok {
+		_spec.AddField(project.FieldSubcontractorVaCount, field.TypeInt, value)
 	}
-	if puo.mutation.OwnerApplyAmountCleared() {
-		_spec.ClearField(project.FieldOwnerApplyAmount, field.TypeFloat64)
+	if puo.mutation.SubcontractorVaCountCleared() {
+		_spec.ClearField(project.FieldSubcontractorVaCount, field.TypeInt)
 	}
-	if value, ok := puo.mutation.OwnerApplyCount(); ok {
-		_spec.SetField(project.FieldOwnerApplyCount, field.TypeInt, value)
+	if value, ok := puo.mutation.ContractSupplementaryCount(); ok {
+		_spec.SetField(project.FieldContractSupplementaryCount, field.TypeInt, value)
 	}
-	if value, ok := puo.mutation.AddedOwnerApplyCount(); ok {
-		_spec.AddField(project.FieldOwnerApplyCount, field.TypeInt, value)
+	if value, ok := puo.mutation.AddedContractSupplementaryCount(); ok {
+		_spec.AddField(project.FieldContractSupplementaryCount, field.TypeInt, value)
 	}
-	if puo.mutation.OwnerApplyCountCleared() {
-		_spec.ClearField(project.FieldOwnerApplyCount, field.TypeInt)
+	if puo.mutation.ContractSupplementaryCountCleared() {
+		_spec.ClearField(project.FieldContractSupplementaryCount, field.TypeInt)
 	}
-	if value, ok := puo.mutation.OwnerApproveAmount(); ok {
-		_spec.SetField(project.FieldOwnerApproveAmount, field.TypeFloat64, value)
+	if value, ok := puo.mutation.RepairFee(); ok {
+		_spec.SetField(project.FieldRepairFee, field.TypeFloat64, value)
 	}
-	if value, ok := puo.mutation.AddedOwnerApproveAmount(); ok {
-		_spec.AddField(project.FieldOwnerApproveAmount, field.TypeFloat64, value)
+	if value, ok := puo.mutation.AddedRepairFee(); ok {
+		_spec.AddField(project.FieldRepairFee, field.TypeFloat64, value)
 	}
-	if puo.mutation.OwnerApproveAmountCleared() {
-		_spec.ClearField(project.FieldOwnerApproveAmount, field.TypeFloat64)
-	}
-	if value, ok := puo.mutation.OwnerApproveCount(); ok {
-		_spec.SetField(project.FieldOwnerApproveCount, field.TypeInt, value)
-	}
-	if value, ok := puo.mutation.AddedOwnerApproveCount(); ok {
-		_spec.AddField(project.FieldOwnerApproveCount, field.TypeInt, value)
-	}
-	if puo.mutation.OwnerApproveCountCleared() {
-		_spec.ClearField(project.FieldOwnerApproveCount, field.TypeInt)
-	}
-	if value, ok := puo.mutation.ContractorApplyAmount(); ok {
-		_spec.SetField(project.FieldContractorApplyAmount, field.TypeFloat64, value)
-	}
-	if value, ok := puo.mutation.AddedContractorApplyAmount(); ok {
-		_spec.AddField(project.FieldContractorApplyAmount, field.TypeFloat64, value)
-	}
-	if puo.mutation.ContractorApplyAmountCleared() {
-		_spec.ClearField(project.FieldContractorApplyAmount, field.TypeFloat64)
-	}
-	if value, ok := puo.mutation.ContractorApplyCount(); ok {
-		_spec.SetField(project.FieldContractorApplyCount, field.TypeInt, value)
-	}
-	if value, ok := puo.mutation.AddedContractorApplyCount(); ok {
-		_spec.AddField(project.FieldContractorApplyCount, field.TypeInt, value)
-	}
-	if puo.mutation.ContractorApplyCountCleared() {
-		_spec.ClearField(project.FieldContractorApplyCount, field.TypeInt)
-	}
-	if value, ok := puo.mutation.ContractorApproveAmount(); ok {
-		_spec.SetField(project.FieldContractorApproveAmount, field.TypeFloat64, value)
-	}
-	if value, ok := puo.mutation.AddedContractorApproveAmount(); ok {
-		_spec.AddField(project.FieldContractorApproveAmount, field.TypeFloat64, value)
-	}
-	if puo.mutation.ContractorApproveAmountCleared() {
-		_spec.ClearField(project.FieldContractorApproveAmount, field.TypeFloat64)
-	}
-	if value, ok := puo.mutation.ContractorApproveCount(); ok {
-		_spec.SetField(project.FieldContractorApproveCount, field.TypeInt, value)
-	}
-	if value, ok := puo.mutation.AddedContractorApproveCount(); ok {
-		_spec.AddField(project.FieldContractorApproveCount, field.TypeInt, value)
-	}
-	if puo.mutation.ContractorApproveCountCleared() {
-		_spec.ClearField(project.FieldContractorApproveCount, field.TypeInt)
-	}
-	if value, ok := puo.mutation.InstallProgress(); ok {
-		_spec.SetField(project.FieldInstallProgress, field.TypeFloat64, value)
-	}
-	if value, ok := puo.mutation.AddedInstallProgress(); ok {
-		_spec.AddField(project.FieldInstallProgress, field.TypeFloat64, value)
-	}
-	if puo.mutation.InstallProgressCleared() {
-		_spec.ClearField(project.FieldInstallProgress, field.TypeFloat64)
-	}
-	if value, ok := puo.mutation.EffectiveContractAmount(); ok {
-		_spec.SetField(project.FieldEffectiveContractAmount, field.TypeFloat64, value)
-	}
-	if value, ok := puo.mutation.AddedEffectiveContractAmount(); ok {
-		_spec.AddField(project.FieldEffectiveContractAmount, field.TypeFloat64, value)
-	}
-	if puo.mutation.EffectiveContractAmountCleared() {
-		_spec.ClearField(project.FieldEffectiveContractAmount, field.TypeFloat64)
-	}
-	if value, ok := puo.mutation.VaApplyAmount(); ok {
-		_spec.SetField(project.FieldVaApplyAmount, field.TypeFloat64, value)
-	}
-	if value, ok := puo.mutation.AddedVaApplyAmount(); ok {
-		_spec.AddField(project.FieldVaApplyAmount, field.TypeFloat64, value)
-	}
-	if puo.mutation.VaApplyAmountCleared() {
-		_spec.ClearField(project.FieldVaApplyAmount, field.TypeFloat64)
-	}
-	if value, ok := puo.mutation.VaApproveAmount(); ok {
-		_spec.SetField(project.FieldVaApproveAmount, field.TypeFloat64, value)
-	}
-	if value, ok := puo.mutation.AddedVaApproveAmount(); ok {
-		_spec.AddField(project.FieldVaApproveAmount, field.TypeFloat64, value)
-	}
-	if puo.mutation.VaApproveAmountCleared() {
-		_spec.ClearField(project.FieldVaApproveAmount, field.TypeFloat64)
-	}
-	if value, ok := puo.mutation.AccumulatedStatutoryDeductions(); ok {
-		_spec.SetField(project.FieldAccumulatedStatutoryDeductions, field.TypeFloat64, value)
-	}
-	if value, ok := puo.mutation.AddedAccumulatedStatutoryDeductions(); ok {
-		_spec.AddField(project.FieldAccumulatedStatutoryDeductions, field.TypeFloat64, value)
-	}
-	if puo.mutation.AccumulatedStatutoryDeductionsCleared() {
-		_spec.ClearField(project.FieldAccumulatedStatutoryDeductions, field.TypeFloat64)
-	}
-	if value, ok := puo.mutation.AccumulatedNonStatutoryDeductions(); ok {
-		_spec.SetField(project.FieldAccumulatedNonStatutoryDeductions, field.TypeFloat64, value)
-	}
-	if value, ok := puo.mutation.AddedAccumulatedNonStatutoryDeductions(); ok {
-		_spec.AddField(project.FieldAccumulatedNonStatutoryDeductions, field.TypeFloat64, value)
-	}
-	if puo.mutation.AccumulatedNonStatutoryDeductionsCleared() {
-		_spec.ClearField(project.FieldAccumulatedNonStatutoryDeductions, field.TypeFloat64)
-	}
-	if value, ok := puo.mutation.AccumulatedStatutoryDeductionsPeriod(); ok {
-		_spec.SetField(project.FieldAccumulatedStatutoryDeductionsPeriod, field.TypeFloat64, value)
-	}
-	if value, ok := puo.mutation.AddedAccumulatedStatutoryDeductionsPeriod(); ok {
-		_spec.AddField(project.FieldAccumulatedStatutoryDeductionsPeriod, field.TypeFloat64, value)
-	}
-	if puo.mutation.AccumulatedStatutoryDeductionsPeriodCleared() {
-		_spec.ClearField(project.FieldAccumulatedStatutoryDeductionsPeriod, field.TypeFloat64)
-	}
-	if value, ok := puo.mutation.AccumulatedNonStatutoryDeductionsPeriod(); ok {
-		_spec.SetField(project.FieldAccumulatedNonStatutoryDeductionsPeriod, field.TypeFloat64, value)
-	}
-	if value, ok := puo.mutation.AddedAccumulatedNonStatutoryDeductionsPeriod(); ok {
-		_spec.AddField(project.FieldAccumulatedNonStatutoryDeductionsPeriod, field.TypeFloat64, value)
-	}
-	if puo.mutation.AccumulatedNonStatutoryDeductionsPeriodCleared() {
-		_spec.ClearField(project.FieldAccumulatedNonStatutoryDeductionsPeriod, field.TypeFloat64)
-	}
-	if value, ok := puo.mutation.TotalContractAmount(); ok {
-		_spec.SetField(project.FieldTotalContractAmount, field.TypeFloat64, value)
-	}
-	if value, ok := puo.mutation.AddedTotalContractAmount(); ok {
-		_spec.AddField(project.FieldTotalContractAmount, field.TypeFloat64, value)
-	}
-	if puo.mutation.TotalContractAmountCleared() {
-		_spec.ClearField(project.FieldTotalContractAmount, field.TypeFloat64)
-	}
-	if value, ok := puo.mutation.AluminumPlateBudgetPercentage(); ok {
-		_spec.SetField(project.FieldAluminumPlateBudgetPercentage, field.TypeFloat64, value)
-	}
-	if value, ok := puo.mutation.AddedAluminumPlateBudgetPercentage(); ok {
-		_spec.AddField(project.FieldAluminumPlateBudgetPercentage, field.TypeFloat64, value)
-	}
-	if puo.mutation.AluminumPlateBudgetPercentageCleared() {
-		_spec.ClearField(project.FieldAluminumPlateBudgetPercentage, field.TypeFloat64)
-	}
-	if value, ok := puo.mutation.AluminumBudgetPercentage(); ok {
-		_spec.SetField(project.FieldAluminumBudgetPercentage, field.TypeFloat64, value)
-	}
-	if value, ok := puo.mutation.AddedAluminumBudgetPercentage(); ok {
-		_spec.AddField(project.FieldAluminumBudgetPercentage, field.TypeFloat64, value)
-	}
-	if puo.mutation.AluminumBudgetPercentageCleared() {
-		_spec.ClearField(project.FieldAluminumBudgetPercentage, field.TypeFloat64)
-	}
-	if value, ok := puo.mutation.GlassBudgetPercentage(); ok {
-		_spec.SetField(project.FieldGlassBudgetPercentage, field.TypeFloat64, value)
-	}
-	if value, ok := puo.mutation.AddedGlassBudgetPercentage(); ok {
-		_spec.AddField(project.FieldGlassBudgetPercentage, field.TypeFloat64, value)
-	}
-	if puo.mutation.GlassBudgetPercentageCleared() {
-		_spec.ClearField(project.FieldGlassBudgetPercentage, field.TypeFloat64)
-	}
-	if value, ok := puo.mutation.IronBudgetPercentage(); ok {
-		_spec.SetField(project.FieldIronBudgetPercentage, field.TypeFloat64, value)
-	}
-	if value, ok := puo.mutation.AddedIronBudgetPercentage(); ok {
-		_spec.AddField(project.FieldIronBudgetPercentage, field.TypeFloat64, value)
-	}
-	if puo.mutation.IronBudgetPercentageCleared() {
-		_spec.ClearField(project.FieldIronBudgetPercentage, field.TypeFloat64)
-	}
-	if value, ok := puo.mutation.MilestonePlanYear(); ok {
-		_spec.SetField(project.FieldMilestonePlanYear, field.TypeInt, value)
-	}
-	if value, ok := puo.mutation.AddedMilestonePlanYear(); ok {
-		_spec.AddField(project.FieldMilestonePlanYear, field.TypeInt, value)
-	}
-	if puo.mutation.MilestonePlanYearCleared() {
-		_spec.ClearField(project.FieldMilestonePlanYear, field.TypeInt)
-	}
-	if value, ok := puo.mutation.MilestonePlanMonth(); ok {
-		_spec.SetField(project.FieldMilestonePlanMonth, field.TypeInt, value)
-	}
-	if value, ok := puo.mutation.AddedMilestonePlanMonth(); ok {
-		_spec.AddField(project.FieldMilestonePlanMonth, field.TypeInt, value)
-	}
-	if puo.mutation.MilestonePlanMonthCleared() {
-		_spec.ClearField(project.FieldMilestonePlanMonth, field.TypeInt)
-	}
-	if value, ok := puo.mutation.MilestoneDoneYear(); ok {
-		_spec.SetField(project.FieldMilestoneDoneYear, field.TypeInt, value)
-	}
-	if value, ok := puo.mutation.AddedMilestoneDoneYear(); ok {
-		_spec.AddField(project.FieldMilestoneDoneYear, field.TypeInt, value)
-	}
-	if puo.mutation.MilestoneDoneYearCleared() {
-		_spec.ClearField(project.FieldMilestoneDoneYear, field.TypeInt)
-	}
-	if value, ok := puo.mutation.MilestoneDoneMonth(); ok {
-		_spec.SetField(project.FieldMilestoneDoneMonth, field.TypeInt, value)
-	}
-	if value, ok := puo.mutation.AddedMilestoneDoneMonth(); ok {
-		_spec.AddField(project.FieldMilestoneDoneMonth, field.TypeInt, value)
-	}
-	if puo.mutation.MilestoneDoneMonthCleared() {
-		_spec.ClearField(project.FieldMilestoneDoneMonth, field.TypeInt)
-	}
-	if value, ok := puo.mutation.PmArea(); ok {
-		_spec.SetField(project.FieldPmArea, field.TypeFloat64, value)
-	}
-	if value, ok := puo.mutation.AddedPmArea(); ok {
-		_spec.AddField(project.FieldPmArea, field.TypeFloat64, value)
-	}
-	if puo.mutation.PmAreaCleared() {
-		_spec.ClearField(project.FieldPmArea, field.TypeFloat64)
-	}
-	if value, ok := puo.mutation.PmYearTarget(); ok {
-		_spec.SetField(project.FieldPmYearTarget, field.TypeFloat64, value)
-	}
-	if value, ok := puo.mutation.AddedPmYearTarget(); ok {
-		_spec.AddField(project.FieldPmYearTarget, field.TypeFloat64, value)
-	}
-	if puo.mutation.PmYearTargetCleared() {
-		_spec.ClearField(project.FieldPmYearTarget, field.TypeFloat64)
-	}
-	if value, ok := puo.mutation.PmMonthTarget(); ok {
-		_spec.SetField(project.FieldPmMonthTarget, field.TypeFloat64, value)
-	}
-	if value, ok := puo.mutation.AddedPmMonthTarget(); ok {
-		_spec.AddField(project.FieldPmMonthTarget, field.TypeFloat64, value)
-	}
-	if puo.mutation.PmMonthTargetCleared() {
-		_spec.ClearField(project.FieldPmMonthTarget, field.TypeFloat64)
-	}
-	if value, ok := puo.mutation.PmYearActual(); ok {
-		_spec.SetField(project.FieldPmYearActual, field.TypeFloat64, value)
-	}
-	if value, ok := puo.mutation.AddedPmYearActual(); ok {
-		_spec.AddField(project.FieldPmYearActual, field.TypeFloat64, value)
-	}
-	if puo.mutation.PmYearActualCleared() {
-		_spec.ClearField(project.FieldPmYearActual, field.TypeFloat64)
-	}
-	if value, ok := puo.mutation.PmMonthActual(); ok {
-		_spec.SetField(project.FieldPmMonthActual, field.TypeFloat64, value)
-	}
-	if value, ok := puo.mutation.AddedPmMonthActual(); ok {
-		_spec.AddField(project.FieldPmMonthActual, field.TypeFloat64, value)
-	}
-	if puo.mutation.PmMonthActualCleared() {
-		_spec.ClearField(project.FieldPmMonthActual, field.TypeFloat64)
-	}
-	if value, ok := puo.mutation.PmTotal(); ok {
-		_spec.SetField(project.FieldPmTotal, field.TypeFloat64, value)
-	}
-	if value, ok := puo.mutation.AddedPmTotal(); ok {
-		_spec.AddField(project.FieldPmTotal, field.TypeFloat64, value)
-	}
-	if puo.mutation.PmTotalCleared() {
-		_spec.ClearField(project.FieldPmTotal, field.TypeFloat64)
-	}
-	if value, ok := puo.mutation.PmYesterday(); ok {
-		_spec.SetField(project.FieldPmYesterday, field.TypeFloat64, value)
-	}
-	if value, ok := puo.mutation.AddedPmYesterday(); ok {
-		_spec.AddField(project.FieldPmYesterday, field.TypeFloat64, value)
-	}
-	if puo.mutation.PmYesterdayCleared() {
-		_spec.ClearField(project.FieldPmYesterday, field.TypeFloat64)
+	if puo.mutation.RepairFeeCleared() {
+		_spec.ClearField(project.FieldRepairFee, field.TypeFloat64)
 	}
 	if value, ok := puo.mutation.UnitInventoryTotal(); ok {
 		_spec.SetField(project.FieldUnitInventoryTotal, field.TypeFloat64, value)
@@ -5757,78 +2064,6 @@ func (puo *ProjectUpdateOne) sqlSave(ctx context.Context) (_node *Project, err e
 	if puo.mutation.UnitComponentInstallationCleared() {
 		_spec.ClearField(project.FieldUnitComponentInstallation, field.TypeFloat64)
 	}
-	if value, ok := puo.mutation.MaterialLoss(); ok {
-		_spec.SetField(project.FieldMaterialLoss, field.TypeFloat64, value)
-	}
-	if value, ok := puo.mutation.AddedMaterialLoss(); ok {
-		_spec.AddField(project.FieldMaterialLoss, field.TypeFloat64, value)
-	}
-	if puo.mutation.MaterialLossCleared() {
-		_spec.ClearField(project.FieldMaterialLoss, field.TypeFloat64)
-	}
-	if value, ok := puo.mutation.DesignRatedWeight(); ok {
-		_spec.SetField(project.FieldDesignRatedWeight, field.TypeFloat64, value)
-	}
-	if value, ok := puo.mutation.AddedDesignRatedWeight(); ok {
-		_spec.AddField(project.FieldDesignRatedWeight, field.TypeFloat64, value)
-	}
-	if puo.mutation.DesignRatedWeightCleared() {
-		_spec.ClearField(project.FieldDesignRatedWeight, field.TypeFloat64)
-	}
-	if value, ok := puo.mutation.ProcessingWeight(); ok {
-		_spec.SetField(project.FieldProcessingWeight, field.TypeFloat64, value)
-	}
-	if value, ok := puo.mutation.AddedProcessingWeight(); ok {
-		_spec.AddField(project.FieldProcessingWeight, field.TypeFloat64, value)
-	}
-	if puo.mutation.ProcessingWeightCleared() {
-		_spec.ClearField(project.FieldProcessingWeight, field.TypeFloat64)
-	}
-	if value, ok := puo.mutation.ItemStockWeight(); ok {
-		_spec.SetField(project.FieldItemStockWeight, field.TypeFloat64, value)
-	}
-	if value, ok := puo.mutation.AddedItemStockWeight(); ok {
-		_spec.AddField(project.FieldItemStockWeight, field.TypeFloat64, value)
-	}
-	if puo.mutation.ItemStockWeightCleared() {
-		_spec.ClearField(project.FieldItemStockWeight, field.TypeFloat64)
-	}
-	if value, ok := puo.mutation.PalletsInStock(); ok {
-		_spec.SetField(project.FieldPalletsInStock, field.TypeFloat64, value)
-	}
-	if value, ok := puo.mutation.AddedPalletsInStock(); ok {
-		_spec.AddField(project.FieldPalletsInStock, field.TypeFloat64, value)
-	}
-	if puo.mutation.PalletsInStockCleared() {
-		_spec.ClearField(project.FieldPalletsInStock, field.TypeFloat64)
-	}
-	if value, ok := puo.mutation.PartsInStock(); ok {
-		_spec.SetField(project.FieldPartsInStock, field.TypeFloat64, value)
-	}
-	if value, ok := puo.mutation.AddedPartsInStock(); ok {
-		_spec.AddField(project.FieldPartsInStock, field.TypeFloat64, value)
-	}
-	if puo.mutation.PartsInStockCleared() {
-		_spec.ClearField(project.FieldPartsInStock, field.TypeFloat64)
-	}
-	if value, ok := puo.mutation.QualityScore(); ok {
-		_spec.SetField(project.FieldQualityScore, field.TypeFloat64, value)
-	}
-	if value, ok := puo.mutation.AddedQualityScore(); ok {
-		_spec.AddField(project.FieldQualityScore, field.TypeFloat64, value)
-	}
-	if puo.mutation.QualityScoreCleared() {
-		_spec.ClearField(project.FieldQualityScore, field.TypeFloat64)
-	}
-	if value, ok := puo.mutation.QualityRanking(); ok {
-		_spec.SetField(project.FieldQualityRanking, field.TypeFloat64, value)
-	}
-	if value, ok := puo.mutation.AddedQualityRanking(); ok {
-		_spec.AddField(project.FieldQualityRanking, field.TypeFloat64, value)
-	}
-	if puo.mutation.QualityRankingCleared() {
-		_spec.ClearField(project.FieldQualityRanking, field.TypeFloat64)
-	}
 	if value, ok := puo.mutation.BulkMaterialsTotalOrderQuantity(); ok {
 		_spec.SetField(project.FieldBulkMaterialsTotalOrderQuantity, field.TypeFloat64, value)
 	}
@@ -5855,33 +2090,6 @@ func (puo *ProjectUpdateOne) sqlSave(ctx context.Context) (_node *Project, err e
 	}
 	if puo.mutation.BulkMaterialsUncompletedQuantityCleared() {
 		_spec.ClearField(project.FieldBulkMaterialsUncompletedQuantity, field.TypeFloat64)
-	}
-	if value, ok := puo.mutation.PlanTotalCount(); ok {
-		_spec.SetField(project.FieldPlanTotalCount, field.TypeInt, value)
-	}
-	if value, ok := puo.mutation.AddedPlanTotalCount(); ok {
-		_spec.AddField(project.FieldPlanTotalCount, field.TypeInt, value)
-	}
-	if puo.mutation.PlanTotalCountCleared() {
-		_spec.ClearField(project.FieldPlanTotalCount, field.TypeInt)
-	}
-	if value, ok := puo.mutation.PlanOverdueCount(); ok {
-		_spec.SetField(project.FieldPlanOverdueCount, field.TypeInt, value)
-	}
-	if value, ok := puo.mutation.AddedPlanOverdueCount(); ok {
-		_spec.AddField(project.FieldPlanOverdueCount, field.TypeInt, value)
-	}
-	if puo.mutation.PlanOverdueCountCleared() {
-		_spec.ClearField(project.FieldPlanOverdueCount, field.TypeInt)
-	}
-	if value, ok := puo.mutation.PlanOverdueMonthCount(); ok {
-		_spec.SetField(project.FieldPlanOverdueMonthCount, field.TypeInt, value)
-	}
-	if value, ok := puo.mutation.AddedPlanOverdueMonthCount(); ok {
-		_spec.AddField(project.FieldPlanOverdueMonthCount, field.TypeInt, value)
-	}
-	if puo.mutation.PlanOverdueMonthCountCleared() {
-		_spec.ClearField(project.FieldPlanOverdueMonthCount, field.TypeInt)
 	}
 	if value, ok := puo.mutation.DiagramBdFinishCount(); ok {
 		_spec.SetField(project.FieldDiagramBdFinishCount, field.TypeInt, value)
@@ -5954,96 +2162,6 @@ func (puo *ProjectUpdateOne) sqlSave(ctx context.Context) (_node *Project, err e
 	}
 	if puo.mutation.DiagramCApprovalRatioDenominatorCleared() {
 		_spec.ClearField(project.FieldDiagramCApprovalRatioDenominator, field.TypeInt)
-	}
-	if puo.mutation.VosCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   project.VosTable,
-			Columns: []string{project.VosColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(projectvo.FieldID, field.TypeString),
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := puo.mutation.RemovedVosIDs(); len(nodes) > 0 && !puo.mutation.VosCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   project.VosTable,
-			Columns: []string{project.VosColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(projectvo.FieldID, field.TypeString),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := puo.mutation.VosIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   project.VosTable,
-			Columns: []string{project.VosColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(projectvo.FieldID, field.TypeString),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
-	}
-	if puo.mutation.ProjectStaffsCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   project.ProjectStaffsTable,
-			Columns: []string{project.ProjectStaffsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(projectstaff.FieldID, field.TypeString),
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := puo.mutation.RemovedProjectStaffsIDs(); len(nodes) > 0 && !puo.mutation.ProjectStaffsCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   project.ProjectStaffsTable,
-			Columns: []string{project.ProjectStaffsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(projectstaff.FieldID, field.TypeString),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := puo.mutation.ProjectStaffsIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   project.ProjectStaffsTable,
-			Columns: []string{project.ProjectStaffsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(projectstaff.FieldID, field.TypeString),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	if puo.mutation.UsersCleared() {
 		edge := &sqlgraph.EdgeSpec{

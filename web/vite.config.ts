@@ -21,32 +21,23 @@ export default defineConfig(({ mode }) => ({
       ? {
           proxy: {
             "/graphql": {
-              target: "http://localhost:3000",
+              target: "http://localhost:8000",
               changeOrigin: true,
             },
             "/static": {
-              target: "http://localhost:3000",
+              target: "http://localhost:8000",
               changeOrigin: true,
             },
             "/3dm": {
-              target: "http://localhost:3000",
+              target: "http://localhost:8000",
               changeOrigin: true,
             },
             "/api/v1": {
-              target: "http://localhost:3000",
+              target: "http://localhost:8000",
               changeOrigin: true,
             },
             "/webroot/decision": {
-              target: "http://localhost:3000",
-              changeOrigin: true,
-            },
-            "/_AMapService": {
-              target: "http://localhost:3000",
-              changeOrigin: true,
-              secure: true,
-            },
-            "/api/copilotkit": {
-              target: "http://localhost:8308",
+              target: "http://localhost:8000",
               changeOrigin: true,
             },
           },
