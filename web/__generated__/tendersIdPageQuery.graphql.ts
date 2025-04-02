@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<f8ad87dc0d8d73260fd8c52ac1d2544d>>
+ * @generated SignedSource<<c056e7833a829c8a4063df0b0306fb73>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -14,74 +14,74 @@ export type tendersIdPageQuery$variables = {
 };
 export type tendersIdPageQuery$data = {
   readonly node: {
-    readonly architect?: string | null | undefined;
-    readonly area?: {
-      readonly code: string;
-      readonly name: string;
-    };
-    readonly city?: {
-      readonly adcode: number;
-      readonly name: string;
-    } | null | undefined;
-    readonly competitivePartnershipRating?: number | null | undefined;
-    readonly competitivePartnershipRatingOverview?: string | null | undefined;
-    readonly constructionArea?: string | null | undefined;
-    readonly consultingFirm?: string | null | undefined;
-    readonly contractForm?: string | null | undefined;
-    readonly contractor?: string | null | undefined;
-    readonly createdAt?: any;
-    readonly creditAndPaymentRating?: number | null | undefined;
-    readonly creditAndPaymentRatingOverview?: string | null | undefined;
-    readonly customer?: {
-      readonly area: {
+    readonly activeProfile?: {
+      readonly architect: string | null | undefined;
+      readonly city: {
+        readonly adcode: number;
+        readonly name: string;
+      } | null | undefined;
+      readonly competitivePartnershipRating: number | null | undefined;
+      readonly competitivePartnershipRatingOverview: string | null | undefined;
+      readonly constructionArea: string | null | undefined;
+      readonly consultingFirm: string | null | undefined;
+      readonly contractForm: string | null | undefined;
+      readonly contractor: string | null | undefined;
+      readonly createdAt: any;
+      readonly creditAndPaymentRating: number | null | undefined;
+      readonly creditAndPaymentRatingOverview: string | null | undefined;
+      readonly customer: {
+        readonly area: {
+          readonly id: string;
+          readonly name: string;
+        };
         readonly id: string;
         readonly name: string;
-      };
+        readonly ownerType: number | null | undefined;
+      } | null | undefined;
+      readonly customerRelationshipRating: number | null | undefined;
+      readonly customerRelationshipRatingOverview: string | null | undefined;
+      readonly designUnit: string | null | undefined;
+      readonly developer: string | null | undefined;
+      readonly discoveryDate: any | null | undefined;
+      readonly district: {
+        readonly adcode: number;
+        readonly name: string;
+      } | null | undefined;
+      readonly estimatedAmount: number | null | undefined;
+      readonly facadeConsultant: string | null | undefined;
+      readonly fullAddress: string | null | undefined;
+      readonly geoCoordinate: ReadonlyArray<number> | null | undefined;
+      readonly images: ReadonlyArray<string> | null | undefined;
+      readonly keyProject: boolean;
+      readonly name: string | null | undefined;
+      readonly province: {
+        readonly adcode: number;
+        readonly name: string;
+      } | null | undefined;
+      readonly sizeAndValueRating: number | null | undefined;
+      readonly sizeAndValueRatingOverview: string | null | undefined;
+      readonly status: number;
+      readonly tenderClosingDate: any | null | undefined;
+      readonly tenderCode: string | null | undefined;
+      readonly tenderDate: any | null | undefined;
+      readonly tenderForm: string | null | undefined;
+      readonly tenderWinAmount: number | null | undefined;
+      readonly tenderWinCompany: string | null | undefined;
+      readonly tenderWinDate: any | null | undefined;
+      readonly tenderingAgency: string | null | undefined;
+      readonly timeLimitRating: number | null | undefined;
+      readonly timeLimitRatingOverview: string | null | undefined;
+    } | null | undefined;
+    readonly area?: {
+      readonly code: string;
       readonly id: string;
       readonly name: string;
-      readonly ownerType: number | null | undefined;
-    } | null | undefined;
-    readonly customerRelationshipRating?: number | null | undefined;
-    readonly customerRelationshipRatingOverview?: string | null | undefined;
-    readonly designUnit?: string | null | undefined;
-    readonly developer?: string | null | undefined;
-    readonly discoveryDate?: any;
-    readonly district?: {
-      readonly adcode: number;
-      readonly name: string;
-    } | null | undefined;
-    readonly estimatedAmount?: number | null | undefined;
-    readonly facadeConsultant?: string | null | undefined;
+    };
     readonly followingSales?: ReadonlyArray<{
       readonly id: string;
       readonly name: string | null | undefined;
     }> | null | undefined;
-    readonly fullAddress?: string | null | undefined;
-    readonly geoBounds?: ReadonlyArray<ReadonlyArray<number | null | undefined> | null | undefined> | null | undefined;
-    readonly geoCoordinate?: {
-      readonly coordinates: ReadonlyArray<number>;
-    } | null | undefined;
     readonly id?: string;
-    readonly images?: ReadonlyArray<string> | null | undefined;
-    readonly keyProject?: boolean;
-    readonly name?: string;
-    readonly province?: {
-      readonly adcode: number;
-      readonly name: string;
-    } | null | undefined;
-    readonly sizeAndValueRating?: number | null | undefined;
-    readonly sizeAndValueRatingOverview?: string | null | undefined;
-    readonly status?: number;
-    readonly tenderClosingDate?: any | null | undefined;
-    readonly tenderCode?: string | null | undefined;
-    readonly tenderDate?: any | null | undefined;
-    readonly tenderForm?: string | null | undefined;
-    readonly tenderWinAmount?: number | null | undefined;
-    readonly tenderWinCompany?: string | null | undefined;
-    readonly tenderWinDate?: any | null | undefined;
-    readonly tenderingAgency?: string | null | undefined;
-    readonly timeLimitRating?: number | null | undefined;
-    readonly timeLimitRatingOverview?: string | null | undefined;
   } | null | undefined;
 };
 export type tendersIdPageQuery = {
@@ -121,29 +121,59 @@ v3 = {
 v4 = {
   "alias": null,
   "args": null,
+  "concreteType": "Area",
+  "kind": "LinkedField",
+  "name": "area",
+  "plural": false,
+  "selections": [
+    (v2/*: any*/),
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "code",
+      "storageKey": null
+    },
+    (v3/*: any*/)
+  ],
+  "storageKey": null
+},
+v5 = [
+  (v2/*: any*/),
+  (v3/*: any*/)
+],
+v6 = {
+  "alias": null,
+  "args": null,
+  "concreteType": "User",
+  "kind": "LinkedField",
+  "name": "followingSales",
+  "plural": true,
+  "selections": (v5/*: any*/),
+  "storageKey": null
+},
+v7 = {
+  "alias": null,
+  "args": null,
   "kind": "ScalarField",
   "name": "status",
   "storageKey": null
 },
-v5 = {
+v8 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "createdAt",
   "storageKey": null
 },
-v6 = {
+v9 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "estimatedAmount",
   "storageKey": null
 },
-v7 = [
-  (v2/*: any*/),
-  (v3/*: any*/)
-],
-v8 = {
+v10 = {
   "alias": null,
   "args": null,
   "concreteType": "Customer",
@@ -167,237 +197,220 @@ v8 = {
       "kind": "LinkedField",
       "name": "area",
       "plural": false,
-      "selections": (v7/*: any*/),
+      "selections": (v5/*: any*/),
       "storageKey": null
     }
   ],
-  "storageKey": null
-},
-v9 = {
-  "alias": null,
-  "args": null,
-  "concreteType": "User",
-  "kind": "LinkedField",
-  "name": "followingSales",
-  "plural": true,
-  "selections": (v7/*: any*/),
-  "storageKey": null
-},
-v10 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "images",
   "storageKey": null
 },
 v11 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "fullAddress",
+  "name": "images",
   "storageKey": null
 },
 v12 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "tenderDate",
+  "name": "fullAddress",
   "storageKey": null
 },
 v13 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "discoveryDate",
+  "name": "tenderDate",
   "storageKey": null
 },
 v14 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "contractor",
+  "name": "discoveryDate",
   "storageKey": null
 },
 v15 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "designUnit",
+  "name": "contractor",
   "storageKey": null
 },
 v16 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "tenderForm",
+  "name": "designUnit",
   "storageKey": null
 },
 v17 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "keyProject",
+  "name": "tenderForm",
   "storageKey": null
 },
 v18 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "contractForm",
+  "name": "keyProject",
   "storageKey": null
 },
 v19 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "tenderingAgency",
+  "name": "contractForm",
   "storageKey": null
 },
 v20 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "consultingFirm",
+  "name": "tenderingAgency",
   "storageKey": null
 },
 v21 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "facadeConsultant",
+  "name": "consultingFirm",
   "storageKey": null
 },
 v22 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "timeLimitRating",
+  "name": "facadeConsultant",
   "storageKey": null
 },
 v23 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "sizeAndValueRating",
+  "name": "timeLimitRating",
   "storageKey": null
 },
 v24 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "creditAndPaymentRating",
+  "name": "sizeAndValueRating",
   "storageKey": null
 },
 v25 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "customerRelationshipRating",
+  "name": "creditAndPaymentRating",
   "storageKey": null
 },
 v26 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "competitivePartnershipRating",
+  "name": "customerRelationshipRating",
   "storageKey": null
 },
 v27 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "timeLimitRatingOverview",
+  "name": "competitivePartnershipRating",
   "storageKey": null
 },
 v28 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "sizeAndValueRatingOverview",
+  "name": "timeLimitRatingOverview",
   "storageKey": null
 },
 v29 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "creditAndPaymentRatingOverview",
+  "name": "sizeAndValueRatingOverview",
   "storageKey": null
 },
 v30 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "customerRelationshipRatingOverview",
+  "name": "creditAndPaymentRatingOverview",
   "storageKey": null
 },
 v31 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "competitivePartnershipRatingOverview",
+  "name": "customerRelationshipRatingOverview",
   "storageKey": null
 },
 v32 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "tenderWinCompany",
+  "name": "competitivePartnershipRatingOverview",
   "storageKey": null
 },
 v33 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "tenderCode",
+  "name": "tenderWinCompany",
   "storageKey": null
 },
 v34 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "developer",
+  "name": "tenderCode",
   "storageKey": null
 },
 v35 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "architect",
+  "name": "developer",
   "storageKey": null
 },
 v36 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "tenderClosingDate",
+  "name": "architect",
   "storageKey": null
 },
 v37 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "constructionArea",
+  "name": "tenderClosingDate",
   "storageKey": null
 },
 v38 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "tenderWinAmount",
+  "name": "constructionArea",
   "storageKey": null
 },
 v39 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "tenderWinDate",
+  "name": "tenderWinAmount",
   "storageKey": null
 },
 v40 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "code",
+  "name": "tenderWinDate",
   "storageKey": null
 },
 v41 = {
@@ -414,29 +427,11 @@ v42 = [
 v43 = {
   "alias": null,
   "args": null,
-  "concreteType": "GeoJson",
-  "kind": "LinkedField",
-  "name": "geoCoordinate",
-  "plural": false,
-  "selections": [
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "coordinates",
-      "storageKey": null
-    }
-  ],
-  "storageKey": null
-},
-v44 = {
-  "alias": null,
-  "args": null,
   "kind": "ScalarField",
-  "name": "geoBounds",
+  "name": "geoCoordinate",
   "storageKey": null
 },
-v45 = [
+v44 = [
   (v3/*: any*/),
   (v41/*: any*/),
   (v2/*: any*/)
@@ -460,90 +455,88 @@ return {
             "kind": "InlineFragment",
             "selections": [
               (v2/*: any*/),
-              (v3/*: any*/),
               (v4/*: any*/),
-              (v5/*: any*/),
               (v6/*: any*/),
-              (v8/*: any*/),
-              (v9/*: any*/),
-              (v10/*: any*/),
-              (v11/*: any*/),
-              (v12/*: any*/),
-              (v13/*: any*/),
-              (v14/*: any*/),
-              (v15/*: any*/),
-              (v16/*: any*/),
-              (v17/*: any*/),
-              (v18/*: any*/),
-              (v19/*: any*/),
-              (v20/*: any*/),
-              (v21/*: any*/),
-              (v22/*: any*/),
-              (v23/*: any*/),
-              (v24/*: any*/),
-              (v25/*: any*/),
-              (v26/*: any*/),
-              (v27/*: any*/),
-              (v28/*: any*/),
-              (v29/*: any*/),
-              (v30/*: any*/),
-              (v31/*: any*/),
-              (v32/*: any*/),
-              (v33/*: any*/),
-              (v34/*: any*/),
-              (v35/*: any*/),
-              (v36/*: any*/),
-              (v37/*: any*/),
-              (v38/*: any*/),
-              (v39/*: any*/),
               {
                 "alias": null,
                 "args": null,
-                "concreteType": "Area",
+                "concreteType": "TenderProfile",
                 "kind": "LinkedField",
-                "name": "area",
+                "name": "activeProfile",
                 "plural": false,
                 "selections": [
+                  (v3/*: any*/),
+                  (v7/*: any*/),
+                  (v8/*: any*/),
+                  (v9/*: any*/),
+                  (v10/*: any*/),
+                  (v11/*: any*/),
+                  (v12/*: any*/),
+                  (v13/*: any*/),
+                  (v14/*: any*/),
+                  (v15/*: any*/),
+                  (v16/*: any*/),
+                  (v17/*: any*/),
+                  (v18/*: any*/),
+                  (v19/*: any*/),
+                  (v20/*: any*/),
+                  (v21/*: any*/),
+                  (v22/*: any*/),
+                  (v23/*: any*/),
+                  (v24/*: any*/),
+                  (v25/*: any*/),
+                  (v26/*: any*/),
+                  (v27/*: any*/),
+                  (v28/*: any*/),
+                  (v29/*: any*/),
+                  (v30/*: any*/),
+                  (v31/*: any*/),
+                  (v32/*: any*/),
+                  (v33/*: any*/),
+                  (v34/*: any*/),
+                  (v35/*: any*/),
+                  (v36/*: any*/),
+                  (v37/*: any*/),
+                  (v38/*: any*/),
+                  (v39/*: any*/),
                   (v40/*: any*/),
-                  (v3/*: any*/)
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "Province",
+                    "kind": "LinkedField",
+                    "name": "province",
+                    "plural": false,
+                    "selections": [
+                      (v41/*: any*/),
+                      (v3/*: any*/)
+                    ],
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "City",
+                    "kind": "LinkedField",
+                    "name": "city",
+                    "plural": false,
+                    "selections": (v42/*: any*/),
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "District",
+                    "kind": "LinkedField",
+                    "name": "district",
+                    "plural": false,
+                    "selections": (v42/*: any*/),
+                    "storageKey": null
+                  },
+                  (v43/*: any*/)
                 ],
                 "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "concreteType": "Province",
-                "kind": "LinkedField",
-                "name": "province",
-                "plural": false,
-                "selections": [
-                  (v41/*: any*/),
-                  (v3/*: any*/)
-                ],
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "concreteType": "City",
-                "kind": "LinkedField",
-                "name": "city",
-                "plural": false,
-                "selections": (v42/*: any*/),
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "concreteType": "District",
-                "kind": "LinkedField",
-                "name": "district",
-                "plural": false,
-                "selections": (v42/*: any*/),
-                "storageKey": null
-              },
-              (v43/*: any*/),
-              (v44/*: any*/)
+              }
             ],
             "type": "Tender",
             "abstractKey": null
@@ -580,92 +573,90 @@ return {
           {
             "kind": "InlineFragment",
             "selections": [
-              (v3/*: any*/),
               (v4/*: any*/),
-              (v5/*: any*/),
               (v6/*: any*/),
-              (v8/*: any*/),
-              (v9/*: any*/),
-              (v10/*: any*/),
-              (v11/*: any*/),
-              (v12/*: any*/),
-              (v13/*: any*/),
-              (v14/*: any*/),
-              (v15/*: any*/),
-              (v16/*: any*/),
-              (v17/*: any*/),
-              (v18/*: any*/),
-              (v19/*: any*/),
-              (v20/*: any*/),
-              (v21/*: any*/),
-              (v22/*: any*/),
-              (v23/*: any*/),
-              (v24/*: any*/),
-              (v25/*: any*/),
-              (v26/*: any*/),
-              (v27/*: any*/),
-              (v28/*: any*/),
-              (v29/*: any*/),
-              (v30/*: any*/),
-              (v31/*: any*/),
-              (v32/*: any*/),
-              (v33/*: any*/),
-              (v34/*: any*/),
-              (v35/*: any*/),
-              (v36/*: any*/),
-              (v37/*: any*/),
-              (v38/*: any*/),
-              (v39/*: any*/),
               {
                 "alias": null,
                 "args": null,
-                "concreteType": "Area",
+                "concreteType": "TenderProfile",
                 "kind": "LinkedField",
-                "name": "area",
+                "name": "activeProfile",
                 "plural": false,
                 "selections": [
+                  (v3/*: any*/),
+                  (v7/*: any*/),
+                  (v8/*: any*/),
+                  (v9/*: any*/),
+                  (v10/*: any*/),
+                  (v11/*: any*/),
+                  (v12/*: any*/),
+                  (v13/*: any*/),
+                  (v14/*: any*/),
+                  (v15/*: any*/),
+                  (v16/*: any*/),
+                  (v17/*: any*/),
+                  (v18/*: any*/),
+                  (v19/*: any*/),
+                  (v20/*: any*/),
+                  (v21/*: any*/),
+                  (v22/*: any*/),
+                  (v23/*: any*/),
+                  (v24/*: any*/),
+                  (v25/*: any*/),
+                  (v26/*: any*/),
+                  (v27/*: any*/),
+                  (v28/*: any*/),
+                  (v29/*: any*/),
+                  (v30/*: any*/),
+                  (v31/*: any*/),
+                  (v32/*: any*/),
+                  (v33/*: any*/),
+                  (v34/*: any*/),
+                  (v35/*: any*/),
+                  (v36/*: any*/),
+                  (v37/*: any*/),
+                  (v38/*: any*/),
+                  (v39/*: any*/),
                   (v40/*: any*/),
-                  (v3/*: any*/),
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "Province",
+                    "kind": "LinkedField",
+                    "name": "province",
+                    "plural": false,
+                    "selections": [
+                      (v41/*: any*/),
+                      (v3/*: any*/),
+                      (v2/*: any*/)
+                    ],
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "City",
+                    "kind": "LinkedField",
+                    "name": "city",
+                    "plural": false,
+                    "selections": (v44/*: any*/),
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "District",
+                    "kind": "LinkedField",
+                    "name": "district",
+                    "plural": false,
+                    "selections": (v44/*: any*/),
+                    "storageKey": null
+                  },
+                  (v43/*: any*/),
                   (v2/*: any*/)
                 ],
                 "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "concreteType": "Province",
-                "kind": "LinkedField",
-                "name": "province",
-                "plural": false,
-                "selections": [
-                  (v41/*: any*/),
-                  (v3/*: any*/),
-                  (v2/*: any*/)
-                ],
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "concreteType": "City",
-                "kind": "LinkedField",
-                "name": "city",
-                "plural": false,
-                "selections": (v45/*: any*/),
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "concreteType": "District",
-                "kind": "LinkedField",
-                "name": "district",
-                "plural": false,
-                "selections": (v45/*: any*/),
-                "storageKey": null
-              },
-              (v43/*: any*/),
-              (v44/*: any*/)
+              }
             ],
             "type": "Tender",
             "abstractKey": null
@@ -676,16 +667,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "472039d3ebe531b02d3c1c60ca9648d3",
+    "cacheID": "54711585823931c1171338863cec2d53",
     "id": null,
     "metadata": {},
     "name": "tendersIdPageQuery",
     "operationKind": "query",
-    "text": "query tendersIdPageQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ... on Tender {\n      id\n      name\n      status\n      createdAt\n      estimatedAmount\n      customer {\n        id\n        name\n        ownerType\n        area {\n          id\n          name\n        }\n      }\n      followingSales {\n        id\n        name\n      }\n      images\n      fullAddress\n      tenderDate\n      discoveryDate\n      contractor\n      designUnit\n      tenderForm\n      keyProject\n      contractForm\n      tenderingAgency\n      consultingFirm\n      facadeConsultant\n      timeLimitRating\n      sizeAndValueRating\n      creditAndPaymentRating\n      customerRelationshipRating\n      competitivePartnershipRating\n      timeLimitRatingOverview\n      sizeAndValueRatingOverview\n      creditAndPaymentRatingOverview\n      customerRelationshipRatingOverview\n      competitivePartnershipRatingOverview\n      tenderWinCompany\n      tenderCode\n      developer\n      architect\n      tenderClosingDate\n      constructionArea\n      tenderWinAmount\n      tenderWinDate\n      area {\n        code\n        name\n        id\n      }\n      province {\n        adcode\n        name\n        id\n      }\n      city {\n        name\n        adcode\n        id\n      }\n      district {\n        name\n        adcode\n        id\n      }\n      geoCoordinate {\n        coordinates\n      }\n      geoBounds\n    }\n    id\n  }\n}\n"
+    "text": "query tendersIdPageQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ... on Tender {\n      id\n      area {\n        id\n        code\n        name\n      }\n      followingSales {\n        id\n        name\n      }\n      activeProfile {\n        name\n        status\n        createdAt\n        estimatedAmount\n        customer {\n          id\n          name\n          ownerType\n          area {\n            id\n            name\n          }\n        }\n        images\n        fullAddress\n        tenderDate\n        discoveryDate\n        contractor\n        designUnit\n        tenderForm\n        keyProject\n        contractForm\n        tenderingAgency\n        consultingFirm\n        facadeConsultant\n        timeLimitRating\n        sizeAndValueRating\n        creditAndPaymentRating\n        customerRelationshipRating\n        competitivePartnershipRating\n        timeLimitRatingOverview\n        sizeAndValueRatingOverview\n        creditAndPaymentRatingOverview\n        customerRelationshipRatingOverview\n        competitivePartnershipRatingOverview\n        tenderWinCompany\n        tenderCode\n        developer\n        architect\n        tenderClosingDate\n        constructionArea\n        tenderWinAmount\n        tenderWinDate\n        province {\n          adcode\n          name\n          id\n        }\n        city {\n          name\n          adcode\n          id\n        }\n        district {\n          name\n          adcode\n          id\n        }\n        geoCoordinate\n        id\n      }\n    }\n    id\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "fda9b14f44a9c49f1aee73cce1250d34";
+(node as any).hash = "f5fc9ce7c6b246da4fdd590f6886c715";
 
 export default node;

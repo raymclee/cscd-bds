@@ -20,74 +20,74 @@ function RouteComponent() {
         node(id: $id) {
           ... on Tender {
             id
-            name
-            status
-            createdAt
-            estimatedAmount
-            customer {
+            area {
               id
+              code
               name
-              ownerType
-              area {
-                id
-                name
-              }
             }
             followingSales {
               id
               name
             }
-            images
-            fullAddress
-            tenderDate
-            discoveryDate
-            contractor
-            designUnit
-            tenderForm
-            keyProject
-            contractForm
-            tenderingAgency
-            consultingFirm
-            facadeConsultant
-            contractForm
-            timeLimitRating
-            sizeAndValueRating
-            creditAndPaymentRating
-            customerRelationshipRating
-            competitivePartnershipRating
-            timeLimitRatingOverview
-            sizeAndValueRatingOverview
-            creditAndPaymentRatingOverview
-            customerRelationshipRatingOverview
-            competitivePartnershipRatingOverview
-            tenderWinCompany
-            tenderCode
-            developer
-            architect
-            tenderClosingDate
-            constructionArea
-            tenderWinAmount
-            tenderWinDate
-            area {
-              code
+            activeProfile {
               name
+              status
+              createdAt
+              estimatedAmount
+              customer {
+                id
+                name
+                ownerType
+                area {
+                  id
+                  name
+                }
+              }
+              images
+              fullAddress
+              tenderDate
+              discoveryDate
+              contractor
+              designUnit
+              tenderForm
+              keyProject
+              contractForm
+              tenderingAgency
+              consultingFirm
+              facadeConsultant
+              contractForm
+              timeLimitRating
+              sizeAndValueRating
+              creditAndPaymentRating
+              customerRelationshipRating
+              competitivePartnershipRating
+              timeLimitRatingOverview
+              sizeAndValueRatingOverview
+              creditAndPaymentRatingOverview
+              customerRelationshipRatingOverview
+              competitivePartnershipRatingOverview
+              tenderWinCompany
+              tenderCode
+              developer
+              architect
+              tenderClosingDate
+              constructionArea
+              tenderWinAmount
+              tenderWinDate
+              province {
+                adcode
+                name
+              }
+              city {
+                name
+                adcode
+              }
+              district {
+                name
+                adcode
+              }
+              geoCoordinate
             }
-            province {
-              adcode
-              name
-            }
-            city {
-              name
-              adcode
-            }
-            district {
-              name
-              adcode
-            }
-            geoCoordinate {
-              coordinates
-            }
-            geoBounds
           }
         }
       }
@@ -106,13 +106,15 @@ function RouteComponent() {
       mapStyle: "amap://styles/blue",
     });
 
+    mapRef.current.add(new AMap.TileLayer.Satellite());
+
     return () => {
       mapRef.current?.destroy();
     };
   }, []);
 
   useEffect(() => {
-    if (!data.node || !data.node?.geoCoordinate?.coordinates) {
+    if (!data.node || !data.node?.activeProfile?.geoCoordinate) {
       return;
     }
 
@@ -161,7 +163,7 @@ function RouteComponent() {
         map,
         position: pBounds?.getCenter(),
       });
-    } else if (tender?.geoCoordinate?.coordinates) {
+    } else if (tender?.activeProfile?.geoCoordinate?.length == 2) {
       const offsetY = tender.name && tender.name?.length > 10 ? -35 : -25;
       // @ts-expect-error
       const label = new AMapUI.SimpleMarker({
@@ -186,15 +188,15 @@ function RouteComponent() {
             <div class="group-hover:bg-corner-border-glow absolute bottom-0 left-0 h-[2px] w-4 bg-transparent opacity-0 transition-all duration-300 group-hover:opacity-100"></div>
             <div class="group-hover:bg-corner-border-glow absolute bottom-0 right-0 h-[2px] w-4 bg-transparent opacity-0 transition-all duration-300 group-hover:opacity-100"></div>
             
-            <div class="relative z-10 text-sm font-medium text-center transition-all duration-300 text-wrap group-hover:text-shadow-glow group-hover:text-blue-200 line-clamp-2">${tender.name}</div>
+            <div class="relative z-10 text-sm font-medium text-center transition-all duration-300 text-wrap group-hover:text-shadow-glow group-hover:text-blue-200 line-clamp-2">${tender.activeProfile?.name}</div>
           </div>
           `,
           offset: new AMap.Pixel(-235, offsetY),
         },
         map,
         position: new AMap.LngLat(
-          tender.geoCoordinate?.coordinates[0],
-          tender.geoCoordinate?.coordinates[1],
+          tender.activeProfile?.geoCoordinate?.[1]!,
+          tender.activeProfile?.geoCoordinate?.[0]!,
         ),
         extData: {
           tenderId: tender.id,
@@ -203,8 +205,8 @@ function RouteComponent() {
 
       const circleMarker = new AMap.CircleMarker({
         center: new AMap.LngLat(
-          tender.geoCoordinate?.coordinates[0],
-          tender.geoCoordinate?.coordinates[1],
+          tender.activeProfile?.geoCoordinate?.[1]!,
+          tender.activeProfile?.geoCoordinate?.[0]!,
         ),
         radius: 20 + Math.random() * 10, //3D视图下，CircleMarker半径不要超过64px
         fillColor: tenderStatusBoundColor(tender!),
@@ -219,9 +221,11 @@ function RouteComponent() {
       map?.add(circleMarker);
     }
 
-    mapRef.current?.setCenter(
-      data.node?.geoCoordinate?.coordinates as [number, number],
-    );
+    const [lat, lng] = data.node?.activeProfile?.geoCoordinate as [
+      number,
+      number,
+    ];
+    mapRef.current?.setZoomAndCenter(15, [lng, lat], false, 600);
   }, [data.node]);
 
   if (!data.node) {
@@ -232,7 +236,7 @@ function RouteComponent() {
     <>
       <div
         ref={mapContainerRef}
-        className="sticky top-14 z-20 aspect-video"
+        className="sticky z-20 top-14 aspect-video"
       ></div>
       <TenderDetail tender={data.node as Tender} />
     </>

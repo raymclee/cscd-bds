@@ -35,8 +35,9 @@ type Action = {
   renderAreas: (areas?: AreaConnection) => void;
   renderArea: () => void;
   renderMarker: (props: any, hidable?: boolean) => void;
-  renderAdcode: (adcode: string) => void;
+  renderAdcode: (adcode: string, tenderId?: string) => void;
   getMarker: (tenderId: string) => AMap.CircleMarker | AMap.Polygon | undefined;
+  panToTender: (tenderId: string) => void;
 };
 
 export const districtsQuery = graphql`
@@ -401,7 +402,7 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
     });
     set((s) => ({ markers: [...s.markers, marker] }));
   },
-  renderAdcode(adcode) {
+  renderAdcode(adcode, tenderId?: string) {
     const {
       renderMarker,
       districtExplorer,
@@ -678,7 +679,8 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
                 tenders[0]?.activeProfile?.geoCoordinate?.[1],
                 tenders[0]?.activeProfile?.geoCoordinate?.[0],
               ]
-            : areaProps.center;
+            : areaProps?.center;
+
         map?.setZoomAndCenter(15, center, false, 600);
 
         return;
@@ -690,5 +692,18 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
   getMarker(tenderId) {
     const { mapCircles } = get();
     return mapCircles.find((c) => c.getExtData()?.tenderId === tenderId);
+  },
+  panToTender(tenderId) {
+    setTimeout(() => {
+      const { map, selectedArea } = get();
+      const tenderCenter = selectedArea?.tenders.edges?.find(
+        (t) => t?.node?.id === tenderId,
+      )?.node?.activeProfile?.geoCoordinate;
+
+      if (tenderCenter?.length == 2) {
+        const [lat, lng] = tenderCenter;
+        map?.setZoomAndCenter(15, [lng, lat], false, 400);
+      }
+    }, 100);
   },
 }));
