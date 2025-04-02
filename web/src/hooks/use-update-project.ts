@@ -5,8 +5,7 @@ export function useUpdateProject() {
   return useMutation<useUpdateProjectMutation>(graphql`
     mutation useUpdateProjectMutation($id: ID!, $input: UpdateProjectInput!) {
       updateProject(id: $id, input: $input) {
-        fsDate
-        opDate
+        id
       }
     }
   `);

@@ -19,6 +19,7 @@ import (
 	"cscd-bds/store/ent/customer"
 	"cscd-bds/store/ent/customerprofile"
 	"cscd-bds/store/ent/district"
+	"cscd-bds/store/ent/land"
 	"cscd-bds/store/ent/operation"
 	"cscd-bds/store/ent/plot"
 	"cscd-bds/store/ent/potentialtender"
@@ -55,6 +56,8 @@ type Client struct {
 	CustomerProfile *CustomerProfileClient
 	// District is the client for interacting with the District builders.
 	District *DistrictClient
+	// Land is the client for interacting with the Land builders.
+	Land *LandClient
 	// Operation is the client for interacting with the Operation builders.
 	Operation *OperationClient
 	// Plot is the client for interacting with the Plot builders.
@@ -93,6 +96,7 @@ func (c *Client) init() {
 	c.Customer = NewCustomerClient(c.config)
 	c.CustomerProfile = NewCustomerProfileClient(c.config)
 	c.District = NewDistrictClient(c.config)
+	c.Land = NewLandClient(c.config)
 	c.Operation = NewOperationClient(c.config)
 	c.Plot = NewPlotClient(c.config)
 	c.PotentialTender = NewPotentialTenderClient(c.config)
@@ -202,6 +206,7 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		Customer:         NewCustomerClient(cfg),
 		CustomerProfile:  NewCustomerProfileClient(cfg),
 		District:         NewDistrictClient(cfg),
+		Land:             NewLandClient(cfg),
 		Operation:        NewOperationClient(cfg),
 		Plot:             NewPlotClient(cfg),
 		PotentialTender:  NewPotentialTenderClient(cfg),
@@ -238,6 +243,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		Customer:         NewCustomerClient(cfg),
 		CustomerProfile:  NewCustomerProfileClient(cfg),
 		District:         NewDistrictClient(cfg),
+		Land:             NewLandClient(cfg),
 		Operation:        NewOperationClient(cfg),
 		Plot:             NewPlotClient(cfg),
 		PotentialTender:  NewPotentialTenderClient(cfg),
@@ -278,8 +284,9 @@ func (c *Client) Close() error {
 func (c *Client) Use(hooks ...Hook) {
 	for _, n := range []interface{ Use(...Hook) }{
 		c.Area, c.City, c.Competitor, c.Country, c.Customer, c.CustomerProfile,
-		c.District, c.Operation, c.Plot, c.PotentialTender, c.Project, c.Province,
-		c.Tender, c.TenderCompetitor, c.TenderProfile, c.User, c.VisitRecord,
+		c.District, c.Land, c.Operation, c.Plot, c.PotentialTender, c.Project,
+		c.Province, c.Tender, c.TenderCompetitor, c.TenderProfile, c.User,
+		c.VisitRecord,
 	} {
 		n.Use(hooks...)
 	}
@@ -290,8 +297,9 @@ func (c *Client) Use(hooks ...Hook) {
 func (c *Client) Intercept(interceptors ...Interceptor) {
 	for _, n := range []interface{ Intercept(...Interceptor) }{
 		c.Area, c.City, c.Competitor, c.Country, c.Customer, c.CustomerProfile,
-		c.District, c.Operation, c.Plot, c.PotentialTender, c.Project, c.Province,
-		c.Tender, c.TenderCompetitor, c.TenderProfile, c.User, c.VisitRecord,
+		c.District, c.Land, c.Operation, c.Plot, c.PotentialTender, c.Project,
+		c.Province, c.Tender, c.TenderCompetitor, c.TenderProfile, c.User,
+		c.VisitRecord,
 	} {
 		n.Intercept(interceptors...)
 	}
@@ -314,6 +322,8 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 		return c.CustomerProfile.mutate(ctx, m)
 	case *DistrictMutation:
 		return c.District.mutate(ctx, m)
+	case *LandMutation:
+		return c.Land.mutate(ctx, m)
 	case *OperationMutation:
 		return c.Operation.mutate(ctx, m)
 	case *PlotMutation:
@@ -1699,6 +1709,139 @@ func (c *DistrictClient) mutate(ctx context.Context, m *DistrictMutation) (Value
 		return (&DistrictDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
 	default:
 		return nil, fmt.Errorf("ent: unknown District mutation op: %q", m.Op())
+	}
+}
+
+// LandClient is a client for the Land schema.
+type LandClient struct {
+	config
+}
+
+// NewLandClient returns a client for the Land from the given config.
+func NewLandClient(c config) *LandClient {
+	return &LandClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `land.Hooks(f(g(h())))`.
+func (c *LandClient) Use(hooks ...Hook) {
+	c.hooks.Land = append(c.hooks.Land, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `land.Intercept(f(g(h())))`.
+func (c *LandClient) Intercept(interceptors ...Interceptor) {
+	c.inters.Land = append(c.inters.Land, interceptors...)
+}
+
+// Create returns a builder for creating a Land entity.
+func (c *LandClient) Create() *LandCreate {
+	mutation := newLandMutation(c.config, OpCreate)
+	return &LandCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Land entities.
+func (c *LandClient) CreateBulk(builders ...*LandCreate) *LandCreateBulk {
+	return &LandCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *LandClient) MapCreateBulk(slice any, setFunc func(*LandCreate, int)) *LandCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &LandCreateBulk{err: fmt.Errorf("calling to LandClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*LandCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &LandCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Land.
+func (c *LandClient) Update() *LandUpdate {
+	mutation := newLandMutation(c.config, OpUpdate)
+	return &LandUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *LandClient) UpdateOne(l *Land) *LandUpdateOne {
+	mutation := newLandMutation(c.config, OpUpdateOne, withLand(l))
+	return &LandUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *LandClient) UpdateOneID(id xid.ID) *LandUpdateOne {
+	mutation := newLandMutation(c.config, OpUpdateOne, withLandID(id))
+	return &LandUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Land.
+func (c *LandClient) Delete() *LandDelete {
+	mutation := newLandMutation(c.config, OpDelete)
+	return &LandDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *LandClient) DeleteOne(l *Land) *LandDeleteOne {
+	return c.DeleteOneID(l.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *LandClient) DeleteOneID(id xid.ID) *LandDeleteOne {
+	builder := c.Delete().Where(land.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &LandDeleteOne{builder}
+}
+
+// Query returns a query builder for Land.
+func (c *LandClient) Query() *LandQuery {
+	return &LandQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeLand},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a Land entity by its id.
+func (c *LandClient) Get(ctx context.Context, id xid.ID) (*Land, error) {
+	return c.Query().Where(land.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *LandClient) GetX(ctx context.Context, id xid.ID) *Land {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *LandClient) Hooks() []Hook {
+	return c.hooks.Land
+}
+
+// Interceptors returns the client interceptors.
+func (c *LandClient) Interceptors() []Interceptor {
+	return c.inters.Land
+}
+
+func (c *LandClient) mutate(ctx context.Context, m *LandMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&LandCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&LandUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&LandUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&LandDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("ent: unknown Land mutation op: %q", m.Op())
 	}
 }
 
@@ -3691,13 +3834,13 @@ func (c *VisitRecordClient) mutate(ctx context.Context, m *VisitRecordMutation) 
 // hooks and interceptors per client, for fast access.
 type (
 	hooks struct {
-		Area, City, Competitor, Country, Customer, CustomerProfile, District, Operation,
-		Plot, PotentialTender, Project, Province, Tender, TenderCompetitor,
+		Area, City, Competitor, Country, Customer, CustomerProfile, District, Land,
+		Operation, Plot, PotentialTender, Project, Province, Tender, TenderCompetitor,
 		TenderProfile, User, VisitRecord []ent.Hook
 	}
 	inters struct {
-		Area, City, Competitor, Country, Customer, CustomerProfile, District, Operation,
-		Plot, PotentialTender, Project, Province, Tender, TenderCompetitor,
+		Area, City, Competitor, Country, Customer, CustomerProfile, District, Land,
+		Operation, Plot, PotentialTender, Project, Province, Tender, TenderCompetitor,
 		TenderProfile, User, VisitRecord []ent.Interceptor
 	}
 )

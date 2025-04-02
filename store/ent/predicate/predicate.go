@@ -27,6 +27,9 @@ type CustomerProfile func(*sql.Selector)
 // District is the predicate function for district builders.
 type District func(*sql.Selector)
 
+// Land is the predicate function for land builders.
+type Land func(*sql.Selector)
+
 // Operation is the predicate function for operation builders.
 type Operation func(*sql.Selector)
 

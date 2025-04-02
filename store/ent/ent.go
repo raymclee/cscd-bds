@@ -11,6 +11,7 @@ import (
 	"cscd-bds/store/ent/customer"
 	"cscd-bds/store/ent/customerprofile"
 	"cscd-bds/store/ent/district"
+	"cscd-bds/store/ent/land"
 	"cscd-bds/store/ent/operation"
 	"cscd-bds/store/ent/plot"
 	"cscd-bds/store/ent/potentialtender"
@@ -96,6 +97,7 @@ func checkColumn(table, column string) error {
 			customer.Table:         customer.ValidColumn,
 			customerprofile.Table:  customerprofile.ValidColumn,
 			district.Table:         district.ValidColumn,
+			land.Table:             land.ValidColumn,
 			operation.Table:        operation.ValidColumn,
 			plot.Table:             plot.ValidColumn,
 			potentialtender.Table:  potentialtender.ValidColumn,

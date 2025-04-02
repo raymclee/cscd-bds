@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<f0b06683c45db55b372880d5d5bee237>>
+ * @generated SignedSource<<92667ae14de827504292dad4710eb9eb>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -160,6 +160,7 @@ export type useCreateTenderMutation$variables = {
 };
 export type useCreateTenderMutation$data = {
   readonly createTender: {
+    readonly id: string;
     readonly " $fragmentSpreads": FragmentRefs<"tenderListItemFragment">;
   };
 };
@@ -340,6 +341,7 @@ return {
         "name": "createTender",
         "plural": false,
         "selections": [
+          (v5/*: any*/),
           {
             "args": null,
             "kind": "FragmentSpread",
@@ -449,16 +451,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "c3464291b13063495f1183c1da8138b8",
+    "cacheID": "2787dff3c66a229cd60b90bdd47c3232",
     "id": null,
     "metadata": {},
     "name": "useCreateTenderMutation",
     "operationKind": "mutation",
-    "text": "mutation useCreateTenderMutation(\n  $tenderInput: CreateTenderInput!\n  $profileInput: CreateTenderProfileInput!\n  $imageFileNames: [String!]!\n) {\n  createTender(tenderInput: $tenderInput, profileInput: $profileInput, imageFileNames: $imageFileNames) {\n    ...tenderListItemFragment\n    id\n  }\n}\n\nfragment tenderListItemFragment on Tender {\n  id\n  area {\n    id\n    name\n    code\n  }\n  followingSales {\n    id\n  }\n  pendingProfile {\n    id\n    approvalStatus\n    name\n    status\n    createdAt\n    estimatedAmount\n    classify\n    customer {\n      id\n      name\n    }\n    images\n    fullAddress\n    tenderDate\n    discoveryDate\n    tenderClosingDate\n    createdBy {\n      id\n    }\n  }\n  activeProfile {\n    id\n    approvalStatus\n    name\n    status\n    createdAt\n    estimatedAmount\n    classify\n    customer {\n      id\n      name\n    }\n    images\n    fullAddress\n    tenderDate\n    discoveryDate\n    tenderClosingDate\n    createdBy {\n      id\n    }\n  }\n}\n"
+    "text": "mutation useCreateTenderMutation(\n  $tenderInput: CreateTenderInput!\n  $profileInput: CreateTenderProfileInput!\n  $imageFileNames: [String!]!\n) {\n  createTender(tenderInput: $tenderInput, profileInput: $profileInput, imageFileNames: $imageFileNames) {\n    id\n    ...tenderListItemFragment\n  }\n}\n\nfragment tenderListItemFragment on Tender {\n  id\n  area {\n    id\n    name\n    code\n  }\n  followingSales {\n    id\n  }\n  pendingProfile {\n    id\n    approvalStatus\n    name\n    status\n    createdAt\n    estimatedAmount\n    classify\n    customer {\n      id\n      name\n    }\n    images\n    fullAddress\n    tenderDate\n    discoveryDate\n    tenderClosingDate\n    createdBy {\n      id\n    }\n  }\n  activeProfile {\n    id\n    approvalStatus\n    name\n    status\n    createdAt\n    estimatedAmount\n    classify\n    customer {\n      id\n      name\n    }\n    images\n    fullAddress\n    tenderDate\n    discoveryDate\n    tenderClosingDate\n    createdBy {\n      id\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "9fd4779a273b6d510eeb682f0d25521e";
+(node as any).hash = "c09a153d34b66b0a59abb76ed0be51b6";
 
 export default node;

@@ -16,6 +16,7 @@ export function useCreateTenderV2() {
         imageFileNames: $imageFileNames
         attachmentFileNames: $attachmentFileNames
       ) @appendNode(connections: $connections, edgeTypeName: "TenderEdge") {
+        id
         ...tenderListItemFragment
       }
     }

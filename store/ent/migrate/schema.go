@@ -244,6 +244,18 @@ var (
 			},
 		},
 	}
+	// LandsColumns holds the columns for the "lands" table.
+	LandsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeString, Unique: true},
+		{Name: "created_at", Type: field.TypeTime},
+		{Name: "updated_at", Type: field.TypeTime},
+	}
+	// LandsTable holds the schema information for the "lands" table.
+	LandsTable = &schema.Table{
+		Name:       "lands",
+		Columns:    LandsColumns,
+		PrimaryKey: []*schema.Column{LandsColumns[0]},
+	}
 	// OperationsColumns holds the columns for the "operations" table.
 	OperationsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeString, Unique: true},
@@ -858,6 +870,7 @@ var (
 		CustomersTable,
 		CustomerProfilesTable,
 		DistrictsTable,
+		LandsTable,
 		OperationsTable,
 		PlotsTable,
 		PotentialTendersTable,

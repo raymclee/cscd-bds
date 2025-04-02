@@ -14,6 +14,7 @@ const mutation = graphql`
       profileInput: $profileInput
       imageFileNames: $imageFileNames
     ) @prependNode(connections: $connections, edgeTypeName: "TenderEdge") {
+      id
       ...tenderListItemFragment
     }
   }

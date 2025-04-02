@@ -92,6 +92,18 @@ func (f DistrictFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, er
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.DistrictMutation", m)
 }
 
+// The LandFunc type is an adapter to allow the use of ordinary
+// function as Land mutator.
+type LandFunc func(context.Context, *ent.LandMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f LandFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.LandMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.LandMutation", m)
+}
+
 // The OperationFunc type is an adapter to allow the use of ordinary
 // function as Operation mutator.
 type OperationFunc func(context.Context, *ent.OperationMutation) (ent.Value, error)

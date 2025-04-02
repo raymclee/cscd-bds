@@ -9,6 +9,8 @@ export const useUpdateTenderV2 = () => {
       $profileInput: CreateTenderProfileInput!
       $imageFileNames: [String!]!
       $attachmentFileNames: [String!]!
+      $removeImageFileNames: [String!]
+      $removeAttachmentFileNames: [String!]
     ) {
       updateTenderV2(
         id: $id
@@ -16,6 +18,8 @@ export const useUpdateTenderV2 = () => {
         profileInput: $profileInput
         imageFileNames: $imageFileNames
         attachmentFileNames: $attachmentFileNames
+        removeImageFileNames: $removeImageFileNames
+        removeAttachmentFileNames: $removeAttachmentFileNames
       ) {
         ...tenderDetailFragment
       }

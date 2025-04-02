@@ -10,6 +10,7 @@ import (
 	"cscd-bds/store/ent/customer"
 	"cscd-bds/store/ent/customerprofile"
 	"cscd-bds/store/ent/district"
+	"cscd-bds/store/ent/land"
 	"cscd-bds/store/ent/operation"
 	"cscd-bds/store/ent/plot"
 	"cscd-bds/store/ent/potentialtender"
@@ -214,6 +215,27 @@ func init() {
 	districtDescID := districtMixinFields0[0].Descriptor()
 	// district.DefaultID holds the default value on creation for the id field.
 	district.DefaultID = districtDescID.Default.(func() xid.ID)
+	landMixin := schema.Land{}.Mixin()
+	landMixinFields0 := landMixin[0].Fields()
+	_ = landMixinFields0
+	landMixinFields1 := landMixin[1].Fields()
+	_ = landMixinFields1
+	landFields := schema.Land{}.Fields()
+	_ = landFields
+	// landDescCreatedAt is the schema descriptor for created_at field.
+	landDescCreatedAt := landMixinFields1[0].Descriptor()
+	// land.DefaultCreatedAt holds the default value on creation for the created_at field.
+	land.DefaultCreatedAt = landDescCreatedAt.Default.(func() time.Time)
+	// landDescUpdatedAt is the schema descriptor for updated_at field.
+	landDescUpdatedAt := landMixinFields1[1].Descriptor()
+	// land.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	land.DefaultUpdatedAt = landDescUpdatedAt.Default.(func() time.Time)
+	// land.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	land.UpdateDefaultUpdatedAt = landDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// landDescID is the schema descriptor for id field.
+	landDescID := landMixinFields0[0].Descriptor()
+	// land.DefaultID holds the default value on creation for the id field.
+	land.DefaultID = landDescID.Default.(func() xid.ID)
 	operationMixin := schema.Operation{}.Mixin()
 	operationMixinFields0 := operationMixin[0].Fields()
 	_ = operationMixinFields0

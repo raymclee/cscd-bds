@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<fee8cfafc835794ef3b52e0927c978af>>
+ * @generated SignedSource<<654455a058dc9f0e7fbfe5a81d7e8cb5>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -19,7 +19,6 @@ export type operationsIndexPageQuery$data = {
         readonly node: {
           readonly code: string;
           readonly id: string;
-          readonly name: string | null | undefined;
         } | null | undefined;
       } | null | undefined> | null | undefined;
     };
@@ -101,13 +100,6 @@ v3 = {
                   "alias": null,
                   "args": null,
                   "kind": "ScalarField",
-                  "name": "name",
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
                   "name": "code",
                   "storageKey": null
                 }
@@ -176,16 +168,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "ca712e374e65b38916130dd5c7688b47",
+    "cacheID": "3625f0d725a884c8bfcedf447d9f5db9",
     "id": null,
     "metadata": {},
     "name": "operationsIndexPageQuery",
     "operationKind": "query",
-    "text": "query operationsIndexPageQuery(\n  $userId: ID!\n) {\n  node(id: $userId) {\n    __typename\n    ... on User {\n      projects(where: {isFinishedNEQ: true}, orderBy: [{field: CODE}]) {\n        edges {\n          node {\n            id\n            name\n            code\n          }\n        }\n      }\n    }\n    id\n  }\n}\n"
+    "text": "query operationsIndexPageQuery(\n  $userId: ID!\n) {\n  node(id: $userId) {\n    __typename\n    ... on User {\n      projects(where: {isFinishedNEQ: true}, orderBy: [{field: CODE}]) {\n        edges {\n          node {\n            id\n            code\n          }\n        }\n      }\n    }\n    id\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "52e57b90aa7b21ff5dfeb6958a4f341f";
+(node as any).hash = "0fa54ee9e61191abac777df2be10beb5";
 
 export default node;

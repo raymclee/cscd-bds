@@ -31,9 +31,9 @@ type MutationResolver interface {
 	CreateCustomerV2(ctx context.Context, customerInput ent.CreateCustomerInput, profileInput ent.CreateCustomerProfileInput) (*ent.Customer, error)
 	UpdateCustomerV2(ctx context.Context, id xid.ID, customerInput ent.UpdateCustomerInput, profileInput ent.CreateCustomerProfileInput) (*ent.Customer, error)
 	CreateTender(ctx context.Context, tenderInput ent.CreateTenderInput, profileInput ent.CreateTenderProfileInput, imageFileNames []string) (*ent.Tender, error)
-	UpdateTender(ctx context.Context, id xid.ID, tenderInput ent.UpdateTenderInput, profileInput ent.CreateTenderProfileInput, imageFileNames []string) (*ent.Tender, error)
+	UpdateTender(ctx context.Context, id xid.ID, tenderInput ent.UpdateTenderInput, profileInput ent.CreateTenderProfileInput, imageFileNames []string, removeImageFileNames []string) (*ent.Tender, error)
 	CreateTenderV2(ctx context.Context, tenderInput ent.CreateTenderInput, profileInput ent.CreateTenderProfileInput, imageFileNames []string, attachmentFileNames []string) (*ent.Tender, error)
-	UpdateTenderV2(ctx context.Context, id xid.ID, tenderInput ent.UpdateTenderInput, profileInput ent.CreateTenderProfileInput, imageFileNames []string, attachmentFileNames []string) (*ent.Tender, error)
+	UpdateTenderV2(ctx context.Context, id xid.ID, tenderInput ent.UpdateTenderInput, profileInput ent.CreateTenderProfileInput, imageFileNames []string, attachmentFileNames []string, removeImageFileNames []string, removeAttachmentFileNames []string) (*ent.Tender, error)
 	VoidTender(ctx context.Context, id xid.ID) (*ent.Tender, error)
 	WinTender(ctx context.Context, id xid.ID, input model.WinTenderInput) (*ent.Tender, error)
 	LoseTender(ctx context.Context, id xid.ID, input model.LoseTenderInput) (*ent.Tender, error)
@@ -1315,6 +1315,16 @@ func (ec *executionContext) field_Mutation_updateTenderV2_args(ctx context.Conte
 		return nil, err
 	}
 	args["attachmentFileNames"] = arg4
+	arg5, err := ec.field_Mutation_updateTenderV2_argsRemoveImageFileNames(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["removeImageFileNames"] = arg5
+	arg6, err := ec.field_Mutation_updateTenderV2_argsRemoveAttachmentFileNames(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["removeAttachmentFileNames"] = arg6
 	return args, nil
 }
 func (ec *executionContext) field_Mutation_updateTenderV2_argsID(
@@ -1427,6 +1437,50 @@ func (ec *executionContext) field_Mutation_updateTenderV2_argsAttachmentFileName
 	return zeroVal, nil
 }
 
+func (ec *executionContext) field_Mutation_updateTenderV2_argsRemoveImageFileNames(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) ([]string, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["removeImageFileNames"]
+	if !ok {
+		var zeroVal []string
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("removeImageFileNames"))
+	if tmp, ok := rawArgs["removeImageFileNames"]; ok {
+		return ec.unmarshalOString2ᚕstringᚄ(ctx, tmp)
+	}
+
+	var zeroVal []string
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_updateTenderV2_argsRemoveAttachmentFileNames(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) ([]string, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["removeAttachmentFileNames"]
+	if !ok {
+		var zeroVal []string
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("removeAttachmentFileNames"))
+	if tmp, ok := rawArgs["removeAttachmentFileNames"]; ok {
+		return ec.unmarshalOString2ᚕstringᚄ(ctx, tmp)
+	}
+
+	var zeroVal []string
+	return zeroVal, nil
+}
+
 func (ec *executionContext) field_Mutation_updateTender_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
@@ -1450,6 +1504,11 @@ func (ec *executionContext) field_Mutation_updateTender_args(ctx context.Context
 		return nil, err
 	}
 	args["imageFileNames"] = arg3
+	arg4, err := ec.field_Mutation_updateTender_argsRemoveImageFileNames(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["removeImageFileNames"] = arg4
 	return args, nil
 }
 func (ec *executionContext) field_Mutation_updateTender_argsID(
@@ -1533,6 +1592,28 @@ func (ec *executionContext) field_Mutation_updateTender_argsImageFileNames(
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("imageFileNames"))
 	if tmp, ok := rawArgs["imageFileNames"]; ok {
+		return ec.unmarshalOString2ᚕstringᚄ(ctx, tmp)
+	}
+
+	var zeroVal []string
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_updateTender_argsRemoveImageFileNames(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) ([]string, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["removeImageFileNames"]
+	if !ok {
+		var zeroVal []string
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("removeImageFileNames"))
+	if tmp, ok := rawArgs["removeImageFileNames"]; ok {
 		return ec.unmarshalOString2ᚕstringᚄ(ctx, tmp)
 	}
 
@@ -3180,7 +3261,7 @@ func (ec *executionContext) _Mutation_updateTender(ctx context.Context, field gr
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().UpdateTender(rctx, fc.Args["id"].(xid.ID), fc.Args["tenderInput"].(ent.UpdateTenderInput), fc.Args["profileInput"].(ent.CreateTenderProfileInput), fc.Args["imageFileNames"].([]string))
+		return ec.resolvers.Mutation().UpdateTender(rctx, fc.Args["id"].(xid.ID), fc.Args["tenderInput"].(ent.UpdateTenderInput), fc.Args["profileInput"].(ent.CreateTenderProfileInput), fc.Args["imageFileNames"].([]string), fc.Args["removeImageFileNames"].([]string))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -3634,7 +3715,7 @@ func (ec *executionContext) _Mutation_updateTenderV2(ctx context.Context, field 
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().UpdateTenderV2(rctx, fc.Args["id"].(xid.ID), fc.Args["tenderInput"].(ent.UpdateTenderInput), fc.Args["profileInput"].(ent.CreateTenderProfileInput), fc.Args["imageFileNames"].([]string), fc.Args["attachmentFileNames"].([]string))
+		return ec.resolvers.Mutation().UpdateTenderV2(rctx, fc.Args["id"].(xid.ID), fc.Args["tenderInput"].(ent.UpdateTenderInput), fc.Args["profileInput"].(ent.CreateTenderProfileInput), fc.Args["imageFileNames"].([]string), fc.Args["attachmentFileNames"].([]string), fc.Args["removeImageFileNames"].([]string), fc.Args["removeAttachmentFileNames"].([]string))
 	})
 	if err != nil {
 		ec.Error(ctx, err)

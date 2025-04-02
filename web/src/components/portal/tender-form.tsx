@@ -151,12 +151,12 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
 
   const [imageFileNames, setImageFileNames] = useState<string[]>([]);
   const [attachmentFileNames, setAttachmentFileNames] = useState<string[]>([]);
-  // const [removeImageFileNames, setRemoveImageFileNames] = useState<string[]>(
-  //   [],
-  // );
-  // const [removeAttachmentFileNames, setRemoveAttachmentFileNames] = useState<
-  //   string[]
-  // >([]);
+  const [removeImageFileNames, setRemoveImageFileNames] = useState<string[]>(
+    [],
+  );
+  const [removeAttachmentFileNames, setRemoveAttachmentFileNames] = useState<
+    string[]
+  >([]);
   const showSHFields = !!data.areas.edges?.find(
     (e) =>
       e?.node?.id === areaID && e.node.code !== "GA" && e.node.code !== "HW",
@@ -335,6 +335,8 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
                 },
                 imageFileNames,
                 attachmentFileNames,
+                removeImageFileNames,
+                removeAttachmentFileNames,
               },
               onCompleted() {
                 navigate({
@@ -378,6 +380,7 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
                   : undefined,
               },
               imageFileNames,
+              removeImageFileNames,
             },
             onCompleted() {
               navigate({
@@ -407,6 +410,7 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
             estimatedAmount,
             geoCoordinate,
             tenderWinAmount,
+            followingSaleIDs,
             ...input
           } = values;
 
@@ -437,6 +441,7 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
                   discoveryDate: dayjs(),
                   code: "",
                   name: "",
+                  followingSaleIDs,
                 },
                 profileInput: {
                   ...input,
@@ -450,11 +455,11 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
                 imageFileNames,
                 attachmentFileNames,
               },
-              onCompleted() {
+              onCompleted(data) {
                 clear();
                 navigate({
-                  to: "/portal/tenders",
-                  search: (prev) => ({ ...prev, create: true }),
+                  to: "/portal/tenders/$id",
+                  params: { id: data.createTenderV2.id },
                 });
                 message.success("创建成功");
               },
@@ -480,6 +485,7 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
                 discoveryDate: dayjs(),
                 code: "",
                 name: "",
+                followingSaleIDs,
               },
               profileInput: {
                 ...input,
@@ -492,11 +498,11 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
               connections,
               imageFileNames,
             },
-            onCompleted() {
+            onCompleted(data) {
               clear();
               navigate({
-                to: "/portal/tenders",
-                search: (prev) => ({ ...prev, create: true }),
+                to: "/portal/tenders/$id",
+                params: { id: data.createTender.id },
               });
               message.success("创建成功");
             },
@@ -966,12 +972,12 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
                     name="files"
                     action="/api/v1/file/upload"
                     accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.zip,.rar"
-                    // onRemove={(file) => {
-                    //   setRemoveAttachmentFileNames((prev) => [
-                    //     ...prev,
-                    //     file.name,
-                    //   ]);
-                    // }}
+                    onRemove={(file) => {
+                      setRemoveAttachmentFileNames((prev) => [
+                        ...prev,
+                        file.name,
+                      ]);
+                    }}
                     onChange={(info) => {
                       for (const file of info.fileList) {
                         if (
@@ -1084,9 +1090,9 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
                 action="/api/v1/file/upload"
                 accept=".jpg,.jpeg,.png,.gif"
                 listType="picture-card"
-                // onRemove={(file) => {
-                //   setRemoveImageFileNames((prev) => [...prev, file.name]);
-                // }}
+                onRemove={(file) => {
+                  setRemoveImageFileNames((prev) => [...prev, file.name]);
+                }}
                 onChange={(info) => {
                   for (const file of info.fileList) {
                     if (

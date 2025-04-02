@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<a366f9d3692189cd7360cae9e9a9eb42>>
+ * @generated SignedSource<<ac0e2025849d6c44e7054c90807257e5>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -835,7 +835,8 @@ return {
                           {
                             "kind": "RequiredField",
                             "field": (v6/*: any*/),
-                            "action": "NONE"
+                            "action": "NONE",
+                            "path": "node.areas.edges.node.name"
                           },
                           (v7/*: any*/),
                           (v8/*: any*/),

@@ -413,7 +413,7 @@ func (r *mutationResolver) CreateTender(ctx context.Context, tenderInput ent.Cre
 }
 
 // UpdateTender is the resolver for the updateTender field.
-func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, tenderInput ent.UpdateTenderInput, profileInput ent.CreateTenderProfileInput, imageFileNames []string) (*ent.Tender, error) {
+func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, tenderInput ent.UpdateTenderInput, profileInput ent.CreateTenderProfileInput, imageFileNames []string, removeImageFileNames []string) (*ent.Tender, error) {
 	sess, err := r.session.GetSession(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get session: %w", err)
@@ -609,12 +609,12 @@ func (r *mutationResolver) CreateTenderV2(ctx context.Context, tenderInput ent.C
 }
 
 // UpdateTenderV2 is the resolver for the updateTenderV2 field.
-func (r *mutationResolver) UpdateTenderV2(ctx context.Context, id xid.ID, tenderInput ent.UpdateTenderInput, profileInput ent.CreateTenderProfileInput, imageFileNames []string, attachmentFileNames []string) (*ent.Tender, error) {
+func (r *mutationResolver) UpdateTenderV2(ctx context.Context, id xid.ID, tenderInput ent.UpdateTenderInput, profileInput ent.CreateTenderProfileInput, imageFileNames []string, attachmentFileNames []string, removeImageFileNames []string, removeAttachmentFileNames []string) (*ent.Tender, error) {
 	sess, err := r.session.GetSession(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get session: %w", err)
 	}
-	t, err := r.store.Tender.Query().Where(tender.ID(id)).WithPendingProfile().Only(ctx)
+	t, err := r.store.Tender.Query().Where(tender.ID(id)).WithPendingProfile().WithActiveProfile().Only(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get tender: %w", err)
 	}
@@ -623,7 +623,6 @@ func (r *mutationResolver) UpdateTenderV2(ctx context.Context, id xid.ID, tender
 		return nil, fmt.Errorf("failed to update tender: %w", errors.New("permission denied"))
 	}
 
-	var images []string
 	{
 		for _, fn := range imageFileNames {
 			if strings.HasPrefix(fn, "/static/") {
@@ -633,24 +632,43 @@ func (r *mutationResolver) UpdateTenderV2(ctx context.Context, id xid.ID, tender
 			if err != nil {
 				return nil, fmt.Errorf("failed to save image file: %w", err)
 			}
-			images = append(images, fmt.Sprintf("/static/%s", filename))
-		}
-		if len(images) > 0 {
-			profileInput.Images = images
+			profileInput.Images = append(profileInput.Images, fmt.Sprintf("/static/%s", filename))
 		}
 	}
 
-	var attachments []string
 	{
 		for _, fn := range attachmentFileNames {
 			filename, err := util.SaveStaticFile(string(t.ID), fn, false)
 			if err != nil {
 				return nil, fmt.Errorf("failed to save attachment file: %w", err)
 			}
-			attachments = append(attachments, fmt.Sprintf("/static/%s", filename))
+			profileInput.Attachments = append(profileInput.Attachments, fmt.Sprintf("/static/%s", filename))
 		}
-		if len(attachments) > 0 {
-			profileInput.Attachments = attachments
+	}
+
+	if t.Edges.PendingProfile != nil {
+		for _, ai := range t.Edges.PendingProfile.Images {
+			if !slices.Contains(removeImageFileNames, strings.TrimPrefix(ai, "/static/"+string(t.ID)+"/")) {
+				profileInput.Images = append(profileInput.Images, ai)
+			}
+		}
+
+		for _, ai := range t.Edges.PendingProfile.Attachments {
+			if !slices.Contains(removeAttachmentFileNames, strings.TrimPrefix(ai, "/static/"+string(t.ID)+"/")) {
+				profileInput.Attachments = append(profileInput.Attachments, ai)
+			}
+		}
+	} else if t.Edges.ActiveProfile != nil {
+		for _, ai := range t.Edges.ActiveProfile.Images {
+			if !slices.Contains(removeImageFileNames, strings.TrimPrefix(ai, "/static/"+string(t.ID)+"/")) {
+				profileInput.Images = append(profileInput.Images, ai)
+			}
+		}
+
+		for _, ai := range t.Edges.ActiveProfile.Attachments {
+			if !slices.Contains(removeAttachmentFileNames, strings.TrimPrefix(ai, "/static/"+string(t.ID)+"/")) {
+				profileInput.Attachments = append(profileInput.Attachments, ai)
+			}
 		}
 	}
 
@@ -705,7 +723,13 @@ func (r *mutationResolver) UpdateTenderV2(ctx context.Context, id xid.ID, tender
 	}()
 
 	// 设置新的profile为待审批
-	return r.store.Tender.UpdateOneID(t.ID).SetInput(tenderInput).SetActiveProfileID(tp.ID).Save(ctx)
+	tq := r.store.Tender.UpdateOneID(t.ID).SetInput(tenderInput)
+	if t.Edges.ActiveProfile != nil {
+		tq.SetActiveProfile(tp)
+	} else if t.Edges.PendingProfile != nil {
+		tq.SetPendingProfile(tp)
+	}
+	return tq.Save(ctx)
 }
 
 // VoidTender is the resolver for the voidTender field.

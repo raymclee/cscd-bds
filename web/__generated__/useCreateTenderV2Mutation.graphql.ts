@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<89406e9859299ea704d64db0c71e76bc>>
+ * @generated SignedSource<<7ed0c553835041cfe135c555adedf2c3>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -161,6 +161,7 @@ export type useCreateTenderV2Mutation$variables = {
 };
 export type useCreateTenderV2Mutation$data = {
   readonly createTenderV2: {
+    readonly id: string;
     readonly " $fragmentSpreads": FragmentRefs<"tenderListItemFragment">;
   };
 };
@@ -352,6 +353,7 @@ return {
         "name": "createTenderV2",
         "plural": false,
         "selections": [
+          (v6/*: any*/),
           {
             "args": null,
             "kind": "FragmentSpread",
@@ -462,16 +464,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "2968e79f40d785933833905e01f71b54",
+    "cacheID": "a91fd5aed05b5e991898e484da957c52",
     "id": null,
     "metadata": {},
     "name": "useCreateTenderV2Mutation",
     "operationKind": "mutation",
-    "text": "mutation useCreateTenderV2Mutation(\n  $tenderInput: CreateTenderInput!\n  $profileInput: CreateTenderProfileInput!\n  $imageFileNames: [String!]!\n  $attachmentFileNames: [String!]!\n) {\n  createTenderV2(tenderInput: $tenderInput, profileInput: $profileInput, imageFileNames: $imageFileNames, attachmentFileNames: $attachmentFileNames) {\n    ...tenderListItemFragment\n    id\n  }\n}\n\nfragment tenderListItemFragment on Tender {\n  id\n  area {\n    id\n    name\n    code\n  }\n  followingSales {\n    id\n  }\n  pendingProfile {\n    id\n    approvalStatus\n    name\n    status\n    createdAt\n    estimatedAmount\n    classify\n    customer {\n      id\n      name\n    }\n    images\n    fullAddress\n    tenderDate\n    discoveryDate\n    tenderClosingDate\n    createdBy {\n      id\n    }\n  }\n  activeProfile {\n    id\n    approvalStatus\n    name\n    status\n    createdAt\n    estimatedAmount\n    classify\n    customer {\n      id\n      name\n    }\n    images\n    fullAddress\n    tenderDate\n    discoveryDate\n    tenderClosingDate\n    createdBy {\n      id\n    }\n  }\n}\n"
+    "text": "mutation useCreateTenderV2Mutation(\n  $tenderInput: CreateTenderInput!\n  $profileInput: CreateTenderProfileInput!\n  $imageFileNames: [String!]!\n  $attachmentFileNames: [String!]!\n) {\n  createTenderV2(tenderInput: $tenderInput, profileInput: $profileInput, imageFileNames: $imageFileNames, attachmentFileNames: $attachmentFileNames) {\n    id\n    ...tenderListItemFragment\n  }\n}\n\nfragment tenderListItemFragment on Tender {\n  id\n  area {\n    id\n    name\n    code\n  }\n  followingSales {\n    id\n  }\n  pendingProfile {\n    id\n    approvalStatus\n    name\n    status\n    createdAt\n    estimatedAmount\n    classify\n    customer {\n      id\n      name\n    }\n    images\n    fullAddress\n    tenderDate\n    discoveryDate\n    tenderClosingDate\n    createdBy {\n      id\n    }\n  }\n  activeProfile {\n    id\n    approvalStatus\n    name\n    status\n    createdAt\n    estimatedAmount\n    classify\n    customer {\n      id\n      name\n    }\n    images\n    fullAddress\n    tenderDate\n    discoveryDate\n    tenderClosingDate\n    createdBy {\n      id\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "e29e00bbc47098c9a7ab105db42a2ad5";
+(node as any).hash = "ec50671bcad2ebf60925b42928d4dab6";
 
 export default node;

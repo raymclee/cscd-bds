@@ -31,6 +31,7 @@ type Mutation {
     tenderInput: UpdateTenderInput!
     profileInput: CreateTenderProfileInput!
     imageFileNames: [String!]
+    removeImageFileNames: [String!]
   ): Tender!
   createTenderV2(
     tenderInput: CreateTenderInput!
@@ -44,6 +45,8 @@ type Mutation {
     profileInput: CreateTenderProfileInput!
     imageFileNames: [String!]!
     attachmentFileNames: [String!]!
+    removeImageFileNames: [String!]
+    removeAttachmentFileNames: [String!]
   ): Tender!
   voidTender(id: ID!): Tender!
   winTender(id: ID!, input: WinTenderInput!): Tender!

@@ -276,6 +276,12 @@ type ComplexityRoot struct {
 		Type        func(childComplexity int) int
 	}
 
+	Land struct {
+		CreatedAt func(childComplexity int) int
+		ID        func(childComplexity int) int
+		UpdatedAt func(childComplexity int) int
+	}
+
 	Location struct {
 		Address  func(childComplexity int) int
 		City     func(childComplexity int) int
@@ -313,8 +319,8 @@ type ComplexityRoot struct {
 		UpdateCustomerV2  func(childComplexity int, id xid.ID, customerInput ent.UpdateCustomerInput, profileInput ent.CreateCustomerProfileInput) int
 		UpdatePlot        func(childComplexity int, id xid.ID, input ent.UpdatePlotInput, geoBounds [][]float64) int
 		UpdateProject     func(childComplexity int, id xid.ID, input ent.UpdateProjectInput) int
-		UpdateTender      func(childComplexity int, id xid.ID, tenderInput ent.UpdateTenderInput, profileInput ent.CreateTenderProfileInput, imageFileNames []string) int
-		UpdateTenderV2    func(childComplexity int, id xid.ID, tenderInput ent.UpdateTenderInput, profileInput ent.CreateTenderProfileInput, imageFileNames []string, attachmentFileNames []string) int
+		UpdateTender      func(childComplexity int, id xid.ID, tenderInput ent.UpdateTenderInput, profileInput ent.CreateTenderProfileInput, imageFileNames []string, removeImageFileNames []string) int
+		UpdateTenderV2    func(childComplexity int, id xid.ID, tenderInput ent.UpdateTenderInput, profileInput ent.CreateTenderProfileInput, imageFileNames []string, attachmentFileNames []string, removeImageFileNames []string, removeAttachmentFileNames []string) int
 		UpdateUser        func(childComplexity int, id xid.ID, input ent.UpdateUserInput) int
 		UpdateVisitRecord func(childComplexity int, id xid.ID, input ent.UpdateVisitRecordInput) int
 		VoidTender        func(childComplexity int, id xid.ID) int
@@ -1952,6 +1958,27 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.GeoJson.Type(childComplexity), true
 
+	case "Land.createdAt":
+		if e.complexity.Land.CreatedAt == nil {
+			break
+		}
+
+		return e.complexity.Land.CreatedAt(childComplexity), true
+
+	case "Land.id":
+		if e.complexity.Land.ID == nil {
+			break
+		}
+
+		return e.complexity.Land.ID(childComplexity), true
+
+	case "Land.updatedAt":
+		if e.complexity.Land.UpdatedAt == nil {
+			break
+		}
+
+		return e.complexity.Land.UpdatedAt(childComplexity), true
+
 	case "Location.address":
 		if e.complexity.Location.Address == nil {
 			break
@@ -2318,7 +2345,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.UpdateTender(childComplexity, args["id"].(xid.ID), args["tenderInput"].(ent.UpdateTenderInput), args["profileInput"].(ent.CreateTenderProfileInput), args["imageFileNames"].([]string)), true
+		return e.complexity.Mutation.UpdateTender(childComplexity, args["id"].(xid.ID), args["tenderInput"].(ent.UpdateTenderInput), args["profileInput"].(ent.CreateTenderProfileInput), args["imageFileNames"].([]string), args["removeImageFileNames"].([]string)), true
 
 	case "Mutation.updateTenderV2":
 		if e.complexity.Mutation.UpdateTenderV2 == nil {
@@ -2330,7 +2357,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.UpdateTenderV2(childComplexity, args["id"].(xid.ID), args["tenderInput"].(ent.UpdateTenderInput), args["profileInput"].(ent.CreateTenderProfileInput), args["imageFileNames"].([]string), args["attachmentFileNames"].([]string)), true
+		return e.complexity.Mutation.UpdateTenderV2(childComplexity, args["id"].(xid.ID), args["tenderInput"].(ent.UpdateTenderInput), args["profileInput"].(ent.CreateTenderProfileInput), args["imageFileNames"].([]string), args["attachmentFileNames"].([]string), args["removeImageFileNames"].([]string), args["removeAttachmentFileNames"].([]string)), true
 
 	case "Mutation.updateUser":
 		if e.complexity.Mutation.UpdateUser == nil {
@@ -5296,7 +5323,6 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputCreateCustomerProfileInput,
 		ec.unmarshalInputCreateDistrictInput,
 		ec.unmarshalInputCreatePlotInput,
-		ec.unmarshalInputCreatePotentialTenderInput,
 		ec.unmarshalInputCreateProvinceInput,
 		ec.unmarshalInputCreateTenderCompetitorInput,
 		ec.unmarshalInputCreateTenderInput,
@@ -5309,6 +5335,8 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputCustomerWhereInput,
 		ec.unmarshalInputDistrictOrder,
 		ec.unmarshalInputDistrictWhereInput,
+		ec.unmarshalInputLandOrder,
+		ec.unmarshalInputLandWhereInput,
 		ec.unmarshalInputLoseTenderInput,
 		ec.unmarshalInputOperationOrder,
 		ec.unmarshalInputOperationWhereInput,
@@ -5333,7 +5361,6 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputUpdateCustomerInput,
 		ec.unmarshalInputUpdateDistrictInput,
 		ec.unmarshalInputUpdatePlotInput,
-		ec.unmarshalInputUpdatePotentialTenderInput,
 		ec.unmarshalInputUpdateProjectInput,
 		ec.unmarshalInputUpdateProvinceInput,
 		ec.unmarshalInputUpdateTenderCompetitorInput,
@@ -6436,29 +6463,6 @@ input CreatePlotInput {
   name: String!
   colorHex: String!
   districtID: ID!
-}
-"""
-CreatePotentialTenderInput is used for create PotentialTender object.
-Input was generated by ent.
-"""
-input CreatePotentialTenderInput {
-  createdAt: Time
-  updatedAt: Time
-  refURL: String!
-  title: String!
-  description: String
-  requirement: String
-  address: String
-  date: String
-  type: String
-  status: String
-  amount: String
-  size: String
-  location: String
-  contact: String
-  contactPhone: String
-  contactEmail: String
-  contactAddress: String
 }
 """
 CreateProvinceInput is used for create Province object.
@@ -7892,6 +7896,72 @@ input DistrictWhereInput {
   """
   hasPlots: Boolean
   hasPlotsWith: [PlotWhereInput!]
+}
+type Land implements Node {
+  id: ID!
+  createdAt: Time!
+  updatedAt: Time!
+}
+"""
+Ordering options for Land connections
+"""
+input LandOrder {
+  """
+  The ordering direction.
+  """
+  direction: OrderDirection! = ASC
+  """
+  The field by which to order Lands.
+  """
+  field: LandOrderField!
+}
+"""
+Properties by which Land connections can be ordered.
+"""
+enum LandOrderField {
+  CREATED_AT
+}
+"""
+LandWhereInput is used for filtering Land objects.
+Input was generated by ent.
+"""
+input LandWhereInput {
+  not: LandWhereInput
+  and: [LandWhereInput!]
+  or: [LandWhereInput!]
+  """
+  id field predicates
+  """
+  id: ID
+  idNEQ: ID
+  idIn: [ID!]
+  idNotIn: [ID!]
+  idGT: ID
+  idGTE: ID
+  idLT: ID
+  idLTE: ID
+  """
+  created_at field predicates
+  """
+  createdAt: Time
+  createdAtNEQ: Time
+  createdAtIn: [Time!]
+  createdAtNotIn: [Time!]
+  createdAtGT: Time
+  createdAtGTE: Time
+  createdAtLT: Time
+  createdAtLTE: Time
+  """
+  updated_at field predicates
+  """
+  updatedAt: Time
+  updatedAtNEQ: Time
+  updatedAtIn: [Time!]
+  updatedAtNotIn: [Time!]
+  updatedAtGT: Time
+  updatedAtGTE: Time
+  updatedAtLT: Time
+  updatedAtLTE: Time
 }
 """
 An object with an ID.
@@ -12992,41 +13062,6 @@ input UpdatePlotInput {
   districtID: ID
 }
 """
-UpdatePotentialTenderInput is used for update PotentialTender object.
-Input was generated by ent.
-"""
-input UpdatePotentialTenderInput {
-  updatedAt: Time
-  refURL: String
-  title: String
-  description: String
-  clearDescription: Boolean
-  requirement: String
-  clearRequirement: Boolean
-  address: String
-  clearAddress: Boolean
-  date: String
-  clearDate: Boolean
-  type: String
-  clearType: Boolean
-  status: String
-  clearStatus: Boolean
-  amount: String
-  clearAmount: Boolean
-  size: String
-  clearSize: Boolean
-  location: String
-  clearLocation: Boolean
-  contact: String
-  clearContact: Boolean
-  contactPhone: String
-  clearContactPhone: Boolean
-  contactEmail: String
-  clearContactEmail: Boolean
-  contactAddress: String
-  clearContactAddress: Boolean
-}
-"""
 UpdateProjectInput is used for update Project object.
 Input was generated by ent.
 """
@@ -14195,6 +14230,7 @@ type GeoJson {
     tenderInput: UpdateTenderInput!
     profileInput: CreateTenderProfileInput!
     imageFileNames: [String!]
+    removeImageFileNames: [String!]
   ): Tender!
   createTenderV2(
     tenderInput: CreateTenderInput!
@@ -14208,6 +14244,8 @@ type GeoJson {
     profileInput: CreateTenderProfileInput!
     imageFileNames: [String!]!
     attachmentFileNames: [String!]!
+    removeImageFileNames: [String!]
+    removeAttachmentFileNames: [String!]
   ): Tender!
   voidTender(id: ID!): Tender!
   winTender(id: ID!, input: WinTenderInput!): Tender!

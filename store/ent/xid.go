@@ -11,6 +11,7 @@ import (
 	"cscd-bds/store/ent/customer"
 	"cscd-bds/store/ent/customerprofile"
 	"cscd-bds/store/ent/district"
+	"cscd-bds/store/ent/land"
 	"cscd-bds/store/ent/operation"
 	"cscd-bds/store/ent/plot"
 	"cscd-bds/store/ent/potentialtender"
@@ -34,6 +35,7 @@ var prefixMap = map[xid.ID]string{
 	"CU": customer.Table,
 	"CH": customerprofile.Table,
 	"DI": district.Table,
+	"LA": land.Table,
 	"OP": operation.Table,
 	"PL": plot.Table,
 	"PT": potentialtender.Table,

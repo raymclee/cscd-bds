@@ -11,6 +11,7 @@ import (
 	"cscd-bds/store/ent/customer"
 	"cscd-bds/store/ent/customerprofile"
 	"cscd-bds/store/ent/district"
+	"cscd-bds/store/ent/land"
 	"cscd-bds/store/ent/operation"
 	"cscd-bds/store/ent/plot"
 	"cscd-bds/store/ent/potentialtender"
@@ -2418,6 +2419,302 @@ func (d *District) ToEdge(order *DistrictOrder) *DistrictEdge {
 	return &DistrictEdge{
 		Node:   d,
 		Cursor: order.Field.toCursor(d),
+	}
+}
+
+// LandEdge is the edge representation of Land.
+type LandEdge struct {
+	Node   *Land  `json:"node"`
+	Cursor Cursor `json:"cursor"`
+}
+
+// LandConnection is the connection containing edges to Land.
+type LandConnection struct {
+	Edges      []*LandEdge `json:"edges"`
+	PageInfo   PageInfo    `json:"pageInfo"`
+	TotalCount int         `json:"totalCount"`
+}
+
+func (c *LandConnection) build(nodes []*Land, pager *landPager, after *Cursor, first *int, before *Cursor, last *int) {
+	c.PageInfo.HasNextPage = before != nil
+	c.PageInfo.HasPreviousPage = after != nil
+	if first != nil && *first+1 == len(nodes) {
+		c.PageInfo.HasNextPage = true
+		nodes = nodes[:len(nodes)-1]
+	} else if last != nil && *last+1 == len(nodes) {
+		c.PageInfo.HasPreviousPage = true
+		nodes = nodes[:len(nodes)-1]
+	}
+	var nodeAt func(int) *Land
+	if last != nil {
+		n := len(nodes) - 1
+		nodeAt = func(i int) *Land {
+			return nodes[n-i]
+		}
+	} else {
+		nodeAt = func(i int) *Land {
+			return nodes[i]
+		}
+	}
+	c.Edges = make([]*LandEdge, len(nodes))
+	for i := range nodes {
+		node := nodeAt(i)
+		c.Edges[i] = &LandEdge{
+			Node:   node,
+			Cursor: pager.toCursor(node),
+		}
+	}
+	if l := len(c.Edges); l > 0 {
+		c.PageInfo.StartCursor = &c.Edges[0].Cursor
+		c.PageInfo.EndCursor = &c.Edges[l-1].Cursor
+	}
+	if c.TotalCount == 0 {
+		c.TotalCount = len(nodes)
+	}
+}
+
+// LandPaginateOption enables pagination customization.
+type LandPaginateOption func(*landPager) error
+
+// WithLandOrder configures pagination ordering.
+func WithLandOrder(order *LandOrder) LandPaginateOption {
+	if order == nil {
+		order = DefaultLandOrder
+	}
+	o := *order
+	return func(pager *landPager) error {
+		if err := o.Direction.Validate(); err != nil {
+			return err
+		}
+		if o.Field == nil {
+			o.Field = DefaultLandOrder.Field
+		}
+		pager.order = &o
+		return nil
+	}
+}
+
+// WithLandFilter configures pagination filter.
+func WithLandFilter(filter func(*LandQuery) (*LandQuery, error)) LandPaginateOption {
+	return func(pager *landPager) error {
+		if filter == nil {
+			return errors.New("LandQuery filter cannot be nil")
+		}
+		pager.filter = filter
+		return nil
+	}
+}
+
+type landPager struct {
+	reverse bool
+	order   *LandOrder
+	filter  func(*LandQuery) (*LandQuery, error)
+}
+
+func newLandPager(opts []LandPaginateOption, reverse bool) (*landPager, error) {
+	pager := &landPager{reverse: reverse}
+	for _, opt := range opts {
+		if err := opt(pager); err != nil {
+			return nil, err
+		}
+	}
+	if pager.order == nil {
+		pager.order = DefaultLandOrder
+	}
+	return pager, nil
+}
+
+func (p *landPager) applyFilter(query *LandQuery) (*LandQuery, error) {
+	if p.filter != nil {
+		return p.filter(query)
+	}
+	return query, nil
+}
+
+func (p *landPager) toCursor(l *Land) Cursor {
+	return p.order.Field.toCursor(l)
+}
+
+func (p *landPager) applyCursors(query *LandQuery, after, before *Cursor) (*LandQuery, error) {
+	direction := p.order.Direction
+	if p.reverse {
+		direction = direction.Reverse()
+	}
+	for _, predicate := range entgql.CursorsPredicate(after, before, DefaultLandOrder.Field.column, p.order.Field.column, direction) {
+		query = query.Where(predicate)
+	}
+	return query, nil
+}
+
+func (p *landPager) applyOrder(query *LandQuery) *LandQuery {
+	direction := p.order.Direction
+	if p.reverse {
+		direction = direction.Reverse()
+	}
+	query = query.Order(p.order.Field.toTerm(direction.OrderTermOption()))
+	if p.order.Field != DefaultLandOrder.Field {
+		query = query.Order(DefaultLandOrder.Field.toTerm(direction.OrderTermOption()))
+	}
+	if len(query.ctx.Fields) > 0 {
+		query.ctx.AppendFieldOnce(p.order.Field.column)
+	}
+	return query
+}
+
+func (p *landPager) orderExpr(query *LandQuery) sql.Querier {
+	direction := p.order.Direction
+	if p.reverse {
+		direction = direction.Reverse()
+	}
+	if len(query.ctx.Fields) > 0 {
+		query.ctx.AppendFieldOnce(p.order.Field.column)
+	}
+	return sql.ExprFunc(func(b *sql.Builder) {
+		b.Ident(p.order.Field.column).Pad().WriteString(string(direction))
+		if p.order.Field != DefaultLandOrder.Field {
+			b.Comma().Ident(DefaultLandOrder.Field.column).Pad().WriteString(string(direction))
+		}
+	})
+}
+
+// Paginate executes the query and returns a relay based cursor connection to Land.
+func (l *LandQuery) Paginate(
+	ctx context.Context, after *Cursor, first *int,
+	before *Cursor, last *int, opts ...LandPaginateOption,
+) (*LandConnection, error) {
+	if err := validateFirstLast(first, last); err != nil {
+		return nil, err
+	}
+	pager, err := newLandPager(opts, last != nil)
+	if err != nil {
+		return nil, err
+	}
+	if l, err = pager.applyFilter(l); err != nil {
+		return nil, err
+	}
+	conn := &LandConnection{Edges: []*LandEdge{}}
+	ignoredEdges := !hasCollectedField(ctx, edgesField)
+	if hasCollectedField(ctx, totalCountField) || hasCollectedField(ctx, pageInfoField) {
+		hasPagination := after != nil || first != nil || before != nil || last != nil
+		if hasPagination || ignoredEdges {
+			c := l.Clone()
+			c.ctx.Fields = nil
+			if conn.TotalCount, err = c.Count(ctx); err != nil {
+				return nil, err
+			}
+			conn.PageInfo.HasNextPage = first != nil && conn.TotalCount > 0
+			conn.PageInfo.HasPreviousPage = last != nil && conn.TotalCount > 0
+		}
+	}
+	if ignoredEdges || (first != nil && *first == 0) || (last != nil && *last == 0) {
+		return conn, nil
+	}
+	if l, err = pager.applyCursors(l, after, before); err != nil {
+		return nil, err
+	}
+	limit := paginateLimit(first, last)
+	if limit != 0 {
+		l.Limit(limit)
+	}
+	if field := collectedField(ctx, edgesField, nodeField); field != nil {
+		if err := l.collectField(ctx, limit == 1, graphql.GetOperationContext(ctx), *field, []string{edgesField, nodeField}); err != nil {
+			return nil, err
+		}
+	}
+	l = pager.applyOrder(l)
+	nodes, err := l.All(ctx)
+	if err != nil {
+		return nil, err
+	}
+	conn.build(nodes, pager, after, first, before, last)
+	return conn, nil
+}
+
+var (
+	// LandOrderFieldCreatedAt orders Land by created_at.
+	LandOrderFieldCreatedAt = &LandOrderField{
+		Value: func(l *Land) (ent.Value, error) {
+			return l.CreatedAt, nil
+		},
+		column: land.FieldCreatedAt,
+		toTerm: land.ByCreatedAt,
+		toCursor: func(l *Land) Cursor {
+			return Cursor{
+				ID:    l.ID,
+				Value: l.CreatedAt,
+			}
+		},
+	}
+)
+
+// String implement fmt.Stringer interface.
+func (f LandOrderField) String() string {
+	var str string
+	switch f.column {
+	case LandOrderFieldCreatedAt.column:
+		str = "CREATED_AT"
+	}
+	return str
+}
+
+// MarshalGQL implements graphql.Marshaler interface.
+func (f LandOrderField) MarshalGQL(w io.Writer) {
+	io.WriteString(w, strconv.Quote(f.String()))
+}
+
+// UnmarshalGQL implements graphql.Unmarshaler interface.
+func (f *LandOrderField) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("LandOrderField %T must be a string", v)
+	}
+	switch str {
+	case "CREATED_AT":
+		*f = *LandOrderFieldCreatedAt
+	default:
+		return fmt.Errorf("%s is not a valid LandOrderField", str)
+	}
+	return nil
+}
+
+// LandOrderField defines the ordering field of Land.
+type LandOrderField struct {
+	// Value extracts the ordering value from the given Land.
+	Value    func(*Land) (ent.Value, error)
+	column   string // field or computed.
+	toTerm   func(...sql.OrderTermOption) land.OrderOption
+	toCursor func(*Land) Cursor
+}
+
+// LandOrder defines the ordering of Land.
+type LandOrder struct {
+	Direction OrderDirection  `json:"direction"`
+	Field     *LandOrderField `json:"field"`
+}
+
+// DefaultLandOrder is the default ordering of Land.
+var DefaultLandOrder = &LandOrder{
+	Direction: entgql.OrderDirectionAsc,
+	Field: &LandOrderField{
+		Value: func(l *Land) (ent.Value, error) {
+			return l.ID, nil
+		},
+		column: land.FieldID,
+		toTerm: land.ByID,
+		toCursor: func(l *Land) Cursor {
+			return Cursor{ID: l.ID}
+		},
+	},
+}
+
+// ToEdge converts Land into LandEdge.
+func (l *Land) ToEdge(order *LandOrder) *LandEdge {
+	if order == nil {
+		order = DefaultLandOrder
+	}
+	return &LandEdge{
+		Node:   l,
+		Cursor: order.Field.toCursor(l),
 	}
 }
 

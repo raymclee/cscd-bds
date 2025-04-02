@@ -39,7 +39,6 @@ function RouteComponent() {
               edges {
                 node {
                   id
-                  name
                   code
                 }
               }

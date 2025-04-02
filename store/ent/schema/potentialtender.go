@@ -19,29 +19,6 @@ func (PotentialTender) Mixin() []ent.Mixin {
 	}
 }
 
-// tender_title TEXT,
-//                          tender_description TEXT,
-//                          tender_requirement TEXT,
-//                          tender_address TEXT,
-//                          tender_date TEXT,
-//                          tender_type TEXT,
-//                          tender_status TEXT,
-//                          tender_amount TEXT,
-//                          tender_size TEXT,
-//                          tender_location TEXT,
-//                          tender_contact TEXT,
-//                          tender_contact_phone TEXT,
-//                          tender_contact_email TEXT,
-//                          tender_contact_address TEXT,
-//                          tender_contact_2 TEXT,
-//                          tender_contact_phone_2 TEXT,
-//                          tender_contact_email_2 TEXT,
-//                          tender_contact_address_2 TEXT,
-//                          tender_contact_3 TEXT,
-//                          tender_contact_phone_3 TEXT,
-//                          tender_contact_email_3 TEXT,
-//                          tender_contact_address_3 TEXT
-
 // Fields of the PotentialTender.
 func (PotentialTender) Fields() []ent.Field {
 	return []ent.Field{
@@ -73,9 +50,5 @@ func (PotentialTender) Annotations() []schema.Annotation {
 		entgql.RelayConnection(),
 		entgql.QueryField(),
 		entgql.MultiOrder(),
-		entgql.Mutations(
-			entgql.MutationCreate(),
-			entgql.MutationUpdate(),
-		),
 	}
 }
