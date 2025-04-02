@@ -686,7 +686,7 @@ func (r *mutationResolver) UpdateTenderV2(ctx context.Context, id xid.ID, tender
 	// 创建新的profile
 	tpq := r.store.TenderProfile.Create().SetInput(profileInput).SetTender(t).SetCreatedByID(xid.ID(sess.UserId))
 	// 如果当前没有待审批的profile，则将新的profile设置为待审批
-	if t.Edges.PendingProfile == nil {
+	if t.Edges.ActiveProfile != nil {
 		tpq.SetApprovalStatus(2)
 	}
 	tp, err := tpq.Save(ctx)
@@ -709,14 +709,21 @@ func (r *mutationResolver) UpdateTenderV2(ctx context.Context, id xid.ID, tender
 			return
 		}
 
-		chatId := r.feishu.GetSalesChatId(tpp.Edges.Tender.Edges.Area)
-		if chatId == nil {
-			fmt.Printf("failed to get sales chat id: %v\n", errors.New("sales chat id is nil"))
-			return
+		var chatId string
+		if t.Edges.ActiveProfile != nil {
+			chatId = r.feishu.GetSalesChatId(tpp.Edges.Tender.Edges.Area)
+		} else {
+			u, err := r.store.User.Query().Where(user.ID(xid.ID(sess.UserId))).WithLeader().Only(ctxx)
+			if err != nil {
+				fmt.Printf("failed to get user: %v\n", err)
+				return
+			}
+			chatId = u.Edges.Leader.OpenID
 		}
+
 		if _, err = r.feishu.SendGroupMessage(ctxx, feishu.TemplateIdTenderUpdated, &feishu.GroupMessageParams{
 			TenderProfile: tpp,
-			ChatId:        *chatId,
+			ChatId:        chatId,
 		}); err != nil {
 			fmt.Printf("failed to send group message: %v\n", err)
 		}
@@ -793,13 +800,13 @@ func (r *mutationResolver) VoidTender(ctx context.Context, id xid.ID) (*ent.Tend
 		}
 
 		chatId := r.feishu.GetSalesChatId(tpp.Edges.Tender.Edges.Area)
-		if chatId == nil {
+		if chatId == "" {
 			fmt.Printf("failed to get sales chat id: %v\n", errors.New("sales chat id is nil"))
 			return
 		}
 		if _, err = r.feishu.SendGroupMessage(ctxx, feishu.TemplateIdTenderUpdated, &feishu.GroupMessageParams{
 			TenderProfile: tpp,
-			ChatId:        *chatId,
+			ChatId:        chatId,
 		}); err != nil {
 			fmt.Printf("failed to send group message: %v\n", err)
 		}
@@ -868,13 +875,9 @@ func (r *mutationResolver) WinTender(ctx context.Context, id xid.ID, input model
 			return
 		}
 		chatId := r.feishu.GetSalesChatId(tpp.Edges.Tender.Edges.Area)
-		if chatId == nil {
-			fmt.Printf("failed to get sales chat id: %v\n", errors.New("sales chat id is nil"))
-			return
-		}
 		if _, err = r.feishu.SendGroupMessage(ctxx, feishu.TemplateIdTenderWin, &feishu.GroupMessageParams{
 			TenderProfile: tpp,
-			ChatId:        *chatId,
+			ChatId:        chatId,
 		}); err != nil {
 			fmt.Printf("failed to send group message: %v\n", err)
 		}
@@ -971,13 +974,9 @@ func (r *mutationResolver) LoseTender(ctx context.Context, id xid.ID, input mode
 			return
 		}
 		chatId := r.feishu.GetSalesChatId(tpp.Edges.Tender.Edges.Area)
-		if chatId == nil {
-			fmt.Printf("failed to get sales chat id: %v\n", errors.New("sales chat id is nil"))
-			return
-		}
 		if _, err = r.feishu.SendGroupMessage(ctxx, feishu.TemplateIdTenderUpdated, &feishu.GroupMessageParams{
 			TenderProfile: tpp,
-			ChatId:        *chatId,
+			ChatId:        chatId,
 		}); err != nil {
 			fmt.Printf("failed to send group message: %v\n", err)
 		}

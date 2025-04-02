@@ -291,10 +291,10 @@ func (f *Feishu) GetLeaderChatId(area *ent.Area) *string {
 	return &chatId
 }
 
-func (f *Feishu) GetSalesChatId(area *ent.Area) *string {
-	if config.IsProd {
-		return area.SalesChatID
+func (f *Feishu) GetSalesChatId(area *ent.Area) string {
+	if config.IsProd && area.SalesChatID != nil {
+		return *area.SalesChatID
 	}
 	chatId := "oc_8af2e1d869f15821fc3d9bdc6dca80ad"
-	return &chatId
+	return chatId
 }
