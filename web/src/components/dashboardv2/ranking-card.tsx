@@ -40,8 +40,8 @@ export const RankingCard = React.memo(function RankingCard() {
       </CardHeader>
       <CardContent className="py-2">
         <ul className="space-y-2">
-          {data.competitors.edges?.slice(0, 5).map((e, index) => (
-            <li className="flex items-center gap-4" key={e?.node?.id}>
+          {data.topCompetitors?.slice(0, 5).map((e, index) => (
+            <li className="flex items-center gap-4" key={e?.id}>
               {index < 3 ? (
                 <img
                   src={numberMap[(index + 1) as 1 | 2 | 3]}
@@ -54,9 +54,9 @@ export const RankingCard = React.memo(function RankingCard() {
                 </div>
               )}
               <div className="flex flex-1 flex-col">
-                <span className="line-clamp-1 text-sm">{e?.node?.name}</span>
+                <span className="line-clamp-1 text-sm">{e?.name}</span>
               </div>
-              <div className="text-sm">0%</div>
+              <div className="text-sm">{e?.winRate.toFixed(2) ?? 0}%</div>
             </li>
           ))}
         </ul>

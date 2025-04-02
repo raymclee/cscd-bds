@@ -146,17 +146,17 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
   // }, [tender, pathname]);
 
   const areaID = Form.useWatch("areaID", form);
-  // const status = Form.useWatch("status", form);
+  const status = Form.useWatch("status", form);
   const prepareToBid = Form.useWatch("prepareToBid", form);
 
   const [imageFileNames, setImageFileNames] = useState<string[]>([]);
   const [attachmentFileNames, setAttachmentFileNames] = useState<string[]>([]);
-  const [removeImageFileNames, setRemoveImageFileNames] = useState<string[]>(
-    [],
-  );
-  const [removeAttachmentFileNames, setRemoveAttachmentFileNames] = useState<
-    string[]
-  >([]);
+  // const [removeImageFileNames, setRemoveImageFileNames] = useState<string[]>(
+  //   [],
+  // );
+  // const [removeAttachmentFileNames, setRemoveAttachmentFileNames] = useState<
+  //   string[]
+  // >([]);
   const showSHFields = !!data.areas.edges?.find(
     (e) =>
       e?.node?.id === areaID && e.node.code !== "GA" && e.node.code !== "HW",
@@ -721,6 +721,34 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
               <Form.Item name="estimatedAmount" label="预计金额">
                 <Input prefix="$" suffix="亿元" />
               </Form.Item>
+
+              {status == 3 && (
+                <>
+                  <Form.Item
+                    name="tenderWinAmount"
+                    label="中标金额"
+                    rules={[{ required: true }]}
+                  >
+                    <Input prefix="$" suffix="亿元" />
+                  </Form.Item>
+
+                  <Form.Item
+                    name="tenderWinDate"
+                    label="中标日期"
+                    rules={[{ required: true }]}
+                  >
+                    <DatePicker className="w-full" />
+                  </Form.Item>
+
+                  <Form.Item
+                    name="constructionArea"
+                    label="施工面积"
+                    rules={[{ required: true }]}
+                  >
+                    <Input suffix="㎡" />
+                  </Form.Item>
+                </>
+              )}
             </>
           )}
 
@@ -938,12 +966,12 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
                     name="files"
                     action="/api/v1/file/upload"
                     accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.zip,.rar"
-                    onRemove={(file) => {
-                      setRemoveAttachmentFileNames((prev) => [
-                        ...prev,
-                        file.name,
-                      ]);
-                    }}
+                    // onRemove={(file) => {
+                    //   setRemoveAttachmentFileNames((prev) => [
+                    //     ...prev,
+                    //     file.name,
+                    //   ]);
+                    // }}
                     onChange={(info) => {
                       for (const file of info.fileList) {
                         if (
@@ -1056,9 +1084,9 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
                 action="/api/v1/file/upload"
                 accept=".jpg,.jpeg,.png,.gif"
                 listType="picture-card"
-                onRemove={(file) => {
-                  setRemoveImageFileNames((prev) => [...prev, file.name]);
-                }}
+                // onRemove={(file) => {
+                //   setRemoveImageFileNames((prev) => [...prev, file.name]);
+                // }}
                 onChange={(info) => {
                   for (const file of info.fileList) {
                     if (

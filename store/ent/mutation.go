@@ -29968,6 +29968,7 @@ type TenderCompetitorMutation struct {
 	updated_at        *time.Time
 	amount            *float64
 	addamount         *float64
+	result            *bool
 	clearedFields     map[string]struct{}
 	tender            *xid.ID
 	clearedtender     bool
@@ -30282,6 +30283,42 @@ func (m *TenderCompetitorMutation) ResetAmount() {
 	m.addamount = nil
 }
 
+// SetResult sets the "result" field.
+func (m *TenderCompetitorMutation) SetResult(b bool) {
+	m.result = &b
+}
+
+// Result returns the value of the "result" field in the mutation.
+func (m *TenderCompetitorMutation) Result() (r bool, exists bool) {
+	v := m.result
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldResult returns the old "result" field's value of the TenderCompetitor entity.
+// If the TenderCompetitor object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *TenderCompetitorMutation) OldResult(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldResult is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldResult requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldResult: %w", err)
+	}
+	return oldValue.Result, nil
+}
+
+// ResetResult resets all changes to the "result" field.
+func (m *TenderCompetitorMutation) ResetResult() {
+	m.result = nil
+}
+
 // ClearTender clears the "tender" edge to the Tender entity.
 func (m *TenderCompetitorMutation) ClearTender() {
 	m.clearedtender = true
@@ -30370,7 +30407,7 @@ func (m *TenderCompetitorMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *TenderCompetitorMutation) Fields() []string {
-	fields := make([]string, 0, 5)
+	fields := make([]string, 0, 6)
 	if m.created_at != nil {
 		fields = append(fields, tendercompetitor.FieldCreatedAt)
 	}
@@ -30385,6 +30422,9 @@ func (m *TenderCompetitorMutation) Fields() []string {
 	}
 	if m.amount != nil {
 		fields = append(fields, tendercompetitor.FieldAmount)
+	}
+	if m.result != nil {
+		fields = append(fields, tendercompetitor.FieldResult)
 	}
 	return fields
 }
@@ -30404,6 +30444,8 @@ func (m *TenderCompetitorMutation) Field(name string) (ent.Value, bool) {
 		return m.CompetitorID()
 	case tendercompetitor.FieldAmount:
 		return m.Amount()
+	case tendercompetitor.FieldResult:
+		return m.Result()
 	}
 	return nil, false
 }
@@ -30423,6 +30465,8 @@ func (m *TenderCompetitorMutation) OldField(ctx context.Context, name string) (e
 		return m.OldCompetitorID(ctx)
 	case tendercompetitor.FieldAmount:
 		return m.OldAmount(ctx)
+	case tendercompetitor.FieldResult:
+		return m.OldResult(ctx)
 	}
 	return nil, fmt.Errorf("unknown TenderCompetitor field %s", name)
 }
@@ -30466,6 +30510,13 @@ func (m *TenderCompetitorMutation) SetField(name string, value ent.Value) error 
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetAmount(v)
+		return nil
+	case tendercompetitor.FieldResult:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetResult(v)
 		return nil
 	}
 	return fmt.Errorf("unknown TenderCompetitor field %s", name)
@@ -30545,6 +30596,9 @@ func (m *TenderCompetitorMutation) ResetField(name string) error {
 		return nil
 	case tendercompetitor.FieldAmount:
 		m.ResetAmount()
+		return nil
+	case tendercompetitor.FieldResult:
+		m.ResetResult()
 		return nil
 	}
 	return fmt.Errorf("unknown TenderCompetitor field %s", name)

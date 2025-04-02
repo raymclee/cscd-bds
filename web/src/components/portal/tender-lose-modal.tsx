@@ -1,6 +1,6 @@
 import { App, Button, Form, Input, Modal, Select } from "antd";
 import { CloseOutlined, MinusCircleOutlined } from "@ant-design/icons";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useFragment } from "react-relay";
 import { graphql } from "react-relay";
 import { tenderLoseModalFragment$key } from "__generated__/tenderLoseModalFragment.graphql";
@@ -40,6 +40,11 @@ export function TenderLoseModal({
   const onClose = () => {
     setOpen(false);
   };
+
+  const TenderWinAmountInput = useMemo(
+    () => <Input prefix="￥" suffix="亿元" />,
+    [],
+  );
 
   return (
     <>
@@ -81,7 +86,7 @@ export function TenderLoseModal({
               loseTender({
                 variables: {
                   id,
-                  input: { competitors },
+                  input: { ...values, competitors },
                 },
                 onCompleted() {
                   message.destroy();
@@ -100,7 +105,16 @@ export function TenderLoseModal({
           </Form>
         )}
       >
-        <Form.Item label="竞争对手" className="!mt-8">
+        <Form.Item
+          name="tenderWinAmount"
+          label="中标金额"
+          className="!mt-8 md:col-span-2"
+          rules={[{ required: true }]}
+        >
+          {TenderWinAmountInput}
+        </Form.Item>
+
+        <Form.Item label="竞争对手">
           <Form.List name="competitors">
             {(fields, { add, remove }) => (
               <>

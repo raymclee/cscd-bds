@@ -519,6 +519,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			tendercompetitor.FieldTenderID:     {Type: field.TypeString, Column: tendercompetitor.FieldTenderID},
 			tendercompetitor.FieldCompetitorID: {Type: field.TypeString, Column: tendercompetitor.FieldCompetitorID},
 			tendercompetitor.FieldAmount:       {Type: field.TypeFloat64, Column: tendercompetitor.FieldAmount},
+			tendercompetitor.FieldResult:       {Type: field.TypeBool, Column: tendercompetitor.FieldResult},
 		},
 	}
 	graph.Nodes[16] = &sqlgraph.Node{
@@ -4289,6 +4290,11 @@ func (f *TenderCompetitorFilter) WhereCompetitorID(p entql.StringP) {
 // WhereAmount applies the entql float64 predicate on the amount field.
 func (f *TenderCompetitorFilter) WhereAmount(p entql.Float64P) {
 	f.Where(p.Field(tendercompetitor.FieldAmount))
+}
+
+// WhereResult applies the entql bool predicate on the result field.
+func (f *TenderCompetitorFilter) WhereResult(p entql.BoolP) {
+	f.Where(p.Field(tendercompetitor.FieldResult))
 }
 
 // WhereHasTender applies a predicate to check if query has an edge tender.

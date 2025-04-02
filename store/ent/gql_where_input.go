@@ -15688,6 +15688,10 @@ type TenderCompetitorWhereInput struct {
 	AmountLT    *float64  `json:"amountLT,omitempty"`
 	AmountLTE   *float64  `json:"amountLTE,omitempty"`
 
+	// "result" field predicates.
+	Result    *bool `json:"result,omitempty"`
+	ResultNEQ *bool `json:"resultNEQ,omitempty"`
+
 	// "tender" edge predicates.
 	HasTender     *bool               `json:"hasTender,omitempty"`
 	HasTenderWith []*TenderWhereInput `json:"hasTenderWith,omitempty"`
@@ -15941,6 +15945,12 @@ func (i *TenderCompetitorWhereInput) P() (predicate.TenderCompetitor, error) {
 	}
 	if i.AmountLTE != nil {
 		predicates = append(predicates, tendercompetitor.AmountLTE(*i.AmountLTE))
+	}
+	if i.Result != nil {
+		predicates = append(predicates, tendercompetitor.ResultEQ(*i.Result))
+	}
+	if i.ResultNEQ != nil {
+		predicates = append(predicates, tendercompetitor.ResultNEQ(*i.ResultNEQ))
 	}
 
 	if i.HasTender != nil {

@@ -96,11 +96,6 @@ export function TenderListItem({
     ? item.pendingProfile
     : item.activeProfile;
 
-  const canDelete =
-    item.activeProfile?.status !== 3 &&
-    item.activeProfile?.status !== 4 &&
-    item.activeProfile?.status !== 7;
-
   return (
     <List.Item
       actions={
@@ -129,19 +124,16 @@ export function TenderListItem({
                   修改
                 </Button>
               </Link>,
-              // <Link
-              //   key="draw-link"
-              //   to="/portal/tenders/$id/plot"
-              //   params={{ id: item.id }}
-              //   resetScroll={false}
-              // >
-              //   <Button type="link" size="small">
-              //     地块
-              //   </Button>
-              // </Link>,
-              canDelete && showDelete && (
-                <DeleteButton key="delete" tender={item} />
-              ),
+              <Link
+                key="draw-link"
+                to="/portal/tenders/$id/plot"
+                params={{ id: item.id }}
+              >
+                <Button type="link" size="small">
+                  地块
+                </Button>
+              </Link>,
+              showDelete && <DeleteButton key="delete" tender={item} />,
               // <a key="list-loadmore-more">more</a>,
               // !isGAOrHW && (
               //   <Button

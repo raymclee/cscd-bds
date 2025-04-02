@@ -81,6 +81,11 @@ func Amount(v float64) predicate.TenderCompetitor {
 	return predicate.TenderCompetitor(sql.FieldEQ(FieldAmount, v))
 }
 
+// Result applies equality check predicate on the "result" field. It's identical to ResultEQ.
+func Result(v bool) predicate.TenderCompetitor {
+	return predicate.TenderCompetitor(sql.FieldEQ(FieldResult, v))
+}
+
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
 func CreatedAtEQ(v time.Time) predicate.TenderCompetitor {
 	return predicate.TenderCompetitor(sql.FieldEQ(FieldCreatedAt, v))
@@ -339,6 +344,16 @@ func AmountLT(v float64) predicate.TenderCompetitor {
 // AmountLTE applies the LTE predicate on the "amount" field.
 func AmountLTE(v float64) predicate.TenderCompetitor {
 	return predicate.TenderCompetitor(sql.FieldLTE(FieldAmount, v))
+}
+
+// ResultEQ applies the EQ predicate on the "result" field.
+func ResultEQ(v bool) predicate.TenderCompetitor {
+	return predicate.TenderCompetitor(sql.FieldEQ(FieldResult, v))
+}
+
+// ResultNEQ applies the NEQ predicate on the "result" field.
+func ResultNEQ(v bool) predicate.TenderCompetitor {
+	return predicate.TenderCompetitor(sql.FieldNEQ(FieldResult, v))
 }
 
 // HasTender applies the HasEdge predicate on the "tender" edge.

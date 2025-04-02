@@ -464,7 +464,7 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, tenderIn
 		profileInput.GeoCoordinate = []float64{lat, lng}
 	}
 
-	cp, err := r.store.TenderProfile.Create().
+	tp, err := r.store.TenderProfile.Create().
 		SetInput(profileInput).
 		SetCreatedByID(xid.ID(sess.UserId)).
 		SetApprovalStatus(2).
@@ -474,7 +474,38 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, tenderIn
 		return nil, fmt.Errorf("failed to create tender profile: %w", err)
 	}
 
-	return t.Update().SetInput(tenderInput).SetActiveProfile(cp).Save(ctx)
+	if config.IsProd {
+		go func() {
+			ctxx := context.Background()
+			tpp, err := r.store.TenderProfile.Query().Where(tenderprofile.ID(tp.ID)).
+				WithTender(func(tq *ent.TenderQuery) {
+					tq.WithArea()
+				}).
+				WithCreatedBy().
+				WithCustomer().
+				WithFinder().
+				Only(ctxx)
+			if err != nil {
+				fmt.Printf("failed to get tender: %v\n", err)
+				return
+			}
+
+			lin, err := r.store.User.Query().Where(user.Username("lin.cheng")).Only(ctxx)
+			if err != nil {
+				fmt.Printf("failed to get user: %v\n", err)
+				return
+			}
+
+			if _, err = r.feishu.SendChatMessage(ctxx, &feishu.ChatMessageParams{
+				TenderProfile: tpp,
+				ChatId:        lin.OpenID,
+			}); err != nil {
+				fmt.Printf("failed to send group message: %v\n", err)
+			}
+		}()
+	}
+
+	return t.Update().SetInput(tenderInput).SetActiveProfile(tp).Save(ctx)
 }
 
 // CreateTenderV2 is the resolver for the createTenderV2 field.
@@ -789,7 +820,7 @@ func (r *mutationResolver) WinTender(ctx context.Context, id xid.ID, input model
 
 	competitorCreates := make([]*ent.TenderCompetitorCreate, len(input.Competitors))
 	for i, co := range input.Competitors {
-		competitorCreates[i] = r.store.TenderCompetitor.Create().SetCompetitorID(xid.ID(co.ID)).SetTender(t).SetAmount(co.Amount)
+		competitorCreates[i] = r.store.TenderCompetitor.Create().SetCompetitorID(xid.ID(co.ID)).SetTender(t).SetAmount(co.Amount).SetResult(true)
 	}
 	if err := r.store.TenderCompetitor.CreateBulk(competitorCreates...).Exec(ctx); err != nil {
 		return nil, fmt.Errorf("failed to create competitors: %w", err)
@@ -856,6 +887,7 @@ func (r *mutationResolver) LoseTender(ctx context.Context, id xid.ID, input mode
 		SetStatus(4).
 		SetTenderID(xid.ID(id)).
 		SetCreatedByID(xid.ID(sess.UserId)).
+		SetTenderWinAmount(input.TenderWinAmount).
 		SetApprovalStatus(2).
 		Save(ctx)
 	if err != nil {

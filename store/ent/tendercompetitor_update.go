@@ -86,6 +86,20 @@ func (tcu *TenderCompetitorUpdate) AddAmount(f float64) *TenderCompetitorUpdate 
 	return tcu
 }
 
+// SetResult sets the "result" field.
+func (tcu *TenderCompetitorUpdate) SetResult(b bool) *TenderCompetitorUpdate {
+	tcu.mutation.SetResult(b)
+	return tcu
+}
+
+// SetNillableResult sets the "result" field if the given value is not nil.
+func (tcu *TenderCompetitorUpdate) SetNillableResult(b *bool) *TenderCompetitorUpdate {
+	if b != nil {
+		tcu.SetResult(*b)
+	}
+	return tcu
+}
+
 // SetTender sets the "tender" edge to the Tender entity.
 func (tcu *TenderCompetitorUpdate) SetTender(t *Tender) *TenderCompetitorUpdate {
 	return tcu.SetTenderID(t.ID)
@@ -180,6 +194,9 @@ func (tcu *TenderCompetitorUpdate) sqlSave(ctx context.Context) (n int, err erro
 	}
 	if value, ok := tcu.mutation.AddedAmount(); ok {
 		_spec.AddField(tendercompetitor.FieldAmount, field.TypeFloat64, value)
+	}
+	if value, ok := tcu.mutation.Result(); ok {
+		_spec.SetField(tendercompetitor.FieldResult, field.TypeBool, value)
 	}
 	if tcu.mutation.TenderCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -314,6 +331,20 @@ func (tcuo *TenderCompetitorUpdateOne) AddAmount(f float64) *TenderCompetitorUpd
 	return tcuo
 }
 
+// SetResult sets the "result" field.
+func (tcuo *TenderCompetitorUpdateOne) SetResult(b bool) *TenderCompetitorUpdateOne {
+	tcuo.mutation.SetResult(b)
+	return tcuo
+}
+
+// SetNillableResult sets the "result" field if the given value is not nil.
+func (tcuo *TenderCompetitorUpdateOne) SetNillableResult(b *bool) *TenderCompetitorUpdateOne {
+	if b != nil {
+		tcuo.SetResult(*b)
+	}
+	return tcuo
+}
+
 // SetTender sets the "tender" edge to the Tender entity.
 func (tcuo *TenderCompetitorUpdateOne) SetTender(t *Tender) *TenderCompetitorUpdateOne {
 	return tcuo.SetTenderID(t.ID)
@@ -438,6 +469,9 @@ func (tcuo *TenderCompetitorUpdateOne) sqlSave(ctx context.Context) (_node *Tend
 	}
 	if value, ok := tcuo.mutation.AddedAmount(); ok {
 		_spec.AddField(tendercompetitor.FieldAmount, field.TypeFloat64, value)
+	}
+	if value, ok := tcuo.mutation.Result(); ok {
+		_spec.SetField(tendercompetitor.FieldResult, field.TypeBool, value)
 	}
 	if tcuo.mutation.TenderCleared() {
 		edge := &sqlgraph.EdgeSpec{

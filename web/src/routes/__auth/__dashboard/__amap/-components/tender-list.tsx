@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
-import { Tender } from "~/graphql/graphql";
+import { Area, Tender } from "~/graphql/graphql";
 import { useAreaTenders } from "~/hooks/dashboardv2/use-area-tenders";
 import { fixAmount, tenderStatusText } from "~/lib/helper";
 import { useMapV2Store } from "~/store";
@@ -138,6 +138,7 @@ function TenderListFilter() {
           q: e.target.value === "" ? undefined : e.target.value,
         }),
         replace: true,
+        resetScroll: false,
       });
     },
     [navigate],
@@ -151,6 +152,7 @@ function TenderListFilter() {
           ...prev,
           status: value === "undefined" ? undefined : Number(value),
         }),
+        resetScroll: false,
       });
     },
     [navigate],
@@ -171,6 +173,7 @@ function TenderListFilter() {
           ...prev,
           ...s,
         }),
+        resetScroll: false,
       });
     },
     [navigate],
@@ -326,6 +329,7 @@ function TenderListFilter() {
               sd: undefined,
               ed: undefined,
             }),
+            resetScroll: false,
           });
         }}
       >
@@ -348,9 +352,19 @@ function TenderListItem({ tender }: { tender: Tender }) {
   const { width } = useWindowSize();
   const isMobile = width && width < 768;
 
-  const onMouseEnter = () => {
+  const onMouseEnter = useCallback(() => {
+    const { areas, getMarker } = useMapV2Store.getState();
+
+    const selectedArea = areas?.edges?.find(
+      (a) => a?.node?.id === tender?.area?.id,
+    );
+    useMapV2Store.setState({
+      selectedArea: selectedArea?.node as Area,
+    });
+
     if (!d || !tender?.activeProfile?.geoCoordinate?.length) return;
-    const marker = useMapV2Store.getState().getMarker(tender?.id);
+
+    const marker = getMarker(tender?.id);
     if (marker) {
       marker.setOptions({
         zIndex: 13,
@@ -370,18 +384,8 @@ function TenderListItem({ tender }: { tender: Tender }) {
           t: tender?.id,
         }),
         replace: true,
+        resetScroll: false,
       });
-      setTimeout(() => {
-        navigate({
-          to: ".",
-          search: (prev) => ({
-            ...prev,
-            t: tender?.id,
-          }),
-          replace: true,
-          resetScroll: false,
-        });
-      }, 50);
     }
 
     const [lat, lng] = tender?.activeProfile?.geoCoordinate ?? [];
@@ -390,7 +394,7 @@ function TenderListItem({ tender }: { tender: Tender }) {
         .getState()
         .map?.setCenter([lng, lat] as [number, number], false, 300);
     }
-  };
+  }, [navigate, tender?.id, tender?.activeProfile?.geoCoordinate]);
 
   const onMouseLeave = useDebounceCallback(() => {
     if (!d || !tender?.activeProfile?.geoCoordinate?.length) return;
@@ -423,10 +427,11 @@ function TenderListItem({ tender }: { tender: Tender }) {
           : undefined
       }
       replace={!isMobile && !!t}
+      resetScroll={false}
       to={isMobile ? "/tenders/$id" : "."}
       params={{ id: tender?.id }}
       className="group block"
-      onClick={onMouseEnter}
+      // onClick={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
       <div className="relative grid grid-cols-3 gap-4 overflow-hidden rounded-lg px-6 py-4 transition-all duration-300 group-hover:scale-105 group-hover:bg-gradient-to-br group-hover:from-sky-950 group-hover:to-sky-700">

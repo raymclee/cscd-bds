@@ -72,6 +72,20 @@ func (tcc *TenderCompetitorCreate) SetAmount(f float64) *TenderCompetitorCreate 
 	return tcc
 }
 
+// SetResult sets the "result" field.
+func (tcc *TenderCompetitorCreate) SetResult(b bool) *TenderCompetitorCreate {
+	tcc.mutation.SetResult(b)
+	return tcc
+}
+
+// SetNillableResult sets the "result" field if the given value is not nil.
+func (tcc *TenderCompetitorCreate) SetNillableResult(b *bool) *TenderCompetitorCreate {
+	if b != nil {
+		tcc.SetResult(*b)
+	}
+	return tcc
+}
+
 // SetID sets the "id" field.
 func (tcc *TenderCompetitorCreate) SetID(x xid.ID) *TenderCompetitorCreate {
 	tcc.mutation.SetID(x)
@@ -139,6 +153,10 @@ func (tcc *TenderCompetitorCreate) defaults() {
 		v := tendercompetitor.DefaultUpdatedAt()
 		tcc.mutation.SetUpdatedAt(v)
 	}
+	if _, ok := tcc.mutation.Result(); !ok {
+		v := tendercompetitor.DefaultResult
+		tcc.mutation.SetResult(v)
+	}
 	if _, ok := tcc.mutation.ID(); !ok {
 		v := tendercompetitor.DefaultID()
 		tcc.mutation.SetID(v)
@@ -161,6 +179,9 @@ func (tcc *TenderCompetitorCreate) check() error {
 	}
 	if _, ok := tcc.mutation.Amount(); !ok {
 		return &ValidationError{Name: "amount", err: errors.New(`ent: missing required field "TenderCompetitor.amount"`)}
+	}
+	if _, ok := tcc.mutation.Result(); !ok {
+		return &ValidationError{Name: "result", err: errors.New(`ent: missing required field "TenderCompetitor.result"`)}
 	}
 	if len(tcc.mutation.TenderIDs()) == 0 {
 		return &ValidationError{Name: "tender", err: errors.New(`ent: missing required edge "TenderCompetitor.tender"`)}
@@ -215,6 +236,10 @@ func (tcc *TenderCompetitorCreate) createSpec() (*TenderCompetitor, *sqlgraph.Cr
 	if value, ok := tcc.mutation.Amount(); ok {
 		_spec.SetField(tendercompetitor.FieldAmount, field.TypeFloat64, value)
 		_node.Amount = value
+	}
+	if value, ok := tcc.mutation.Result(); ok {
+		_spec.SetField(tendercompetitor.FieldResult, field.TypeBool, value)
+		_node.Result = value
 	}
 	if nodes := tcc.mutation.TenderIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
@@ -356,6 +381,18 @@ func (u *TenderCompetitorUpsert) AddAmount(v float64) *TenderCompetitorUpsert {
 	return u
 }
 
+// SetResult sets the "result" field.
+func (u *TenderCompetitorUpsert) SetResult(v bool) *TenderCompetitorUpsert {
+	u.Set(tendercompetitor.FieldResult, v)
+	return u
+}
+
+// UpdateResult sets the "result" field to the value that was provided on create.
+func (u *TenderCompetitorUpsert) UpdateResult() *TenderCompetitorUpsert {
+	u.SetExcluded(tendercompetitor.FieldResult)
+	return u
+}
+
 // UpdateNewValues updates the mutable fields using the new values that were set on create except the ID field.
 // Using this option is equivalent to using:
 //
@@ -467,6 +504,20 @@ func (u *TenderCompetitorUpsertOne) AddAmount(v float64) *TenderCompetitorUpsert
 func (u *TenderCompetitorUpsertOne) UpdateAmount() *TenderCompetitorUpsertOne {
 	return u.Update(func(s *TenderCompetitorUpsert) {
 		s.UpdateAmount()
+	})
+}
+
+// SetResult sets the "result" field.
+func (u *TenderCompetitorUpsertOne) SetResult(v bool) *TenderCompetitorUpsertOne {
+	return u.Update(func(s *TenderCompetitorUpsert) {
+		s.SetResult(v)
+	})
+}
+
+// UpdateResult sets the "result" field to the value that was provided on create.
+func (u *TenderCompetitorUpsertOne) UpdateResult() *TenderCompetitorUpsertOne {
+	return u.Update(func(s *TenderCompetitorUpsert) {
+		s.UpdateResult()
 	})
 }
 
@@ -748,6 +799,20 @@ func (u *TenderCompetitorUpsertBulk) AddAmount(v float64) *TenderCompetitorUpser
 func (u *TenderCompetitorUpsertBulk) UpdateAmount() *TenderCompetitorUpsertBulk {
 	return u.Update(func(s *TenderCompetitorUpsert) {
 		s.UpdateAmount()
+	})
+}
+
+// SetResult sets the "result" field.
+func (u *TenderCompetitorUpsertBulk) SetResult(v bool) *TenderCompetitorUpsertBulk {
+	return u.Update(func(s *TenderCompetitorUpsert) {
+		s.SetResult(v)
+	})
+}
+
+// UpdateResult sets the "result" field to the value that was provided on create.
+func (u *TenderCompetitorUpsertBulk) UpdateResult() *TenderCompetitorUpsertBulk {
+	return u.Update(func(s *TenderCompetitorUpsert) {
+		s.UpdateResult()
 	})
 }
 

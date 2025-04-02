@@ -18,6 +18,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"slices"
 	"strconv"
 	"strings"
 
@@ -261,6 +262,9 @@ func (r *queryResolver) AmapRegeo(ctx context.Context, lng float64, lat float64)
 
 // TopCompetitors is the resolver for the topCompetitors field.
 func (r *queryResolver) TopCompetitors(ctx context.Context, first *int) ([]*model.TopCompetitor, error) {
+	var (
+		out []*model.TopCompetitor
+	)
 	comps, err := r.store.Competitor.Query().
 		// Order(competitor.ByWonTendersCount(sql.OrderDesc())).
 		WithTenders().
@@ -268,15 +272,29 @@ func (r *queryResolver) TopCompetitors(ctx context.Context, first *int) ([]*mode
 	if err != nil {
 		return nil, err
 	}
-	var out []*model.TopCompetitor
+
 	for _, comp := range comps {
+		var wonTendersCount int
+		for _, tender := range comp.Edges.Tenders {
+			if tender.Result {
+				wonTendersCount++
+			}
+		}
+		winRate := float64(0)
+		if len(comp.Edges.Tenders) > 0 {
+			winRate = (float64(wonTendersCount) / float64(len(comp.Edges.Tenders))) * 100
+		}
+
 		out = append(out, &model.TopCompetitor{
-			ID:              xid.ID(fmt.Sprintf("TC-%s", strings.ReplaceAll(string(comp.ID), "CP-", ""))),
-			Name:            comp.Name,
-			ShortName:       comp.ShortName,
-			WonTendersCount: int(len(comp.Edges.Tenders)),
+			ID:        xid.ID(fmt.Sprintf("TC-%s", strings.ReplaceAll(string(comp.ID), "CP-", ""))),
+			Name:      comp.Name,
+			ShortName: comp.ShortName,
+			WinRate:   winRate,
 		})
 	}
+	slices.SortFunc(out, func(a, b *model.TopCompetitor) int {
+		return int(b.WinRate - a.WinRate)
+	})
 	return out, nil
 }
 

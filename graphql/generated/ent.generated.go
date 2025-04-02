@@ -9846,6 +9846,8 @@ func (ec *executionContext) fieldContext_Competitor_tenders(_ context.Context, f
 				return ec.fieldContext_TenderCompetitor_competitorID(ctx, field)
 			case "amount":
 				return ec.fieldContext_TenderCompetitor_amount(ctx, field)
+			case "result":
+				return ec.fieldContext_TenderCompetitor_result(ctx, field)
 			case "tender":
 				return ec.fieldContext_TenderCompetitor_tender(ctx, field)
 			case "competitor":
@@ -25404,8 +25406,8 @@ func (ec *executionContext) fieldContext_Query_topCompetitors(ctx context.Contex
 				return ec.fieldContext_TopCompetitor_name(ctx, field)
 			case "shortName":
 				return ec.fieldContext_TopCompetitor_shortName(ctx, field)
-			case "wonTendersCount":
-				return ec.fieldContext_TopCompetitor_wonTendersCount(ctx, field)
+			case "winRate":
+				return ec.fieldContext_TopCompetitor_winRate(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type TopCompetitor", field.Name)
 		},
@@ -28706,6 +28708,8 @@ func (ec *executionContext) fieldContext_Tender_competitors(_ context.Context, f
 				return ec.fieldContext_TenderCompetitor_competitorID(ctx, field)
 			case "amount":
 				return ec.fieldContext_TenderCompetitor_amount(ctx, field)
+			case "result":
+				return ec.fieldContext_TenderCompetitor_result(ctx, field)
 			case "tender":
 				return ec.fieldContext_TenderCompetitor_tender(ctx, field)
 			case "competitor":
@@ -30190,6 +30194,50 @@ func (ec *executionContext) fieldContext_TenderCompetitor_amount(_ context.Conte
 	return fc, nil
 }
 
+func (ec *executionContext) _TenderCompetitor_result(ctx context.Context, field graphql.CollectedField, obj *ent.TenderCompetitor) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TenderCompetitor_result(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Result, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(bool)
+	fc.Result = res
+	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TenderCompetitor_result(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TenderCompetitor",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Boolean does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _TenderCompetitor_tender(ctx context.Context, field graphql.CollectedField, obj *ent.TenderCompetitor) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_TenderCompetitor_tender(ctx, field)
 	if err != nil {
@@ -30657,6 +30705,8 @@ func (ec *executionContext) fieldContext_TenderCompetitorEdge_node(_ context.Con
 				return ec.fieldContext_TenderCompetitor_competitorID(ctx, field)
 			case "amount":
 				return ec.fieldContext_TenderCompetitor_amount(ctx, field)
+			case "result":
+				return ec.fieldContext_TenderCompetitor_result(ctx, field)
 			case "tender":
 				return ec.fieldContext_TenderCompetitor_tender(ctx, field)
 			case "competitor":
@@ -40761,7 +40811,7 @@ func (ec *executionContext) unmarshalInputCreateTenderCompetitorInput(ctx contex
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"createdAt", "updatedAt", "amount", "tenderID", "competitorID"}
+	fieldsInOrder := [...]string{"createdAt", "updatedAt", "amount", "result", "tenderID", "competitorID"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -40789,6 +40839,13 @@ func (ec *executionContext) unmarshalInputCreateTenderCompetitorInput(ctx contex
 				return it, err
 			}
 			it.Amount = data
+		case "result":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("result"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Result = data
 		case "tenderID":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderID"))
 			data, err := ec.unmarshalNID2cscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
@@ -57593,7 +57650,7 @@ func (ec *executionContext) unmarshalInputTenderCompetitorWhereInput(ctx context
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdAt", "createdAtNEQ", "createdAtIn", "createdAtNotIn", "createdAtGT", "createdAtGTE", "createdAtLT", "createdAtLTE", "updatedAt", "updatedAtNEQ", "updatedAtIn", "updatedAtNotIn", "updatedAtGT", "updatedAtGTE", "updatedAtLT", "updatedAtLTE", "tenderID", "tenderIDNEQ", "tenderIDIn", "tenderIDNotIn", "tenderIDGT", "tenderIDGTE", "tenderIDLT", "tenderIDLTE", "tenderIDContains", "tenderIDHasPrefix", "tenderIDHasSuffix", "tenderIDEqualFold", "tenderIDContainsFold", "competitorID", "competitorIDNEQ", "competitorIDIn", "competitorIDNotIn", "competitorIDGT", "competitorIDGTE", "competitorIDLT", "competitorIDLTE", "competitorIDContains", "competitorIDHasPrefix", "competitorIDHasSuffix", "competitorIDEqualFold", "competitorIDContainsFold", "amount", "amountNEQ", "amountIn", "amountNotIn", "amountGT", "amountGTE", "amountLT", "amountLTE", "hasTender", "hasTenderWith", "hasCompetitor", "hasCompetitorWith"}
+	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdAt", "createdAtNEQ", "createdAtIn", "createdAtNotIn", "createdAtGT", "createdAtGTE", "createdAtLT", "createdAtLTE", "updatedAt", "updatedAtNEQ", "updatedAtIn", "updatedAtNotIn", "updatedAtGT", "updatedAtGTE", "updatedAtLT", "updatedAtLTE", "tenderID", "tenderIDNEQ", "tenderIDIn", "tenderIDNotIn", "tenderIDGT", "tenderIDGTE", "tenderIDLT", "tenderIDLTE", "tenderIDContains", "tenderIDHasPrefix", "tenderIDHasSuffix", "tenderIDEqualFold", "tenderIDContainsFold", "competitorID", "competitorIDNEQ", "competitorIDIn", "competitorIDNotIn", "competitorIDGT", "competitorIDGTE", "competitorIDLT", "competitorIDLTE", "competitorIDContains", "competitorIDHasPrefix", "competitorIDHasSuffix", "competitorIDEqualFold", "competitorIDContainsFold", "amount", "amountNEQ", "amountIn", "amountNotIn", "amountGT", "amountGTE", "amountLT", "amountLTE", "result", "resultNEQ", "hasTender", "hasTenderWith", "hasCompetitor", "hasCompetitorWith"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -58027,6 +58084,20 @@ func (ec *executionContext) unmarshalInputTenderCompetitorWhereInput(ctx context
 				return it, err
 			}
 			it.AmountLTE = data
+		case "result":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("result"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Result = data
+		case "resultNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("resultNEQ"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ResultNEQ = data
 		case "hasTender":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasTender"))
 			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
@@ -72552,7 +72623,7 @@ func (ec *executionContext) unmarshalInputUpdateTenderCompetitorInput(ctx contex
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"updatedAt", "amount", "tenderID", "competitorID"}
+	fieldsInOrder := [...]string{"updatedAt", "amount", "result", "tenderID", "competitorID"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -72573,6 +72644,13 @@ func (ec *executionContext) unmarshalInputUpdateTenderCompetitorInput(ctx contex
 				return it, err
 			}
 			it.Amount = data
+		case "result":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("result"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Result = data
 		case "tenderID":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderID"))
 			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
@@ -81240,6 +81318,11 @@ func (ec *executionContext) _TenderCompetitor(ctx context.Context, sel ast.Selec
 			}
 		case "amount":
 			out.Values[i] = ec._TenderCompetitor_amount(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "result":
+			out.Values[i] = ec._TenderCompetitor_result(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				atomic.AddUint32(&out.Invalids, 1)
 			}

@@ -222,12 +222,19 @@ func tenderTemplateVars(tender *ent.Tender) map[string]any {
 		"tender_id":      tender.ID,
 		"created_by_id":  tender.Edges.CreatedBy.OpenID,
 		"tender_name":    tender.Name,
-		"customer_name":  tender.Edges.Customer.Name,
 		"finder_id":      tender.Edges.Finder.OpenID,
 		"finder_name":    tender.Edges.Finder.Name,
 		"discovery_date": tender.DiscoveryDate.Format("2006-01-02"),
 		"url":            fmt.Sprintf("%s/portal/tenders/%s", config.HostUrl, tender.ID),
 		"amount":         amount,
+	}
+
+	if tender.Edges.Customer != nil {
+		tv["customer_name"] = tender.Edges.Customer.Name
+	}
+
+	if tender.Developer != "" {
+		tv["customer_name"] = tender.Developer
 	}
 
 	if tender.Edges.Area != nil {

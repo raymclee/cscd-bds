@@ -34,6 +34,9 @@ func (TenderCompetitor) Fields() []ent.Field {
 			SchemaType(map[string]string{
 				dialect.Postgres: "numeric",
 			}),
+		field.Bool("result").
+			Default(false).
+			Comment("是否中标"),
 	}
 }
 

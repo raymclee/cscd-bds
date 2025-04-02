@@ -1,4 +1,5 @@
 import { useNavigate } from "@tanstack/react-router";
+import { AmapPageQuery } from "__generated__/AmapPageQuery.graphql";
 import { mapv2DistrictsQuery } from "__generated__/mapv2DistrictsQuery.graphql";
 import { Environment, fetchQuery, graphql } from "relay-runtime";
 import { create } from "zustand";
@@ -217,6 +218,7 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
               ...prev,
               a: area?.code,
             }),
+            resetScroll: false,
           });
           // get().renderArea();
         });
@@ -388,6 +390,7 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
           ...prev,
           ...s,
         }),
+        resetScroll: false,
       });
     });
     marker.on("mouseover", () => {
@@ -447,6 +450,48 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
         map?.addLayer(satelliteLayer!);
 
         const mapCircles: AMap.CircleMarker[] | any[] | AMap.Polygon[] = [];
+
+        const districts = await fetchQuery<mapv2DistrictsQuery>(
+          relayEnvironment,
+          districtsQuery,
+          {
+            adcode: areaProps.adcode,
+          },
+        ).toPromise();
+
+        for (const plot of districts?.districts.edges
+          ?.map((e) => e?.node)
+          .flatMap((d) => d?.plots.edges)
+          .map((e) => e?.node) || []) {
+          const polygon = new AMap.Polygon();
+
+          polygon.setPath(plot?.geoBounds as AMap.LngLatLike[]);
+          polygon.setOptions({
+            fillColor: plot?.colorHex,
+            fillOpacity: 0.35,
+            strokeColor: plot?.colorHex,
+            strokeWeight: 2,
+          });
+
+          // @ts-expect-error
+          const label = new AMapUI.SimpleMarker({
+            // @ts-expect-error
+            iconStyle: AMapUI.SimpleMarker.getBuiltInIconStyles("default"),
+            label: {
+              content: `
+            <div class="w-[10rem] rounded-lg px-1 py-0.5 line-clamp-2">
+              <div class="text-sm font-medium text-center text-wrap">${plot?.name}</div>
+            </div>
+            `,
+              offset: new AMap.Pixel(-100, 30),
+            },
+            map,
+            position: polygon.getBounds()?.getCenter(),
+          });
+
+          mapCircles.push(polygon);
+          mapCircles.push(label);
+        }
 
         const tenders =
           selectedArea?.tenders.edges
@@ -517,6 +562,7 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
                   ...prev,
                   t: tender.id,
                 }),
+                resetScroll: false,
               });
             });
             label.on("mouseover", () => {
@@ -585,6 +631,7 @@ export const useMapV2StoreBase = create<State & Action>()((set, get) => ({
                   ...prev,
                   t: tender.id,
                 }),
+                resetScroll: false,
               });
             });
             label.on("mouseover", () => {

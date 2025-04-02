@@ -1450,8 +1450,8 @@ func (ec *executionContext) fieldContext_TopCompetitor_shortName(_ context.Conte
 	return fc, nil
 }
 
-func (ec *executionContext) _TopCompetitor_wonTendersCount(ctx context.Context, field graphql.CollectedField, obj *model.TopCompetitor) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_TopCompetitor_wonTendersCount(ctx, field)
+func (ec *executionContext) _TopCompetitor_winRate(ctx context.Context, field graphql.CollectedField, obj *model.TopCompetitor) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TopCompetitor_winRate(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -1464,7 +1464,7 @@ func (ec *executionContext) _TopCompetitor_wonTendersCount(ctx context.Context, 
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.WonTendersCount, nil
+		return obj.WinRate, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1476,19 +1476,19 @@ func (ec *executionContext) _TopCompetitor_wonTendersCount(ctx context.Context, 
 		}
 		return graphql.Null
 	}
-	res := resTmp.(int)
+	res := resTmp.(float64)
 	fc.Result = res
-	return ec.marshalNInt2int(ctx, field.Selections, res)
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_TopCompetitor_wonTendersCount(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_TopCompetitor_winRate(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "TopCompetitor",
 		Field:      field,
 		IsMethod:   false,
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Int does not have child fields")
+			return nil, errors.New("field of type Float does not have child fields")
 		},
 	}
 	return fc, nil
@@ -1765,8 +1765,8 @@ func (ec *executionContext) _TopCompetitor(ctx context.Context, sel ast.Selectio
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "wonTendersCount":
-			out.Values[i] = ec._TopCompetitor_wonTendersCount(ctx, field, obj)
+		case "winRate":
+			out.Values[i] = ec._TopCompetitor_winRate(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}

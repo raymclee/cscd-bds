@@ -5867,7 +5867,7 @@ func (ec *executionContext) unmarshalInputLoseTenderInput(ctx context.Context, o
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"competitors"}
+	fieldsInOrder := [...]string{"competitors", "tenderWinAmount"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -5881,6 +5881,13 @@ func (ec *executionContext) unmarshalInputLoseTenderInput(ctx context.Context, o
 				return it, err
 			}
 			it.Competitors = data
+		case "tenderWinAmount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderWinAmount"))
+			data, err := ec.unmarshalNFloat2float64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderWinAmount = data
 		}
 	}
 

@@ -69,7 +69,7 @@ type TopCompetitor {
   id: ID!
   name: String!
   shortName: String!
-  wonTendersCount: Int!
+  winRate: Float!
 }
 
 type POI {

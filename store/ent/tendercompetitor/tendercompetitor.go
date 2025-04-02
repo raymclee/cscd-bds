@@ -25,6 +25,8 @@ const (
 	FieldCompetitorID = "competitor_id"
 	// FieldAmount holds the string denoting the amount field in the database.
 	FieldAmount = "amount"
+	// FieldResult holds the string denoting the result field in the database.
+	FieldResult = "result"
 	// EdgeTender holds the string denoting the tender edge name in mutations.
 	EdgeTender = "tender"
 	// EdgeCompetitor holds the string denoting the competitor edge name in mutations.
@@ -55,6 +57,7 @@ var Columns = []string{
 	FieldTenderID,
 	FieldCompetitorID,
 	FieldAmount,
+	FieldResult,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -74,6 +77,8 @@ var (
 	DefaultUpdatedAt func() time.Time
 	// UpdateDefaultUpdatedAt holds the default value on update for the "updated_at" field.
 	UpdateDefaultUpdatedAt func() time.Time
+	// DefaultResult holds the default value on creation for the "result" field.
+	DefaultResult bool
 	// DefaultID holds the default value on creation for the "id" field.
 	DefaultID func() xid.ID
 )
@@ -109,6 +114,11 @@ func ByCompetitorID(opts ...sql.OrderTermOption) OrderOption {
 // ByAmount orders the results by the amount field.
 func ByAmount(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldAmount, opts...).ToFunc()
+}
+
+// ByResult orders the results by the result field.
+func ByResult(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldResult, opts...).ToFunc()
 }
 
 // ByTenderField orders the results by tender field.

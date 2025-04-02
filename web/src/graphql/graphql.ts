@@ -794,6 +794,8 @@ export type CreateTenderCompetitorInput = {
   amount: Scalars['Float']['input'];
   competitorID: Scalars['ID']['input'];
   createdAt?: InputMaybe<Scalars['Time']['input']>;
+  /** 是否中标 */
+  result?: InputMaybe<Scalars['Boolean']['input']>;
   tenderID: Scalars['ID']['input'];
   updatedAt?: InputMaybe<Scalars['Time']['input']>;
 };
@@ -1937,6 +1939,7 @@ export type Location = {
 
 export type LoseTenderInput = {
   competitors: Array<WinLostTenderCompetitorInput>;
+  tenderWinAmount: Scalars['Float']['input'];
 };
 
 export type Mutation = {
@@ -4896,6 +4899,8 @@ export type TenderCompetitor = Node & {
   competitorID: Scalars['ID']['output'];
   createdAt: Scalars['Time']['output'];
   id: Scalars['ID']['output'];
+  /** 是否中标 */
+  result: Scalars['Boolean']['output'];
   tender: Tender;
   tenderID: Scalars['ID']['output'];
   updatedAt: Scalars['Time']['output'];
@@ -4989,6 +4994,9 @@ export type TenderCompetitorWhereInput = {
   idNotIn?: InputMaybe<Array<Scalars['ID']['input']>>;
   not?: InputMaybe<TenderCompetitorWhereInput>;
   or?: InputMaybe<Array<TenderCompetitorWhereInput>>;
+  /** result field predicates */
+  result?: InputMaybe<Scalars['Boolean']['input']>;
+  resultNEQ?: InputMaybe<Scalars['Boolean']['input']>;
   /** tender_id field predicates */
   tenderID?: InputMaybe<Scalars['ID']['input']>;
   tenderIDContains?: InputMaybe<Scalars['ID']['input']>;
@@ -7062,7 +7070,7 @@ export type TopCompetitor = {
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
   shortName: Scalars['String']['output'];
-  wonTendersCount: Scalars['Int']['output'];
+  winRate: Scalars['Float']['output'];
 };
 
 /**
@@ -7532,6 +7540,8 @@ export type UpdateProvinceInput = {
 export type UpdateTenderCompetitorInput = {
   amount?: InputMaybe<Scalars['Float']['input']>;
   competitorID?: InputMaybe<Scalars['ID']['input']>;
+  /** 是否中标 */
+  result?: InputMaybe<Scalars['Boolean']['input']>;
   tenderID?: InputMaybe<Scalars['ID']['input']>;
   updatedAt?: InputMaybe<Scalars['Time']['input']>;
 };
@@ -8282,7 +8292,7 @@ export type UseCreateUserMutationMutationVariables = Exact<{
 }>;
 
 
-export type UseCreateUserMutationMutation = { __typename?: 'Mutation', createUser: { __typename?: 'UserConnection', edges?: Array<{ __typename?: 'UserEdge', node?: { __typename?: 'User', id: string, name?: string | null, email?: string | null, username?: string | null, openID: string, avatarURL?: string | null, disabled: boolean, isAdmin: boolean, isSuperAdmin: boolean, isCeo: boolean, hasMapAccess: boolean, hasEditAccess: boolean, areas: { __typename?: 'AreaConnection', edges?: Array<{ __typename?: 'AreaEdge', node?: { __typename?: 'Area', id: string, name: string } | null } | null> | null }, leader?: { __typename?: 'User', id: string, name?: string | null } | null, projects: { __typename?: 'ProjectConnection', edges?: Array<{ __typename?: 'ProjectEdge', node?: { __typename?: 'Project', id: string, code: string } | null } | null> | null } } | null } | null> | null } };
+export type UseCreateUserMutationMutation = { __typename?: 'Mutation', createUser: { __typename?: 'UserConnection', edges?: Array<{ __typename?: 'UserEdge', node?: { __typename?: 'User', id: string, name?: string | null, email?: string | null, username?: string | null, openID: string, avatarURL?: string | null, disabled: boolean, isAdmin: boolean, isSuperAdmin: boolean, isCeo: boolean, hasMapAccess: boolean, hasEditAccess: boolean, areas: { __typename?: 'AreaConnection', edges?: Array<{ __typename?: 'AreaEdge', node?: { __typename?: 'Area', id: string, name: string } | null } | null> | null }, leader?: { __typename?: 'User', id: string, name?: string | null } | null, teamMembers?: Array<{ __typename?: 'User', id: string, name?: string | null }> | null, projects: { __typename?: 'ProjectConnection', edges?: Array<{ __typename?: 'ProjectEdge', node?: { __typename?: 'Project', id: string, code: string } | null } | null> | null } } | null } | null> | null } };
 
 export type UseDeleteUserMutationMutationVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -8314,7 +8324,7 @@ export type UseUpdateUserMutationMutationVariables = Exact<{
 }>;
 
 
-export type UseUpdateUserMutationMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'User', id: string, name?: string | null, email?: string | null, username?: string | null, openID: string, avatarURL?: string | null, disabled: boolean, isSuperAdmin: boolean, isAdmin: boolean, isCeo: boolean, hasMapAccess: boolean, hasEditAccess: boolean, areas: { __typename?: 'AreaConnection', edges?: Array<{ __typename?: 'AreaEdge', node?: { __typename?: 'Area', id: string, name: string } | null } | null> | null }, leader?: { __typename?: 'User', id: string, name?: string | null } | null, projects: { __typename?: 'ProjectConnection', edges?: Array<{ __typename?: 'ProjectEdge', node?: { __typename?: 'Project', id: string, code: string } | null } | null> | null } } };
+export type UseUpdateUserMutationMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'User', id: string, name?: string | null, email?: string | null, username?: string | null, openID: string, avatarURL?: string | null, disabled: boolean, isSuperAdmin: boolean, isAdmin: boolean, isCeo: boolean, hasMapAccess: boolean, hasEditAccess: boolean, areas: { __typename?: 'AreaConnection', edges?: Array<{ __typename?: 'AreaEdge', node?: { __typename?: 'Area', id: string, name: string } | null } | null> | null }, leader?: { __typename?: 'User', id: string, name?: string | null } | null, teamMembers?: Array<{ __typename?: 'User', id: string, name?: string | null }> | null, projects: { __typename?: 'ProjectConnection', edges?: Array<{ __typename?: 'ProjectEdge', node?: { __typename?: 'Project', id: string, code: string } | null } | null> | null } } };
 
 export type Mapv2DistrictsQueryQueryVariables = Exact<{
   adcode: Scalars['Int']['input'];
@@ -8373,6 +8383,10 @@ export const UseCreateUserMutationDocument = new TypedDocumentString(`
           }
         }
         leader {
+          id
+          name
+        }
+        teamMembers {
           id
           name
         }
@@ -8437,6 +8451,10 @@ export const UseUpdateUserMutationDocument = new TypedDocumentString(`
       }
     }
     leader {
+      id
+      name
+    }
+    teamMembers {
       id
       name
     }

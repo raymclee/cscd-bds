@@ -188,7 +188,6 @@ export const mapIndexPageQuery = graphql`
     topCompetitors {
       id
       shortName
-      wonTendersCount
     }
 
     users {

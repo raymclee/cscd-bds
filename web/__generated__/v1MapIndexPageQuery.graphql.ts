@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<0c578eb64fe41fe88255534ae4b20d73>>
+ * @generated SignedSource<<9fdab6e5885dec38d98ee6db3529d9bd>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -135,7 +135,6 @@ export type v1MapIndexPageQuery$data = {
   readonly topCompetitors: ReadonlyArray<{
     readonly id: string;
     readonly shortName: string;
-    readonly wonTendersCount: number;
   }>;
   readonly users: {
     readonly edges: ReadonlyArray<{
@@ -640,13 +639,6 @@ v57 = {
       "args": null,
       "kind": "ScalarField",
       "name": "shortName",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "wonTendersCount",
       "storageKey": null
     }
   ],
@@ -1155,7 +1147,7 @@ return {
     ]
   },
   "params": {
-    "cacheID": "c34cc26693c1324303ab4d9124a1ef00",
+    "cacheID": "494b920b8359dae224f882c236518700",
     "id": null,
     "metadata": {
       "connection": [
@@ -1169,11 +1161,11 @@ return {
     },
     "name": "v1MapIndexPageQuery",
     "operationKind": "query",
-    "text": "query v1MapIndexPageQuery(\n  $userId: ID!\n  $orderBy: [TenderOrder!]\n  $first: Int\n  $last: Int\n) {\n  node(id: $userId) {\n    __typename\n    ... on User {\n      areas {\n        edges {\n          node {\n            id\n            name\n            code\n            createdAt\n            center {\n              coordinates\n            }\n            provinces {\n              edges {\n                node {\n                  id\n                  name\n                  adcode\n                  center {\n                    coordinates\n                  }\n                }\n              }\n            }\n            tenders(orderBy: $orderBy, first: $first, last: $last, where: {statusNEQ: 7, approvalStatus: 2}) {\n              edges {\n                node {\n                  id\n                  name\n                  status\n                  createdAt\n                  estimatedAmount\n                  customer {\n                    id\n                    name\n                    ownerType\n                    area {\n                      id\n                      name\n                    }\n                  }\n                  followingSales {\n                    id\n                    name\n                  }\n                  images\n                  fullAddress\n                  tenderDate\n                  discoveryDate\n                  contractor\n                  designUnit\n                  tenderForm\n                  keyProject\n                  contractForm\n                  tenderingAgency\n                  consultingFirm\n                  facadeConsultant\n                  timeLimitRating\n                  sizeAndValueRating\n                  creditAndPaymentRating\n                  customerRelationshipRating\n                  competitivePartnershipRating\n                  timeLimitRatingOverview\n                  sizeAndValueRatingOverview\n                  creditAndPaymentRatingOverview\n                  customerRelationshipRatingOverview\n                  competitivePartnershipRatingOverview\n                  tenderWinCompany\n                  tenderCode\n                  developer\n                  architect\n                  tenderClosingDate\n                  constructionArea\n                  tenderWinAmount\n                  tenderWinDate\n                  area {\n                    code\n                    name\n                    id\n                  }\n                  province {\n                    adcode\n                    name\n                    id\n                  }\n                  city {\n                    name\n                    adcode\n                    id\n                  }\n                  district {\n                    name\n                    adcode\n                    id\n                  }\n                  geoCoordinate {\n                    coordinates\n                  }\n                  geoBounds\n                  __typename\n                }\n                cursor\n              }\n              pageInfo {\n                endCursor\n                hasNextPage\n                hasPreviousPage\n                startCursor\n              }\n            }\n          }\n        }\n      }\n    }\n    id\n  }\n  topCompetitors {\n    id\n    shortName\n    wonTendersCount\n  }\n  users {\n    edges {\n      node {\n        id\n        name\n      }\n    }\n  }\n  customers {\n    edges {\n      node {\n        id\n        name\n        ownerType\n      }\n    }\n  }\n}\n"
+    "text": "query v1MapIndexPageQuery(\n  $userId: ID!\n  $orderBy: [TenderOrder!]\n  $first: Int\n  $last: Int\n) {\n  node(id: $userId) {\n    __typename\n    ... on User {\n      areas {\n        edges {\n          node {\n            id\n            name\n            code\n            createdAt\n            center {\n              coordinates\n            }\n            provinces {\n              edges {\n                node {\n                  id\n                  name\n                  adcode\n                  center {\n                    coordinates\n                  }\n                }\n              }\n            }\n            tenders(orderBy: $orderBy, first: $first, last: $last, where: {statusNEQ: 7, approvalStatus: 2}) {\n              edges {\n                node {\n                  id\n                  name\n                  status\n                  createdAt\n                  estimatedAmount\n                  customer {\n                    id\n                    name\n                    ownerType\n                    area {\n                      id\n                      name\n                    }\n                  }\n                  followingSales {\n                    id\n                    name\n                  }\n                  images\n                  fullAddress\n                  tenderDate\n                  discoveryDate\n                  contractor\n                  designUnit\n                  tenderForm\n                  keyProject\n                  contractForm\n                  tenderingAgency\n                  consultingFirm\n                  facadeConsultant\n                  timeLimitRating\n                  sizeAndValueRating\n                  creditAndPaymentRating\n                  customerRelationshipRating\n                  competitivePartnershipRating\n                  timeLimitRatingOverview\n                  sizeAndValueRatingOverview\n                  creditAndPaymentRatingOverview\n                  customerRelationshipRatingOverview\n                  competitivePartnershipRatingOverview\n                  tenderWinCompany\n                  tenderCode\n                  developer\n                  architect\n                  tenderClosingDate\n                  constructionArea\n                  tenderWinAmount\n                  tenderWinDate\n                  area {\n                    code\n                    name\n                    id\n                  }\n                  province {\n                    adcode\n                    name\n                    id\n                  }\n                  city {\n                    name\n                    adcode\n                    id\n                  }\n                  district {\n                    name\n                    adcode\n                    id\n                  }\n                  geoCoordinate {\n                    coordinates\n                  }\n                  geoBounds\n                  __typename\n                }\n                cursor\n              }\n              pageInfo {\n                endCursor\n                hasNextPage\n                hasPreviousPage\n                startCursor\n              }\n            }\n          }\n        }\n      }\n    }\n    id\n  }\n  topCompetitors {\n    id\n    shortName\n  }\n  users {\n    edges {\n      node {\n        id\n        name\n      }\n    }\n  }\n  customers {\n    edges {\n      node {\n        id\n        name\n        ownerType\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "f456ab5a2e8b23c94d60714c1d7fad95";
+(node as any).hash = "d64f4f380734172ba54dd634547840f9";
 
 export default node;

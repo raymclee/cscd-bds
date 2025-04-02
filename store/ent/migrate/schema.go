@@ -638,6 +638,7 @@ var (
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "amount", Type: field.TypeFloat64, SchemaType: map[string]string{"postgres": "numeric"}},
+		{Name: "result", Type: field.TypeBool, Default: false},
 		{Name: "competitor_id", Type: field.TypeString},
 		{Name: "tender_id", Type: field.TypeString},
 	}
@@ -649,13 +650,13 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "tender_competitors_competitors_tenders",
-				Columns:    []*schema.Column{TenderCompetitorsColumns[4]},
+				Columns:    []*schema.Column{TenderCompetitorsColumns[5]},
 				RefColumns: []*schema.Column{CompetitorsColumns[0]},
 				OnDelete:   schema.NoAction,
 			},
 			{
 				Symbol:     "tender_competitors_tenders_competitors",
-				Columns:    []*schema.Column{TenderCompetitorsColumns[5]},
+				Columns:    []*schema.Column{TenderCompetitorsColumns[6]},
 				RefColumns: []*schema.Column{TendersColumns[0]},
 				OnDelete:   schema.NoAction,
 			},

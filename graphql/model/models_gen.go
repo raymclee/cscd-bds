@@ -44,7 +44,8 @@ type Location struct {
 }
 
 type LoseTenderInput struct {
-	Competitors []*WinLostTenderCompetitorInput `json:"competitors"`
+	Competitors     []*WinLostTenderCompetitorInput `json:"competitors"`
+	TenderWinAmount float64                         `json:"tenderWinAmount"`
 }
 
 type Poi struct {
@@ -68,10 +69,10 @@ type Session struct {
 }
 
 type TopCompetitor struct {
-	ID              xid.ID `json:"id"`
-	Name            string `json:"name"`
-	ShortName       string `json:"shortName"`
-	WonTendersCount int    `json:"wonTendersCount"`
+	ID        xid.ID  `json:"id"`
+	Name      string  `json:"name"`
+	ShortName string  `json:"shortName"`
+	WinRate   float64 `json:"winRate"`
 }
 
 type WinLostTenderCompetitorInput struct {

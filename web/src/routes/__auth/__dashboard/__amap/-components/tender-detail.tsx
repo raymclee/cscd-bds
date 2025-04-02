@@ -38,6 +38,7 @@ export function TenderDetailFrame() {
       to: ".",
       search: (prev) => ({ ...prev, t: undefined }),
       replace: true,
+      resetScroll: false,
     });
   });
 

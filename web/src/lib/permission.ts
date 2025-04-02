@@ -16,7 +16,10 @@ export function canEdit(
   } = {},
 ) {
   if (tender || customer) {
-    if (tender?.status === 3 || tender?.status === 4) {
+    if (
+      tender?.activeProfile?.status === 3 ||
+      tender?.activeProfile?.status === 4
+    ) {
       return false;
     }
     const areaCode = tender?.area?.code || customer?.area?.code;
@@ -31,10 +34,10 @@ export function canEdit(
         if (session.isAdmin || session.isSuperAdmin) {
           return true;
         }
-        if (session.userId == customer?.sales?.id) {
+        if (session.userId == customer?.activeProfile?.sales?.id) {
           return true;
         }
-        if (session.userId == tender?.createdBy?.id) {
+        if (session.userId == tender?.activeProfile?.createdBy?.id) {
           return true;
         }
         if (

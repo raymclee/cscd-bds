@@ -579,6 +579,10 @@ func init() {
 	tendercompetitor.DefaultUpdatedAt = tendercompetitorDescUpdatedAt.Default.(func() time.Time)
 	// tendercompetitor.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
 	tendercompetitor.UpdateDefaultUpdatedAt = tendercompetitorDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// tendercompetitorDescResult is the schema descriptor for result field.
+	tendercompetitorDescResult := tendercompetitorFields[3].Descriptor()
+	// tendercompetitor.DefaultResult holds the default value on creation for the result field.
+	tendercompetitor.DefaultResult = tendercompetitorDescResult.Default.(bool)
 	// tendercompetitorDescID is the schema descriptor for id field.
 	tendercompetitorDescID := tendercompetitorMixinFields0[0].Descriptor()
 	// tendercompetitor.DefaultID holds the default value on creation for the id field.

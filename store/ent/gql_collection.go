@@ -4921,6 +4921,11 @@ func (tc *TenderCompetitorQuery) collectField(ctx context.Context, oneNode bool,
 				selectedFields = append(selectedFields, tendercompetitor.FieldAmount)
 				fieldSeen[tendercompetitor.FieldAmount] = struct{}{}
 			}
+		case "result":
+			if _, ok := fieldSeen[tendercompetitor.FieldResult]; !ok {
+				selectedFields = append(selectedFields, tendercompetitor.FieldResult)
+				fieldSeen[tendercompetitor.FieldResult] = struct{}{}
+			}
 		case "id":
 		case "__typename":
 		default:

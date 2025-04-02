@@ -1,6 +1,6 @@
 import { App, Button, Form, Input, Modal, Select, Space } from "antd";
 import { CheckOutlined, MinusCircleOutlined } from "@ant-design/icons";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useFragment } from "react-relay";
 import { graphql } from "react-relay";
 import { tenderWinModalFragment$key } from "__generated__/tenderWinModalFragment.graphql";
@@ -37,6 +37,13 @@ export function TenderWinModal({
   );
   const selectedCompetitors = Form.useWatch(["competitors"], form);
   const { message } = App.useApp();
+
+  const ProjectCodeInput = useMemo(() => <Input />, []);
+  const ProjectDefinitionInput = useMemo(() => <Input />, []);
+  const TenderWinAmountInput = useMemo(
+    () => <Input prefix="￥" suffix="亿元" />,
+    [],
+  );
 
   const onClose = () => {
     setOpen(false);
@@ -114,7 +121,7 @@ export function TenderWinModal({
           className="!mt-8 md:col-span-2"
           rules={[{ required: true, max: 4 }]}
         >
-          <Input />
+          {ProjectCodeInput}
         </Form.Item>
 
         <Form.Item
@@ -123,7 +130,7 @@ export function TenderWinModal({
           className="md:col-span-2"
           rules={[{ required: true, max: 10 }]}
         >
-          <Input />
+          {ProjectDefinitionInput}
         </Form.Item>
 
         <Form.Item
@@ -132,7 +139,7 @@ export function TenderWinModal({
           className="md:col-span-2"
           rules={[{ required: true }]}
         >
-          <Input prefix="￥" suffix="亿元" />
+          {TenderWinAmountInput}
         </Form.Item>
 
         <Form.Item label="竞争对手">

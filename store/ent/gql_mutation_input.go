@@ -2832,6 +2832,7 @@ type CreateTenderCompetitorInput struct {
 	CreatedAt    *time.Time
 	UpdatedAt    *time.Time
 	Amount       float64
+	Result       *bool
 	TenderID     xid.ID
 	CompetitorID xid.ID
 }
@@ -2845,6 +2846,9 @@ func (i *CreateTenderCompetitorInput) Mutate(m *TenderCompetitorMutation) {
 		m.SetUpdatedAt(*v)
 	}
 	m.SetAmount(i.Amount)
+	if v := i.Result; v != nil {
+		m.SetResult(*v)
+	}
 	m.SetTenderID(i.TenderID)
 	m.SetCompetitorID(i.CompetitorID)
 }
@@ -2859,6 +2863,7 @@ func (c *TenderCompetitorCreate) SetInput(i CreateTenderCompetitorInput) *Tender
 type UpdateTenderCompetitorInput struct {
 	UpdatedAt    *time.Time
 	Amount       *float64
+	Result       *bool
 	TenderID     *xid.ID
 	CompetitorID *xid.ID
 }
@@ -2870,6 +2875,9 @@ func (i *UpdateTenderCompetitorInput) Mutate(m *TenderCompetitorMutation) {
 	}
 	if v := i.Amount; v != nil {
 		m.SetAmount(*v)
+	}
+	if v := i.Result; v != nil {
+		m.SetResult(*v)
 	}
 	if v := i.TenderID; v != nil {
 		m.SetTenderID(*v)
