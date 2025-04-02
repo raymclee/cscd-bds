@@ -691,11 +691,13 @@ func (r *mutationResolver) UpdateTenderV2(ctx context.Context, id xid.ID, tender
 		return nil, fmt.Errorf("failed to update tender profile: %w", err)
 	}
 
+	isNewTender := true
 	// 创建新的profile
 	tpq := r.store.TenderProfile.Create().SetInput(profileInput).SetTender(t).SetCreatedByID(xid.ID(sess.UserId))
 	// 如果当前没有待审批的profile，则将新的profile设置为待审批
 	if t.Edges.ActiveProfile != nil {
 		tpq.SetApprovalStatus(2)
+		isNewTender = false
 	}
 	tp, err := tpq.Save(ctx)
 	if err != nil {
@@ -717,7 +719,7 @@ func (r *mutationResolver) UpdateTenderV2(ctx context.Context, id xid.ID, tender
 			return
 		}
 
-		if t.Edges.ActiveProfile != nil {
+		if !isNewTender {
 			chatId := r.feishu.GetSalesChatId(tpp.Edges.Tender.Edges.Area)
 			if _, err = r.feishu.SendGroupMessage(ctxx, feishu.TemplateIdTenderUpdated, &feishu.GroupMessageParams{
 				TenderProfile: tpp,
@@ -734,9 +736,10 @@ func (r *mutationResolver) UpdateTenderV2(ctx context.Context, id xid.ID, tender
 			msgId, err := r.feishu.SendChatMessage(ctxx, &feishu.ChatMessageParams{
 				TenderProfile: tpp,
 				ChatId:        u.Edges.Leader.OpenID,
+				TemplateId:    feishu.TemplateIdTenderCreateRequest,
 			})
 			if err != nil {
-				fmt.Printf("failed to send group message: %v\n", err)
+				fmt.Printf("failed to send chat message: %v\n", err)
 			}
 			if err := tpp.Update().SetApprovalMsgID(msgId).Exec(ctxx); err != nil {
 				fmt.Printf("failed to update tender profile: %v\n", err)
@@ -873,7 +876,7 @@ func (r *mutationResolver) WinTender(ctx context.Context, id xid.ID, input model
 	}
 
 	if !config.IsDev {
-		go r.sap.InsertTender(r.store, t)
+		go r.sap.InsertTender(r.store, t.ID)
 	}
 	go func() {
 		ctxx := context.Background()
@@ -945,7 +948,7 @@ func (r *mutationResolver) LoseTender(ctx context.Context, id xid.ID, input mode
 	}
 
 	if !config.IsDev {
-		go r.sap.InsertTender(r.store, t)
+		go r.sap.InsertTender(r.store, t.ID)
 	}
 	// go func() {
 	// 	ctxx := context.Background()

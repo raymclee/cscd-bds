@@ -470,7 +470,7 @@ function ApprovalModal({
     });
   };
 
-  const isPendingApproval = Boolean(customer.pendingProfile);
+  const isPendingApproval = customer.pendingProfile?.approvalStatus == 1;
 
   if (!open) {
     return (

@@ -523,12 +523,6 @@ function SHTender({
       {})
     : pendingProfile || activeProfile || {};
 
-  console.log({
-    attachments,
-    pendingProfile,
-    activeProfile,
-  });
-
   return (
     <div className="!space-y-4 lg:col-span-2 xl:col-span-3">
       <Descriptions

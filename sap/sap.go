@@ -5,7 +5,8 @@ import (
 	"cscd-bds/config"
 	"cscd-bds/store"
 	"cscd-bds/store/ent"
-	"cscd-bds/store/ent/tender"
+	"cscd-bds/store/ent/schema/xid"
+	"cscd-bds/store/ent/tenderprofile"
 	"database/sql"
 	"fmt"
 	"log"
@@ -35,16 +36,18 @@ func (s *Sap) Close() error {
 	return s.Hana.Close()
 }
 
-func (s *Sap) InsertTender(st *store.Store, t *ent.Tender) {
+func (s *Sap) InsertTender(st *store.Store, tenderId xid.ID) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	t, err := st.Tender.Query().Where(tender.ID(t.ID)).
-		WithArea().
+	t, err := st.TenderProfile.Query().Where(tenderprofile.ID(tenderId)).
+		WithTender(func(tq *ent.TenderQuery) {
+			tq.WithArea()
+			tq.WithFollowingSales()
+		}).
+		WithCreatedBy().
 		WithCustomer().
 		WithFinder().
-		WithCreatedBy().
-		WithFollowingSales().
 		Only(ctx)
 	if err != nil {
 		fmt.Println(err)
@@ -69,8 +72,8 @@ func (s *Sap) InsertTender(st *store.Store, t *ent.Tender) {
 	} else {
 		mandt = "300"
 	}
-	if t.Developer != "" {
-		customerName = t.Developer
+	if t.Developer != nil {
+		customerName = *t.Developer
 	} else {
 		customerName = t.Edges.Customer.Name
 	}
@@ -90,13 +93,13 @@ func (s *Sap) InsertTender(st *store.Store, t *ent.Tender) {
 	if t.ProjectType != nil {
 		projectType = *t.ProjectType
 	}
-	for _, s := range t.Edges.FollowingSales {
+	for _, s := range t.Edges.Tender.Edges.FollowingSales {
 		if s.Name != nil {
 			followingSalesNames = append(followingSalesNames, *s.Name)
 		}
 	}
 	followingSalesNamesStr = strings.Join(followingSalesNames, ",")
-	esAmount = strconv.FormatFloat(t.EstimatedAmount, 'f', -1, 64)
+	esAmount = strconv.FormatFloat(*t.EstimatedAmount, 'f', -1, 64)
 
 	if !t.EstimatedProjectStartDate.IsZero() {
 		estimatedProjectStartDate = t.EstimatedProjectStartDate.Format("20060102")
@@ -166,9 +169,9 @@ func (s *Sap) InsertTender(st *store.Store, t *ent.Tender) {
 		// 		VALUES (s.MANDT, s.ZBABH, s.ZXMMC, s.ZYWQY, s.ZYZMC, s.ZSJFXR, s.ZSJFXRQ, s.ZCJZ, s.ZCJRQ, s.ZSJZT, s.ZDQGZR, s.ZLOCATION, s.ZYJJE, s.ZTBSJ, s.ZXMDM, s.ZXMLX);
 		// `,
 		mandt,
-		t.Code,
+		t.Edges.Tender.Code,
 		t.Name,
-		t.Edges.Area.Name,
+		t.Edges.Tender.Edges.Area.Name,
 		customerName,
 		t.Edges.Finder.Name,
 		t.DiscoveryDate.Format("20060102"),
