@@ -35,6 +35,7 @@ func (TenderProfile) Fields() []ent.Field {
 			).
 			Comment("1 待審核 2 已通過 3 已拒絕 4 已撤回"),
 		field.String("approval_msg_id").Optional().Nillable().Comment("審核飛書訊息ID"),
+		field.Time("approval_date").Optional().Nillable().Comment("審核日期"),
 
 		field.String("name").
 			Optional().

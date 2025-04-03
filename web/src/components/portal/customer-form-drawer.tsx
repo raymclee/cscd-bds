@@ -70,9 +70,9 @@ export function CustomerFormDrawer() {
 
   useEffect(() => {
     if (customerFormOpen && !queryRef) {
-      loadQuery({ id: session.userId });
+      loadQuery({ id: session?.userId });
     }
-  }, [customerFormOpen, session.userId]);
+  }, [customerFormOpen, session?.userId]);
 
   const onClose = () => {
     usePortalStore.setState({
@@ -121,7 +121,8 @@ function CustomerForm({ queryRef }: CustomerFormProps) {
   const selectedAreaID = usePortalStore(
     (state) => state.customerFormSelectedAreaID,
   );
-  const activeProfile = selectedCustomer?.activeProfile;
+  const activeProfile =
+    selectedCustomer?.pendingProfile || selectedCustomer?.activeProfile;
   const navigate = useNavigate();
 
   const onClose = () => {
@@ -184,12 +185,12 @@ function CustomerForm({ queryRef }: CustomerFormProps) {
                     contactPersonPosition: contactPersonPosition.at(0),
                   },
                 },
-                onCompleted: () => {
+                onCompleted: (data) => {
                   message.destroy();
                   message.success("修改客户成功");
                   navigate({
-                    to: ".",
-                    search: { p: undefined },
+                    to: "/portal/customers/$id",
+                    params: { id: data.updateCustomerV2?.id },
                     replace: true,
                   });
                   onClose();
@@ -256,9 +257,14 @@ function CustomerForm({ queryRef }: CustomerFormProps) {
                     ),
                   ],
                 },
-                onCompleted: () => {
+                onCompleted: (data) => {
                   message.destroy();
                   message.success("创建客户成功");
+                  navigate({
+                    to: "/portal/customers/$id",
+                    params: { id: data.createCustomerV2?.id },
+                    replace: true,
+                  });
                   onClose();
                 },
                 onError: (error) => {
@@ -389,7 +395,6 @@ function CustomerForm({ queryRef }: CustomerFormProps) {
           <Select
             mode="tags"
             onChange={(value) => {
-              console.log({ value });
               if (value?.length == 0) {
                 form.setFieldValue("contactPersonPosition", []);
               } else if (value.at(1)) {

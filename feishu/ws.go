@@ -8,6 +8,7 @@ import (
 	"cscd-bds/store/ent/tenderprofile"
 	"cscd-bds/store/ent/user"
 	"fmt"
+	"time"
 
 	larkcore "github.com/larksuite/oapi-sdk-go/v3/core"
 	"github.com/larksuite/oapi-sdk-go/v3/event/dispatcher"
@@ -37,7 +38,7 @@ func (f *Feishu) StartWSClient(ctx context.Context) {
 						return nil, err
 					}
 
-					tp, err := f.store.TenderProfile.UpdateOneID(xid.ID(tenderId)).SetApprovalStatus(2).SetApprover(approver).Save(ctx)
+					tp, err := f.store.TenderProfile.UpdateOneID(xid.ID(tenderId)).SetApprovalStatus(2).SetApprover(approver).SetApprovalDate(time.Now()).Save(ctx)
 					if err != nil {
 						return nil, err
 					}
@@ -85,7 +86,7 @@ func (f *Feishu) StartWSClient(ctx context.Context) {
 						return nil, err
 					}
 
-					tp, err := f.store.TenderProfile.UpdateOneID(xid.ID(tenderId)).SetApprovalStatus(3).SetApprover(approver).Save(ctx)
+					tp, err := f.store.TenderProfile.UpdateOneID(xid.ID(tenderId)).SetApprovalStatus(3).SetApprover(approver).SetApprovalDate(time.Now()).Save(ctx)
 					if err != nil {
 						return nil, err
 					}
@@ -127,15 +128,31 @@ func (f *Feishu) StartWSClient(ctx context.Context) {
 
 					approver, err := f.store.User.Query().Where(user.OpenID(event.Event.Operator.OpenID)).Only(ctx)
 					if err != nil {
+						fmt.Printf("failed to get approver: %v\n", err)
 						return nil, err
 					}
 
-					cp, err := f.store.CustomerProfile.UpdateOneID(xid.ID(customerId)).SetApprovalStatus(2).SetApprover(approver).Save(ctx)
+					profile, err := f.store.CustomerProfile.Query().
+						Where(customerprofile.ID(xid.ID(customerId))).
+						WithCustomer(func(cq *ent.CustomerQuery) {
+							cq.WithActiveProfile()
+						}).
+						Only(ctx)
 					if err != nil {
 						return nil, err
 					}
+
+					isCreate := profile.Edges.Customer.Edges.ActiveProfile == nil
+
+					cp, err := profile.Update().SetApprovalStatus(2).SetApprover(approver).SetApprovalDate(time.Now()).Save(ctx)
+					if err != nil {
+						fmt.Printf("failed to update customer profile: %v\n", err)
+						return nil, err
+					}
+
 					t, err := f.store.Customer.UpdateOneID(cp.CustomerID).ClearPendingProfile().SetActiveProfile(cp).Save(ctx)
 					if err != nil {
+						fmt.Printf("failed to update customer: %v\n", err)
 						return nil, err
 					}
 
@@ -143,24 +160,47 @@ func (f *Feishu) StartWSClient(ctx context.Context) {
 						Where(customerprofile.ID(cp.ID)).
 						WithCustomer(func(tq *ent.CustomerQuery) {
 							tq.WithArea()
+							tq.WithActiveProfile()
 						}).
 						WithCreatedBy().
 						WithSales().
 						WithApprover().
 						Only(ctx)
 					if err != nil {
+						fmt.Printf("failed to get customer profile: %v\n", err)
 						return nil, err
 					}
 
-					templateId = TemplateIdCustomerApproved
+					templateId = TemplateIdCustomerFinished
 					templateVars = customerProfileTemplateVars(cpp)
+					color := ApprovedColor
+
+					var (
+						title  string
+						result string
+					)
+
+					if isCreate {
+						title = CreateCustomerApprovedTitle
+						result = CreateCustomerApprovedResult
+					} else {
+						title = UpdateCustomerApprovedTitle
+						result = UpdateCustomerApprovedResult
+					}
+
+					templateVars["title"] = title
+					templateVars["color"] = color
+					templateVars["result"] = result
 
 					go func() {
 						ctxx := context.Background()
 						chatId := f.GetSalesChatId(t.Edges.Area)
-						if _, err := f.SendGroupMessage(ctxx, TemplateIdCustomerApproved, &GroupMessageParams{
-							CustomerProfile: cpp,
-							ChatId:          chatId,
+						if _, err := f.SendGroupMessage(ctxx, templateId, &GroupMessageParams{
+							CustomerProfile:    cpp,
+							ChatId:             chatId,
+							CustomerCardTitle:  title,
+							CustomerCardColor:  color,
+							CustomerCardResult: result,
 						}); err != nil {
 							fmt.Printf("failed to send group message: %v\n", err)
 						}
@@ -177,7 +217,19 @@ func (f *Feishu) StartWSClient(ctx context.Context) {
 						return nil, err
 					}
 
-					cp, err := f.store.CustomerProfile.UpdateOneID(xid.ID(customerId)).SetApprovalStatus(3).SetApprover(approver).Save(ctx)
+					profile, err := f.store.CustomerProfile.Query().
+						Where(customerprofile.ID(xid.ID(customerId))).
+						WithCustomer(func(cq *ent.CustomerQuery) {
+							cq.WithActiveProfile()
+						}).
+						Only(ctx)
+					if err != nil {
+						return nil, err
+					}
+
+					isCreate := profile.Edges.Customer.Edges.ActiveProfile == nil
+
+					cp, err := profile.Update().SetApprovalStatus(3).SetApprover(approver).SetApprovalDate(time.Now()).Save(ctx)
 					if err != nil {
 						return nil, err
 					}
@@ -186,6 +238,7 @@ func (f *Feishu) StartWSClient(ctx context.Context) {
 						Where(customerprofile.ID(cp.ID)).
 						WithCustomer(func(tq *ent.CustomerQuery) {
 							tq.WithArea()
+							tq.WithActiveProfile()
 						}).
 						WithCreatedBy().
 						WithApprover().
@@ -195,15 +248,35 @@ func (f *Feishu) StartWSClient(ctx context.Context) {
 						return nil, err
 					}
 
-					templateId = TemplateIdCustomerRejected
+					templateId = TemplateIdCustomerFinished
 					templateVars = customerProfileTemplateVars(cpp)
+					color := RejectedColor
+
+					var (
+						title  string
+						result string
+					)
+					if isCreate {
+						title = CreateCustomerRejectedTitle
+						result = CreateCustomerRejectedResult
+					} else {
+						title = UpdateCustomerRejectedTitle
+						result = UpdateCustomerRejectedResult
+					}
+
+					templateVars["title"] = title
+					templateVars["color"] = color
+					templateVars["result"] = result
 
 					go func() {
 						ctxx := context.Background()
 						chatId := f.GetSalesChatId(cpp.Edges.Customer.Edges.Area)
-						if _, err := f.SendGroupMessage(ctxx, TemplateIdCustomerRejected, &GroupMessageParams{
-							CustomerProfile: cpp,
-							ChatId:          chatId,
+						if _, err := f.SendGroupMessage(ctxx, templateId, &GroupMessageParams{
+							CustomerProfile:    cpp,
+							ChatId:             chatId,
+							CustomerCardTitle:  title,
+							CustomerCardColor:  color,
+							CustomerCardResult: result,
 						}); err != nil {
 							fmt.Printf("failed to send group message: %v\n", err)
 						}

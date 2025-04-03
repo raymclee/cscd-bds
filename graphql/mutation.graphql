@@ -78,7 +78,9 @@ input WinTenderInput {
 
 input LoseTenderInput {
   competitors: [WinLostTenderCompetitorInput!]!
-  tenderWinAmount: Float!
+  winCompetitorId: ID!
+  winAmount: Float!
+  tenderAmount: Float!
 }
 
 input WinLostTenderCompetitorInput {

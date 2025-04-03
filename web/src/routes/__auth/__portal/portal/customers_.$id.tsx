@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { loadQuery } from "react-relay";
 import node, {
   customersDetailPageQuery,
@@ -20,7 +20,7 @@ export const Route = createFileRoute("/__auth/__portal/portal/customers_/$id")({
   loader({ context: { RelayEnvironment, session }, params: { id } }) {
     return loadQuery<customersDetailPageQuery>(RelayEnvironment, node, {
       id,
-      userId: session.userId,
+      userId: session?.userId,
       // orderBy: [{ field: "DATE", direction: "DESC" }],
       // where: { customerID: id },
     });

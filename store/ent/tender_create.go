@@ -804,6 +804,20 @@ func (tc *TenderCreate) SetNillableTenderWinAmount(f *float64) *TenderCreate {
 	return tc
 }
 
+// SetTenderAmount sets the "tender_amount" field.
+func (tc *TenderCreate) SetTenderAmount(f float64) *TenderCreate {
+	tc.mutation.SetTenderAmount(f)
+	return tc
+}
+
+// SetNillableTenderAmount sets the "tender_amount" field if the given value is not nil.
+func (tc *TenderCreate) SetNillableTenderAmount(f *float64) *TenderCreate {
+	if f != nil {
+		tc.SetTenderAmount(*f)
+	}
+	return tc
+}
+
 // SetLastTenderAmount sets the "last_tender_amount" field.
 func (tc *TenderCreate) SetLastTenderAmount(f float64) *TenderCreate {
 	tc.mutation.SetLastTenderAmount(f)
@@ -1470,35 +1484,39 @@ func (tc *TenderCreate) createSpec() (*Tender, *sqlgraph.CreateSpec) {
 	}
 	if value, ok := tc.mutation.TenderCode(); ok {
 		_spec.SetField(tender.FieldTenderCode, field.TypeString, value)
-		_node.TenderCode = value
+		_node.TenderCode = &value
 	}
 	if value, ok := tc.mutation.Architect(); ok {
 		_spec.SetField(tender.FieldArchitect, field.TypeString, value)
-		_node.Architect = value
+		_node.Architect = &value
 	}
 	if value, ok := tc.mutation.Developer(); ok {
 		_spec.SetField(tender.FieldDeveloper, field.TypeString, value)
-		_node.Developer = value
+		_node.Developer = &value
 	}
 	if value, ok := tc.mutation.TenderClosingDate(); ok {
 		_spec.SetField(tender.FieldTenderClosingDate, field.TypeTime, value)
-		_node.TenderClosingDate = value
+		_node.TenderClosingDate = &value
 	}
 	if value, ok := tc.mutation.ConstructionArea(); ok {
 		_spec.SetField(tender.FieldConstructionArea, field.TypeString, value)
-		_node.ConstructionArea = value
+		_node.ConstructionArea = &value
 	}
 	if value, ok := tc.mutation.TenderWinDate(); ok {
 		_spec.SetField(tender.FieldTenderWinDate, field.TypeTime, value)
-		_node.TenderWinDate = value
+		_node.TenderWinDate = &value
 	}
 	if value, ok := tc.mutation.TenderWinAmount(); ok {
 		_spec.SetField(tender.FieldTenderWinAmount, field.TypeFloat64, value)
-		_node.TenderWinAmount = value
+		_node.TenderWinAmount = &value
+	}
+	if value, ok := tc.mutation.TenderAmount(); ok {
+		_spec.SetField(tender.FieldTenderAmount, field.TypeFloat64, value)
+		_node.TenderAmount = &value
 	}
 	if value, ok := tc.mutation.LastTenderAmount(); ok {
 		_spec.SetField(tender.FieldLastTenderAmount, field.TypeFloat64, value)
-		_node.LastTenderAmount = value
+		_node.LastTenderAmount = &value
 	}
 	if nodes := tc.mutation.AreaIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
@@ -2845,6 +2863,30 @@ func (u *TenderUpsert) AddTenderWinAmount(v float64) *TenderUpsert {
 // ClearTenderWinAmount clears the value of the "tender_win_amount" field.
 func (u *TenderUpsert) ClearTenderWinAmount() *TenderUpsert {
 	u.SetNull(tender.FieldTenderWinAmount)
+	return u
+}
+
+// SetTenderAmount sets the "tender_amount" field.
+func (u *TenderUpsert) SetTenderAmount(v float64) *TenderUpsert {
+	u.Set(tender.FieldTenderAmount, v)
+	return u
+}
+
+// UpdateTenderAmount sets the "tender_amount" field to the value that was provided on create.
+func (u *TenderUpsert) UpdateTenderAmount() *TenderUpsert {
+	u.SetExcluded(tender.FieldTenderAmount)
+	return u
+}
+
+// AddTenderAmount adds v to the "tender_amount" field.
+func (u *TenderUpsert) AddTenderAmount(v float64) *TenderUpsert {
+	u.Add(tender.FieldTenderAmount, v)
+	return u
+}
+
+// ClearTenderAmount clears the value of the "tender_amount" field.
+func (u *TenderUpsert) ClearTenderAmount() *TenderUpsert {
+	u.SetNull(tender.FieldTenderAmount)
 	return u
 }
 
@@ -4333,6 +4375,34 @@ func (u *TenderUpsertOne) UpdateTenderWinAmount() *TenderUpsertOne {
 func (u *TenderUpsertOne) ClearTenderWinAmount() *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
 		s.ClearTenderWinAmount()
+	})
+}
+
+// SetTenderAmount sets the "tender_amount" field.
+func (u *TenderUpsertOne) SetTenderAmount(v float64) *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetTenderAmount(v)
+	})
+}
+
+// AddTenderAmount adds v to the "tender_amount" field.
+func (u *TenderUpsertOne) AddTenderAmount(v float64) *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.AddTenderAmount(v)
+	})
+}
+
+// UpdateTenderAmount sets the "tender_amount" field to the value that was provided on create.
+func (u *TenderUpsertOne) UpdateTenderAmount() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateTenderAmount()
+	})
+}
+
+// ClearTenderAmount clears the value of the "tender_amount" field.
+func (u *TenderUpsertOne) ClearTenderAmount() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearTenderAmount()
 	})
 }
 
@@ -6021,6 +6091,34 @@ func (u *TenderUpsertBulk) UpdateTenderWinAmount() *TenderUpsertBulk {
 func (u *TenderUpsertBulk) ClearTenderWinAmount() *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
 		s.ClearTenderWinAmount()
+	})
+}
+
+// SetTenderAmount sets the "tender_amount" field.
+func (u *TenderUpsertBulk) SetTenderAmount(v float64) *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetTenderAmount(v)
+	})
+}
+
+// AddTenderAmount adds v to the "tender_amount" field.
+func (u *TenderUpsertBulk) AddTenderAmount(v float64) *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.AddTenderAmount(v)
+	})
+}
+
+// UpdateTenderAmount sets the "tender_amount" field to the value that was provided on create.
+func (u *TenderUpsertBulk) UpdateTenderAmount() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateTenderAmount()
+	})
+}
+
+// ClearTenderAmount clears the value of the "tender_amount" field.
+func (u *TenderUpsertBulk) ClearTenderAmount() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearTenderAmount()
 	})
 }
 

@@ -74,6 +74,7 @@ export const TenderDetailFragment = graphql`
     activeProfile {
       id
       createdAt
+      updatedAt
       approvalStatus
       approver {
         id
@@ -261,6 +262,7 @@ export const TenderDetailFragment = graphql`
           id
           createdAt
           approvalStatus
+          approvalDate
           approver {
             id
             name
@@ -380,7 +382,7 @@ export function TenderDetail({
         <div className={cn("top-28 mt-8 self-start lg:sticky")}>
           <ScrollArea className={cn("h-[calc(100vh-128px)]")}>
             <Timeline
-              className="py-2 pr-4 lg:-ml-28"
+              className="py-2 pr-4 lg:-ml-20"
               mode="left"
               items={[
                 ...(profiles?.edges?.map((e, i) => {
@@ -410,7 +412,11 @@ export function TenderDetail({
                     // ),
                     label: (
                       <div>
-                        {isActive && <Tag color="blue">当前</Tag>}
+                        {isActive && (
+                          <div className="mb-1">
+                            <Tag color="blue">当前</Tag>
+                          </div>
+                        )}
                         {isPending && <Tag color="green">待审批</Tag>}
                         {isApproved && <Tag color="green">已审批</Tag>}
                         {isRejected && <Tag color="red">已拒绝</Tag>}
@@ -436,9 +442,16 @@ export function TenderDetail({
                           {`${e?.node?.createdBy?.name} ${action}商机`}
                         </div>
                         {isApproved && (
-                          <div className="text-sm text-gray-500">
-                            {e?.node?.approver?.name || "系统"} 批核了
-                          </div>
+                          <>
+                            {e?.node.approvalDate && (
+                              <div className="text-sm text-gray-500">
+                                {dayjs(e?.node.approvalDate).format("LLL")}
+                              </div>
+                            )}
+                            <div className="text-sm text-gray-500">
+                              {e?.node?.approver?.name || "系统"} 批核了
+                            </div>
+                          </>
                         )}
                         {isRejected && (
                           <div className="text-sm text-gray-500">
@@ -533,9 +546,9 @@ function SHTender({
               <span>{name}</span>
               <div className="flex items-center">
                 <Tag>{area.name}</Tag>
-                {/* <Tag color={approvalStatusTagColor(approvalStatus)}>
+                <Tag color={approvalStatusTagColor(approvalStatus)}>
                   {approvalStatusText(approvalStatus)}
-                </Tag> */}
+                </Tag>
               </div>
             </div>
             {canEdit(session, { tender }) && (
@@ -1129,7 +1142,7 @@ function ApprovalModal({ tender }: { tender: tenderDetailFragment$data }) {
           </Button>,
         ]}
       >
-        <p>确定批核该客户更新吗？</p>
+        <p>确定批核该申请吗？</p>
       </Modal>
     </>
   );

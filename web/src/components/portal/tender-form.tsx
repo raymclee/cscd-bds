@@ -328,6 +328,7 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
                 profileInput: {
                   ...input,
                   tenderID: tender.id,
+                  geoCoordinate,
                   estimatedAmount: toActualAmount(estimatedAmount),
                   tenderWinAmount: tenderWinAmount
                     ? toActualAmount(tenderWinAmount)
@@ -374,6 +375,7 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
               profileInput: {
                 ...input,
                 tenderID: tender.id,
+                geoCoordinate,
                 estimatedAmount: toActualAmount(estimatedAmount),
                 tenderWinAmount: tenderWinAmount
                   ? toActualAmount(tenderWinAmount)
@@ -446,6 +448,7 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
                 profileInput: {
                   ...input,
                   tenderID: "",
+                  geoCoordinate,
                   estimatedAmount: toActualAmount(estimatedAmount),
                   tenderWinAmount: tenderWinAmount
                     ? toActualAmount(tenderWinAmount)
@@ -490,6 +493,7 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
               profileInput: {
                 ...input,
                 tenderID: "",
+                geoCoordinate,
                 estimatedAmount: toActualAmount(estimatedAmount),
                 tenderWinAmount: tenderWinAmount
                   ? toActualAmount(tenderWinAmount)
@@ -588,6 +592,7 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
                   "tenderDate",
                   "address",
                   "fullAddress",
+                  "geoCoordinate",
                 ]);
               }}
             />
@@ -889,7 +894,16 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
                 label="分类"
                 rules={[{ required: true }]}
               >
-                <Select options={classifyOptions} />
+                <Select
+                  options={classifyOptions}
+                  onSelect={(v) => {
+                    if (v == 1) {
+                      form.setFieldValue("keyProject", true);
+                    } else {
+                      form.setFieldValue("keyProject", false);
+                    }
+                  }}
+                />
               </Form.Item>
 
               <Form.Item name="followingSaleIDs" label="当前跟踪人">
@@ -1355,7 +1369,7 @@ function ProvinceCityDistrictSelectorLoader({
               form.setFieldValue("provinceID", data.province?.id);
               form.setFieldValue("cityID", data.city?.id);
               form.setFieldValue("districtID", data.district?.id);
-              form.setFieldValue("geoCoordinate", [data.lng, data.lat]);
+              form.setFieldValue("geoCoordinate", [data.lat, data.lng]);
             }}
           />
         ) : (

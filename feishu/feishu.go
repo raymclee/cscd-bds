@@ -15,15 +15,32 @@ import (
 )
 
 const (
-	TemplateIdTenderCreateRequest   = "AAqBNW44n7ilw"
-	TemplateIdTenderApproved        = "AAqBWVpaKCZdj"
-	TemplateIdTenderRejected        = "AAqBP5xjh7xEX"
-	TemplateIdTenderUpdated         = "AAqBTrx72i3Sg"
-	TemplateIdCustomerUpdateRequest = "AAqBGHwfrmoK6"
-	TemplateIdCustomerCreateRequest = "AAqBNaYBYPmu8"
-	TemplateIdCustomerApproved      = "AAqBTqzWTYgz2"
-	TemplateIdCustomerRejected      = "AAqBTqnEDgP5x"
-	TemplateIdTenderWin             = "AAqBGFwKSuNWp"
+	TemplateIdTenderCreateRequest = "AAqBNW44n7ilw"
+	TemplateIdTenderApproved      = "AAqBWVpaKCZdj"
+	TemplateIdTenderRejected      = "AAqBP5xjh7xEX"
+	TemplateIdTenderUpdated       = "AAqBTrx72i3Sg"
+	TemplateIdTenderCanceled      = ""
+	// TemplateIdCustomerUpdateRequest = "AAqBGHwfrmoK6"
+	TemplateIdCustomerRequest  = "AAqBNaYBYPmu8"
+	TemplateIdCustomerFinished = "AAqBTqzWTYgz2"
+	// TemplateIdCustomerRejected = "AAqBTqnEDgP5x"
+	TemplateIdCustomerCanceled = "AAqR70Yp3EhmT"
+	TemplateIdTenderWin        = "AAqBGFwKSuNWp"
+
+	CreateCustomerRequestTitle   = "你有一个客户新增申请待审批"
+	CreateCustomerApprovedTitle  = "该客户新增申请已审批通过"
+	CreateCustomerRejectedTitle  = "该客户新增申请已驳回"
+	CreateCustomerApprovedResult = "已审批通过该申请"
+	CreateCustomerRejectedResult = "已驳回该申请"
+
+	UpdateCustomerRequestTitle   = "你有一个客户更新申请待审批"
+	UpdateCustomerApprovedTitle  = "该客户更新申请已审批通过"
+	UpdateCustomerRejectedTitle  = "该客户更新申请已驳回"
+	UpdateCustomerApprovedResult = "已审批通过该申请"
+	UpdateCustomerRejectedResult = "已驳回该申请"
+
+	ApprovedColor = "green"
+	RejectedColor = "red"
 )
 
 type Feishu struct {

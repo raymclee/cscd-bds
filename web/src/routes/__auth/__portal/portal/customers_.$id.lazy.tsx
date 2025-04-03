@@ -26,8 +26,8 @@ function RouteComponent() {
         $first: Int
         $last: Int
         $userId: ID! # $orderBy: [VisitRecordOrder!]!
-      ) # $where: VisitRecordWhereInput
-      {
+        # $where: VisitRecordWhereInput
+      ) {
         node(id: $id) {
           ... on Customer {
             id
@@ -81,6 +81,7 @@ function RouteComponent() {
                   ownerType
                   industry
                   size
+                  approvalDate
                   approvalStatus
                   contactPerson
                   contactPersonPosition
@@ -187,11 +188,11 @@ function RouteComponent() {
         {/* {tab === 2 && data.user && <CustomerVisitRecordList user={data.user} />} */}
       </Card>
 
-      <div className={cn("self-start mt-8 top-28 lg:sticky")}>
+      <div className={cn("top-28 mt-8 self-start lg:sticky")}>
         <ScrollArea className={cn("h-[calc(100vh-128px)]")}>
           <Timeline
             mode="left"
-            className="py-2 pr-4 lg:-ml-28"
+            className="py-2 pr-4 lg:-ml-20"
             items={customer.profiles?.edges?.map((e, i) => {
               const isFirst =
                 customer.profiles?.edges &&
@@ -202,8 +203,13 @@ function RouteComponent() {
               const isRejected = e?.node?.approvalStatus == 3;
               const isCancelled = e?.node?.approvalStatus == 4;
               const isActive = customer.activeProfile?.id === e?.node?.id;
+
+              const activeId =
+                selectedProfile?.id ||
+                customer.pendingProfile?.id ||
+                customer.activeProfile?.id;
               return {
-                color: isActive ? undefined : "gray",
+                color: activeId == e?.node?.id ? undefined : "gray",
                 // label: isActive ? (
                 //   <Tag color="blue">当前</Tag>
                 // ) : isPending ? (
@@ -215,7 +221,11 @@ function RouteComponent() {
                 // ),
                 label: (
                   <div>
-                    {isActive && <Tag color="blue">当前</Tag>}
+                    {isActive && (
+                      <div className="mb-1">
+                        <Tag color="blue">当前</Tag>
+                      </div>
+                    )}
                     {isPending && <Tag color="green">待审批</Tag>}
                     {isApproved && <Tag color="green">已审批</Tag>}
                     {isRejected && <Tag color="red">已拒绝</Tag>}
@@ -228,10 +238,6 @@ function RouteComponent() {
                     search={(prev) => ({ ...prev, p: e?.node?.id })}
                     preload={false}
                     className="flex flex-col gap-1"
-                    activeOptions={{
-                      includeSearch: true,
-                    }}
-                    activeProps={{ className: "font-bold" }}
                     replace
                     onClick={() => {
                       if (selectedProfile?.id) {
@@ -247,12 +253,19 @@ function RouteComponent() {
                       <span>{dayjs(e?.node?.createdAt).format("LLL")}</span>
                     </div>
                     <div className="text-sm text-gray-500">
-                      {`${e?.node?.createdBy?.name} ${action}商机`}
+                      {`${e?.node?.createdBy?.name} ${action}客户`}
                     </div>
                     {isApproved && (
-                      <div className="text-sm text-gray-500">
-                        {e?.node?.approver?.name || "系统"} 批核了
-                      </div>
+                      <>
+                        {e?.node.approvalDate && (
+                          <div className="text-sm text-gray-500">
+                            {dayjs(e?.node.approvalDate).format("LLL")}
+                          </div>
+                        )}
+                        <div className="text-sm text-gray-500">
+                          {e?.node?.approver?.name || "系统"} 批核了
+                        </div>
+                      </>
                     )}
                     {isRejected && (
                       <div className="text-sm text-gray-500">

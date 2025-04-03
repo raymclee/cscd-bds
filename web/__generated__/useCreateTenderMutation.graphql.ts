@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<92667ae14de827504292dad4710eb9eb>>
+ * @generated SignedSource<<be6adb6fcd30ffb4c5211d7b3a2c7c5a>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -86,6 +86,7 @@ export type CreateTenderInput = {
 };
 export type CreateTenderProfileInput = {
   address?: string | null | undefined;
+  approvalDate?: any | null | undefined;
   approvalMsgID?: string | null | undefined;
   approvalStatus?: number | null | undefined;
   approverID?: string | null | undefined;

@@ -76,6 +76,16 @@ func ApprovalStatus(v int) predicate.CustomerProfile {
 	return predicate.CustomerProfile(sql.FieldEQ(FieldApprovalStatus, v))
 }
 
+// ApprovalMsgID applies equality check predicate on the "approval_msg_id" field. It's identical to ApprovalMsgIDEQ.
+func ApprovalMsgID(v string) predicate.CustomerProfile {
+	return predicate.CustomerProfile(sql.FieldEQ(FieldApprovalMsgID, v))
+}
+
+// ApprovalDate applies equality check predicate on the "approval_date" field. It's identical to ApprovalDateEQ.
+func ApprovalDate(v time.Time) predicate.CustomerProfile {
+	return predicate.CustomerProfile(sql.FieldEQ(FieldApprovalDate, v))
+}
+
 // OwnerType applies equality check predicate on the "owner_type" field. It's identical to OwnerTypeEQ.
 func OwnerType(v int) predicate.CustomerProfile {
 	return predicate.CustomerProfile(sql.FieldEQ(FieldOwnerType, v))
@@ -314,6 +324,131 @@ func ApprovalStatusLT(v int) predicate.CustomerProfile {
 // ApprovalStatusLTE applies the LTE predicate on the "approval_status" field.
 func ApprovalStatusLTE(v int) predicate.CustomerProfile {
 	return predicate.CustomerProfile(sql.FieldLTE(FieldApprovalStatus, v))
+}
+
+// ApprovalMsgIDEQ applies the EQ predicate on the "approval_msg_id" field.
+func ApprovalMsgIDEQ(v string) predicate.CustomerProfile {
+	return predicate.CustomerProfile(sql.FieldEQ(FieldApprovalMsgID, v))
+}
+
+// ApprovalMsgIDNEQ applies the NEQ predicate on the "approval_msg_id" field.
+func ApprovalMsgIDNEQ(v string) predicate.CustomerProfile {
+	return predicate.CustomerProfile(sql.FieldNEQ(FieldApprovalMsgID, v))
+}
+
+// ApprovalMsgIDIn applies the In predicate on the "approval_msg_id" field.
+func ApprovalMsgIDIn(vs ...string) predicate.CustomerProfile {
+	return predicate.CustomerProfile(sql.FieldIn(FieldApprovalMsgID, vs...))
+}
+
+// ApprovalMsgIDNotIn applies the NotIn predicate on the "approval_msg_id" field.
+func ApprovalMsgIDNotIn(vs ...string) predicate.CustomerProfile {
+	return predicate.CustomerProfile(sql.FieldNotIn(FieldApprovalMsgID, vs...))
+}
+
+// ApprovalMsgIDGT applies the GT predicate on the "approval_msg_id" field.
+func ApprovalMsgIDGT(v string) predicate.CustomerProfile {
+	return predicate.CustomerProfile(sql.FieldGT(FieldApprovalMsgID, v))
+}
+
+// ApprovalMsgIDGTE applies the GTE predicate on the "approval_msg_id" field.
+func ApprovalMsgIDGTE(v string) predicate.CustomerProfile {
+	return predicate.CustomerProfile(sql.FieldGTE(FieldApprovalMsgID, v))
+}
+
+// ApprovalMsgIDLT applies the LT predicate on the "approval_msg_id" field.
+func ApprovalMsgIDLT(v string) predicate.CustomerProfile {
+	return predicate.CustomerProfile(sql.FieldLT(FieldApprovalMsgID, v))
+}
+
+// ApprovalMsgIDLTE applies the LTE predicate on the "approval_msg_id" field.
+func ApprovalMsgIDLTE(v string) predicate.CustomerProfile {
+	return predicate.CustomerProfile(sql.FieldLTE(FieldApprovalMsgID, v))
+}
+
+// ApprovalMsgIDContains applies the Contains predicate on the "approval_msg_id" field.
+func ApprovalMsgIDContains(v string) predicate.CustomerProfile {
+	return predicate.CustomerProfile(sql.FieldContains(FieldApprovalMsgID, v))
+}
+
+// ApprovalMsgIDHasPrefix applies the HasPrefix predicate on the "approval_msg_id" field.
+func ApprovalMsgIDHasPrefix(v string) predicate.CustomerProfile {
+	return predicate.CustomerProfile(sql.FieldHasPrefix(FieldApprovalMsgID, v))
+}
+
+// ApprovalMsgIDHasSuffix applies the HasSuffix predicate on the "approval_msg_id" field.
+func ApprovalMsgIDHasSuffix(v string) predicate.CustomerProfile {
+	return predicate.CustomerProfile(sql.FieldHasSuffix(FieldApprovalMsgID, v))
+}
+
+// ApprovalMsgIDIsNil applies the IsNil predicate on the "approval_msg_id" field.
+func ApprovalMsgIDIsNil() predicate.CustomerProfile {
+	return predicate.CustomerProfile(sql.FieldIsNull(FieldApprovalMsgID))
+}
+
+// ApprovalMsgIDNotNil applies the NotNil predicate on the "approval_msg_id" field.
+func ApprovalMsgIDNotNil() predicate.CustomerProfile {
+	return predicate.CustomerProfile(sql.FieldNotNull(FieldApprovalMsgID))
+}
+
+// ApprovalMsgIDEqualFold applies the EqualFold predicate on the "approval_msg_id" field.
+func ApprovalMsgIDEqualFold(v string) predicate.CustomerProfile {
+	return predicate.CustomerProfile(sql.FieldEqualFold(FieldApprovalMsgID, v))
+}
+
+// ApprovalMsgIDContainsFold applies the ContainsFold predicate on the "approval_msg_id" field.
+func ApprovalMsgIDContainsFold(v string) predicate.CustomerProfile {
+	return predicate.CustomerProfile(sql.FieldContainsFold(FieldApprovalMsgID, v))
+}
+
+// ApprovalDateEQ applies the EQ predicate on the "approval_date" field.
+func ApprovalDateEQ(v time.Time) predicate.CustomerProfile {
+	return predicate.CustomerProfile(sql.FieldEQ(FieldApprovalDate, v))
+}
+
+// ApprovalDateNEQ applies the NEQ predicate on the "approval_date" field.
+func ApprovalDateNEQ(v time.Time) predicate.CustomerProfile {
+	return predicate.CustomerProfile(sql.FieldNEQ(FieldApprovalDate, v))
+}
+
+// ApprovalDateIn applies the In predicate on the "approval_date" field.
+func ApprovalDateIn(vs ...time.Time) predicate.CustomerProfile {
+	return predicate.CustomerProfile(sql.FieldIn(FieldApprovalDate, vs...))
+}
+
+// ApprovalDateNotIn applies the NotIn predicate on the "approval_date" field.
+func ApprovalDateNotIn(vs ...time.Time) predicate.CustomerProfile {
+	return predicate.CustomerProfile(sql.FieldNotIn(FieldApprovalDate, vs...))
+}
+
+// ApprovalDateGT applies the GT predicate on the "approval_date" field.
+func ApprovalDateGT(v time.Time) predicate.CustomerProfile {
+	return predicate.CustomerProfile(sql.FieldGT(FieldApprovalDate, v))
+}
+
+// ApprovalDateGTE applies the GTE predicate on the "approval_date" field.
+func ApprovalDateGTE(v time.Time) predicate.CustomerProfile {
+	return predicate.CustomerProfile(sql.FieldGTE(FieldApprovalDate, v))
+}
+
+// ApprovalDateLT applies the LT predicate on the "approval_date" field.
+func ApprovalDateLT(v time.Time) predicate.CustomerProfile {
+	return predicate.CustomerProfile(sql.FieldLT(FieldApprovalDate, v))
+}
+
+// ApprovalDateLTE applies the LTE predicate on the "approval_date" field.
+func ApprovalDateLTE(v time.Time) predicate.CustomerProfile {
+	return predicate.CustomerProfile(sql.FieldLTE(FieldApprovalDate, v))
+}
+
+// ApprovalDateIsNil applies the IsNil predicate on the "approval_date" field.
+func ApprovalDateIsNil() predicate.CustomerProfile {
+	return predicate.CustomerProfile(sql.FieldIsNull(FieldApprovalDate))
+}
+
+// ApprovalDateNotNil applies the NotNil predicate on the "approval_date" field.
+func ApprovalDateNotNil() predicate.CustomerProfile {
+	return predicate.CustomerProfile(sql.FieldNotNull(FieldApprovalDate))
 }
 
 // OwnerTypeEQ applies the EQ predicate on the "owner_type" field.

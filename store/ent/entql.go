@@ -155,6 +155,8 @@ var schemaGraph = func() *sqlgraph.Schema {
 			customerprofile.FieldUpdatedAt:             {Type: field.TypeTime, Column: customerprofile.FieldUpdatedAt},
 			customerprofile.FieldName:                  {Type: field.TypeString, Column: customerprofile.FieldName},
 			customerprofile.FieldApprovalStatus:        {Type: field.TypeInt, Column: customerprofile.FieldApprovalStatus},
+			customerprofile.FieldApprovalMsgID:         {Type: field.TypeString, Column: customerprofile.FieldApprovalMsgID},
+			customerprofile.FieldApprovalDate:          {Type: field.TypeTime, Column: customerprofile.FieldApprovalDate},
 			customerprofile.FieldOwnerType:             {Type: field.TypeInt, Column: customerprofile.FieldOwnerType},
 			customerprofile.FieldIndustry:              {Type: field.TypeInt, Column: customerprofile.FieldIndustry},
 			customerprofile.FieldSize:                  {Type: field.TypeInt, Column: customerprofile.FieldSize},
@@ -409,6 +411,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			tender.FieldConstructionArea:                     {Type: field.TypeString, Column: tender.FieldConstructionArea},
 			tender.FieldTenderWinDate:                        {Type: field.TypeTime, Column: tender.FieldTenderWinDate},
 			tender.FieldTenderWinAmount:                      {Type: field.TypeFloat64, Column: tender.FieldTenderWinAmount},
+			tender.FieldTenderAmount:                         {Type: field.TypeFloat64, Column: tender.FieldTenderAmount},
 			tender.FieldLastTenderAmount:                     {Type: field.TypeFloat64, Column: tender.FieldLastTenderAmount},
 			tender.FieldAreaID:                               {Type: field.TypeString, Column: tender.FieldAreaID},
 			tender.FieldProvinceID:                           {Type: field.TypeString, Column: tender.FieldProvinceID},
@@ -457,6 +460,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			tenderprofile.FieldStatus:                               {Type: field.TypeInt, Column: tenderprofile.FieldStatus},
 			tenderprofile.FieldApprovalStatus:                       {Type: field.TypeInt, Column: tenderprofile.FieldApprovalStatus},
 			tenderprofile.FieldApprovalMsgID:                        {Type: field.TypeString, Column: tenderprofile.FieldApprovalMsgID},
+			tenderprofile.FieldApprovalDate:                         {Type: field.TypeTime, Column: tenderprofile.FieldApprovalDate},
 			tenderprofile.FieldName:                                 {Type: field.TypeString, Column: tenderprofile.FieldName},
 			tenderprofile.FieldEstimatedAmount:                      {Type: field.TypeFloat64, Column: tenderprofile.FieldEstimatedAmount},
 			tenderprofile.FieldTenderDate:                           {Type: field.TypeTime, Column: tenderprofile.FieldTenderDate},
@@ -2136,6 +2140,16 @@ func (f *CustomerProfileFilter) WhereApprovalStatus(p entql.IntP) {
 	f.Where(p.Field(customerprofile.FieldApprovalStatus))
 }
 
+// WhereApprovalMsgID applies the entql string predicate on the approval_msg_id field.
+func (f *CustomerProfileFilter) WhereApprovalMsgID(p entql.StringP) {
+	f.Where(p.Field(customerprofile.FieldApprovalMsgID))
+}
+
+// WhereApprovalDate applies the entql time.Time predicate on the approval_date field.
+func (f *CustomerProfileFilter) WhereApprovalDate(p entql.TimeP) {
+	f.Where(p.Field(customerprofile.FieldApprovalDate))
+}
+
 // WhereOwnerType applies the entql int predicate on the owner_type field.
 func (f *CustomerProfileFilter) WhereOwnerType(p entql.IntP) {
 	f.Where(p.Field(customerprofile.FieldOwnerType))
@@ -3416,6 +3430,11 @@ func (f *TenderFilter) WhereTenderWinAmount(p entql.Float64P) {
 	f.Where(p.Field(tender.FieldTenderWinAmount))
 }
 
+// WhereTenderAmount applies the entql float64 predicate on the tender_amount field.
+func (f *TenderFilter) WhereTenderAmount(p entql.Float64P) {
+	f.Where(p.Field(tender.FieldTenderAmount))
+}
+
 // WhereLastTenderAmount applies the entql float64 predicate on the last_tender_amount field.
 func (f *TenderFilter) WhereLastTenderAmount(p entql.Float64P) {
 	f.Where(p.Field(tender.FieldLastTenderAmount))
@@ -3828,6 +3847,11 @@ func (f *TenderProfileFilter) WhereApprovalStatus(p entql.IntP) {
 // WhereApprovalMsgID applies the entql string predicate on the approval_msg_id field.
 func (f *TenderProfileFilter) WhereApprovalMsgID(p entql.StringP) {
 	f.Where(p.Field(tenderprofile.FieldApprovalMsgID))
+}
+
+// WhereApprovalDate applies the entql time.Time predicate on the approval_date field.
+func (f *TenderProfileFilter) WhereApprovalDate(p entql.TimeP) {
+	f.Where(p.Field(tenderprofile.FieldApprovalDate))
 }
 
 // WhereName applies the entql string predicate on the name field.

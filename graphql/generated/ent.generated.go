@@ -11810,6 +11810,10 @@ func (ec *executionContext) fieldContext_Customer_activeProfile(_ context.Contex
 				return ec.fieldContext_CustomerProfile_name(ctx, field)
 			case "approvalStatus":
 				return ec.fieldContext_CustomerProfile_approvalStatus(ctx, field)
+			case "approvalMsgID":
+				return ec.fieldContext_CustomerProfile_approvalMsgID(ctx, field)
+			case "approvalDate":
+				return ec.fieldContext_CustomerProfile_approvalDate(ctx, field)
 			case "ownerType":
 				return ec.fieldContext_CustomerProfile_ownerType(ctx, field)
 			case "industry":
@@ -11893,6 +11897,10 @@ func (ec *executionContext) fieldContext_Customer_pendingProfile(_ context.Conte
 				return ec.fieldContext_CustomerProfile_name(ctx, field)
 			case "approvalStatus":
 				return ec.fieldContext_CustomerProfile_approvalStatus(ctx, field)
+			case "approvalMsgID":
+				return ec.fieldContext_CustomerProfile_approvalMsgID(ctx, field)
+			case "approvalDate":
+				return ec.fieldContext_CustomerProfile_approvalDate(ctx, field)
 			case "ownerType":
 				return ec.fieldContext_CustomerProfile_ownerType(ctx, field)
 			case "industry":
@@ -12500,6 +12508,88 @@ func (ec *executionContext) fieldContext_CustomerProfile_approvalStatus(_ contex
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _CustomerProfile_approvalMsgID(ctx context.Context, field graphql.CollectedField, obj *ent.CustomerProfile) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_CustomerProfile_approvalMsgID(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ApprovalMsgID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_CustomerProfile_approvalMsgID(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "CustomerProfile",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _CustomerProfile_approvalDate(ctx context.Context, field graphql.CollectedField, obj *ent.CustomerProfile) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_CustomerProfile_approvalDate(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ApprovalDate, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*time.Time)
+	fc.Result = res
+	return ec.marshalOTime2ᚖtimeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_CustomerProfile_approvalDate(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "CustomerProfile",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Time does not have child fields")
 		},
 	}
 	return fc, nil
@@ -13529,6 +13619,10 @@ func (ec *executionContext) fieldContext_CustomerProfileEdge_node(_ context.Cont
 				return ec.fieldContext_CustomerProfile_name(ctx, field)
 			case "approvalStatus":
 				return ec.fieldContext_CustomerProfile_approvalStatus(ctx, field)
+			case "approvalMsgID":
+				return ec.fieldContext_CustomerProfile_approvalMsgID(ctx, field)
+			case "approvalDate":
+				return ec.fieldContext_CustomerProfile_approvalDate(ctx, field)
 			case "ownerType":
 				return ec.fieldContext_CustomerProfile_ownerType(ctx, field)
 			case "industry":
@@ -23675,9 +23769,9 @@ func (ec *executionContext) _Tender_tenderCode(ctx context.Context, field graphq
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(string)
+	res := resTmp.(*string)
 	fc.Result = res
-	return ec.marshalOString2string(ctx, field.Selections, res)
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Tender_tenderCode(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -23716,9 +23810,9 @@ func (ec *executionContext) _Tender_architect(ctx context.Context, field graphql
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(string)
+	res := resTmp.(*string)
 	fc.Result = res
-	return ec.marshalOString2string(ctx, field.Selections, res)
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Tender_architect(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -23757,9 +23851,9 @@ func (ec *executionContext) _Tender_developer(ctx context.Context, field graphql
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(string)
+	res := resTmp.(*string)
 	fc.Result = res
-	return ec.marshalOString2string(ctx, field.Selections, res)
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Tender_developer(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -23798,9 +23892,9 @@ func (ec *executionContext) _Tender_tenderClosingDate(ctx context.Context, field
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(time.Time)
+	res := resTmp.(*time.Time)
 	fc.Result = res
-	return ec.marshalOTime2timeᚐTime(ctx, field.Selections, res)
+	return ec.marshalOTime2ᚖtimeᚐTime(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Tender_tenderClosingDate(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -23839,9 +23933,9 @@ func (ec *executionContext) _Tender_constructionArea(ctx context.Context, field 
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(string)
+	res := resTmp.(*string)
 	fc.Result = res
-	return ec.marshalOString2string(ctx, field.Selections, res)
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Tender_constructionArea(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -23880,9 +23974,9 @@ func (ec *executionContext) _Tender_tenderWinDate(ctx context.Context, field gra
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(time.Time)
+	res := resTmp.(*time.Time)
 	fc.Result = res
-	return ec.marshalOTime2timeᚐTime(ctx, field.Selections, res)
+	return ec.marshalOTime2ᚖtimeᚐTime(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Tender_tenderWinDate(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -23921,12 +24015,53 @@ func (ec *executionContext) _Tender_tenderWinAmount(ctx context.Context, field g
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(float64)
+	res := resTmp.(*float64)
 	fc.Result = res
-	return ec.marshalOFloat2float64(ctx, field.Selections, res)
+	return ec.marshalOFloat2ᚖfloat64(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Tender_tenderWinAmount(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Tender",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Tender_tenderAmount(ctx context.Context, field graphql.CollectedField, obj *ent.Tender) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Tender_tenderAmount(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TenderAmount, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*float64)
+	fc.Result = res
+	return ec.marshalOFloat2ᚖfloat64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Tender_tenderAmount(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Tender",
 		Field:      field,
@@ -23962,9 +24097,9 @@ func (ec *executionContext) _Tender_lastTenderAmount(ctx context.Context, field 
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(float64)
+	res := resTmp.(*float64)
 	fc.Result = res
-	return ec.marshalOFloat2float64(ctx, field.Selections, res)
+	return ec.marshalOFloat2ᚖfloat64(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Tender_lastTenderAmount(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -25370,6 +25505,8 @@ func (ec *executionContext) fieldContext_Tender_activeProfile(_ context.Context,
 				return ec.fieldContext_TenderProfile_approvalStatus(ctx, field)
 			case "approvalMsgID":
 				return ec.fieldContext_TenderProfile_approvalMsgID(ctx, field)
+			case "approvalDate":
+				return ec.fieldContext_TenderProfile_approvalDate(ctx, field)
 			case "name":
 				return ec.fieldContext_TenderProfile_name(ctx, field)
 			case "estimatedAmount":
@@ -25563,6 +25700,8 @@ func (ec *executionContext) fieldContext_Tender_pendingProfile(_ context.Context
 				return ec.fieldContext_TenderProfile_approvalStatus(ctx, field)
 			case "approvalMsgID":
 				return ec.fieldContext_TenderProfile_approvalMsgID(ctx, field)
+			case "approvalDate":
+				return ec.fieldContext_TenderProfile_approvalDate(ctx, field)
 			case "name":
 				return ec.fieldContext_TenderProfile_name(ctx, field)
 			case "estimatedAmount":
@@ -26259,6 +26398,8 @@ func (ec *executionContext) fieldContext_TenderCompetitor_tender(_ context.Conte
 				return ec.fieldContext_Tender_tenderWinDate(ctx, field)
 			case "tenderWinAmount":
 				return ec.fieldContext_Tender_tenderWinAmount(ctx, field)
+			case "tenderAmount":
+				return ec.fieldContext_Tender_tenderAmount(ctx, field)
 			case "lastTenderAmount":
 				return ec.fieldContext_Tender_lastTenderAmount(ctx, field)
 			case "areaID":
@@ -26925,6 +27066,8 @@ func (ec *executionContext) fieldContext_TenderEdge_node(_ context.Context, fiel
 				return ec.fieldContext_Tender_tenderWinDate(ctx, field)
 			case "tenderWinAmount":
 				return ec.fieldContext_Tender_tenderWinAmount(ctx, field)
+			case "tenderAmount":
+				return ec.fieldContext_Tender_tenderAmount(ctx, field)
 			case "lastTenderAmount":
 				return ec.fieldContext_Tender_lastTenderAmount(ctx, field)
 			case "areaID":
@@ -27286,6 +27429,47 @@ func (ec *executionContext) fieldContext_TenderProfile_approvalMsgID(_ context.C
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TenderProfile_approvalDate(ctx context.Context, field graphql.CollectedField, obj *ent.TenderProfile) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TenderProfile_approvalDate(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ApprovalDate, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*time.Time)
+	fc.Result = res
+	return ec.marshalOTime2ᚖtimeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TenderProfile_approvalDate(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TenderProfile",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Time does not have child fields")
 		},
 	}
 	return fc, nil
@@ -29956,6 +30140,8 @@ func (ec *executionContext) fieldContext_TenderProfile_tender(_ context.Context,
 				return ec.fieldContext_Tender_tenderWinDate(ctx, field)
 			case "tenderWinAmount":
 				return ec.fieldContext_Tender_tenderWinAmount(ctx, field)
+			case "tenderAmount":
+				return ec.fieldContext_Tender_tenderAmount(ctx, field)
 			case "lastTenderAmount":
 				return ec.fieldContext_Tender_lastTenderAmount(ctx, field)
 			case "areaID":
@@ -30791,6 +30977,8 @@ func (ec *executionContext) fieldContext_TenderProfileEdge_node(_ context.Contex
 				return ec.fieldContext_TenderProfile_approvalStatus(ctx, field)
 			case "approvalMsgID":
 				return ec.fieldContext_TenderProfile_approvalMsgID(ctx, field)
+			case "approvalDate":
+				return ec.fieldContext_TenderProfile_approvalDate(ctx, field)
 			case "name":
 				return ec.fieldContext_TenderProfile_name(ctx, field)
 			case "estimatedAmount":
@@ -33114,6 +33302,8 @@ func (ec *executionContext) fieldContext_VisitRecord_tender(_ context.Context, f
 				return ec.fieldContext_Tender_tenderWinDate(ctx, field)
 			case "tenderWinAmount":
 				return ec.fieldContext_Tender_tenderWinAmount(ctx, field)
+			case "tenderAmount":
+				return ec.fieldContext_Tender_tenderAmount(ctx, field)
 			case "lastTenderAmount":
 				return ec.fieldContext_Tender_lastTenderAmount(ctx, field)
 			case "areaID":
@@ -36185,7 +36375,7 @@ func (ec *executionContext) unmarshalInputCreateCustomerProfileInput(ctx context
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"createdAt", "updatedAt", "name", "approvalStatus", "ownerType", "industry", "size", "contactPerson", "contactPersonPosition", "contactPersonPhone", "contactPersonEmail", "customerID", "createdByID", "approverID", "salesID"}
+	fieldsInOrder := [...]string{"createdAt", "updatedAt", "name", "approvalStatus", "approvalMsgID", "approvalDate", "ownerType", "industry", "size", "contactPerson", "contactPersonPosition", "contactPersonPhone", "contactPersonEmail", "customerID", "createdByID", "approverID", "salesID"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -36220,6 +36410,20 @@ func (ec *executionContext) unmarshalInputCreateCustomerProfileInput(ctx context
 				return it, err
 			}
 			it.ApprovalStatus = data
+		case "approvalMsgID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalMsgID"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalMsgID = data
+		case "approvalDate":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalDate"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalDate = data
 		case "ownerType":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ownerType"))
 			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
@@ -36600,7 +36804,7 @@ func (ec *executionContext) unmarshalInputCreateTenderInput(ctx context.Context,
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"createdAt", "updatedAt", "code", "status", "approvalStatus", "approvalMsgID", "name", "estimatedAmount", "tenderDate", "classify", "discoveryDate", "address", "fullAddress", "contractor", "levelInvolved", "sizeAndValueRating", "sizeAndValueRatingOverview", "creditAndPaymentRating", "creditAndPaymentRatingOverview", "timeLimitRating", "timeLimitRatingOverview", "customerRelationshipRating", "customerRelationshipRatingOverview", "competitivePartnershipRating", "competitivePartnershipRatingOverview", "prepareToBid", "projectCode", "projectType", "projectDefinition", "estimatedProjectStartDate", "estimatedProjectEndDate", "attachements", "remark", "images", "tenderSituations", "ownerSituations", "biddingInstructions", "competitorSituations", "costEngineer", "tenderForm", "contractForm", "managementCompany", "tenderingAgency", "biddingDate", "facadeConsultant", "designUnit", "consultingFirm", "keyProject", "currentProgress", "tenderWinCompany", "tenderCode", "architect", "developer", "tenderClosingDate", "constructionArea", "tenderWinDate", "tenderWinAmount", "lastTenderAmount", "areaID", "profileIDs", "competitorIDs", "customerID", "finderID", "createdByID", "followingSaleIDs", "provinceID", "cityID", "districtID", "visitRecordIDs", "approverID", "activeProfileID", "pendingProfileID"}
+	fieldsInOrder := [...]string{"createdAt", "updatedAt", "code", "status", "approvalStatus", "approvalMsgID", "name", "estimatedAmount", "tenderDate", "classify", "discoveryDate", "address", "fullAddress", "contractor", "levelInvolved", "sizeAndValueRating", "sizeAndValueRatingOverview", "creditAndPaymentRating", "creditAndPaymentRatingOverview", "timeLimitRating", "timeLimitRatingOverview", "customerRelationshipRating", "customerRelationshipRatingOverview", "competitivePartnershipRating", "competitivePartnershipRatingOverview", "prepareToBid", "projectCode", "projectType", "projectDefinition", "estimatedProjectStartDate", "estimatedProjectEndDate", "attachements", "remark", "images", "tenderSituations", "ownerSituations", "biddingInstructions", "competitorSituations", "costEngineer", "tenderForm", "contractForm", "managementCompany", "tenderingAgency", "biddingDate", "facadeConsultant", "designUnit", "consultingFirm", "keyProject", "currentProgress", "tenderWinCompany", "tenderCode", "architect", "developer", "tenderClosingDate", "constructionArea", "tenderWinDate", "tenderWinAmount", "tenderAmount", "lastTenderAmount", "areaID", "profileIDs", "competitorIDs", "customerID", "finderID", "createdByID", "followingSaleIDs", "provinceID", "cityID", "districtID", "visitRecordIDs", "approverID", "activeProfileID", "pendingProfileID"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -37006,6 +37210,13 @@ func (ec *executionContext) unmarshalInputCreateTenderInput(ctx context.Context,
 				return it, err
 			}
 			it.TenderWinAmount = data
+		case "tenderAmount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderAmount"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderAmount = data
 		case "lastTenderAmount":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("lastTenderAmount"))
 			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
@@ -37124,7 +37335,7 @@ func (ec *executionContext) unmarshalInputCreateTenderProfileInput(ctx context.C
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"createdAt", "updatedAt", "status", "approvalStatus", "approvalMsgID", "name", "estimatedAmount", "tenderDate", "classify", "discoveryDate", "address", "fullAddress", "contractor", "levelInvolved", "sizeAndValueRating", "sizeAndValueRatingOverview", "creditAndPaymentRating", "creditAndPaymentRatingOverview", "timeLimitRating", "timeLimitRatingOverview", "customerRelationshipRating", "customerRelationshipRatingOverview", "competitivePartnershipRating", "competitivePartnershipRatingOverview", "prepareToBid", "projectCode", "projectType", "projectDefinition", "estimatedProjectStartDate", "estimatedProjectEndDate", "attachments", "geoCoordinate", "remark", "images", "tenderSituations", "ownerSituations", "biddingInstructions", "competitorSituations", "costEngineer", "tenderForm", "contractForm", "managementCompany", "tenderingAgency", "biddingDate", "facadeConsultant", "designUnit", "consultingFirm", "keyProject", "currentProgress", "tenderWinCompany", "tenderCode", "architect", "developer", "tenderClosingDate", "constructionArea", "tenderWinDate", "tenderWinAmount", "lastTenderAmount", "tenderID", "customerID", "finderID", "createdByID", "provinceID", "cityID", "districtID", "approverID"}
+	fieldsInOrder := [...]string{"createdAt", "updatedAt", "status", "approvalStatus", "approvalMsgID", "approvalDate", "name", "estimatedAmount", "tenderDate", "classify", "discoveryDate", "address", "fullAddress", "contractor", "levelInvolved", "sizeAndValueRating", "sizeAndValueRatingOverview", "creditAndPaymentRating", "creditAndPaymentRatingOverview", "timeLimitRating", "timeLimitRatingOverview", "customerRelationshipRating", "customerRelationshipRatingOverview", "competitivePartnershipRating", "competitivePartnershipRatingOverview", "prepareToBid", "projectCode", "projectType", "projectDefinition", "estimatedProjectStartDate", "estimatedProjectEndDate", "attachments", "geoCoordinate", "remark", "images", "tenderSituations", "ownerSituations", "biddingInstructions", "competitorSituations", "costEngineer", "tenderForm", "contractForm", "managementCompany", "tenderingAgency", "biddingDate", "facadeConsultant", "designUnit", "consultingFirm", "keyProject", "currentProgress", "tenderWinCompany", "tenderCode", "architect", "developer", "tenderClosingDate", "constructionArea", "tenderWinDate", "tenderWinAmount", "lastTenderAmount", "tenderID", "customerID", "finderID", "createdByID", "provinceID", "cityID", "districtID", "approverID"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -37166,6 +37377,13 @@ func (ec *executionContext) unmarshalInputCreateTenderProfileInput(ctx context.C
 				return it, err
 			}
 			it.ApprovalMsgID = data
+		case "approvalDate":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalDate"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalDate = data
 		case "name":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
 			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
@@ -37932,7 +38150,7 @@ func (ec *executionContext) unmarshalInputCustomerProfileWhereInput(ctx context.
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdAt", "createdAtNEQ", "createdAtIn", "createdAtNotIn", "createdAtGT", "createdAtGTE", "createdAtLT", "createdAtLTE", "updatedAt", "updatedAtNEQ", "updatedAtIn", "updatedAtNotIn", "updatedAtGT", "updatedAtGTE", "updatedAtLT", "updatedAtLTE", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "approvalStatus", "approvalStatusNEQ", "approvalStatusIn", "approvalStatusNotIn", "approvalStatusGT", "approvalStatusGTE", "approvalStatusLT", "approvalStatusLTE", "ownerType", "ownerTypeNEQ", "ownerTypeIn", "ownerTypeNotIn", "ownerTypeGT", "ownerTypeGTE", "ownerTypeLT", "ownerTypeLTE", "ownerTypeIsNil", "ownerTypeNotNil", "industry", "industryNEQ", "industryIn", "industryNotIn", "industryGT", "industryGTE", "industryLT", "industryLTE", "industryIsNil", "industryNotNil", "size", "sizeNEQ", "sizeIn", "sizeNotIn", "sizeGT", "sizeGTE", "sizeLT", "sizeLTE", "sizeIsNil", "sizeNotNil", "contactPerson", "contactPersonNEQ", "contactPersonIn", "contactPersonNotIn", "contactPersonGT", "contactPersonGTE", "contactPersonLT", "contactPersonLTE", "contactPersonContains", "contactPersonHasPrefix", "contactPersonHasSuffix", "contactPersonIsNil", "contactPersonNotNil", "contactPersonEqualFold", "contactPersonContainsFold", "contactPersonPosition", "contactPersonPositionNEQ", "contactPersonPositionIn", "contactPersonPositionNotIn", "contactPersonPositionGT", "contactPersonPositionGTE", "contactPersonPositionLT", "contactPersonPositionLTE", "contactPersonPositionContains", "contactPersonPositionHasPrefix", "contactPersonPositionHasSuffix", "contactPersonPositionIsNil", "contactPersonPositionNotNil", "contactPersonPositionEqualFold", "contactPersonPositionContainsFold", "contactPersonPhone", "contactPersonPhoneNEQ", "contactPersonPhoneIn", "contactPersonPhoneNotIn", "contactPersonPhoneGT", "contactPersonPhoneGTE", "contactPersonPhoneLT", "contactPersonPhoneLTE", "contactPersonPhoneContains", "contactPersonPhoneHasPrefix", "contactPersonPhoneHasSuffix", "contactPersonPhoneIsNil", "contactPersonPhoneNotNil", "contactPersonPhoneEqualFold", "contactPersonPhoneContainsFold", "contactPersonEmail", "contactPersonEmailNEQ", "contactPersonEmailIn", "contactPersonEmailNotIn", "contactPersonEmailGT", "contactPersonEmailGTE", "contactPersonEmailLT", "contactPersonEmailLTE", "contactPersonEmailContains", "contactPersonEmailHasPrefix", "contactPersonEmailHasSuffix", "contactPersonEmailIsNil", "contactPersonEmailNotNil", "contactPersonEmailEqualFold", "contactPersonEmailContainsFold", "salesID", "salesIDNEQ", "salesIDIn", "salesIDNotIn", "salesIDGT", "salesIDGTE", "salesIDLT", "salesIDLTE", "salesIDContains", "salesIDHasPrefix", "salesIDHasSuffix", "salesIDIsNil", "salesIDNotNil", "salesIDEqualFold", "salesIDContainsFold", "customerID", "customerIDNEQ", "customerIDIn", "customerIDNotIn", "customerIDGT", "customerIDGTE", "customerIDLT", "customerIDLTE", "customerIDContains", "customerIDHasPrefix", "customerIDHasSuffix", "customerIDEqualFold", "customerIDContainsFold", "createdByID", "createdByIDNEQ", "createdByIDIn", "createdByIDNotIn", "createdByIDGT", "createdByIDGTE", "createdByIDLT", "createdByIDLTE", "createdByIDContains", "createdByIDHasPrefix", "createdByIDHasSuffix", "createdByIDIsNil", "createdByIDNotNil", "createdByIDEqualFold", "createdByIDContainsFold", "approverID", "approverIDNEQ", "approverIDIn", "approverIDNotIn", "approverIDGT", "approverIDGTE", "approverIDLT", "approverIDLTE", "approverIDContains", "approverIDHasPrefix", "approverIDHasSuffix", "approverIDIsNil", "approverIDNotNil", "approverIDEqualFold", "approverIDContainsFold", "hasCustomer", "hasCustomerWith", "hasCreatedBy", "hasCreatedByWith", "hasApprover", "hasApproverWith", "hasSales", "hasSalesWith"}
+	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdAt", "createdAtNEQ", "createdAtIn", "createdAtNotIn", "createdAtGT", "createdAtGTE", "createdAtLT", "createdAtLTE", "updatedAt", "updatedAtNEQ", "updatedAtIn", "updatedAtNotIn", "updatedAtGT", "updatedAtGTE", "updatedAtLT", "updatedAtLTE", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "approvalStatus", "approvalStatusNEQ", "approvalStatusIn", "approvalStatusNotIn", "approvalStatusGT", "approvalStatusGTE", "approvalStatusLT", "approvalStatusLTE", "approvalMsgID", "approvalMsgIDNEQ", "approvalMsgIDIn", "approvalMsgIDNotIn", "approvalMsgIDGT", "approvalMsgIDGTE", "approvalMsgIDLT", "approvalMsgIDLTE", "approvalMsgIDContains", "approvalMsgIDHasPrefix", "approvalMsgIDHasSuffix", "approvalMsgIDIsNil", "approvalMsgIDNotNil", "approvalMsgIDEqualFold", "approvalMsgIDContainsFold", "approvalDate", "approvalDateNEQ", "approvalDateIn", "approvalDateNotIn", "approvalDateGT", "approvalDateGTE", "approvalDateLT", "approvalDateLTE", "approvalDateIsNil", "approvalDateNotNil", "ownerType", "ownerTypeNEQ", "ownerTypeIn", "ownerTypeNotIn", "ownerTypeGT", "ownerTypeGTE", "ownerTypeLT", "ownerTypeLTE", "ownerTypeIsNil", "ownerTypeNotNil", "industry", "industryNEQ", "industryIn", "industryNotIn", "industryGT", "industryGTE", "industryLT", "industryLTE", "industryIsNil", "industryNotNil", "size", "sizeNEQ", "sizeIn", "sizeNotIn", "sizeGT", "sizeGTE", "sizeLT", "sizeLTE", "sizeIsNil", "sizeNotNil", "contactPerson", "contactPersonNEQ", "contactPersonIn", "contactPersonNotIn", "contactPersonGT", "contactPersonGTE", "contactPersonLT", "contactPersonLTE", "contactPersonContains", "contactPersonHasPrefix", "contactPersonHasSuffix", "contactPersonIsNil", "contactPersonNotNil", "contactPersonEqualFold", "contactPersonContainsFold", "contactPersonPosition", "contactPersonPositionNEQ", "contactPersonPositionIn", "contactPersonPositionNotIn", "contactPersonPositionGT", "contactPersonPositionGTE", "contactPersonPositionLT", "contactPersonPositionLTE", "contactPersonPositionContains", "contactPersonPositionHasPrefix", "contactPersonPositionHasSuffix", "contactPersonPositionIsNil", "contactPersonPositionNotNil", "contactPersonPositionEqualFold", "contactPersonPositionContainsFold", "contactPersonPhone", "contactPersonPhoneNEQ", "contactPersonPhoneIn", "contactPersonPhoneNotIn", "contactPersonPhoneGT", "contactPersonPhoneGTE", "contactPersonPhoneLT", "contactPersonPhoneLTE", "contactPersonPhoneContains", "contactPersonPhoneHasPrefix", "contactPersonPhoneHasSuffix", "contactPersonPhoneIsNil", "contactPersonPhoneNotNil", "contactPersonPhoneEqualFold", "contactPersonPhoneContainsFold", "contactPersonEmail", "contactPersonEmailNEQ", "contactPersonEmailIn", "contactPersonEmailNotIn", "contactPersonEmailGT", "contactPersonEmailGTE", "contactPersonEmailLT", "contactPersonEmailLTE", "contactPersonEmailContains", "contactPersonEmailHasPrefix", "contactPersonEmailHasSuffix", "contactPersonEmailIsNil", "contactPersonEmailNotNil", "contactPersonEmailEqualFold", "contactPersonEmailContainsFold", "salesID", "salesIDNEQ", "salesIDIn", "salesIDNotIn", "salesIDGT", "salesIDGTE", "salesIDLT", "salesIDLTE", "salesIDContains", "salesIDHasPrefix", "salesIDHasSuffix", "salesIDIsNil", "salesIDNotNil", "salesIDEqualFold", "salesIDContainsFold", "customerID", "customerIDNEQ", "customerIDIn", "customerIDNotIn", "customerIDGT", "customerIDGTE", "customerIDLT", "customerIDLTE", "customerIDContains", "customerIDHasPrefix", "customerIDHasSuffix", "customerIDEqualFold", "customerIDContainsFold", "createdByID", "createdByIDNEQ", "createdByIDIn", "createdByIDNotIn", "createdByIDGT", "createdByIDGTE", "createdByIDLT", "createdByIDLTE", "createdByIDContains", "createdByIDHasPrefix", "createdByIDHasSuffix", "createdByIDIsNil", "createdByIDNotNil", "createdByIDEqualFold", "createdByIDContainsFold", "approverID", "approverIDNEQ", "approverIDIn", "approverIDNotIn", "approverIDGT", "approverIDGTE", "approverIDLT", "approverIDLTE", "approverIDContains", "approverIDHasPrefix", "approverIDHasSuffix", "approverIDIsNil", "approverIDNotNil", "approverIDEqualFold", "approverIDContainsFold", "hasCustomer", "hasCustomerWith", "hasCreatedBy", "hasCreatedByWith", "hasApprover", "hasApproverWith", "hasSales", "hasSalesWith"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -38275,6 +38493,181 @@ func (ec *executionContext) unmarshalInputCustomerProfileWhereInput(ctx context.
 				return it, err
 			}
 			it.ApprovalStatusLTE = data
+		case "approvalMsgID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalMsgID"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalMsgID = data
+		case "approvalMsgIDNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalMsgIDNEQ"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalMsgIDNEQ = data
+		case "approvalMsgIDIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalMsgIDIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalMsgIDIn = data
+		case "approvalMsgIDNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalMsgIDNotIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalMsgIDNotIn = data
+		case "approvalMsgIDGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalMsgIDGT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalMsgIDGT = data
+		case "approvalMsgIDGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalMsgIDGTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalMsgIDGTE = data
+		case "approvalMsgIDLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalMsgIDLT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalMsgIDLT = data
+		case "approvalMsgIDLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalMsgIDLTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalMsgIDLTE = data
+		case "approvalMsgIDContains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalMsgIDContains"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalMsgIDContains = data
+		case "approvalMsgIDHasPrefix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalMsgIDHasPrefix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalMsgIDHasPrefix = data
+		case "approvalMsgIDHasSuffix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalMsgIDHasSuffix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalMsgIDHasSuffix = data
+		case "approvalMsgIDIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalMsgIDIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalMsgIDIsNil = data
+		case "approvalMsgIDNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalMsgIDNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalMsgIDNotNil = data
+		case "approvalMsgIDEqualFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalMsgIDEqualFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalMsgIDEqualFold = data
+		case "approvalMsgIDContainsFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalMsgIDContainsFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalMsgIDContainsFold = data
+		case "approvalDate":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalDate"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalDate = data
+		case "approvalDateNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalDateNEQ"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalDateNEQ = data
+		case "approvalDateIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalDateIn"))
+			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalDateIn = data
+		case "approvalDateNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalDateNotIn"))
+			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalDateNotIn = data
+		case "approvalDateGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalDateGT"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalDateGT = data
+		case "approvalDateGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalDateGTE"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalDateGTE = data
+		case "approvalDateLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalDateLT"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalDateLT = data
+		case "approvalDateLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalDateLTE"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalDateLTE = data
+		case "approvalDateIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalDateIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalDateIsNil = data
+		case "approvalDateNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalDateNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalDateNotNil = data
 		case "ownerType":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ownerType"))
 			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
@@ -48746,7 +49139,7 @@ func (ec *executionContext) unmarshalInputTenderProfileWhereInput(ctx context.Co
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdAt", "createdAtNEQ", "createdAtIn", "createdAtNotIn", "createdAtGT", "createdAtGTE", "createdAtLT", "createdAtLTE", "updatedAt", "updatedAtNEQ", "updatedAtIn", "updatedAtNotIn", "updatedAtGT", "updatedAtGTE", "updatedAtLT", "updatedAtLTE", "status", "statusNEQ", "statusIn", "statusNotIn", "statusGT", "statusGTE", "statusLT", "statusLTE", "approvalStatus", "approvalStatusNEQ", "approvalStatusIn", "approvalStatusNotIn", "approvalStatusGT", "approvalStatusGTE", "approvalStatusLT", "approvalStatusLTE", "approvalMsgID", "approvalMsgIDNEQ", "approvalMsgIDIn", "approvalMsgIDNotIn", "approvalMsgIDGT", "approvalMsgIDGTE", "approvalMsgIDLT", "approvalMsgIDLTE", "approvalMsgIDContains", "approvalMsgIDHasPrefix", "approvalMsgIDHasSuffix", "approvalMsgIDIsNil", "approvalMsgIDNotNil", "approvalMsgIDEqualFold", "approvalMsgIDContainsFold", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameIsNil", "nameNotNil", "nameEqualFold", "nameContainsFold", "estimatedAmount", "estimatedAmountNEQ", "estimatedAmountIn", "estimatedAmountNotIn", "estimatedAmountGT", "estimatedAmountGTE", "estimatedAmountLT", "estimatedAmountLTE", "estimatedAmountIsNil", "estimatedAmountNotNil", "tenderDate", "tenderDateNEQ", "tenderDateIn", "tenderDateNotIn", "tenderDateGT", "tenderDateGTE", "tenderDateLT", "tenderDateLTE", "tenderDateIsNil", "tenderDateNotNil", "classify", "classifyNEQ", "classifyIn", "classifyNotIn", "classifyGT", "classifyGTE", "classifyLT", "classifyLTE", "classifyIsNil", "classifyNotNil", "discoveryDate", "discoveryDateNEQ", "discoveryDateIn", "discoveryDateNotIn", "discoveryDateGT", "discoveryDateGTE", "discoveryDateLT", "discoveryDateLTE", "discoveryDateIsNil", "discoveryDateNotNil", "address", "addressNEQ", "addressIn", "addressNotIn", "addressGT", "addressGTE", "addressLT", "addressLTE", "addressContains", "addressHasPrefix", "addressHasSuffix", "addressIsNil", "addressNotNil", "addressEqualFold", "addressContainsFold", "fullAddress", "fullAddressNEQ", "fullAddressIn", "fullAddressNotIn", "fullAddressGT", "fullAddressGTE", "fullAddressLT", "fullAddressLTE", "fullAddressContains", "fullAddressHasPrefix", "fullAddressHasSuffix", "fullAddressIsNil", "fullAddressNotNil", "fullAddressEqualFold", "fullAddressContainsFold", "contractor", "contractorNEQ", "contractorIn", "contractorNotIn", "contractorGT", "contractorGTE", "contractorLT", "contractorLTE", "contractorContains", "contractorHasPrefix", "contractorHasSuffix", "contractorIsNil", "contractorNotNil", "contractorEqualFold", "contractorContainsFold", "levelInvolved", "levelInvolvedNEQ", "levelInvolvedIn", "levelInvolvedNotIn", "levelInvolvedGT", "levelInvolvedGTE", "levelInvolvedLT", "levelInvolvedLTE", "levelInvolvedIsNil", "levelInvolvedNotNil", "sizeAndValueRating", "sizeAndValueRatingNEQ", "sizeAndValueRatingIn", "sizeAndValueRatingNotIn", "sizeAndValueRatingGT", "sizeAndValueRatingGTE", "sizeAndValueRatingLT", "sizeAndValueRatingLTE", "sizeAndValueRatingIsNil", "sizeAndValueRatingNotNil", "sizeAndValueRatingOverview", "sizeAndValueRatingOverviewNEQ", "sizeAndValueRatingOverviewIn", "sizeAndValueRatingOverviewNotIn", "sizeAndValueRatingOverviewGT", "sizeAndValueRatingOverviewGTE", "sizeAndValueRatingOverviewLT", "sizeAndValueRatingOverviewLTE", "sizeAndValueRatingOverviewContains", "sizeAndValueRatingOverviewHasPrefix", "sizeAndValueRatingOverviewHasSuffix", "sizeAndValueRatingOverviewIsNil", "sizeAndValueRatingOverviewNotNil", "sizeAndValueRatingOverviewEqualFold", "sizeAndValueRatingOverviewContainsFold", "creditAndPaymentRating", "creditAndPaymentRatingNEQ", "creditAndPaymentRatingIn", "creditAndPaymentRatingNotIn", "creditAndPaymentRatingGT", "creditAndPaymentRatingGTE", "creditAndPaymentRatingLT", "creditAndPaymentRatingLTE", "creditAndPaymentRatingIsNil", "creditAndPaymentRatingNotNil", "creditAndPaymentRatingOverview", "creditAndPaymentRatingOverviewNEQ", "creditAndPaymentRatingOverviewIn", "creditAndPaymentRatingOverviewNotIn", "creditAndPaymentRatingOverviewGT", "creditAndPaymentRatingOverviewGTE", "creditAndPaymentRatingOverviewLT", "creditAndPaymentRatingOverviewLTE", "creditAndPaymentRatingOverviewContains", "creditAndPaymentRatingOverviewHasPrefix", "creditAndPaymentRatingOverviewHasSuffix", "creditAndPaymentRatingOverviewIsNil", "creditAndPaymentRatingOverviewNotNil", "creditAndPaymentRatingOverviewEqualFold", "creditAndPaymentRatingOverviewContainsFold", "timeLimitRating", "timeLimitRatingNEQ", "timeLimitRatingIn", "timeLimitRatingNotIn", "timeLimitRatingGT", "timeLimitRatingGTE", "timeLimitRatingLT", "timeLimitRatingLTE", "timeLimitRatingIsNil", "timeLimitRatingNotNil", "timeLimitRatingOverview", "timeLimitRatingOverviewNEQ", "timeLimitRatingOverviewIn", "timeLimitRatingOverviewNotIn", "timeLimitRatingOverviewGT", "timeLimitRatingOverviewGTE", "timeLimitRatingOverviewLT", "timeLimitRatingOverviewLTE", "timeLimitRatingOverviewContains", "timeLimitRatingOverviewHasPrefix", "timeLimitRatingOverviewHasSuffix", "timeLimitRatingOverviewIsNil", "timeLimitRatingOverviewNotNil", "timeLimitRatingOverviewEqualFold", "timeLimitRatingOverviewContainsFold", "customerRelationshipRating", "customerRelationshipRatingNEQ", "customerRelationshipRatingIn", "customerRelationshipRatingNotIn", "customerRelationshipRatingGT", "customerRelationshipRatingGTE", "customerRelationshipRatingLT", "customerRelationshipRatingLTE", "customerRelationshipRatingIsNil", "customerRelationshipRatingNotNil", "customerRelationshipRatingOverview", "customerRelationshipRatingOverviewNEQ", "customerRelationshipRatingOverviewIn", "customerRelationshipRatingOverviewNotIn", "customerRelationshipRatingOverviewGT", "customerRelationshipRatingOverviewGTE", "customerRelationshipRatingOverviewLT", "customerRelationshipRatingOverviewLTE", "customerRelationshipRatingOverviewContains", "customerRelationshipRatingOverviewHasPrefix", "customerRelationshipRatingOverviewHasSuffix", "customerRelationshipRatingOverviewIsNil", "customerRelationshipRatingOverviewNotNil", "customerRelationshipRatingOverviewEqualFold", "customerRelationshipRatingOverviewContainsFold", "competitivePartnershipRating", "competitivePartnershipRatingNEQ", "competitivePartnershipRatingIn", "competitivePartnershipRatingNotIn", "competitivePartnershipRatingGT", "competitivePartnershipRatingGTE", "competitivePartnershipRatingLT", "competitivePartnershipRatingLTE", "competitivePartnershipRatingIsNil", "competitivePartnershipRatingNotNil", "competitivePartnershipRatingOverview", "competitivePartnershipRatingOverviewNEQ", "competitivePartnershipRatingOverviewIn", "competitivePartnershipRatingOverviewNotIn", "competitivePartnershipRatingOverviewGT", "competitivePartnershipRatingOverviewGTE", "competitivePartnershipRatingOverviewLT", "competitivePartnershipRatingOverviewLTE", "competitivePartnershipRatingOverviewContains", "competitivePartnershipRatingOverviewHasPrefix", "competitivePartnershipRatingOverviewHasSuffix", "competitivePartnershipRatingOverviewIsNil", "competitivePartnershipRatingOverviewNotNil", "competitivePartnershipRatingOverviewEqualFold", "competitivePartnershipRatingOverviewContainsFold", "prepareToBid", "prepareToBidNEQ", "projectCode", "projectCodeNEQ", "projectCodeIn", "projectCodeNotIn", "projectCodeGT", "projectCodeGTE", "projectCodeLT", "projectCodeLTE", "projectCodeContains", "projectCodeHasPrefix", "projectCodeHasSuffix", "projectCodeIsNil", "projectCodeNotNil", "projectCodeEqualFold", "projectCodeContainsFold", "projectType", "projectTypeNEQ", "projectTypeIn", "projectTypeNotIn", "projectTypeGT", "projectTypeGTE", "projectTypeLT", "projectTypeLTE", "projectTypeContains", "projectTypeHasPrefix", "projectTypeHasSuffix", "projectTypeIsNil", "projectTypeNotNil", "projectTypeEqualFold", "projectTypeContainsFold", "projectDefinition", "projectDefinitionNEQ", "projectDefinitionIn", "projectDefinitionNotIn", "projectDefinitionGT", "projectDefinitionGTE", "projectDefinitionLT", "projectDefinitionLTE", "projectDefinitionContains", "projectDefinitionHasPrefix", "projectDefinitionHasSuffix", "projectDefinitionIsNil", "projectDefinitionNotNil", "projectDefinitionEqualFold", "projectDefinitionContainsFold", "estimatedProjectStartDate", "estimatedProjectStartDateNEQ", "estimatedProjectStartDateIn", "estimatedProjectStartDateNotIn", "estimatedProjectStartDateGT", "estimatedProjectStartDateGTE", "estimatedProjectStartDateLT", "estimatedProjectStartDateLTE", "estimatedProjectStartDateIsNil", "estimatedProjectStartDateNotNil", "estimatedProjectEndDate", "estimatedProjectEndDateNEQ", "estimatedProjectEndDateIn", "estimatedProjectEndDateNotIn", "estimatedProjectEndDateGT", "estimatedProjectEndDateGTE", "estimatedProjectEndDateLT", "estimatedProjectEndDateLTE", "estimatedProjectEndDateIsNil", "estimatedProjectEndDateNotNil", "remark", "remarkNEQ", "remarkIn", "remarkNotIn", "remarkGT", "remarkGTE", "remarkLT", "remarkLTE", "remarkContains", "remarkHasPrefix", "remarkHasSuffix", "remarkIsNil", "remarkNotNil", "remarkEqualFold", "remarkContainsFold", "tenderSituations", "tenderSituationsNEQ", "tenderSituationsIn", "tenderSituationsNotIn", "tenderSituationsGT", "tenderSituationsGTE", "tenderSituationsLT", "tenderSituationsLTE", "tenderSituationsContains", "tenderSituationsHasPrefix", "tenderSituationsHasSuffix", "tenderSituationsIsNil", "tenderSituationsNotNil", "tenderSituationsEqualFold", "tenderSituationsContainsFold", "ownerSituations", "ownerSituationsNEQ", "ownerSituationsIn", "ownerSituationsNotIn", "ownerSituationsGT", "ownerSituationsGTE", "ownerSituationsLT", "ownerSituationsLTE", "ownerSituationsContains", "ownerSituationsHasPrefix", "ownerSituationsHasSuffix", "ownerSituationsIsNil", "ownerSituationsNotNil", "ownerSituationsEqualFold", "ownerSituationsContainsFold", "biddingInstructions", "biddingInstructionsNEQ", "biddingInstructionsIn", "biddingInstructionsNotIn", "biddingInstructionsGT", "biddingInstructionsGTE", "biddingInstructionsLT", "biddingInstructionsLTE", "biddingInstructionsContains", "biddingInstructionsHasPrefix", "biddingInstructionsHasSuffix", "biddingInstructionsIsNil", "biddingInstructionsNotNil", "biddingInstructionsEqualFold", "biddingInstructionsContainsFold", "competitorSituations", "competitorSituationsNEQ", "competitorSituationsIn", "competitorSituationsNotIn", "competitorSituationsGT", "competitorSituationsGTE", "competitorSituationsLT", "competitorSituationsLTE", "competitorSituationsContains", "competitorSituationsHasPrefix", "competitorSituationsHasSuffix", "competitorSituationsIsNil", "competitorSituationsNotNil", "competitorSituationsEqualFold", "competitorSituationsContainsFold", "costEngineer", "costEngineerNEQ", "costEngineerIn", "costEngineerNotIn", "costEngineerGT", "costEngineerGTE", "costEngineerLT", "costEngineerLTE", "costEngineerContains", "costEngineerHasPrefix", "costEngineerHasSuffix", "costEngineerIsNil", "costEngineerNotNil", "costEngineerEqualFold", "costEngineerContainsFold", "tenderForm", "tenderFormNEQ", "tenderFormIn", "tenderFormNotIn", "tenderFormGT", "tenderFormGTE", "tenderFormLT", "tenderFormLTE", "tenderFormContains", "tenderFormHasPrefix", "tenderFormHasSuffix", "tenderFormIsNil", "tenderFormNotNil", "tenderFormEqualFold", "tenderFormContainsFold", "contractForm", "contractFormNEQ", "contractFormIn", "contractFormNotIn", "contractFormGT", "contractFormGTE", "contractFormLT", "contractFormLTE", "contractFormContains", "contractFormHasPrefix", "contractFormHasSuffix", "contractFormIsNil", "contractFormNotNil", "contractFormEqualFold", "contractFormContainsFold", "managementCompany", "managementCompanyNEQ", "managementCompanyIn", "managementCompanyNotIn", "managementCompanyGT", "managementCompanyGTE", "managementCompanyLT", "managementCompanyLTE", "managementCompanyContains", "managementCompanyHasPrefix", "managementCompanyHasSuffix", "managementCompanyIsNil", "managementCompanyNotNil", "managementCompanyEqualFold", "managementCompanyContainsFold", "tenderingAgency", "tenderingAgencyNEQ", "tenderingAgencyIn", "tenderingAgencyNotIn", "tenderingAgencyGT", "tenderingAgencyGTE", "tenderingAgencyLT", "tenderingAgencyLTE", "tenderingAgencyContains", "tenderingAgencyHasPrefix", "tenderingAgencyHasSuffix", "tenderingAgencyIsNil", "tenderingAgencyNotNil", "tenderingAgencyEqualFold", "tenderingAgencyContainsFold", "biddingDate", "biddingDateNEQ", "biddingDateIn", "biddingDateNotIn", "biddingDateGT", "biddingDateGTE", "biddingDateLT", "biddingDateLTE", "biddingDateIsNil", "biddingDateNotNil", "facadeConsultant", "facadeConsultantNEQ", "facadeConsultantIn", "facadeConsultantNotIn", "facadeConsultantGT", "facadeConsultantGTE", "facadeConsultantLT", "facadeConsultantLTE", "facadeConsultantContains", "facadeConsultantHasPrefix", "facadeConsultantHasSuffix", "facadeConsultantIsNil", "facadeConsultantNotNil", "facadeConsultantEqualFold", "facadeConsultantContainsFold", "designUnit", "designUnitNEQ", "designUnitIn", "designUnitNotIn", "designUnitGT", "designUnitGTE", "designUnitLT", "designUnitLTE", "designUnitContains", "designUnitHasPrefix", "designUnitHasSuffix", "designUnitIsNil", "designUnitNotNil", "designUnitEqualFold", "designUnitContainsFold", "consultingFirm", "consultingFirmNEQ", "consultingFirmIn", "consultingFirmNotIn", "consultingFirmGT", "consultingFirmGTE", "consultingFirmLT", "consultingFirmLTE", "consultingFirmContains", "consultingFirmHasPrefix", "consultingFirmHasSuffix", "consultingFirmIsNil", "consultingFirmNotNil", "consultingFirmEqualFold", "consultingFirmContainsFold", "keyProject", "keyProjectNEQ", "currentProgress", "currentProgressNEQ", "currentProgressIn", "currentProgressNotIn", "currentProgressGT", "currentProgressGTE", "currentProgressLT", "currentProgressLTE", "currentProgressContains", "currentProgressHasPrefix", "currentProgressHasSuffix", "currentProgressIsNil", "currentProgressNotNil", "currentProgressEqualFold", "currentProgressContainsFold", "tenderWinCompany", "tenderWinCompanyNEQ", "tenderWinCompanyIn", "tenderWinCompanyNotIn", "tenderWinCompanyGT", "tenderWinCompanyGTE", "tenderWinCompanyLT", "tenderWinCompanyLTE", "tenderWinCompanyContains", "tenderWinCompanyHasPrefix", "tenderWinCompanyHasSuffix", "tenderWinCompanyIsNil", "tenderWinCompanyNotNil", "tenderWinCompanyEqualFold", "tenderWinCompanyContainsFold", "tenderCode", "tenderCodeNEQ", "tenderCodeIn", "tenderCodeNotIn", "tenderCodeGT", "tenderCodeGTE", "tenderCodeLT", "tenderCodeLTE", "tenderCodeContains", "tenderCodeHasPrefix", "tenderCodeHasSuffix", "tenderCodeIsNil", "tenderCodeNotNil", "tenderCodeEqualFold", "tenderCodeContainsFold", "architect", "architectNEQ", "architectIn", "architectNotIn", "architectGT", "architectGTE", "architectLT", "architectLTE", "architectContains", "architectHasPrefix", "architectHasSuffix", "architectIsNil", "architectNotNil", "architectEqualFold", "architectContainsFold", "developer", "developerNEQ", "developerIn", "developerNotIn", "developerGT", "developerGTE", "developerLT", "developerLTE", "developerContains", "developerHasPrefix", "developerHasSuffix", "developerIsNil", "developerNotNil", "developerEqualFold", "developerContainsFold", "tenderClosingDate", "tenderClosingDateNEQ", "tenderClosingDateIn", "tenderClosingDateNotIn", "tenderClosingDateGT", "tenderClosingDateGTE", "tenderClosingDateLT", "tenderClosingDateLTE", "tenderClosingDateIsNil", "tenderClosingDateNotNil", "constructionArea", "constructionAreaNEQ", "constructionAreaIn", "constructionAreaNotIn", "constructionAreaGT", "constructionAreaGTE", "constructionAreaLT", "constructionAreaLTE", "constructionAreaContains", "constructionAreaHasPrefix", "constructionAreaHasSuffix", "constructionAreaIsNil", "constructionAreaNotNil", "constructionAreaEqualFold", "constructionAreaContainsFold", "tenderWinDate", "tenderWinDateNEQ", "tenderWinDateIn", "tenderWinDateNotIn", "tenderWinDateGT", "tenderWinDateGTE", "tenderWinDateLT", "tenderWinDateLTE", "tenderWinDateIsNil", "tenderWinDateNotNil", "tenderWinAmount", "tenderWinAmountNEQ", "tenderWinAmountIn", "tenderWinAmountNotIn", "tenderWinAmountGT", "tenderWinAmountGTE", "tenderWinAmountLT", "tenderWinAmountLTE", "tenderWinAmountIsNil", "tenderWinAmountNotNil", "lastTenderAmount", "lastTenderAmountNEQ", "lastTenderAmountIn", "lastTenderAmountNotIn", "lastTenderAmountGT", "lastTenderAmountGTE", "lastTenderAmountLT", "lastTenderAmountLTE", "lastTenderAmountIsNil", "lastTenderAmountNotNil", "tenderID", "tenderIDNEQ", "tenderIDIn", "tenderIDNotIn", "tenderIDGT", "tenderIDGTE", "tenderIDLT", "tenderIDLTE", "tenderIDContains", "tenderIDHasPrefix", "tenderIDHasSuffix", "tenderIDEqualFold", "tenderIDContainsFold", "provinceID", "provinceIDNEQ", "provinceIDIn", "provinceIDNotIn", "provinceIDGT", "provinceIDGTE", "provinceIDLT", "provinceIDLTE", "provinceIDContains", "provinceIDHasPrefix", "provinceIDHasSuffix", "provinceIDIsNil", "provinceIDNotNil", "provinceIDEqualFold", "provinceIDContainsFold", "cityID", "cityIDNEQ", "cityIDIn", "cityIDNotIn", "cityIDGT", "cityIDGTE", "cityIDLT", "cityIDLTE", "cityIDContains", "cityIDHasPrefix", "cityIDHasSuffix", "cityIDIsNil", "cityIDNotNil", "cityIDEqualFold", "cityIDContainsFold", "districtID", "districtIDNEQ", "districtIDIn", "districtIDNotIn", "districtIDGT", "districtIDGTE", "districtIDLT", "districtIDLTE", "districtIDContains", "districtIDHasPrefix", "districtIDHasSuffix", "districtIDIsNil", "districtIDNotNil", "districtIDEqualFold", "districtIDContainsFold", "customerID", "customerIDNEQ", "customerIDIn", "customerIDNotIn", "customerIDGT", "customerIDGTE", "customerIDLT", "customerIDLTE", "customerIDContains", "customerIDHasPrefix", "customerIDHasSuffix", "customerIDIsNil", "customerIDNotNil", "customerIDEqualFold", "customerIDContainsFold", "finderID", "finderIDNEQ", "finderIDIn", "finderIDNotIn", "finderIDGT", "finderIDGTE", "finderIDLT", "finderIDLTE", "finderIDContains", "finderIDHasPrefix", "finderIDHasSuffix", "finderIDIsNil", "finderIDNotNil", "finderIDEqualFold", "finderIDContainsFold", "createdByID", "createdByIDNEQ", "createdByIDIn", "createdByIDNotIn", "createdByIDGT", "createdByIDGTE", "createdByIDLT", "createdByIDLTE", "createdByIDContains", "createdByIDHasPrefix", "createdByIDHasSuffix", "createdByIDIsNil", "createdByIDNotNil", "createdByIDEqualFold", "createdByIDContainsFold", "approverID", "approverIDNEQ", "approverIDIn", "approverIDNotIn", "approverIDGT", "approverIDGTE", "approverIDLT", "approverIDLTE", "approverIDContains", "approverIDHasPrefix", "approverIDHasSuffix", "approverIDIsNil", "approverIDNotNil", "approverIDEqualFold", "approverIDContainsFold", "hasTender", "hasTenderWith", "hasCustomer", "hasCustomerWith", "hasFinder", "hasFinderWith", "hasCreatedBy", "hasCreatedByWith", "hasProvince", "hasProvinceWith", "hasCity", "hasCityWith", "hasDistrict", "hasDistrictWith", "hasApprover", "hasApproverWith"}
+	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdAt", "createdAtNEQ", "createdAtIn", "createdAtNotIn", "createdAtGT", "createdAtGTE", "createdAtLT", "createdAtLTE", "updatedAt", "updatedAtNEQ", "updatedAtIn", "updatedAtNotIn", "updatedAtGT", "updatedAtGTE", "updatedAtLT", "updatedAtLTE", "status", "statusNEQ", "statusIn", "statusNotIn", "statusGT", "statusGTE", "statusLT", "statusLTE", "approvalStatus", "approvalStatusNEQ", "approvalStatusIn", "approvalStatusNotIn", "approvalStatusGT", "approvalStatusGTE", "approvalStatusLT", "approvalStatusLTE", "approvalMsgID", "approvalMsgIDNEQ", "approvalMsgIDIn", "approvalMsgIDNotIn", "approvalMsgIDGT", "approvalMsgIDGTE", "approvalMsgIDLT", "approvalMsgIDLTE", "approvalMsgIDContains", "approvalMsgIDHasPrefix", "approvalMsgIDHasSuffix", "approvalMsgIDIsNil", "approvalMsgIDNotNil", "approvalMsgIDEqualFold", "approvalMsgIDContainsFold", "approvalDate", "approvalDateNEQ", "approvalDateIn", "approvalDateNotIn", "approvalDateGT", "approvalDateGTE", "approvalDateLT", "approvalDateLTE", "approvalDateIsNil", "approvalDateNotNil", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameIsNil", "nameNotNil", "nameEqualFold", "nameContainsFold", "estimatedAmount", "estimatedAmountNEQ", "estimatedAmountIn", "estimatedAmountNotIn", "estimatedAmountGT", "estimatedAmountGTE", "estimatedAmountLT", "estimatedAmountLTE", "estimatedAmountIsNil", "estimatedAmountNotNil", "tenderDate", "tenderDateNEQ", "tenderDateIn", "tenderDateNotIn", "tenderDateGT", "tenderDateGTE", "tenderDateLT", "tenderDateLTE", "tenderDateIsNil", "tenderDateNotNil", "classify", "classifyNEQ", "classifyIn", "classifyNotIn", "classifyGT", "classifyGTE", "classifyLT", "classifyLTE", "classifyIsNil", "classifyNotNil", "discoveryDate", "discoveryDateNEQ", "discoveryDateIn", "discoveryDateNotIn", "discoveryDateGT", "discoveryDateGTE", "discoveryDateLT", "discoveryDateLTE", "discoveryDateIsNil", "discoveryDateNotNil", "address", "addressNEQ", "addressIn", "addressNotIn", "addressGT", "addressGTE", "addressLT", "addressLTE", "addressContains", "addressHasPrefix", "addressHasSuffix", "addressIsNil", "addressNotNil", "addressEqualFold", "addressContainsFold", "fullAddress", "fullAddressNEQ", "fullAddressIn", "fullAddressNotIn", "fullAddressGT", "fullAddressGTE", "fullAddressLT", "fullAddressLTE", "fullAddressContains", "fullAddressHasPrefix", "fullAddressHasSuffix", "fullAddressIsNil", "fullAddressNotNil", "fullAddressEqualFold", "fullAddressContainsFold", "contractor", "contractorNEQ", "contractorIn", "contractorNotIn", "contractorGT", "contractorGTE", "contractorLT", "contractorLTE", "contractorContains", "contractorHasPrefix", "contractorHasSuffix", "contractorIsNil", "contractorNotNil", "contractorEqualFold", "contractorContainsFold", "levelInvolved", "levelInvolvedNEQ", "levelInvolvedIn", "levelInvolvedNotIn", "levelInvolvedGT", "levelInvolvedGTE", "levelInvolvedLT", "levelInvolvedLTE", "levelInvolvedIsNil", "levelInvolvedNotNil", "sizeAndValueRating", "sizeAndValueRatingNEQ", "sizeAndValueRatingIn", "sizeAndValueRatingNotIn", "sizeAndValueRatingGT", "sizeAndValueRatingGTE", "sizeAndValueRatingLT", "sizeAndValueRatingLTE", "sizeAndValueRatingIsNil", "sizeAndValueRatingNotNil", "sizeAndValueRatingOverview", "sizeAndValueRatingOverviewNEQ", "sizeAndValueRatingOverviewIn", "sizeAndValueRatingOverviewNotIn", "sizeAndValueRatingOverviewGT", "sizeAndValueRatingOverviewGTE", "sizeAndValueRatingOverviewLT", "sizeAndValueRatingOverviewLTE", "sizeAndValueRatingOverviewContains", "sizeAndValueRatingOverviewHasPrefix", "sizeAndValueRatingOverviewHasSuffix", "sizeAndValueRatingOverviewIsNil", "sizeAndValueRatingOverviewNotNil", "sizeAndValueRatingOverviewEqualFold", "sizeAndValueRatingOverviewContainsFold", "creditAndPaymentRating", "creditAndPaymentRatingNEQ", "creditAndPaymentRatingIn", "creditAndPaymentRatingNotIn", "creditAndPaymentRatingGT", "creditAndPaymentRatingGTE", "creditAndPaymentRatingLT", "creditAndPaymentRatingLTE", "creditAndPaymentRatingIsNil", "creditAndPaymentRatingNotNil", "creditAndPaymentRatingOverview", "creditAndPaymentRatingOverviewNEQ", "creditAndPaymentRatingOverviewIn", "creditAndPaymentRatingOverviewNotIn", "creditAndPaymentRatingOverviewGT", "creditAndPaymentRatingOverviewGTE", "creditAndPaymentRatingOverviewLT", "creditAndPaymentRatingOverviewLTE", "creditAndPaymentRatingOverviewContains", "creditAndPaymentRatingOverviewHasPrefix", "creditAndPaymentRatingOverviewHasSuffix", "creditAndPaymentRatingOverviewIsNil", "creditAndPaymentRatingOverviewNotNil", "creditAndPaymentRatingOverviewEqualFold", "creditAndPaymentRatingOverviewContainsFold", "timeLimitRating", "timeLimitRatingNEQ", "timeLimitRatingIn", "timeLimitRatingNotIn", "timeLimitRatingGT", "timeLimitRatingGTE", "timeLimitRatingLT", "timeLimitRatingLTE", "timeLimitRatingIsNil", "timeLimitRatingNotNil", "timeLimitRatingOverview", "timeLimitRatingOverviewNEQ", "timeLimitRatingOverviewIn", "timeLimitRatingOverviewNotIn", "timeLimitRatingOverviewGT", "timeLimitRatingOverviewGTE", "timeLimitRatingOverviewLT", "timeLimitRatingOverviewLTE", "timeLimitRatingOverviewContains", "timeLimitRatingOverviewHasPrefix", "timeLimitRatingOverviewHasSuffix", "timeLimitRatingOverviewIsNil", "timeLimitRatingOverviewNotNil", "timeLimitRatingOverviewEqualFold", "timeLimitRatingOverviewContainsFold", "customerRelationshipRating", "customerRelationshipRatingNEQ", "customerRelationshipRatingIn", "customerRelationshipRatingNotIn", "customerRelationshipRatingGT", "customerRelationshipRatingGTE", "customerRelationshipRatingLT", "customerRelationshipRatingLTE", "customerRelationshipRatingIsNil", "customerRelationshipRatingNotNil", "customerRelationshipRatingOverview", "customerRelationshipRatingOverviewNEQ", "customerRelationshipRatingOverviewIn", "customerRelationshipRatingOverviewNotIn", "customerRelationshipRatingOverviewGT", "customerRelationshipRatingOverviewGTE", "customerRelationshipRatingOverviewLT", "customerRelationshipRatingOverviewLTE", "customerRelationshipRatingOverviewContains", "customerRelationshipRatingOverviewHasPrefix", "customerRelationshipRatingOverviewHasSuffix", "customerRelationshipRatingOverviewIsNil", "customerRelationshipRatingOverviewNotNil", "customerRelationshipRatingOverviewEqualFold", "customerRelationshipRatingOverviewContainsFold", "competitivePartnershipRating", "competitivePartnershipRatingNEQ", "competitivePartnershipRatingIn", "competitivePartnershipRatingNotIn", "competitivePartnershipRatingGT", "competitivePartnershipRatingGTE", "competitivePartnershipRatingLT", "competitivePartnershipRatingLTE", "competitivePartnershipRatingIsNil", "competitivePartnershipRatingNotNil", "competitivePartnershipRatingOverview", "competitivePartnershipRatingOverviewNEQ", "competitivePartnershipRatingOverviewIn", "competitivePartnershipRatingOverviewNotIn", "competitivePartnershipRatingOverviewGT", "competitivePartnershipRatingOverviewGTE", "competitivePartnershipRatingOverviewLT", "competitivePartnershipRatingOverviewLTE", "competitivePartnershipRatingOverviewContains", "competitivePartnershipRatingOverviewHasPrefix", "competitivePartnershipRatingOverviewHasSuffix", "competitivePartnershipRatingOverviewIsNil", "competitivePartnershipRatingOverviewNotNil", "competitivePartnershipRatingOverviewEqualFold", "competitivePartnershipRatingOverviewContainsFold", "prepareToBid", "prepareToBidNEQ", "projectCode", "projectCodeNEQ", "projectCodeIn", "projectCodeNotIn", "projectCodeGT", "projectCodeGTE", "projectCodeLT", "projectCodeLTE", "projectCodeContains", "projectCodeHasPrefix", "projectCodeHasSuffix", "projectCodeIsNil", "projectCodeNotNil", "projectCodeEqualFold", "projectCodeContainsFold", "projectType", "projectTypeNEQ", "projectTypeIn", "projectTypeNotIn", "projectTypeGT", "projectTypeGTE", "projectTypeLT", "projectTypeLTE", "projectTypeContains", "projectTypeHasPrefix", "projectTypeHasSuffix", "projectTypeIsNil", "projectTypeNotNil", "projectTypeEqualFold", "projectTypeContainsFold", "projectDefinition", "projectDefinitionNEQ", "projectDefinitionIn", "projectDefinitionNotIn", "projectDefinitionGT", "projectDefinitionGTE", "projectDefinitionLT", "projectDefinitionLTE", "projectDefinitionContains", "projectDefinitionHasPrefix", "projectDefinitionHasSuffix", "projectDefinitionIsNil", "projectDefinitionNotNil", "projectDefinitionEqualFold", "projectDefinitionContainsFold", "estimatedProjectStartDate", "estimatedProjectStartDateNEQ", "estimatedProjectStartDateIn", "estimatedProjectStartDateNotIn", "estimatedProjectStartDateGT", "estimatedProjectStartDateGTE", "estimatedProjectStartDateLT", "estimatedProjectStartDateLTE", "estimatedProjectStartDateIsNil", "estimatedProjectStartDateNotNil", "estimatedProjectEndDate", "estimatedProjectEndDateNEQ", "estimatedProjectEndDateIn", "estimatedProjectEndDateNotIn", "estimatedProjectEndDateGT", "estimatedProjectEndDateGTE", "estimatedProjectEndDateLT", "estimatedProjectEndDateLTE", "estimatedProjectEndDateIsNil", "estimatedProjectEndDateNotNil", "remark", "remarkNEQ", "remarkIn", "remarkNotIn", "remarkGT", "remarkGTE", "remarkLT", "remarkLTE", "remarkContains", "remarkHasPrefix", "remarkHasSuffix", "remarkIsNil", "remarkNotNil", "remarkEqualFold", "remarkContainsFold", "tenderSituations", "tenderSituationsNEQ", "tenderSituationsIn", "tenderSituationsNotIn", "tenderSituationsGT", "tenderSituationsGTE", "tenderSituationsLT", "tenderSituationsLTE", "tenderSituationsContains", "tenderSituationsHasPrefix", "tenderSituationsHasSuffix", "tenderSituationsIsNil", "tenderSituationsNotNil", "tenderSituationsEqualFold", "tenderSituationsContainsFold", "ownerSituations", "ownerSituationsNEQ", "ownerSituationsIn", "ownerSituationsNotIn", "ownerSituationsGT", "ownerSituationsGTE", "ownerSituationsLT", "ownerSituationsLTE", "ownerSituationsContains", "ownerSituationsHasPrefix", "ownerSituationsHasSuffix", "ownerSituationsIsNil", "ownerSituationsNotNil", "ownerSituationsEqualFold", "ownerSituationsContainsFold", "biddingInstructions", "biddingInstructionsNEQ", "biddingInstructionsIn", "biddingInstructionsNotIn", "biddingInstructionsGT", "biddingInstructionsGTE", "biddingInstructionsLT", "biddingInstructionsLTE", "biddingInstructionsContains", "biddingInstructionsHasPrefix", "biddingInstructionsHasSuffix", "biddingInstructionsIsNil", "biddingInstructionsNotNil", "biddingInstructionsEqualFold", "biddingInstructionsContainsFold", "competitorSituations", "competitorSituationsNEQ", "competitorSituationsIn", "competitorSituationsNotIn", "competitorSituationsGT", "competitorSituationsGTE", "competitorSituationsLT", "competitorSituationsLTE", "competitorSituationsContains", "competitorSituationsHasPrefix", "competitorSituationsHasSuffix", "competitorSituationsIsNil", "competitorSituationsNotNil", "competitorSituationsEqualFold", "competitorSituationsContainsFold", "costEngineer", "costEngineerNEQ", "costEngineerIn", "costEngineerNotIn", "costEngineerGT", "costEngineerGTE", "costEngineerLT", "costEngineerLTE", "costEngineerContains", "costEngineerHasPrefix", "costEngineerHasSuffix", "costEngineerIsNil", "costEngineerNotNil", "costEngineerEqualFold", "costEngineerContainsFold", "tenderForm", "tenderFormNEQ", "tenderFormIn", "tenderFormNotIn", "tenderFormGT", "tenderFormGTE", "tenderFormLT", "tenderFormLTE", "tenderFormContains", "tenderFormHasPrefix", "tenderFormHasSuffix", "tenderFormIsNil", "tenderFormNotNil", "tenderFormEqualFold", "tenderFormContainsFold", "contractForm", "contractFormNEQ", "contractFormIn", "contractFormNotIn", "contractFormGT", "contractFormGTE", "contractFormLT", "contractFormLTE", "contractFormContains", "contractFormHasPrefix", "contractFormHasSuffix", "contractFormIsNil", "contractFormNotNil", "contractFormEqualFold", "contractFormContainsFold", "managementCompany", "managementCompanyNEQ", "managementCompanyIn", "managementCompanyNotIn", "managementCompanyGT", "managementCompanyGTE", "managementCompanyLT", "managementCompanyLTE", "managementCompanyContains", "managementCompanyHasPrefix", "managementCompanyHasSuffix", "managementCompanyIsNil", "managementCompanyNotNil", "managementCompanyEqualFold", "managementCompanyContainsFold", "tenderingAgency", "tenderingAgencyNEQ", "tenderingAgencyIn", "tenderingAgencyNotIn", "tenderingAgencyGT", "tenderingAgencyGTE", "tenderingAgencyLT", "tenderingAgencyLTE", "tenderingAgencyContains", "tenderingAgencyHasPrefix", "tenderingAgencyHasSuffix", "tenderingAgencyIsNil", "tenderingAgencyNotNil", "tenderingAgencyEqualFold", "tenderingAgencyContainsFold", "biddingDate", "biddingDateNEQ", "biddingDateIn", "biddingDateNotIn", "biddingDateGT", "biddingDateGTE", "biddingDateLT", "biddingDateLTE", "biddingDateIsNil", "biddingDateNotNil", "facadeConsultant", "facadeConsultantNEQ", "facadeConsultantIn", "facadeConsultantNotIn", "facadeConsultantGT", "facadeConsultantGTE", "facadeConsultantLT", "facadeConsultantLTE", "facadeConsultantContains", "facadeConsultantHasPrefix", "facadeConsultantHasSuffix", "facadeConsultantIsNil", "facadeConsultantNotNil", "facadeConsultantEqualFold", "facadeConsultantContainsFold", "designUnit", "designUnitNEQ", "designUnitIn", "designUnitNotIn", "designUnitGT", "designUnitGTE", "designUnitLT", "designUnitLTE", "designUnitContains", "designUnitHasPrefix", "designUnitHasSuffix", "designUnitIsNil", "designUnitNotNil", "designUnitEqualFold", "designUnitContainsFold", "consultingFirm", "consultingFirmNEQ", "consultingFirmIn", "consultingFirmNotIn", "consultingFirmGT", "consultingFirmGTE", "consultingFirmLT", "consultingFirmLTE", "consultingFirmContains", "consultingFirmHasPrefix", "consultingFirmHasSuffix", "consultingFirmIsNil", "consultingFirmNotNil", "consultingFirmEqualFold", "consultingFirmContainsFold", "keyProject", "keyProjectNEQ", "currentProgress", "currentProgressNEQ", "currentProgressIn", "currentProgressNotIn", "currentProgressGT", "currentProgressGTE", "currentProgressLT", "currentProgressLTE", "currentProgressContains", "currentProgressHasPrefix", "currentProgressHasSuffix", "currentProgressIsNil", "currentProgressNotNil", "currentProgressEqualFold", "currentProgressContainsFold", "tenderWinCompany", "tenderWinCompanyNEQ", "tenderWinCompanyIn", "tenderWinCompanyNotIn", "tenderWinCompanyGT", "tenderWinCompanyGTE", "tenderWinCompanyLT", "tenderWinCompanyLTE", "tenderWinCompanyContains", "tenderWinCompanyHasPrefix", "tenderWinCompanyHasSuffix", "tenderWinCompanyIsNil", "tenderWinCompanyNotNil", "tenderWinCompanyEqualFold", "tenderWinCompanyContainsFold", "tenderCode", "tenderCodeNEQ", "tenderCodeIn", "tenderCodeNotIn", "tenderCodeGT", "tenderCodeGTE", "tenderCodeLT", "tenderCodeLTE", "tenderCodeContains", "tenderCodeHasPrefix", "tenderCodeHasSuffix", "tenderCodeIsNil", "tenderCodeNotNil", "tenderCodeEqualFold", "tenderCodeContainsFold", "architect", "architectNEQ", "architectIn", "architectNotIn", "architectGT", "architectGTE", "architectLT", "architectLTE", "architectContains", "architectHasPrefix", "architectHasSuffix", "architectIsNil", "architectNotNil", "architectEqualFold", "architectContainsFold", "developer", "developerNEQ", "developerIn", "developerNotIn", "developerGT", "developerGTE", "developerLT", "developerLTE", "developerContains", "developerHasPrefix", "developerHasSuffix", "developerIsNil", "developerNotNil", "developerEqualFold", "developerContainsFold", "tenderClosingDate", "tenderClosingDateNEQ", "tenderClosingDateIn", "tenderClosingDateNotIn", "tenderClosingDateGT", "tenderClosingDateGTE", "tenderClosingDateLT", "tenderClosingDateLTE", "tenderClosingDateIsNil", "tenderClosingDateNotNil", "constructionArea", "constructionAreaNEQ", "constructionAreaIn", "constructionAreaNotIn", "constructionAreaGT", "constructionAreaGTE", "constructionAreaLT", "constructionAreaLTE", "constructionAreaContains", "constructionAreaHasPrefix", "constructionAreaHasSuffix", "constructionAreaIsNil", "constructionAreaNotNil", "constructionAreaEqualFold", "constructionAreaContainsFold", "tenderWinDate", "tenderWinDateNEQ", "tenderWinDateIn", "tenderWinDateNotIn", "tenderWinDateGT", "tenderWinDateGTE", "tenderWinDateLT", "tenderWinDateLTE", "tenderWinDateIsNil", "tenderWinDateNotNil", "tenderWinAmount", "tenderWinAmountNEQ", "tenderWinAmountIn", "tenderWinAmountNotIn", "tenderWinAmountGT", "tenderWinAmountGTE", "tenderWinAmountLT", "tenderWinAmountLTE", "tenderWinAmountIsNil", "tenderWinAmountNotNil", "lastTenderAmount", "lastTenderAmountNEQ", "lastTenderAmountIn", "lastTenderAmountNotIn", "lastTenderAmountGT", "lastTenderAmountGTE", "lastTenderAmountLT", "lastTenderAmountLTE", "lastTenderAmountIsNil", "lastTenderAmountNotNil", "tenderID", "tenderIDNEQ", "tenderIDIn", "tenderIDNotIn", "tenderIDGT", "tenderIDGTE", "tenderIDLT", "tenderIDLTE", "tenderIDContains", "tenderIDHasPrefix", "tenderIDHasSuffix", "tenderIDEqualFold", "tenderIDContainsFold", "provinceID", "provinceIDNEQ", "provinceIDIn", "provinceIDNotIn", "provinceIDGT", "provinceIDGTE", "provinceIDLT", "provinceIDLTE", "provinceIDContains", "provinceIDHasPrefix", "provinceIDHasSuffix", "provinceIDIsNil", "provinceIDNotNil", "provinceIDEqualFold", "provinceIDContainsFold", "cityID", "cityIDNEQ", "cityIDIn", "cityIDNotIn", "cityIDGT", "cityIDGTE", "cityIDLT", "cityIDLTE", "cityIDContains", "cityIDHasPrefix", "cityIDHasSuffix", "cityIDIsNil", "cityIDNotNil", "cityIDEqualFold", "cityIDContainsFold", "districtID", "districtIDNEQ", "districtIDIn", "districtIDNotIn", "districtIDGT", "districtIDGTE", "districtIDLT", "districtIDLTE", "districtIDContains", "districtIDHasPrefix", "districtIDHasSuffix", "districtIDIsNil", "districtIDNotNil", "districtIDEqualFold", "districtIDContainsFold", "customerID", "customerIDNEQ", "customerIDIn", "customerIDNotIn", "customerIDGT", "customerIDGTE", "customerIDLT", "customerIDLTE", "customerIDContains", "customerIDHasPrefix", "customerIDHasSuffix", "customerIDIsNil", "customerIDNotNil", "customerIDEqualFold", "customerIDContainsFold", "finderID", "finderIDNEQ", "finderIDIn", "finderIDNotIn", "finderIDGT", "finderIDGTE", "finderIDLT", "finderIDLTE", "finderIDContains", "finderIDHasPrefix", "finderIDHasSuffix", "finderIDIsNil", "finderIDNotNil", "finderIDEqualFold", "finderIDContainsFold", "createdByID", "createdByIDNEQ", "createdByIDIn", "createdByIDNotIn", "createdByIDGT", "createdByIDGTE", "createdByIDLT", "createdByIDLTE", "createdByIDContains", "createdByIDHasPrefix", "createdByIDHasSuffix", "createdByIDIsNil", "createdByIDNotNil", "createdByIDEqualFold", "createdByIDContainsFold", "approverID", "approverIDNEQ", "approverIDIn", "approverIDNotIn", "approverIDGT", "approverIDGTE", "approverIDLT", "approverIDLTE", "approverIDContains", "approverIDHasPrefix", "approverIDHasSuffix", "approverIDIsNil", "approverIDNotNil", "approverIDEqualFold", "approverIDContainsFold", "hasTender", "hasTenderWith", "hasCustomer", "hasCustomerWith", "hasFinder", "hasFinderWith", "hasCreatedBy", "hasCreatedByWith", "hasProvince", "hasProvinceWith", "hasCity", "hasCityWith", "hasDistrict", "hasDistrictWith", "hasApprover", "hasApproverWith"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -49159,6 +49552,76 @@ func (ec *executionContext) unmarshalInputTenderProfileWhereInput(ctx context.Co
 				return it, err
 			}
 			it.ApprovalMsgIDContainsFold = data
+		case "approvalDate":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalDate"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalDate = data
+		case "approvalDateNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalDateNEQ"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalDateNEQ = data
+		case "approvalDateIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalDateIn"))
+			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalDateIn = data
+		case "approvalDateNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalDateNotIn"))
+			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalDateNotIn = data
+		case "approvalDateGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalDateGT"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalDateGT = data
+		case "approvalDateGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalDateGTE"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalDateGTE = data
+		case "approvalDateLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalDateLT"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalDateLT = data
+		case "approvalDateLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalDateLTE"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalDateLTE = data
+		case "approvalDateIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalDateIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalDateIsNil = data
+		case "approvalDateNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvalDateNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovalDateNotNil = data
 		case "name":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
 			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
@@ -54583,7 +55046,7 @@ func (ec *executionContext) unmarshalInputTenderWhereInput(ctx context.Context, 
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdAt", "createdAtNEQ", "createdAtIn", "createdAtNotIn", "createdAtGT", "createdAtGTE", "createdAtLT", "createdAtLTE", "updatedAt", "updatedAtNEQ", "updatedAtIn", "updatedAtNotIn", "updatedAtGT", "updatedAtGTE", "updatedAtLT", "updatedAtLTE", "code", "codeNEQ", "codeIn", "codeNotIn", "codeGT", "codeGTE", "codeLT", "codeLTE", "codeContains", "codeHasPrefix", "codeHasSuffix", "codeEqualFold", "codeContainsFold", "status", "statusNEQ", "statusIn", "statusNotIn", "statusGT", "statusGTE", "statusLT", "statusLTE", "approvalStatus", "approvalStatusNEQ", "approvalStatusIn", "approvalStatusNotIn", "approvalStatusGT", "approvalStatusGTE", "approvalStatusLT", "approvalStatusLTE", "approvalMsgID", "approvalMsgIDNEQ", "approvalMsgIDIn", "approvalMsgIDNotIn", "approvalMsgIDGT", "approvalMsgIDGTE", "approvalMsgIDLT", "approvalMsgIDLTE", "approvalMsgIDContains", "approvalMsgIDHasPrefix", "approvalMsgIDHasSuffix", "approvalMsgIDIsNil", "approvalMsgIDNotNil", "approvalMsgIDEqualFold", "approvalMsgIDContainsFold", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "estimatedAmount", "estimatedAmountNEQ", "estimatedAmountIn", "estimatedAmountNotIn", "estimatedAmountGT", "estimatedAmountGTE", "estimatedAmountLT", "estimatedAmountLTE", "estimatedAmountIsNil", "estimatedAmountNotNil", "tenderDate", "tenderDateNEQ", "tenderDateIn", "tenderDateNotIn", "tenderDateGT", "tenderDateGTE", "tenderDateLT", "tenderDateLTE", "tenderDateIsNil", "tenderDateNotNil", "classify", "classifyNEQ", "classifyIn", "classifyNotIn", "classifyGT", "classifyGTE", "classifyLT", "classifyLTE", "classifyIsNil", "classifyNotNil", "discoveryDate", "discoveryDateNEQ", "discoveryDateIn", "discoveryDateNotIn", "discoveryDateGT", "discoveryDateGTE", "discoveryDateLT", "discoveryDateLTE", "address", "addressNEQ", "addressIn", "addressNotIn", "addressGT", "addressGTE", "addressLT", "addressLTE", "addressContains", "addressHasPrefix", "addressHasSuffix", "addressIsNil", "addressNotNil", "addressEqualFold", "addressContainsFold", "fullAddress", "fullAddressNEQ", "fullAddressIn", "fullAddressNotIn", "fullAddressGT", "fullAddressGTE", "fullAddressLT", "fullAddressLTE", "fullAddressContains", "fullAddressHasPrefix", "fullAddressHasSuffix", "fullAddressIsNil", "fullAddressNotNil", "fullAddressEqualFold", "fullAddressContainsFold", "contractor", "contractorNEQ", "contractorIn", "contractorNotIn", "contractorGT", "contractorGTE", "contractorLT", "contractorLTE", "contractorContains", "contractorHasPrefix", "contractorHasSuffix", "contractorIsNil", "contractorNotNil", "contractorEqualFold", "contractorContainsFold", "levelInvolved", "levelInvolvedNEQ", "levelInvolvedIn", "levelInvolvedNotIn", "levelInvolvedGT", "levelInvolvedGTE", "levelInvolvedLT", "levelInvolvedLTE", "levelInvolvedIsNil", "levelInvolvedNotNil", "sizeAndValueRating", "sizeAndValueRatingNEQ", "sizeAndValueRatingIn", "sizeAndValueRatingNotIn", "sizeAndValueRatingGT", "sizeAndValueRatingGTE", "sizeAndValueRatingLT", "sizeAndValueRatingLTE", "sizeAndValueRatingIsNil", "sizeAndValueRatingNotNil", "sizeAndValueRatingOverview", "sizeAndValueRatingOverviewNEQ", "sizeAndValueRatingOverviewIn", "sizeAndValueRatingOverviewNotIn", "sizeAndValueRatingOverviewGT", "sizeAndValueRatingOverviewGTE", "sizeAndValueRatingOverviewLT", "sizeAndValueRatingOverviewLTE", "sizeAndValueRatingOverviewContains", "sizeAndValueRatingOverviewHasPrefix", "sizeAndValueRatingOverviewHasSuffix", "sizeAndValueRatingOverviewIsNil", "sizeAndValueRatingOverviewNotNil", "sizeAndValueRatingOverviewEqualFold", "sizeAndValueRatingOverviewContainsFold", "creditAndPaymentRating", "creditAndPaymentRatingNEQ", "creditAndPaymentRatingIn", "creditAndPaymentRatingNotIn", "creditAndPaymentRatingGT", "creditAndPaymentRatingGTE", "creditAndPaymentRatingLT", "creditAndPaymentRatingLTE", "creditAndPaymentRatingIsNil", "creditAndPaymentRatingNotNil", "creditAndPaymentRatingOverview", "creditAndPaymentRatingOverviewNEQ", "creditAndPaymentRatingOverviewIn", "creditAndPaymentRatingOverviewNotIn", "creditAndPaymentRatingOverviewGT", "creditAndPaymentRatingOverviewGTE", "creditAndPaymentRatingOverviewLT", "creditAndPaymentRatingOverviewLTE", "creditAndPaymentRatingOverviewContains", "creditAndPaymentRatingOverviewHasPrefix", "creditAndPaymentRatingOverviewHasSuffix", "creditAndPaymentRatingOverviewIsNil", "creditAndPaymentRatingOverviewNotNil", "creditAndPaymentRatingOverviewEqualFold", "creditAndPaymentRatingOverviewContainsFold", "timeLimitRating", "timeLimitRatingNEQ", "timeLimitRatingIn", "timeLimitRatingNotIn", "timeLimitRatingGT", "timeLimitRatingGTE", "timeLimitRatingLT", "timeLimitRatingLTE", "timeLimitRatingIsNil", "timeLimitRatingNotNil", "timeLimitRatingOverview", "timeLimitRatingOverviewNEQ", "timeLimitRatingOverviewIn", "timeLimitRatingOverviewNotIn", "timeLimitRatingOverviewGT", "timeLimitRatingOverviewGTE", "timeLimitRatingOverviewLT", "timeLimitRatingOverviewLTE", "timeLimitRatingOverviewContains", "timeLimitRatingOverviewHasPrefix", "timeLimitRatingOverviewHasSuffix", "timeLimitRatingOverviewIsNil", "timeLimitRatingOverviewNotNil", "timeLimitRatingOverviewEqualFold", "timeLimitRatingOverviewContainsFold", "customerRelationshipRating", "customerRelationshipRatingNEQ", "customerRelationshipRatingIn", "customerRelationshipRatingNotIn", "customerRelationshipRatingGT", "customerRelationshipRatingGTE", "customerRelationshipRatingLT", "customerRelationshipRatingLTE", "customerRelationshipRatingIsNil", "customerRelationshipRatingNotNil", "customerRelationshipRatingOverview", "customerRelationshipRatingOverviewNEQ", "customerRelationshipRatingOverviewIn", "customerRelationshipRatingOverviewNotIn", "customerRelationshipRatingOverviewGT", "customerRelationshipRatingOverviewGTE", "customerRelationshipRatingOverviewLT", "customerRelationshipRatingOverviewLTE", "customerRelationshipRatingOverviewContains", "customerRelationshipRatingOverviewHasPrefix", "customerRelationshipRatingOverviewHasSuffix", "customerRelationshipRatingOverviewIsNil", "customerRelationshipRatingOverviewNotNil", "customerRelationshipRatingOverviewEqualFold", "customerRelationshipRatingOverviewContainsFold", "competitivePartnershipRating", "competitivePartnershipRatingNEQ", "competitivePartnershipRatingIn", "competitivePartnershipRatingNotIn", "competitivePartnershipRatingGT", "competitivePartnershipRatingGTE", "competitivePartnershipRatingLT", "competitivePartnershipRatingLTE", "competitivePartnershipRatingIsNil", "competitivePartnershipRatingNotNil", "competitivePartnershipRatingOverview", "competitivePartnershipRatingOverviewNEQ", "competitivePartnershipRatingOverviewIn", "competitivePartnershipRatingOverviewNotIn", "competitivePartnershipRatingOverviewGT", "competitivePartnershipRatingOverviewGTE", "competitivePartnershipRatingOverviewLT", "competitivePartnershipRatingOverviewLTE", "competitivePartnershipRatingOverviewContains", "competitivePartnershipRatingOverviewHasPrefix", "competitivePartnershipRatingOverviewHasSuffix", "competitivePartnershipRatingOverviewIsNil", "competitivePartnershipRatingOverviewNotNil", "competitivePartnershipRatingOverviewEqualFold", "competitivePartnershipRatingOverviewContainsFold", "prepareToBid", "prepareToBidNEQ", "projectCode", "projectCodeNEQ", "projectCodeIn", "projectCodeNotIn", "projectCodeGT", "projectCodeGTE", "projectCodeLT", "projectCodeLTE", "projectCodeContains", "projectCodeHasPrefix", "projectCodeHasSuffix", "projectCodeIsNil", "projectCodeNotNil", "projectCodeEqualFold", "projectCodeContainsFold", "projectType", "projectTypeNEQ", "projectTypeIn", "projectTypeNotIn", "projectTypeGT", "projectTypeGTE", "projectTypeLT", "projectTypeLTE", "projectTypeContains", "projectTypeHasPrefix", "projectTypeHasSuffix", "projectTypeIsNil", "projectTypeNotNil", "projectTypeEqualFold", "projectTypeContainsFold", "projectDefinition", "projectDefinitionNEQ", "projectDefinitionIn", "projectDefinitionNotIn", "projectDefinitionGT", "projectDefinitionGTE", "projectDefinitionLT", "projectDefinitionLTE", "projectDefinitionContains", "projectDefinitionHasPrefix", "projectDefinitionHasSuffix", "projectDefinitionIsNil", "projectDefinitionNotNil", "projectDefinitionEqualFold", "projectDefinitionContainsFold", "estimatedProjectStartDate", "estimatedProjectStartDateNEQ", "estimatedProjectStartDateIn", "estimatedProjectStartDateNotIn", "estimatedProjectStartDateGT", "estimatedProjectStartDateGTE", "estimatedProjectStartDateLT", "estimatedProjectStartDateLTE", "estimatedProjectStartDateIsNil", "estimatedProjectStartDateNotNil", "estimatedProjectEndDate", "estimatedProjectEndDateNEQ", "estimatedProjectEndDateIn", "estimatedProjectEndDateNotIn", "estimatedProjectEndDateGT", "estimatedProjectEndDateGTE", "estimatedProjectEndDateLT", "estimatedProjectEndDateLTE", "estimatedProjectEndDateIsNil", "estimatedProjectEndDateNotNil", "remark", "remarkNEQ", "remarkIn", "remarkNotIn", "remarkGT", "remarkGTE", "remarkLT", "remarkLTE", "remarkContains", "remarkHasPrefix", "remarkHasSuffix", "remarkIsNil", "remarkNotNil", "remarkEqualFold", "remarkContainsFold", "tenderSituations", "tenderSituationsNEQ", "tenderSituationsIn", "tenderSituationsNotIn", "tenderSituationsGT", "tenderSituationsGTE", "tenderSituationsLT", "tenderSituationsLTE", "tenderSituationsContains", "tenderSituationsHasPrefix", "tenderSituationsHasSuffix", "tenderSituationsIsNil", "tenderSituationsNotNil", "tenderSituationsEqualFold", "tenderSituationsContainsFold", "ownerSituations", "ownerSituationsNEQ", "ownerSituationsIn", "ownerSituationsNotIn", "ownerSituationsGT", "ownerSituationsGTE", "ownerSituationsLT", "ownerSituationsLTE", "ownerSituationsContains", "ownerSituationsHasPrefix", "ownerSituationsHasSuffix", "ownerSituationsIsNil", "ownerSituationsNotNil", "ownerSituationsEqualFold", "ownerSituationsContainsFold", "biddingInstructions", "biddingInstructionsNEQ", "biddingInstructionsIn", "biddingInstructionsNotIn", "biddingInstructionsGT", "biddingInstructionsGTE", "biddingInstructionsLT", "biddingInstructionsLTE", "biddingInstructionsContains", "biddingInstructionsHasPrefix", "biddingInstructionsHasSuffix", "biddingInstructionsIsNil", "biddingInstructionsNotNil", "biddingInstructionsEqualFold", "biddingInstructionsContainsFold", "competitorSituations", "competitorSituationsNEQ", "competitorSituationsIn", "competitorSituationsNotIn", "competitorSituationsGT", "competitorSituationsGTE", "competitorSituationsLT", "competitorSituationsLTE", "competitorSituationsContains", "competitorSituationsHasPrefix", "competitorSituationsHasSuffix", "competitorSituationsIsNil", "competitorSituationsNotNil", "competitorSituationsEqualFold", "competitorSituationsContainsFold", "costEngineer", "costEngineerNEQ", "costEngineerIn", "costEngineerNotIn", "costEngineerGT", "costEngineerGTE", "costEngineerLT", "costEngineerLTE", "costEngineerContains", "costEngineerHasPrefix", "costEngineerHasSuffix", "costEngineerIsNil", "costEngineerNotNil", "costEngineerEqualFold", "costEngineerContainsFold", "tenderForm", "tenderFormNEQ", "tenderFormIn", "tenderFormNotIn", "tenderFormGT", "tenderFormGTE", "tenderFormLT", "tenderFormLTE", "tenderFormContains", "tenderFormHasPrefix", "tenderFormHasSuffix", "tenderFormIsNil", "tenderFormNotNil", "tenderFormEqualFold", "tenderFormContainsFold", "contractForm", "contractFormNEQ", "contractFormIn", "contractFormNotIn", "contractFormGT", "contractFormGTE", "contractFormLT", "contractFormLTE", "contractFormContains", "contractFormHasPrefix", "contractFormHasSuffix", "contractFormIsNil", "contractFormNotNil", "contractFormEqualFold", "contractFormContainsFold", "managementCompany", "managementCompanyNEQ", "managementCompanyIn", "managementCompanyNotIn", "managementCompanyGT", "managementCompanyGTE", "managementCompanyLT", "managementCompanyLTE", "managementCompanyContains", "managementCompanyHasPrefix", "managementCompanyHasSuffix", "managementCompanyIsNil", "managementCompanyNotNil", "managementCompanyEqualFold", "managementCompanyContainsFold", "tenderingAgency", "tenderingAgencyNEQ", "tenderingAgencyIn", "tenderingAgencyNotIn", "tenderingAgencyGT", "tenderingAgencyGTE", "tenderingAgencyLT", "tenderingAgencyLTE", "tenderingAgencyContains", "tenderingAgencyHasPrefix", "tenderingAgencyHasSuffix", "tenderingAgencyIsNil", "tenderingAgencyNotNil", "tenderingAgencyEqualFold", "tenderingAgencyContainsFold", "biddingDate", "biddingDateNEQ", "biddingDateIn", "biddingDateNotIn", "biddingDateGT", "biddingDateGTE", "biddingDateLT", "biddingDateLTE", "biddingDateIsNil", "biddingDateNotNil", "facadeConsultant", "facadeConsultantNEQ", "facadeConsultantIn", "facadeConsultantNotIn", "facadeConsultantGT", "facadeConsultantGTE", "facadeConsultantLT", "facadeConsultantLTE", "facadeConsultantContains", "facadeConsultantHasPrefix", "facadeConsultantHasSuffix", "facadeConsultantIsNil", "facadeConsultantNotNil", "facadeConsultantEqualFold", "facadeConsultantContainsFold", "designUnit", "designUnitNEQ", "designUnitIn", "designUnitNotIn", "designUnitGT", "designUnitGTE", "designUnitLT", "designUnitLTE", "designUnitContains", "designUnitHasPrefix", "designUnitHasSuffix", "designUnitIsNil", "designUnitNotNil", "designUnitEqualFold", "designUnitContainsFold", "consultingFirm", "consultingFirmNEQ", "consultingFirmIn", "consultingFirmNotIn", "consultingFirmGT", "consultingFirmGTE", "consultingFirmLT", "consultingFirmLTE", "consultingFirmContains", "consultingFirmHasPrefix", "consultingFirmHasSuffix", "consultingFirmIsNil", "consultingFirmNotNil", "consultingFirmEqualFold", "consultingFirmContainsFold", "keyProject", "keyProjectNEQ", "currentProgress", "currentProgressNEQ", "currentProgressIn", "currentProgressNotIn", "currentProgressGT", "currentProgressGTE", "currentProgressLT", "currentProgressLTE", "currentProgressContains", "currentProgressHasPrefix", "currentProgressHasSuffix", "currentProgressIsNil", "currentProgressNotNil", "currentProgressEqualFold", "currentProgressContainsFold", "tenderWinCompany", "tenderWinCompanyNEQ", "tenderWinCompanyIn", "tenderWinCompanyNotIn", "tenderWinCompanyGT", "tenderWinCompanyGTE", "tenderWinCompanyLT", "tenderWinCompanyLTE", "tenderWinCompanyContains", "tenderWinCompanyHasPrefix", "tenderWinCompanyHasSuffix", "tenderWinCompanyIsNil", "tenderWinCompanyNotNil", "tenderWinCompanyEqualFold", "tenderWinCompanyContainsFold", "tenderCode", "tenderCodeNEQ", "tenderCodeIn", "tenderCodeNotIn", "tenderCodeGT", "tenderCodeGTE", "tenderCodeLT", "tenderCodeLTE", "tenderCodeContains", "tenderCodeHasPrefix", "tenderCodeHasSuffix", "tenderCodeIsNil", "tenderCodeNotNil", "tenderCodeEqualFold", "tenderCodeContainsFold", "architect", "architectNEQ", "architectIn", "architectNotIn", "architectGT", "architectGTE", "architectLT", "architectLTE", "architectContains", "architectHasPrefix", "architectHasSuffix", "architectIsNil", "architectNotNil", "architectEqualFold", "architectContainsFold", "developer", "developerNEQ", "developerIn", "developerNotIn", "developerGT", "developerGTE", "developerLT", "developerLTE", "developerContains", "developerHasPrefix", "developerHasSuffix", "developerIsNil", "developerNotNil", "developerEqualFold", "developerContainsFold", "tenderClosingDate", "tenderClosingDateNEQ", "tenderClosingDateIn", "tenderClosingDateNotIn", "tenderClosingDateGT", "tenderClosingDateGTE", "tenderClosingDateLT", "tenderClosingDateLTE", "tenderClosingDateIsNil", "tenderClosingDateNotNil", "constructionArea", "constructionAreaNEQ", "constructionAreaIn", "constructionAreaNotIn", "constructionAreaGT", "constructionAreaGTE", "constructionAreaLT", "constructionAreaLTE", "constructionAreaContains", "constructionAreaHasPrefix", "constructionAreaHasSuffix", "constructionAreaIsNil", "constructionAreaNotNil", "constructionAreaEqualFold", "constructionAreaContainsFold", "tenderWinDate", "tenderWinDateNEQ", "tenderWinDateIn", "tenderWinDateNotIn", "tenderWinDateGT", "tenderWinDateGTE", "tenderWinDateLT", "tenderWinDateLTE", "tenderWinDateIsNil", "tenderWinDateNotNil", "tenderWinAmount", "tenderWinAmountNEQ", "tenderWinAmountIn", "tenderWinAmountNotIn", "tenderWinAmountGT", "tenderWinAmountGTE", "tenderWinAmountLT", "tenderWinAmountLTE", "tenderWinAmountIsNil", "tenderWinAmountNotNil", "lastTenderAmount", "lastTenderAmountNEQ", "lastTenderAmountIn", "lastTenderAmountNotIn", "lastTenderAmountGT", "lastTenderAmountGTE", "lastTenderAmountLT", "lastTenderAmountLTE", "lastTenderAmountIsNil", "lastTenderAmountNotNil", "areaID", "areaIDNEQ", "areaIDIn", "areaIDNotIn", "areaIDGT", "areaIDGTE", "areaIDLT", "areaIDLTE", "areaIDContains", "areaIDHasPrefix", "areaIDHasSuffix", "areaIDEqualFold", "areaIDContainsFold", "provinceID", "provinceIDNEQ", "provinceIDIn", "provinceIDNotIn", "provinceIDGT", "provinceIDGTE", "provinceIDLT", "provinceIDLTE", "provinceIDContains", "provinceIDHasPrefix", "provinceIDHasSuffix", "provinceIDIsNil", "provinceIDNotNil", "provinceIDEqualFold", "provinceIDContainsFold", "cityID", "cityIDNEQ", "cityIDIn", "cityIDNotIn", "cityIDGT", "cityIDGTE", "cityIDLT", "cityIDLTE", "cityIDContains", "cityIDHasPrefix", "cityIDHasSuffix", "cityIDIsNil", "cityIDNotNil", "cityIDEqualFold", "cityIDContainsFold", "districtID", "districtIDNEQ", "districtIDIn", "districtIDNotIn", "districtIDGT", "districtIDGTE", "districtIDLT", "districtIDLTE", "districtIDContains", "districtIDHasPrefix", "districtIDHasSuffix", "districtIDIsNil", "districtIDNotNil", "districtIDEqualFold", "districtIDContainsFold", "customerID", "customerIDNEQ", "customerIDIn", "customerIDNotIn", "customerIDGT", "customerIDGTE", "customerIDLT", "customerIDLTE", "customerIDContains", "customerIDHasPrefix", "customerIDHasSuffix", "customerIDIsNil", "customerIDNotNil", "customerIDEqualFold", "customerIDContainsFold", "finderID", "finderIDNEQ", "finderIDIn", "finderIDNotIn", "finderIDGT", "finderIDGTE", "finderIDLT", "finderIDLTE", "finderIDContains", "finderIDHasPrefix", "finderIDHasSuffix", "finderIDIsNil", "finderIDNotNil", "finderIDEqualFold", "finderIDContainsFold", "createdByID", "createdByIDNEQ", "createdByIDIn", "createdByIDNotIn", "createdByIDGT", "createdByIDGTE", "createdByIDLT", "createdByIDLTE", "createdByIDContains", "createdByIDHasPrefix", "createdByIDHasSuffix", "createdByIDIsNil", "createdByIDNotNil", "createdByIDEqualFold", "createdByIDContainsFold", "approverID", "approverIDNEQ", "approverIDIn", "approverIDNotIn", "approverIDGT", "approverIDGTE", "approverIDLT", "approverIDLTE", "approverIDContains", "approverIDHasPrefix", "approverIDHasSuffix", "approverIDIsNil", "approverIDNotNil", "approverIDEqualFold", "approverIDContainsFold", "activeProfileID", "activeProfileIDNEQ", "activeProfileIDIn", "activeProfileIDNotIn", "activeProfileIDGT", "activeProfileIDGTE", "activeProfileIDLT", "activeProfileIDLTE", "activeProfileIDContains", "activeProfileIDHasPrefix", "activeProfileIDHasSuffix", "activeProfileIDIsNil", "activeProfileIDNotNil", "activeProfileIDEqualFold", "activeProfileIDContainsFold", "pendingProfileID", "pendingProfileIDNEQ", "pendingProfileIDIn", "pendingProfileIDNotIn", "pendingProfileIDGT", "pendingProfileIDGTE", "pendingProfileIDLT", "pendingProfileIDLTE", "pendingProfileIDContains", "pendingProfileIDHasPrefix", "pendingProfileIDHasSuffix", "pendingProfileIDIsNil", "pendingProfileIDNotNil", "pendingProfileIDEqualFold", "pendingProfileIDContainsFold", "hasArea", "hasAreaWith", "hasProfiles", "hasProfilesWith", "hasCompetitors", "hasCompetitorsWith", "hasCustomer", "hasCustomerWith", "hasFinder", "hasFinderWith", "hasCreatedBy", "hasCreatedByWith", "hasFollowingSales", "hasFollowingSalesWith", "hasProvince", "hasProvinceWith", "hasCity", "hasCityWith", "hasDistrict", "hasDistrictWith", "hasVisitRecords", "hasVisitRecordsWith", "hasApprover", "hasApproverWith", "hasActiveProfile", "hasActiveProfileWith", "hasPendingProfile", "hasPendingProfileWith"}
+	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdAt", "createdAtNEQ", "createdAtIn", "createdAtNotIn", "createdAtGT", "createdAtGTE", "createdAtLT", "createdAtLTE", "updatedAt", "updatedAtNEQ", "updatedAtIn", "updatedAtNotIn", "updatedAtGT", "updatedAtGTE", "updatedAtLT", "updatedAtLTE", "code", "codeNEQ", "codeIn", "codeNotIn", "codeGT", "codeGTE", "codeLT", "codeLTE", "codeContains", "codeHasPrefix", "codeHasSuffix", "codeEqualFold", "codeContainsFold", "status", "statusNEQ", "statusIn", "statusNotIn", "statusGT", "statusGTE", "statusLT", "statusLTE", "approvalStatus", "approvalStatusNEQ", "approvalStatusIn", "approvalStatusNotIn", "approvalStatusGT", "approvalStatusGTE", "approvalStatusLT", "approvalStatusLTE", "approvalMsgID", "approvalMsgIDNEQ", "approvalMsgIDIn", "approvalMsgIDNotIn", "approvalMsgIDGT", "approvalMsgIDGTE", "approvalMsgIDLT", "approvalMsgIDLTE", "approvalMsgIDContains", "approvalMsgIDHasPrefix", "approvalMsgIDHasSuffix", "approvalMsgIDIsNil", "approvalMsgIDNotNil", "approvalMsgIDEqualFold", "approvalMsgIDContainsFold", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "estimatedAmount", "estimatedAmountNEQ", "estimatedAmountIn", "estimatedAmountNotIn", "estimatedAmountGT", "estimatedAmountGTE", "estimatedAmountLT", "estimatedAmountLTE", "estimatedAmountIsNil", "estimatedAmountNotNil", "tenderDate", "tenderDateNEQ", "tenderDateIn", "tenderDateNotIn", "tenderDateGT", "tenderDateGTE", "tenderDateLT", "tenderDateLTE", "tenderDateIsNil", "tenderDateNotNil", "classify", "classifyNEQ", "classifyIn", "classifyNotIn", "classifyGT", "classifyGTE", "classifyLT", "classifyLTE", "classifyIsNil", "classifyNotNil", "discoveryDate", "discoveryDateNEQ", "discoveryDateIn", "discoveryDateNotIn", "discoveryDateGT", "discoveryDateGTE", "discoveryDateLT", "discoveryDateLTE", "address", "addressNEQ", "addressIn", "addressNotIn", "addressGT", "addressGTE", "addressLT", "addressLTE", "addressContains", "addressHasPrefix", "addressHasSuffix", "addressIsNil", "addressNotNil", "addressEqualFold", "addressContainsFold", "fullAddress", "fullAddressNEQ", "fullAddressIn", "fullAddressNotIn", "fullAddressGT", "fullAddressGTE", "fullAddressLT", "fullAddressLTE", "fullAddressContains", "fullAddressHasPrefix", "fullAddressHasSuffix", "fullAddressIsNil", "fullAddressNotNil", "fullAddressEqualFold", "fullAddressContainsFold", "contractor", "contractorNEQ", "contractorIn", "contractorNotIn", "contractorGT", "contractorGTE", "contractorLT", "contractorLTE", "contractorContains", "contractorHasPrefix", "contractorHasSuffix", "contractorIsNil", "contractorNotNil", "contractorEqualFold", "contractorContainsFold", "levelInvolved", "levelInvolvedNEQ", "levelInvolvedIn", "levelInvolvedNotIn", "levelInvolvedGT", "levelInvolvedGTE", "levelInvolvedLT", "levelInvolvedLTE", "levelInvolvedIsNil", "levelInvolvedNotNil", "sizeAndValueRating", "sizeAndValueRatingNEQ", "sizeAndValueRatingIn", "sizeAndValueRatingNotIn", "sizeAndValueRatingGT", "sizeAndValueRatingGTE", "sizeAndValueRatingLT", "sizeAndValueRatingLTE", "sizeAndValueRatingIsNil", "sizeAndValueRatingNotNil", "sizeAndValueRatingOverview", "sizeAndValueRatingOverviewNEQ", "sizeAndValueRatingOverviewIn", "sizeAndValueRatingOverviewNotIn", "sizeAndValueRatingOverviewGT", "sizeAndValueRatingOverviewGTE", "sizeAndValueRatingOverviewLT", "sizeAndValueRatingOverviewLTE", "sizeAndValueRatingOverviewContains", "sizeAndValueRatingOverviewHasPrefix", "sizeAndValueRatingOverviewHasSuffix", "sizeAndValueRatingOverviewIsNil", "sizeAndValueRatingOverviewNotNil", "sizeAndValueRatingOverviewEqualFold", "sizeAndValueRatingOverviewContainsFold", "creditAndPaymentRating", "creditAndPaymentRatingNEQ", "creditAndPaymentRatingIn", "creditAndPaymentRatingNotIn", "creditAndPaymentRatingGT", "creditAndPaymentRatingGTE", "creditAndPaymentRatingLT", "creditAndPaymentRatingLTE", "creditAndPaymentRatingIsNil", "creditAndPaymentRatingNotNil", "creditAndPaymentRatingOverview", "creditAndPaymentRatingOverviewNEQ", "creditAndPaymentRatingOverviewIn", "creditAndPaymentRatingOverviewNotIn", "creditAndPaymentRatingOverviewGT", "creditAndPaymentRatingOverviewGTE", "creditAndPaymentRatingOverviewLT", "creditAndPaymentRatingOverviewLTE", "creditAndPaymentRatingOverviewContains", "creditAndPaymentRatingOverviewHasPrefix", "creditAndPaymentRatingOverviewHasSuffix", "creditAndPaymentRatingOverviewIsNil", "creditAndPaymentRatingOverviewNotNil", "creditAndPaymentRatingOverviewEqualFold", "creditAndPaymentRatingOverviewContainsFold", "timeLimitRating", "timeLimitRatingNEQ", "timeLimitRatingIn", "timeLimitRatingNotIn", "timeLimitRatingGT", "timeLimitRatingGTE", "timeLimitRatingLT", "timeLimitRatingLTE", "timeLimitRatingIsNil", "timeLimitRatingNotNil", "timeLimitRatingOverview", "timeLimitRatingOverviewNEQ", "timeLimitRatingOverviewIn", "timeLimitRatingOverviewNotIn", "timeLimitRatingOverviewGT", "timeLimitRatingOverviewGTE", "timeLimitRatingOverviewLT", "timeLimitRatingOverviewLTE", "timeLimitRatingOverviewContains", "timeLimitRatingOverviewHasPrefix", "timeLimitRatingOverviewHasSuffix", "timeLimitRatingOverviewIsNil", "timeLimitRatingOverviewNotNil", "timeLimitRatingOverviewEqualFold", "timeLimitRatingOverviewContainsFold", "customerRelationshipRating", "customerRelationshipRatingNEQ", "customerRelationshipRatingIn", "customerRelationshipRatingNotIn", "customerRelationshipRatingGT", "customerRelationshipRatingGTE", "customerRelationshipRatingLT", "customerRelationshipRatingLTE", "customerRelationshipRatingIsNil", "customerRelationshipRatingNotNil", "customerRelationshipRatingOverview", "customerRelationshipRatingOverviewNEQ", "customerRelationshipRatingOverviewIn", "customerRelationshipRatingOverviewNotIn", "customerRelationshipRatingOverviewGT", "customerRelationshipRatingOverviewGTE", "customerRelationshipRatingOverviewLT", "customerRelationshipRatingOverviewLTE", "customerRelationshipRatingOverviewContains", "customerRelationshipRatingOverviewHasPrefix", "customerRelationshipRatingOverviewHasSuffix", "customerRelationshipRatingOverviewIsNil", "customerRelationshipRatingOverviewNotNil", "customerRelationshipRatingOverviewEqualFold", "customerRelationshipRatingOverviewContainsFold", "competitivePartnershipRating", "competitivePartnershipRatingNEQ", "competitivePartnershipRatingIn", "competitivePartnershipRatingNotIn", "competitivePartnershipRatingGT", "competitivePartnershipRatingGTE", "competitivePartnershipRatingLT", "competitivePartnershipRatingLTE", "competitivePartnershipRatingIsNil", "competitivePartnershipRatingNotNil", "competitivePartnershipRatingOverview", "competitivePartnershipRatingOverviewNEQ", "competitivePartnershipRatingOverviewIn", "competitivePartnershipRatingOverviewNotIn", "competitivePartnershipRatingOverviewGT", "competitivePartnershipRatingOverviewGTE", "competitivePartnershipRatingOverviewLT", "competitivePartnershipRatingOverviewLTE", "competitivePartnershipRatingOverviewContains", "competitivePartnershipRatingOverviewHasPrefix", "competitivePartnershipRatingOverviewHasSuffix", "competitivePartnershipRatingOverviewIsNil", "competitivePartnershipRatingOverviewNotNil", "competitivePartnershipRatingOverviewEqualFold", "competitivePartnershipRatingOverviewContainsFold", "prepareToBid", "prepareToBidNEQ", "projectCode", "projectCodeNEQ", "projectCodeIn", "projectCodeNotIn", "projectCodeGT", "projectCodeGTE", "projectCodeLT", "projectCodeLTE", "projectCodeContains", "projectCodeHasPrefix", "projectCodeHasSuffix", "projectCodeIsNil", "projectCodeNotNil", "projectCodeEqualFold", "projectCodeContainsFold", "projectType", "projectTypeNEQ", "projectTypeIn", "projectTypeNotIn", "projectTypeGT", "projectTypeGTE", "projectTypeLT", "projectTypeLTE", "projectTypeContains", "projectTypeHasPrefix", "projectTypeHasSuffix", "projectTypeIsNil", "projectTypeNotNil", "projectTypeEqualFold", "projectTypeContainsFold", "projectDefinition", "projectDefinitionNEQ", "projectDefinitionIn", "projectDefinitionNotIn", "projectDefinitionGT", "projectDefinitionGTE", "projectDefinitionLT", "projectDefinitionLTE", "projectDefinitionContains", "projectDefinitionHasPrefix", "projectDefinitionHasSuffix", "projectDefinitionIsNil", "projectDefinitionNotNil", "projectDefinitionEqualFold", "projectDefinitionContainsFold", "estimatedProjectStartDate", "estimatedProjectStartDateNEQ", "estimatedProjectStartDateIn", "estimatedProjectStartDateNotIn", "estimatedProjectStartDateGT", "estimatedProjectStartDateGTE", "estimatedProjectStartDateLT", "estimatedProjectStartDateLTE", "estimatedProjectStartDateIsNil", "estimatedProjectStartDateNotNil", "estimatedProjectEndDate", "estimatedProjectEndDateNEQ", "estimatedProjectEndDateIn", "estimatedProjectEndDateNotIn", "estimatedProjectEndDateGT", "estimatedProjectEndDateGTE", "estimatedProjectEndDateLT", "estimatedProjectEndDateLTE", "estimatedProjectEndDateIsNil", "estimatedProjectEndDateNotNil", "remark", "remarkNEQ", "remarkIn", "remarkNotIn", "remarkGT", "remarkGTE", "remarkLT", "remarkLTE", "remarkContains", "remarkHasPrefix", "remarkHasSuffix", "remarkIsNil", "remarkNotNil", "remarkEqualFold", "remarkContainsFold", "tenderSituations", "tenderSituationsNEQ", "tenderSituationsIn", "tenderSituationsNotIn", "tenderSituationsGT", "tenderSituationsGTE", "tenderSituationsLT", "tenderSituationsLTE", "tenderSituationsContains", "tenderSituationsHasPrefix", "tenderSituationsHasSuffix", "tenderSituationsIsNil", "tenderSituationsNotNil", "tenderSituationsEqualFold", "tenderSituationsContainsFold", "ownerSituations", "ownerSituationsNEQ", "ownerSituationsIn", "ownerSituationsNotIn", "ownerSituationsGT", "ownerSituationsGTE", "ownerSituationsLT", "ownerSituationsLTE", "ownerSituationsContains", "ownerSituationsHasPrefix", "ownerSituationsHasSuffix", "ownerSituationsIsNil", "ownerSituationsNotNil", "ownerSituationsEqualFold", "ownerSituationsContainsFold", "biddingInstructions", "biddingInstructionsNEQ", "biddingInstructionsIn", "biddingInstructionsNotIn", "biddingInstructionsGT", "biddingInstructionsGTE", "biddingInstructionsLT", "biddingInstructionsLTE", "biddingInstructionsContains", "biddingInstructionsHasPrefix", "biddingInstructionsHasSuffix", "biddingInstructionsIsNil", "biddingInstructionsNotNil", "biddingInstructionsEqualFold", "biddingInstructionsContainsFold", "competitorSituations", "competitorSituationsNEQ", "competitorSituationsIn", "competitorSituationsNotIn", "competitorSituationsGT", "competitorSituationsGTE", "competitorSituationsLT", "competitorSituationsLTE", "competitorSituationsContains", "competitorSituationsHasPrefix", "competitorSituationsHasSuffix", "competitorSituationsIsNil", "competitorSituationsNotNil", "competitorSituationsEqualFold", "competitorSituationsContainsFold", "costEngineer", "costEngineerNEQ", "costEngineerIn", "costEngineerNotIn", "costEngineerGT", "costEngineerGTE", "costEngineerLT", "costEngineerLTE", "costEngineerContains", "costEngineerHasPrefix", "costEngineerHasSuffix", "costEngineerIsNil", "costEngineerNotNil", "costEngineerEqualFold", "costEngineerContainsFold", "tenderForm", "tenderFormNEQ", "tenderFormIn", "tenderFormNotIn", "tenderFormGT", "tenderFormGTE", "tenderFormLT", "tenderFormLTE", "tenderFormContains", "tenderFormHasPrefix", "tenderFormHasSuffix", "tenderFormIsNil", "tenderFormNotNil", "tenderFormEqualFold", "tenderFormContainsFold", "contractForm", "contractFormNEQ", "contractFormIn", "contractFormNotIn", "contractFormGT", "contractFormGTE", "contractFormLT", "contractFormLTE", "contractFormContains", "contractFormHasPrefix", "contractFormHasSuffix", "contractFormIsNil", "contractFormNotNil", "contractFormEqualFold", "contractFormContainsFold", "managementCompany", "managementCompanyNEQ", "managementCompanyIn", "managementCompanyNotIn", "managementCompanyGT", "managementCompanyGTE", "managementCompanyLT", "managementCompanyLTE", "managementCompanyContains", "managementCompanyHasPrefix", "managementCompanyHasSuffix", "managementCompanyIsNil", "managementCompanyNotNil", "managementCompanyEqualFold", "managementCompanyContainsFold", "tenderingAgency", "tenderingAgencyNEQ", "tenderingAgencyIn", "tenderingAgencyNotIn", "tenderingAgencyGT", "tenderingAgencyGTE", "tenderingAgencyLT", "tenderingAgencyLTE", "tenderingAgencyContains", "tenderingAgencyHasPrefix", "tenderingAgencyHasSuffix", "tenderingAgencyIsNil", "tenderingAgencyNotNil", "tenderingAgencyEqualFold", "tenderingAgencyContainsFold", "biddingDate", "biddingDateNEQ", "biddingDateIn", "biddingDateNotIn", "biddingDateGT", "biddingDateGTE", "biddingDateLT", "biddingDateLTE", "biddingDateIsNil", "biddingDateNotNil", "facadeConsultant", "facadeConsultantNEQ", "facadeConsultantIn", "facadeConsultantNotIn", "facadeConsultantGT", "facadeConsultantGTE", "facadeConsultantLT", "facadeConsultantLTE", "facadeConsultantContains", "facadeConsultantHasPrefix", "facadeConsultantHasSuffix", "facadeConsultantIsNil", "facadeConsultantNotNil", "facadeConsultantEqualFold", "facadeConsultantContainsFold", "designUnit", "designUnitNEQ", "designUnitIn", "designUnitNotIn", "designUnitGT", "designUnitGTE", "designUnitLT", "designUnitLTE", "designUnitContains", "designUnitHasPrefix", "designUnitHasSuffix", "designUnitIsNil", "designUnitNotNil", "designUnitEqualFold", "designUnitContainsFold", "consultingFirm", "consultingFirmNEQ", "consultingFirmIn", "consultingFirmNotIn", "consultingFirmGT", "consultingFirmGTE", "consultingFirmLT", "consultingFirmLTE", "consultingFirmContains", "consultingFirmHasPrefix", "consultingFirmHasSuffix", "consultingFirmIsNil", "consultingFirmNotNil", "consultingFirmEqualFold", "consultingFirmContainsFold", "keyProject", "keyProjectNEQ", "currentProgress", "currentProgressNEQ", "currentProgressIn", "currentProgressNotIn", "currentProgressGT", "currentProgressGTE", "currentProgressLT", "currentProgressLTE", "currentProgressContains", "currentProgressHasPrefix", "currentProgressHasSuffix", "currentProgressIsNil", "currentProgressNotNil", "currentProgressEqualFold", "currentProgressContainsFold", "tenderWinCompany", "tenderWinCompanyNEQ", "tenderWinCompanyIn", "tenderWinCompanyNotIn", "tenderWinCompanyGT", "tenderWinCompanyGTE", "tenderWinCompanyLT", "tenderWinCompanyLTE", "tenderWinCompanyContains", "tenderWinCompanyHasPrefix", "tenderWinCompanyHasSuffix", "tenderWinCompanyIsNil", "tenderWinCompanyNotNil", "tenderWinCompanyEqualFold", "tenderWinCompanyContainsFold", "tenderCode", "tenderCodeNEQ", "tenderCodeIn", "tenderCodeNotIn", "tenderCodeGT", "tenderCodeGTE", "tenderCodeLT", "tenderCodeLTE", "tenderCodeContains", "tenderCodeHasPrefix", "tenderCodeHasSuffix", "tenderCodeIsNil", "tenderCodeNotNil", "tenderCodeEqualFold", "tenderCodeContainsFold", "architect", "architectNEQ", "architectIn", "architectNotIn", "architectGT", "architectGTE", "architectLT", "architectLTE", "architectContains", "architectHasPrefix", "architectHasSuffix", "architectIsNil", "architectNotNil", "architectEqualFold", "architectContainsFold", "developer", "developerNEQ", "developerIn", "developerNotIn", "developerGT", "developerGTE", "developerLT", "developerLTE", "developerContains", "developerHasPrefix", "developerHasSuffix", "developerIsNil", "developerNotNil", "developerEqualFold", "developerContainsFold", "tenderClosingDate", "tenderClosingDateNEQ", "tenderClosingDateIn", "tenderClosingDateNotIn", "tenderClosingDateGT", "tenderClosingDateGTE", "tenderClosingDateLT", "tenderClosingDateLTE", "tenderClosingDateIsNil", "tenderClosingDateNotNil", "constructionArea", "constructionAreaNEQ", "constructionAreaIn", "constructionAreaNotIn", "constructionAreaGT", "constructionAreaGTE", "constructionAreaLT", "constructionAreaLTE", "constructionAreaContains", "constructionAreaHasPrefix", "constructionAreaHasSuffix", "constructionAreaIsNil", "constructionAreaNotNil", "constructionAreaEqualFold", "constructionAreaContainsFold", "tenderWinDate", "tenderWinDateNEQ", "tenderWinDateIn", "tenderWinDateNotIn", "tenderWinDateGT", "tenderWinDateGTE", "tenderWinDateLT", "tenderWinDateLTE", "tenderWinDateIsNil", "tenderWinDateNotNil", "tenderWinAmount", "tenderWinAmountNEQ", "tenderWinAmountIn", "tenderWinAmountNotIn", "tenderWinAmountGT", "tenderWinAmountGTE", "tenderWinAmountLT", "tenderWinAmountLTE", "tenderWinAmountIsNil", "tenderWinAmountNotNil", "tenderAmount", "tenderAmountNEQ", "tenderAmountIn", "tenderAmountNotIn", "tenderAmountGT", "tenderAmountGTE", "tenderAmountLT", "tenderAmountLTE", "tenderAmountIsNil", "tenderAmountNotNil", "lastTenderAmount", "lastTenderAmountNEQ", "lastTenderAmountIn", "lastTenderAmountNotIn", "lastTenderAmountGT", "lastTenderAmountGTE", "lastTenderAmountLT", "lastTenderAmountLTE", "lastTenderAmountIsNil", "lastTenderAmountNotNil", "areaID", "areaIDNEQ", "areaIDIn", "areaIDNotIn", "areaIDGT", "areaIDGTE", "areaIDLT", "areaIDLTE", "areaIDContains", "areaIDHasPrefix", "areaIDHasSuffix", "areaIDEqualFold", "areaIDContainsFold", "provinceID", "provinceIDNEQ", "provinceIDIn", "provinceIDNotIn", "provinceIDGT", "provinceIDGTE", "provinceIDLT", "provinceIDLTE", "provinceIDContains", "provinceIDHasPrefix", "provinceIDHasSuffix", "provinceIDIsNil", "provinceIDNotNil", "provinceIDEqualFold", "provinceIDContainsFold", "cityID", "cityIDNEQ", "cityIDIn", "cityIDNotIn", "cityIDGT", "cityIDGTE", "cityIDLT", "cityIDLTE", "cityIDContains", "cityIDHasPrefix", "cityIDHasSuffix", "cityIDIsNil", "cityIDNotNil", "cityIDEqualFold", "cityIDContainsFold", "districtID", "districtIDNEQ", "districtIDIn", "districtIDNotIn", "districtIDGT", "districtIDGTE", "districtIDLT", "districtIDLTE", "districtIDContains", "districtIDHasPrefix", "districtIDHasSuffix", "districtIDIsNil", "districtIDNotNil", "districtIDEqualFold", "districtIDContainsFold", "customerID", "customerIDNEQ", "customerIDIn", "customerIDNotIn", "customerIDGT", "customerIDGTE", "customerIDLT", "customerIDLTE", "customerIDContains", "customerIDHasPrefix", "customerIDHasSuffix", "customerIDIsNil", "customerIDNotNil", "customerIDEqualFold", "customerIDContainsFold", "finderID", "finderIDNEQ", "finderIDIn", "finderIDNotIn", "finderIDGT", "finderIDGTE", "finderIDLT", "finderIDLTE", "finderIDContains", "finderIDHasPrefix", "finderIDHasSuffix", "finderIDIsNil", "finderIDNotNil", "finderIDEqualFold", "finderIDContainsFold", "createdByID", "createdByIDNEQ", "createdByIDIn", "createdByIDNotIn", "createdByIDGT", "createdByIDGTE", "createdByIDLT", "createdByIDLTE", "createdByIDContains", "createdByIDHasPrefix", "createdByIDHasSuffix", "createdByIDIsNil", "createdByIDNotNil", "createdByIDEqualFold", "createdByIDContainsFold", "approverID", "approverIDNEQ", "approverIDIn", "approverIDNotIn", "approverIDGT", "approverIDGTE", "approverIDLT", "approverIDLTE", "approverIDContains", "approverIDHasPrefix", "approverIDHasSuffix", "approverIDIsNil", "approverIDNotNil", "approverIDEqualFold", "approverIDContainsFold", "activeProfileID", "activeProfileIDNEQ", "activeProfileIDIn", "activeProfileIDNotIn", "activeProfileIDGT", "activeProfileIDGTE", "activeProfileIDLT", "activeProfileIDLTE", "activeProfileIDContains", "activeProfileIDHasPrefix", "activeProfileIDHasSuffix", "activeProfileIDIsNil", "activeProfileIDNotNil", "activeProfileIDEqualFold", "activeProfileIDContainsFold", "pendingProfileID", "pendingProfileIDNEQ", "pendingProfileIDIn", "pendingProfileIDNotIn", "pendingProfileIDGT", "pendingProfileIDGTE", "pendingProfileIDLT", "pendingProfileIDLTE", "pendingProfileIDContains", "pendingProfileIDHasPrefix", "pendingProfileIDHasSuffix", "pendingProfileIDIsNil", "pendingProfileIDNotNil", "pendingProfileIDEqualFold", "pendingProfileIDContainsFold", "hasArea", "hasAreaWith", "hasProfiles", "hasProfilesWith", "hasCompetitors", "hasCompetitorsWith", "hasCustomer", "hasCustomerWith", "hasFinder", "hasFinderWith", "hasCreatedBy", "hasCreatedByWith", "hasFollowingSales", "hasFollowingSalesWith", "hasProvince", "hasProvinceWith", "hasCity", "hasCityWith", "hasDistrict", "hasDistrictWith", "hasVisitRecords", "hasVisitRecordsWith", "hasApprover", "hasApproverWith", "hasActiveProfile", "hasActiveProfileWith", "hasPendingProfile", "hasPendingProfileWith"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -59462,6 +59925,76 @@ func (ec *executionContext) unmarshalInputTenderWhereInput(ctx context.Context, 
 				return it, err
 			}
 			it.TenderWinAmountNotNil = data
+		case "tenderAmount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderAmount"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderAmount = data
+		case "tenderAmountNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderAmountNEQ"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderAmountNEQ = data
+		case "tenderAmountIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderAmountIn"))
+			data, err := ec.unmarshalOFloat2ᚕfloat64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderAmountIn = data
+		case "tenderAmountNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderAmountNotIn"))
+			data, err := ec.unmarshalOFloat2ᚕfloat64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderAmountNotIn = data
+		case "tenderAmountGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderAmountGT"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderAmountGT = data
+		case "tenderAmountGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderAmountGTE"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderAmountGTE = data
+		case "tenderAmountLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderAmountLT"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderAmountLT = data
+		case "tenderAmountLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderAmountLTE"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderAmountLTE = data
+		case "tenderAmountIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderAmountIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderAmountIsNil = data
+		case "tenderAmountNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderAmountNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderAmountNotNil = data
 		case "lastTenderAmount":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("lastTenderAmount"))
 			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
@@ -62202,7 +62735,7 @@ func (ec *executionContext) unmarshalInputUpdateTenderInput(ctx context.Context,
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"updatedAt", "code", "status", "approvalStatus", "approvalMsgID", "clearApprovalMsgID", "name", "estimatedAmount", "clearEstimatedAmount", "tenderDate", "clearTenderDate", "classify", "clearClassify", "discoveryDate", "address", "clearAddress", "fullAddress", "clearFullAddress", "contractor", "clearContractor", "levelInvolved", "clearLevelInvolved", "sizeAndValueRating", "clearSizeAndValueRating", "sizeAndValueRatingOverview", "clearSizeAndValueRatingOverview", "creditAndPaymentRating", "clearCreditAndPaymentRating", "creditAndPaymentRatingOverview", "clearCreditAndPaymentRatingOverview", "timeLimitRating", "clearTimeLimitRating", "timeLimitRatingOverview", "clearTimeLimitRatingOverview", "customerRelationshipRating", "clearCustomerRelationshipRating", "customerRelationshipRatingOverview", "clearCustomerRelationshipRatingOverview", "competitivePartnershipRating", "clearCompetitivePartnershipRating", "competitivePartnershipRatingOverview", "clearCompetitivePartnershipRatingOverview", "prepareToBid", "projectCode", "clearProjectCode", "projectType", "clearProjectType", "projectDefinition", "clearProjectDefinition", "estimatedProjectStartDate", "clearEstimatedProjectStartDate", "estimatedProjectEndDate", "clearEstimatedProjectEndDate", "attachements", "appendAttachements", "clearAttachements", "remark", "clearRemark", "images", "appendImages", "clearImages", "tenderSituations", "clearTenderSituations", "ownerSituations", "clearOwnerSituations", "biddingInstructions", "clearBiddingInstructions", "competitorSituations", "clearCompetitorSituations", "costEngineer", "clearCostEngineer", "tenderForm", "clearTenderForm", "contractForm", "clearContractForm", "managementCompany", "clearManagementCompany", "tenderingAgency", "clearTenderingAgency", "biddingDate", "clearBiddingDate", "facadeConsultant", "clearFacadeConsultant", "designUnit", "clearDesignUnit", "consultingFirm", "clearConsultingFirm", "keyProject", "currentProgress", "clearCurrentProgress", "tenderWinCompany", "clearTenderWinCompany", "tenderCode", "clearTenderCode", "architect", "clearArchitect", "developer", "clearDeveloper", "tenderClosingDate", "clearTenderClosingDate", "constructionArea", "clearConstructionArea", "tenderWinDate", "clearTenderWinDate", "tenderWinAmount", "clearTenderWinAmount", "lastTenderAmount", "clearLastTenderAmount", "areaID", "addProfileIDs", "removeProfileIDs", "clearProfiles", "addCompetitorIDs", "removeCompetitorIDs", "clearCompetitors", "customerID", "clearCustomer", "finderID", "clearFinder", "createdByID", "clearCreatedBy", "addFollowingSaleIDs", "removeFollowingSaleIDs", "clearFollowingSales", "provinceID", "clearProvince", "cityID", "clearCity", "districtID", "clearDistrict", "addVisitRecordIDs", "removeVisitRecordIDs", "clearVisitRecords", "approverID", "clearApprover", "activeProfileID", "clearActiveProfile", "pendingProfileID", "clearPendingProfile"}
+	fieldsInOrder := [...]string{"updatedAt", "code", "status", "approvalStatus", "approvalMsgID", "clearApprovalMsgID", "name", "estimatedAmount", "clearEstimatedAmount", "tenderDate", "clearTenderDate", "classify", "clearClassify", "discoveryDate", "address", "clearAddress", "fullAddress", "clearFullAddress", "contractor", "clearContractor", "levelInvolved", "clearLevelInvolved", "sizeAndValueRating", "clearSizeAndValueRating", "sizeAndValueRatingOverview", "clearSizeAndValueRatingOverview", "creditAndPaymentRating", "clearCreditAndPaymentRating", "creditAndPaymentRatingOverview", "clearCreditAndPaymentRatingOverview", "timeLimitRating", "clearTimeLimitRating", "timeLimitRatingOverview", "clearTimeLimitRatingOverview", "customerRelationshipRating", "clearCustomerRelationshipRating", "customerRelationshipRatingOverview", "clearCustomerRelationshipRatingOverview", "competitivePartnershipRating", "clearCompetitivePartnershipRating", "competitivePartnershipRatingOverview", "clearCompetitivePartnershipRatingOverview", "prepareToBid", "projectCode", "clearProjectCode", "projectType", "clearProjectType", "projectDefinition", "clearProjectDefinition", "estimatedProjectStartDate", "clearEstimatedProjectStartDate", "estimatedProjectEndDate", "clearEstimatedProjectEndDate", "attachements", "appendAttachements", "clearAttachements", "remark", "clearRemark", "images", "appendImages", "clearImages", "tenderSituations", "clearTenderSituations", "ownerSituations", "clearOwnerSituations", "biddingInstructions", "clearBiddingInstructions", "competitorSituations", "clearCompetitorSituations", "costEngineer", "clearCostEngineer", "tenderForm", "clearTenderForm", "contractForm", "clearContractForm", "managementCompany", "clearManagementCompany", "tenderingAgency", "clearTenderingAgency", "biddingDate", "clearBiddingDate", "facadeConsultant", "clearFacadeConsultant", "designUnit", "clearDesignUnit", "consultingFirm", "clearConsultingFirm", "keyProject", "currentProgress", "clearCurrentProgress", "tenderWinCompany", "clearTenderWinCompany", "tenderCode", "clearTenderCode", "architect", "clearArchitect", "developer", "clearDeveloper", "tenderClosingDate", "clearTenderClosingDate", "constructionArea", "clearConstructionArea", "tenderWinDate", "clearTenderWinDate", "tenderWinAmount", "clearTenderWinAmount", "tenderAmount", "clearTenderAmount", "lastTenderAmount", "clearLastTenderAmount", "areaID", "addProfileIDs", "removeProfileIDs", "clearProfiles", "addCompetitorIDs", "removeCompetitorIDs", "clearCompetitors", "customerID", "clearCustomer", "finderID", "clearFinder", "createdByID", "clearCreatedBy", "addFollowingSaleIDs", "removeFollowingSaleIDs", "clearFollowingSales", "provinceID", "clearProvince", "cityID", "clearCity", "districtID", "clearDistrict", "addVisitRecordIDs", "removeVisitRecordIDs", "clearVisitRecords", "approverID", "clearApprover", "activeProfileID", "clearActiveProfile", "pendingProfileID", "clearPendingProfile"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -62951,6 +63484,20 @@ func (ec *executionContext) unmarshalInputUpdateTenderInput(ctx context.Context,
 				return it, err
 			}
 			it.ClearTenderWinAmount = data
+		case "tenderAmount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderAmount"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderAmount = data
+		case "clearTenderAmount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearTenderAmount"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearTenderAmount = data
 		case "lastTenderAmount":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("lastTenderAmount"))
 			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
@@ -67213,6 +67760,10 @@ func (ec *executionContext) _CustomerProfile(ctx context.Context, sel ast.Select
 			if out.Values[i] == graphql.Null {
 				atomic.AddUint32(&out.Invalids, 1)
 			}
+		case "approvalMsgID":
+			out.Values[i] = ec._CustomerProfile_approvalMsgID(ctx, field, obj)
+		case "approvalDate":
+			out.Values[i] = ec._CustomerProfile_approvalDate(ctx, field, obj)
 		case "ownerType":
 			out.Values[i] = ec._CustomerProfile_ownerType(ctx, field, obj)
 		case "industry":
@@ -69801,6 +70352,8 @@ func (ec *executionContext) _Tender(ctx context.Context, sel ast.SelectionSet, o
 			out.Values[i] = ec._Tender_tenderWinDate(ctx, field, obj)
 		case "tenderWinAmount":
 			out.Values[i] = ec._Tender_tenderWinAmount(ctx, field, obj)
+		case "tenderAmount":
+			out.Values[i] = ec._Tender_tenderAmount(ctx, field, obj)
 		case "lastTenderAmount":
 			out.Values[i] = ec._Tender_lastTenderAmount(ctx, field, obj)
 		case "areaID":
@@ -70708,6 +71261,8 @@ func (ec *executionContext) _TenderProfile(ctx context.Context, sel ast.Selectio
 			}
 		case "approvalMsgID":
 			out.Values[i] = ec._TenderProfile_approvalMsgID(ctx, field, obj)
+		case "approvalDate":
+			out.Values[i] = ec._TenderProfile_approvalDate(ctx, field, obj)
 		case "name":
 			out.Values[i] = ec._TenderProfile_name(ctx, field, obj)
 		case "estimatedAmount":

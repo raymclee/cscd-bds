@@ -145,13 +145,18 @@ export function CustomerDetail(props: {
           <div className="flex h-8 flex-wrap items-center justify-between gap-2">
             <div className="flex items-center gap-2">
               <span>{activeProfile?.name}</span>
-              {isSH(customer.area.code) && (
-                <Tag
-                  color={approvalStatusTagColor(activeProfile?.approvalStatus)}
-                >
-                  {approvalStatusText(activeProfile?.approvalStatus)}
-                </Tag>
-              )}
+              <div className="flex items-center">
+                <Tag>{customer.area.name}</Tag>
+                {isSH(customer.area.code) && (
+                  <Tag
+                    color={approvalStatusTagColor(
+                      activeProfile?.approvalStatus,
+                    )}
+                  >
+                    {approvalStatusText(activeProfile?.approvalStatus)}
+                  </Tag>
+                )}
+              </div>
             </div>
 
             {canEdit(session) && (
@@ -268,7 +273,7 @@ export function CustomerDetail(props: {
           {
             key: "createdAt",
             label: "创建时间",
-            span: { sm: 3, md: 1 },
+            span: { md: 3, xxl: 1 },
             children: (
               <span className="font-normal">
                 {dayjs(customer.createdAt).format("LLL")}
@@ -278,7 +283,7 @@ export function CustomerDetail(props: {
           {
             key: "updatedAt",
             label: "更新时间",
-            span: { sm: 3, md: 1 },
+            span: { md: 3, xxl: 1 },
             children: (
               <span className="font-normal">
                 {dayjs(activeProfile?.createdAt).format("LLL")}
@@ -528,7 +533,7 @@ function ApprovalModal({
           </Button>,
         ]}
       >
-        <p>确定批核该客户更新吗？</p>
+        <p>确定批核该申请吗？</p>
       </Modal>
     </>
   );

@@ -47,7 +47,7 @@ function DistrictPlotsContent({ adcode }: { adcode: number }) {
 
   useEffect(() => {
     if (data?.districts.edges?.length === 0) return;
-    console.log("render");
+
     const { map } = useMapV2Store.getState();
 
     const mapCircles: (AMap.Polygon | AMap.CircleMarker | any)[] = [];
@@ -89,10 +89,7 @@ function DistrictPlotsContent({ adcode }: { adcode: number }) {
       map?.add(circle);
     }
 
-    console.log(mapCircles);
-
     useMapV2Store.setState((state) => {
-      console.log("set state", state.mapCircles);
       return {
         mapCircles,
       };

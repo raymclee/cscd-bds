@@ -23,6 +23,10 @@ const (
 	FieldName = "name"
 	// FieldApprovalStatus holds the string denoting the approval_status field in the database.
 	FieldApprovalStatus = "approval_status"
+	// FieldApprovalMsgID holds the string denoting the approval_msg_id field in the database.
+	FieldApprovalMsgID = "approval_msg_id"
+	// FieldApprovalDate holds the string denoting the approval_date field in the database.
+	FieldApprovalDate = "approval_date"
 	// FieldOwnerType holds the string denoting the owner_type field in the database.
 	FieldOwnerType = "owner_type"
 	// FieldIndustry holds the string denoting the industry field in the database.
@@ -92,6 +96,8 @@ var Columns = []string{
 	FieldUpdatedAt,
 	FieldName,
 	FieldApprovalStatus,
+	FieldApprovalMsgID,
+	FieldApprovalDate,
 	FieldOwnerType,
 	FieldIndustry,
 	FieldSize,
@@ -158,6 +164,16 @@ func ByName(opts ...sql.OrderTermOption) OrderOption {
 // ByApprovalStatus orders the results by the approval_status field.
 func ByApprovalStatus(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldApprovalStatus, opts...).ToFunc()
+}
+
+// ByApprovalMsgID orders the results by the approval_msg_id field.
+func ByApprovalMsgID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldApprovalMsgID, opts...).ToFunc()
+}
+
+// ByApprovalDate orders the results by the approval_date field.
+func ByApprovalDate(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldApprovalDate, opts...).ToFunc()
 }
 
 // ByOwnerType orders the results by the owner_type field.

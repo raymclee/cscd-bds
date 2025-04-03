@@ -192,15 +192,61 @@ func (r *mutationResolver) ApproveCustomer(ctx context.Context, id xid.ID) (*ent
 	if err != nil {
 		return nil, fmt.Errorf("failed to get session: %w", err)
 	}
-	c, err := r.store.Customer.Query().Where(customer.ID(id)).WithPendingProfile().Only(ctx)
+	c, err := r.store.Customer.Query().Where(customer.ID(id)).WithPendingProfile().WithActiveProfile().Only(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get customer: %w", err)
 	}
 	if c.Edges.PendingProfile == nil {
 		return nil, fmt.Errorf("failed to approve customer: %w", errors.New("customer has no pending profile"))
 	}
-	if err := r.store.CustomerProfile.UpdateOneID(c.Edges.PendingProfile.ID).SetApprovalStatus(2).SetApproverID(xid.ID(sess.UserId)).Exec(ctx); err != nil {
+
+	isCreate := c.Edges.ActiveProfile == nil
+
+	if err := r.store.CustomerProfile.
+		UpdateOneID(c.Edges.PendingProfile.ID).
+		SetApprovalStatus(2).
+		ClearApprovalMsgID().
+		SetApproverID(xid.ID(sess.UserId)).
+		SetApprovalDate(time.Now()).
+		Exec(ctx); err != nil {
 		return nil, fmt.Errorf("failed to approve customer: %w", err)
+	}
+
+	if c.Edges.PendingProfile.ApprovalMsgID != nil {
+		go func() {
+			ctxx := context.Background()
+			cp, err := r.store.CustomerProfile.Query().
+				Where(customerprofile.ID(c.Edges.PendingProfile.ID)).
+				WithCustomer(func(cq *ent.CustomerQuery) {
+					cq.WithArea()
+				}).
+				WithApprover().
+				WithCreatedBy().
+				WithSales().
+				Only(ctxx)
+			if err != nil {
+				fmt.Printf("failed to get customer profile: %v\n", err)
+				return
+			}
+			var (
+				title string
+			)
+			if isCreate {
+				title = feishu.CreateCustomerApprovedTitle
+			} else {
+				title = feishu.UpdateCustomerApprovedTitle
+			}
+			if err := r.feishu.UpdateGroupMessage(ctxx, &feishu.UpdateGroupMessageParams{
+				TemplateId:         feishu.TemplateIdCustomerFinished,
+				MsgId:              *c.Edges.PendingProfile.ApprovalMsgID,
+				CustomerProfile:    cp,
+				CustomerCardTitle:  title,
+				CustomerCardColor:  feishu.ApprovedColor,
+				CustomerCardResult: feishu.UpdateCustomerApprovedResult,
+			}); err != nil {
+				fmt.Printf("failed to update group message: %v\n", err)
+			}
+		}()
 	}
 	return c.Update().SetActiveProfileID(c.Edges.PendingProfile.ID).ClearPendingProfile().Save(ctx)
 }
@@ -218,9 +264,43 @@ func (r *mutationResolver) RejectCustomer(ctx context.Context, id xid.ID) (*ent.
 	if c.Edges.PendingProfile == nil {
 		return nil, fmt.Errorf("failed to approve customer: %w", errors.New("customer has no pending profile"))
 	}
-	if err := r.store.CustomerProfile.UpdateOneID(c.Edges.PendingProfile.ID).SetApprovalStatus(3).SetApproverID(xid.ID(sess.UserId)).Exec(ctx); err != nil {
+	if err := r.store.CustomerProfile.UpdateOneID(c.Edges.PendingProfile.ID).
+		SetApprovalStatus(3).
+		SetApproverID(xid.ID(sess.UserId)).
+		SetApprovalDate(time.Now()).
+		Exec(ctx); err != nil {
 		return nil, fmt.Errorf("failed to approve customer: %w", err)
 	}
+
+	if c.Edges.PendingProfile.ApprovalMsgID != nil {
+		go func() {
+			ctxx := context.Background()
+			cp, err := r.store.CustomerProfile.Query().
+				Where(customerprofile.ID(c.Edges.PendingProfile.ID)).
+				WithCustomer(func(cq *ent.CustomerQuery) {
+					cq.WithArea()
+				}).
+				WithApprover().
+				WithCreatedBy().
+				WithSales().
+				Only(ctxx)
+			if err != nil {
+				fmt.Printf("failed to get customer profile: %v\n", err)
+				return
+			}
+			if err := r.feishu.UpdateGroupMessage(ctxx, &feishu.UpdateGroupMessageParams{
+				TemplateId:         feishu.TemplateIdCustomerFinished,
+				MsgId:              *c.Edges.PendingProfile.ApprovalMsgID,
+				CustomerProfile:    cp,
+				CustomerCardTitle:  feishu.CreateCustomerRejectedTitle,
+				CustomerCardColor:  feishu.RejectedColor,
+				CustomerCardResult: feishu.CreateCustomerRejectedResult,
+			}); err != nil {
+				fmt.Printf("failed to update group message: %v\n", err)
+			}
+		}()
+	}
+
 	return c.Update().ClearPendingProfile().Save(ctx)
 }
 
@@ -260,11 +340,20 @@ func (r *mutationResolver) CreateCustomerV2(ctx context.Context, customerInput e
 			return
 		}
 		if u.Edges.Leader != nil {
-			go r.feishu.SendChatMessage(ctxx, &feishu.ChatMessageParams{
-				CustomerProfile: cpp,
-				TemplateId:      feishu.TemplateIdCustomerCreateRequest,
-				ChatId:          u.Edges.Leader.OpenID,
+			msgId, err := r.feishu.SendChatMessage(ctxx, &feishu.ChatMessageParams{
+				CustomerProfile:   cpp,
+				TemplateId:        feishu.TemplateIdCustomerRequest,
+				ChatId:            u.Edges.Leader.OpenID,
+				CustomerCardTitle: feishu.CreateCustomerRequestTitle,
+				CustomerCardColor: "blue",
 			})
+			if err != nil {
+				fmt.Printf("failed to send chat message: %v\n", err)
+				return
+			}
+			if err := r.store.CustomerProfile.UpdateOneID(cp.ID).SetApprovalMsgID(msgId).Exec(ctxx); err != nil {
+				fmt.Printf("failed to update customer profile: %v\n", err)
+			}
 		}
 	}()
 
@@ -278,17 +367,44 @@ func (r *mutationResolver) UpdateCustomerV2(ctx context.Context, id xid.ID, cust
 		return nil, fmt.Errorf("failed to get session: %w", err)
 	}
 
-	cus, err := r.store.Customer.Get(ctx, id)
+	cus, err := r.store.Customer.Query().Where(customer.ID(id)).WithActiveProfile().Only(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get customer: %w", err)
 	}
 
-	if err := r.store.CustomerProfile.Update().
+	isNew := cus.Edges.ActiveProfile == nil
+
+	ocps, err := r.store.CustomerProfile.Query().
 		Where(customerprofile.And(
 			customerprofile.CustomerID(cus.ID),
 			customerprofile.ApprovalStatus(1),
-		)).SetApprovalStatus(4).Exec(ctx); err != nil {
+		)).
+		WithCustomer(func(cq *ent.CustomerQuery) {
+			cq.WithArea()
+		}).
+		WithSales().
+		WithCreatedBy().
+		All(ctx)
+	if err != nil {
 		return nil, fmt.Errorf("failed to approve customer profile: %w", err)
+	}
+	for _, cp := range ocps {
+		if cp.ApprovalMsgID != nil {
+			go func() {
+				ctxx := context.Background()
+				if err := r.feishu.UpdateGroupMessage(ctxx, &feishu.UpdateGroupMessageParams{
+					TemplateId:      feishu.TemplateIdCustomerCanceled,
+					MsgId:           *cp.ApprovalMsgID,
+					CustomerProfile: cp,
+				}); err != nil {
+					fmt.Printf("failed to update group message: %v\n", err)
+					return
+				}
+			}()
+		}
+		if err := r.store.CustomerProfile.UpdateOneID(cp.ID).SetApprovalStatus(4).ClearApprovalMsgID().Exec(context.Background()); err != nil {
+			fmt.Printf("failed to update customer profile: %v\n", err)
+		}
 	}
 
 	cp, err := r.store.CustomerProfile.Create().SetInput(profileInput).SetCreatedByID(xid.ID(sess.UserId)).Save(ctx)
@@ -303,7 +419,8 @@ func (r *mutationResolver) UpdateCustomerV2(ctx context.Context, id xid.ID, cust
 			fmt.Printf("failed to get user: %v\n", err)
 			return
 		}
-		cpp, err := r.store.CustomerProfile.Query().Where(customerprofile.ID(cp.ID)).
+		cpp, err := r.store.CustomerProfile.Query().
+			Where(customerprofile.ID(cp.ID)).
 			WithCustomer(func(cq *ent.CustomerQuery) {
 				cq.WithArea()
 			}).
@@ -315,11 +432,31 @@ func (r *mutationResolver) UpdateCustomerV2(ctx context.Context, id xid.ID, cust
 			return
 		}
 		if u.Edges.Leader != nil {
-			go r.feishu.SendChatMessage(ctxx, &feishu.ChatMessageParams{
-				CustomerProfile: cpp,
-				TemplateId:      feishu.TemplateIdCustomerCreateRequest,
-				ChatId:          u.Edges.Leader.OpenID,
+			var (
+				title string
+				color string
+			)
+			if isNew {
+				title = feishu.CreateCustomerRequestTitle
+				color = feishu.ApprovedColor
+			} else {
+				title = feishu.UpdateCustomerRequestTitle
+				color = feishu.ApprovedColor
+			}
+			msgId, err := r.feishu.SendChatMessage(ctxx, &feishu.ChatMessageParams{
+				CustomerProfile:   cpp,
+				TemplateId:        feishu.TemplateIdCustomerRequest,
+				ChatId:            u.Edges.Leader.OpenID,
+				CustomerCardTitle: title,
+				CustomerCardColor: color,
 			})
+			if err != nil {
+				fmt.Printf("failed to send chat message: %v\n", err)
+				return
+			}
+			if err := r.store.CustomerProfile.UpdateOneID(cp.ID).SetApprovalMsgID(msgId).Exec(ctxx); err != nil {
+				fmt.Printf("failed to update customer profile: %v\n", err)
+			}
 		}
 	}()
 
@@ -697,6 +834,7 @@ func (r *mutationResolver) UpdateTenderV2(ctx context.Context, id xid.ID, tender
 	// 如果当前没有待审批的profile，则将新的profile设置为待审批
 	if t.Edges.ActiveProfile != nil {
 		tpq.SetApprovalStatus(2)
+		tpq.SetApprovalDate(time.Now())
 		isNewTender = false
 	}
 	tp, err := tpq.Save(ctx)
@@ -932,7 +1070,6 @@ func (r *mutationResolver) LoseTender(ctx context.Context, id xid.ID, input mode
 		SetStatus(4).
 		SetTenderID(xid.ID(id)).
 		SetCreatedByID(xid.ID(sess.UserId)).
-		SetTenderWinAmount(input.TenderWinAmount).
 		SetApprovalStatus(2).
 		Save(ctx)
 	if err != nil {
@@ -947,9 +1084,6 @@ func (r *mutationResolver) LoseTender(ctx context.Context, id xid.ID, input mode
 		return nil, fmt.Errorf("failed to create competitors: %w", err)
 	}
 
-	if !config.IsDev {
-		go r.sap.InsertTender(r.store, t.ID)
-	}
 	// go func() {
 	// 	ctxx := context.Background()
 	// 	ten, err := r.store.Tender.Query().
@@ -1024,6 +1158,7 @@ func (r *mutationResolver) ApproveTender(ctx context.Context, id xid.ID) (*ent.T
 	activeProfile, err := r.store.TenderProfile.UpdateOneID(t.Edges.PendingProfile.ID).
 		SetApprovalStatus(2).
 		SetApproverID(xid.ID(sess.UserId)).
+		SetApprovalDate(time.Now()).
 		ClearApprovalMsgID().
 		Save(ctx)
 	if err != nil {
@@ -1045,7 +1180,11 @@ func (r *mutationResolver) ApproveTender(ctx context.Context, id xid.ID) (*ent.T
 			return
 		}
 		if approvalMsgId != nil {
-			if err := r.feishu.UpdateGroupMessage(ctx, feishu.TemplateIdTenderApproved, *approvalMsgId, tpp); err != nil {
+			if err := r.feishu.UpdateGroupMessage(ctx, &feishu.UpdateGroupMessageParams{
+				TemplateId:    feishu.TemplateIdTenderApproved,
+				MsgId:         *approvalMsgId,
+				TenderProfile: tpp,
+			}); err != nil {
 				fmt.Printf("failed to update group message: %v\n", err)
 			}
 		}
@@ -1079,6 +1218,7 @@ func (r *mutationResolver) RejectTender(ctx context.Context, id xid.ID) (*ent.Te
 	if err := t.Edges.PendingProfile.Update().
 		SetApprovalStatus(3).
 		SetApproverID(xid.ID(sess.UserId)).
+		SetApprovalDate(time.Now()).
 		ClearApprovalMsgID().
 		Exec(ctx); err != nil {
 		return nil, fmt.Errorf("failed to reject tender profile: %w", err)
@@ -1100,7 +1240,11 @@ func (r *mutationResolver) RejectTender(ctx context.Context, id xid.ID) (*ent.Te
 			return
 		}
 		if approvalMsgId != nil {
-			if err := r.feishu.UpdateGroupMessage(ctx, feishu.TemplateIdTenderRejected, *approvalMsgId, tpp); err != nil {
+			if err := r.feishu.UpdateGroupMessage(ctx, &feishu.UpdateGroupMessageParams{
+				TemplateId:    feishu.TemplateIdTenderRejected,
+				MsgId:         *approvalMsgId,
+				TenderProfile: tpp,
+			}); err != nil {
 				fmt.Printf("failed to update group message: %v\n", err)
 			}
 		}

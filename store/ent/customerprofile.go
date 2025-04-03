@@ -28,6 +28,10 @@ type CustomerProfile struct {
 	Name string `json:"name,omitempty"`
 	// 1 待審核 2 已通過 3 已拒絕 4 已撤回
 	ApprovalStatus int `json:"approval_status,omitempty"`
+	// 審核飛書訊息ID
+	ApprovalMsgID *string `json:"approval_msg_id,omitempty"`
+	// 審核日期
+	ApprovalDate *time.Time `json:"approval_date,omitempty"`
 	// OwnerType holds the value of the "owner_type" field.
 	OwnerType *int `json:"owner_type,omitempty"`
 	// Industry holds the value of the "industry" field.
@@ -126,9 +130,9 @@ func (*CustomerProfile) scanValues(columns []string) ([]any, error) {
 			values[i] = &sql.NullScanner{S: new(xid.ID)}
 		case customerprofile.FieldApprovalStatus, customerprofile.FieldOwnerType, customerprofile.FieldIndustry, customerprofile.FieldSize:
 			values[i] = new(sql.NullInt64)
-		case customerprofile.FieldName, customerprofile.FieldContactPerson, customerprofile.FieldContactPersonPosition, customerprofile.FieldContactPersonPhone, customerprofile.FieldContactPersonEmail:
+		case customerprofile.FieldName, customerprofile.FieldApprovalMsgID, customerprofile.FieldContactPerson, customerprofile.FieldContactPersonPosition, customerprofile.FieldContactPersonPhone, customerprofile.FieldContactPersonEmail:
 			values[i] = new(sql.NullString)
-		case customerprofile.FieldCreatedAt, customerprofile.FieldUpdatedAt:
+		case customerprofile.FieldCreatedAt, customerprofile.FieldUpdatedAt, customerprofile.FieldApprovalDate:
 			values[i] = new(sql.NullTime)
 		case customerprofile.FieldID, customerprofile.FieldCustomerID:
 			values[i] = new(xid.ID)
@@ -176,6 +180,20 @@ func (cp *CustomerProfile) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field approval_status", values[i])
 			} else if value.Valid {
 				cp.ApprovalStatus = int(value.Int64)
+			}
+		case customerprofile.FieldApprovalMsgID:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field approval_msg_id", values[i])
+			} else if value.Valid {
+				cp.ApprovalMsgID = new(string)
+				*cp.ApprovalMsgID = value.String
+			}
+		case customerprofile.FieldApprovalDate:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field approval_date", values[i])
+			} else if value.Valid {
+				cp.ApprovalDate = new(time.Time)
+				*cp.ApprovalDate = value.Time
 			}
 		case customerprofile.FieldOwnerType:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -320,6 +338,16 @@ func (cp *CustomerProfile) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("approval_status=")
 	builder.WriteString(fmt.Sprintf("%v", cp.ApprovalStatus))
+	builder.WriteString(", ")
+	if v := cp.ApprovalMsgID; v != nil {
+		builder.WriteString("approval_msg_id=")
+		builder.WriteString(*v)
+	}
+	builder.WriteString(", ")
+	if v := cp.ApprovalDate; v != nil {
+		builder.WriteString("approval_date=")
+		builder.WriteString(v.Format(time.ANSIC))
+	}
 	builder.WriteString(", ")
 	if v := cp.OwnerType; v != nil {
 		builder.WriteString("owner_type=")

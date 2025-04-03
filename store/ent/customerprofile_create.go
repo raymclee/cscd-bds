@@ -74,6 +74,34 @@ func (cpc *CustomerProfileCreate) SetNillableApprovalStatus(i *int) *CustomerPro
 	return cpc
 }
 
+// SetApprovalMsgID sets the "approval_msg_id" field.
+func (cpc *CustomerProfileCreate) SetApprovalMsgID(s string) *CustomerProfileCreate {
+	cpc.mutation.SetApprovalMsgID(s)
+	return cpc
+}
+
+// SetNillableApprovalMsgID sets the "approval_msg_id" field if the given value is not nil.
+func (cpc *CustomerProfileCreate) SetNillableApprovalMsgID(s *string) *CustomerProfileCreate {
+	if s != nil {
+		cpc.SetApprovalMsgID(*s)
+	}
+	return cpc
+}
+
+// SetApprovalDate sets the "approval_date" field.
+func (cpc *CustomerProfileCreate) SetApprovalDate(t time.Time) *CustomerProfileCreate {
+	cpc.mutation.SetApprovalDate(t)
+	return cpc
+}
+
+// SetNillableApprovalDate sets the "approval_date" field if the given value is not nil.
+func (cpc *CustomerProfileCreate) SetNillableApprovalDate(t *time.Time) *CustomerProfileCreate {
+	if t != nil {
+		cpc.SetApprovalDate(*t)
+	}
+	return cpc
+}
+
 // SetOwnerType sets the "owner_type" field.
 func (cpc *CustomerProfileCreate) SetOwnerType(i int) *CustomerProfileCreate {
 	cpc.mutation.SetOwnerType(i)
@@ -389,6 +417,14 @@ func (cpc *CustomerProfileCreate) createSpec() (*CustomerProfile, *sqlgraph.Crea
 		_spec.SetField(customerprofile.FieldApprovalStatus, field.TypeInt, value)
 		_node.ApprovalStatus = value
 	}
+	if value, ok := cpc.mutation.ApprovalMsgID(); ok {
+		_spec.SetField(customerprofile.FieldApprovalMsgID, field.TypeString, value)
+		_node.ApprovalMsgID = &value
+	}
+	if value, ok := cpc.mutation.ApprovalDate(); ok {
+		_spec.SetField(customerprofile.FieldApprovalDate, field.TypeTime, value)
+		_node.ApprovalDate = &value
+	}
 	if value, ok := cpc.mutation.OwnerType(); ok {
 		_spec.SetField(customerprofile.FieldOwnerType, field.TypeInt, value)
 		_node.OwnerType = &value
@@ -576,6 +612,42 @@ func (u *CustomerProfileUpsert) UpdateApprovalStatus() *CustomerProfileUpsert {
 // AddApprovalStatus adds v to the "approval_status" field.
 func (u *CustomerProfileUpsert) AddApprovalStatus(v int) *CustomerProfileUpsert {
 	u.Add(customerprofile.FieldApprovalStatus, v)
+	return u
+}
+
+// SetApprovalMsgID sets the "approval_msg_id" field.
+func (u *CustomerProfileUpsert) SetApprovalMsgID(v string) *CustomerProfileUpsert {
+	u.Set(customerprofile.FieldApprovalMsgID, v)
+	return u
+}
+
+// UpdateApprovalMsgID sets the "approval_msg_id" field to the value that was provided on create.
+func (u *CustomerProfileUpsert) UpdateApprovalMsgID() *CustomerProfileUpsert {
+	u.SetExcluded(customerprofile.FieldApprovalMsgID)
+	return u
+}
+
+// ClearApprovalMsgID clears the value of the "approval_msg_id" field.
+func (u *CustomerProfileUpsert) ClearApprovalMsgID() *CustomerProfileUpsert {
+	u.SetNull(customerprofile.FieldApprovalMsgID)
+	return u
+}
+
+// SetApprovalDate sets the "approval_date" field.
+func (u *CustomerProfileUpsert) SetApprovalDate(v time.Time) *CustomerProfileUpsert {
+	u.Set(customerprofile.FieldApprovalDate, v)
+	return u
+}
+
+// UpdateApprovalDate sets the "approval_date" field to the value that was provided on create.
+func (u *CustomerProfileUpsert) UpdateApprovalDate() *CustomerProfileUpsert {
+	u.SetExcluded(customerprofile.FieldApprovalDate)
+	return u
+}
+
+// ClearApprovalDate clears the value of the "approval_date" field.
+func (u *CustomerProfileUpsert) ClearApprovalDate() *CustomerProfileUpsert {
+	u.SetNull(customerprofile.FieldApprovalDate)
 	return u
 }
 
@@ -886,6 +958,48 @@ func (u *CustomerProfileUpsertOne) AddApprovalStatus(v int) *CustomerProfileUpse
 func (u *CustomerProfileUpsertOne) UpdateApprovalStatus() *CustomerProfileUpsertOne {
 	return u.Update(func(s *CustomerProfileUpsert) {
 		s.UpdateApprovalStatus()
+	})
+}
+
+// SetApprovalMsgID sets the "approval_msg_id" field.
+func (u *CustomerProfileUpsertOne) SetApprovalMsgID(v string) *CustomerProfileUpsertOne {
+	return u.Update(func(s *CustomerProfileUpsert) {
+		s.SetApprovalMsgID(v)
+	})
+}
+
+// UpdateApprovalMsgID sets the "approval_msg_id" field to the value that was provided on create.
+func (u *CustomerProfileUpsertOne) UpdateApprovalMsgID() *CustomerProfileUpsertOne {
+	return u.Update(func(s *CustomerProfileUpsert) {
+		s.UpdateApprovalMsgID()
+	})
+}
+
+// ClearApprovalMsgID clears the value of the "approval_msg_id" field.
+func (u *CustomerProfileUpsertOne) ClearApprovalMsgID() *CustomerProfileUpsertOne {
+	return u.Update(func(s *CustomerProfileUpsert) {
+		s.ClearApprovalMsgID()
+	})
+}
+
+// SetApprovalDate sets the "approval_date" field.
+func (u *CustomerProfileUpsertOne) SetApprovalDate(v time.Time) *CustomerProfileUpsertOne {
+	return u.Update(func(s *CustomerProfileUpsert) {
+		s.SetApprovalDate(v)
+	})
+}
+
+// UpdateApprovalDate sets the "approval_date" field to the value that was provided on create.
+func (u *CustomerProfileUpsertOne) UpdateApprovalDate() *CustomerProfileUpsertOne {
+	return u.Update(func(s *CustomerProfileUpsert) {
+		s.UpdateApprovalDate()
+	})
+}
+
+// ClearApprovalDate clears the value of the "approval_date" field.
+func (u *CustomerProfileUpsertOne) ClearApprovalDate() *CustomerProfileUpsertOne {
+	return u.Update(func(s *CustomerProfileUpsert) {
+		s.ClearApprovalDate()
 	})
 }
 
@@ -1398,6 +1512,48 @@ func (u *CustomerProfileUpsertBulk) AddApprovalStatus(v int) *CustomerProfileUps
 func (u *CustomerProfileUpsertBulk) UpdateApprovalStatus() *CustomerProfileUpsertBulk {
 	return u.Update(func(s *CustomerProfileUpsert) {
 		s.UpdateApprovalStatus()
+	})
+}
+
+// SetApprovalMsgID sets the "approval_msg_id" field.
+func (u *CustomerProfileUpsertBulk) SetApprovalMsgID(v string) *CustomerProfileUpsertBulk {
+	return u.Update(func(s *CustomerProfileUpsert) {
+		s.SetApprovalMsgID(v)
+	})
+}
+
+// UpdateApprovalMsgID sets the "approval_msg_id" field to the value that was provided on create.
+func (u *CustomerProfileUpsertBulk) UpdateApprovalMsgID() *CustomerProfileUpsertBulk {
+	return u.Update(func(s *CustomerProfileUpsert) {
+		s.UpdateApprovalMsgID()
+	})
+}
+
+// ClearApprovalMsgID clears the value of the "approval_msg_id" field.
+func (u *CustomerProfileUpsertBulk) ClearApprovalMsgID() *CustomerProfileUpsertBulk {
+	return u.Update(func(s *CustomerProfileUpsert) {
+		s.ClearApprovalMsgID()
+	})
+}
+
+// SetApprovalDate sets the "approval_date" field.
+func (u *CustomerProfileUpsertBulk) SetApprovalDate(v time.Time) *CustomerProfileUpsertBulk {
+	return u.Update(func(s *CustomerProfileUpsert) {
+		s.SetApprovalDate(v)
+	})
+}
+
+// UpdateApprovalDate sets the "approval_date" field to the value that was provided on create.
+func (u *CustomerProfileUpsertBulk) UpdateApprovalDate() *CustomerProfileUpsertBulk {
+	return u.Update(func(s *CustomerProfileUpsert) {
+		s.UpdateApprovalDate()
+	})
+}
+
+// ClearApprovalDate clears the value of the "approval_date" field.
+func (u *CustomerProfileUpsertBulk) ClearApprovalDate() *CustomerProfileUpsertBulk {
+	return u.Update(func(s *CustomerProfileUpsert) {
+		s.ClearApprovalDate()
 	})
 }
 

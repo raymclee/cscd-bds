@@ -20,7 +20,7 @@ export const Route = createFileRoute("/__auth/__portal/portal/tenders_/new")({
     // });
 
     return loadQuery<tendersNewTenderPageQuery>(RelayEnvironment, node, {
-      userId: session.userId,
+      userId: session?.userId,
     });
   },
 });

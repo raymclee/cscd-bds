@@ -14,7 +14,6 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as authImport } from './routes/__auth'
-import { Route as authportalImport } from './routes/__auth/__portal'
 import { Route as authdashboardImport } from './routes/__auth/__dashboard'
 import { Route as authdashboardRainbowImport } from './routes/__auth/__dashboard/rainbow'
 import { Route as authdashboardBiImport } from './routes/__auth/__dashboard/bi'
@@ -47,6 +46,7 @@ import { Route as authportalPortalSuperAdminSaAreasImport } from './routes/__aut
 const LogoutLazyImport = createFileRoute('/logout')()
 const LoginLazyImport = createFileRoute('/login')()
 const AccessDeniedLazyImport = createFileRoute('/access-denied')()
+const authportalLazyImport = createFileRoute('/__auth/__portal')()
 const authportalPortalImport = createFileRoute('/__auth/__portal/portal')()
 const authdashboardscaledLazyImport = createFileRoute(
   '/__auth/__dashboard/__scaled',
@@ -79,7 +79,7 @@ const authRoute = authImport
   } as any)
   .lazy(() => import('./routes/__auth.lazy').then((d) => d.Route))
 
-const authportalRoute = authportalImport
+const authportalLazyRoute = authportalLazyImport
   .update({
     id: '/__portal',
     getParentRoute: () => authRoute,
@@ -96,7 +96,7 @@ const authdashboardRoute = authdashboardImport
 const authportalPortalRoute = authportalPortalImport.update({
   id: '/portal',
   path: '/portal',
-  getParentRoute: () => authportalRoute,
+  getParentRoute: () => authportalLazyRoute,
 } as any)
 
 const authdashboardscaledLazyRoute = authdashboardscaledLazyImport
@@ -419,7 +419,7 @@ declare module '@tanstack/react-router' {
       id: '/__auth/__portal'
       path: ''
       fullPath: ''
-      preLoaderRoute: typeof authportalImport
+      preLoaderRoute: typeof authportalLazyImport
       parentRoute: typeof authImport
     }
     '/__auth/__dashboard/__amap': {
@@ -469,7 +469,7 @@ declare module '@tanstack/react-router' {
       path: '/portal'
       fullPath: '/portal'
       preLoaderRoute: typeof authportalPortalImport
-      parentRoute: typeof authportalImport
+      parentRoute: typeof authportalLazyImport
     }
     '/__auth/__portal/portal/_admin': {
       id: '/__auth/__portal/portal/_admin'
@@ -746,26 +746,26 @@ const authportalPortalRouteChildren: authportalPortalRouteChildren = {
 const authportalPortalRouteWithChildren =
   authportalPortalRoute._addFileChildren(authportalPortalRouteChildren)
 
-interface authportalRouteChildren {
+interface authportalLazyRouteChildren {
   authportalPortalRoute: typeof authportalPortalRouteWithChildren
 }
 
-const authportalRouteChildren: authportalRouteChildren = {
+const authportalLazyRouteChildren: authportalLazyRouteChildren = {
   authportalPortalRoute: authportalPortalRouteWithChildren,
 }
 
-const authportalRouteWithChildren = authportalRoute._addFileChildren(
-  authportalRouteChildren,
+const authportalLazyRouteWithChildren = authportalLazyRoute._addFileChildren(
+  authportalLazyRouteChildren,
 )
 
 interface authRouteChildren {
   authdashboardRoute: typeof authdashboardRouteWithChildren
-  authportalRoute: typeof authportalRouteWithChildren
+  authportalLazyRoute: typeof authportalLazyRouteWithChildren
 }
 
 const authRouteChildren: authRouteChildren = {
   authdashboardRoute: authdashboardRouteWithChildren,
-  authportalRoute: authportalRouteWithChildren,
+  authportalLazyRoute: authportalLazyRouteWithChildren,
 }
 
 const authRouteWithChildren = authRoute._addFileChildren(authRouteChildren)
@@ -834,7 +834,7 @@ export interface FileRoutesById {
   '/login': typeof LoginLazyRoute
   '/logout': typeof LogoutLazyRoute
   '/__auth/__dashboard': typeof authdashboardRouteWithChildren
-  '/__auth/__portal': typeof authportalRouteWithChildren
+  '/__auth/__portal': typeof authportalLazyRouteWithChildren
   '/__auth/__dashboard/__amap': typeof authdashboardamapRouteWithChildren
   '/__auth/__dashboard/bi': typeof authdashboardBiRoute
   '/__auth/__dashboard/rainbow': typeof authdashboardRainbowRoute
@@ -1015,7 +1015,7 @@ export const routeTree = rootRoute
       ]
     },
     "/__auth/__portal": {
-      "filePath": "__auth/__portal.tsx",
+      "filePath": "__auth/__portal.lazy.tsx",
       "parent": "/__auth",
       "children": [
         "/__auth/__portal/portal"

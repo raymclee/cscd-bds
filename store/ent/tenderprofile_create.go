@@ -100,6 +100,20 @@ func (tpc *TenderProfileCreate) SetNillableApprovalMsgID(s *string) *TenderProfi
 	return tpc
 }
 
+// SetApprovalDate sets the "approval_date" field.
+func (tpc *TenderProfileCreate) SetApprovalDate(t time.Time) *TenderProfileCreate {
+	tpc.mutation.SetApprovalDate(t)
+	return tpc
+}
+
+// SetNillableApprovalDate sets the "approval_date" field if the given value is not nil.
+func (tpc *TenderProfileCreate) SetNillableApprovalDate(t *time.Time) *TenderProfileCreate {
+	if t != nil {
+		tpc.SetApprovalDate(*t)
+	}
+	return tpc
+}
+
 // SetName sets the "name" field.
 func (tpc *TenderProfileCreate) SetName(s string) *TenderProfileCreate {
 	tpc.mutation.SetName(s)
@@ -1184,6 +1198,10 @@ func (tpc *TenderProfileCreate) createSpec() (*TenderProfile, *sqlgraph.CreateSp
 		_spec.SetField(tenderprofile.FieldApprovalMsgID, field.TypeString, value)
 		_node.ApprovalMsgID = &value
 	}
+	if value, ok := tpc.mutation.ApprovalDate(); ok {
+		_spec.SetField(tenderprofile.FieldApprovalDate, field.TypeTime, value)
+		_node.ApprovalDate = &value
+	}
 	if value, ok := tpc.mutation.Name(); ok {
 		_spec.SetField(tenderprofile.FieldName, field.TypeString, value)
 		_node.Name = &value
@@ -1651,6 +1669,24 @@ func (u *TenderProfileUpsert) UpdateApprovalMsgID() *TenderProfileUpsert {
 // ClearApprovalMsgID clears the value of the "approval_msg_id" field.
 func (u *TenderProfileUpsert) ClearApprovalMsgID() *TenderProfileUpsert {
 	u.SetNull(tenderprofile.FieldApprovalMsgID)
+	return u
+}
+
+// SetApprovalDate sets the "approval_date" field.
+func (u *TenderProfileUpsert) SetApprovalDate(v time.Time) *TenderProfileUpsert {
+	u.Set(tenderprofile.FieldApprovalDate, v)
+	return u
+}
+
+// UpdateApprovalDate sets the "approval_date" field to the value that was provided on create.
+func (u *TenderProfileUpsert) UpdateApprovalDate() *TenderProfileUpsert {
+	u.SetExcluded(tenderprofile.FieldApprovalDate)
+	return u
+}
+
+// ClearApprovalDate clears the value of the "approval_date" field.
+func (u *TenderProfileUpsert) ClearApprovalDate() *TenderProfileUpsert {
+	u.SetNull(tenderprofile.FieldApprovalDate)
 	return u
 }
 
@@ -2937,6 +2973,27 @@ func (u *TenderProfileUpsertOne) UpdateApprovalMsgID() *TenderProfileUpsertOne {
 func (u *TenderProfileUpsertOne) ClearApprovalMsgID() *TenderProfileUpsertOne {
 	return u.Update(func(s *TenderProfileUpsert) {
 		s.ClearApprovalMsgID()
+	})
+}
+
+// SetApprovalDate sets the "approval_date" field.
+func (u *TenderProfileUpsertOne) SetApprovalDate(v time.Time) *TenderProfileUpsertOne {
+	return u.Update(func(s *TenderProfileUpsert) {
+		s.SetApprovalDate(v)
+	})
+}
+
+// UpdateApprovalDate sets the "approval_date" field to the value that was provided on create.
+func (u *TenderProfileUpsertOne) UpdateApprovalDate() *TenderProfileUpsertOne {
+	return u.Update(func(s *TenderProfileUpsert) {
+		s.UpdateApprovalDate()
+	})
+}
+
+// ClearApprovalDate clears the value of the "approval_date" field.
+func (u *TenderProfileUpsertOne) ClearApprovalDate() *TenderProfileUpsertOne {
+	return u.Update(func(s *TenderProfileUpsert) {
+		s.ClearApprovalDate()
 	})
 }
 
@@ -4583,6 +4640,27 @@ func (u *TenderProfileUpsertBulk) UpdateApprovalMsgID() *TenderProfileUpsertBulk
 func (u *TenderProfileUpsertBulk) ClearApprovalMsgID() *TenderProfileUpsertBulk {
 	return u.Update(func(s *TenderProfileUpsert) {
 		s.ClearApprovalMsgID()
+	})
+}
+
+// SetApprovalDate sets the "approval_date" field.
+func (u *TenderProfileUpsertBulk) SetApprovalDate(v time.Time) *TenderProfileUpsertBulk {
+	return u.Update(func(s *TenderProfileUpsert) {
+		s.SetApprovalDate(v)
+	})
+}
+
+// UpdateApprovalDate sets the "approval_date" field to the value that was provided on create.
+func (u *TenderProfileUpsertBulk) UpdateApprovalDate() *TenderProfileUpsertBulk {
+	return u.Update(func(s *TenderProfileUpsert) {
+		s.UpdateApprovalDate()
+	})
+}
+
+// ClearApprovalDate clears the value of the "approval_date" field.
+func (u *TenderProfileUpsertBulk) ClearApprovalDate() *TenderProfileUpsertBulk {
+	return u.Update(func(s *TenderProfileUpsert) {
+		s.ClearApprovalDate()
 	})
 }
 

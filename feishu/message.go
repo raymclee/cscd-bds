@@ -11,10 +11,13 @@ import (
 )
 
 type ChatMessageParams struct {
-	ChatId          string
-	TenderProfile   *ent.TenderProfile
-	CustomerProfile *ent.CustomerProfile
-	TemplateId      string
+	ChatId             string
+	TenderProfile      *ent.TenderProfile
+	CustomerProfile    *ent.CustomerProfile
+	TemplateId         string
+	CustomerCardTitle  string
+	CustomerCardColor  string
+	CustomerCardResult string
 }
 
 func (f *Feishu) SendChatMessage(ctx context.Context, params *ChatMessageParams) (string, error) {
@@ -37,6 +40,15 @@ func (f *Feishu) SendChatMessage(ctx context.Context, params *ChatMessageParams)
 		tv = customerProfileTemplateVars(params.CustomerProfile)
 		if params.CustomerProfile.Edges.CreatedBy != nil {
 			tv["created_by_id"] = params.CustomerProfile.Edges.CreatedBy.OpenID
+		}
+		if params.CustomerCardTitle != "" {
+			tv["title"] = params.CustomerCardTitle
+		}
+		if params.CustomerCardColor != "" {
+			tv["color"] = params.CustomerCardColor
+		}
+		if params.CustomerCardResult != "" {
+			tv["result"] = params.CustomerCardResult
 		}
 		contentData = map[string]any{
 			"template_id":       params.TemplateId,
@@ -82,9 +94,12 @@ func (f *Feishu) SendChatMessage(ctx context.Context, params *ChatMessageParams)
 }
 
 type GroupMessageParams struct {
-	TenderProfile   *ent.TenderProfile
-	CustomerProfile *ent.CustomerProfile
-	ChatId          string
+	TenderProfile      *ent.TenderProfile
+	CustomerProfile    *ent.CustomerProfile
+	ChatId             string
+	CustomerCardTitle  string
+	CustomerCardColor  string
+	CustomerCardResult string
 }
 
 func (f *Feishu) SendGroupMessage(ctx context.Context, templateId string, params *GroupMessageParams) (string, error) {
@@ -107,6 +122,15 @@ func (f *Feishu) SendGroupMessage(ctx context.Context, templateId string, params
 		tv = customerProfileTemplateVars(params.CustomerProfile)
 		if params.CustomerProfile.Edges.CreatedBy != nil {
 			tv["created_by_id"] = params.CustomerProfile.Edges.CreatedBy.OpenID
+		}
+		if params.CustomerCardTitle != "" {
+			tv["title"] = params.CustomerCardTitle
+		}
+		if params.CustomerCardColor != "" {
+			tv["color"] = params.CustomerCardColor
+		}
+		if params.CustomerCardResult != "" {
+			tv["result"] = params.CustomerCardResult
 		}
 		contentData = map[string]any{
 			"template_id":       templateId,
@@ -151,11 +175,41 @@ func (f *Feishu) SendGroupMessage(ctx context.Context, templateId string, params
 	return msgId, nil
 }
 
-func (f *Feishu) UpdateGroupMessage(ctx context.Context, templateId string, msgId string, tenderProfile *ent.TenderProfile) error {
+type UpdateGroupMessageParams struct {
+	TemplateId         string
+	MsgId              string
+	TenderProfile      *ent.TenderProfile
+	CustomerProfile    *ent.CustomerProfile
+	CustomerCardTitle  string
+	CustomerCardColor  string
+	CustomerCardResult string
+}
 
-	contentData := map[string]any{
-		"template_id":       templateId,
-		"template_variable": tenderProfileTemplateVars(tenderProfile),
+func (f *Feishu) UpdateGroupMessage(ctx context.Context, params *UpdateGroupMessageParams) error {
+	var contentData map[string]any
+	switch {
+	case params.TenderProfile != nil:
+		contentData = map[string]any{
+			"template_id":       params.TemplateId,
+			"template_variable": tenderProfileTemplateVars(params.TenderProfile),
+		}
+	case params.CustomerProfile != nil:
+		tv := customerProfileTemplateVars(params.CustomerProfile)
+		if params.CustomerCardTitle != "" {
+			tv["title"] = params.CustomerCardTitle
+		}
+		if params.CustomerCardColor != "" {
+			tv["color"] = params.CustomerCardColor
+		}
+		if params.CustomerCardResult != "" {
+			tv["result"] = params.CustomerCardResult
+		}
+		contentData = map[string]any{
+			"template_id":       params.TemplateId,
+			"template_variable": tv,
+		}
+	default:
+		return fmt.Errorf("invalid params")
 	}
 	content, err := json.Marshal(map[string]any{
 		"type": "template",
@@ -165,7 +219,7 @@ func (f *Feishu) UpdateGroupMessage(ctx context.Context, templateId string, msgI
 		return err
 	}
 
-	res, err := f.Client.Patch(ctx, "https://open.feishu.cn/open-apis/im/v1/messages/"+msgId, map[string]any{
+	res, err := f.Client.Patch(ctx, "https://open.feishu.cn/open-apis/im/v1/messages/"+params.MsgId, map[string]any{
 		"content": string(content),
 	}, larkcore.AccessTokenTypeTenant)
 	if err != nil {

@@ -35,6 +35,8 @@ type TenderProfile struct {
 	ApprovalStatus int `json:"approval_status,omitempty"`
 	// 審核飛書訊息ID
 	ApprovalMsgID *string `json:"approval_msg_id,omitempty"`
+	// 審核日期
+	ApprovalDate *time.Time `json:"approval_date,omitempty"`
 	// Name holds the value of the "name" field.
 	Name *string `json:"name,omitempty"`
 	// EstimatedAmount holds the value of the "estimated_amount" field.
@@ -295,7 +297,7 @@ func (*TenderProfile) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullInt64)
 		case tenderprofile.FieldApprovalMsgID, tenderprofile.FieldName, tenderprofile.FieldAddress, tenderprofile.FieldFullAddress, tenderprofile.FieldContractor, tenderprofile.FieldSizeAndValueRatingOverview, tenderprofile.FieldCreditAndPaymentRatingOverview, tenderprofile.FieldTimeLimitRatingOverview, tenderprofile.FieldCustomerRelationshipRatingOverview, tenderprofile.FieldCompetitivePartnershipRatingOverview, tenderprofile.FieldProjectCode, tenderprofile.FieldProjectType, tenderprofile.FieldProjectDefinition, tenderprofile.FieldRemark, tenderprofile.FieldTenderSituations, tenderprofile.FieldOwnerSituations, tenderprofile.FieldBiddingInstructions, tenderprofile.FieldCompetitorSituations, tenderprofile.FieldCostEngineer, tenderprofile.FieldTenderForm, tenderprofile.FieldContractForm, tenderprofile.FieldManagementCompany, tenderprofile.FieldTenderingAgency, tenderprofile.FieldFacadeConsultant, tenderprofile.FieldDesignUnit, tenderprofile.FieldConsultingFirm, tenderprofile.FieldCurrentProgress, tenderprofile.FieldTenderWinCompany, tenderprofile.FieldTenderCode, tenderprofile.FieldArchitect, tenderprofile.FieldDeveloper, tenderprofile.FieldConstructionArea:
 			values[i] = new(sql.NullString)
-		case tenderprofile.FieldCreatedAt, tenderprofile.FieldUpdatedAt, tenderprofile.FieldTenderDate, tenderprofile.FieldDiscoveryDate, tenderprofile.FieldEstimatedProjectStartDate, tenderprofile.FieldEstimatedProjectEndDate, tenderprofile.FieldBiddingDate, tenderprofile.FieldTenderClosingDate, tenderprofile.FieldTenderWinDate:
+		case tenderprofile.FieldCreatedAt, tenderprofile.FieldUpdatedAt, tenderprofile.FieldApprovalDate, tenderprofile.FieldTenderDate, tenderprofile.FieldDiscoveryDate, tenderprofile.FieldEstimatedProjectStartDate, tenderprofile.FieldEstimatedProjectEndDate, tenderprofile.FieldBiddingDate, tenderprofile.FieldTenderClosingDate, tenderprofile.FieldTenderWinDate:
 			values[i] = new(sql.NullTime)
 		case tenderprofile.FieldID, tenderprofile.FieldTenderID:
 			values[i] = new(xid.ID)
@@ -350,6 +352,13 @@ func (tp *TenderProfile) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				tp.ApprovalMsgID = new(string)
 				*tp.ApprovalMsgID = value.String
+			}
+		case tenderprofile.FieldApprovalDate:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field approval_date", values[i])
+			} else if value.Valid {
+				tp.ApprovalDate = new(time.Time)
+				*tp.ApprovalDate = value.Time
 			}
 		case tenderprofile.FieldName:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -877,6 +886,11 @@ func (tp *TenderProfile) String() string {
 	if v := tp.ApprovalMsgID; v != nil {
 		builder.WriteString("approval_msg_id=")
 		builder.WriteString(*v)
+	}
+	builder.WriteString(", ")
+	if v := tp.ApprovalDate; v != nil {
+		builder.WriteString("approval_date=")
+		builder.WriteString(v.Format(time.ANSIC))
 	}
 	builder.WriteString(", ")
 	if v := tp.Name; v != nil {

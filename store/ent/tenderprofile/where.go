@@ -81,6 +81,11 @@ func ApprovalMsgID(v string) predicate.TenderProfile {
 	return predicate.TenderProfile(sql.FieldEQ(FieldApprovalMsgID, v))
 }
 
+// ApprovalDate applies equality check predicate on the "approval_date" field. It's identical to ApprovalDateEQ.
+func ApprovalDate(v time.Time) predicate.TenderProfile {
+	return predicate.TenderProfile(sql.FieldEQ(FieldApprovalDate, v))
+}
+
 // Name applies equality check predicate on the "name" field. It's identical to NameEQ.
 func Name(v string) predicate.TenderProfile {
 	return predicate.TenderProfile(sql.FieldEQ(FieldName, v))
@@ -604,6 +609,56 @@ func ApprovalMsgIDEqualFold(v string) predicate.TenderProfile {
 // ApprovalMsgIDContainsFold applies the ContainsFold predicate on the "approval_msg_id" field.
 func ApprovalMsgIDContainsFold(v string) predicate.TenderProfile {
 	return predicate.TenderProfile(sql.FieldContainsFold(FieldApprovalMsgID, v))
+}
+
+// ApprovalDateEQ applies the EQ predicate on the "approval_date" field.
+func ApprovalDateEQ(v time.Time) predicate.TenderProfile {
+	return predicate.TenderProfile(sql.FieldEQ(FieldApprovalDate, v))
+}
+
+// ApprovalDateNEQ applies the NEQ predicate on the "approval_date" field.
+func ApprovalDateNEQ(v time.Time) predicate.TenderProfile {
+	return predicate.TenderProfile(sql.FieldNEQ(FieldApprovalDate, v))
+}
+
+// ApprovalDateIn applies the In predicate on the "approval_date" field.
+func ApprovalDateIn(vs ...time.Time) predicate.TenderProfile {
+	return predicate.TenderProfile(sql.FieldIn(FieldApprovalDate, vs...))
+}
+
+// ApprovalDateNotIn applies the NotIn predicate on the "approval_date" field.
+func ApprovalDateNotIn(vs ...time.Time) predicate.TenderProfile {
+	return predicate.TenderProfile(sql.FieldNotIn(FieldApprovalDate, vs...))
+}
+
+// ApprovalDateGT applies the GT predicate on the "approval_date" field.
+func ApprovalDateGT(v time.Time) predicate.TenderProfile {
+	return predicate.TenderProfile(sql.FieldGT(FieldApprovalDate, v))
+}
+
+// ApprovalDateGTE applies the GTE predicate on the "approval_date" field.
+func ApprovalDateGTE(v time.Time) predicate.TenderProfile {
+	return predicate.TenderProfile(sql.FieldGTE(FieldApprovalDate, v))
+}
+
+// ApprovalDateLT applies the LT predicate on the "approval_date" field.
+func ApprovalDateLT(v time.Time) predicate.TenderProfile {
+	return predicate.TenderProfile(sql.FieldLT(FieldApprovalDate, v))
+}
+
+// ApprovalDateLTE applies the LTE predicate on the "approval_date" field.
+func ApprovalDateLTE(v time.Time) predicate.TenderProfile {
+	return predicate.TenderProfile(sql.FieldLTE(FieldApprovalDate, v))
+}
+
+// ApprovalDateIsNil applies the IsNil predicate on the "approval_date" field.
+func ApprovalDateIsNil() predicate.TenderProfile {
+	return predicate.TenderProfile(sql.FieldIsNull(FieldApprovalDate))
+}
+
+// ApprovalDateNotNil applies the NotNil predicate on the "approval_date" field.
+func ApprovalDateNotNil() predicate.TenderProfile {
+	return predicate.TenderProfile(sql.FieldNotNull(FieldApprovalDate))
 }
 
 // NameEQ applies the EQ predicate on the "name" field.

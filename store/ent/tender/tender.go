@@ -133,6 +133,8 @@ const (
 	FieldTenderWinDate = "tender_win_date"
 	// FieldTenderWinAmount holds the string denoting the tender_win_amount field in the database.
 	FieldTenderWinAmount = "tender_win_amount"
+	// FieldTenderAmount holds the string denoting the tender_amount field in the database.
+	FieldTenderAmount = "tender_amount"
 	// FieldLastTenderAmount holds the string denoting the last_tender_amount field in the database.
 	FieldLastTenderAmount = "last_tender_amount"
 	// FieldAreaID holds the string denoting the area_id field in the database.
@@ -345,6 +347,7 @@ var Columns = []string{
 	FieldConstructionArea,
 	FieldTenderWinDate,
 	FieldTenderWinAmount,
+	FieldTenderAmount,
 	FieldLastTenderAmount,
 	FieldAreaID,
 	FieldProvinceID,
@@ -699,6 +702,11 @@ func ByTenderWinDate(opts ...sql.OrderTermOption) OrderOption {
 // ByTenderWinAmount orders the results by the tender_win_amount field.
 func ByTenderWinAmount(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldTenderWinAmount, opts...).ToFunc()
+}
+
+// ByTenderAmount orders the results by the tender_amount field.
+func ByTenderAmount(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldTenderAmount, opts...).ToFunc()
 }
 
 // ByLastTenderAmount orders the results by the last_tender_amount field.

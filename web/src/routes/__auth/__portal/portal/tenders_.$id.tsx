@@ -9,7 +9,7 @@ export const Route = createFileRoute("/__auth/__portal/portal/tenders_/$id")({
   loader({ context: { RelayEnvironment, session }, params: { id } }) {
     return loadQuery<tendersDetailPageQuery>(RelayEnvironment, node, {
       id,
-      userId: session.userId,
+      userId: session?.userId,
     });
   },
   validateSearch: v.object({

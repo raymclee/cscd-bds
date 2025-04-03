@@ -585,11 +585,11 @@ func init() {
 	// tenderprofile.ApprovalStatusValidator is a validator for the "approval_status" field. It is called by the builders before save.
 	tenderprofile.ApprovalStatusValidator = tenderprofileDescApprovalStatus.Validators[0].(func(int) error)
 	// tenderprofileDescName is the schema descriptor for name field.
-	tenderprofileDescName := tenderprofileFields[3].Descriptor()
+	tenderprofileDescName := tenderprofileFields[4].Descriptor()
 	// tenderprofile.NameValidator is a validator for the "name" field. It is called by the builders before save.
 	tenderprofile.NameValidator = tenderprofileDescName.Validators[0].(func(string) error)
 	// tenderprofileDescClassify is the schema descriptor for classify field.
-	tenderprofileDescClassify := tenderprofileFields[6].Descriptor()
+	tenderprofileDescClassify := tenderprofileFields[7].Descriptor()
 	// tenderprofile.ClassifyValidator is a validator for the "classify" field. It is called by the builders before save.
 	tenderprofile.ClassifyValidator = func() func(int) error {
 		validators := tenderprofileDescClassify.Validators
@@ -607,7 +607,7 @@ func init() {
 		}
 	}()
 	// tenderprofileDescLevelInvolved is the schema descriptor for level_involved field.
-	tenderprofileDescLevelInvolved := tenderprofileFields[11].Descriptor()
+	tenderprofileDescLevelInvolved := tenderprofileFields[12].Descriptor()
 	// tenderprofile.LevelInvolvedValidator is a validator for the "level_involved" field. It is called by the builders before save.
 	tenderprofile.LevelInvolvedValidator = func() func(int) error {
 		validators := tenderprofileDescLevelInvolved.Validators
@@ -625,7 +625,7 @@ func init() {
 		}
 	}()
 	// tenderprofileDescSizeAndValueRating is the schema descriptor for size_and_value_rating field.
-	tenderprofileDescSizeAndValueRating := tenderprofileFields[12].Descriptor()
+	tenderprofileDescSizeAndValueRating := tenderprofileFields[13].Descriptor()
 	// tenderprofile.SizeAndValueRatingValidator is a validator for the "size_and_value_rating" field. It is called by the builders before save.
 	tenderprofile.SizeAndValueRatingValidator = func() func(int) error {
 		validators := tenderprofileDescSizeAndValueRating.Validators
@@ -643,7 +643,7 @@ func init() {
 		}
 	}()
 	// tenderprofileDescCreditAndPaymentRating is the schema descriptor for credit_and_payment_rating field.
-	tenderprofileDescCreditAndPaymentRating := tenderprofileFields[14].Descriptor()
+	tenderprofileDescCreditAndPaymentRating := tenderprofileFields[15].Descriptor()
 	// tenderprofile.CreditAndPaymentRatingValidator is a validator for the "credit_and_payment_rating" field. It is called by the builders before save.
 	tenderprofile.CreditAndPaymentRatingValidator = func() func(int) error {
 		validators := tenderprofileDescCreditAndPaymentRating.Validators
@@ -661,7 +661,7 @@ func init() {
 		}
 	}()
 	// tenderprofileDescTimeLimitRating is the schema descriptor for time_limit_rating field.
-	tenderprofileDescTimeLimitRating := tenderprofileFields[16].Descriptor()
+	tenderprofileDescTimeLimitRating := tenderprofileFields[17].Descriptor()
 	// tenderprofile.TimeLimitRatingValidator is a validator for the "time_limit_rating" field. It is called by the builders before save.
 	tenderprofile.TimeLimitRatingValidator = func() func(int) error {
 		validators := tenderprofileDescTimeLimitRating.Validators
@@ -679,7 +679,7 @@ func init() {
 		}
 	}()
 	// tenderprofileDescCustomerRelationshipRating is the schema descriptor for customer_relationship_rating field.
-	tenderprofileDescCustomerRelationshipRating := tenderprofileFields[18].Descriptor()
+	tenderprofileDescCustomerRelationshipRating := tenderprofileFields[19].Descriptor()
 	// tenderprofile.CustomerRelationshipRatingValidator is a validator for the "customer_relationship_rating" field. It is called by the builders before save.
 	tenderprofile.CustomerRelationshipRatingValidator = func() func(int) error {
 		validators := tenderprofileDescCustomerRelationshipRating.Validators
@@ -697,7 +697,7 @@ func init() {
 		}
 	}()
 	// tenderprofileDescCompetitivePartnershipRating is the schema descriptor for competitive_partnership_rating field.
-	tenderprofileDescCompetitivePartnershipRating := tenderprofileFields[20].Descriptor()
+	tenderprofileDescCompetitivePartnershipRating := tenderprofileFields[21].Descriptor()
 	// tenderprofile.CompetitivePartnershipRatingValidator is a validator for the "competitive_partnership_rating" field. It is called by the builders before save.
 	tenderprofile.CompetitivePartnershipRatingValidator = func() func(int) error {
 		validators := tenderprofileDescCompetitivePartnershipRating.Validators
@@ -715,19 +715,19 @@ func init() {
 		}
 	}()
 	// tenderprofileDescPrepareToBid is the schema descriptor for prepare_to_bid field.
-	tenderprofileDescPrepareToBid := tenderprofileFields[22].Descriptor()
+	tenderprofileDescPrepareToBid := tenderprofileFields[23].Descriptor()
 	// tenderprofile.DefaultPrepareToBid holds the default value on creation for the prepare_to_bid field.
 	tenderprofile.DefaultPrepareToBid = tenderprofileDescPrepareToBid.Default.(bool)
 	// tenderprofileDescKeyProject is the schema descriptor for key_project field.
-	tenderprofileDescKeyProject := tenderprofileFields[46].Descriptor()
+	tenderprofileDescKeyProject := tenderprofileFields[47].Descriptor()
 	// tenderprofile.DefaultKeyProject holds the default value on creation for the key_project field.
 	tenderprofile.DefaultKeyProject = tenderprofileDescKeyProject.Default.(bool)
 	// tenderprofileDescTenderWinAmount is the schema descriptor for tender_win_amount field.
-	tenderprofileDescTenderWinAmount := tenderprofileFields[55].Descriptor()
+	tenderprofileDescTenderWinAmount := tenderprofileFields[56].Descriptor()
 	// tenderprofile.TenderWinAmountValidator is a validator for the "tender_win_amount" field. It is called by the builders before save.
 	tenderprofile.TenderWinAmountValidator = tenderprofileDescTenderWinAmount.Validators[0].(func(float64) error)
 	// tenderprofileDescLastTenderAmount is the schema descriptor for last_tender_amount field.
-	tenderprofileDescLastTenderAmount := tenderprofileFields[56].Descriptor()
+	tenderprofileDescLastTenderAmount := tenderprofileFields[57].Descriptor()
 	// tenderprofile.LastTenderAmountValidator is a validator for the "last_tender_amount" field. It is called by the builders before save.
 	tenderprofile.LastTenderAmountValidator = tenderprofileDescLastTenderAmount.Validators[0].(func(float64) error)
 	// tenderprofileDescID is the schema descriptor for id field.

@@ -559,7 +559,7 @@ function TenderListItem({ tender }: { tender: Tender }) {
       onClick={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
-      <div className="relative grid grid-cols-1 gap-2 overflow-hidden rounded-lg px-6 py-4 transition-all duration-300 group-hover:scale-105 group-hover:bg-gradient-to-br group-hover:from-sky-950 group-hover:to-sky-700 md:grid-cols-3">
+      <div className="relative grid grid-cols-1 gap-2 overflow-hidden rounded-lg px-6 py-4 transition-all duration-300 md:grid-cols-3 lg:group-hover:scale-105 lg:group-hover:bg-gradient-to-br lg:group-hover:from-sky-950 lg:group-hover:to-sky-700">
         {/* Full card overlay effect */}
         <div className="pointer-events-none absolute inset-0 z-0 bg-gradient-to-br from-blue-900/30 to-cyan-900/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
 

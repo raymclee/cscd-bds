@@ -128,7 +128,7 @@ export function TenderTypeCard() {
   } satisfies ChartConfig;
 
   return (
-    <Card className="relative h-56 pb-4 text-white border-none bg-slate-900/60 backdrop-blur">
+    <Card className="relative h-56 border-none bg-slate-900/60 pb-4 text-white backdrop-blur">
       {/* 科技感装饰线条 */}
       <div className="absolute left-0 top-0 h-[2px] w-full bg-gradient-to-r from-transparent via-blue-500/50 to-transparent" />
       <div className="absolute right-0 top-0 h-full w-[2px] bg-gradient-to-b from-transparent via-cyan-500/50 to-transparent" />
@@ -136,17 +136,17 @@ export function TenderTypeCard() {
       <div className="absolute left-0 top-0 h-full w-[2px] bg-gradient-to-b from-transparent via-cyan-500/50 to-transparent" />
 
       {/* 全息扫描效果 */}
-      <div className="absolute inset-0 pointer-events-none holographic-effect" />
+      <div className="holographic-effect pointer-events-none absolute inset-0" />
 
       <CardHeader>
         <img
           src={headerSvg}
           alt="sub-head"
-          className="w-full h-8 select-none"
+          className="h-8 w-full select-none"
         />
       </CardHeader>
-      <CardContent className="h-full px-0 -mt-3 dark">
-        <AntdPie {...config} className="pb-2" />
+      <CardContent className="dark -mt-3 h-full px-0">
+        <AntdPie {...config} />
         {/* <ChartContainer
           config={chartConfig}
           className="mx-auto pb-0 [&_.recharts-pie-label-text]:fill-foreground"

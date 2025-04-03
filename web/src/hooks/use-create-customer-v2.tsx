@@ -12,28 +12,8 @@ export function useCreateCustomerV2() {
         customerInput: $customerInput
         profileInput: $profileInput
       ) @appendNode(connections: $connections, edgeTypeName: "CustomerEdge") {
+        id
         ...customerDetailFragment
-        activeProfile {
-          id
-          approvalStatus
-          name
-          createdAt
-          ownerType
-          industry
-          size
-        }
-        area {
-          id
-          code
-          name
-        }
-        tenders {
-          edges {
-            node {
-              id
-            }
-          }
-        }
       }
     }
   `);

@@ -104,6 +104,26 @@ func (tpu *TenderProfileUpdate) ClearApprovalMsgID() *TenderProfileUpdate {
 	return tpu
 }
 
+// SetApprovalDate sets the "approval_date" field.
+func (tpu *TenderProfileUpdate) SetApprovalDate(t time.Time) *TenderProfileUpdate {
+	tpu.mutation.SetApprovalDate(t)
+	return tpu
+}
+
+// SetNillableApprovalDate sets the "approval_date" field if the given value is not nil.
+func (tpu *TenderProfileUpdate) SetNillableApprovalDate(t *time.Time) *TenderProfileUpdate {
+	if t != nil {
+		tpu.SetApprovalDate(*t)
+	}
+	return tpu
+}
+
+// ClearApprovalDate clears the value of the "approval_date" field.
+func (tpu *TenderProfileUpdate) ClearApprovalDate() *TenderProfileUpdate {
+	tpu.mutation.ClearApprovalDate()
+	return tpu
+}
+
 // SetName sets the "name" field.
 func (tpu *TenderProfileUpdate) SetName(s string) *TenderProfileUpdate {
 	tpu.mutation.SetName(s)
@@ -1613,6 +1633,12 @@ func (tpu *TenderProfileUpdate) sqlSave(ctx context.Context) (n int, err error) 
 	if tpu.mutation.ApprovalMsgIDCleared() {
 		_spec.ClearField(tenderprofile.FieldApprovalMsgID, field.TypeString)
 	}
+	if value, ok := tpu.mutation.ApprovalDate(); ok {
+		_spec.SetField(tenderprofile.FieldApprovalDate, field.TypeTime, value)
+	}
+	if tpu.mutation.ApprovalDateCleared() {
+		_spec.ClearField(tenderprofile.FieldApprovalDate, field.TypeTime)
+	}
 	if value, ok := tpu.mutation.Name(); ok {
 		_spec.SetField(tenderprofile.FieldName, field.TypeString, value)
 	}
@@ -2298,6 +2324,26 @@ func (tpuo *TenderProfileUpdateOne) SetNillableApprovalMsgID(s *string) *TenderP
 // ClearApprovalMsgID clears the value of the "approval_msg_id" field.
 func (tpuo *TenderProfileUpdateOne) ClearApprovalMsgID() *TenderProfileUpdateOne {
 	tpuo.mutation.ClearApprovalMsgID()
+	return tpuo
+}
+
+// SetApprovalDate sets the "approval_date" field.
+func (tpuo *TenderProfileUpdateOne) SetApprovalDate(t time.Time) *TenderProfileUpdateOne {
+	tpuo.mutation.SetApprovalDate(t)
+	return tpuo
+}
+
+// SetNillableApprovalDate sets the "approval_date" field if the given value is not nil.
+func (tpuo *TenderProfileUpdateOne) SetNillableApprovalDate(t *time.Time) *TenderProfileUpdateOne {
+	if t != nil {
+		tpuo.SetApprovalDate(*t)
+	}
+	return tpuo
+}
+
+// ClearApprovalDate clears the value of the "approval_date" field.
+func (tpuo *TenderProfileUpdateOne) ClearApprovalDate() *TenderProfileUpdateOne {
+	tpuo.mutation.ClearApprovalDate()
 	return tpuo
 }
 
@@ -3839,6 +3885,12 @@ func (tpuo *TenderProfileUpdateOne) sqlSave(ctx context.Context) (_node *TenderP
 	}
 	if tpuo.mutation.ApprovalMsgIDCleared() {
 		_spec.ClearField(tenderprofile.FieldApprovalMsgID, field.TypeString)
+	}
+	if value, ok := tpuo.mutation.ApprovalDate(); ok {
+		_spec.SetField(tenderprofile.FieldApprovalDate, field.TypeTime, value)
+	}
+	if tpuo.mutation.ApprovalDateCleared() {
+		_spec.ClearField(tenderprofile.FieldApprovalDate, field.TypeTime)
 	}
 	if value, ok := tpuo.mutation.Name(); ok {
 		_spec.SetField(tenderprofile.FieldName, field.TypeString, value)

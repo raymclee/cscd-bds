@@ -2960,6 +2960,35 @@ type CustomerProfileWhereInput struct {
 	ApprovalStatusLT    *int  `json:"approvalStatusLT,omitempty"`
 	ApprovalStatusLTE   *int  `json:"approvalStatusLTE,omitempty"`
 
+	// "approval_msg_id" field predicates.
+	ApprovalMsgID             *string  `json:"approvalMsgID,omitempty"`
+	ApprovalMsgIDNEQ          *string  `json:"approvalMsgIDNEQ,omitempty"`
+	ApprovalMsgIDIn           []string `json:"approvalMsgIDIn,omitempty"`
+	ApprovalMsgIDNotIn        []string `json:"approvalMsgIDNotIn,omitempty"`
+	ApprovalMsgIDGT           *string  `json:"approvalMsgIDGT,omitempty"`
+	ApprovalMsgIDGTE          *string  `json:"approvalMsgIDGTE,omitempty"`
+	ApprovalMsgIDLT           *string  `json:"approvalMsgIDLT,omitempty"`
+	ApprovalMsgIDLTE          *string  `json:"approvalMsgIDLTE,omitempty"`
+	ApprovalMsgIDContains     *string  `json:"approvalMsgIDContains,omitempty"`
+	ApprovalMsgIDHasPrefix    *string  `json:"approvalMsgIDHasPrefix,omitempty"`
+	ApprovalMsgIDHasSuffix    *string  `json:"approvalMsgIDHasSuffix,omitempty"`
+	ApprovalMsgIDIsNil        bool     `json:"approvalMsgIDIsNil,omitempty"`
+	ApprovalMsgIDNotNil       bool     `json:"approvalMsgIDNotNil,omitempty"`
+	ApprovalMsgIDEqualFold    *string  `json:"approvalMsgIDEqualFold,omitempty"`
+	ApprovalMsgIDContainsFold *string  `json:"approvalMsgIDContainsFold,omitempty"`
+
+	// "approval_date" field predicates.
+	ApprovalDate       *time.Time  `json:"approvalDate,omitempty"`
+	ApprovalDateNEQ    *time.Time  `json:"approvalDateNEQ,omitempty"`
+	ApprovalDateIn     []time.Time `json:"approvalDateIn,omitempty"`
+	ApprovalDateNotIn  []time.Time `json:"approvalDateNotIn,omitempty"`
+	ApprovalDateGT     *time.Time  `json:"approvalDateGT,omitempty"`
+	ApprovalDateGTE    *time.Time  `json:"approvalDateGTE,omitempty"`
+	ApprovalDateLT     *time.Time  `json:"approvalDateLT,omitempty"`
+	ApprovalDateLTE    *time.Time  `json:"approvalDateLTE,omitempty"`
+	ApprovalDateIsNil  bool        `json:"approvalDateIsNil,omitempty"`
+	ApprovalDateNotNil bool        `json:"approvalDateNotNil,omitempty"`
+
 	// "owner_type" field predicates.
 	OwnerType       *int  `json:"ownerType,omitempty"`
 	OwnerTypeNEQ    *int  `json:"ownerTypeNEQ,omitempty"`
@@ -3352,6 +3381,81 @@ func (i *CustomerProfileWhereInput) P() (predicate.CustomerProfile, error) {
 	}
 	if i.ApprovalStatusLTE != nil {
 		predicates = append(predicates, customerprofile.ApprovalStatusLTE(*i.ApprovalStatusLTE))
+	}
+	if i.ApprovalMsgID != nil {
+		predicates = append(predicates, customerprofile.ApprovalMsgIDEQ(*i.ApprovalMsgID))
+	}
+	if i.ApprovalMsgIDNEQ != nil {
+		predicates = append(predicates, customerprofile.ApprovalMsgIDNEQ(*i.ApprovalMsgIDNEQ))
+	}
+	if len(i.ApprovalMsgIDIn) > 0 {
+		predicates = append(predicates, customerprofile.ApprovalMsgIDIn(i.ApprovalMsgIDIn...))
+	}
+	if len(i.ApprovalMsgIDNotIn) > 0 {
+		predicates = append(predicates, customerprofile.ApprovalMsgIDNotIn(i.ApprovalMsgIDNotIn...))
+	}
+	if i.ApprovalMsgIDGT != nil {
+		predicates = append(predicates, customerprofile.ApprovalMsgIDGT(*i.ApprovalMsgIDGT))
+	}
+	if i.ApprovalMsgIDGTE != nil {
+		predicates = append(predicates, customerprofile.ApprovalMsgIDGTE(*i.ApprovalMsgIDGTE))
+	}
+	if i.ApprovalMsgIDLT != nil {
+		predicates = append(predicates, customerprofile.ApprovalMsgIDLT(*i.ApprovalMsgIDLT))
+	}
+	if i.ApprovalMsgIDLTE != nil {
+		predicates = append(predicates, customerprofile.ApprovalMsgIDLTE(*i.ApprovalMsgIDLTE))
+	}
+	if i.ApprovalMsgIDContains != nil {
+		predicates = append(predicates, customerprofile.ApprovalMsgIDContains(*i.ApprovalMsgIDContains))
+	}
+	if i.ApprovalMsgIDHasPrefix != nil {
+		predicates = append(predicates, customerprofile.ApprovalMsgIDHasPrefix(*i.ApprovalMsgIDHasPrefix))
+	}
+	if i.ApprovalMsgIDHasSuffix != nil {
+		predicates = append(predicates, customerprofile.ApprovalMsgIDHasSuffix(*i.ApprovalMsgIDHasSuffix))
+	}
+	if i.ApprovalMsgIDIsNil {
+		predicates = append(predicates, customerprofile.ApprovalMsgIDIsNil())
+	}
+	if i.ApprovalMsgIDNotNil {
+		predicates = append(predicates, customerprofile.ApprovalMsgIDNotNil())
+	}
+	if i.ApprovalMsgIDEqualFold != nil {
+		predicates = append(predicates, customerprofile.ApprovalMsgIDEqualFold(*i.ApprovalMsgIDEqualFold))
+	}
+	if i.ApprovalMsgIDContainsFold != nil {
+		predicates = append(predicates, customerprofile.ApprovalMsgIDContainsFold(*i.ApprovalMsgIDContainsFold))
+	}
+	if i.ApprovalDate != nil {
+		predicates = append(predicates, customerprofile.ApprovalDateEQ(*i.ApprovalDate))
+	}
+	if i.ApprovalDateNEQ != nil {
+		predicates = append(predicates, customerprofile.ApprovalDateNEQ(*i.ApprovalDateNEQ))
+	}
+	if len(i.ApprovalDateIn) > 0 {
+		predicates = append(predicates, customerprofile.ApprovalDateIn(i.ApprovalDateIn...))
+	}
+	if len(i.ApprovalDateNotIn) > 0 {
+		predicates = append(predicates, customerprofile.ApprovalDateNotIn(i.ApprovalDateNotIn...))
+	}
+	if i.ApprovalDateGT != nil {
+		predicates = append(predicates, customerprofile.ApprovalDateGT(*i.ApprovalDateGT))
+	}
+	if i.ApprovalDateGTE != nil {
+		predicates = append(predicates, customerprofile.ApprovalDateGTE(*i.ApprovalDateGTE))
+	}
+	if i.ApprovalDateLT != nil {
+		predicates = append(predicates, customerprofile.ApprovalDateLT(*i.ApprovalDateLT))
+	}
+	if i.ApprovalDateLTE != nil {
+		predicates = append(predicates, customerprofile.ApprovalDateLTE(*i.ApprovalDateLTE))
+	}
+	if i.ApprovalDateIsNil {
+		predicates = append(predicates, customerprofile.ApprovalDateIsNil())
+	}
+	if i.ApprovalDateNotNil {
+		predicates = append(predicates, customerprofile.ApprovalDateNotNil())
 	}
 	if i.OwnerType != nil {
 		predicates = append(predicates, customerprofile.OwnerTypeEQ(*i.OwnerType))
@@ -9280,6 +9384,18 @@ type TenderWhereInput struct {
 	TenderWinAmountIsNil  bool      `json:"tenderWinAmountIsNil,omitempty"`
 	TenderWinAmountNotNil bool      `json:"tenderWinAmountNotNil,omitempty"`
 
+	// "tender_amount" field predicates.
+	TenderAmount       *float64  `json:"tenderAmount,omitempty"`
+	TenderAmountNEQ    *float64  `json:"tenderAmountNEQ,omitempty"`
+	TenderAmountIn     []float64 `json:"tenderAmountIn,omitempty"`
+	TenderAmountNotIn  []float64 `json:"tenderAmountNotIn,omitempty"`
+	TenderAmountGT     *float64  `json:"tenderAmountGT,omitempty"`
+	TenderAmountGTE    *float64  `json:"tenderAmountGTE,omitempty"`
+	TenderAmountLT     *float64  `json:"tenderAmountLT,omitempty"`
+	TenderAmountLTE    *float64  `json:"tenderAmountLTE,omitempty"`
+	TenderAmountIsNil  bool      `json:"tenderAmountIsNil,omitempty"`
+	TenderAmountNotNil bool      `json:"tenderAmountNotNil,omitempty"`
+
 	// "last_tender_amount" field predicates.
 	LastTenderAmount       *float64  `json:"lastTenderAmount,omitempty"`
 	LastTenderAmountNEQ    *float64  `json:"lastTenderAmountNEQ,omitempty"`
@@ -11667,6 +11783,36 @@ func (i *TenderWhereInput) P() (predicate.Tender, error) {
 	if i.TenderWinAmountNotNil {
 		predicates = append(predicates, tender.TenderWinAmountNotNil())
 	}
+	if i.TenderAmount != nil {
+		predicates = append(predicates, tender.TenderAmountEQ(*i.TenderAmount))
+	}
+	if i.TenderAmountNEQ != nil {
+		predicates = append(predicates, tender.TenderAmountNEQ(*i.TenderAmountNEQ))
+	}
+	if len(i.TenderAmountIn) > 0 {
+		predicates = append(predicates, tender.TenderAmountIn(i.TenderAmountIn...))
+	}
+	if len(i.TenderAmountNotIn) > 0 {
+		predicates = append(predicates, tender.TenderAmountNotIn(i.TenderAmountNotIn...))
+	}
+	if i.TenderAmountGT != nil {
+		predicates = append(predicates, tender.TenderAmountGT(*i.TenderAmountGT))
+	}
+	if i.TenderAmountGTE != nil {
+		predicates = append(predicates, tender.TenderAmountGTE(*i.TenderAmountGTE))
+	}
+	if i.TenderAmountLT != nil {
+		predicates = append(predicates, tender.TenderAmountLT(*i.TenderAmountLT))
+	}
+	if i.TenderAmountLTE != nil {
+		predicates = append(predicates, tender.TenderAmountLTE(*i.TenderAmountLTE))
+	}
+	if i.TenderAmountIsNil {
+		predicates = append(predicates, tender.TenderAmountIsNil())
+	}
+	if i.TenderAmountNotNil {
+		predicates = append(predicates, tender.TenderAmountNotNil())
+	}
 	if i.LastTenderAmount != nil {
 		predicates = append(predicates, tender.LastTenderAmountEQ(*i.LastTenderAmount))
 	}
@@ -12866,6 +13012,18 @@ type TenderProfileWhereInput struct {
 	ApprovalMsgIDEqualFold    *string  `json:"approvalMsgIDEqualFold,omitempty"`
 	ApprovalMsgIDContainsFold *string  `json:"approvalMsgIDContainsFold,omitempty"`
 
+	// "approval_date" field predicates.
+	ApprovalDate       *time.Time  `json:"approvalDate,omitempty"`
+	ApprovalDateNEQ    *time.Time  `json:"approvalDateNEQ,omitempty"`
+	ApprovalDateIn     []time.Time `json:"approvalDateIn,omitempty"`
+	ApprovalDateNotIn  []time.Time `json:"approvalDateNotIn,omitempty"`
+	ApprovalDateGT     *time.Time  `json:"approvalDateGT,omitempty"`
+	ApprovalDateGTE    *time.Time  `json:"approvalDateGTE,omitempty"`
+	ApprovalDateLT     *time.Time  `json:"approvalDateLT,omitempty"`
+	ApprovalDateLTE    *time.Time  `json:"approvalDateLTE,omitempty"`
+	ApprovalDateIsNil  bool        `json:"approvalDateIsNil,omitempty"`
+	ApprovalDateNotNil bool        `json:"approvalDateNotNil,omitempty"`
+
 	// "name" field predicates.
 	Name             *string  `json:"name,omitempty"`
 	NameNEQ          *string  `json:"nameNEQ,omitempty"`
@@ -14007,6 +14165,36 @@ func (i *TenderProfileWhereInput) P() (predicate.TenderProfile, error) {
 	}
 	if i.ApprovalMsgIDContainsFold != nil {
 		predicates = append(predicates, tenderprofile.ApprovalMsgIDContainsFold(*i.ApprovalMsgIDContainsFold))
+	}
+	if i.ApprovalDate != nil {
+		predicates = append(predicates, tenderprofile.ApprovalDateEQ(*i.ApprovalDate))
+	}
+	if i.ApprovalDateNEQ != nil {
+		predicates = append(predicates, tenderprofile.ApprovalDateNEQ(*i.ApprovalDateNEQ))
+	}
+	if len(i.ApprovalDateIn) > 0 {
+		predicates = append(predicates, tenderprofile.ApprovalDateIn(i.ApprovalDateIn...))
+	}
+	if len(i.ApprovalDateNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.ApprovalDateNotIn(i.ApprovalDateNotIn...))
+	}
+	if i.ApprovalDateGT != nil {
+		predicates = append(predicates, tenderprofile.ApprovalDateGT(*i.ApprovalDateGT))
+	}
+	if i.ApprovalDateGTE != nil {
+		predicates = append(predicates, tenderprofile.ApprovalDateGTE(*i.ApprovalDateGTE))
+	}
+	if i.ApprovalDateLT != nil {
+		predicates = append(predicates, tenderprofile.ApprovalDateLT(*i.ApprovalDateLT))
+	}
+	if i.ApprovalDateLTE != nil {
+		predicates = append(predicates, tenderprofile.ApprovalDateLTE(*i.ApprovalDateLTE))
+	}
+	if i.ApprovalDateIsNil {
+		predicates = append(predicates, tenderprofile.ApprovalDateIsNil())
+	}
+	if i.ApprovalDateNotNil {
+		predicates = append(predicates, tenderprofile.ApprovalDateNotNil())
 	}
 	if i.Name != nil {
 		predicates = append(predicates, tenderprofile.NameEQ(*i.Name))

@@ -203,6 +203,8 @@ type ComplexityRoot struct {
 	}
 
 	CustomerProfile struct {
+		ApprovalDate          func(childComplexity int) int
+		ApprovalMsgID         func(childComplexity int) int
 		ApprovalStatus        func(childComplexity int) int
 		Approver              func(childComplexity int) int
 		ApproverID            func(childComplexity int) int
@@ -611,6 +613,7 @@ type ComplexityRoot struct {
 		SizeAndValueRating                   func(childComplexity int) int
 		SizeAndValueRatingOverview           func(childComplexity int) int
 		Status                               func(childComplexity int) int
+		TenderAmount                         func(childComplexity int) int
 		TenderClosingDate                    func(childComplexity int) int
 		TenderCode                           func(childComplexity int) int
 		TenderDate                           func(childComplexity int) int
@@ -662,6 +665,7 @@ type ComplexityRoot struct {
 
 	TenderProfile struct {
 		Address                              func(childComplexity int) int
+		ApprovalDate                         func(childComplexity int) int
 		ApprovalMsgID                        func(childComplexity int) int
 		ApprovalStatus                       func(childComplexity int) int
 		Approver                             func(childComplexity int) int
@@ -1597,6 +1601,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.CustomerEdge.Node(childComplexity), true
+
+	case "CustomerProfile.approvalDate":
+		if e.complexity.CustomerProfile.ApprovalDate == nil {
+			break
+		}
+
+		return e.complexity.CustomerProfile.ApprovalDate(childComplexity), true
+
+	case "CustomerProfile.approvalMsgID":
+		if e.complexity.CustomerProfile.ApprovalMsgID == nil {
+			break
+		}
+
+		return e.complexity.CustomerProfile.ApprovalMsgID(childComplexity), true
 
 	case "CustomerProfile.approvalStatus":
 		if e.complexity.CustomerProfile.ApprovalStatus == nil {
@@ -4113,6 +4131,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Tender.Status(childComplexity), true
 
+	case "Tender.tenderAmount":
+		if e.complexity.Tender.TenderAmount == nil {
+			break
+		}
+
+		return e.complexity.Tender.TenderAmount(childComplexity), true
+
 	case "Tender.tenderClosingDate":
 		if e.complexity.Tender.TenderClosingDate == nil {
 			break
@@ -4348,6 +4373,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.TenderProfile.Address(childComplexity), true
+
+	case "TenderProfile.approvalDate":
+		if e.complexity.TenderProfile.ApprovalDate == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.ApprovalDate(childComplexity), true
 
 	case "TenderProfile.approvalMsgID":
 		if e.complexity.TenderProfile.ApprovalMsgID == nil {
@@ -6425,6 +6457,14 @@ input CreateCustomerProfileInput {
   1 待審核 2 已通過 3 已拒絕 4 已撤回
   """
   approvalStatus: Int
+  """
+  審核飛書訊息ID
+  """
+  approvalMsgID: String
+  """
+  審核日期
+  """
+  approvalDate: Time
   ownerType: Int
   industry: Int
   size: Int
@@ -6584,6 +6624,10 @@ input CreateTenderInput {
   """
   tenderWinAmount: Float
   """
+  投標金額
+  """
+  tenderAmount: Float
+  """
   最後一次投標金額，只限港澳
   """
   lastTenderAmount: Float
@@ -6618,6 +6662,10 @@ input CreateTenderProfileInput {
   審核飛書訊息ID
   """
   approvalMsgID: String
+  """
+  審核日期
+  """
+  approvalDate: Time
   name: String
   estimatedAmount: Float
   tenderDate: Time
@@ -6936,6 +6984,14 @@ type CustomerProfile implements Node {
   1 待審核 2 已通過 3 已拒絕 4 已撤回
   """
   approvalStatus: Int!
+  """
+  審核飛書訊息ID
+  """
+  approvalMsgID: String
+  """
+  審核日期
+  """
+  approvalDate: Time
   ownerType: Int
   industry: Int
   size: Int
@@ -7072,6 +7128,37 @@ input CustomerProfileWhereInput {
   approvalStatusGTE: Int
   approvalStatusLT: Int
   approvalStatusLTE: Int
+  """
+  approval_msg_id field predicates
+  """
+  approvalMsgID: String
+  approvalMsgIDNEQ: String
+  approvalMsgIDIn: [String!]
+  approvalMsgIDNotIn: [String!]
+  approvalMsgIDGT: String
+  approvalMsgIDGTE: String
+  approvalMsgIDLT: String
+  approvalMsgIDLTE: String
+  approvalMsgIDContains: String
+  approvalMsgIDHasPrefix: String
+  approvalMsgIDHasSuffix: String
+  approvalMsgIDIsNil: Boolean
+  approvalMsgIDNotNil: Boolean
+  approvalMsgIDEqualFold: String
+  approvalMsgIDContainsFold: String
+  """
+  approval_date field predicates
+  """
+  approvalDate: Time
+  approvalDateNEQ: Time
+  approvalDateIn: [Time!]
+  approvalDateNotIn: [Time!]
+  approvalDateGT: Time
+  approvalDateGTE: Time
+  approvalDateLT: Time
+  approvalDateLTE: Time
+  approvalDateIsNil: Boolean
+  approvalDateNotNil: Boolean
   """
   owner_type field predicates
   """
@@ -10269,6 +10356,10 @@ type Tender implements Node {
   """
   tenderWinAmount: Float
   """
+  投標金額
+  """
+  tenderAmount: Float
+  """
   最後一次投標金額，只限港澳
   """
   lastTenderAmount: Float
@@ -10586,6 +10677,10 @@ type TenderProfile implements Node {
   審核飛書訊息ID
   """
   approvalMsgID: String
+  """
+  審核日期
+  """
+  approvalDate: Time
   name: String
   estimatedAmount: Float
   tenderDate: Time
@@ -10814,6 +10909,19 @@ input TenderProfileWhereInput {
   approvalMsgIDNotNil: Boolean
   approvalMsgIDEqualFold: String
   approvalMsgIDContainsFold: String
+  """
+  approval_date field predicates
+  """
+  approvalDate: Time
+  approvalDateNEQ: Time
+  approvalDateIn: [Time!]
+  approvalDateNotIn: [Time!]
+  approvalDateGT: Time
+  approvalDateGTE: Time
+  approvalDateLT: Time
+  approvalDateLTE: Time
+  approvalDateIsNil: Boolean
+  approvalDateNotNil: Boolean
   """
   name field predicates
   """
@@ -12656,6 +12764,19 @@ input TenderWhereInput {
   tenderWinAmountIsNil: Boolean
   tenderWinAmountNotNil: Boolean
   """
+  tender_amount field predicates
+  """
+  tenderAmount: Float
+  tenderAmountNEQ: Float
+  tenderAmountIn: [Float!]
+  tenderAmountNotIn: [Float!]
+  tenderAmountGT: Float
+  tenderAmountGTE: Float
+  tenderAmountLT: Float
+  tenderAmountLTE: Float
+  tenderAmountIsNil: Boolean
+  tenderAmountNotNil: Boolean
+  """
   last_tender_amount field predicates
   """
   lastTenderAmount: Float
@@ -13374,6 +13495,11 @@ input UpdateTenderInput {
   """
   tenderWinAmount: Float
   clearTenderWinAmount: Boolean
+  """
+  投標金額
+  """
+  tenderAmount: Float
+  clearTenderAmount: Boolean
   """
   最後一次投標金額，只限港澳
   """
@@ -14277,7 +14403,9 @@ input WinTenderInput {
 
 input LoseTenderInput {
   competitors: [WinLostTenderCompetitorInput!]!
-  tenderWinAmount: Float!
+  winCompetitorId: ID!
+  winAmount: Float!
+  tenderAmount: Float!
 }
 
 input WinLostTenderCompetitorInput {

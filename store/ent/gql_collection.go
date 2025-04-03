@@ -1781,6 +1781,16 @@ func (cp *CustomerProfileQuery) collectField(ctx context.Context, oneNode bool, 
 				selectedFields = append(selectedFields, customerprofile.FieldApprovalStatus)
 				fieldSeen[customerprofile.FieldApprovalStatus] = struct{}{}
 			}
+		case "approvalMsgID":
+			if _, ok := fieldSeen[customerprofile.FieldApprovalMsgID]; !ok {
+				selectedFields = append(selectedFields, customerprofile.FieldApprovalMsgID)
+				fieldSeen[customerprofile.FieldApprovalMsgID] = struct{}{}
+			}
+		case "approvalDate":
+			if _, ok := fieldSeen[customerprofile.FieldApprovalDate]; !ok {
+				selectedFields = append(selectedFields, customerprofile.FieldApprovalDate)
+				fieldSeen[customerprofile.FieldApprovalDate] = struct{}{}
+			}
 		case "ownerType":
 			if _, ok := fieldSeen[customerprofile.FieldOwnerType]; !ok {
 				selectedFields = append(selectedFields, customerprofile.FieldOwnerType)
@@ -4163,6 +4173,11 @@ func (t *TenderQuery) collectField(ctx context.Context, oneNode bool, opCtx *gra
 				selectedFields = append(selectedFields, tender.FieldTenderWinAmount)
 				fieldSeen[tender.FieldTenderWinAmount] = struct{}{}
 			}
+		case "tenderAmount":
+			if _, ok := fieldSeen[tender.FieldTenderAmount]; !ok {
+				selectedFields = append(selectedFields, tender.FieldTenderAmount)
+				fieldSeen[tender.FieldTenderAmount] = struct{}{}
+			}
 		case "lastTenderAmount":
 			if _, ok := fieldSeen[tender.FieldLastTenderAmount]; !ok {
 				selectedFields = append(selectedFields, tender.FieldLastTenderAmount)
@@ -4602,6 +4617,11 @@ func (tp *TenderProfileQuery) collectField(ctx context.Context, oneNode bool, op
 			if _, ok := fieldSeen[tenderprofile.FieldApprovalMsgID]; !ok {
 				selectedFields = append(selectedFields, tenderprofile.FieldApprovalMsgID)
 				fieldSeen[tenderprofile.FieldApprovalMsgID] = struct{}{}
+			}
+		case "approvalDate":
+			if _, ok := fieldSeen[tenderprofile.FieldApprovalDate]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldApprovalDate)
+				fieldSeen[tenderprofile.FieldApprovalDate] = struct{}{}
 			}
 		case "name":
 			if _, ok := fieldSeen[tenderprofile.FieldName]; !ok {

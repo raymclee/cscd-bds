@@ -679,6 +679,8 @@ type CreateCustomerProfileInput struct {
 	UpdatedAt             *time.Time
 	Name                  string
 	ApprovalStatus        *int
+	ApprovalMsgID         *string
+	ApprovalDate          *time.Time
 	OwnerType             *int
 	Industry              *int
 	Size                  *int
@@ -703,6 +705,12 @@ func (i *CreateCustomerProfileInput) Mutate(m *CustomerProfileMutation) {
 	m.SetName(i.Name)
 	if v := i.ApprovalStatus; v != nil {
 		m.SetApprovalStatus(*v)
+	}
+	if v := i.ApprovalMsgID; v != nil {
+		m.SetApprovalMsgID(*v)
+	}
+	if v := i.ApprovalDate; v != nil {
+		m.SetApprovalDate(*v)
 	}
 	if v := i.OwnerType; v != nil {
 		m.SetOwnerType(*v)
@@ -1354,6 +1362,7 @@ type CreateTenderInput struct {
 	ConstructionArea                     *string
 	TenderWinDate                        *time.Time
 	TenderWinAmount                      *float64
+	TenderAmount                         *float64
 	LastTenderAmount                     *float64
 	AreaID                               xid.ID
 	ProfileIDs                           []xid.ID
@@ -1538,6 +1547,9 @@ func (i *CreateTenderInput) Mutate(m *TenderMutation) {
 	if v := i.TenderWinAmount; v != nil {
 		m.SetTenderWinAmount(*v)
 	}
+	if v := i.TenderAmount; v != nil {
+		m.SetTenderAmount(*v)
+	}
 	if v := i.LastTenderAmount; v != nil {
 		m.SetLastTenderAmount(*v)
 	}
@@ -1697,6 +1709,8 @@ type UpdateTenderInput struct {
 	TenderWinDate                             *time.Time
 	ClearTenderWinAmount                      bool
 	TenderWinAmount                           *float64
+	ClearTenderAmount                         bool
+	TenderAmount                              *float64
 	ClearLastTenderAmount                     bool
 	LastTenderAmount                          *float64
 	AreaID                                    *xid.ID
@@ -2052,6 +2066,12 @@ func (i *UpdateTenderInput) Mutate(m *TenderMutation) {
 	if v := i.TenderWinAmount; v != nil {
 		m.SetTenderWinAmount(*v)
 	}
+	if i.ClearTenderAmount {
+		m.ClearTenderAmount()
+	}
+	if v := i.TenderAmount; v != nil {
+		m.SetTenderAmount(*v)
+	}
 	if i.ClearLastTenderAmount {
 		m.ClearLastTenderAmount()
 	}
@@ -2244,6 +2264,7 @@ type CreateTenderProfileInput struct {
 	Status                               *int
 	ApprovalStatus                       *int
 	ApprovalMsgID                        *string
+	ApprovalDate                         *time.Time
 	Name                                 *string
 	EstimatedAmount                      *float64
 	TenderDate                           *time.Time
@@ -2323,6 +2344,9 @@ func (i *CreateTenderProfileInput) Mutate(m *TenderProfileMutation) {
 	}
 	if v := i.ApprovalMsgID; v != nil {
 		m.SetApprovalMsgID(*v)
+	}
+	if v := i.ApprovalDate; v != nil {
+		m.SetApprovalDate(*v)
 	}
 	if v := i.Name; v != nil {
 		m.SetName(*v)

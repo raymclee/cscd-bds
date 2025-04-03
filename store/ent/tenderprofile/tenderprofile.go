@@ -25,6 +25,8 @@ const (
 	FieldApprovalStatus = "approval_status"
 	// FieldApprovalMsgID holds the string denoting the approval_msg_id field in the database.
 	FieldApprovalMsgID = "approval_msg_id"
+	// FieldApprovalDate holds the string denoting the approval_date field in the database.
+	FieldApprovalDate = "approval_date"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
 	// FieldEstimatedAmount holds the string denoting the estimated_amount field in the database.
@@ -233,6 +235,7 @@ var Columns = []string{
 	FieldStatus,
 	FieldApprovalStatus,
 	FieldApprovalMsgID,
+	FieldApprovalDate,
 	FieldName,
 	FieldEstimatedAmount,
 	FieldTenderDate,
@@ -379,6 +382,11 @@ func ByApprovalStatus(opts ...sql.OrderTermOption) OrderOption {
 // ByApprovalMsgID orders the results by the approval_msg_id field.
 func ByApprovalMsgID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldApprovalMsgID, opts...).ToFunc()
+}
+
+// ByApprovalDate orders the results by the approval_date field.
+func ByApprovalDate(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldApprovalDate, opts...).ToFunc()
 }
 
 // ByName orders the results by the name field.

@@ -94,16 +94,10 @@ function RouteComponent() {
   const { session } = Route.useRouteContext();
   const area = searchParams.area;
 
-  console.log({ data });
-
   const areas = data?.node?.areas?.edges?.map((a) => ({
     label: a?.node?.name ?? "",
     value: a?.node?.code ?? "",
   }));
-
-  const isGAOrHW = data?.node?.areas?.edges?.every(
-    (a) => a?.node?.code === "GA" || a?.node?.code === "HW",
-  );
 
   const dataSource =
     data.node?.areas?.edges?.flatMap((a) =>

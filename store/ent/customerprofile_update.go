@@ -72,6 +72,46 @@ func (cpu *CustomerProfileUpdate) AddApprovalStatus(i int) *CustomerProfileUpdat
 	return cpu
 }
 
+// SetApprovalMsgID sets the "approval_msg_id" field.
+func (cpu *CustomerProfileUpdate) SetApprovalMsgID(s string) *CustomerProfileUpdate {
+	cpu.mutation.SetApprovalMsgID(s)
+	return cpu
+}
+
+// SetNillableApprovalMsgID sets the "approval_msg_id" field if the given value is not nil.
+func (cpu *CustomerProfileUpdate) SetNillableApprovalMsgID(s *string) *CustomerProfileUpdate {
+	if s != nil {
+		cpu.SetApprovalMsgID(*s)
+	}
+	return cpu
+}
+
+// ClearApprovalMsgID clears the value of the "approval_msg_id" field.
+func (cpu *CustomerProfileUpdate) ClearApprovalMsgID() *CustomerProfileUpdate {
+	cpu.mutation.ClearApprovalMsgID()
+	return cpu
+}
+
+// SetApprovalDate sets the "approval_date" field.
+func (cpu *CustomerProfileUpdate) SetApprovalDate(t time.Time) *CustomerProfileUpdate {
+	cpu.mutation.SetApprovalDate(t)
+	return cpu
+}
+
+// SetNillableApprovalDate sets the "approval_date" field if the given value is not nil.
+func (cpu *CustomerProfileUpdate) SetNillableApprovalDate(t *time.Time) *CustomerProfileUpdate {
+	if t != nil {
+		cpu.SetApprovalDate(*t)
+	}
+	return cpu
+}
+
+// ClearApprovalDate clears the value of the "approval_date" field.
+func (cpu *CustomerProfileUpdate) ClearApprovalDate() *CustomerProfileUpdate {
+	cpu.mutation.ClearApprovalDate()
+	return cpu
+}
+
 // SetOwnerType sets the "owner_type" field.
 func (cpu *CustomerProfileUpdate) SetOwnerType(i int) *CustomerProfileUpdate {
 	cpu.mutation.ResetOwnerType()
@@ -434,6 +474,18 @@ func (cpu *CustomerProfileUpdate) sqlSave(ctx context.Context) (n int, err error
 	if value, ok := cpu.mutation.AddedApprovalStatus(); ok {
 		_spec.AddField(customerprofile.FieldApprovalStatus, field.TypeInt, value)
 	}
+	if value, ok := cpu.mutation.ApprovalMsgID(); ok {
+		_spec.SetField(customerprofile.FieldApprovalMsgID, field.TypeString, value)
+	}
+	if cpu.mutation.ApprovalMsgIDCleared() {
+		_spec.ClearField(customerprofile.FieldApprovalMsgID, field.TypeString)
+	}
+	if value, ok := cpu.mutation.ApprovalDate(); ok {
+		_spec.SetField(customerprofile.FieldApprovalDate, field.TypeTime, value)
+	}
+	if cpu.mutation.ApprovalDateCleared() {
+		_spec.ClearField(customerprofile.FieldApprovalDate, field.TypeTime)
+	}
 	if value, ok := cpu.mutation.OwnerType(); ok {
 		_spec.SetField(customerprofile.FieldOwnerType, field.TypeInt, value)
 	}
@@ -659,6 +711,46 @@ func (cpuo *CustomerProfileUpdateOne) SetNillableApprovalStatus(i *int) *Custome
 // AddApprovalStatus adds i to the "approval_status" field.
 func (cpuo *CustomerProfileUpdateOne) AddApprovalStatus(i int) *CustomerProfileUpdateOne {
 	cpuo.mutation.AddApprovalStatus(i)
+	return cpuo
+}
+
+// SetApprovalMsgID sets the "approval_msg_id" field.
+func (cpuo *CustomerProfileUpdateOne) SetApprovalMsgID(s string) *CustomerProfileUpdateOne {
+	cpuo.mutation.SetApprovalMsgID(s)
+	return cpuo
+}
+
+// SetNillableApprovalMsgID sets the "approval_msg_id" field if the given value is not nil.
+func (cpuo *CustomerProfileUpdateOne) SetNillableApprovalMsgID(s *string) *CustomerProfileUpdateOne {
+	if s != nil {
+		cpuo.SetApprovalMsgID(*s)
+	}
+	return cpuo
+}
+
+// ClearApprovalMsgID clears the value of the "approval_msg_id" field.
+func (cpuo *CustomerProfileUpdateOne) ClearApprovalMsgID() *CustomerProfileUpdateOne {
+	cpuo.mutation.ClearApprovalMsgID()
+	return cpuo
+}
+
+// SetApprovalDate sets the "approval_date" field.
+func (cpuo *CustomerProfileUpdateOne) SetApprovalDate(t time.Time) *CustomerProfileUpdateOne {
+	cpuo.mutation.SetApprovalDate(t)
+	return cpuo
+}
+
+// SetNillableApprovalDate sets the "approval_date" field if the given value is not nil.
+func (cpuo *CustomerProfileUpdateOne) SetNillableApprovalDate(t *time.Time) *CustomerProfileUpdateOne {
+	if t != nil {
+		cpuo.SetApprovalDate(*t)
+	}
+	return cpuo
+}
+
+// ClearApprovalDate clears the value of the "approval_date" field.
+func (cpuo *CustomerProfileUpdateOne) ClearApprovalDate() *CustomerProfileUpdateOne {
+	cpuo.mutation.ClearApprovalDate()
 	return cpuo
 }
 
@@ -1053,6 +1145,18 @@ func (cpuo *CustomerProfileUpdateOne) sqlSave(ctx context.Context) (_node *Custo
 	}
 	if value, ok := cpuo.mutation.AddedApprovalStatus(); ok {
 		_spec.AddField(customerprofile.FieldApprovalStatus, field.TypeInt, value)
+	}
+	if value, ok := cpuo.mutation.ApprovalMsgID(); ok {
+		_spec.SetField(customerprofile.FieldApprovalMsgID, field.TypeString, value)
+	}
+	if cpuo.mutation.ApprovalMsgIDCleared() {
+		_spec.ClearField(customerprofile.FieldApprovalMsgID, field.TypeString)
+	}
+	if value, ok := cpuo.mutation.ApprovalDate(); ok {
+		_spec.SetField(customerprofile.FieldApprovalDate, field.TypeTime, value)
+	}
+	if cpuo.mutation.ApprovalDateCleared() {
+		_spec.ClearField(customerprofile.FieldApprovalDate, field.TypeTime)
 	}
 	if value, ok := cpuo.mutation.OwnerType(); ok {
 		_spec.SetField(customerprofile.FieldOwnerType, field.TypeInt, value)

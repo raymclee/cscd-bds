@@ -35,6 +35,7 @@ func main() {
 
 				q := s.TenderProfile.Create().
 					SetApprovalStatus(2).
+					SetApprovalDate(t.CreatedAt).
 					SetStatus(t.Status).
 					SetTenderID(t.ID).
 					SetCreatedAt(t.CreatedAt).
@@ -168,6 +169,7 @@ func main() {
 				SetNillableContactPersonPhone(c.ContactPersonPhone).
 				SetNillableContactPersonEmail(c.ContactPersonEmail).
 				SetApprovalStatus(2).
+				SetApprovalDate(c.CreatedAt).
 				SetNillableSalesID(c.SalesID).
 				Save(ctx)
 			if err != nil {

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<64b99ffa10ec240d043fc5853c5e409f>>
+ * @generated SignedSource<<8442516d78e6f5f944e87055f47cb662>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -52,6 +52,8 @@ export type UpdateCustomerInput = {
   updatedByID?: string | null | undefined;
 };
 export type CreateCustomerProfileInput = {
+  approvalDate?: any | null | undefined;
+  approvalMsgID?: string | null | undefined;
   approvalStatus?: number | null | undefined;
   approverID?: string | null | undefined;
   contactPerson?: string | null | undefined;
@@ -75,6 +77,7 @@ export type useUpdateCustomerV2Mutation$variables = {
 };
 export type useUpdateCustomerV2Mutation$data = {
   readonly updateCustomerV2: {
+    readonly id: string;
     readonly " $fragmentSpreads": FragmentRefs<"customerDetailFragment">;
   };
 };
@@ -269,6 +272,7 @@ return {
         "name": "updateCustomerV2",
         "plural": false,
         "selections": [
+          (v4/*: any*/),
           {
             "args": null,
             "kind": "FragmentSpread",
@@ -514,16 +518,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "03a37823cbf5c36cf31d287c0b124a0f",
+    "cacheID": "c8bb55f2bf72a877ab40cbb0eb7c30a4",
     "id": null,
     "metadata": {},
     "name": "useUpdateCustomerV2Mutation",
     "operationKind": "mutation",
-    "text": "mutation useUpdateCustomerV2Mutation(\n  $id: ID!\n  $customerInput: UpdateCustomerInput!\n  $profileInput: CreateCustomerProfileInput!\n) {\n  updateCustomerV2(id: $id, customerInput: $customerInput, profileInput: $profileInput) {\n    ...customerDetailFragment\n    id\n  }\n}\n\nfragment customerDetailFragment on Customer {\n  id\n  createdAt\n  createdBy {\n    id\n    name\n  }\n  area {\n    id\n    name\n    code\n  }\n  activeProfile {\n    id\n    name\n    createdAt\n    createdBy {\n      name\n      id\n    }\n    updatedAt\n    ownerType\n    industry\n    size\n    approvalStatus\n    contactPerson\n    contactPersonPosition\n    contactPersonPhone\n    contactPersonEmail\n    sales {\n      id\n      name\n    }\n    approver {\n      id\n      name\n    }\n  }\n  pendingProfile {\n    id\n    name\n    createdAt\n    createdBy {\n      name\n      id\n    }\n    updatedAt\n    ownerType\n    industry\n    size\n    approvalStatus\n    contactPerson\n    contactPersonPosition\n    contactPersonPhone\n    contactPersonEmail\n    sales {\n      id\n      name\n    }\n  }\n  profiles(orderBy: [{field: CREATED_AT, direction: DESC}]) {\n    edges {\n      node {\n        id\n        name\n        createdAt\n        createdBy {\n          name\n          id\n        }\n        updatedAt\n        ownerType\n        industry\n        size\n        approvalStatus\n        contactPerson\n        contactPersonPosition\n        contactPersonPhone\n        contactPersonEmail\n        sales {\n          id\n          name\n        }\n      }\n    }\n  }\n  lastVisitRecord: visitRecords(last: 1) {\n    edges {\n      node {\n        date\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n"
+    "text": "mutation useUpdateCustomerV2Mutation(\n  $id: ID!\n  $customerInput: UpdateCustomerInput!\n  $profileInput: CreateCustomerProfileInput!\n) {\n  updateCustomerV2(id: $id, customerInput: $customerInput, profileInput: $profileInput) {\n    id\n    ...customerDetailFragment\n  }\n}\n\nfragment customerDetailFragment on Customer {\n  id\n  createdAt\n  createdBy {\n    id\n    name\n  }\n  area {\n    id\n    name\n    code\n  }\n  activeProfile {\n    id\n    name\n    createdAt\n    createdBy {\n      name\n      id\n    }\n    updatedAt\n    ownerType\n    industry\n    size\n    approvalStatus\n    contactPerson\n    contactPersonPosition\n    contactPersonPhone\n    contactPersonEmail\n    sales {\n      id\n      name\n    }\n    approver {\n      id\n      name\n    }\n  }\n  pendingProfile {\n    id\n    name\n    createdAt\n    createdBy {\n      name\n      id\n    }\n    updatedAt\n    ownerType\n    industry\n    size\n    approvalStatus\n    contactPerson\n    contactPersonPosition\n    contactPersonPhone\n    contactPersonEmail\n    sales {\n      id\n      name\n    }\n  }\n  profiles(orderBy: [{field: CREATED_AT, direction: DESC}]) {\n    edges {\n      node {\n        id\n        name\n        createdAt\n        createdBy {\n          name\n          id\n        }\n        updatedAt\n        ownerType\n        industry\n        size\n        approvalStatus\n        contactPerson\n        contactPersonPosition\n        contactPersonPhone\n        contactPersonEmail\n        sales {\n          id\n          name\n        }\n      }\n    }\n  }\n  lastVisitRecord: visitRecords(last: 1) {\n    edges {\n      node {\n        date\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "8217939bbfbbc8f9c66219fef781a5c9";
+(node as any).hash = "db08be8ac2479c83a6e013f185291599";
 
 export default node;

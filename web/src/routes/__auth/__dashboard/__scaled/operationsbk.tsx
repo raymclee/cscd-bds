@@ -16,7 +16,7 @@ export const Route = createFileRoute(
   validateSearch: operationSearchSchema,
   loader({ context: { RelayEnvironment, session } }) {
     return loadQuery<operationsbkPageQuery>(RelayEnvironment, node, {
-      userId: session.userId,
+      userId: session?.userId,
     });
   },
 });

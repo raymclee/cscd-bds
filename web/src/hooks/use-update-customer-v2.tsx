@@ -13,6 +13,7 @@ export function useUpdateCustomerV2() {
         customerInput: $customerInput
         profileInput: $profileInput
       ) {
+        id
         ...customerDetailFragment
       }
     }

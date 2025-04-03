@@ -3175,6 +3175,8 @@ func (ec *executionContext) fieldContext_Mutation_createTender(ctx context.Conte
 				return ec.fieldContext_Tender_tenderWinDate(ctx, field)
 			case "tenderWinAmount":
 				return ec.fieldContext_Tender_tenderWinAmount(ctx, field)
+			case "tenderAmount":
+				return ec.fieldContext_Tender_tenderAmount(ctx, field)
 			case "lastTenderAmount":
 				return ec.fieldContext_Tender_lastTenderAmount(ctx, field)
 			case "areaID":
@@ -3402,6 +3404,8 @@ func (ec *executionContext) fieldContext_Mutation_updateTender(ctx context.Conte
 				return ec.fieldContext_Tender_tenderWinDate(ctx, field)
 			case "tenderWinAmount":
 				return ec.fieldContext_Tender_tenderWinAmount(ctx, field)
+			case "tenderAmount":
+				return ec.fieldContext_Tender_tenderAmount(ctx, field)
 			case "lastTenderAmount":
 				return ec.fieldContext_Tender_lastTenderAmount(ctx, field)
 			case "areaID":
@@ -3629,6 +3633,8 @@ func (ec *executionContext) fieldContext_Mutation_createTenderV2(ctx context.Con
 				return ec.fieldContext_Tender_tenderWinDate(ctx, field)
 			case "tenderWinAmount":
 				return ec.fieldContext_Tender_tenderWinAmount(ctx, field)
+			case "tenderAmount":
+				return ec.fieldContext_Tender_tenderAmount(ctx, field)
 			case "lastTenderAmount":
 				return ec.fieldContext_Tender_lastTenderAmount(ctx, field)
 			case "areaID":
@@ -3856,6 +3862,8 @@ func (ec *executionContext) fieldContext_Mutation_updateTenderV2(ctx context.Con
 				return ec.fieldContext_Tender_tenderWinDate(ctx, field)
 			case "tenderWinAmount":
 				return ec.fieldContext_Tender_tenderWinAmount(ctx, field)
+			case "tenderAmount":
+				return ec.fieldContext_Tender_tenderAmount(ctx, field)
 			case "lastTenderAmount":
 				return ec.fieldContext_Tender_lastTenderAmount(ctx, field)
 			case "areaID":
@@ -4083,6 +4091,8 @@ func (ec *executionContext) fieldContext_Mutation_voidTender(ctx context.Context
 				return ec.fieldContext_Tender_tenderWinDate(ctx, field)
 			case "tenderWinAmount":
 				return ec.fieldContext_Tender_tenderWinAmount(ctx, field)
+			case "tenderAmount":
+				return ec.fieldContext_Tender_tenderAmount(ctx, field)
 			case "lastTenderAmount":
 				return ec.fieldContext_Tender_lastTenderAmount(ctx, field)
 			case "areaID":
@@ -4310,6 +4320,8 @@ func (ec *executionContext) fieldContext_Mutation_winTender(ctx context.Context,
 				return ec.fieldContext_Tender_tenderWinDate(ctx, field)
 			case "tenderWinAmount":
 				return ec.fieldContext_Tender_tenderWinAmount(ctx, field)
+			case "tenderAmount":
+				return ec.fieldContext_Tender_tenderAmount(ctx, field)
 			case "lastTenderAmount":
 				return ec.fieldContext_Tender_lastTenderAmount(ctx, field)
 			case "areaID":
@@ -4537,6 +4549,8 @@ func (ec *executionContext) fieldContext_Mutation_loseTender(ctx context.Context
 				return ec.fieldContext_Tender_tenderWinDate(ctx, field)
 			case "tenderWinAmount":
 				return ec.fieldContext_Tender_tenderWinAmount(ctx, field)
+			case "tenderAmount":
+				return ec.fieldContext_Tender_tenderAmount(ctx, field)
 			case "lastTenderAmount":
 				return ec.fieldContext_Tender_lastTenderAmount(ctx, field)
 			case "areaID":
@@ -4764,6 +4778,8 @@ func (ec *executionContext) fieldContext_Mutation_approveTender(ctx context.Cont
 				return ec.fieldContext_Tender_tenderWinDate(ctx, field)
 			case "tenderWinAmount":
 				return ec.fieldContext_Tender_tenderWinAmount(ctx, field)
+			case "tenderAmount":
+				return ec.fieldContext_Tender_tenderAmount(ctx, field)
 			case "lastTenderAmount":
 				return ec.fieldContext_Tender_lastTenderAmount(ctx, field)
 			case "areaID":
@@ -4991,6 +5007,8 @@ func (ec *executionContext) fieldContext_Mutation_rejectTender(ctx context.Conte
 				return ec.fieldContext_Tender_tenderWinDate(ctx, field)
 			case "tenderWinAmount":
 				return ec.fieldContext_Tender_tenderWinAmount(ctx, field)
+			case "tenderAmount":
+				return ec.fieldContext_Tender_tenderAmount(ctx, field)
 			case "lastTenderAmount":
 				return ec.fieldContext_Tender_lastTenderAmount(ctx, field)
 			case "areaID":
@@ -5838,7 +5856,7 @@ func (ec *executionContext) unmarshalInputLoseTenderInput(ctx context.Context, o
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"competitors", "tenderWinAmount"}
+	fieldsInOrder := [...]string{"competitors", "winCompetitorId", "winAmount", "tenderAmount"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -5852,13 +5870,27 @@ func (ec *executionContext) unmarshalInputLoseTenderInput(ctx context.Context, o
 				return it, err
 			}
 			it.Competitors = data
-		case "tenderWinAmount":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderWinAmount"))
+		case "winCompetitorId":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("winCompetitorId"))
+			data, err := ec.unmarshalNID2cscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.WinCompetitorID = data
+		case "winAmount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("winAmount"))
 			data, err := ec.unmarshalNFloat2float64(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.TenderWinAmount = data
+			it.WinAmount = data
+		case "tenderAmount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderAmount"))
+			data, err := ec.unmarshalNFloat2float64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderAmount = data
 		}
 	}
 
