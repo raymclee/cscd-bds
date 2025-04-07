@@ -944,6 +944,8 @@ input CreateTenderProfileInput {
   sizeAndValueRating: Int
   sizeAndValueRatingOverview: String
   status: Int
+  """投標金額"""
+  tenderAmount: Float
   """交標日期，只限港澳"""
   tenderClosingDate: Time
   """投標編號，只限港澳"""
@@ -2035,7 +2037,8 @@ type Location {
 
 input LoseTenderInput {
   competitors: [WinLostTenderCompetitorInput!]!
-  tenderWinAmount: Float!
+  tenderAmount: Float!
+  winCompetitor: WinLostTenderCompetitorInput!
 }
 
 type Mutation {
@@ -4046,6 +4049,8 @@ type TenderProfile implements Node {
   sizeAndValueRatingOverview: String
   status: Int!
   tender: Tender!
+  """投標金額"""
+  tenderAmount: Float
   """交標日期，只限港澳"""
   tenderClosingDate: Time
   """投標編號，只限港澳"""
@@ -4845,6 +4850,17 @@ input TenderProfileWhereInput {
   statusLTE: Int
   statusNEQ: Int
   statusNotIn: [Int!]
+  """tender_amount field predicates"""
+  tenderAmount: Float
+  tenderAmountGT: Float
+  tenderAmountGTE: Float
+  tenderAmountIn: [Float!]
+  tenderAmountIsNil: Boolean
+  tenderAmountLT: Float
+  tenderAmountLTE: Float
+  tenderAmountNEQ: Float
+  tenderAmountNotIn: [Float!]
+  tenderAmountNotNil: Boolean
   """tender_closing_date field predicates"""
   tenderClosingDate: Time
   tenderClosingDateGT: Time

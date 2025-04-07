@@ -796,6 +796,20 @@ func (tpc *TenderProfileCreate) SetNillableConstructionArea(s *string) *TenderPr
 	return tpc
 }
 
+// SetTenderAmount sets the "tender_amount" field.
+func (tpc *TenderProfileCreate) SetTenderAmount(f float64) *TenderProfileCreate {
+	tpc.mutation.SetTenderAmount(f)
+	return tpc
+}
+
+// SetNillableTenderAmount sets the "tender_amount" field if the given value is not nil.
+func (tpc *TenderProfileCreate) SetNillableTenderAmount(f *float64) *TenderProfileCreate {
+	if f != nil {
+		tpc.SetTenderAmount(*f)
+	}
+	return tpc
+}
+
 // SetTenderWinDate sets the "tender_win_date" field.
 func (tpc *TenderProfileCreate) SetTenderWinDate(t time.Time) *TenderProfileCreate {
 	tpc.mutation.SetTenderWinDate(t)
@@ -1126,6 +1140,11 @@ func (tpc *TenderProfileCreate) check() error {
 	if _, ok := tpc.mutation.KeyProject(); !ok {
 		return &ValidationError{Name: "key_project", err: errors.New(`ent: missing required field "TenderProfile.key_project"`)}
 	}
+	if v, ok := tpc.mutation.TenderAmount(); ok {
+		if err := tenderprofile.TenderAmountValidator(v); err != nil {
+			return &ValidationError{Name: "tender_amount", err: fmt.Errorf(`ent: validator failed for field "TenderProfile.tender_amount": %w`, err)}
+		}
+	}
 	if v, ok := tpc.mutation.TenderWinAmount(); ok {
 		if err := tenderprofile.TenderWinAmountValidator(v); err != nil {
 			return &ValidationError{Name: "tender_win_amount", err: fmt.Errorf(`ent: validator failed for field "TenderProfile.tender_win_amount": %w`, err)}
@@ -1405,6 +1424,10 @@ func (tpc *TenderProfileCreate) createSpec() (*TenderProfile, *sqlgraph.CreateSp
 	if value, ok := tpc.mutation.ConstructionArea(); ok {
 		_spec.SetField(tenderprofile.FieldConstructionArea, field.TypeString, value)
 		_node.ConstructionArea = &value
+	}
+	if value, ok := tpc.mutation.TenderAmount(); ok {
+		_spec.SetField(tenderprofile.FieldTenderAmount, field.TypeFloat64, value)
+		_node.TenderAmount = &value
 	}
 	if value, ok := tpc.mutation.TenderWinDate(); ok {
 		_spec.SetField(tenderprofile.FieldTenderWinDate, field.TypeTime, value)
@@ -2641,6 +2664,30 @@ func (u *TenderProfileUpsert) UpdateConstructionArea() *TenderProfileUpsert {
 // ClearConstructionArea clears the value of the "construction_area" field.
 func (u *TenderProfileUpsert) ClearConstructionArea() *TenderProfileUpsert {
 	u.SetNull(tenderprofile.FieldConstructionArea)
+	return u
+}
+
+// SetTenderAmount sets the "tender_amount" field.
+func (u *TenderProfileUpsert) SetTenderAmount(v float64) *TenderProfileUpsert {
+	u.Set(tenderprofile.FieldTenderAmount, v)
+	return u
+}
+
+// UpdateTenderAmount sets the "tender_amount" field to the value that was provided on create.
+func (u *TenderProfileUpsert) UpdateTenderAmount() *TenderProfileUpsert {
+	u.SetExcluded(tenderprofile.FieldTenderAmount)
+	return u
+}
+
+// AddTenderAmount adds v to the "tender_amount" field.
+func (u *TenderProfileUpsert) AddTenderAmount(v float64) *TenderProfileUpsert {
+	u.Add(tenderprofile.FieldTenderAmount, v)
+	return u
+}
+
+// ClearTenderAmount clears the value of the "tender_amount" field.
+func (u *TenderProfileUpsert) ClearTenderAmount() *TenderProfileUpsert {
+	u.SetNull(tenderprofile.FieldTenderAmount)
 	return u
 }
 
@@ -4107,6 +4154,34 @@ func (u *TenderProfileUpsertOne) UpdateConstructionArea() *TenderProfileUpsertOn
 func (u *TenderProfileUpsertOne) ClearConstructionArea() *TenderProfileUpsertOne {
 	return u.Update(func(s *TenderProfileUpsert) {
 		s.ClearConstructionArea()
+	})
+}
+
+// SetTenderAmount sets the "tender_amount" field.
+func (u *TenderProfileUpsertOne) SetTenderAmount(v float64) *TenderProfileUpsertOne {
+	return u.Update(func(s *TenderProfileUpsert) {
+		s.SetTenderAmount(v)
+	})
+}
+
+// AddTenderAmount adds v to the "tender_amount" field.
+func (u *TenderProfileUpsertOne) AddTenderAmount(v float64) *TenderProfileUpsertOne {
+	return u.Update(func(s *TenderProfileUpsert) {
+		s.AddTenderAmount(v)
+	})
+}
+
+// UpdateTenderAmount sets the "tender_amount" field to the value that was provided on create.
+func (u *TenderProfileUpsertOne) UpdateTenderAmount() *TenderProfileUpsertOne {
+	return u.Update(func(s *TenderProfileUpsert) {
+		s.UpdateTenderAmount()
+	})
+}
+
+// ClearTenderAmount clears the value of the "tender_amount" field.
+func (u *TenderProfileUpsertOne) ClearTenderAmount() *TenderProfileUpsertOne {
+	return u.Update(func(s *TenderProfileUpsert) {
+		s.ClearTenderAmount()
 	})
 }
 
@@ -5774,6 +5849,34 @@ func (u *TenderProfileUpsertBulk) UpdateConstructionArea() *TenderProfileUpsertB
 func (u *TenderProfileUpsertBulk) ClearConstructionArea() *TenderProfileUpsertBulk {
 	return u.Update(func(s *TenderProfileUpsert) {
 		s.ClearConstructionArea()
+	})
+}
+
+// SetTenderAmount sets the "tender_amount" field.
+func (u *TenderProfileUpsertBulk) SetTenderAmount(v float64) *TenderProfileUpsertBulk {
+	return u.Update(func(s *TenderProfileUpsert) {
+		s.SetTenderAmount(v)
+	})
+}
+
+// AddTenderAmount adds v to the "tender_amount" field.
+func (u *TenderProfileUpsertBulk) AddTenderAmount(v float64) *TenderProfileUpsertBulk {
+	return u.Update(func(s *TenderProfileUpsert) {
+		s.AddTenderAmount(v)
+	})
+}
+
+// UpdateTenderAmount sets the "tender_amount" field to the value that was provided on create.
+func (u *TenderProfileUpsertBulk) UpdateTenderAmount() *TenderProfileUpsertBulk {
+	return u.Update(func(s *TenderProfileUpsert) {
+		s.UpdateTenderAmount()
+	})
+}
+
+// ClearTenderAmount clears the value of the "tender_amount" field.
+func (u *TenderProfileUpsertBulk) ClearTenderAmount() *TenderProfileUpsertBulk {
+	return u.Update(func(s *TenderProfileUpsert) {
+		s.ClearTenderAmount()
 	})
 }
 

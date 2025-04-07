@@ -167,6 +167,12 @@ export const TenderDetailFragment = graphql`
     pendingProfile {
       id
       createdAt
+      createdBy {
+        id
+        leader {
+          id
+        }
+      }
       approvalStatus
       approver {
         id
@@ -363,11 +369,16 @@ export function TenderDetail({
 }: TenderDetailProps) {
   const data = useFragment(TenderDetailFragment, queryRef);
   const { profiles } = data;
-
+  const selectedProfile = useSearch({
+    from: "/__auth/__portal/portal/tenders_/$id",
+    select: (state) =>
+      data.profiles.edges?.find((e) => e?.node?.id === state.p)?.node,
+  });
   const isSH = data.area.code !== "GA" && data.area.code !== "HW";
 
   return (
-    <div className="grid grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4">
+    <div className="flex flex-wrap gap-2">
+      {/* <div className="grid grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4"> */}
       {isSH ? (
         <SHTender
           tender={data}
@@ -379,10 +390,13 @@ export function TenderDetail({
       )}
 
       {isSH && (
-        <div className={cn("top-28 mt-8 self-start lg:sticky")}>
+        <div
+          className={cn("top-28 mt-8 w-full self-start lg:sticky lg:w-[340px]")}
+          // className={cn("self-start mt-8 top-28 lg:sticky")}
+        >
           <ScrollArea className={cn("h-[calc(100vh-128px)]")}>
             <Timeline
-              className="py-2 pr-4 lg:-ml-20"
+              className="py-2 pr-4 lg:-ml-28"
               mode="left"
               items={[
                 ...(profiles?.edges?.map((e, i) => {
@@ -394,8 +408,14 @@ export function TenderDetail({
                   const isRejected = e?.node?.approvalStatus == 3;
                   const isCancelled = e?.node?.approvalStatus == 4;
                   const isActive = data.activeProfile?.id === e?.node?.id;
+
+                  const activeId = selectedProfile
+                    ? selectedProfile?.id
+                    : data.pendingProfile?.approvalStatus == 1
+                      ? data.pendingProfile?.id
+                      : data.activeProfile?.id;
                   return {
-                    color: isActive ? undefined : "gray",
+                    color: activeId == e?.node?.id ? undefined : "gray",
                     // label: isPending ? (
                     //   <div>
                     //     <Tag color="blue">当前</Tag>
@@ -429,10 +449,6 @@ export function TenderDetail({
                         search={(prev) => ({ ...prev, p: e?.node?.id })}
                         preload={false}
                         className="flex flex-col gap-1"
-                        activeOptions={{
-                          includeSearch: true,
-                        }}
-                        activeProps={{ className: "font-bold" }}
                         replace
                       >
                         <div className="flex gap-1 py-0.5 text-sm text-gray-500">
@@ -441,22 +457,24 @@ export function TenderDetail({
                         <div className="text-sm text-gray-500">
                           {`${e?.node?.createdBy?.name} ${action}商机`}
                         </div>
-                        {isApproved && (
+                        {(isApproved || isRejected) && (
                           <>
                             {e?.node.approvalDate && (
                               <div className="text-sm text-gray-500">
                                 {dayjs(e?.node.approvalDate).format("LLL")}
                               </div>
                             )}
-                            <div className="text-sm text-gray-500">
-                              {e?.node?.approver?.name || "系统"} 批核了
-                            </div>
+                            {isApproved && (
+                              <div className="text-sm text-gray-500">
+                                {e?.node?.approver?.name || "系统"} 批核了
+                              </div>
+                            )}
+                            {isRejected && (
+                              <div className="text-sm text-gray-500">
+                                {e?.node?.approver?.name || "系统"} 拒绝了
+                              </div>
+                            )}
                           </>
-                        )}
-                        {isRejected && (
-                          <div className="text-sm text-gray-500">
-                            {e?.node?.approver?.name || "系统"} 拒绝了
-                          </div>
                         )}
                       </Link>
                     ),
@@ -534,11 +552,16 @@ function SHTender({
   } = selectedProfileId
     ? (profiles?.edges?.find((e) => e?.node?.id === selectedProfileId)?.node ??
       {})
-    : pendingProfile || activeProfile || {};
+    : pendingProfile?.approvalStatus == 1
+      ? pendingProfile
+      : activeProfile || {};
+
+  const isLeader = session.userId == pendingProfile?.createdBy?.leader?.id;
 
   return (
-    <div className="!space-y-4 lg:col-span-2 xl:col-span-3">
+    <div className="!space-y-4 md:w-full lg:flex-1">
       <Descriptions
+        column={{ xs: 1, lg: 2, xxl: 3 }}
         className="rounded-lg bg-white !p-6"
         title={
           <div className="flex h-8 flex-wrap items-center justify-between gap-2">
@@ -577,7 +600,7 @@ function SHTender({
                   disabled={activeProfile?.approvalStatus != 2}
                   competitorRef={lostCompetitorRef}
                 />
-                {(session.isAdmin || session.isSuperAdmin) && (
+                {(isLeader || session.isAdmin || session.isSuperAdmin) && (
                   <ApprovalModal tender={tender} />
                 )}
               </div>
@@ -585,11 +608,6 @@ function SHTender({
           </div>
         }
         items={[
-          {
-            key: "status",
-            label: "状态",
-            children: tenderStatusText(status),
-          },
           {
             key: "customer",
             label: "业主",
@@ -602,7 +620,20 @@ function SHTender({
                 {customer?.name}
               </Link>
             ),
+            span: "filled",
           },
+          {
+            key: "fullAddress",
+            label: "地址",
+            children: fullAddress || "-",
+            span: "filled",
+          },
+          {
+            key: "status",
+            label: "状态",
+            children: tenderStatusText(status),
+          },
+
           {
             key: "finder",
             label: "发现人",
@@ -671,25 +702,17 @@ function SHTender({
             key: "costEngineer",
             label: "造价师",
             children: costEngineer || "-",
-            span: 2,
-          },
-          {
-            key: "fullAddress",
-            label: "地址",
-            children: fullAddress || "-",
-            span: 3,
           },
           {
             key: "remark",
             label: "备注",
             children: remark || "-",
-            span: 3,
+            span: "filled",
           },
           {
             key: "biddingInstructions",
             label: "立项/投标说明",
             children: biddingInstructions || "-",
-            span: 3,
           },
           {
             key: "tenderForm",
@@ -737,24 +760,22 @@ function SHTender({
       <Descriptions
         className="rounded-lg bg-white !p-6"
         title="项目情况"
+        column={1}
         items={[
           {
             key: "tenderSituations",
             label: "项目主要情况",
             children: tenderSituations || "-",
-            span: 3,
           },
           {
             key: "ownerSituations",
             label: "业主主要情况",
             children: ownerSituations || "-",
-            span: 3,
           },
           {
             key: "competitorSituations",
             label: "竞争对手情况",
             children: competitorSituations || "-",
-            span: 3,
           },
         ]}
       />
@@ -762,6 +783,7 @@ function SHTender({
       <Descriptions
         className="rounded-lg bg-white !p-6"
         title="评分"
+        column={1}
         items={[
           {
             key: "sizeAndValue",
@@ -774,7 +796,6 @@ function SHTender({
             ) : (
               "-"
             ),
-            span: 3,
           },
           {
             key: "creditAndPayment",
@@ -787,7 +808,6 @@ function SHTender({
             ) : (
               "-"
             ),
-            span: 3,
           },
           {
             key: "timeLimit",
@@ -800,7 +820,6 @@ function SHTender({
             ) : (
               "-"
             ),
-            span: 3,
           },
           {
             key: "customerRelationship",
@@ -813,7 +832,6 @@ function SHTender({
             ) : (
               "-"
             ),
-            span: 3,
           },
           {
             key: "competitivePartnership",
@@ -826,7 +844,6 @@ function SHTender({
             ) : (
               "-"
             ),
-            span: 3,
           },
         ]}
       />

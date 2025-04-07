@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<5b9c3c10faccf025a9e02904af2c0fee>>
+ * @generated SignedSource<<e62f0fc5ab89ccee9f0452b939470731>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -41,7 +41,6 @@ export type customerDetailFragment$data = {
     readonly id: string;
     readonly name: string;
   };
-  readonly createdAt: any;
   readonly createdBy: {
     readonly id: string;
     readonly name: string | null | undefined;
@@ -62,6 +61,10 @@ export type customerDetailFragment$data = {
     readonly contactPersonPosition: string | null | undefined;
     readonly createdAt: any;
     readonly createdBy: {
+      readonly id: string;
+      readonly leader: {
+        readonly id: string;
+      } | null | undefined;
       readonly name: string | null | undefined;
     } | null | undefined;
     readonly id: string;
@@ -78,7 +81,12 @@ export type customerDetailFragment$data = {
   readonly profiles: {
     readonly edges: ReadonlyArray<{
       readonly node: {
+        readonly approvalDate: any | null | undefined;
         readonly approvalStatus: number;
+        readonly approver: {
+          readonly id: string;
+          readonly name: string | null | undefined;
+        } | null | undefined;
         readonly contactPerson: string | null | undefined;
         readonly contactPersonEmail: string | null | undefined;
         readonly contactPersonPhone: string | null | undefined;
@@ -119,20 +127,20 @@ v1 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "createdAt",
-  "storageKey": null
-},
-v2 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
   "name": "name",
   "storageKey": null
 },
-v3 = [
+v2 = [
   (v0/*: any*/),
-  (v2/*: any*/)
+  (v1/*: any*/)
 ],
+v3 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "createdAt",
+  "storageKey": null
+},
 v4 = {
   "alias": null,
   "args": null,
@@ -141,7 +149,7 @@ v4 = {
   "name": "createdBy",
   "plural": false,
   "selections": [
-    (v2/*: any*/)
+    (v1/*: any*/)
   ],
   "storageKey": null
 },
@@ -215,25 +223,19 @@ v14 = {
   "kind": "LinkedField",
   "name": "sales",
   "plural": false,
-  "selections": (v3/*: any*/),
+  "selections": (v2/*: any*/),
   "storageKey": null
 },
-v15 = [
-  (v0/*: any*/),
-  (v2/*: any*/),
-  (v1/*: any*/),
-  (v4/*: any*/),
-  (v5/*: any*/),
-  (v6/*: any*/),
-  (v7/*: any*/),
-  (v8/*: any*/),
-  (v9/*: any*/),
-  (v10/*: any*/),
-  (v11/*: any*/),
-  (v12/*: any*/),
-  (v13/*: any*/),
-  (v14/*: any*/)
-];
+v15 = {
+  "alias": null,
+  "args": null,
+  "concreteType": "User",
+  "kind": "LinkedField",
+  "name": "approver",
+  "plural": false,
+  "selections": (v2/*: any*/),
+  "storageKey": null
+};
 return {
   "argumentDefinitions": [],
   "kind": "Fragment",
@@ -252,7 +254,6 @@ return {
   "name": "customerDetailFragment",
   "selections": [
     (v0/*: any*/),
-    (v1/*: any*/),
     {
       "alias": null,
       "args": null,
@@ -260,7 +261,7 @@ return {
       "kind": "LinkedField",
       "name": "createdBy",
       "plural": false,
-      "selections": (v3/*: any*/),
+      "selections": (v2/*: any*/),
       "storageKey": null
     },
     {
@@ -272,7 +273,7 @@ return {
       "plural": false,
       "selections": [
         (v0/*: any*/),
-        (v2/*: any*/),
+        (v1/*: any*/),
         {
           "alias": null,
           "args": null,
@@ -292,8 +293,8 @@ return {
       "plural": false,
       "selections": [
         (v0/*: any*/),
-        (v2/*: any*/),
         (v1/*: any*/),
+        (v3/*: any*/),
         (v4/*: any*/),
         (v5/*: any*/),
         (v6/*: any*/),
@@ -305,16 +306,7 @@ return {
         (v12/*: any*/),
         (v13/*: any*/),
         (v14/*: any*/),
-        {
-          "alias": null,
-          "args": null,
-          "concreteType": "User",
-          "kind": "LinkedField",
-          "name": "approver",
-          "plural": false,
-          "selections": (v3/*: any*/),
-          "storageKey": null
-        }
+        (v15/*: any*/)
       ],
       "storageKey": null
     },
@@ -325,7 +317,46 @@ return {
       "kind": "LinkedField",
       "name": "pendingProfile",
       "plural": false,
-      "selections": (v15/*: any*/),
+      "selections": [
+        (v0/*: any*/),
+        (v1/*: any*/),
+        (v3/*: any*/),
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "User",
+          "kind": "LinkedField",
+          "name": "createdBy",
+          "plural": false,
+          "selections": [
+            (v0/*: any*/),
+            {
+              "alias": null,
+              "args": null,
+              "concreteType": "User",
+              "kind": "LinkedField",
+              "name": "leader",
+              "plural": false,
+              "selections": [
+                (v0/*: any*/)
+              ],
+              "storageKey": null
+            },
+            (v1/*: any*/)
+          ],
+          "storageKey": null
+        },
+        (v5/*: any*/),
+        (v6/*: any*/),
+        (v7/*: any*/),
+        (v8/*: any*/),
+        (v9/*: any*/),
+        (v10/*: any*/),
+        (v11/*: any*/),
+        (v12/*: any*/),
+        (v13/*: any*/),
+        (v14/*: any*/)
+      ],
       "storageKey": null
     },
     {
@@ -362,7 +393,30 @@ return {
               "kind": "LinkedField",
               "name": "node",
               "plural": false,
-              "selections": (v15/*: any*/),
+              "selections": [
+                (v0/*: any*/),
+                (v1/*: any*/),
+                (v3/*: any*/),
+                (v4/*: any*/),
+                (v5/*: any*/),
+                (v6/*: any*/),
+                (v7/*: any*/),
+                (v8/*: any*/),
+                (v9/*: any*/),
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "approvalDate",
+                  "storageKey": null
+                },
+                (v15/*: any*/),
+                (v10/*: any*/),
+                (v11/*: any*/),
+                (v12/*: any*/),
+                (v13/*: any*/),
+                (v14/*: any*/)
+              ],
               "storageKey": null
             }
           ],
@@ -456,6 +510,6 @@ return {
 };
 })();
 
-(node as any).hash = "bdba5fa9bd93e568e07338ea7354d516";
+(node as any).hash = "be949d517a4ebaf33e799589c3f0f535";
 
 export default node;

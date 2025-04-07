@@ -1362,7 +1362,6 @@ type CreateTenderInput struct {
 	ConstructionArea                     *string
 	TenderWinDate                        *time.Time
 	TenderWinAmount                      *float64
-	TenderAmount                         *float64
 	LastTenderAmount                     *float64
 	AreaID                               xid.ID
 	ProfileIDs                           []xid.ID
@@ -1547,9 +1546,6 @@ func (i *CreateTenderInput) Mutate(m *TenderMutation) {
 	if v := i.TenderWinAmount; v != nil {
 		m.SetTenderWinAmount(*v)
 	}
-	if v := i.TenderAmount; v != nil {
-		m.SetTenderAmount(*v)
-	}
 	if v := i.LastTenderAmount; v != nil {
 		m.SetLastTenderAmount(*v)
 	}
@@ -1709,8 +1705,6 @@ type UpdateTenderInput struct {
 	TenderWinDate                             *time.Time
 	ClearTenderWinAmount                      bool
 	TenderWinAmount                           *float64
-	ClearTenderAmount                         bool
-	TenderAmount                              *float64
 	ClearLastTenderAmount                     bool
 	LastTenderAmount                          *float64
 	AreaID                                    *xid.ID
@@ -2066,12 +2060,6 @@ func (i *UpdateTenderInput) Mutate(m *TenderMutation) {
 	if v := i.TenderWinAmount; v != nil {
 		m.SetTenderWinAmount(*v)
 	}
-	if i.ClearTenderAmount {
-		m.ClearTenderAmount()
-	}
-	if v := i.TenderAmount; v != nil {
-		m.SetTenderAmount(*v)
-	}
 	if i.ClearLastTenderAmount {
 		m.ClearLastTenderAmount()
 	}
@@ -2315,6 +2303,7 @@ type CreateTenderProfileInput struct {
 	Developer                            *string
 	TenderClosingDate                    *time.Time
 	ConstructionArea                     *string
+	TenderAmount                         *float64
 	TenderWinDate                        *time.Time
 	TenderWinAmount                      *float64
 	LastTenderAmount                     *float64
@@ -2497,6 +2486,9 @@ func (i *CreateTenderProfileInput) Mutate(m *TenderProfileMutation) {
 	}
 	if v := i.ConstructionArea; v != nil {
 		m.SetConstructionArea(*v)
+	}
+	if v := i.TenderAmount; v != nil {
+		m.SetTenderAmount(*v)
 	}
 	if v := i.TenderWinDate; v != nil {
 		m.SetTenderWinDate(*v)

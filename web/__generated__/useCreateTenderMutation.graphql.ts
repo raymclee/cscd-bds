@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<be6adb6fcd30ffb4c5211d7b3a2c7c5a>>
+ * @generated SignedSource<<deda2bcf7405140122313740ff83571c>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -139,6 +139,7 @@ export type CreateTenderProfileInput = {
   sizeAndValueRating?: number | null | undefined;
   sizeAndValueRatingOverview?: string | null | undefined;
   status?: number | null | undefined;
+  tenderAmount?: number | null | undefined;
   tenderClosingDate?: any | null | undefined;
   tenderCode?: string | null | undefined;
   tenderDate?: any | null | undefined;

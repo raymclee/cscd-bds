@@ -613,7 +613,6 @@ type ComplexityRoot struct {
 		SizeAndValueRating                   func(childComplexity int) int
 		SizeAndValueRatingOverview           func(childComplexity int) int
 		Status                               func(childComplexity int) int
-		TenderAmount                         func(childComplexity int) int
 		TenderClosingDate                    func(childComplexity int) int
 		TenderCode                           func(childComplexity int) int
 		TenderDate                           func(childComplexity int) int
@@ -727,6 +726,7 @@ type ComplexityRoot struct {
 		SizeAndValueRatingOverview           func(childComplexity int) int
 		Status                               func(childComplexity int) int
 		Tender                               func(childComplexity int) int
+		TenderAmount                         func(childComplexity int) int
 		TenderClosingDate                    func(childComplexity int) int
 		TenderCode                           func(childComplexity int) int
 		TenderDate                           func(childComplexity int) int
@@ -4131,13 +4131,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Tender.Status(childComplexity), true
 
-	case "Tender.tenderAmount":
-		if e.complexity.Tender.TenderAmount == nil {
-			break
-		}
-
-		return e.complexity.Tender.TenderAmount(childComplexity), true
-
 	case "Tender.tenderClosingDate":
 		if e.complexity.Tender.TenderClosingDate == nil {
 			break
@@ -4807,6 +4800,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.TenderProfile.Tender(childComplexity), true
+
+	case "TenderProfile.tenderAmount":
+		if e.complexity.TenderProfile.TenderAmount == nil {
+			break
+		}
+
+		return e.complexity.TenderProfile.TenderAmount(childComplexity), true
 
 	case "TenderProfile.tenderClosingDate":
 		if e.complexity.TenderProfile.TenderClosingDate == nil {
@@ -6624,10 +6624,6 @@ input CreateTenderInput {
   """
   tenderWinAmount: Float
   """
-  投標金額
-  """
-  tenderAmount: Float
-  """
   最後一次投標金額，只限港澳
   """
   lastTenderAmount: Float
@@ -6731,6 +6727,10 @@ input CreateTenderProfileInput {
   施工面積，只限港澳
   """
   constructionArea: String
+  """
+  投標金額
+  """
+  tenderAmount: Float
   """
   得標日期，只限港澳
   """
@@ -10356,10 +10356,6 @@ type Tender implements Node {
   """
   tenderWinAmount: Float
   """
-  投標金額
-  """
-  tenderAmount: Float
-  """
   最後一次投標金額，只限港澳
   """
   lastTenderAmount: Float
@@ -10746,6 +10742,10 @@ type TenderProfile implements Node {
   施工面積，只限港澳
   """
   constructionArea: String
+  """
+  投標金額
+  """
+  tenderAmount: Float
   """
   得標日期，只限港澳
   """
@@ -11672,6 +11672,19 @@ input TenderProfileWhereInput {
   constructionAreaNotNil: Boolean
   constructionAreaEqualFold: String
   constructionAreaContainsFold: String
+  """
+  tender_amount field predicates
+  """
+  tenderAmount: Float
+  tenderAmountNEQ: Float
+  tenderAmountIn: [Float!]
+  tenderAmountNotIn: [Float!]
+  tenderAmountGT: Float
+  tenderAmountGTE: Float
+  tenderAmountLT: Float
+  tenderAmountLTE: Float
+  tenderAmountIsNil: Boolean
+  tenderAmountNotNil: Boolean
   """
   tender_win_date field predicates
   """
@@ -12764,19 +12777,6 @@ input TenderWhereInput {
   tenderWinAmountIsNil: Boolean
   tenderWinAmountNotNil: Boolean
   """
-  tender_amount field predicates
-  """
-  tenderAmount: Float
-  tenderAmountNEQ: Float
-  tenderAmountIn: [Float!]
-  tenderAmountNotIn: [Float!]
-  tenderAmountGT: Float
-  tenderAmountGTE: Float
-  tenderAmountLT: Float
-  tenderAmountLTE: Float
-  tenderAmountIsNil: Boolean
-  tenderAmountNotNil: Boolean
-  """
   last_tender_amount field predicates
   """
   lastTenderAmount: Float
@@ -13495,11 +13495,6 @@ input UpdateTenderInput {
   """
   tenderWinAmount: Float
   clearTenderWinAmount: Boolean
-  """
-  投標金額
-  """
-  tenderAmount: Float
-  clearTenderAmount: Boolean
   """
   最後一次投標金額，只限港澳
   """
@@ -14403,8 +14398,7 @@ input WinTenderInput {
 
 input LoseTenderInput {
   competitors: [WinLostTenderCompetitorInput!]!
-  winCompetitorId: ID!
-  winAmount: Float!
+  winCompetitor: WinLostTenderCompetitorInput!
   tenderAmount: Float!
 }
 

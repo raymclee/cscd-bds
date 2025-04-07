@@ -321,6 +321,11 @@ func ConstructionArea(v string) predicate.TenderProfile {
 	return predicate.TenderProfile(sql.FieldEQ(FieldConstructionArea, v))
 }
 
+// TenderAmount applies equality check predicate on the "tender_amount" field. It's identical to TenderAmountEQ.
+func TenderAmount(v float64) predicate.TenderProfile {
+	return predicate.TenderProfile(sql.FieldEQ(FieldTenderAmount, v))
+}
+
 // TenderWinDate applies equality check predicate on the "tender_win_date" field. It's identical to TenderWinDateEQ.
 func TenderWinDate(v time.Time) predicate.TenderProfile {
 	return predicate.TenderProfile(sql.FieldEQ(FieldTenderWinDate, v))
@@ -3744,6 +3749,56 @@ func ConstructionAreaEqualFold(v string) predicate.TenderProfile {
 // ConstructionAreaContainsFold applies the ContainsFold predicate on the "construction_area" field.
 func ConstructionAreaContainsFold(v string) predicate.TenderProfile {
 	return predicate.TenderProfile(sql.FieldContainsFold(FieldConstructionArea, v))
+}
+
+// TenderAmountEQ applies the EQ predicate on the "tender_amount" field.
+func TenderAmountEQ(v float64) predicate.TenderProfile {
+	return predicate.TenderProfile(sql.FieldEQ(FieldTenderAmount, v))
+}
+
+// TenderAmountNEQ applies the NEQ predicate on the "tender_amount" field.
+func TenderAmountNEQ(v float64) predicate.TenderProfile {
+	return predicate.TenderProfile(sql.FieldNEQ(FieldTenderAmount, v))
+}
+
+// TenderAmountIn applies the In predicate on the "tender_amount" field.
+func TenderAmountIn(vs ...float64) predicate.TenderProfile {
+	return predicate.TenderProfile(sql.FieldIn(FieldTenderAmount, vs...))
+}
+
+// TenderAmountNotIn applies the NotIn predicate on the "tender_amount" field.
+func TenderAmountNotIn(vs ...float64) predicate.TenderProfile {
+	return predicate.TenderProfile(sql.FieldNotIn(FieldTenderAmount, vs...))
+}
+
+// TenderAmountGT applies the GT predicate on the "tender_amount" field.
+func TenderAmountGT(v float64) predicate.TenderProfile {
+	return predicate.TenderProfile(sql.FieldGT(FieldTenderAmount, v))
+}
+
+// TenderAmountGTE applies the GTE predicate on the "tender_amount" field.
+func TenderAmountGTE(v float64) predicate.TenderProfile {
+	return predicate.TenderProfile(sql.FieldGTE(FieldTenderAmount, v))
+}
+
+// TenderAmountLT applies the LT predicate on the "tender_amount" field.
+func TenderAmountLT(v float64) predicate.TenderProfile {
+	return predicate.TenderProfile(sql.FieldLT(FieldTenderAmount, v))
+}
+
+// TenderAmountLTE applies the LTE predicate on the "tender_amount" field.
+func TenderAmountLTE(v float64) predicate.TenderProfile {
+	return predicate.TenderProfile(sql.FieldLTE(FieldTenderAmount, v))
+}
+
+// TenderAmountIsNil applies the IsNil predicate on the "tender_amount" field.
+func TenderAmountIsNil() predicate.TenderProfile {
+	return predicate.TenderProfile(sql.FieldIsNull(FieldTenderAmount))
+}
+
+// TenderAmountNotNil applies the NotNil predicate on the "tender_amount" field.
+func TenderAmountNotNil() predicate.TenderProfile {
+	return predicate.TenderProfile(sql.FieldNotNull(FieldTenderAmount))
 }
 
 // TenderWinDateEQ applies the EQ predicate on the "tender_win_date" field.

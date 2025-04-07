@@ -90,32 +90,48 @@ func main() {
 					SetKeyProject(t.KeyProject).
 					SetNillableCurrentProgress(t.CurrentProgress)
 
-				if t.EstimatedAmount != 0 {
-					q.SetEstimatedAmount(t.EstimatedAmount)
-				}
 				if !t.TenderClosingDate.IsZero() {
 					q.SetTenderClosingDate(t.TenderClosingDate)
 				}
+
 				if !t.TenderWinDate.IsZero() {
 					q.SetTenderWinDate(t.TenderWinDate)
 				}
+
 				if t.TenderWinAmount != 0 {
 					q.SetTenderWinAmount(t.TenderWinAmount)
 				}
+
 				if t.LastTenderAmount != 0 {
 					q.SetLastTenderAmount(t.LastTenderAmount)
 				}
+
 				if t.TenderCode != "" {
 					q.SetTenderCode(t.TenderCode)
 				}
+
 				if t.Architect != "" {
 					q.SetArchitect(t.Architect)
 				}
+
 				if t.Developer != "" {
 					q.SetDeveloper(t.Developer)
 				}
+
 				if t.ConstructionArea != "" {
 					q.SetConstructionArea(t.ConstructionArea)
+				}
+
+				if t.EstimatedAmount != 0 {
+					q.SetEstimatedAmount(t.EstimatedAmount)
+				}
+
+				if t.Remark != "" {
+					q.SetRemark(t.Remark)
+				}
+
+				if t.EstimatedAmount != 0 {
+					q.SetEstimatedAmount(t.EstimatedAmount)
 				}
 
 				if t.Remark != "" {

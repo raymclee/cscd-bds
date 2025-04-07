@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<2c08763da89cc109a80229a1f0ce96d9>>
+ * @generated SignedSource<<2ab97b5e5ac85171fb133d0c36be80ec>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -141,6 +141,9 @@ export type tenderDetailFragment$data = {
     readonly createdAt: any;
     readonly createdBy: {
       readonly id: string;
+      readonly leader: {
+        readonly id: string;
+      } | null | undefined;
       readonly name: string | null | undefined;
     } | null | undefined;
     readonly creditAndPaymentRating: number | null | undefined;
@@ -923,6 +926,31 @@ return {
       "selections": [
         (v0/*: any*/),
         (v4/*: any*/),
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "User",
+          "kind": "LinkedField",
+          "name": "createdBy",
+          "plural": false,
+          "selections": [
+            (v0/*: any*/),
+            {
+              "alias": null,
+              "args": null,
+              "concreteType": "User",
+              "kind": "LinkedField",
+              "name": "leader",
+              "plural": false,
+              "selections": [
+                (v0/*: any*/)
+              ],
+              "storageKey": null
+            },
+            (v2/*: any*/)
+          ],
+          "storageKey": null
+        },
         (v5/*: any*/),
         (v6/*: any*/),
         (v2/*: any*/),
@@ -977,7 +1005,6 @@ return {
         (v55/*: any*/),
         (v56/*: any*/),
         (v57/*: any*/),
-        (v58/*: any*/),
         (v59/*: any*/),
         (v60/*: any*/),
         (v62/*: any*/),
@@ -1107,6 +1134,6 @@ return {
 };
 })();
 
-(node as any).hash = "c67e9dd68529bd68205cc50bd28cc8a2";
+(node as any).hash = "c616aa66cad909ff86ebeafc2ea7c3fb";
 
 export default node;

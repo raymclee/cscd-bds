@@ -935,6 +935,8 @@ export type CreateTenderProfileInput = {
   sizeAndValueRating?: InputMaybe<Scalars['Int']['input']>;
   sizeAndValueRatingOverview?: InputMaybe<Scalars['String']['input']>;
   status?: InputMaybe<Scalars['Int']['input']>;
+  /** 投標金額 */
+  tenderAmount?: InputMaybe<Scalars['Float']['input']>;
   /** 交標日期，只限港澳 */
   tenderClosingDate?: InputMaybe<Scalars['Time']['input']>;
   /** 投標編號，只限港澳 */
@@ -2009,7 +2011,8 @@ export type Location = {
 
 export type LoseTenderInput = {
   competitors: Array<WinLostTenderCompetitorInput>;
-  tenderWinAmount: Scalars['Float']['input'];
+  tenderAmount: Scalars['Float']['input'];
+  winCompetitor: WinLostTenderCompetitorInput;
 };
 
 export type Mutation = {
@@ -4146,6 +4149,8 @@ export type TenderProfile = Node & {
   sizeAndValueRatingOverview?: Maybe<Scalars['String']['output']>;
   status: Scalars['Int']['output'];
   tender: Tender;
+  /** 投標金額 */
+  tenderAmount?: Maybe<Scalars['Float']['output']>;
   /** 交標日期，只限港澳 */
   tenderClosingDate?: Maybe<Scalars['Time']['output']>;
   /** 投標編號，只限港澳 */
@@ -4947,6 +4952,17 @@ export type TenderProfileWhereInput = {
   statusLTE?: InputMaybe<Scalars['Int']['input']>;
   statusNEQ?: InputMaybe<Scalars['Int']['input']>;
   statusNotIn?: InputMaybe<Array<Scalars['Int']['input']>>;
+  /** tender_amount field predicates */
+  tenderAmount?: InputMaybe<Scalars['Float']['input']>;
+  tenderAmountGT?: InputMaybe<Scalars['Float']['input']>;
+  tenderAmountGTE?: InputMaybe<Scalars['Float']['input']>;
+  tenderAmountIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  tenderAmountIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  tenderAmountLT?: InputMaybe<Scalars['Float']['input']>;
+  tenderAmountLTE?: InputMaybe<Scalars['Float']['input']>;
+  tenderAmountNEQ?: InputMaybe<Scalars['Float']['input']>;
+  tenderAmountNotIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  tenderAmountNotNil?: InputMaybe<Scalars['Boolean']['input']>;
   /** tender_closing_date field predicates */
   tenderClosingDate?: InputMaybe<Scalars['Time']['input']>;
   tenderClosingDateGT?: InputMaybe<Scalars['Time']['input']>;
@@ -7166,13 +7182,9 @@ export class TypedDocumentString<TResult, TVariables>
   implements DocumentTypeDecoration<TResult, TVariables>
 {
   __apiType?: DocumentTypeDecoration<TResult, TVariables>['__apiType'];
-  private value: string;
-  public __meta__?: Record<string, any> | undefined;
 
-  constructor(value: string, __meta__?: Record<string, any> | undefined) {
+  constructor(private value: string, public __meta__?: Record<string, any> | undefined) {
     super(value);
-    this.value = value;
-    this.__meta__ = __meta__;
   }
 
   toString(): string & DocumentTypeDecoration<TResult, TVariables> {

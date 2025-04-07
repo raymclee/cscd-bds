@@ -1207,33 +1207,6 @@ func (tu *TenderUpdate) ClearTenderWinAmount() *TenderUpdate {
 	return tu
 }
 
-// SetTenderAmount sets the "tender_amount" field.
-func (tu *TenderUpdate) SetTenderAmount(f float64) *TenderUpdate {
-	tu.mutation.ResetTenderAmount()
-	tu.mutation.SetTenderAmount(f)
-	return tu
-}
-
-// SetNillableTenderAmount sets the "tender_amount" field if the given value is not nil.
-func (tu *TenderUpdate) SetNillableTenderAmount(f *float64) *TenderUpdate {
-	if f != nil {
-		tu.SetTenderAmount(*f)
-	}
-	return tu
-}
-
-// AddTenderAmount adds f to the "tender_amount" field.
-func (tu *TenderUpdate) AddTenderAmount(f float64) *TenderUpdate {
-	tu.mutation.AddTenderAmount(f)
-	return tu
-}
-
-// ClearTenderAmount clears the value of the "tender_amount" field.
-func (tu *TenderUpdate) ClearTenderAmount() *TenderUpdate {
-	tu.mutation.ClearTenderAmount()
-	return tu
-}
-
 // SetLastTenderAmount sets the "last_tender_amount" field.
 func (tu *TenderUpdate) SetLastTenderAmount(f float64) *TenderUpdate {
 	tu.mutation.ResetLastTenderAmount()
@@ -2191,15 +2164,6 @@ func (tu *TenderUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if tu.mutation.TenderWinAmountCleared() {
 		_spec.ClearField(tender.FieldTenderWinAmount, field.TypeFloat64)
-	}
-	if value, ok := tu.mutation.TenderAmount(); ok {
-		_spec.SetField(tender.FieldTenderAmount, field.TypeFloat64, value)
-	}
-	if value, ok := tu.mutation.AddedTenderAmount(); ok {
-		_spec.AddField(tender.FieldTenderAmount, field.TypeFloat64, value)
-	}
-	if tu.mutation.TenderAmountCleared() {
-		_spec.ClearField(tender.FieldTenderAmount, field.TypeFloat64)
 	}
 	if value, ok := tu.mutation.LastTenderAmount(); ok {
 		_spec.SetField(tender.FieldLastTenderAmount, field.TypeFloat64, value)
@@ -3867,33 +3831,6 @@ func (tuo *TenderUpdateOne) ClearTenderWinAmount() *TenderUpdateOne {
 	return tuo
 }
 
-// SetTenderAmount sets the "tender_amount" field.
-func (tuo *TenderUpdateOne) SetTenderAmount(f float64) *TenderUpdateOne {
-	tuo.mutation.ResetTenderAmount()
-	tuo.mutation.SetTenderAmount(f)
-	return tuo
-}
-
-// SetNillableTenderAmount sets the "tender_amount" field if the given value is not nil.
-func (tuo *TenderUpdateOne) SetNillableTenderAmount(f *float64) *TenderUpdateOne {
-	if f != nil {
-		tuo.SetTenderAmount(*f)
-	}
-	return tuo
-}
-
-// AddTenderAmount adds f to the "tender_amount" field.
-func (tuo *TenderUpdateOne) AddTenderAmount(f float64) *TenderUpdateOne {
-	tuo.mutation.AddTenderAmount(f)
-	return tuo
-}
-
-// ClearTenderAmount clears the value of the "tender_amount" field.
-func (tuo *TenderUpdateOne) ClearTenderAmount() *TenderUpdateOne {
-	tuo.mutation.ClearTenderAmount()
-	return tuo
-}
-
 // SetLastTenderAmount sets the "last_tender_amount" field.
 func (tuo *TenderUpdateOne) SetLastTenderAmount(f float64) *TenderUpdateOne {
 	tuo.mutation.ResetLastTenderAmount()
@@ -4881,15 +4818,6 @@ func (tuo *TenderUpdateOne) sqlSave(ctx context.Context) (_node *Tender, err err
 	}
 	if tuo.mutation.TenderWinAmountCleared() {
 		_spec.ClearField(tender.FieldTenderWinAmount, field.TypeFloat64)
-	}
-	if value, ok := tuo.mutation.TenderAmount(); ok {
-		_spec.SetField(tender.FieldTenderAmount, field.TypeFloat64, value)
-	}
-	if value, ok := tuo.mutation.AddedTenderAmount(); ok {
-		_spec.AddField(tender.FieldTenderAmount, field.TypeFloat64, value)
-	}
-	if tuo.mutation.TenderAmountCleared() {
-		_spec.ClearField(tender.FieldTenderAmount, field.TypeFloat64)
 	}
 	if value, ok := tuo.mutation.LastTenderAmount(); ok {
 		_spec.SetField(tender.FieldLastTenderAmount, field.TypeFloat64, value)

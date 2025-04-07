@@ -4173,11 +4173,6 @@ func (t *TenderQuery) collectField(ctx context.Context, oneNode bool, opCtx *gra
 				selectedFields = append(selectedFields, tender.FieldTenderWinAmount)
 				fieldSeen[tender.FieldTenderWinAmount] = struct{}{}
 			}
-		case "tenderAmount":
-			if _, ok := fieldSeen[tender.FieldTenderAmount]; !ok {
-				selectedFields = append(selectedFields, tender.FieldTenderAmount)
-				fieldSeen[tender.FieldTenderAmount] = struct{}{}
-			}
 		case "lastTenderAmount":
 			if _, ok := fieldSeen[tender.FieldLastTenderAmount]; !ok {
 				selectedFields = append(selectedFields, tender.FieldLastTenderAmount)
@@ -4872,6 +4867,11 @@ func (tp *TenderProfileQuery) collectField(ctx context.Context, oneNode bool, op
 			if _, ok := fieldSeen[tenderprofile.FieldConstructionArea]; !ok {
 				selectedFields = append(selectedFields, tenderprofile.FieldConstructionArea)
 				fieldSeen[tenderprofile.FieldConstructionArea] = struct{}{}
+			}
+		case "tenderAmount":
+			if _, ok := fieldSeen[tenderprofile.FieldTenderAmount]; !ok {
+				selectedFields = append(selectedFields, tenderprofile.FieldTenderAmount)
+				fieldSeen[tenderprofile.FieldTenderAmount] = struct{}{}
 			}
 		case "tenderWinDate":
 			if _, ok := fieldSeen[tenderprofile.FieldTenderWinDate]; !ok {

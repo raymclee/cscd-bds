@@ -267,58 +267,6 @@ func tenderProfileTemplateVars(tenderProfile *ent.TenderProfile) map[string]any 
 	return tv
 }
 
-func tenderTemplateVars(tender *ent.Tender) map[string]any {
-	amount := "￥0"
-	if tender.TenderWinAmount > 0 {
-		amount = fmt.Sprintf("￥%v亿", tender.TenderWinAmount/100000000)
-	}
-	tv := map[string]any{
-		"tender_id":      tender.ID,
-		"created_by_id":  tender.Edges.CreatedBy.OpenID,
-		"tender_name":    tender.Name,
-		"finder_id":      tender.Edges.Finder.OpenID,
-		"finder_name":    tender.Edges.Finder.Name,
-		"discovery_date": tender.DiscoveryDate.Format("2006-01-02"),
-		"url":            fmt.Sprintf("%s/portal/tenders/%s", config.HostUrl, tender.ID),
-		"amount":         amount,
-	}
-
-	if tender.Edges.Customer != nil {
-		tv["customer_name"] = tender.Edges.Customer.Name
-	}
-
-	if tender.Developer != "" {
-		tv["customer_name"] = tender.Developer
-	}
-
-	if tender.Edges.Area != nil {
-		tv["area"] = tender.Edges.Area.Name
-	}
-
-	if tender.Edges.Approver != nil {
-		tv["approver_id"] = tender.Edges.Approver.OpenID
-		tv["approver_name"] = tender.Edges.Approver.Name
-	}
-
-	return tv
-}
-
-func customerTemplateVars(customer *ent.Customer) map[string]any {
-	tv := map[string]any{
-		"customer_id":   customer.ID,
-		"created_by_id": customer.Edges.CreatedBy.OpenID,
-		"customer_name": customer.Name,
-		"sales_id":      customer.Edges.Sales.OpenID,
-		"url":           fmt.Sprintf("%s/portal/customers/%s", config.HostUrl, customer.ID),
-	}
-	if customer.Edges.Approver != nil {
-		tv["approver_id"] = customer.Edges.Approver.OpenID
-		tv["approver_name"] = customer.Edges.Approver.Name
-	}
-
-	return tv
-}
-
 func customerProfileTemplateVars(customerProfile *ent.CustomerProfile) map[string]any {
 	tv := map[string]any{
 		"customer_id":     customerProfile.ID,

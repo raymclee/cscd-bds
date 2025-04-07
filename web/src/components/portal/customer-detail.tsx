@@ -33,7 +33,6 @@ export function CustomerDetail(props: {
     graphql`
       fragment customerDetailFragment on Customer {
         id
-        createdAt
         createdBy {
           id
           name
@@ -73,6 +72,10 @@ export function CustomerDetail(props: {
           name
           createdAt
           createdBy {
+            id
+            leader {
+              id
+            }
             name
           }
           updatedAt
@@ -103,6 +106,11 @@ export function CustomerDetail(props: {
               industry
               size
               approvalStatus
+              approvalDate
+              approver {
+                id
+                name
+              }
               contactPerson
               contactPersonPosition
               contactPersonPhone
@@ -138,9 +146,13 @@ export function CustomerDetail(props: {
   const activeProfile =
     selectedProfile || customer.pendingProfile || customer.activeProfile;
 
+  const isLeader =
+    session.userId == customer.pendingProfile?.createdBy?.leader?.id;
+
   return (
     <>
       <Descriptions
+        column={{ xs: 1, lg: 2, xxl: 3 }}
         title={
           <div className="flex h-8 flex-wrap items-center justify-between gap-2">
             <div className="flex items-center gap-2">
@@ -185,7 +197,7 @@ export function CustomerDetail(props: {
                 >
                   添加拜访记录
                 </Button> */}
-                {(session.isAdmin || session.isSuperAdmin) && (
+                {(isLeader || session.isAdmin || session.isSuperAdmin) && (
                   <ApprovalModal customer={customer} />
                 )}
               </Space>
@@ -270,26 +282,6 @@ export function CustomerDetail(props: {
               <span className="font-normal">{customer.createdBy?.name}</span>
             ),
           },
-          {
-            key: "createdAt",
-            label: "创建时间",
-            span: { md: 3, xxl: 1 },
-            children: (
-              <span className="font-normal">
-                {dayjs(customer.createdAt).format("LLL")}
-              </span>
-            ),
-          },
-          {
-            key: "updatedAt",
-            label: "更新时间",
-            span: { md: 3, xxl: 1 },
-            children: (
-              <span className="font-normal">
-                {dayjs(activeProfile?.createdAt).format("LLL")}
-              </span>
-            ),
-          },
           // {
           //   key: "lastUpdated",
           //   label: "最新跟进时间",
@@ -317,6 +309,7 @@ export function CustomerDetail(props: {
           {
             key: "contactPerson",
             label: "对接人姓名",
+            span: { lg: 3, xl: 2, xxl: 1 },
             children: (
               <span className="font-normal">
                 {activeProfile?.contactPerson}
@@ -326,6 +319,7 @@ export function CustomerDetail(props: {
           {
             key: "contactPersonPosition",
             label: "对接人职位",
+            span: { lg: 3, xl: 2, xxl: 1 },
             children: (
               <span className="font-normal">
                 {activeProfile?.contactPersonPosition}
@@ -335,6 +329,7 @@ export function CustomerDetail(props: {
           {
             key: "contactPersonPhone",
             label: "对接人电话",
+            span: { lg: 3, xl: 2, xxl: 1 },
             children: (
               <span className="font-normal">
                 {activeProfile?.contactPersonPhone}
@@ -344,7 +339,7 @@ export function CustomerDetail(props: {
           {
             key: "contactPersonEmail",
             label: "对接人邮箱",
-            span: 2,
+            span: { lg: 3, xl: 2, xxl: 1 },
             children: (
               <span className="font-normal">
                 {activeProfile?.contactPersonEmail}
@@ -353,6 +348,32 @@ export function CustomerDetail(props: {
           },
         ]}
       />
+
+      {/* <Descriptions
+        className="!mt-4"
+        items={[
+          {
+            key: "createdAt",
+            label: "创建时间",
+            children: (
+              <span className="font-normal">
+                {dayjs(customer.createdAt).format("LLL")}
+              </span>
+            ),
+            span: "filled",
+          },
+          {
+            key: "updatedAt",
+            label: "更新时间",
+            children: (
+              <span className="font-normal">
+                {dayjs(activeProfile?.createdAt).format("LLL")}
+              </span>
+            ),
+            span: "filled",
+          },
+        ]}
+      /> */}
 
       <VisitRecordFormDrawer
         areaId={customer.area.id}

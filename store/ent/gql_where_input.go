@@ -9384,18 +9384,6 @@ type TenderWhereInput struct {
 	TenderWinAmountIsNil  bool      `json:"tenderWinAmountIsNil,omitempty"`
 	TenderWinAmountNotNil bool      `json:"tenderWinAmountNotNil,omitempty"`
 
-	// "tender_amount" field predicates.
-	TenderAmount       *float64  `json:"tenderAmount,omitempty"`
-	TenderAmountNEQ    *float64  `json:"tenderAmountNEQ,omitempty"`
-	TenderAmountIn     []float64 `json:"tenderAmountIn,omitempty"`
-	TenderAmountNotIn  []float64 `json:"tenderAmountNotIn,omitempty"`
-	TenderAmountGT     *float64  `json:"tenderAmountGT,omitempty"`
-	TenderAmountGTE    *float64  `json:"tenderAmountGTE,omitempty"`
-	TenderAmountLT     *float64  `json:"tenderAmountLT,omitempty"`
-	TenderAmountLTE    *float64  `json:"tenderAmountLTE,omitempty"`
-	TenderAmountIsNil  bool      `json:"tenderAmountIsNil,omitempty"`
-	TenderAmountNotNil bool      `json:"tenderAmountNotNil,omitempty"`
-
 	// "last_tender_amount" field predicates.
 	LastTenderAmount       *float64  `json:"lastTenderAmount,omitempty"`
 	LastTenderAmountNEQ    *float64  `json:"lastTenderAmountNEQ,omitempty"`
@@ -11783,36 +11771,6 @@ func (i *TenderWhereInput) P() (predicate.Tender, error) {
 	if i.TenderWinAmountNotNil {
 		predicates = append(predicates, tender.TenderWinAmountNotNil())
 	}
-	if i.TenderAmount != nil {
-		predicates = append(predicates, tender.TenderAmountEQ(*i.TenderAmount))
-	}
-	if i.TenderAmountNEQ != nil {
-		predicates = append(predicates, tender.TenderAmountNEQ(*i.TenderAmountNEQ))
-	}
-	if len(i.TenderAmountIn) > 0 {
-		predicates = append(predicates, tender.TenderAmountIn(i.TenderAmountIn...))
-	}
-	if len(i.TenderAmountNotIn) > 0 {
-		predicates = append(predicates, tender.TenderAmountNotIn(i.TenderAmountNotIn...))
-	}
-	if i.TenderAmountGT != nil {
-		predicates = append(predicates, tender.TenderAmountGT(*i.TenderAmountGT))
-	}
-	if i.TenderAmountGTE != nil {
-		predicates = append(predicates, tender.TenderAmountGTE(*i.TenderAmountGTE))
-	}
-	if i.TenderAmountLT != nil {
-		predicates = append(predicates, tender.TenderAmountLT(*i.TenderAmountLT))
-	}
-	if i.TenderAmountLTE != nil {
-		predicates = append(predicates, tender.TenderAmountLTE(*i.TenderAmountLTE))
-	}
-	if i.TenderAmountIsNil {
-		predicates = append(predicates, tender.TenderAmountIsNil())
-	}
-	if i.TenderAmountNotNil {
-		predicates = append(predicates, tender.TenderAmountNotNil())
-	}
 	if i.LastTenderAmount != nil {
 		predicates = append(predicates, tender.LastTenderAmountEQ(*i.LastTenderAmount))
 	}
@@ -13726,6 +13684,18 @@ type TenderProfileWhereInput struct {
 	ConstructionAreaNotNil       bool     `json:"constructionAreaNotNil,omitempty"`
 	ConstructionAreaEqualFold    *string  `json:"constructionAreaEqualFold,omitempty"`
 	ConstructionAreaContainsFold *string  `json:"constructionAreaContainsFold,omitempty"`
+
+	// "tender_amount" field predicates.
+	TenderAmount       *float64  `json:"tenderAmount,omitempty"`
+	TenderAmountNEQ    *float64  `json:"tenderAmountNEQ,omitempty"`
+	TenderAmountIn     []float64 `json:"tenderAmountIn,omitempty"`
+	TenderAmountNotIn  []float64 `json:"tenderAmountNotIn,omitempty"`
+	TenderAmountGT     *float64  `json:"tenderAmountGT,omitempty"`
+	TenderAmountGTE    *float64  `json:"tenderAmountGTE,omitempty"`
+	TenderAmountLT     *float64  `json:"tenderAmountLT,omitempty"`
+	TenderAmountLTE    *float64  `json:"tenderAmountLTE,omitempty"`
+	TenderAmountIsNil  bool      `json:"tenderAmountIsNil,omitempty"`
+	TenderAmountNotNil bool      `json:"tenderAmountNotNil,omitempty"`
 
 	// "tender_win_date" field predicates.
 	TenderWinDate       *time.Time  `json:"tenderWinDate,omitempty"`
@@ -16022,6 +15992,36 @@ func (i *TenderProfileWhereInput) P() (predicate.TenderProfile, error) {
 	}
 	if i.ConstructionAreaContainsFold != nil {
 		predicates = append(predicates, tenderprofile.ConstructionAreaContainsFold(*i.ConstructionAreaContainsFold))
+	}
+	if i.TenderAmount != nil {
+		predicates = append(predicates, tenderprofile.TenderAmountEQ(*i.TenderAmount))
+	}
+	if i.TenderAmountNEQ != nil {
+		predicates = append(predicates, tenderprofile.TenderAmountNEQ(*i.TenderAmountNEQ))
+	}
+	if len(i.TenderAmountIn) > 0 {
+		predicates = append(predicates, tenderprofile.TenderAmountIn(i.TenderAmountIn...))
+	}
+	if len(i.TenderAmountNotIn) > 0 {
+		predicates = append(predicates, tenderprofile.TenderAmountNotIn(i.TenderAmountNotIn...))
+	}
+	if i.TenderAmountGT != nil {
+		predicates = append(predicates, tenderprofile.TenderAmountGT(*i.TenderAmountGT))
+	}
+	if i.TenderAmountGTE != nil {
+		predicates = append(predicates, tenderprofile.TenderAmountGTE(*i.TenderAmountGTE))
+	}
+	if i.TenderAmountLT != nil {
+		predicates = append(predicates, tenderprofile.TenderAmountLT(*i.TenderAmountLT))
+	}
+	if i.TenderAmountLTE != nil {
+		predicates = append(predicates, tenderprofile.TenderAmountLTE(*i.TenderAmountLTE))
+	}
+	if i.TenderAmountIsNil {
+		predicates = append(predicates, tenderprofile.TenderAmountIsNil())
+	}
+	if i.TenderAmountNotNil {
+		predicates = append(predicates, tenderprofile.TenderAmountNotNil())
 	}
 	if i.TenderWinDate != nil {
 		predicates = append(predicates, tenderprofile.TenderWinDateEQ(*i.TenderWinDate))

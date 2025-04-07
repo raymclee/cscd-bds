@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<8100cc9f488ba02d28ea7352f3d705b5>>
+ * @generated SignedSource<<224465d1354aeadc6c0ae38b6e244e40>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -117,32 +117,27 @@ v4 = {
   "storageKey": null
 },
 v5 = {
-  "kind": "RequiredField",
-  "field": (v4/*: any*/),
-  "action": "NONE"
-},
-v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
 },
-v7 = {
+v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "adcode",
   "storageKey": null
 },
-v8 = {
+v7 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "__typename",
   "storageKey": null
 },
-v9 = [
+v8 = [
   {
     "alias": null,
     "args": null,
@@ -160,7 +155,7 @@ v9 = [
         "plural": false,
         "selections": [
           (v4/*: any*/),
-          (v6/*: any*/),
+          (v5/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -175,7 +170,7 @@ v9 = [
             "name": "colorHex",
             "storageKey": null
           },
-          (v8/*: any*/)
+          (v7/*: any*/)
         ],
         "storageKey": null
       },
@@ -229,53 +224,17 @@ v9 = [
     "storageKey": null
   }
 ],
-v10 = {
-  "alias": null,
+v9 = {
+  "alias": "plots",
   "args": null,
-  "concreteType": "DistrictConnection",
+  "concreteType": "PlotConnection",
   "kind": "LinkedField",
-  "name": "districts",
+  "name": "__PlotsPageQuery_plots_connection",
   "plural": false,
-  "selections": [
-    {
-      "alias": null,
-      "args": null,
-      "concreteType": "DistrictEdge",
-      "kind": "LinkedField",
-      "name": "edges",
-      "plural": true,
-      "selections": [
-        {
-          "alias": null,
-          "args": null,
-          "concreteType": "District",
-          "kind": "LinkedField",
-          "name": "node",
-          "plural": false,
-          "selections": [
-            (v5/*: any*/),
-            (v6/*: any*/),
-            (v7/*: any*/),
-            {
-              "alias": "plots",
-              "args": null,
-              "concreteType": "PlotConnection",
-              "kind": "LinkedField",
-              "name": "__PlotsPageQuery_plots_connection",
-              "plural": false,
-              "selections": (v9/*: any*/),
-              "storageKey": null
-            }
-          ],
-          "storageKey": null
-        }
-      ],
-      "storageKey": null
-    }
-  ],
+  "selections": (v8/*: any*/),
   "storageKey": null
 },
-v11 = [
+v10 = [
   {
     "kind": "Variable",
     "name": "first",
@@ -287,7 +246,7 @@ v11 = [
     "variableName": "last"
   }
 ],
-v12 = {
+v11 = {
   "alias": null,
   "args": null,
   "concreteType": "DistrictConnection",
@@ -312,21 +271,21 @@ v12 = {
           "plural": false,
           "selections": [
             (v4/*: any*/),
+            (v5/*: any*/),
             (v6/*: any*/),
-            (v7/*: any*/),
             {
               "alias": null,
-              "args": (v11/*: any*/),
+              "args": (v10/*: any*/),
               "concreteType": "PlotConnection",
               "kind": "LinkedField",
               "name": "plots",
               "plural": false,
-              "selections": (v9/*: any*/),
+              "selections": (v8/*: any*/),
               "storageKey": null
             },
             {
               "alias": null,
-              "args": (v11/*: any*/),
+              "args": (v10/*: any*/),
               "filters": null,
               "handle": "connection",
               "key": "PlotsPageQuery_plots",
@@ -342,7 +301,7 @@ v12 = {
   ],
   "storageKey": null
 },
-v13 = {
+v12 = {
   "count": null,
   "cursor": null,
   "direction": "bidirectional",
@@ -419,9 +378,14 @@ return {
                                     "name": "node",
                                     "plural": false,
                                     "selections": [
+                                      {
+                                        "kind": "RequiredField",
+                                        "field": (v4/*: any*/),
+                                        "action": "NONE",
+                                        "path": "node.areas.edges.node.provinces.edges.node.id"
+                                      },
                                       (v5/*: any*/),
                                       (v6/*: any*/),
-                                      (v7/*: any*/),
                                       {
                                         "alias": null,
                                         "args": null,
@@ -446,10 +410,56 @@ return {
                                                 "name": "node",
                                                 "plural": false,
                                                 "selections": [
+                                                  {
+                                                    "kind": "RequiredField",
+                                                    "field": (v4/*: any*/),
+                                                    "action": "NONE",
+                                                    "path": "node.areas.edges.node.provinces.edges.node.cities.edges.node.id"
+                                                  },
                                                   (v5/*: any*/),
                                                   (v6/*: any*/),
-                                                  (v7/*: any*/),
-                                                  (v10/*: any*/)
+                                                  {
+                                                    "alias": null,
+                                                    "args": null,
+                                                    "concreteType": "DistrictConnection",
+                                                    "kind": "LinkedField",
+                                                    "name": "districts",
+                                                    "plural": false,
+                                                    "selections": [
+                                                      {
+                                                        "alias": null,
+                                                        "args": null,
+                                                        "concreteType": "DistrictEdge",
+                                                        "kind": "LinkedField",
+                                                        "name": "edges",
+                                                        "plural": true,
+                                                        "selections": [
+                                                          {
+                                                            "alias": null,
+                                                            "args": null,
+                                                            "concreteType": "District",
+                                                            "kind": "LinkedField",
+                                                            "name": "node",
+                                                            "plural": false,
+                                                            "selections": [
+                                                              {
+                                                                "kind": "RequiredField",
+                                                                "field": (v4/*: any*/),
+                                                                "action": "NONE",
+                                                                "path": "node.areas.edges.node.provinces.edges.node.cities.edges.node.districts.edges.node.id"
+                                                              },
+                                                              (v5/*: any*/),
+                                                              (v6/*: any*/),
+                                                              (v9/*: any*/)
+                                                            ],
+                                                            "storageKey": null
+                                                          }
+                                                        ],
+                                                        "storageKey": null
+                                                      }
+                                                    ],
+                                                    "storageKey": null
+                                                  }
                                                 ],
                                                 "storageKey": null
                                               }
@@ -459,7 +469,48 @@ return {
                                         ],
                                         "storageKey": null
                                       },
-                                      (v10/*: any*/)
+                                      {
+                                        "alias": null,
+                                        "args": null,
+                                        "concreteType": "DistrictConnection",
+                                        "kind": "LinkedField",
+                                        "name": "districts",
+                                        "plural": false,
+                                        "selections": [
+                                          {
+                                            "alias": null,
+                                            "args": null,
+                                            "concreteType": "DistrictEdge",
+                                            "kind": "LinkedField",
+                                            "name": "edges",
+                                            "plural": true,
+                                            "selections": [
+                                              {
+                                                "alias": null,
+                                                "args": null,
+                                                "concreteType": "District",
+                                                "kind": "LinkedField",
+                                                "name": "node",
+                                                "plural": false,
+                                                "selections": [
+                                                  {
+                                                    "kind": "RequiredField",
+                                                    "field": (v4/*: any*/),
+                                                    "action": "NONE",
+                                                    "path": "node.areas.edges.node.provinces.edges.node.districts.edges.node.id"
+                                                  },
+                                                  (v5/*: any*/),
+                                                  (v6/*: any*/),
+                                                  (v9/*: any*/)
+                                                ],
+                                                "storageKey": null
+                                              }
+                                            ],
+                                            "storageKey": null
+                                          }
+                                        ],
+                                        "storageKey": null
+                                      }
                                     ],
                                     "storageKey": null
                                   }
@@ -507,7 +558,7 @@ return {
         "name": "node",
         "plural": false,
         "selections": [
-          (v8/*: any*/),
+          (v7/*: any*/),
           (v4/*: any*/),
           {
             "kind": "InlineFragment",
@@ -561,8 +612,8 @@ return {
                                     "plural": false,
                                     "selections": [
                                       (v4/*: any*/),
+                                      (v5/*: any*/),
                                       (v6/*: any*/),
-                                      (v7/*: any*/),
                                       {
                                         "alias": null,
                                         "args": null,
@@ -588,9 +639,9 @@ return {
                                                 "plural": false,
                                                 "selections": [
                                                   (v4/*: any*/),
+                                                  (v5/*: any*/),
                                                   (v6/*: any*/),
-                                                  (v7/*: any*/),
-                                                  (v12/*: any*/)
+                                                  (v11/*: any*/)
                                                 ],
                                                 "storageKey": null
                                               }
@@ -600,7 +651,7 @@ return {
                                         ],
                                         "storageKey": null
                                       },
-                                      (v12/*: any*/)
+                                      (v11/*: any*/)
                                     ],
                                     "storageKey": null
                                   }
@@ -634,8 +685,8 @@ return {
     "id": null,
     "metadata": {
       "connection": [
-        (v13/*: any*/),
-        (v13/*: any*/)
+        (v12/*: any*/),
+        (v12/*: any*/)
       ]
     },
     "name": "plotsPageQuery",

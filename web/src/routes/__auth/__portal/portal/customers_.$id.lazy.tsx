@@ -87,7 +87,6 @@ function RouteComponent() {
                   contactPersonPosition
                   contactPersonPhone
                   contactPersonEmail
-
                   approver {
                     id
                     name
@@ -156,9 +155,11 @@ function RouteComponent() {
   }
 
   return (
-    <div className="grid grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4">
+    <div className="flex flex-wrap gap-2">
+      {/* <div className="grid grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4"> */}
       <Card
-        className="py-2 lg:col-span-2 xl:col-span-3"
+        // className="py-2 lg:col-span-2 xl:col-span-3"
+        className="py-2 md:w-full lg:flex-1"
         title={
           <CustomerDetail
             customer={customer}
@@ -188,11 +189,13 @@ function RouteComponent() {
         {/* {tab === 2 && data.user && <CustomerVisitRecordList user={data.user} />} */}
       </Card>
 
-      <div className={cn("top-28 mt-8 self-start lg:sticky")}>
+      <div
+        className={cn("top-28 mt-8 w-full self-start lg:sticky lg:w-[340px]")}
+      >
         <ScrollArea className={cn("h-[calc(100vh-128px)]")}>
           <Timeline
             mode="left"
-            className="py-2 pr-4 lg:-ml-20"
+            className="-ml-28 py-2 pr-4"
             items={customer.profiles?.edges?.map((e, i) => {
               const isFirst =
                 customer.profiles?.edges &&
@@ -255,22 +258,24 @@ function RouteComponent() {
                     <div className="text-sm text-gray-500">
                       {`${e?.node?.createdBy?.name} ${action}客户`}
                     </div>
-                    {isApproved && (
+                    {(isApproved || isRejected) && (
                       <>
                         {e?.node.approvalDate && (
                           <div className="text-sm text-gray-500">
                             {dayjs(e?.node.approvalDate).format("LLL")}
                           </div>
                         )}
-                        <div className="text-sm text-gray-500">
-                          {e?.node?.approver?.name || "系统"} 批核了
-                        </div>
+                        {isApproved && (
+                          <div className="text-sm text-gray-500">
+                            {e?.node?.approver?.name || "系统"} 批核了
+                          </div>
+                        )}
+                        {isRejected && (
+                          <div className="text-sm text-gray-500">
+                            {e?.node?.approver?.name || "系统"} 拒绝了
+                          </div>
+                        )}
                       </>
-                    )}
-                    {isRejected && (
-                      <div className="text-sm text-gray-500">
-                        {e?.node?.approver?.name || "系统"} 拒绝了
-                      </div>
                     )}
                   </Link>
                 ),

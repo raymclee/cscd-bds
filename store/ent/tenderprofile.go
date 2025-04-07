@@ -139,6 +139,8 @@ type TenderProfile struct {
 	TenderClosingDate *time.Time `json:"tender_closing_date,omitempty"`
 	// 施工面積，只限港澳
 	ConstructionArea *string `json:"construction_area,omitempty"`
+	// 投標金額
+	TenderAmount *float64 `json:"tender_amount,omitempty"`
 	// 得標日期，只限港澳
 	TenderWinDate *time.Time `json:"tender_win_date,omitempty"`
 	// 得標金額
@@ -291,7 +293,7 @@ func (*TenderProfile) scanValues(columns []string) ([]any, error) {
 			values[i] = new([]byte)
 		case tenderprofile.FieldPrepareToBid, tenderprofile.FieldKeyProject:
 			values[i] = new(sql.NullBool)
-		case tenderprofile.FieldEstimatedAmount, tenderprofile.FieldTenderWinAmount, tenderprofile.FieldLastTenderAmount:
+		case tenderprofile.FieldEstimatedAmount, tenderprofile.FieldTenderAmount, tenderprofile.FieldTenderWinAmount, tenderprofile.FieldLastTenderAmount:
 			values[i] = new(sql.NullFloat64)
 		case tenderprofile.FieldStatus, tenderprofile.FieldApprovalStatus, tenderprofile.FieldClassify, tenderprofile.FieldLevelInvolved, tenderprofile.FieldSizeAndValueRating, tenderprofile.FieldCreditAndPaymentRating, tenderprofile.FieldTimeLimitRating, tenderprofile.FieldCustomerRelationshipRating, tenderprofile.FieldCompetitivePartnershipRating:
 			values[i] = new(sql.NullInt64)
@@ -719,6 +721,13 @@ func (tp *TenderProfile) assignValues(columns []string, values []any) error {
 				tp.ConstructionArea = new(string)
 				*tp.ConstructionArea = value.String
 			}
+		case tenderprofile.FieldTenderAmount:
+			if value, ok := values[i].(*sql.NullFloat64); !ok {
+				return fmt.Errorf("unexpected type %T for field tender_amount", values[i])
+			} else if value.Valid {
+				tp.TenderAmount = new(float64)
+				*tp.TenderAmount = value.Float64
+			}
 		case tenderprofile.FieldTenderWinDate:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field tender_win_date", values[i])
@@ -1134,6 +1143,11 @@ func (tp *TenderProfile) String() string {
 	if v := tp.ConstructionArea; v != nil {
 		builder.WriteString("construction_area=")
 		builder.WriteString(*v)
+	}
+	builder.WriteString(", ")
+	if v := tp.TenderAmount; v != nil {
+		builder.WriteString("tender_amount=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteString(", ")
 	if v := tp.TenderWinDate; v != nil {

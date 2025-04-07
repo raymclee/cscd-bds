@@ -1180,6 +1180,33 @@ func (tpu *TenderProfileUpdate) ClearConstructionArea() *TenderProfileUpdate {
 	return tpu
 }
 
+// SetTenderAmount sets the "tender_amount" field.
+func (tpu *TenderProfileUpdate) SetTenderAmount(f float64) *TenderProfileUpdate {
+	tpu.mutation.ResetTenderAmount()
+	tpu.mutation.SetTenderAmount(f)
+	return tpu
+}
+
+// SetNillableTenderAmount sets the "tender_amount" field if the given value is not nil.
+func (tpu *TenderProfileUpdate) SetNillableTenderAmount(f *float64) *TenderProfileUpdate {
+	if f != nil {
+		tpu.SetTenderAmount(*f)
+	}
+	return tpu
+}
+
+// AddTenderAmount adds f to the "tender_amount" field.
+func (tpu *TenderProfileUpdate) AddTenderAmount(f float64) *TenderProfileUpdate {
+	tpu.mutation.AddTenderAmount(f)
+	return tpu
+}
+
+// ClearTenderAmount clears the value of the "tender_amount" field.
+func (tpu *TenderProfileUpdate) ClearTenderAmount() *TenderProfileUpdate {
+	tpu.mutation.ClearTenderAmount()
+	return tpu
+}
+
 // SetTenderWinDate sets the "tender_win_date" field.
 func (tpu *TenderProfileUpdate) SetTenderWinDate(t time.Time) *TenderProfileUpdate {
 	tpu.mutation.SetTenderWinDate(t)
@@ -1584,6 +1611,11 @@ func (tpu *TenderProfileUpdate) check() error {
 			return &ValidationError{Name: "competitive_partnership_rating", err: fmt.Errorf(`ent: validator failed for field "TenderProfile.competitive_partnership_rating": %w`, err)}
 		}
 	}
+	if v, ok := tpu.mutation.TenderAmount(); ok {
+		if err := tenderprofile.TenderAmountValidator(v); err != nil {
+			return &ValidationError{Name: "tender_amount", err: fmt.Errorf(`ent: validator failed for field "TenderProfile.tender_amount": %w`, err)}
+		}
+	}
 	if v, ok := tpu.mutation.TenderWinAmount(); ok {
 		if err := tenderprofile.TenderWinAmountValidator(v); err != nil {
 			return &ValidationError{Name: "tender_win_amount", err: fmt.Errorf(`ent: validator failed for field "TenderProfile.tender_win_amount": %w`, err)}
@@ -1982,6 +2014,15 @@ func (tpu *TenderProfileUpdate) sqlSave(ctx context.Context) (n int, err error) 
 	}
 	if tpu.mutation.ConstructionAreaCleared() {
 		_spec.ClearField(tenderprofile.FieldConstructionArea, field.TypeString)
+	}
+	if value, ok := tpu.mutation.TenderAmount(); ok {
+		_spec.SetField(tenderprofile.FieldTenderAmount, field.TypeFloat64, value)
+	}
+	if value, ok := tpu.mutation.AddedTenderAmount(); ok {
+		_spec.AddField(tenderprofile.FieldTenderAmount, field.TypeFloat64, value)
+	}
+	if tpu.mutation.TenderAmountCleared() {
+		_spec.ClearField(tenderprofile.FieldTenderAmount, field.TypeFloat64)
 	}
 	if value, ok := tpu.mutation.TenderWinDate(); ok {
 		_spec.SetField(tenderprofile.FieldTenderWinDate, field.TypeTime, value)
@@ -3403,6 +3444,33 @@ func (tpuo *TenderProfileUpdateOne) ClearConstructionArea() *TenderProfileUpdate
 	return tpuo
 }
 
+// SetTenderAmount sets the "tender_amount" field.
+func (tpuo *TenderProfileUpdateOne) SetTenderAmount(f float64) *TenderProfileUpdateOne {
+	tpuo.mutation.ResetTenderAmount()
+	tpuo.mutation.SetTenderAmount(f)
+	return tpuo
+}
+
+// SetNillableTenderAmount sets the "tender_amount" field if the given value is not nil.
+func (tpuo *TenderProfileUpdateOne) SetNillableTenderAmount(f *float64) *TenderProfileUpdateOne {
+	if f != nil {
+		tpuo.SetTenderAmount(*f)
+	}
+	return tpuo
+}
+
+// AddTenderAmount adds f to the "tender_amount" field.
+func (tpuo *TenderProfileUpdateOne) AddTenderAmount(f float64) *TenderProfileUpdateOne {
+	tpuo.mutation.AddTenderAmount(f)
+	return tpuo
+}
+
+// ClearTenderAmount clears the value of the "tender_amount" field.
+func (tpuo *TenderProfileUpdateOne) ClearTenderAmount() *TenderProfileUpdateOne {
+	tpuo.mutation.ClearTenderAmount()
+	return tpuo
+}
+
 // SetTenderWinDate sets the "tender_win_date" field.
 func (tpuo *TenderProfileUpdateOne) SetTenderWinDate(t time.Time) *TenderProfileUpdateOne {
 	tpuo.mutation.SetTenderWinDate(t)
@@ -3820,6 +3888,11 @@ func (tpuo *TenderProfileUpdateOne) check() error {
 			return &ValidationError{Name: "competitive_partnership_rating", err: fmt.Errorf(`ent: validator failed for field "TenderProfile.competitive_partnership_rating": %w`, err)}
 		}
 	}
+	if v, ok := tpuo.mutation.TenderAmount(); ok {
+		if err := tenderprofile.TenderAmountValidator(v); err != nil {
+			return &ValidationError{Name: "tender_amount", err: fmt.Errorf(`ent: validator failed for field "TenderProfile.tender_amount": %w`, err)}
+		}
+	}
 	if v, ok := tpuo.mutation.TenderWinAmount(); ok {
 		if err := tenderprofile.TenderWinAmountValidator(v); err != nil {
 			return &ValidationError{Name: "tender_win_amount", err: fmt.Errorf(`ent: validator failed for field "TenderProfile.tender_win_amount": %w`, err)}
@@ -4235,6 +4308,15 @@ func (tpuo *TenderProfileUpdateOne) sqlSave(ctx context.Context) (_node *TenderP
 	}
 	if tpuo.mutation.ConstructionAreaCleared() {
 		_spec.ClearField(tenderprofile.FieldConstructionArea, field.TypeString)
+	}
+	if value, ok := tpuo.mutation.TenderAmount(); ok {
+		_spec.SetField(tenderprofile.FieldTenderAmount, field.TypeFloat64, value)
+	}
+	if value, ok := tpuo.mutation.AddedTenderAmount(); ok {
+		_spec.AddField(tenderprofile.FieldTenderAmount, field.TypeFloat64, value)
+	}
+	if tpuo.mutation.TenderAmountCleared() {
+		_spec.ClearField(tenderprofile.FieldTenderAmount, field.TypeFloat64)
 	}
 	if value, ok := tpuo.mutation.TenderWinDate(); ok {
 		_spec.SetField(tenderprofile.FieldTenderWinDate, field.TypeTime, value)

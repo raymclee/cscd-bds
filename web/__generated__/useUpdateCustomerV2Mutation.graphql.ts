@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<8442516d78e6f5f944e87055f47cb662>>
+ * @generated SignedSource<<d52ef873a7eeaf9816d51038630290c7>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -130,20 +130,20 @@ v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "createdAt",
-  "storageKey": null
-},
-v6 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
   "name": "name",
   "storageKey": null
 },
-v7 = [
+v6 = [
   (v4/*: any*/),
-  (v6/*: any*/)
+  (v5/*: any*/)
 ],
+v7 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "createdAt",
+  "storageKey": null
+},
 v8 = {
   "alias": null,
   "args": null,
@@ -152,7 +152,7 @@ v8 = {
   "name": "createdBy",
   "plural": false,
   "selections": [
-    (v6/*: any*/),
+    (v5/*: any*/),
     (v4/*: any*/)
   ],
   "storageKey": null
@@ -227,25 +227,19 @@ v18 = {
   "kind": "LinkedField",
   "name": "sales",
   "plural": false,
-  "selections": (v7/*: any*/),
+  "selections": (v6/*: any*/),
   "storageKey": null
 },
-v19 = [
-  (v4/*: any*/),
-  (v6/*: any*/),
-  (v5/*: any*/),
-  (v8/*: any*/),
-  (v9/*: any*/),
-  (v10/*: any*/),
-  (v11/*: any*/),
-  (v12/*: any*/),
-  (v13/*: any*/),
-  (v14/*: any*/),
-  (v15/*: any*/),
-  (v16/*: any*/),
-  (v17/*: any*/),
-  (v18/*: any*/)
-],
+v19 = {
+  "alias": null,
+  "args": null,
+  "concreteType": "User",
+  "kind": "LinkedField",
+  "name": "approver",
+  "plural": false,
+  "selections": (v6/*: any*/),
+  "storageKey": null
+},
 v20 = [
   {
     "kind": "Literal",
@@ -304,7 +298,6 @@ return {
         "plural": false,
         "selections": [
           (v4/*: any*/),
-          (v5/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -312,7 +305,7 @@ return {
             "kind": "LinkedField",
             "name": "createdBy",
             "plural": false,
-            "selections": (v7/*: any*/),
+            "selections": (v6/*: any*/),
             "storageKey": null
           },
           {
@@ -324,7 +317,7 @@ return {
             "plural": false,
             "selections": [
               (v4/*: any*/),
-              (v6/*: any*/),
+              (v5/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -344,8 +337,8 @@ return {
             "plural": false,
             "selections": [
               (v4/*: any*/),
-              (v6/*: any*/),
               (v5/*: any*/),
+              (v7/*: any*/),
               (v8/*: any*/),
               (v9/*: any*/),
               (v10/*: any*/),
@@ -357,16 +350,7 @@ return {
               (v16/*: any*/),
               (v17/*: any*/),
               (v18/*: any*/),
-              {
-                "alias": null,
-                "args": null,
-                "concreteType": "User",
-                "kind": "LinkedField",
-                "name": "approver",
-                "plural": false,
-                "selections": (v7/*: any*/),
-                "storageKey": null
-              }
+              (v19/*: any*/)
             ],
             "storageKey": null
           },
@@ -377,7 +361,46 @@ return {
             "kind": "LinkedField",
             "name": "pendingProfile",
             "plural": false,
-            "selections": (v19/*: any*/),
+            "selections": [
+              (v4/*: any*/),
+              (v5/*: any*/),
+              (v7/*: any*/),
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "User",
+                "kind": "LinkedField",
+                "name": "createdBy",
+                "plural": false,
+                "selections": [
+                  (v4/*: any*/),
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "User",
+                    "kind": "LinkedField",
+                    "name": "leader",
+                    "plural": false,
+                    "selections": [
+                      (v4/*: any*/)
+                    ],
+                    "storageKey": null
+                  },
+                  (v5/*: any*/)
+                ],
+                "storageKey": null
+              },
+              (v9/*: any*/),
+              (v10/*: any*/),
+              (v11/*: any*/),
+              (v12/*: any*/),
+              (v13/*: any*/),
+              (v14/*: any*/),
+              (v15/*: any*/),
+              (v16/*: any*/),
+              (v17/*: any*/),
+              (v18/*: any*/)
+            ],
             "storageKey": null
           },
           {
@@ -414,7 +437,30 @@ return {
                     "kind": "LinkedField",
                     "name": "node",
                     "plural": false,
-                    "selections": (v19/*: any*/),
+                    "selections": [
+                      (v4/*: any*/),
+                      (v5/*: any*/),
+                      (v7/*: any*/),
+                      (v8/*: any*/),
+                      (v9/*: any*/),
+                      (v10/*: any*/),
+                      (v11/*: any*/),
+                      (v12/*: any*/),
+                      (v13/*: any*/),
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "approvalDate",
+                        "storageKey": null
+                      },
+                      (v19/*: any*/),
+                      (v14/*: any*/),
+                      (v15/*: any*/),
+                      (v16/*: any*/),
+                      (v17/*: any*/),
+                      (v18/*: any*/)
+                    ],
                     "storageKey": null
                   }
                 ],
@@ -518,12 +564,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "c8bb55f2bf72a877ab40cbb0eb7c30a4",
+    "cacheID": "09e85442186488d8f1c2d4aa242e9c7b",
     "id": null,
     "metadata": {},
     "name": "useUpdateCustomerV2Mutation",
     "operationKind": "mutation",
-    "text": "mutation useUpdateCustomerV2Mutation(\n  $id: ID!\n  $customerInput: UpdateCustomerInput!\n  $profileInput: CreateCustomerProfileInput!\n) {\n  updateCustomerV2(id: $id, customerInput: $customerInput, profileInput: $profileInput) {\n    id\n    ...customerDetailFragment\n  }\n}\n\nfragment customerDetailFragment on Customer {\n  id\n  createdAt\n  createdBy {\n    id\n    name\n  }\n  area {\n    id\n    name\n    code\n  }\n  activeProfile {\n    id\n    name\n    createdAt\n    createdBy {\n      name\n      id\n    }\n    updatedAt\n    ownerType\n    industry\n    size\n    approvalStatus\n    contactPerson\n    contactPersonPosition\n    contactPersonPhone\n    contactPersonEmail\n    sales {\n      id\n      name\n    }\n    approver {\n      id\n      name\n    }\n  }\n  pendingProfile {\n    id\n    name\n    createdAt\n    createdBy {\n      name\n      id\n    }\n    updatedAt\n    ownerType\n    industry\n    size\n    approvalStatus\n    contactPerson\n    contactPersonPosition\n    contactPersonPhone\n    contactPersonEmail\n    sales {\n      id\n      name\n    }\n  }\n  profiles(orderBy: [{field: CREATED_AT, direction: DESC}]) {\n    edges {\n      node {\n        id\n        name\n        createdAt\n        createdBy {\n          name\n          id\n        }\n        updatedAt\n        ownerType\n        industry\n        size\n        approvalStatus\n        contactPerson\n        contactPersonPosition\n        contactPersonPhone\n        contactPersonEmail\n        sales {\n          id\n          name\n        }\n      }\n    }\n  }\n  lastVisitRecord: visitRecords(last: 1) {\n    edges {\n      node {\n        date\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n"
+    "text": "mutation useUpdateCustomerV2Mutation(\n  $id: ID!\n  $customerInput: UpdateCustomerInput!\n  $profileInput: CreateCustomerProfileInput!\n) {\n  updateCustomerV2(id: $id, customerInput: $customerInput, profileInput: $profileInput) {\n    id\n    ...customerDetailFragment\n  }\n}\n\nfragment customerDetailFragment on Customer {\n  id\n  createdBy {\n    id\n    name\n  }\n  area {\n    id\n    name\n    code\n  }\n  activeProfile {\n    id\n    name\n    createdAt\n    createdBy {\n      name\n      id\n    }\n    updatedAt\n    ownerType\n    industry\n    size\n    approvalStatus\n    contactPerson\n    contactPersonPosition\n    contactPersonPhone\n    contactPersonEmail\n    sales {\n      id\n      name\n    }\n    approver {\n      id\n      name\n    }\n  }\n  pendingProfile {\n    id\n    name\n    createdAt\n    createdBy {\n      id\n      leader {\n        id\n      }\n      name\n    }\n    updatedAt\n    ownerType\n    industry\n    size\n    approvalStatus\n    contactPerson\n    contactPersonPosition\n    contactPersonPhone\n    contactPersonEmail\n    sales {\n      id\n      name\n    }\n  }\n  profiles(orderBy: [{field: CREATED_AT, direction: DESC}]) {\n    edges {\n      node {\n        id\n        name\n        createdAt\n        createdBy {\n          name\n          id\n        }\n        updatedAt\n        ownerType\n        industry\n        size\n        approvalStatus\n        approvalDate\n        approver {\n          id\n          name\n        }\n        contactPerson\n        contactPersonPosition\n        contactPersonPhone\n        contactPersonEmail\n        sales {\n          id\n          name\n        }\n      }\n    }\n  }\n  lastVisitRecord: visitRecords(last: 1) {\n    edges {\n      node {\n        date\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n"
   }
 };
 })();

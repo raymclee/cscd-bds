@@ -129,6 +129,8 @@ const (
 	FieldTenderClosingDate = "tender_closing_date"
 	// FieldConstructionArea holds the string denoting the construction_area field in the database.
 	FieldConstructionArea = "construction_area"
+	// FieldTenderAmount holds the string denoting the tender_amount field in the database.
+	FieldTenderAmount = "tender_amount"
 	// FieldTenderWinDate holds the string denoting the tender_win_date field in the database.
 	FieldTenderWinDate = "tender_win_date"
 	// FieldTenderWinAmount holds the string denoting the tender_win_amount field in the database.
@@ -287,6 +289,7 @@ var Columns = []string{
 	FieldDeveloper,
 	FieldTenderClosingDate,
 	FieldConstructionArea,
+	FieldTenderAmount,
 	FieldTenderWinDate,
 	FieldTenderWinAmount,
 	FieldLastTenderAmount,
@@ -343,6 +346,8 @@ var (
 	DefaultPrepareToBid bool
 	// DefaultKeyProject holds the default value on creation for the "key_project" field.
 	DefaultKeyProject bool
+	// TenderAmountValidator is a validator for the "tender_amount" field. It is called by the builders before save.
+	TenderAmountValidator func(float64) error
 	// TenderWinAmountValidator is a validator for the "tender_win_amount" field. It is called by the builders before save.
 	TenderWinAmountValidator func(float64) error
 	// LastTenderAmountValidator is a validator for the "last_tender_amount" field. It is called by the builders before save.
@@ -622,6 +627,11 @@ func ByTenderClosingDate(opts ...sql.OrderTermOption) OrderOption {
 // ByConstructionArea orders the results by the construction_area field.
 func ByConstructionArea(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldConstructionArea, opts...).ToFunc()
+}
+
+// ByTenderAmount orders the results by the tender_amount field.
+func ByTenderAmount(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldTenderAmount, opts...).ToFunc()
 }
 
 // ByTenderWinDate orders the results by the tender_win_date field.

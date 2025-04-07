@@ -6,6 +6,7 @@ import { graphql } from "react-relay";
 import { tenderLoseModalFragment$key } from "__generated__/tenderLoseModalFragment.graphql";
 import { useLoseTender } from "~/hooks/use-lose-tender";
 import { toActualAmount } from "~/lib/helper";
+import { WinLostTenderCompetitorInput } from "__generated__/useLoseTenderMutation.graphql";
 
 export function TenderLoseModal({
   id,
@@ -34,6 +35,7 @@ export function TenderLoseModal({
     competitorRef,
   );
   const selectedCompetitors = Form.useWatch(["competitors"], form);
+  const winCompetitor = Form.useWatch(["winCompetitorId"], form);
   const { message } = App.useApp();
   const [loseTender, isLostTenderInFlight] = useLoseTender();
 
@@ -77,16 +79,33 @@ export function TenderLoseModal({
             form={form}
             clearOnDestroy
             onFinish={(values) => {
-              const competitors = values.competitors.map((c: any) => {
-                return {
-                  id: c.competitor.value,
-                  amount: toActualAmount(c.amount),
-                };
-              });
+              console.log(values);
+              const competitors: WinLostTenderCompetitorInput[] =
+                values.competitors.map((c: any) => {
+                  return {
+                    id: c.competitor.value,
+                    amount: toActualAmount(c.amount),
+                  };
+                });
+              if (
+                competitors
+                  .map((c) => c.id)
+                  .includes(values.winCompetitor.value)
+              ) {
+                message.error("中标的竞争对手不能出现在竞争对手列表中");
+                return;
+              }
               loseTender({
                 variables: {
                   id,
-                  input: { ...values, competitors },
+                  input: {
+                    tenderAmount: toActualAmount(values.tenderAmount),
+                    competitors,
+                    winCompetitor: {
+                      id: values.winCompetitor.value,
+                      amount: toActualAmount(values.winAmount),
+                    },
+                  },
                 },
                 onCompleted() {
                   message.destroy();
@@ -106,8 +125,36 @@ export function TenderLoseModal({
         )}
       >
         <Form.Item
-          name="tenderWinAmount"
-          label="中标金额"
+          name="tenderAmount"
+          label="我方投标金额"
+          className="!mt-8 md:col-span-2"
+          rules={[{ required: true }]}
+        >
+          {TenderWinAmountInput}
+        </Form.Item>
+
+        <Form.Item
+          name="winCompetitor"
+          label="中标的竞争对手"
+          className="!mt-8 md:col-span-2"
+          rules={[{ required: true }]}
+        >
+          <Select
+            showSearch
+            placeholder="请选择竞争对手"
+            labelInValue
+            options={
+              competitorsData.competitors?.edges?.map((c) => ({
+                label: c?.node?.name,
+                value: c?.node?.id,
+              })) ?? []
+            }
+          />
+        </Form.Item>
+
+        <Form.Item
+          name="winAmount"
+          label="竞争对手中标金额"
           className="!mt-8 md:col-span-2"
           rules={[{ required: true }]}
         >
@@ -145,7 +192,8 @@ export function TenderLoseModal({
                                     (c: { competitor: { value: string } }) =>
                                       c?.competitor?.value,
                                   )
-                                  .includes(c?.node?.id),
+                                  .includes(c?.node?.id) &&
+                                c?.node?.id !== winCompetitor?.value,
                             )
                             ?.map((c) => {
                               return {

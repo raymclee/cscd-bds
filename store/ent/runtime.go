@@ -722,12 +722,16 @@ func init() {
 	tenderprofileDescKeyProject := tenderprofileFields[47].Descriptor()
 	// tenderprofile.DefaultKeyProject holds the default value on creation for the key_project field.
 	tenderprofile.DefaultKeyProject = tenderprofileDescKeyProject.Default.(bool)
+	// tenderprofileDescTenderAmount is the schema descriptor for tender_amount field.
+	tenderprofileDescTenderAmount := tenderprofileFields[55].Descriptor()
+	// tenderprofile.TenderAmountValidator is a validator for the "tender_amount" field. It is called by the builders before save.
+	tenderprofile.TenderAmountValidator = tenderprofileDescTenderAmount.Validators[0].(func(float64) error)
 	// tenderprofileDescTenderWinAmount is the schema descriptor for tender_win_amount field.
-	tenderprofileDescTenderWinAmount := tenderprofileFields[56].Descriptor()
+	tenderprofileDescTenderWinAmount := tenderprofileFields[57].Descriptor()
 	// tenderprofile.TenderWinAmountValidator is a validator for the "tender_win_amount" field. It is called by the builders before save.
 	tenderprofile.TenderWinAmountValidator = tenderprofileDescTenderWinAmount.Validators[0].(func(float64) error)
 	// tenderprofileDescLastTenderAmount is the schema descriptor for last_tender_amount field.
-	tenderprofileDescLastTenderAmount := tenderprofileFields[57].Descriptor()
+	tenderprofileDescLastTenderAmount := tenderprofileFields[58].Descriptor()
 	// tenderprofile.LastTenderAmountValidator is a validator for the "last_tender_amount" field. It is called by the builders before save.
 	tenderprofile.LastTenderAmountValidator = tenderprofileDescLastTenderAmount.Validators[0].(func(float64) error)
 	// tenderprofileDescID is the schema descriptor for id field.

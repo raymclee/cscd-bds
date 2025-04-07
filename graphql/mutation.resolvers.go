@@ -997,6 +997,8 @@ func (r *mutationResolver) WinTender(ctx context.Context, id xid.ID, input model
 		SetProjectCode(input.ProjectCode).
 		SetProjectDefinition(input.ProjectDefinition).
 		SetTenderWinAmount(input.TenderWinAmount).
+		SetTenderWinDate(time.Now()).
+		SetTenderAmount(input.TenderWinAmount).
 		SetTenderID(xid.ID(id)).
 		SetCreatedByID(xid.ID(sess.UserId)).
 		SetApprovalStatus(2).
@@ -1071,15 +1073,21 @@ func (r *mutationResolver) LoseTender(ctx context.Context, id xid.ID, input mode
 		SetTenderID(xid.ID(id)).
 		SetCreatedByID(xid.ID(sess.UserId)).
 		SetApprovalStatus(2).
+		SetTenderAmount(input.TenderAmount).
 		Save(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create tender profile: %w", err)
 	}
 
-	competitorCreates := make([]*ent.TenderCompetitorCreate, len(input.Competitors))
+	competitorCreates := make([]*ent.TenderCompetitorCreate, len(input.Competitors)+1)
 	for i, c := range input.Competitors {
-		competitorCreates[i] = r.store.TenderCompetitor.Create().SetCompetitorID(xid.ID(c.ID)).SetTender(t).SetAmount(c.Amount).SetResult(true)
+		competitorCreates[i] = r.store.TenderCompetitor.Create().SetCompetitorID(xid.ID(c.ID)).SetTender(t).SetAmount(c.Amount)
 	}
+	competitorCreates[len(input.Competitors)] = r.store.TenderCompetitor.Create().
+		SetCompetitorID(xid.ID(input.WinCompetitor.ID)).
+		SetTender(t).
+		SetAmount(input.WinCompetitor.Amount).
+		SetResult(true)
 	if err := r.store.TenderCompetitor.CreateBulk(competitorCreates...).Exec(ctx); err != nil {
 		return nil, fmt.Errorf("failed to create competitors: %w", err)
 	}
