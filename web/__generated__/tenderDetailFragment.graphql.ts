@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<2ab97b5e5ac85171fb133d0c36be80ec>>
+ * @generated SignedSource<<4f8b45fef6824e4fada1a242f0a9e55b>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -79,6 +79,7 @@ export type tenderDetailFragment$data = {
     readonly ownerSituations: string | null | undefined;
     readonly prepareToBid: boolean;
     readonly projectCode: string | null | undefined;
+    readonly projectDefinition: string | null | undefined;
     readonly projectType: string | null | undefined;
     readonly province: {
       readonly adcode: number;
@@ -89,6 +90,7 @@ export type tenderDetailFragment$data = {
     readonly sizeAndValueRating: number | null | undefined;
     readonly sizeAndValueRatingOverview: string | null | undefined;
     readonly status: number;
+    readonly tenderAmount: number | null | undefined;
     readonly tenderClosingDate: any | null | undefined;
     readonly tenderCode: string | null | undefined;
     readonly tenderDate: any | null | undefined;
@@ -184,6 +186,7 @@ export type tenderDetailFragment$data = {
     readonly ownerSituations: string | null | undefined;
     readonly prepareToBid: boolean;
     readonly projectCode: string | null | undefined;
+    readonly projectDefinition: string | null | undefined;
     readonly projectType: string | null | undefined;
     readonly province: {
       readonly adcode: number;
@@ -194,6 +197,7 @@ export type tenderDetailFragment$data = {
     readonly sizeAndValueRating: number | null | undefined;
     readonly sizeAndValueRatingOverview: string | null | undefined;
     readonly status: number;
+    readonly tenderAmount: number | null | undefined;
     readonly tenderClosingDate: any | null | undefined;
     readonly tenderCode: string | null | undefined;
     readonly tenderDate: any | null | undefined;
@@ -277,6 +281,7 @@ export type tenderDetailFragment$data = {
         readonly ownerSituations: string | null | undefined;
         readonly prepareToBid: boolean;
         readonly projectCode: string | null | undefined;
+        readonly projectDefinition: string | null | undefined;
         readonly projectType: string | null | undefined;
         readonly province: {
           readonly adcode: number;
@@ -287,6 +292,7 @@ export type tenderDetailFragment$data = {
         readonly sizeAndValueRating: number | null | undefined;
         readonly sizeAndValueRatingOverview: string | null | undefined;
         readonly status: number;
+        readonly tenderAmount: number | null | undefined;
         readonly tenderClosingDate: any | null | undefined;
         readonly tenderCode: string | null | undefined;
         readonly tenderDate: any | null | undefined;
@@ -425,297 +431,311 @@ v16 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "projectType",
+  "name": "projectDefinition",
   "storageKey": null
 },
 v17 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "estimatedProjectStartDate",
+  "name": "projectType",
   "storageKey": null
 },
 v18 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "estimatedProjectEndDate",
+  "name": "estimatedProjectStartDate",
   "storageKey": null
 },
 v19 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "levelInvolved",
+  "name": "estimatedProjectEndDate",
   "storageKey": null
 },
 v20 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "costEngineer",
+  "name": "levelInvolved",
   "storageKey": null
 },
 v21 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "sizeAndValueRating",
+  "name": "costEngineer",
   "storageKey": null
 },
 v22 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "sizeAndValueRatingOverview",
+  "name": "sizeAndValueRating",
   "storageKey": null
 },
 v23 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "creditAndPaymentRating",
+  "name": "sizeAndValueRatingOverview",
   "storageKey": null
 },
 v24 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "creditAndPaymentRatingOverview",
+  "name": "creditAndPaymentRating",
   "storageKey": null
 },
 v25 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "timeLimitRating",
+  "name": "creditAndPaymentRatingOverview",
   "storageKey": null
 },
 v26 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "timeLimitRatingOverview",
+  "name": "timeLimitRating",
   "storageKey": null
 },
 v27 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "customerRelationshipRating",
+  "name": "timeLimitRatingOverview",
   "storageKey": null
 },
 v28 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "customerRelationshipRatingOverview",
+  "name": "customerRelationshipRating",
   "storageKey": null
 },
 v29 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "competitivePartnershipRating",
+  "name": "customerRelationshipRatingOverview",
   "storageKey": null
 },
 v30 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "competitivePartnershipRatingOverview",
+  "name": "competitivePartnershipRating",
   "storageKey": null
 },
 v31 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "tenderSituations",
+  "name": "competitivePartnershipRatingOverview",
   "storageKey": null
 },
 v32 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "ownerSituations",
+  "name": "tenderSituations",
   "storageKey": null
 },
 v33 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "biddingInstructions",
+  "name": "ownerSituations",
   "storageKey": null
 },
 v34 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "competitorSituations",
+  "name": "biddingInstructions",
   "storageKey": null
 },
 v35 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "tenderForm",
+  "name": "competitorSituations",
   "storageKey": null
 },
 v36 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "contractForm",
+  "name": "tenderForm",
   "storageKey": null
 },
 v37 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "managementCompany",
+  "name": "contractForm",
   "storageKey": null
 },
 v38 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "tenderingAgency",
+  "name": "managementCompany",
   "storageKey": null
 },
 v39 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "biddingDate",
+  "name": "tenderingAgency",
   "storageKey": null
 },
 v40 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "facadeConsultant",
+  "name": "biddingDate",
   "storageKey": null
 },
 v41 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "designUnit",
+  "name": "facadeConsultant",
   "storageKey": null
 },
 v42 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "consultingFirm",
+  "name": "designUnit",
   "storageKey": null
 },
 v43 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "keyProject",
+  "name": "consultingFirm",
   "storageKey": null
 },
 v44 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "currentProgress",
+  "name": "keyProject",
   "storageKey": null
 },
 v45 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "tenderWinCompany",
+  "name": "currentProgress",
   "storageKey": null
 },
 v46 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "tenderWinDate",
+  "name": "tenderWinCompany",
   "storageKey": null
 },
 v47 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "tenderWinAmount",
+  "name": "tenderWinDate",
   "storageKey": null
 },
 v48 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "lastTenderAmount",
+  "name": "tenderWinAmount",
   "storageKey": null
 },
 v49 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "attachments",
+  "name": "tenderAmount",
   "storageKey": null
 },
 v50 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "tenderCode",
+  "name": "lastTenderAmount",
   "storageKey": null
 },
 v51 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "developer",
+  "name": "attachments",
   "storageKey": null
 },
 v52 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "architect",
+  "name": "tenderCode",
   "storageKey": null
 },
 v53 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "tenderClosingDate",
+  "name": "developer",
   "storageKey": null
 },
 v54 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "constructionArea",
+  "name": "architect",
   "storageKey": null
 },
 v55 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "remark",
+  "name": "tenderClosingDate",
   "storageKey": null
 },
 v56 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "images",
+  "name": "constructionArea",
   "storageKey": null
 },
 v57 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "geoCoordinate",
+  "name": "remark",
   "storageKey": null
 },
 v58 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "images",
+  "storageKey": null
+},
+v59 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "geoCoordinate",
+  "storageKey": null
+},
+v60 = {
   "alias": null,
   "args": null,
   "concreteType": "User",
@@ -725,7 +745,7 @@ v58 = {
   "selections": (v3/*: any*/),
   "storageKey": null
 },
-v59 = {
+v61 = {
   "alias": null,
   "args": null,
   "concreteType": "User",
@@ -735,7 +755,7 @@ v59 = {
   "selections": (v3/*: any*/),
   "storageKey": null
 },
-v60 = {
+v62 = {
   "alias": null,
   "args": null,
   "concreteType": "Customer",
@@ -755,7 +775,7 @@ v60 = {
   ],
   "storageKey": null
 },
-v61 = [
+v63 = [
   (v0/*: any*/),
   {
     "alias": null,
@@ -766,37 +786,37 @@ v61 = [
   },
   (v2/*: any*/)
 ],
-v62 = {
+v64 = {
   "alias": null,
   "args": null,
   "concreteType": "Province",
   "kind": "LinkedField",
   "name": "province",
   "plural": false,
-  "selections": (v61/*: any*/),
+  "selections": (v63/*: any*/),
   "storageKey": null
 },
-v63 = {
+v65 = {
   "alias": null,
   "args": null,
   "concreteType": "City",
   "kind": "LinkedField",
   "name": "city",
   "plural": false,
-  "selections": (v61/*: any*/),
+  "selections": (v63/*: any*/),
   "storageKey": null
 },
-v64 = {
+v66 = {
   "alias": null,
   "args": null,
   "concreteType": "District",
   "kind": "LinkedField",
   "name": "district",
   "plural": false,
-  "selections": (v61/*: any*/),
+  "selections": (v63/*: any*/),
   "storageKey": null
 },
-v65 = {
+v67 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -909,10 +929,12 @@ return {
         (v58/*: any*/),
         (v59/*: any*/),
         (v60/*: any*/),
+        (v61/*: any*/),
         (v62/*: any*/),
-        (v63/*: any*/),
         (v64/*: any*/),
-        (v65/*: any*/)
+        (v65/*: any*/),
+        (v66/*: any*/),
+        (v67/*: any*/)
       ],
       "storageKey": null
     },
@@ -1005,12 +1027,14 @@ return {
         (v55/*: any*/),
         (v56/*: any*/),
         (v57/*: any*/),
+        (v58/*: any*/),
         (v59/*: any*/),
-        (v60/*: any*/),
+        (v61/*: any*/),
         (v62/*: any*/),
-        (v63/*: any*/),
         (v64/*: any*/),
-        (v65/*: any*/)
+        (v65/*: any*/),
+        (v66/*: any*/),
+        (v67/*: any*/)
       ],
       "storageKey": null
     },
@@ -1069,6 +1093,7 @@ return {
                 (v12/*: any*/),
                 (v13/*: any*/),
                 (v14/*: any*/),
+                (v49/*: any*/),
                 (v15/*: any*/),
                 (v16/*: any*/),
                 (v17/*: any*/),
@@ -1103,7 +1128,6 @@ return {
                 (v46/*: any*/),
                 (v47/*: any*/),
                 (v48/*: any*/),
-                (v49/*: any*/),
                 (v50/*: any*/),
                 (v51/*: any*/),
                 (v52/*: any*/),
@@ -1115,10 +1139,12 @@ return {
                 (v58/*: any*/),
                 (v59/*: any*/),
                 (v60/*: any*/),
+                (v61/*: any*/),
                 (v62/*: any*/),
-                (v63/*: any*/),
                 (v64/*: any*/),
-                (v65/*: any*/)
+                (v65/*: any*/),
+                (v66/*: any*/),
+                (v67/*: any*/)
               ],
               "storageKey": null
             }
@@ -1134,6 +1160,6 @@ return {
 };
 })();
 
-(node as any).hash = "c616aa66cad909ff86ebeafc2ea7c3fb";
+(node as any).hash = "79a6001f2a933867b746b2670122987b";
 
 export default node;

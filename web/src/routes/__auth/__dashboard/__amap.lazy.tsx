@@ -69,6 +69,9 @@ export const query = graphql`
                       code
                       name
                     }
+                    competitors {
+                      id
+                    }
                     followingSales {
                       id
                       name
@@ -76,6 +79,7 @@ export const query = graphql`
                     activeProfile {
                       name
                       status
+                      classify
                       createdAt
                       estimatedAmount
                       customer {

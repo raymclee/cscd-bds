@@ -143,8 +143,11 @@ export function CustomerDetail(props: {
     select: (state) =>
       customer.profiles.edges?.find((e) => e?.node?.id === state.p)?.node,
   });
-  const activeProfile =
-    selectedProfile || customer.pendingProfile || customer.activeProfile;
+  const activeProfile = selectedProfile?.id
+    ? selectedProfile
+    : customer.pendingProfile?.id
+      ? customer.pendingProfile
+      : customer.activeProfile;
 
   const isLeader =
     session.userId == customer.pendingProfile?.createdBy?.leader?.id;

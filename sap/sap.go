@@ -6,7 +6,7 @@ import (
 	"cscd-bds/store"
 	"cscd-bds/store/ent"
 	"cscd-bds/store/ent/schema/xid"
-	"cscd-bds/store/ent/tenderprofile"
+	"cscd-bds/store/ent/tender"
 	"database/sql"
 	"fmt"
 	"log"
@@ -40,18 +40,27 @@ func (s *Sap) InsertTender(st *store.Store, tenderId xid.ID) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	t, err := st.TenderProfile.Query().Where(tenderprofile.ID(tenderId)).
-		WithTender(func(tq *ent.TenderQuery) {
-			tq.WithArea()
-			tq.WithFollowingSales()
-		}).
+	te, err := st.Tender.Query().Where(tender.ID(tenderId)).
+		WithArea().
+		WithFollowingSales().
 		WithCreatedBy().
 		WithCustomer().
 		WithFinder().
+		WithActiveProfile(func(tpq *ent.TenderProfileQuery) {
+			tpq.WithFinder()
+			tpq.WithCreatedBy()
+		}).
 		Only(ctx)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Printf("failed to get tender profile: %v\n", err)
+		return
 	}
+	if te.Edges.ActiveProfile == nil {
+		fmt.Printf("tender %s has no active profile\n", tenderId)
+		return
+	}
+	t := te.Edges.ActiveProfile
+
 	var (
 		now                       = time.Now()
 		customerName              string
@@ -75,7 +84,7 @@ func (s *Sap) InsertTender(st *store.Store, tenderId xid.ID) {
 	if t.Developer != nil {
 		customerName = *t.Developer
 	} else {
-		customerName = t.Edges.Customer.Name
+		customerName = te.Edges.Customer.Name
 	}
 	if !t.TenderDate.IsZero() {
 		ti := t.TenderDate.Format("20060102")
@@ -93,7 +102,7 @@ func (s *Sap) InsertTender(st *store.Store, tenderId xid.ID) {
 	if t.ProjectType != nil {
 		projectType = *t.ProjectType
 	}
-	for _, s := range t.Edges.Tender.Edges.FollowingSales {
+	for _, s := range te.Edges.FollowingSales {
 		if s.Name != nil {
 			followingSalesNames = append(followingSalesNames, *s.Name)
 		}
@@ -101,10 +110,10 @@ func (s *Sap) InsertTender(st *store.Store, tenderId xid.ID) {
 	followingSalesNamesStr = strings.Join(followingSalesNames, ",")
 	esAmount = strconv.FormatFloat(*t.EstimatedAmount, 'f', -1, 64)
 
-	if !t.EstimatedProjectStartDate.IsZero() {
+	if t.EstimatedProjectStartDate != nil && !t.EstimatedProjectStartDate.IsZero() {
 		estimatedProjectStartDate = t.EstimatedProjectStartDate.Format("20060102")
 	}
-	if !t.EstimatedProjectEndDate.IsZero() {
+	if t.EstimatedProjectEndDate != nil && !t.EstimatedProjectEndDate.IsZero() {
 		estimatedProjectEndDate = t.EstimatedProjectEndDate.Format("20060102")
 	}
 
@@ -169,9 +178,9 @@ func (s *Sap) InsertTender(st *store.Store, tenderId xid.ID) {
 		// 		VALUES (s.MANDT, s.ZBABH, s.ZXMMC, s.ZYWQY, s.ZYZMC, s.ZSJFXR, s.ZSJFXRQ, s.ZCJZ, s.ZCJRQ, s.ZSJZT, s.ZDQGZR, s.ZLOCATION, s.ZYJJE, s.ZTBSJ, s.ZXMDM, s.ZXMLX);
 		// `,
 		mandt,
-		t.Edges.Tender.Code,
+		te.Code,
 		t.Name,
-		t.Edges.Tender.Edges.Area.Name,
+		te.Edges.Area.Name,
 		customerName,
 		t.Edges.Finder.Name,
 		t.DiscoveryDate.Format("20060102"),

@@ -253,6 +253,9 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
         levelInvolved: profile.levelInvolved,
         approvalStatus: profile.approvalStatus,
         classify: profile.classify,
+        geoCoordinate: profile.geoCoordinate
+          ? (profile.geoCoordinate as number[])
+          : [],
       });
     }
   }, [profile]);

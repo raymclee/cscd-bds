@@ -1,4 +1,5 @@
 import { useSearch } from "@tanstack/react-router";
+import dayjs from "dayjs";
 import { useMapV2Store } from "~/store";
 
 export function useAreaTenders() {
@@ -12,6 +13,11 @@ export function useAreaTenders() {
         p: state.p,
         c: state.c,
         d: state.d,
+        q: state.q,
+        status: state.status,
+        sd: state.sd,
+        ed: state.ed,
+        classify: state.classify,
       };
     },
     structuralSharing: true,
@@ -39,5 +45,28 @@ export function useAreaTenders() {
   if (search.a) {
     return allTenders.filter((t) => t?.area?.code === search.a);
   }
-  return allTenders;
+
+  return allTenders
+    .filter((t) =>
+      search.status
+        ? search.status === 0
+          ? true
+          : t?.activeProfile?.status === search.status
+        : true,
+    )
+    .filter((t) =>
+      search.sd
+        ? dayjs(t?.activeProfile?.tenderDate).isAfter(dayjs(search.sd))
+        : true,
+    )
+    .filter((t) =>
+      search.ed
+        ? dayjs(t?.activeProfile?.tenderDate).isBefore(dayjs(search.ed))
+        : true,
+    )
+    .filter((t) =>
+      search.classify
+        ? t?.activeProfile?.classify === Number(search.classify)
+        : true,
+    );
 }

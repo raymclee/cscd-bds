@@ -233,6 +233,9 @@ func (f *Feishu) StartWSClient(ctx context.Context) {
 					if err != nil {
 						return nil, err
 					}
+					if err := profile.Edges.Customer.Update().ClearPendingProfile().Exec(ctx); err != nil {
+						return nil, fmt.Errorf("failed to approve customer: %w", err)
+					}
 
 					cpp, err := f.store.CustomerProfile.Query().
 						Where(customerprofile.ID(cp.ID)).

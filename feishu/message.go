@@ -32,6 +32,9 @@ func (f *Feishu) SendChatMessage(ctx context.Context, params *ChatMessageParams)
 		// if params.Tender.Edges.UpdatedBy != nil {
 		// 	tv["created_by_id"] = params.Tender.Edges.UpdatedBy.OpenID
 		// }
+		if params.TenderProfile.Developer != nil {
+			tv["customer_name"] = params.TenderProfile.Developer
+		}
 		contentData = map[string]any{
 			"template_id":       params.TemplateId,
 			"template_variable": tv,

@@ -17,7 +17,7 @@ import {
 } from "~/components/ui/select";
 import { Area, Tender } from "~/graphql/graphql";
 import { useAreaTenders } from "~/hooks/dashboardv2/use-area-tenders";
-import { fixAmount, tenderStatusText } from "~/lib/helper";
+import { classifyText, fixAmount, tenderStatusText } from "~/lib/helper";
 import { useMapV2Store } from "~/store";
 import { Calendar } from "~/components/ui/calendar";
 import { CalendarIcon, X } from "lucide-react";
@@ -54,23 +54,6 @@ export function TenderList() {
             ? t?.activeProfile?.name
                 ?.toLowerCase()
                 .includes(state.q.toLowerCase())
-            : true,
-        )
-        .filter((t) =>
-          state.status
-            ? state.status === 0
-              ? true
-              : t?.activeProfile?.status === state.status
-            : true,
-        )
-        .filter((t) =>
-          state.sd
-            ? dayjs(t?.activeProfile?.tenderDate).isAfter(dayjs(state.sd))
-            : true,
-        )
-        .filter((t) =>
-          state.ed
-            ? dayjs(t?.activeProfile?.tenderDate).isBefore(dayjs(state.ed))
             : true,
         )
         .sort((a, b) => {
@@ -161,6 +144,10 @@ function TenderListFilter() {
     select: (state) => [state.sd, state.ed],
     structuralSharing: true,
   });
+  const classify = useSearch({
+    from: "/__auth/__dashboard/__amap/",
+    select: (state) => state.classify,
+  });
   // const [datepickerOpen, setDatepickerOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -173,6 +160,20 @@ function TenderListFilter() {
           q: e.target.value === "" ? undefined : e.target.value,
         }),
         replace: true,
+        resetScroll: false,
+      });
+    },
+    [navigate],
+  );
+
+  const onClassifyChange = useCallback(
+    (value: string) => {
+      navigate({
+        to: ".",
+        search: (prev) => ({
+          ...prev,
+          classify: value === "undefined" ? undefined : Number(value),
+        }),
         resetScroll: false,
       });
     },
@@ -232,7 +233,7 @@ function TenderListFilter() {
             : ""
       : "";
 
-  const showFilter = status || startDate || endDate;
+  const showFilter = status || classify || startDate || endDate;
 
   return (
     <>
@@ -244,6 +245,39 @@ function TenderListFilter() {
           onChange={inputChange}
         />
 
+        <Select value={String(classify)} onValueChange={onClassifyChange}>
+          <SelectTrigger className="h-8 w-56 border-sky-800 bg-transparent focus:ring-sky-500 focus:ring-offset-0">
+            <SelectValue placeholder="分类" />
+          </SelectTrigger>
+          <SelectContent className="border-sky-800 bg-sky-950 text-white">
+            <SelectItem
+              value="undefined"
+              className="hover:bg-sky-700 focus:bg-sky-700 focus:text-white"
+              disabled
+            >
+              分类
+            </SelectItem>
+            <SelectItem
+              value="1"
+              className="hover:bg-sky-700 focus:bg-sky-700 focus:text-white"
+            >
+              A类
+            </SelectItem>
+            <SelectItem
+              value="2"
+              className="hover:bg-sky-700 focus:bg-sky-700 focus:text-white"
+            >
+              B类
+            </SelectItem>
+            <SelectItem
+              value="3"
+              className="hover:bg-sky-700 focus:bg-sky-700 focus:text-white"
+            >
+              C类
+            </SelectItem>
+          </SelectContent>
+        </Select>
+
         <Select value={String(status)} onValueChange={onStatusChange}>
           <SelectTrigger className="h-8 w-56 border-sky-800 bg-transparent focus:ring-sky-500 focus:ring-offset-0">
             <SelectValue placeholder="状态" />
@@ -252,8 +286,9 @@ function TenderListFilter() {
             <SelectItem
               value="undefined"
               className="hover:bg-sky-700 focus:bg-sky-700 focus:text-white"
+              disabled
             >
-              全部
+              状态
             </SelectItem>
             <SelectItem
               value="1"
@@ -411,6 +446,18 @@ function TenderListFilter() {
               </>
             )}
 
+            {classify && (
+              <>
+                <div className="hidden h-4 w-[1px] animate-pulse bg-gradient-to-b from-transparent via-sky-500/30 to-transparent lg:block"></div>
+                <div className="flex items-center gap-2">
+                  <span className="animate-typewriter">分类：</span>
+                  <span className="animate-typewriter text-cyan-300">
+                    {classifyText(classify)}
+                  </span>
+                </div>
+              </>
+            )}
+
             {(startDate || endDate) && (
               <>
                 <div className="h-4 w-[1px] animate-pulse"></div>
@@ -439,6 +486,7 @@ function TenderListFilter() {
                   status: undefined,
                   sd: undefined,
                   ed: undefined,
+                  classify: undefined,
                 }),
                 resetScroll: false,
               });
@@ -623,6 +671,11 @@ function TenderListItem({ tender }: { tender: Tender }) {
 
           <div className="flex flex-1 items-end justify-between gap-2">
             <div className="group-hover:text-shadow-sm text-sm transition-all duration-300 group-hover:scale-110 group-hover:text-cyan-400">
+              {tender?.activeProfile?.classify && (
+                <span className="mr-2">
+                  {classifyText(tender?.activeProfile?.classify)}
+                </span>
+              )}
               {tenderStatusText(tender?.activeProfile?.status)}
             </div>
             <div className="group-hover:text-shadow-sm flex items-center text-sm transition-all duration-300 group-hover:scale-110 group-hover:text-cyan-400">

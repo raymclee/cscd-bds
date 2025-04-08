@@ -1,37 +1,25 @@
-import {
-  CheckOutlined,
-  ClockCircleOutlined,
-  EditOutlined,
-  HistoryOutlined,
-} from "@ant-design/icons";
-import {
-  Link,
-  useNavigate,
-  useRouteContext,
-  useSearch,
-} from "@tanstack/react-router";
+import { EditOutlined } from "@ant-design/icons";
+import { Link, useRouteContext, useSearch } from "@tanstack/react-router";
 import {
   tenderDetailFragment$data,
   tenderDetailFragment$key,
 } from "__generated__/tenderDetailFragment.graphql";
+import { tenderLoseModalFragment$key } from "__generated__/tenderLoseModalFragment.graphql";
+import { tenderWinModalFragment$key } from "__generated__/tenderWinModalFragment.graphql";
 import {
-  Affix,
-  App,
   Button,
   Card,
   Descriptions,
+  DescriptionsProps,
   Empty,
   Image,
   List,
-  Modal,
   Space,
   Tag,
   Timeline,
 } from "antd";
 import dayjs from "dayjs";
 import { graphql, useFragment } from "react-relay";
-import { useUpdateTender } from "~/hooks/use-update-tender";
-import { isSH } from "~/lib/areas";
 import {
   approvalStatusTagColor,
   approvalStatusText,
@@ -42,16 +30,12 @@ import {
   tenderStatusText,
 } from "~/lib/helper";
 import { canEdit } from "~/lib/permission";
-import { TenderWinModal } from "./tender-win-modal";
-import { TenderLoseModal } from "./tender-lose-modal";
-import { tenderWinModalFragment$key } from "__generated__/tenderWinModalFragment.graphql";
-import { tenderLoseModalFragment$key } from "__generated__/tenderLoseModalFragment.graphql";
-import { Check, History } from "lucide-react";
-import { useEffect, useState } from "react";
 import { cn } from "~/lib/utils";
 import { ScrollArea } from "../ui/scroll-area";
-import { useApproveTender } from "~/hooks/use-approve-tender";
-import { useRejectTender } from "~/hooks/use-reject-tender";
+import { ApprovalModal } from "./approval-modal";
+import { TenderLoseModal } from "./tender-lose-modal";
+import { TenderWinModal } from "./tender-win-modal";
+
 type TenderDetailProps = {
   queryRef: tenderDetailFragment$key;
   competitorRef: tenderWinModalFragment$key;
@@ -90,6 +74,7 @@ export const TenderDetailFragment = graphql`
       contractor
       prepareToBid
       projectCode
+      projectDefinition
       projectType
       estimatedProjectStartDate
       estimatedProjectEndDate
@@ -122,6 +107,7 @@ export const TenderDetailFragment = graphql`
       tenderWinCompany
       tenderWinDate
       tenderWinAmount
+      tenderAmount
       lastTenderAmount
       attachments
       tenderCode
@@ -188,6 +174,7 @@ export const TenderDetailFragment = graphql`
       contractor
       prepareToBid
       projectCode
+      projectDefinition
       projectType
       estimatedProjectStartDate
       estimatedProjectEndDate
@@ -220,6 +207,7 @@ export const TenderDetailFragment = graphql`
       tenderWinCompany
       tenderWinDate
       tenderWinAmount
+      tenderAmount
       lastTenderAmount
       attachments
       tenderCode
@@ -282,7 +270,9 @@ export const TenderDetailFragment = graphql`
           fullAddress
           contractor
           prepareToBid
+          tenderAmount
           projectCode
+          projectDefinition
           projectType
           estimatedProjectStartDate
           estimatedProjectEndDate
@@ -549,6 +539,11 @@ function SHTender({
     finder,
     approvalStatus,
     classify,
+    createdBy,
+    tenderWinAmount,
+    projectDefinition,
+    tenderWinDate,
+    tenderAmount,
   } = selectedProfileId
     ? (profiles?.edges?.find((e) => e?.node?.id === selectedProfileId)?.node ??
       {})
@@ -557,6 +552,196 @@ function SHTender({
       : activeProfile || {};
 
   const isLeader = session.userId == pendingProfile?.createdBy?.leader?.id;
+
+  const items = [
+    {
+      key: "customer",
+      label: "业主",
+      children: (
+        <Link
+          to="/portal/customers/$id"
+          params={{ id: customer?.id || "" }}
+          className="text-blue-500 hover:text-blue-700"
+        >
+          {customer?.name}
+        </Link>
+      ),
+      span: "filled",
+    },
+    {
+      key: "fullAddress",
+      label: "地址",
+      children: fullAddress || "-",
+      span: "filled",
+    },
+    {
+      key: "status",
+      label: "状态",
+      children: tenderStatusText(status),
+    },
+
+    {
+      key: "finder",
+      label: "发现人",
+      children: finder?.name || "-",
+    },
+    {
+      key: "createdBy",
+      label: "创建人",
+      children: createdBy?.name || "-",
+    },
+    {
+      key: "followingSales",
+      label: "当前跟踪人",
+      children: followingSales?.map(({ name }) => name).join(", ") || "-",
+    },
+    {
+      key: "classify",
+      label: "分类",
+      children: classify ? classifyText(classify) : "-",
+    },
+    {
+      key: "estimatedAmount",
+      label: "预计金额",
+      children: estimatedAmount ? `￥${fixAmount(estimatedAmount)}亿元` : "-",
+    },
+    {
+      key: "tenderDate",
+      label: "招标日",
+      children: tenderDate ? dayjs(tenderDate).format("LL") : "-",
+    },
+    {
+      key: "contractor",
+      label: "总包单位",
+      children: contractor || "-",
+    },
+    {
+      key: "projectCode",
+      label: "项目代码",
+      children: projectCode || "-",
+    },
+    {
+      key: "projectType",
+      label: "项目类型",
+      children: projectTypeText(projectType) || "-",
+    },
+    {
+      key: "estimatedProjectDates",
+      label: "预计项目周期",
+      children: estimatedProjectStartDate
+        ? `${dayjs(estimatedProjectStartDate).format("LL")} ~ ${dayjs(estimatedProjectEndDate).format("LL")}`
+        : "-",
+    },
+    {
+      key: "levelInvolved",
+      label: "涉及层面",
+      children: levelInvolved ? levelInvolvedText(levelInvolved) : "-",
+    },
+    {
+      key: "keyProject",
+      label: "是否重点跟进项目",
+      children: keyProject ? "是" : "否",
+    },
+    {
+      key: "prepareToBid",
+      label: "准备投标",
+      children: prepareToBid ? "是" : "否",
+    },
+    {
+      key: "costEngineer",
+      label: "造价师",
+      children: costEngineer || "-",
+    },
+    {
+      key: "remark",
+      label: "备注",
+      children: remark || "-",
+      span: "filled",
+    },
+    {
+      key: "biddingInstructions",
+      label: "立项/投标说明",
+      children: biddingInstructions || "-",
+    },
+    {
+      key: "tenderForm",
+      label: "招采形式",
+      children: tenderForm || "-",
+    },
+    {
+      key: "contractForm",
+      label: "合同形式",
+      children: contractForm || "-",
+    },
+    {
+      key: "managementCompany",
+      label: "管理公司",
+      children: managementCompany || "-",
+    },
+    {
+      key: "tenderingAgency",
+      label: "招标代理",
+      children: tenderingAgency || "-",
+    },
+    {
+      key: "consultingFirm",
+      label: "咨询公司",
+      children: consultingFirm || "-",
+    },
+    {
+      key: "facadeConsultant",
+      label: "幕墙顾问",
+      children: facadeConsultant || "-",
+    },
+    {
+      key: "designUnit",
+      label: "设计单位",
+      children: designUnit || "-",
+    },
+    {
+      key: "currentProgress",
+      label: "当前进展",
+      children: currentProgress || "-",
+    },
+  ];
+
+  if (status == 3) {
+    items.push(
+      {
+        key: "projectCode",
+        label: "项目代码",
+        children: projectCode || "-",
+      },
+      {
+        key: "projectDefinition",
+        label: "项目定义",
+        children: projectDefinition || "-",
+      },
+      {
+        key: "tenderWinAmount",
+        label: "中标金额",
+        children: tenderWinAmount ? `￥${fixAmount(tenderWinAmount)}亿元` : "-",
+      },
+      {
+        key: "tenderWinDate",
+        label: "中标日期",
+        children: tenderWinDate ? dayjs(tenderWinDate).format("LL") : "-",
+      },
+    );
+  } else if (status == 4) {
+    items.push(
+      {
+        key: "tenderAmount",
+        label: "我方投标金额",
+        children: tenderAmount ? `￥${fixAmount(tenderAmount)}亿元` : "-",
+      },
+      {
+        key: "tenderWinDate",
+        label: "中标日期",
+        children: tenderWinDate ? dayjs(tenderWinDate).format("LL") : "-",
+      },
+    );
+  }
 
   return (
     <div className="!space-y-4 md:w-full lg:flex-1">
@@ -607,154 +792,7 @@ function SHTender({
             )}
           </div>
         }
-        items={[
-          {
-            key: "customer",
-            label: "业主",
-            children: (
-              <Link
-                to="/portal/customers/$id"
-                params={{ id: customer?.id || "" }}
-                className="text-blue-500 hover:text-blue-700"
-              >
-                {customer?.name}
-              </Link>
-            ),
-            span: "filled",
-          },
-          {
-            key: "fullAddress",
-            label: "地址",
-            children: fullAddress || "-",
-            span: "filled",
-          },
-          {
-            key: "status",
-            label: "状态",
-            children: tenderStatusText(status),
-          },
-
-          {
-            key: "finder",
-            label: "发现人",
-            children: finder?.name || "-",
-          },
-          {
-            key: "followingSales",
-            label: "当前跟踪人",
-            children: followingSales?.map(({ name }) => name).join(", ") || "-",
-          },
-          {
-            key: "classify",
-            label: "分类",
-            children: classify ? classifyText(classify) : "-",
-          },
-          {
-            key: "estimatedAmount",
-            label: "预计金额",
-            children: estimatedAmount
-              ? `￥${fixAmount(estimatedAmount)}亿元`
-              : "-",
-          },
-          {
-            key: "tenderDate",
-            label: "招标日",
-            children: tenderDate ? dayjs(tenderDate).format("LL") : "-",
-          },
-          {
-            key: "contractor",
-            label: "总包单位",
-            children: contractor || "-",
-          },
-          {
-            key: "projectCode",
-            label: "项目代码",
-            children: projectCode || "-",
-          },
-          {
-            key: "projectType",
-            label: "项目类型",
-            children: projectTypeText(projectType) || "-",
-          },
-          {
-            key: "estimatedProjectDates",
-            label: "预计项目周期",
-            children: estimatedProjectStartDate
-              ? `${dayjs(estimatedProjectStartDate).format("LL")} ~ ${dayjs(estimatedProjectEndDate).format("LL")}`
-              : "-",
-          },
-          {
-            key: "levelInvolved",
-            label: "涉及层面",
-            children: levelInvolved ? levelInvolvedText(levelInvolved) : "-",
-          },
-          {
-            key: "keyProject",
-            label: "是否重点跟进项目",
-            children: keyProject ? "是" : "否",
-          },
-          {
-            key: "prepareToBid",
-            label: "准备投标",
-            children: prepareToBid ? "是" : "否",
-          },
-          {
-            key: "costEngineer",
-            label: "造价师",
-            children: costEngineer || "-",
-          },
-          {
-            key: "remark",
-            label: "备注",
-            children: remark || "-",
-            span: "filled",
-          },
-          {
-            key: "biddingInstructions",
-            label: "立项/投标说明",
-            children: biddingInstructions || "-",
-          },
-          {
-            key: "tenderForm",
-            label: "招采形式",
-            children: tenderForm || "-",
-          },
-          {
-            key: "contractForm",
-            label: "合同形式",
-            children: contractForm || "-",
-          },
-          {
-            key: "managementCompany",
-            label: "管理公司",
-            children: managementCompany || "-",
-          },
-          {
-            key: "tenderingAgency",
-            label: "招标代理",
-            children: tenderingAgency || "-",
-          },
-          {
-            key: "consultingFirm",
-            label: "咨询公司",
-            children: consultingFirm || "-",
-          },
-          {
-            key: "facadeConsultant",
-            label: "幕墙顾问",
-            children: facadeConsultant || "-",
-          },
-          {
-            key: "designUnit",
-            label: "设计单位",
-            children: designUnit || "-",
-          },
-          {
-            key: "currentProgress",
-            label: "当前进展",
-            children: currentProgress || "-",
-          },
-        ]}
+        items={items as DescriptionsProps["items"]}
       />
 
       <Descriptions
@@ -904,6 +942,7 @@ function GAAndHWTender({ tender }: { tender: tenderDetailFragment$data }) {
     tenderWinCompany,
     lastTenderAmount,
     finder,
+    createdBy,
   } = profiles?.edges?.[0]?.node ?? {};
   return (
     <div className="!space-y-4 lg:col-span-4">
@@ -944,8 +983,13 @@ function GAAndHWTender({ tender }: { tender: tenderDetailFragment$data }) {
           },
           {
             key: "finder",
-            label: "发现人",
+            label: "商机所有人",
             children: finder?.name || "-",
+          },
+          {
+            key: "createdBy",
+            label: "创建人",
+            children: createdBy?.name || "-",
           },
           {
             key: "followingSales",
@@ -967,7 +1011,6 @@ function GAAndHWTender({ tender }: { tender: tenderDetailFragment$data }) {
             label: "施工面積",
             children: constructionArea ? constructionArea : "-",
           },
-
           {
             key: "fullAddress",
             label: "地址",
@@ -1037,130 +1080,5 @@ function GAAndHWTender({ tender }: { tender: tenderDetailFragment$data }) {
         </Carousel>
       </div> */}
     </div>
-  );
-}
-
-function ApprovalModal({ tender }: { tender: tenderDetailFragment$data }) {
-  const [open, setOpen] = useState(false);
-  const [commitApproveTenderRequest, inApproveTenderRequestFlight] =
-    useApproveTender();
-  const [commitRejectTenderRequest, inRejectTenderRequestFlight] =
-    useRejectTender();
-  const { message } = App.useApp();
-  const navigate = useNavigate();
-
-  const handleCancel = () => {
-    setOpen(false);
-  };
-
-  const handleReject = () => {
-    commitRejectTenderRequest({
-      variables: {
-        id: tender.id,
-      },
-      onCompleted: () => {
-        message.destroy();
-        message.success("拒绝成功");
-        setOpen(false);
-        navigate({
-          to: ".",
-          search: {
-            p: undefined,
-          },
-        });
-      },
-      onError: (error) => {
-        console.error(error);
-        message.destroy();
-        message.error("拒绝失败");
-      },
-    });
-  };
-
-  const handleApprove = () => {
-    commitApproveTenderRequest({
-      variables: {
-        id: tender.id,
-      },
-      onCompleted: () => {
-        message.destroy();
-        message.success("批核成功");
-        setOpen(false);
-        navigate({
-          to: ".",
-          search: {
-            p: undefined,
-          },
-        });
-      },
-      onError: (error) => {
-        console.error(error);
-        message.destroy();
-        message.error("批核失败");
-      },
-    });
-  };
-
-  const isPendingApproval = tender.pendingProfile?.approvalStatus == 1;
-
-  if (!open) {
-    return (
-      <Button
-        disabled={!isPendingApproval}
-        type="primary"
-        icon={<Check size={16} />}
-        onClick={() => {
-          setOpen(true);
-        }}
-      >
-        审批
-      </Button>
-    );
-  }
-
-  const isLoading = inApproveTenderRequestFlight || inRejectTenderRequestFlight;
-
-  return (
-    <>
-      <Button
-        disabled={!isPendingApproval}
-        type="primary"
-        icon={<Check size={16} />}
-        onClick={() => {
-          setOpen(true);
-        }}
-      >
-        审批
-      </Button>
-      <Modal
-        open={open}
-        title="审批"
-        onCancel={handleCancel}
-        footer={[
-          <Button key="back" onClick={handleCancel}>
-            取消
-          </Button>,
-          <Button
-            key="reject"
-            // type="primary"
-            loading={isLoading}
-            onClick={handleReject}
-            danger
-          >
-            拒绝
-          </Button>,
-          <Button
-            key="approve"
-            type="primary"
-            loading={isLoading}
-            onClick={handleApprove}
-          >
-            同意
-          </Button>,
-        ]}
-      >
-        <p>确定批核该申请吗？</p>
-      </Modal>
-    </>
   );
 }
