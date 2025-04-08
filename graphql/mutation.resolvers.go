@@ -1107,9 +1107,9 @@ func (r *mutationResolver) WinTender(ctx context.Context, id xid.ID, input model
 		return nil, fmt.Errorf("failed to create competitors: %w", err)
 	}
 
-	if !config.IsDev {
-		go r.sap.InsertTender(r.store, t.ID)
-	}
+	// if !config.IsDev {
+	go r.sap.InsertTender(r.store, t.ID)
+	// }
 	go func() {
 		ctxx := context.Background()
 		tpp, err := r.store.TenderProfile.Query().Where(tenderprofile.ID(tp.ID)).

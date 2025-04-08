@@ -86,7 +86,7 @@ func (s *Sap) InsertTender(st *store.Store, tenderId xid.ID) {
 	} else {
 		customerName = te.Edges.Customer.Name
 	}
-	if !t.TenderDate.IsZero() {
+	if t.TenderDate != nil && !t.TenderDate.IsZero() {
 		ti := t.TenderDate.Format("20060102")
 		tenderDate = ti
 	}
