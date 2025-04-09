@@ -20,7 +20,7 @@ import { useAreaTenders } from "~/hooks/dashboardv2/use-area-tenders";
 import { classifyText, fixAmount, tenderStatusText } from "~/lib/helper";
 import { useMapV2Store } from "~/store";
 import { Calendar } from "~/components/ui/calendar";
-import { CalendarIcon, X } from "lucide-react";
+import { CalendarIcon, ImageOff, X } from "lucide-react";
 import {
   Popover,
   PopoverContent,
@@ -639,11 +639,18 @@ function TenderListItem({ tender }: { tender: Tender }) {
             {/* Image border glow */}
             <div className="group-hover:animate-pulse-glow absolute -inset-0.5 rounded opacity-0 transition-all duration-300 group-hover:opacity-100"></div>
 
-            <img
-              src={tender?.activeProfile?.images?.at(0)}
-              alt={tender?.activeProfile?.name || ""}
-              className="relative z-10 aspect-[5/3] rounded"
-            />
+            {tender?.activeProfile?.images?.at(0) ? (
+              <img
+                src={tender?.activeProfile?.images?.at(0)}
+                alt={tender?.activeProfile?.name || ""}
+                className="relative z-10 aspect-[5/3] rounded"
+              />
+            ) : (
+              <div className="flex aspect-[5/3] flex-col items-center justify-center rounded-lg bg-gray-500/50 text-white">
+                <ImageOff className="mb-2 size-6" />
+                <span className="text-xs">暂没图片</span>
+              </div>
+            )}
 
             {/* Tech corner marker */}
             <div className="pointer-events-none absolute left-0 top-0 h-6 w-6 bg-gradient-to-br from-cyan-500/50 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>

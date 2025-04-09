@@ -68,7 +68,7 @@ func (s *Sap) InsertTender(st *store.Store, tenderId xid.ID) {
 		mandt                     string
 		tenderDate                = ""
 		followingSalesNamesStr    string
-		esAmount                  string
+		tenderWinAmount           string
 		projectCode               = ""
 		projectDefinition         = ""
 		projectType               = ""
@@ -83,7 +83,7 @@ func (s *Sap) InsertTender(st *store.Store, tenderId xid.ID) {
 	}
 	if t.Developer != nil {
 		customerName = *t.Developer
-	} else {
+	} else if te.Edges.Customer != nil {
 		customerName = te.Edges.Customer.Name
 	}
 	if t.TenderDate != nil && !t.TenderDate.IsZero() {
@@ -108,7 +108,7 @@ func (s *Sap) InsertTender(st *store.Store, tenderId xid.ID) {
 		}
 	}
 	followingSalesNamesStr = strings.Join(followingSalesNames, ",")
-	esAmount = strconv.FormatFloat(*t.EstimatedAmount, 'f', -1, 64)
+	tenderWinAmount = strconv.FormatFloat(*t.TenderWinAmount, 'f', -1, 64)
 
 	if t.EstimatedProjectStartDate != nil && !t.EstimatedProjectStartDate.IsZero() {
 		estimatedProjectStartDate = t.EstimatedProjectStartDate.Format("20060102")
@@ -150,33 +150,6 @@ func (s *Sap) InsertTender(st *store.Store, tenderId xid.ID) {
 					?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
 				)
 			`,
-		// `
-		// 	MERGE INTO ZTSD005 m
-		// 		USING (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) as s
-		// 		(MANDT, ZBABH, ZXMMC, ZYWQY, ZYZMC, ZSJFXR, ZSJFXRQ, ZCJZ, ZCJRQ, ZSJZT, ZDQGZR, ZLOCATION, ZYJJE, ZTBSJ, ZXMDM, ZXMLX)
-		// 		ON m.ZBABH = s.ZBABH
-		// 		WHEN MATCHED THEN
-		// 		UPDATE SET
-		// 			MANDT = s.MANDT,
-		// 			ZBABH = s.ZBABH,
-		// 			ZXMMC = s.ZXMMC,
-		// 			ZYWQY = s.ZYWQY,
-		// 			ZYZMC = s.ZYZMC,
-		// 			ZSJFXR = s.ZSJFXR,
-		// 			ZSJFXRQ = s.ZSJFXRQ,
-		// 			ZCJZ = s.ZCJZ,
-		// 			ZCJRQ = s.ZCJRQ,
-		// 			ZSJZT = s.ZSJZT,
-		// 			ZDQGZR = s.ZDQGZR,
-		// 			ZLOCATION = s.ZLOCATION,
-		// 			ZYJJE = s.ZYJJE,
-		// 			ZTBSJ = s.ZTBSJ,
-		// 			ZXMDM = s.ZXMDM,
-		// 			ZXMLX = s.ZXMLX
-		// 		WHEN NOT MATCHED BY TARGET THEN
-		// 		INSERT (MANDT, ZBABH, ZXMMC, ZYWQY, ZYZMC, ZSJFXR, ZSJFXRQ, ZCJZ, ZCJRQ, ZSJZT, ZDQGZR, ZLOCATION, ZYJJE, ZTBSJ, ZXMDM, ZXMLX)
-		// 		VALUES (s.MANDT, s.ZBABH, s.ZXMMC, s.ZYWQY, s.ZYZMC, s.ZSJFXR, s.ZSJFXRQ, s.ZCJZ, s.ZCJRQ, s.ZSJZT, s.ZDQGZR, s.ZLOCATION, s.ZYJJE, s.ZTBSJ, s.ZXMDM, s.ZXMLX);
-		// `,
 		mandt,
 		te.Code,
 		t.Name,
@@ -189,7 +162,7 @@ func (s *Sap) InsertTender(st *store.Store, tenderId xid.ID) {
 		"中标",
 		followingSalesNamesStr,
 		location,
-		esAmount,
+		tenderWinAmount,
 		tenderDate,
 		projectCode,
 		projectDefinition,

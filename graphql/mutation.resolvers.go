@@ -1107,9 +1107,6 @@ func (r *mutationResolver) WinTender(ctx context.Context, id xid.ID, input model
 		return nil, fmt.Errorf("failed to create competitors: %w", err)
 	}
 
-	// if !config.IsDev {
-	go r.sap.InsertTender(r.store, t.ID)
-	// }
 	go func() {
 		ctxx := context.Background()
 		tpp, err := r.store.TenderProfile.Query().Where(tenderprofile.ID(tp.ID)).
@@ -1133,10 +1130,17 @@ func (r *mutationResolver) WinTender(ctx context.Context, id xid.ID, input model
 		}
 	}()
 
-	return r.store.Tender.UpdateOneID(xid.ID(id)).
+	t, err = r.store.Tender.UpdateOneID(xid.ID(id)).
 		ClearPendingProfile().
 		SetActiveProfileID(tp.ID).
 		Save(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to update tender: %w", err)
+	}
+	// if !config.IsDev {
+	go r.sap.InsertTender(r.store, t.ID)
+	// }
+	return t, nil
 }
 
 // LoseTender is the resolver for the loseTender field.

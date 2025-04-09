@@ -18,7 +18,7 @@ func main() {
 	flag.Parse()
 	ctx := context.Background()
 
-	s := store.New(false)
+	s := store.New(true)
 
 	if *shouldMigrateTenderProfile {
 		// migrate tender profile
@@ -162,41 +162,43 @@ func main() {
 		}
 	}
 
-	// migrate customer profile
-	{
-		cs, err := s.Customer.Query().All(ctx)
-		if err != nil {
-			log.Fatalf("failed to query customers: %v", err)
-		}
+	if *shouldMigrateCustomerProfile {
 
-		for _, c := range cs {
-
-			cp, err := s.CustomerProfile.Create().
-				SetName(c.Name).
-				SetCustomerID(c.ID).
-				SetCreatedAt(c.CreatedAt).
-				SetNillableCreatedByID(c.CreatedByID).
-				SetNillableApproverID(c.ApproverID).
-				SetNillableOwnerType(c.OwnerType).
-				SetNillableIndustry(c.Industry).
-				SetNillableSize(c.Size).
-				SetNillableContactPerson(c.ContactPerson).
-				SetNillableContactPersonPosition(c.ContactPersonPosition).
-				SetNillableContactPersonPhone(c.ContactPersonPhone).
-				SetNillableContactPersonEmail(c.ContactPersonEmail).
-				SetApprovalStatus(2).
-				SetApprovalDate(c.CreatedAt).
-				SetNillableSalesID(c.SalesID).
-				Save(ctx)
+		// migrate customer profile
+		{
+			cs, err := s.Customer.Query().All(ctx)
 			if err != nil {
-				log.Fatalf("failed to save customer profile: %v", err)
+				log.Fatalf("failed to query customers: %v", err)
 			}
 
-			if err := c.Update().SetActiveProfileID(cp.ID).Exec(ctx); err != nil {
-				log.Fatalf("failed to update customer active profile: %v", err)
-			}
+			for _, c := range cs {
 
+				cp, err := s.CustomerProfile.Create().
+					SetName(c.Name).
+					SetCustomerID(c.ID).
+					SetCreatedAt(c.CreatedAt).
+					SetNillableCreatedByID(c.CreatedByID).
+					SetNillableApproverID(c.ApproverID).
+					SetNillableOwnerType(c.OwnerType).
+					SetNillableIndustry(c.Industry).
+					SetNillableSize(c.Size).
+					SetNillableContactPerson(c.ContactPerson).
+					SetNillableContactPersonPosition(c.ContactPersonPosition).
+					SetNillableContactPersonPhone(c.ContactPersonPhone).
+					SetNillableContactPersonEmail(c.ContactPersonEmail).
+					SetApprovalStatus(2).
+					SetApprovalDate(c.CreatedAt).
+					SetNillableSalesID(c.SalesID).
+					Save(ctx)
+				if err != nil {
+					log.Fatalf("failed to save customer profile: %v", err)
+				}
+
+				if err := c.Update().SetActiveProfileID(cp.ID).Exec(ctx); err != nil {
+					log.Fatalf("failed to update customer active profile: %v", err)
+				}
+
+			}
 		}
-
 	}
 }

@@ -48,6 +48,9 @@ export function useAreaTenders() {
 
   return allTenders
     .filter((t) =>
+      search.q ? t?.activeProfile?.name?.includes(search.q) : true,
+    )
+    .filter((t) =>
       search.status
         ? search.status === 0
           ? true

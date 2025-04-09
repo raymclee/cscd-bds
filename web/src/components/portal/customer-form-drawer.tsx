@@ -379,19 +379,11 @@ function CustomerForm({ queryRef }: CustomerFormProps) {
           <Select options={customerSizeOptions} />
         </Form.Item>
 
-        <Form.Item
-          name="contactPerson"
-          label="对接人姓名"
-          rules={[{ required: true }]}
-        >
+        <Form.Item name="contactPerson" label="对接人姓名">
           <Input />
         </Form.Item>
 
-        <Form.Item
-          name="contactPersonPosition"
-          label="对接人职位"
-          rules={[{ required: true }]}
-        >
+        <Form.Item name="contactPersonPosition" label="对接人职位">
           <Select
             mode="tags"
             onChange={(value) => {
@@ -419,11 +411,7 @@ function CustomerForm({ queryRef }: CustomerFormProps) {
           />
         </Form.Item>
 
-        <Form.Item
-          name="contactPersonPhone"
-          label="对接人电话"
-          rules={[{ required: true }]}
-        >
+        <Form.Item name="contactPersonPhone" label="对接人电话">
           <Input />
         </Form.Item>
 

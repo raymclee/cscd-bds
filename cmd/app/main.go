@@ -28,6 +28,8 @@ const (
 	FEISHU_APP_ID     = "cli_a7bb34cd9b65900c"
 	FEISHU_APP_SECRET = "7QgUlxBXSOKYjR7M4KsBzewHcqnPqpvn"
 
+	AMAP_KEY = "28982eb1a6a3cd956e0e0614c2fb131b"
+
 	STG_HOST     = "10.1.8.37"
 	STG_PORT     = 1433
 	STG_USER     = "bi830"
@@ -51,11 +53,11 @@ func main() {
 	sm := session.NewSession(lc, s)
 	f := feishu.NewFeishu(lc, sm, s, FEISHU_APP_ID, FEISHU_APP_SECRET)
 	sh := sap.New()
-	amap := amap.New("28982eb1a6a3cd956e0e0614c2fb131b")
+	amap := amap.New(AMAP_KEY)
 
-	// if config.IsProd || config.IsUat {
-	go f.StartWSClient(ctx)
-	// }
+	if config.IsProd {
+		go f.StartWSClient(ctx)
+	}
 
 	// stgDb, err := sql.Open("sqlserver", fmt.Sprintf("sqlserver://%s:%s@%s:%d?database=%s&connection+timeout=30", STG_USER, STG_PASSWORD, STG_HOST, STG_PORT, STG_DATABASE))
 	// if err != nil {
@@ -105,19 +107,19 @@ func main() {
 		}),
 	}))
 
-	// if config.IsProd || config.IsUat {
-	e.Use(middleware.Secure())
-	e.Use(
-		middleware.Gzip(),
-		middleware.StaticWithConfig(middleware.StaticConfig{
-			Skipper:    nil,
-			Index:      "index.html",
-			HTML5:      true,
-			Browse:     false,
-			IgnoreBase: false,
-			Filesystem: http.FS(web.DistDirFS),
-		}))
-	// }
+	if config.IsProd || config.IsUat {
+		e.Use(middleware.Secure())
+		e.Use(
+			middleware.Gzip(),
+			middleware.StaticWithConfig(middleware.StaticConfig{
+				Skipper:    nil,
+				Index:      "index.html",
+				HTML5:      true,
+				Browse:     false,
+				IgnoreBase: false,
+				Filesystem: http.FS(web.DistDirFS),
+			}))
+	}
 
 	var port string
 	if config.IsProd {
@@ -125,7 +127,7 @@ func main() {
 	} else if config.IsUat {
 		port = ":3001"
 	} else {
-		port = ":4000"
+		port = ":3000"
 	}
 	log.Fatal(e.Start(port))
 }

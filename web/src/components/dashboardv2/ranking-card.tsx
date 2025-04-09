@@ -9,6 +9,7 @@ import { useLoaderData } from "@tanstack/react-router";
 import { usePreloadedQuery } from "react-relay";
 import { query } from "~/routes/__auth/__dashboard/__amap.lazy";
 import { AmapPageQuery } from "__generated__/AmapPageQuery.graphql";
+import { useAreaTenders } from "~/hooks/dashboardv2/use-area-tenders";
 
 const numberMap = {
   1: numberOneSvg,
@@ -20,24 +21,38 @@ export const RankingCard = React.memo(function RankingCard() {
   const preload = useLoaderData({ from: "/__auth/__dashboard/__amap" });
   const data = usePreloadedQuery<AmapPageQuery>(query, preload);
 
-  const allTenders =
-    data.node?.areas?.edges?.flatMap((e) => e?.node?.tenders.edges) || [];
+  const tenders = useAreaTenders();
 
-  const win = allTenders?.filter(
-    (e) => e?.node?.activeProfile?.status == 3,
-  ).length;
+  const winCount = tenders?.filter((t) => t?.activeProfile?.status == 3).length;
 
-  const total = allTenders?.filter(
-    (e) =>
-      e?.node?.activeProfile?.status == 3 ||
-      e?.node?.activeProfile?.status == 4,
-  ).length;
+  const d = [
+    { id: "yuandong", name: "远东上海", winCount },
+    ...(data.competitors.edges?.map((e) => {
+      return {
+        id: e?.node?.id,
+        name: e?.node?.name,
+        winCount: e?.node?.tenders?.reduce((acc, cur) => {
+          if (cur?.result) {
+            return acc + 1;
+          }
+          return acc;
+        }, 0),
+      };
+    }) ?? []),
+  ];
 
-  let yuandongRendered = false;
-  let ydWinRate = 0;
-  if (total > 0) {
-    ydWinRate = (win / total) * 100;
-  }
+  const sorted = d.toSorted((a, b) => {
+    if (a.winCount == b.winCount) {
+      return 0;
+    }
+    if (!a.winCount) {
+      return 1;
+    }
+    if (!b.winCount) {
+      return -1;
+    }
+    return b.winCount - a.winCount;
+  });
 
   return (
     <Card className="relative h-56 border-none bg-slate-900/60 text-white backdrop-blur">
@@ -59,17 +74,7 @@ export const RankingCard = React.memo(function RankingCard() {
       </CardHeader>
       <CardContent className="py-2">
         <ul className="space-y-2">
-          {data.topCompetitors?.slice(0, 5).map((e, index) => {
-            let name, winRate;
-            if (!yuandongRendered && e.winRate < ydWinRate) {
-              name = "远东上海";
-              winRate = ydWinRate.toFixed(2);
-              yuandongRendered = true;
-            } else {
-              name = e.name;
-              winRate = e?.winRate.toFixed(2) ?? 0;
-            }
-
+          {sorted.slice(0, 5).map((e, index) => {
             return (
               <li className="flex items-center gap-4" key={e?.id}>
                 {index < 3 ? (
@@ -84,9 +89,14 @@ export const RankingCard = React.memo(function RankingCard() {
                   </div>
                 )}
                 <div className="flex flex-1 flex-col">
-                  <span className="line-clamp-1 text-sm">{name}</span>
+                  <span className="line-clamp-1 text-sm">{e.name}</span>
                 </div>
-                <div className="text-sm">{winRate}%</div>
+                <div className="text-sm">
+                  {tenders.length
+                    ? (((e.winCount ?? 0) / tenders.length) * 100).toFixed(2)
+                    : "0.00"}
+                  %
+                </div>
               </li>
             );
           })}

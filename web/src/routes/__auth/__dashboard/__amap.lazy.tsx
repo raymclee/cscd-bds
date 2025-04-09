@@ -145,13 +145,6 @@ export const query = graphql`
       }
     }
 
-    topCompetitors {
-      id
-      name
-      shortName
-      winRate
-    }
-
     users {
       edges {
         node {
@@ -166,6 +159,10 @@ export const query = graphql`
         node {
           id
           name
+          tenders {
+            id
+            result
+          }
         }
       }
     }

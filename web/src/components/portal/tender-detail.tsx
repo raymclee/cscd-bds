@@ -55,6 +55,13 @@ export const TenderDetailFragment = graphql`
       id
       name
     }
+    competitors {
+      amount
+      competitor {
+        id
+        name
+      }
+    }
     activeProfile {
       id
       createdAt
@@ -493,8 +500,15 @@ function SHTender({
     select: (state) => state.p,
   });
   const { session } = useRouteContext({ from: "/__auth" });
-  const { id, followingSales, area, profiles, activeProfile, pendingProfile } =
-    tender;
+  const {
+    id,
+    followingSales,
+    area,
+    profiles,
+    activeProfile,
+    pendingProfile,
+    competitors,
+  } = tender;
   const {
     name,
     status,
@@ -616,11 +630,6 @@ function SHTender({
       children: contractor || "-",
     },
     {
-      key: "projectCode",
-      label: "项目代码",
-      children: projectCode || "-",
-    },
-    {
       key: "projectType",
       label: "项目类型",
       children: projectTypeText(projectType) || "-",
@@ -727,6 +736,21 @@ function SHTender({
         label: "中标日期",
         children: tenderWinDate ? dayjs(tenderWinDate).format("LL") : "-",
       },
+      {
+        key: "competitors",
+        label: "竞争对手",
+        span: "filled",
+        children: (
+          <div>
+            {competitors?.map(({ competitor, amount }) => (
+              <div key={competitor?.id}>
+                {competitor?.name}{" "}
+                {amount ? `(￥${fixAmount(amount)}亿元)` : ""}
+              </div>
+            ))}
+          </div>
+        ),
+      },
     );
   } else if (status == 4) {
     items.push(
@@ -739,6 +763,21 @@ function SHTender({
         key: "tenderWinDate",
         label: "中标日期",
         children: tenderWinDate ? dayjs(tenderWinDate).format("LL") : "-",
+      },
+      {
+        key: "competitors",
+        label: "竞争对手",
+        span: "filled",
+        children: (
+          <div>
+            {competitors?.map(({ competitor, amount }) => (
+              <div key={competitor?.id}>
+                {competitor?.name}{" "}
+                {amount ? `(￥${fixAmount(amount)}亿元)` : ""}
+              </div>
+            ))}
+          </div>
+        ),
       },
     );
   }

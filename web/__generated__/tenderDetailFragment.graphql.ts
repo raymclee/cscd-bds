@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<4f8b45fef6824e4fada1a242f0a9e55b>>
+ * @generated SignedSource<<29b4674aa150771a8b96f698ee05f140>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -110,6 +110,13 @@ export type tenderDetailFragment$data = {
     readonly name: string;
   };
   readonly code: string;
+  readonly competitors: ReadonlyArray<{
+    readonly amount: number;
+    readonly competitor: {
+      readonly id: string;
+      readonly name: string;
+    };
+  }> | null | undefined;
   readonly followingSales: ReadonlyArray<{
     readonly id: string;
     readonly name: string | null | undefined;
@@ -858,6 +865,34 @@ return {
     {
       "alias": null,
       "args": null,
+      "concreteType": "TenderCompetitor",
+      "kind": "LinkedField",
+      "name": "competitors",
+      "plural": true,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "amount",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "Competitor",
+          "kind": "LinkedField",
+          "name": "competitor",
+          "plural": false,
+          "selections": (v3/*: any*/),
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
       "concreteType": "TenderProfile",
       "kind": "LinkedField",
       "name": "activeProfile",
@@ -1160,6 +1195,6 @@ return {
 };
 })();
 
-(node as any).hash = "79a6001f2a933867b746b2670122987b";
+(node as any).hash = "48f612bf7e723c8bfb3a707b44780096";
 
 export default node;
