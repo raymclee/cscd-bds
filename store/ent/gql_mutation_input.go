@@ -940,6 +940,7 @@ type UpdateProjectInput struct {
 	UpdatedAt                             *time.Time
 	Code                                  *string
 	IsFinished                            *bool
+	Name                                  *string
 	ClearRevenueKpi                       bool
 	RevenueKpi                            *float64
 	ClearRevenueCurrentYearCompleted      bool
@@ -1005,6 +1006,9 @@ func (i *UpdateProjectInput) Mutate(m *ProjectMutation) {
 	}
 	if v := i.IsFinished; v != nil {
 		m.SetIsFinished(*v)
+	}
+	if v := i.Name; v != nil {
+		m.SetName(*v)
 	}
 	if i.ClearRevenueKpi {
 		m.ClearRevenueKpi()

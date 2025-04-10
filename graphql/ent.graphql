@@ -3345,6 +3345,7 @@ type Project implements Node {
   是否完成
   """
   isFinished: Boolean!
+  name: String!
   """
   營業額KPI
   """
@@ -3526,6 +3527,7 @@ Properties by which Project connections can be ordered.
 enum ProjectOrderField {
   CREATED_AT
   CODE
+  NAME
 }
 """
 ProjectWhereInput is used for filtering Project objects.
@@ -3589,6 +3591,22 @@ input ProjectWhereInput {
   """
   isFinished: Boolean
   isFinishedNEQ: Boolean
+  """
+  name field predicates
+  """
+  name: String
+  nameNEQ: String
+  nameIn: [String!]
+  nameNotIn: [String!]
+  nameGT: String
+  nameGTE: String
+  nameLT: String
+  nameLTE: String
+  nameContains: String
+  nameHasPrefix: String
+  nameHasSuffix: String
+  nameEqualFold: String
+  nameContainsFold: String
   """
   revenue_kpi field predicates
   """
@@ -7672,6 +7690,7 @@ input UpdateProjectInput {
   是否完成
   """
   isFinished: Boolean
+  name: String
   """
   營業額KPI
   """

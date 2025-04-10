@@ -2908,6 +2908,11 @@ func (pr *ProjectQuery) collectField(ctx context.Context, oneNode bool, opCtx *g
 				selectedFields = append(selectedFields, project.FieldIsFinished)
 				fieldSeen[project.FieldIsFinished] = struct{}{}
 			}
+		case "name":
+			if _, ok := fieldSeen[project.FieldName]; !ok {
+				selectedFields = append(selectedFields, project.FieldName)
+				fieldSeen[project.FieldName] = struct{}{}
+			}
 		case "revenueKpi":
 			if _, ok := fieldSeen[project.FieldRevenueKpi]; !ok {
 				selectedFields = append(selectedFields, project.FieldRevenueKpi)

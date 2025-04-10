@@ -12397,6 +12397,7 @@ type ProjectMutation struct {
 	updated_at                              *time.Time
 	code                                    *string
 	is_finished                             *bool
+	name                                    *string
 	revenue_kpi                             *float64
 	addrevenue_kpi                          *float64
 	revenue_current_year_completed          *float64
@@ -12701,6 +12702,42 @@ func (m *ProjectMutation) OldIsFinished(ctx context.Context) (v bool, err error)
 // ResetIsFinished resets all changes to the "is_finished" field.
 func (m *ProjectMutation) ResetIsFinished() {
 	m.is_finished = nil
+}
+
+// SetName sets the "name" field.
+func (m *ProjectMutation) SetName(s string) {
+	m.name = &s
+}
+
+// Name returns the value of the "name" field in the mutation.
+func (m *ProjectMutation) Name() (r string, exists bool) {
+	v := m.name
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldName returns the old "name" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldName(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldName is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldName: %w", err)
+	}
+	return oldValue.Name, nil
+}
+
+// ResetName resets all changes to the "name" field.
+func (m *ProjectMutation) ResetName() {
+	m.name = nil
 }
 
 // SetRevenueKpi sets the "revenue_kpi" field.
@@ -14520,7 +14557,7 @@ func (m *ProjectMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *ProjectMutation) Fields() []string {
-	fields := make([]string, 0, 29)
+	fields := make([]string, 0, 30)
 	if m.created_at != nil {
 		fields = append(fields, project.FieldCreatedAt)
 	}
@@ -14532,6 +14569,9 @@ func (m *ProjectMutation) Fields() []string {
 	}
 	if m.is_finished != nil {
 		fields = append(fields, project.FieldIsFinished)
+	}
+	if m.name != nil {
+		fields = append(fields, project.FieldName)
 	}
 	if m.revenue_kpi != nil {
 		fields = append(fields, project.FieldRevenueKpi)
@@ -14624,6 +14664,8 @@ func (m *ProjectMutation) Field(name string) (ent.Value, bool) {
 		return m.Code()
 	case project.FieldIsFinished:
 		return m.IsFinished()
+	case project.FieldName:
+		return m.Name()
 	case project.FieldRevenueKpi:
 		return m.RevenueKpi()
 	case project.FieldRevenueCurrentYearCompleted:
@@ -14691,6 +14733,8 @@ func (m *ProjectMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldCode(ctx)
 	case project.FieldIsFinished:
 		return m.OldIsFinished(ctx)
+	case project.FieldName:
+		return m.OldName(ctx)
 	case project.FieldRevenueKpi:
 		return m.OldRevenueKpi(ctx)
 	case project.FieldRevenueCurrentYearCompleted:
@@ -14777,6 +14821,13 @@ func (m *ProjectMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetIsFinished(v)
+		return nil
+	case project.FieldName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetName(v)
 		return nil
 	case project.FieldRevenueKpi:
 		v, ok := value.(float64)
@@ -15457,6 +15508,9 @@ func (m *ProjectMutation) ResetField(name string) error {
 		return nil
 	case project.FieldIsFinished:
 		m.ResetIsFinished()
+		return nil
+	case project.FieldName:
+		m.ResetName()
 		return nil
 	case project.FieldRevenueKpi:
 		m.ResetRevenueKpi()

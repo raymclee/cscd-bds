@@ -3915,6 +3915,20 @@ var (
 			}
 		},
 	}
+	// ProjectOrderFieldName orders Project by name.
+	ProjectOrderFieldName = &ProjectOrderField{
+		Value: func(pr *Project) (ent.Value, error) {
+			return pr.Name, nil
+		},
+		column: project.FieldName,
+		toTerm: project.ByName,
+		toCursor: func(pr *Project) Cursor {
+			return Cursor{
+				ID:    pr.ID,
+				Value: pr.Name,
+			}
+		},
+	}
 )
 
 // String implement fmt.Stringer interface.
@@ -3925,6 +3939,8 @@ func (f ProjectOrderField) String() string {
 		str = "CREATED_AT"
 	case ProjectOrderFieldCode.column:
 		str = "CODE"
+	case ProjectOrderFieldName.column:
+		str = "NAME"
 	}
 	return str
 }
@@ -3945,6 +3961,8 @@ func (f *ProjectOrderField) UnmarshalGQL(v interface{}) error {
 		*f = *ProjectOrderFieldCreatedAt
 	case "CODE":
 		*f = *ProjectOrderFieldCode
+	case "NAME":
+		*f = *ProjectOrderFieldName
 	default:
 		return fmt.Errorf("%s is not a valid ProjectOrderField", str)
 	}

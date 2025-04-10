@@ -336,6 +336,7 @@ var (
 		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "code", Type: field.TypeString, Unique: true},
 		{Name: "is_finished", Type: field.TypeBool, Default: false},
+		{Name: "name", Type: field.TypeString},
 		{Name: "revenue_kpi", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"postgres": "numeric"}},
 		{Name: "revenue_current_year_completed", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"postgres": "numeric"}},
 		{Name: "revenue_accumulated_completed", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"postgres": "numeric"}},

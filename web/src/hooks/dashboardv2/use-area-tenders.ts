@@ -27,26 +27,28 @@ export function useAreaTenders() {
     areas?.edges?.flatMap((e) => e?.node?.tenders.edges?.map((e) => e?.node)) ||
     [];
 
+  let areaTenders = allTenders;
+
   if (search.d) {
-    return allTenders.filter(
+    areaTenders = areaTenders.filter(
       (t) => t?.activeProfile?.district?.adcode === search.d,
     );
   }
   if (search.c) {
-    return allTenders.filter(
+    areaTenders = areaTenders.filter(
       (t) => t?.activeProfile?.city?.adcode === search.c,
     );
   }
   if (search.p) {
-    return allTenders.filter(
+    areaTenders = areaTenders.filter(
       (t) => t?.activeProfile?.province?.adcode === search.p,
     );
   }
   if (search.a) {
-    return allTenders.filter((t) => t?.area?.code === search.a);
+    areaTenders = areaTenders.filter((t) => t?.area?.code === search.a);
   }
 
-  return allTenders
+  return areaTenders
     .filter((t) =>
       search.q ? t?.activeProfile?.name?.includes(search.q) : true,
     )
@@ -71,5 +73,27 @@ export function useAreaTenders() {
       search.classify
         ? t?.activeProfile?.classify === Number(search.classify)
         : true,
-    );
+    )
+    .toSorted((a, b) => {
+      if (a?.activeProfile?.tenderDate == null) {
+        return 1;
+      }
+      if (b?.activeProfile?.tenderDate == null) {
+        return -1;
+      }
+      return dayjs(a?.activeProfile?.tenderDate).diff(
+        dayjs(b?.activeProfile?.tenderDate),
+      );
+    })
+    .toSorted((a, b) => {
+      if (!a?.activeProfile?.tenderClosingDate) {
+        return 1;
+      }
+      if (!b?.activeProfile?.tenderClosingDate) {
+        return -1;
+      }
+      return dayjs(a?.activeProfile?.tenderClosingDate).diff(
+        dayjs(b?.activeProfile?.tenderClosingDate),
+      );
+    });
 }

@@ -1,8 +1,6 @@
 import { createLazyFileRoute, Outlet } from "@tanstack/react-router";
 import { domAnimation, LazyMotion } from "motion/react";
 import { Switcher } from "~/components/switcher";
-import { CopilotPopup } from "@copilotkit/react-ui";
-import { CopilotKit } from "@copilotkit/react-core";
 import { CustomInput } from "~/components/customer-input";
 // import "@copilotkit/react-ui/styles.css";
 

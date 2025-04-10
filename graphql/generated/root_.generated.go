@@ -441,6 +441,7 @@ type ComplexityRoot struct {
 		DiagramProcessingTotalCount      func(childComplexity int) int
 		ID                               func(childComplexity int) int
 		IsFinished                       func(childComplexity int) int
+		Name                             func(childComplexity int) int
 		OwnerVoCount                     func(childComplexity int) int
 		PayDate                          func(childComplexity int) int
 		RepairFee                        func(childComplexity int) int
@@ -2970,6 +2971,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Project.IsFinished(childComplexity), true
+
+	case "Project.name":
+		if e.complexity.Project.Name == nil {
+			break
+		}
+
+		return e.complexity.Project.Name(childComplexity), true
 
 	case "Project.ownerVoCount":
 		if e.complexity.Project.OwnerVoCount == nil {
@@ -8866,6 +8874,7 @@ type Project implements Node {
   是否完成
   """
   isFinished: Boolean!
+  name: String!
   """
   營業額KPI
   """
@@ -9047,6 +9056,7 @@ Properties by which Project connections can be ordered.
 enum ProjectOrderField {
   CREATED_AT
   CODE
+  NAME
 }
 """
 ProjectWhereInput is used for filtering Project objects.
@@ -9110,6 +9120,22 @@ input ProjectWhereInput {
   """
   isFinished: Boolean
   isFinishedNEQ: Boolean
+  """
+  name field predicates
+  """
+  name: String
+  nameNEQ: String
+  nameIn: [String!]
+  nameNotIn: [String!]
+  nameGT: String
+  nameGTE: String
+  nameLT: String
+  nameLTE: String
+  nameContains: String
+  nameHasPrefix: String
+  nameHasSuffix: String
+  nameEqualFold: String
+  nameContainsFold: String
   """
   revenue_kpi field predicates
   """
@@ -13193,6 +13219,7 @@ input UpdateProjectInput {
   是否完成
   """
   isFinished: Boolean
+  name: String
   """
   營業額KPI
   """

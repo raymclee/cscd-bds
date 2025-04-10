@@ -5757,6 +5757,8 @@ func (ec *executionContext) fieldContext_Mutation_updateProject(ctx context.Cont
 				return ec.fieldContext_Project_code(ctx, field)
 			case "isFinished":
 				return ec.fieldContext_Project_isFinished(ctx, field)
+			case "name":
+				return ec.fieldContext_Project_name(ctx, field)
 			case "revenueKpi":
 				return ec.fieldContext_Project_revenueKpi(ctx, field)
 			case "revenueCurrentYearCompleted":

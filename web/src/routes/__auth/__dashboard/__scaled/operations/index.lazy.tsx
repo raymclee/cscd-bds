@@ -40,6 +40,7 @@ function RouteComponent() {
                 node {
                   id
                   code
+                  name
                 }
               }
             }

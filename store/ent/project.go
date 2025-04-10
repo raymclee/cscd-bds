@@ -26,6 +26,8 @@ type Project struct {
 	Code string `json:"code,omitempty"`
 	// 是否完成
 	IsFinished bool `json:"is_finished,omitempty"`
+	// Name holds the value of the "name" field.
+	Name string `json:"name,omitempty"`
 	// 營業額KPI
 	RevenueKpi *float64 `json:"revenue_kpi,omitempty"`
 	// 營業額當年完成
@@ -115,7 +117,7 @@ func (*Project) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullFloat64)
 		case project.FieldOwnerVoCount, project.FieldContractorVoCount, project.FieldSubcontractorVaCount, project.FieldContractSupplementaryCount, project.FieldDiagramBdFinishCount, project.FieldDiagramBdTotalCount, project.FieldDiagramConstructionFinishCount, project.FieldDiagramConstructionTotalCount, project.FieldDiagramProcessingFinishCount, project.FieldDiagramProcessingTotalCount, project.FieldDiagramCApprovalRatioNumerator, project.FieldDiagramCApprovalRatioDenominator:
 			values[i] = new(sql.NullInt64)
-		case project.FieldCode:
+		case project.FieldCode, project.FieldName:
 			values[i] = new(sql.NullString)
 		case project.FieldCreatedAt, project.FieldUpdatedAt, project.FieldPayDate:
 			values[i] = new(sql.NullTime)
@@ -165,6 +167,12 @@ func (pr *Project) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field is_finished", values[i])
 			} else if value.Valid {
 				pr.IsFinished = value.Bool
+			}
+		case project.FieldName:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field name", values[i])
+			} else if value.Valid {
+				pr.Name = value.String
 			}
 		case project.FieldRevenueKpi:
 			if value, ok := values[i].(*sql.NullFloat64); !ok {
@@ -393,6 +401,9 @@ func (pr *Project) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("is_finished=")
 	builder.WriteString(fmt.Sprintf("%v", pr.IsFinished))
+	builder.WriteString(", ")
+	builder.WriteString("name=")
+	builder.WriteString(pr.Name)
 	builder.WriteString(", ")
 	if v := pr.RevenueKpi; v != nil {
 		builder.WriteString("revenue_kpi=")

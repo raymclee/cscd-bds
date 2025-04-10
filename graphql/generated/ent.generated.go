@@ -17551,6 +17551,50 @@ func (ec *executionContext) fieldContext_Project_isFinished(_ context.Context, f
 	return fc, nil
 }
 
+func (ec *executionContext) _Project_name(ctx context.Context, field graphql.CollectedField, obj *ent.Project) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Project_name(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Name, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Project_name(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Project",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _Project_revenueKpi(ctx context.Context, field graphql.CollectedField, obj *ent.Project) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Project_revenueKpi(ctx, field)
 	if err != nil {
@@ -18830,6 +18874,8 @@ func (ec *executionContext) fieldContext_ProjectEdge_node(_ context.Context, fie
 				return ec.fieldContext_Project_code(ctx, field)
 			case "isFinished":
 				return ec.fieldContext_Project_isFinished(ctx, field)
+			case "name":
+				return ec.fieldContext_Project_name(ctx, field)
 			case "revenueKpi":
 				return ec.fieldContext_Project_revenueKpi(ctx, field)
 			case "revenueCurrentYearCompleted":
@@ -45796,7 +45842,7 @@ func (ec *executionContext) unmarshalInputProjectWhereInput(ctx context.Context,
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdAt", "createdAtNEQ", "createdAtIn", "createdAtNotIn", "createdAtGT", "createdAtGTE", "createdAtLT", "createdAtLTE", "updatedAt", "updatedAtNEQ", "updatedAtIn", "updatedAtNotIn", "updatedAtGT", "updatedAtGTE", "updatedAtLT", "updatedAtLTE", "code", "codeNEQ", "codeIn", "codeNotIn", "codeGT", "codeGTE", "codeLT", "codeLTE", "codeContains", "codeHasPrefix", "codeHasSuffix", "codeEqualFold", "codeContainsFold", "isFinished", "isFinishedNEQ", "revenueKpi", "revenueKpiNEQ", "revenueKpiIn", "revenueKpiNotIn", "revenueKpiGT", "revenueKpiGTE", "revenueKpiLT", "revenueKpiLTE", "revenueKpiIsNil", "revenueKpiNotNil", "revenueCurrentYearCompleted", "revenueCurrentYearCompletedNEQ", "revenueCurrentYearCompletedIn", "revenueCurrentYearCompletedNotIn", "revenueCurrentYearCompletedGT", "revenueCurrentYearCompletedGTE", "revenueCurrentYearCompletedLT", "revenueCurrentYearCompletedLTE", "revenueCurrentYearCompletedIsNil", "revenueCurrentYearCompletedNotNil", "revenueAccumulatedCompleted", "revenueAccumulatedCompletedNEQ", "revenueAccumulatedCompletedIn", "revenueAccumulatedCompletedNotIn", "revenueAccumulatedCompletedGT", "revenueAccumulatedCompletedGTE", "revenueAccumulatedCompletedLT", "revenueAccumulatedCompletedLTE", "revenueAccumulatedCompletedIsNil", "revenueAccumulatedCompletedNotNil", "payDate", "payDateNEQ", "payDateIn", "payDateNotIn", "payDateGT", "payDateGTE", "payDateLT", "payDateLTE", "payDateIsNil", "payDateNotNil", "ownerVoCount", "ownerVoCountNEQ", "ownerVoCountIn", "ownerVoCountNotIn", "ownerVoCountGT", "ownerVoCountGTE", "ownerVoCountLT", "ownerVoCountLTE", "ownerVoCountIsNil", "ownerVoCountNotNil", "contractorVoCount", "contractorVoCountNEQ", "contractorVoCountIn", "contractorVoCountNotIn", "contractorVoCountGT", "contractorVoCountGTE", "contractorVoCountLT", "contractorVoCountLTE", "contractorVoCountIsNil", "contractorVoCountNotNil", "accumulateDeduction", "accumulateDeductionNEQ", "accumulateDeductionIn", "accumulateDeductionNotIn", "accumulateDeductionGT", "accumulateDeductionGTE", "accumulateDeductionLT", "accumulateDeductionLTE", "accumulateDeductionIsNil", "accumulateDeductionNotNil", "subcontractorVaCount", "subcontractorVaCountNEQ", "subcontractorVaCountIn", "subcontractorVaCountNotIn", "subcontractorVaCountGT", "subcontractorVaCountGTE", "subcontractorVaCountLT", "subcontractorVaCountLTE", "subcontractorVaCountIsNil", "subcontractorVaCountNotNil", "contractSupplementaryCount", "contractSupplementaryCountNEQ", "contractSupplementaryCountIn", "contractSupplementaryCountNotIn", "contractSupplementaryCountGT", "contractSupplementaryCountGTE", "contractSupplementaryCountLT", "contractSupplementaryCountLTE", "contractSupplementaryCountIsNil", "contractSupplementaryCountNotNil", "repairFee", "repairFeeNEQ", "repairFeeIn", "repairFeeNotIn", "repairFeeGT", "repairFeeGTE", "repairFeeLT", "repairFeeLTE", "repairFeeIsNil", "repairFeeNotNil", "unitInventoryTotal", "unitInventoryTotalNEQ", "unitInventoryTotalIn", "unitInventoryTotalNotIn", "unitInventoryTotalGT", "unitInventoryTotalGTE", "unitInventoryTotalLT", "unitInventoryTotalLTE", "unitInventoryTotalIsNil", "unitInventoryTotalNotNil", "unitComponentTotal", "unitComponentTotalNEQ", "unitComponentTotalIn", "unitComponentTotalNotIn", "unitComponentTotalGT", "unitComponentTotalGTE", "unitComponentTotalLT", "unitComponentTotalLTE", "unitComponentTotalIsNil", "unitComponentTotalNotNil", "unitComponentProduction", "unitComponentProductionNEQ", "unitComponentProductionIn", "unitComponentProductionNotIn", "unitComponentProductionGT", "unitComponentProductionGTE", "unitComponentProductionLT", "unitComponentProductionLTE", "unitComponentProductionIsNil", "unitComponentProductionNotNil", "unitComponentInstallation", "unitComponentInstallationNEQ", "unitComponentInstallationIn", "unitComponentInstallationNotIn", "unitComponentInstallationGT", "unitComponentInstallationGTE", "unitComponentInstallationLT", "unitComponentInstallationLTE", "unitComponentInstallationIsNil", "unitComponentInstallationNotNil", "bulkMaterialsTotalOrderQuantity", "bulkMaterialsTotalOrderQuantityNEQ", "bulkMaterialsTotalOrderQuantityIn", "bulkMaterialsTotalOrderQuantityNotIn", "bulkMaterialsTotalOrderQuantityGT", "bulkMaterialsTotalOrderQuantityGTE", "bulkMaterialsTotalOrderQuantityLT", "bulkMaterialsTotalOrderQuantityLTE", "bulkMaterialsTotalOrderQuantityIsNil", "bulkMaterialsTotalOrderQuantityNotNil", "bulkMaterialsCompletedQuantity", "bulkMaterialsCompletedQuantityNEQ", "bulkMaterialsCompletedQuantityIn", "bulkMaterialsCompletedQuantityNotIn", "bulkMaterialsCompletedQuantityGT", "bulkMaterialsCompletedQuantityGTE", "bulkMaterialsCompletedQuantityLT", "bulkMaterialsCompletedQuantityLTE", "bulkMaterialsCompletedQuantityIsNil", "bulkMaterialsCompletedQuantityNotNil", "bulkMaterialsUncompletedQuantity", "bulkMaterialsUncompletedQuantityNEQ", "bulkMaterialsUncompletedQuantityIn", "bulkMaterialsUncompletedQuantityNotIn", "bulkMaterialsUncompletedQuantityGT", "bulkMaterialsUncompletedQuantityGTE", "bulkMaterialsUncompletedQuantityLT", "bulkMaterialsUncompletedQuantityLTE", "bulkMaterialsUncompletedQuantityIsNil", "bulkMaterialsUncompletedQuantityNotNil", "diagramBdFinishCount", "diagramBdFinishCountNEQ", "diagramBdFinishCountIn", "diagramBdFinishCountNotIn", "diagramBdFinishCountGT", "diagramBdFinishCountGTE", "diagramBdFinishCountLT", "diagramBdFinishCountLTE", "diagramBdFinishCountIsNil", "diagramBdFinishCountNotNil", "diagramBdTotalCount", "diagramBdTotalCountNEQ", "diagramBdTotalCountIn", "diagramBdTotalCountNotIn", "diagramBdTotalCountGT", "diagramBdTotalCountGTE", "diagramBdTotalCountLT", "diagramBdTotalCountLTE", "diagramBdTotalCountIsNil", "diagramBdTotalCountNotNil", "diagramConstructionFinishCount", "diagramConstructionFinishCountNEQ", "diagramConstructionFinishCountIn", "diagramConstructionFinishCountNotIn", "diagramConstructionFinishCountGT", "diagramConstructionFinishCountGTE", "diagramConstructionFinishCountLT", "diagramConstructionFinishCountLTE", "diagramConstructionFinishCountIsNil", "diagramConstructionFinishCountNotNil", "diagramConstructionTotalCount", "diagramConstructionTotalCountNEQ", "diagramConstructionTotalCountIn", "diagramConstructionTotalCountNotIn", "diagramConstructionTotalCountGT", "diagramConstructionTotalCountGTE", "diagramConstructionTotalCountLT", "diagramConstructionTotalCountLTE", "diagramConstructionTotalCountIsNil", "diagramConstructionTotalCountNotNil", "diagramProcessingFinishCount", "diagramProcessingFinishCountNEQ", "diagramProcessingFinishCountIn", "diagramProcessingFinishCountNotIn", "diagramProcessingFinishCountGT", "diagramProcessingFinishCountGTE", "diagramProcessingFinishCountLT", "diagramProcessingFinishCountLTE", "diagramProcessingFinishCountIsNil", "diagramProcessingFinishCountNotNil", "diagramProcessingTotalCount", "diagramProcessingTotalCountNEQ", "diagramProcessingTotalCountIn", "diagramProcessingTotalCountNotIn", "diagramProcessingTotalCountGT", "diagramProcessingTotalCountGTE", "diagramProcessingTotalCountLT", "diagramProcessingTotalCountLTE", "diagramProcessingTotalCountIsNil", "diagramProcessingTotalCountNotNil", "diagramCApprovalRatioNumerator", "diagramCApprovalRatioNumeratorNEQ", "diagramCApprovalRatioNumeratorIn", "diagramCApprovalRatioNumeratorNotIn", "diagramCApprovalRatioNumeratorGT", "diagramCApprovalRatioNumeratorGTE", "diagramCApprovalRatioNumeratorLT", "diagramCApprovalRatioNumeratorLTE", "diagramCApprovalRatioNumeratorIsNil", "diagramCApprovalRatioNumeratorNotNil", "diagramCApprovalRatioDenominator", "diagramCApprovalRatioDenominatorNEQ", "diagramCApprovalRatioDenominatorIn", "diagramCApprovalRatioDenominatorNotIn", "diagramCApprovalRatioDenominatorGT", "diagramCApprovalRatioDenominatorGTE", "diagramCApprovalRatioDenominatorLT", "diagramCApprovalRatioDenominatorLTE", "diagramCApprovalRatioDenominatorIsNil", "diagramCApprovalRatioDenominatorNotNil", "hasUsers", "hasUsersWith"}
+	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdAt", "createdAtNEQ", "createdAtIn", "createdAtNotIn", "createdAtGT", "createdAtGTE", "createdAtLT", "createdAtLTE", "updatedAt", "updatedAtNEQ", "updatedAtIn", "updatedAtNotIn", "updatedAtGT", "updatedAtGTE", "updatedAtLT", "updatedAtLTE", "code", "codeNEQ", "codeIn", "codeNotIn", "codeGT", "codeGTE", "codeLT", "codeLTE", "codeContains", "codeHasPrefix", "codeHasSuffix", "codeEqualFold", "codeContainsFold", "isFinished", "isFinishedNEQ", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "revenueKpi", "revenueKpiNEQ", "revenueKpiIn", "revenueKpiNotIn", "revenueKpiGT", "revenueKpiGTE", "revenueKpiLT", "revenueKpiLTE", "revenueKpiIsNil", "revenueKpiNotNil", "revenueCurrentYearCompleted", "revenueCurrentYearCompletedNEQ", "revenueCurrentYearCompletedIn", "revenueCurrentYearCompletedNotIn", "revenueCurrentYearCompletedGT", "revenueCurrentYearCompletedGTE", "revenueCurrentYearCompletedLT", "revenueCurrentYearCompletedLTE", "revenueCurrentYearCompletedIsNil", "revenueCurrentYearCompletedNotNil", "revenueAccumulatedCompleted", "revenueAccumulatedCompletedNEQ", "revenueAccumulatedCompletedIn", "revenueAccumulatedCompletedNotIn", "revenueAccumulatedCompletedGT", "revenueAccumulatedCompletedGTE", "revenueAccumulatedCompletedLT", "revenueAccumulatedCompletedLTE", "revenueAccumulatedCompletedIsNil", "revenueAccumulatedCompletedNotNil", "payDate", "payDateNEQ", "payDateIn", "payDateNotIn", "payDateGT", "payDateGTE", "payDateLT", "payDateLTE", "payDateIsNil", "payDateNotNil", "ownerVoCount", "ownerVoCountNEQ", "ownerVoCountIn", "ownerVoCountNotIn", "ownerVoCountGT", "ownerVoCountGTE", "ownerVoCountLT", "ownerVoCountLTE", "ownerVoCountIsNil", "ownerVoCountNotNil", "contractorVoCount", "contractorVoCountNEQ", "contractorVoCountIn", "contractorVoCountNotIn", "contractorVoCountGT", "contractorVoCountGTE", "contractorVoCountLT", "contractorVoCountLTE", "contractorVoCountIsNil", "contractorVoCountNotNil", "accumulateDeduction", "accumulateDeductionNEQ", "accumulateDeductionIn", "accumulateDeductionNotIn", "accumulateDeductionGT", "accumulateDeductionGTE", "accumulateDeductionLT", "accumulateDeductionLTE", "accumulateDeductionIsNil", "accumulateDeductionNotNil", "subcontractorVaCount", "subcontractorVaCountNEQ", "subcontractorVaCountIn", "subcontractorVaCountNotIn", "subcontractorVaCountGT", "subcontractorVaCountGTE", "subcontractorVaCountLT", "subcontractorVaCountLTE", "subcontractorVaCountIsNil", "subcontractorVaCountNotNil", "contractSupplementaryCount", "contractSupplementaryCountNEQ", "contractSupplementaryCountIn", "contractSupplementaryCountNotIn", "contractSupplementaryCountGT", "contractSupplementaryCountGTE", "contractSupplementaryCountLT", "contractSupplementaryCountLTE", "contractSupplementaryCountIsNil", "contractSupplementaryCountNotNil", "repairFee", "repairFeeNEQ", "repairFeeIn", "repairFeeNotIn", "repairFeeGT", "repairFeeGTE", "repairFeeLT", "repairFeeLTE", "repairFeeIsNil", "repairFeeNotNil", "unitInventoryTotal", "unitInventoryTotalNEQ", "unitInventoryTotalIn", "unitInventoryTotalNotIn", "unitInventoryTotalGT", "unitInventoryTotalGTE", "unitInventoryTotalLT", "unitInventoryTotalLTE", "unitInventoryTotalIsNil", "unitInventoryTotalNotNil", "unitComponentTotal", "unitComponentTotalNEQ", "unitComponentTotalIn", "unitComponentTotalNotIn", "unitComponentTotalGT", "unitComponentTotalGTE", "unitComponentTotalLT", "unitComponentTotalLTE", "unitComponentTotalIsNil", "unitComponentTotalNotNil", "unitComponentProduction", "unitComponentProductionNEQ", "unitComponentProductionIn", "unitComponentProductionNotIn", "unitComponentProductionGT", "unitComponentProductionGTE", "unitComponentProductionLT", "unitComponentProductionLTE", "unitComponentProductionIsNil", "unitComponentProductionNotNil", "unitComponentInstallation", "unitComponentInstallationNEQ", "unitComponentInstallationIn", "unitComponentInstallationNotIn", "unitComponentInstallationGT", "unitComponentInstallationGTE", "unitComponentInstallationLT", "unitComponentInstallationLTE", "unitComponentInstallationIsNil", "unitComponentInstallationNotNil", "bulkMaterialsTotalOrderQuantity", "bulkMaterialsTotalOrderQuantityNEQ", "bulkMaterialsTotalOrderQuantityIn", "bulkMaterialsTotalOrderQuantityNotIn", "bulkMaterialsTotalOrderQuantityGT", "bulkMaterialsTotalOrderQuantityGTE", "bulkMaterialsTotalOrderQuantityLT", "bulkMaterialsTotalOrderQuantityLTE", "bulkMaterialsTotalOrderQuantityIsNil", "bulkMaterialsTotalOrderQuantityNotNil", "bulkMaterialsCompletedQuantity", "bulkMaterialsCompletedQuantityNEQ", "bulkMaterialsCompletedQuantityIn", "bulkMaterialsCompletedQuantityNotIn", "bulkMaterialsCompletedQuantityGT", "bulkMaterialsCompletedQuantityGTE", "bulkMaterialsCompletedQuantityLT", "bulkMaterialsCompletedQuantityLTE", "bulkMaterialsCompletedQuantityIsNil", "bulkMaterialsCompletedQuantityNotNil", "bulkMaterialsUncompletedQuantity", "bulkMaterialsUncompletedQuantityNEQ", "bulkMaterialsUncompletedQuantityIn", "bulkMaterialsUncompletedQuantityNotIn", "bulkMaterialsUncompletedQuantityGT", "bulkMaterialsUncompletedQuantityGTE", "bulkMaterialsUncompletedQuantityLT", "bulkMaterialsUncompletedQuantityLTE", "bulkMaterialsUncompletedQuantityIsNil", "bulkMaterialsUncompletedQuantityNotNil", "diagramBdFinishCount", "diagramBdFinishCountNEQ", "diagramBdFinishCountIn", "diagramBdFinishCountNotIn", "diagramBdFinishCountGT", "diagramBdFinishCountGTE", "diagramBdFinishCountLT", "diagramBdFinishCountLTE", "diagramBdFinishCountIsNil", "diagramBdFinishCountNotNil", "diagramBdTotalCount", "diagramBdTotalCountNEQ", "diagramBdTotalCountIn", "diagramBdTotalCountNotIn", "diagramBdTotalCountGT", "diagramBdTotalCountGTE", "diagramBdTotalCountLT", "diagramBdTotalCountLTE", "diagramBdTotalCountIsNil", "diagramBdTotalCountNotNil", "diagramConstructionFinishCount", "diagramConstructionFinishCountNEQ", "diagramConstructionFinishCountIn", "diagramConstructionFinishCountNotIn", "diagramConstructionFinishCountGT", "diagramConstructionFinishCountGTE", "diagramConstructionFinishCountLT", "diagramConstructionFinishCountLTE", "diagramConstructionFinishCountIsNil", "diagramConstructionFinishCountNotNil", "diagramConstructionTotalCount", "diagramConstructionTotalCountNEQ", "diagramConstructionTotalCountIn", "diagramConstructionTotalCountNotIn", "diagramConstructionTotalCountGT", "diagramConstructionTotalCountGTE", "diagramConstructionTotalCountLT", "diagramConstructionTotalCountLTE", "diagramConstructionTotalCountIsNil", "diagramConstructionTotalCountNotNil", "diagramProcessingFinishCount", "diagramProcessingFinishCountNEQ", "diagramProcessingFinishCountIn", "diagramProcessingFinishCountNotIn", "diagramProcessingFinishCountGT", "diagramProcessingFinishCountGTE", "diagramProcessingFinishCountLT", "diagramProcessingFinishCountLTE", "diagramProcessingFinishCountIsNil", "diagramProcessingFinishCountNotNil", "diagramProcessingTotalCount", "diagramProcessingTotalCountNEQ", "diagramProcessingTotalCountIn", "diagramProcessingTotalCountNotIn", "diagramProcessingTotalCountGT", "diagramProcessingTotalCountGTE", "diagramProcessingTotalCountLT", "diagramProcessingTotalCountLTE", "diagramProcessingTotalCountIsNil", "diagramProcessingTotalCountNotNil", "diagramCApprovalRatioNumerator", "diagramCApprovalRatioNumeratorNEQ", "diagramCApprovalRatioNumeratorIn", "diagramCApprovalRatioNumeratorNotIn", "diagramCApprovalRatioNumeratorGT", "diagramCApprovalRatioNumeratorGTE", "diagramCApprovalRatioNumeratorLT", "diagramCApprovalRatioNumeratorLTE", "diagramCApprovalRatioNumeratorIsNil", "diagramCApprovalRatioNumeratorNotNil", "diagramCApprovalRatioDenominator", "diagramCApprovalRatioDenominatorNEQ", "diagramCApprovalRatioDenominatorIn", "diagramCApprovalRatioDenominatorNotIn", "diagramCApprovalRatioDenominatorGT", "diagramCApprovalRatioDenominatorGTE", "diagramCApprovalRatioDenominatorLT", "diagramCApprovalRatioDenominatorLTE", "diagramCApprovalRatioDenominatorIsNil", "diagramCApprovalRatioDenominatorNotNil", "hasUsers", "hasUsersWith"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -46097,6 +46143,97 @@ func (ec *executionContext) unmarshalInputProjectWhereInput(ctx context.Context,
 				return it, err
 			}
 			it.IsFinishedNEQ = data
+		case "name":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Name = data
+		case "nameNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nameNEQ"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NameNEQ = data
+		case "nameIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nameIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NameIn = data
+		case "nameNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nameNotIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NameNotIn = data
+		case "nameGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nameGT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NameGT = data
+		case "nameGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nameGTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NameGTE = data
+		case "nameLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nameLT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NameLT = data
+		case "nameLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nameLTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NameLTE = data
+		case "nameContains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nameContains"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NameContains = data
+		case "nameHasPrefix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nameHasPrefix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NameHasPrefix = data
+		case "nameHasSuffix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nameHasSuffix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NameHasSuffix = data
+		case "nameEqualFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nameEqualFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NameEqualFold = data
+		case "nameContainsFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nameContainsFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NameContainsFold = data
 		case "revenueKpi":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("revenueKpi"))
 			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
@@ -62141,7 +62278,7 @@ func (ec *executionContext) unmarshalInputUpdateProjectInput(ctx context.Context
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"updatedAt", "code", "isFinished", "revenueKpi", "clearRevenueKpi", "revenueCurrentYearCompleted", "clearRevenueCurrentYearCompleted", "revenueAccumulatedCompleted", "clearRevenueAccumulatedCompleted", "payDate", "clearPayDate", "ownerVoCount", "clearOwnerVoCount", "contractorVoCount", "clearContractorVoCount", "accumulateDeduction", "clearAccumulateDeduction", "subcontractorVaCount", "clearSubcontractorVaCount", "contractSupplementaryCount", "clearContractSupplementaryCount", "repairFee", "clearRepairFee", "unitInventoryTotal", "clearUnitInventoryTotal", "unitComponentTotal", "clearUnitComponentTotal", "unitComponentProduction", "clearUnitComponentProduction", "unitComponentInstallation", "clearUnitComponentInstallation", "bulkMaterialsTotalOrderQuantity", "clearBulkMaterialsTotalOrderQuantity", "bulkMaterialsCompletedQuantity", "clearBulkMaterialsCompletedQuantity", "bulkMaterialsUncompletedQuantity", "clearBulkMaterialsUncompletedQuantity", "diagramBdFinishCount", "clearDiagramBdFinishCount", "diagramBdTotalCount", "clearDiagramBdTotalCount", "diagramConstructionFinishCount", "clearDiagramConstructionFinishCount", "diagramConstructionTotalCount", "clearDiagramConstructionTotalCount", "diagramProcessingFinishCount", "clearDiagramProcessingFinishCount", "diagramProcessingTotalCount", "clearDiagramProcessingTotalCount", "diagramCApprovalRatioNumerator", "clearDiagramCApprovalRatioNumerator", "diagramCApprovalRatioDenominator", "clearDiagramCApprovalRatioDenominator", "addUserIDs", "removeUserIDs", "clearUsers"}
+	fieldsInOrder := [...]string{"updatedAt", "code", "isFinished", "name", "revenueKpi", "clearRevenueKpi", "revenueCurrentYearCompleted", "clearRevenueCurrentYearCompleted", "revenueAccumulatedCompleted", "clearRevenueAccumulatedCompleted", "payDate", "clearPayDate", "ownerVoCount", "clearOwnerVoCount", "contractorVoCount", "clearContractorVoCount", "accumulateDeduction", "clearAccumulateDeduction", "subcontractorVaCount", "clearSubcontractorVaCount", "contractSupplementaryCount", "clearContractSupplementaryCount", "repairFee", "clearRepairFee", "unitInventoryTotal", "clearUnitInventoryTotal", "unitComponentTotal", "clearUnitComponentTotal", "unitComponentProduction", "clearUnitComponentProduction", "unitComponentInstallation", "clearUnitComponentInstallation", "bulkMaterialsTotalOrderQuantity", "clearBulkMaterialsTotalOrderQuantity", "bulkMaterialsCompletedQuantity", "clearBulkMaterialsCompletedQuantity", "bulkMaterialsUncompletedQuantity", "clearBulkMaterialsUncompletedQuantity", "diagramBdFinishCount", "clearDiagramBdFinishCount", "diagramBdTotalCount", "clearDiagramBdTotalCount", "diagramConstructionFinishCount", "clearDiagramConstructionFinishCount", "diagramConstructionTotalCount", "clearDiagramConstructionTotalCount", "diagramProcessingFinishCount", "clearDiagramProcessingFinishCount", "diagramProcessingTotalCount", "clearDiagramProcessingTotalCount", "diagramCApprovalRatioNumerator", "clearDiagramCApprovalRatioNumerator", "diagramCApprovalRatioDenominator", "clearDiagramCApprovalRatioDenominator", "addUserIDs", "removeUserIDs", "clearUsers"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -62169,6 +62306,13 @@ func (ec *executionContext) unmarshalInputUpdateProjectInput(ctx context.Context
 				return it, err
 			}
 			it.IsFinished = data
+		case "name":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Name = data
 		case "revenueKpi":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("revenueKpi"))
 			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
@@ -68998,6 +69142,11 @@ func (ec *executionContext) _Project(ctx context.Context, sel ast.SelectionSet, 
 			}
 		case "isFinished":
 			out.Values[i] = ec._Project_isFinished(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "name":
+			out.Values[i] = ec._Project_name(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				atomic.AddUint32(&out.Invalids, 1)
 			}

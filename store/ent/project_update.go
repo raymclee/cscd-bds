@@ -64,6 +64,20 @@ func (pu *ProjectUpdate) SetNillableIsFinished(b *bool) *ProjectUpdate {
 	return pu
 }
 
+// SetName sets the "name" field.
+func (pu *ProjectUpdate) SetName(s string) *ProjectUpdate {
+	pu.mutation.SetName(s)
+	return pu
+}
+
+// SetNillableName sets the "name" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableName(s *string) *ProjectUpdate {
+	if s != nil {
+		pu.SetName(*s)
+	}
+	return pu
+}
+
 // SetRevenueKpi sets the "revenue_kpi" field.
 func (pu *ProjectUpdate) SetRevenueKpi(f float64) *ProjectUpdate {
 	pu.mutation.ResetRevenueKpi()
@@ -827,6 +841,9 @@ func (pu *ProjectUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := pu.mutation.IsFinished(); ok {
 		_spec.SetField(project.FieldIsFinished, field.TypeBool, value)
 	}
+	if value, ok := pu.mutation.Name(); ok {
+		_spec.SetField(project.FieldName, field.TypeString, value)
+	}
 	if value, ok := pu.mutation.RevenueKpi(); ok {
 		_spec.SetField(project.FieldRevenueKpi, field.TypeFloat64, value)
 	}
@@ -1144,6 +1161,20 @@ func (puo *ProjectUpdateOne) SetIsFinished(b bool) *ProjectUpdateOne {
 func (puo *ProjectUpdateOne) SetNillableIsFinished(b *bool) *ProjectUpdateOne {
 	if b != nil {
 		puo.SetIsFinished(*b)
+	}
+	return puo
+}
+
+// SetName sets the "name" field.
+func (puo *ProjectUpdateOne) SetName(s string) *ProjectUpdateOne {
+	puo.mutation.SetName(s)
+	return puo
+}
+
+// SetNillableName sets the "name" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableName(s *string) *ProjectUpdateOne {
+	if s != nil {
+		puo.SetName(*s)
 	}
 	return puo
 }
@@ -1940,6 +1971,9 @@ func (puo *ProjectUpdateOne) sqlSave(ctx context.Context) (_node *Project, err e
 	}
 	if value, ok := puo.mutation.IsFinished(); ok {
 		_spec.SetField(project.FieldIsFinished, field.TypeBool, value)
+	}
+	if value, ok := puo.mutation.Name(); ok {
+		_spec.SetField(project.FieldName, field.TypeString, value)
 	}
 	if value, ok := puo.mutation.RevenueKpi(); ok {
 		_spec.SetField(project.FieldRevenueKpi, field.TypeFloat64, value)

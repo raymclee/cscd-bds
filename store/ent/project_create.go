@@ -73,6 +73,12 @@ func (pc *ProjectCreate) SetNillableIsFinished(b *bool) *ProjectCreate {
 	return pc
 }
 
+// SetName sets the "name" field.
+func (pc *ProjectCreate) SetName(s string) *ProjectCreate {
+	pc.mutation.SetName(s)
+	return pc
+}
+
 // SetRevenueKpi sets the "revenue_kpi" field.
 func (pc *ProjectCreate) SetRevenueKpi(f float64) *ProjectCreate {
 	pc.mutation.SetRevenueKpi(f)
@@ -519,6 +525,9 @@ func (pc *ProjectCreate) check() error {
 	if _, ok := pc.mutation.IsFinished(); !ok {
 		return &ValidationError{Name: "is_finished", err: errors.New(`ent: missing required field "Project.is_finished"`)}
 	}
+	if _, ok := pc.mutation.Name(); !ok {
+		return &ValidationError{Name: "name", err: errors.New(`ent: missing required field "Project.name"`)}
+	}
 	return nil
 }
 
@@ -570,6 +579,10 @@ func (pc *ProjectCreate) createSpec() (*Project, *sqlgraph.CreateSpec) {
 	if value, ok := pc.mutation.IsFinished(); ok {
 		_spec.SetField(project.FieldIsFinished, field.TypeBool, value)
 		_node.IsFinished = value
+	}
+	if value, ok := pc.mutation.Name(); ok {
+		_spec.SetField(project.FieldName, field.TypeString, value)
+		_node.Name = value
 	}
 	if value, ok := pc.mutation.RevenueKpi(); ok {
 		_spec.SetField(project.FieldRevenueKpi, field.TypeFloat64, value)
@@ -772,6 +785,18 @@ func (u *ProjectUpsert) SetIsFinished(v bool) *ProjectUpsert {
 // UpdateIsFinished sets the "is_finished" field to the value that was provided on create.
 func (u *ProjectUpsert) UpdateIsFinished() *ProjectUpsert {
 	u.SetExcluded(project.FieldIsFinished)
+	return u
+}
+
+// SetName sets the "name" field.
+func (u *ProjectUpsert) SetName(v string) *ProjectUpsert {
+	u.Set(project.FieldName, v)
+	return u
+}
+
+// UpdateName sets the "name" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateName() *ProjectUpsert {
+	u.SetExcluded(project.FieldName)
 	return u
 }
 
@@ -1459,6 +1484,20 @@ func (u *ProjectUpsertOne) SetIsFinished(v bool) *ProjectUpsertOne {
 func (u *ProjectUpsertOne) UpdateIsFinished() *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
 		s.UpdateIsFinished()
+	})
+}
+
+// SetName sets the "name" field.
+func (u *ProjectUpsertOne) SetName(v string) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetName(v)
+	})
+}
+
+// UpdateName sets the "name" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateName() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateName()
 	})
 }
 
@@ -2412,6 +2451,20 @@ func (u *ProjectUpsertBulk) SetIsFinished(v bool) *ProjectUpsertBulk {
 func (u *ProjectUpsertBulk) UpdateIsFinished() *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
 		s.UpdateIsFinished()
+	})
+}
+
+// SetName sets the "name" field.
+func (u *ProjectUpsertBulk) SetName(v string) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetName(v)
+	})
+}
+
+// UpdateName sets the "name" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateName() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateName()
 	})
 }
 

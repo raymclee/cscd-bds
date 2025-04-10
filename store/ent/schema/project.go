@@ -32,6 +32,9 @@ func (Project) Fields() []ent.Field {
 			Default(false).
 			Comment("是否完成"),
 
+		field.String("name").
+			Annotations(entgql.OrderField("NAME")),
+
 		// 金額
 		field.Float("revenue_kpi").
 			Optional().

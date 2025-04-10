@@ -2777,6 +2777,7 @@ type Project implements Node {
   id: ID!
   """是否完成"""
   isFinished: Boolean!
+  name: String!
   """業主VO數量"""
   ownerVoCount: Int
   """糧期"""
@@ -2848,6 +2849,7 @@ input ProjectOrder {
 enum ProjectOrderField {
   CODE
   CREATED_AT
+  NAME
 }
 
 """
@@ -3048,6 +3050,20 @@ input ProjectWhereInput {
   """is_finished field predicates"""
   isFinished: Boolean
   isFinishedNEQ: Boolean
+  """name field predicates"""
+  name: String
+  nameContains: String
+  nameContainsFold: String
+  nameEqualFold: String
+  nameGT: String
+  nameGTE: String
+  nameHasPrefix: String
+  nameHasSuffix: String
+  nameIn: [String!]
+  nameLT: String
+  nameLTE: String
+  nameNEQ: String
+  nameNotIn: [String!]
   not: ProjectWhereInput
   or: [ProjectWhereInput!]
   """owner_vo_count field predicates"""
@@ -6228,6 +6244,7 @@ input UpdateProjectInput {
   diagramProcessingTotalCount: Int
   """是否完成"""
   isFinished: Boolean
+  name: String
   """業主VO數量"""
   ownerVoCount: Int
   """糧期"""

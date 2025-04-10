@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<e8fb099b0bba2786c20d854760094b42>>
+ * @generated SignedSource<<d386433c38ab67da3e22ae305013932b>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -53,6 +53,7 @@ export type UpdateProjectInput = {
   diagramProcessingFinishCount?: number | null | undefined;
   diagramProcessingTotalCount?: number | null | undefined;
   isFinished?: boolean | null | undefined;
+  name?: string | null | undefined;
   ownerVoCount?: number | null | undefined;
   payDate?: any | null | undefined;
   removeUserIDs?: ReadonlyArray<string> | null | undefined;

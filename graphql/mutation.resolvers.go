@@ -921,13 +921,17 @@ func (r *mutationResolver) UpdateTenderV2(ctx context.Context, id xid.ID, tender
 	}
 
 	isNewTender := true
+	if t.Edges.ActiveProfile != nil {
+		now := time.Now()
+		profileInput.ApprovalDate = &now
+		profileInput.ApprovalStatus = &[]int{2}[0]
+		isNewTender = false
+	}
+
 	// 创建新的profile
 	tpq := r.store.TenderProfile.Create().SetInput(profileInput).SetTender(t).SetCreatedByID(xid.ID(sess.UserId))
 	// 如果当前没有待审批的profile，则将新的profile设置为待审批
-	if t.Edges.ActiveProfile != nil {
-		tpq.SetApprovalStatus(2).SetApprovalDate(time.Now())
-		isNewTender = false
-	}
+
 	tp, err := tpq.Save(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to update tender: %w", err)

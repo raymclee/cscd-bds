@@ -294,6 +294,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			project.FieldUpdatedAt:                        {Type: field.TypeTime, Column: project.FieldUpdatedAt},
 			project.FieldCode:                             {Type: field.TypeString, Column: project.FieldCode},
 			project.FieldIsFinished:                       {Type: field.TypeBool, Column: project.FieldIsFinished},
+			project.FieldName:                             {Type: field.TypeString, Column: project.FieldName},
 			project.FieldRevenueKpi:                       {Type: field.TypeFloat64, Column: project.FieldRevenueKpi},
 			project.FieldRevenueCurrentYearCompleted:      {Type: field.TypeFloat64, Column: project.FieldRevenueCurrentYearCompleted},
 			project.FieldRevenueAccumulatedCompleted:      {Type: field.TypeFloat64, Column: project.FieldRevenueAccumulatedCompleted},
@@ -2809,6 +2810,11 @@ func (f *ProjectFilter) WhereCode(p entql.StringP) {
 // WhereIsFinished applies the entql bool predicate on the is_finished field.
 func (f *ProjectFilter) WhereIsFinished(p entql.BoolP) {
 	f.Where(p.Field(project.FieldIsFinished))
+}
+
+// WhereName applies the entql string predicate on the name field.
+func (f *ProjectFilter) WhereName(p entql.StringP) {
+	f.Where(p.Field(project.FieldName))
 }
 
 // WhereRevenueKpi applies the entql float64 predicate on the revenue_kpi field.

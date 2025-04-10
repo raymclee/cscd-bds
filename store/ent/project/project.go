@@ -23,6 +23,8 @@ const (
 	FieldCode = "code"
 	// FieldIsFinished holds the string denoting the is_finished field in the database.
 	FieldIsFinished = "is_finished"
+	// FieldName holds the string denoting the name field in the database.
+	FieldName = "name"
 	// FieldRevenueKpi holds the string denoting the revenue_kpi field in the database.
 	FieldRevenueKpi = "revenue_kpi"
 	// FieldRevenueCurrentYearCompleted holds the string denoting the revenue_current_year_completed field in the database.
@@ -91,6 +93,7 @@ var Columns = []string{
 	FieldUpdatedAt,
 	FieldCode,
 	FieldIsFinished,
+	FieldName,
 	FieldRevenueKpi,
 	FieldRevenueCurrentYearCompleted,
 	FieldRevenueAccumulatedCompleted,
@@ -173,6 +176,11 @@ func ByCode(opts ...sql.OrderTermOption) OrderOption {
 // ByIsFinished orders the results by the is_finished field.
 func ByIsFinished(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldIsFinished, opts...).ToFunc()
+}
+
+// ByName orders the results by the name field.
+func ByName(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldName, opts...).ToFunc()
 }
 
 // ByRevenueKpi orders the results by the revenue_kpi field.

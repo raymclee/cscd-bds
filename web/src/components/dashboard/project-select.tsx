@@ -51,7 +51,7 @@ export function ProjectSelect({ defaultCode, data }: ProjectSelectProps) {
         <button
           role="combobox"
           aria-expanded={open}
-          className="inline-flex w-[310px] cursor-pointer items-center justify-between gap-2 px-2 py-1 text-sm font-medium outline-brand-project"
+          className="inline-flex w-[310px] cursor-pointer items-center justify-between gap-2 px-2 py-1 text-sm font-medium text-white outline-brand-project"
         >
           <div className="line-clamp-1 flex-1 text-left">
             {code

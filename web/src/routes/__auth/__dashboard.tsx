@@ -6,11 +6,7 @@ export const Route = createFileRoute("/__auth/__dashboard")({
     if (ctx.search.ceo == 1 && ctx.location.pathname == "/") {
       throw redirect({ to: "/operations" });
     }
-    if (
-      !ctx.context.session.isCeo &&
-      !ctx.context.session.isAdmin &&
-      !ctx.context.session.hasMapAccess
-    ) {
+    if (!ctx.context.session.isCeo && !ctx.context.session.isSuperAdmin) {
       throw redirect({ to: "/portal/tenders" });
     }
   },

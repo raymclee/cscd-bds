@@ -2946,6 +2946,7 @@ export type Project = Node & {
   id: Scalars['ID']['output'];
   /** 是否完成 */
   isFinished: Scalars['Boolean']['output'];
+  name: Scalars['String']['output'];
   /** 業主VO數量 */
   ownerVoCount?: Maybe<Scalars['Int']['output']>;
   /** 糧期 */
@@ -3013,7 +3014,8 @@ export type ProjectOrder = {
 /** Properties by which Project connections can be ordered. */
 export enum ProjectOrderField {
   Code = 'CODE',
-  CreatedAt = 'CREATED_AT'
+  CreatedAt = 'CREATED_AT',
+  Name = 'NAME'
 }
 
 /**
@@ -3214,6 +3216,20 @@ export type ProjectWhereInput = {
   /** is_finished field predicates */
   isFinished?: InputMaybe<Scalars['Boolean']['input']>;
   isFinishedNEQ?: InputMaybe<Scalars['Boolean']['input']>;
+  /** name field predicates */
+  name?: InputMaybe<Scalars['String']['input']>;
+  nameContains?: InputMaybe<Scalars['String']['input']>;
+  nameContainsFold?: InputMaybe<Scalars['String']['input']>;
+  nameEqualFold?: InputMaybe<Scalars['String']['input']>;
+  nameGT?: InputMaybe<Scalars['String']['input']>;
+  nameGTE?: InputMaybe<Scalars['String']['input']>;
+  nameHasPrefix?: InputMaybe<Scalars['String']['input']>;
+  nameHasSuffix?: InputMaybe<Scalars['String']['input']>;
+  nameIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  nameLT?: InputMaybe<Scalars['String']['input']>;
+  nameLTE?: InputMaybe<Scalars['String']['input']>;
+  nameNEQ?: InputMaybe<Scalars['String']['input']>;
+  nameNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
   not?: InputMaybe<ProjectWhereInput>;
   or?: InputMaybe<Array<ProjectWhereInput>>;
   /** owner_vo_count field predicates */
@@ -6329,6 +6345,7 @@ export type UpdateProjectInput = {
   diagramProcessingTotalCount?: InputMaybe<Scalars['Int']['input']>;
   /** 是否完成 */
   isFinished?: InputMaybe<Scalars['Boolean']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
   /** 業主VO數量 */
   ownerVoCount?: InputMaybe<Scalars['Int']['input']>;
   /** 糧期 */
@@ -7182,9 +7199,13 @@ export class TypedDocumentString<TResult, TVariables>
   implements DocumentTypeDecoration<TResult, TVariables>
 {
   __apiType?: DocumentTypeDecoration<TResult, TVariables>['__apiType'];
+  private value: string;
+  public __meta__?: Record<string, any> | undefined;
 
-  constructor(private value: string, public __meta__?: Record<string, any> | undefined) {
+  constructor(value: string, __meta__?: Record<string, any> | undefined) {
     super(value);
+    this.value = value;
+    this.__meta__ = __meta__;
   }
 
   toString(): string & DocumentTypeDecoration<TResult, TVariables> {

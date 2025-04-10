@@ -45,41 +45,6 @@ export function TenderList() {
     from: "/__auth/__dashboard/__amap/",
   });
 
-  const filteredTenders = useSearch({
-    from: "/__auth/__dashboard/__amap/",
-    select: (state) =>
-      tenders
-        ?.filter((t) =>
-          state.q
-            ? t?.activeProfile?.name
-                ?.toLowerCase()
-                .includes(state.q.toLowerCase())
-            : true,
-        )
-        .sort((a, b) => {
-          if (a?.activeProfile?.tenderDate == null) {
-            return 1;
-          }
-          if (b?.activeProfile?.tenderDate == null) {
-            return -1;
-          }
-          return dayjs(a?.activeProfile?.tenderDate).diff(
-            dayjs(b?.activeProfile?.tenderDate),
-          );
-        })
-        .sort((a, b) => {
-          if (a?.activeProfile?.tenderClosingDate == null) {
-            return -1;
-          }
-          if (b?.activeProfile?.tenderClosingDate == null) {
-            return 1;
-          }
-          return dayjs(a?.activeProfile?.tenderClosingDate).diff(
-            dayjs(b?.activeProfile?.tenderClosingDate),
-          );
-        }),
-  });
-
   return (
     <>
       <div className="relative z-10 order-last min-h-[calc(100vh-6rem)] w-full rounded-lg bg-slate-900/60 backdrop-blur md:order-first">
@@ -111,9 +76,7 @@ export function TenderList() {
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
               <span className="text-sky-300">显示数量</span>
-              <span className="text-cyan-400">
-                {filteredTenders?.length || 0}
-              </span>
+              <span className="text-cyan-400">{tenders?.length || 0}</span>
             </div>
             <div className="h-4 w-[1px] bg-gradient-to-b from-transparent via-sky-500/30 to-transparent"></div>
             <div className="flex items-center gap-2">
@@ -124,7 +87,7 @@ export function TenderList() {
         </div>
 
         <div className="mt-2 space-y-1 pb-4">
-          {filteredTenders.map((tender) => {
+          {tenders.map((tender) => {
             if (!tender) return null;
             return <TenderListItem key={tender.id} tender={tender} />;
           })}
