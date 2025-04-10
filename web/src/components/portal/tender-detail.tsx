@@ -62,6 +62,10 @@ export const TenderDetailFragment = graphql`
         name
       }
     }
+    createdBy {
+      id
+      name
+    }
     activeProfile {
       id
       createdAt
@@ -508,6 +512,7 @@ function SHTender({
     activeProfile,
     pendingProfile,
     competitors,
+    createdBy: tenderCreatedBy,
   } = tender;
   const {
     name,
@@ -602,7 +607,7 @@ function SHTender({
     {
       key: "createdBy",
       label: "创建人",
-      children: createdBy?.name || "-",
+      children: tenderCreatedBy?.name || "-",
     },
     {
       key: "followingSales",
@@ -964,7 +969,7 @@ function SHTender({
 
 function GAAndHWTender({ tender }: { tender: tenderDetailFragment$data }) {
   const { session } = useRouteContext({ from: "/__auth" });
-  const { id, followingSales, profiles } = tender;
+  const { id, followingSales, profiles, createdBy: tenderCreatedBy } = tender;
   const {
     name,
     status,
@@ -981,7 +986,6 @@ function GAAndHWTender({ tender }: { tender: tenderDetailFragment$data }) {
     tenderWinCompany,
     lastTenderAmount,
     finder,
-    createdBy,
   } = profiles?.edges?.[0]?.node ?? {};
   return (
     <div className="!space-y-4 lg:col-span-4">
@@ -1028,7 +1032,7 @@ function GAAndHWTender({ tender }: { tender: tenderDetailFragment$data }) {
           {
             key: "createdBy",
             label: "创建人",
-            children: createdBy?.name || "-",
+            children: tenderCreatedBy?.name || "-",
           },
           {
             key: "followingSales",

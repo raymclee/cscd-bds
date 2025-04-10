@@ -925,8 +925,7 @@ func (r *mutationResolver) UpdateTenderV2(ctx context.Context, id xid.ID, tender
 	tpq := r.store.TenderProfile.Create().SetInput(profileInput).SetTender(t).SetCreatedByID(xid.ID(sess.UserId))
 	// 如果当前没有待审批的profile，则将新的profile设置为待审批
 	if t.Edges.ActiveProfile != nil {
-		tpq.SetApprovalStatus(2)
-		tpq.SetApprovalDate(time.Now())
+		tpq.SetApprovalStatus(2).SetApprovalDate(time.Now())
 		isNewTender = false
 	}
 	tp, err := tpq.Save(ctx)
