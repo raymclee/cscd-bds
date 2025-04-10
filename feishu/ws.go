@@ -42,8 +42,7 @@ func (f *Feishu) StartWSClient(ctx context.Context) {
 					if err != nil {
 						return nil, err
 					}
-					t, err := f.store.Tender.UpdateOneID(tp.TenderID).ClearPendingProfile().SetActiveProfile(tp).Save(ctx)
-					if err != nil {
+					if err := f.store.Tender.UpdateOneID(tp.TenderID).ClearPendingProfile().SetActiveProfile(tp).Exec(ctx); err != nil {
 						return nil, err
 					}
 
@@ -65,9 +64,9 @@ func (f *Feishu) StartWSClient(ctx context.Context) {
 					templateId = TemplateIdTenderApproved
 					templateVars = tenderProfileTemplateVars(tpp)
 
+					chatId := f.GetSalesChatId(tpp.Edges.Tender.Edges.Area)
 					go func() {
 						ctxx := context.Background()
-						chatId := f.GetSalesChatId(t.Edges.Area)
 						if _, err := f.SendGroupMessage(ctxx, TemplateIdTenderApproved, &GroupMessageParams{
 							TenderProfile: tpp,
 							ChatId:        chatId,
@@ -150,8 +149,7 @@ func (f *Feishu) StartWSClient(ctx context.Context) {
 						return nil, err
 					}
 
-					t, err := f.store.Customer.UpdateOneID(cp.CustomerID).ClearPendingProfile().SetActiveProfile(cp).Save(ctx)
-					if err != nil {
+					if err := f.store.Customer.UpdateOneID(cp.CustomerID).ClearPendingProfile().SetActiveProfile(cp).Exec(ctx); err != nil {
 						fmt.Printf("failed to update customer: %v\n", err)
 						return nil, err
 					}
@@ -192,9 +190,9 @@ func (f *Feishu) StartWSClient(ctx context.Context) {
 					templateVars["color"] = color
 					templateVars["result"] = result
 
+					chatId := f.GetSalesChatId(cpp.Edges.Customer.Edges.Area)
 					go func() {
 						ctxx := context.Background()
-						chatId := f.GetSalesChatId(t.Edges.Area)
 						if _, err := f.SendGroupMessage(ctxx, templateId, &GroupMessageParams{
 							CustomerProfile:    cpp,
 							ChatId:             chatId,
@@ -271,9 +269,9 @@ func (f *Feishu) StartWSClient(ctx context.Context) {
 					templateVars["color"] = color
 					templateVars["result"] = result
 
+					chatId := f.GetSalesChatId(cpp.Edges.Customer.Edges.Area)
 					go func() {
 						ctxx := context.Background()
-						chatId := f.GetSalesChatId(cpp.Edges.Customer.Edges.Area)
 						if _, err := f.SendGroupMessage(ctxx, templateId, &GroupMessageParams{
 							CustomerProfile:    cpp,
 							ChatId:             chatId,
