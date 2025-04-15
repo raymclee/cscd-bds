@@ -162,12 +162,16 @@ export function ProjectStatusDialog({
           {/* Status Progress Bars */}
           <div className="space-y-4">
             <motion.h3
-              className="text-lg font-semibold text-brand"
+              className="flex items-center justify-between text-lg font-semibold text-brand"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.3, delay: 0.1 }}
             >
               项目状态分布
+              <span className="text-sm font-normal text-brand-project-3">
+                总计: <span className="font-semibold">{tenderCount}</span>{" "}
+                个项目
+              </span>
             </motion.h3>
 
             <div className="mt-2 space-y-1">
@@ -274,7 +278,7 @@ export function ProjectStatusDialog({
 
             <ScrollArea className="h-[55vh] rounded border border-slate-800 bg-slate-950/50 backdrop-blur">
               <Table className="relative">
-                <TableHeader className="bg-slate-900/80">
+                <TableHeader className="sticky top-0 z-10 bg-slate-900">
                   <TableRow className="border-slate-700/50 hover:bg-transparent">
                     {/* <TableHead className="w-[60px] text-brand">状态</TableHead>
                     <TableHead className="text-brand">项目名称</TableHead>
