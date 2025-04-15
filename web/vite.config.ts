@@ -8,9 +8,9 @@ import relay from "vite-plugin-relay";
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
   plugins: [
-    MillionLint.vite({
-      enabled: true,
-    }),
+    // MillionLint.vite({
+    //   enabled: true,
+    // }),
     relay,
     TanStackRouterVite({}),
     react(),
