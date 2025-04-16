@@ -7,7 +7,7 @@ export const Route = createLazyFileRoute("/login")({
 
 const host = import.meta.env.PROD
   ? window.location.origin
-  : "http://localhost:3000";
+  : "http://localhost:4000";
 
 function HomeComponent() {
   useEffect(() => {

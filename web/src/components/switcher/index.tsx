@@ -11,7 +11,7 @@ const navItems = [
   },
   {
     title: "项目运营管控",
-    href: "/operations",
+    href: "/om",
   },
   {
     title: "BI数字远东报表",
