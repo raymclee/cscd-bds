@@ -4,7 +4,7 @@ import * as v from "valibot";
 export const Route = createFileRoute("/__auth/__dashboard")({
   beforeLoad(ctx) {
     if (ctx.search.ceo == 1 && ctx.location.pathname == "/") {
-      throw redirect({ to: "/operations" });
+      throw redirect({ to: "/om" });
     }
     if (
       ctx.search.portal == 1 &&
