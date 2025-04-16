@@ -47,7 +47,7 @@ export function AmountSummaryCard() {
   );
 
   return (
-    <Card className="relative text-white border-none bg-slate-900/60 backdrop-blur">
+    <Card className="relative h-56 text-white border-none bg-slate-900/60 backdrop-blur">
       {/* 科技感装饰线条 */}
       <div className="absolute left-0 top-0 h-[2px] w-full bg-gradient-to-r from-transparent via-blue-500/50 to-transparent" />
       <div className="absolute right-0 top-0 h-full w-[2px] bg-gradient-to-b from-transparent via-cyan-500/50 to-transparent" />
