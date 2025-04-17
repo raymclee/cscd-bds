@@ -344,6 +344,8 @@ var (
 	CompetitivePartnershipRatingValidator func(int) error
 	// DefaultPrepareToBid holds the default value on creation for the "prepare_to_bid" field.
 	DefaultPrepareToBid bool
+	// DefaultGeoCoordinate holds the default value on creation for the "geo_coordinate" field.
+	DefaultGeoCoordinate []float64
 	// DefaultKeyProject holds the default value on creation for the "key_project" field.
 	DefaultKeyProject bool
 	// TenderAmountValidator is a validator for the "tender_amount" field. It is called by the builders before save.

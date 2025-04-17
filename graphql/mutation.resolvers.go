@@ -587,8 +587,8 @@ func (r *mutationResolver) CreateTender(ctx context.Context, tenderInput ent.Cre
 
 	tenderInput.Code = util.NewTenderCode(len(a.Edges.Tenders), a.Code)
 
-	if profileInput.Address != nil {
-		adcode, lng, lat, address, err := r.amap.GeoCode(*profileInput.Address)
+	if profileInput.FullAddress != nil {
+		adcode, lng, lat, address, err := r.amap.GeoCode(*profileInput.FullAddress)
 		if err != nil {
 			return nil, fmt.Errorf("failed to get geo code: %w", err)
 		}
@@ -718,18 +718,20 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, tenderIn
 				return
 			}
 
-			lin, err := r.store.User.Query().Where(user.Username("lindonghai")).Only(ctxx)
+			us, err := r.store.User.Query().Where(user.Or(user.Username("lindonghai"), user.Username("ray.mclee"))).All(ctxx)
 			if err != nil {
 				fmt.Printf("failed to get user: %v\n", err)
 				return
 			}
 
-			if _, err = r.feishu.SendChatMessage(ctxx, &feishu.ChatMessageParams{
-				TenderProfile: tpp,
-				ChatId:        lin.OpenID,
-				TemplateId:    feishu.TemplateIdTenderUpdated,
-			}); err != nil {
-				fmt.Printf("failed to send group message: %v\n", err)
+			for _, u := range us {
+				if _, err = r.feishu.SendChatMessage(ctxx, &feishu.ChatMessageParams{
+					TenderProfile: tpp,
+					ChatId:        u.OpenID,
+					TemplateId:    feishu.TemplateIdTenderUpdated,
+				}); err != nil {
+					fmt.Printf("failed to send group message: %v\n", err)
+				}
 			}
 		}()
 	}

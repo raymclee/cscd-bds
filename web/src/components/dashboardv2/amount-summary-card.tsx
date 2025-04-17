@@ -1,21 +1,10 @@
+import { Wallet } from "lucide-react";
+import { motion } from "motion/react";
+import { useState } from "react";
+import headerSvg from "~/assets/dashboard/svg/sub-head-amount.svg";
+import { useAreaTenders } from "~/hooks/dashboardv2/use-area-tenders";
 import { fixAmount } from "~/lib/helper";
 import { Card, CardContent, CardHeader } from "../ui/card";
-import { useAreaTenders } from "~/hooks/dashboardv2/use-area-tenders";
-import headerSvg from "~/assets/dashboard/svg/sub-head-amount.svg";
-import { Wallet } from "lucide-react";
-import { motion, AnimatePresence } from "motion/react";
-import { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
-import { tenderStatusOptions } from "~/lib/helper";
-import {
-  Table,
-  TableHeader,
-  TableRow,
-  TableHead,
-  TableBody,
-  TableCell,
-} from "../ui/table";
-import { ScrollArea } from "../ui/scroll-area";
 import { ProjectStatusDialog } from "./project-status-dialog";
 
 export function AmountSummaryCard() {
@@ -47,7 +36,7 @@ export function AmountSummaryCard() {
   );
 
   return (
-    <Card className="relative h-56 text-white border-none bg-slate-900/60 backdrop-blur">
+    <Card className="relative h-56 border-none bg-slate-900/60 text-white backdrop-blur">
       {/* 科技感装饰线条 */}
       <div className="absolute left-0 top-0 h-[2px] w-full bg-gradient-to-r from-transparent via-blue-500/50 to-transparent" />
       <div className="absolute right-0 top-0 h-full w-[2px] bg-gradient-to-b from-transparent via-cyan-500/50 to-transparent" />
@@ -55,18 +44,18 @@ export function AmountSummaryCard() {
       <div className="absolute left-0 top-0 h-full w-[2px] bg-gradient-to-b from-transparent via-cyan-500/50 to-transparent" />
 
       {/* 全息扫描效果 */}
-      <div className="absolute inset-0 pointer-events-none holographic-effect" />
+      <div className="holographic-effect pointer-events-none absolute inset-0" />
 
       <CardHeader>
         <img
           src={headerSvg}
           alt="sub-head"
-          className="w-full h-8 select-none"
+          className="h-8 w-full select-none"
         />
       </CardHeader>
       <CardContent className="py-2">
-        <div className="p-px rounded bg-gradient-to-b from-brand/40 to-transparent">
-          <div className="flex items-center justify-between px-6 py-3 rounded">
+        <div className="rounded bg-gradient-to-b from-brand/40 to-transparent p-px">
+          <div className="flex items-center justify-between rounded px-6 py-3">
             <div className="flex items-baseline gap-1">
               <span className="text-3xl font-black text-white">¥</span>
               <span className="text-3xl font-black text-white">
@@ -76,7 +65,7 @@ export function AmountSummaryCard() {
             </div>
 
             <motion.button
-              className="relative p-2 border rounded-full cursor-pointer border-brand/30 bg-gradient-to-r from-blue-600/20 to-cyan-500/20"
+              className="relative cursor-pointer rounded-full border border-brand/30 bg-gradient-to-r from-blue-600/20 to-cyan-500/20 p-2"
               whileHover={{
                 scale: 1.05,
               }}
@@ -100,7 +89,7 @@ export function AmountSummaryCard() {
 
               {/* 外部发光效果 */}
               <motion.div
-                className="absolute rounded-full -inset-1 opacity-60"
+                className="absolute -inset-1 rounded-full opacity-60"
                 animate={{
                   opacity: [0.3, 0.7, 0.3],
                   boxShadow: [
@@ -151,7 +140,7 @@ export function AmountSummaryCard() {
 
               {/* 中心Wallet图标 */}
               <div className="relative z-10 flex items-center justify-center">
-                <Wallet className="w-8 h-8 text-brand" />
+                <Wallet className="h-8 w-8 text-brand" />
 
                 {/* 图标闪光效果 */}
                 <motion.div
@@ -171,30 +160,30 @@ export function AmountSummaryCard() {
         </div>
 
         <div className="mt-3">
-          <div className="flex items-center justify-between h-full gap-4">
-            <div className="flex-1 h-full overflow-hidden rounded bg-gradient-to-b from-brand/40 to-transparent">
-              <div className="flex flex-col h-full rounded">
-                <div className="flex items-baseline justify-center flex-1 gap-1 py-1">
+          <div className="flex h-full items-center justify-between gap-4">
+            <div className="h-full flex-1 overflow-hidden rounded bg-gradient-to-b from-brand/40 to-transparent">
+              <div className="flex h-full flex-col rounded">
+                <div className="flex flex-1 items-baseline justify-center gap-1 py-1">
                   <span className="text-lg font-bold">{processingAmount}</span>
                   <span className="pt-2 text-sm font-medium text-brand">
                     亿元
                   </span>
                 </div>
-                <div className="py-1 text-center line-clamp-1 bg-gray-500/50 text-xxs">
+                <div className="line-clamp-1 bg-gray-500/50 py-1 text-center text-xxs">
                   跟进中的金额(亿元)
                 </div>
               </div>
             </div>
 
-            <div className="flex-1 h-full overflow-hidden rounded bg-gradient-to-b from-brand/40 to-transparent">
-              <div className="flex flex-col h-full rounded">
-                <div className="flex items-baseline justify-center flex-1 gap-1 py-1">
+            <div className="h-full flex-1 overflow-hidden rounded bg-gradient-to-b from-brand/40 to-transparent">
+              <div className="flex h-full flex-col rounded">
+                <div className="flex flex-1 items-baseline justify-center gap-1 py-1">
                   <span className="text-lg font-bold">{tenderCount}</span>
                   <span className="pt-2 text-sm font-medium text-brand">
                     个项目
                   </span>
                 </div>
-                <div className="py-1 text-center line-clamp-1 bg-gray-500/50 text-xxs">
+                <div className="line-clamp-1 bg-gray-500/50 py-1 text-center text-xxs">
                   总体情况
                 </div>
               </div>

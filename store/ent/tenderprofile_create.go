@@ -1065,6 +1065,10 @@ func (tpc *TenderProfileCreate) defaults() {
 		v := tenderprofile.DefaultPrepareToBid
 		tpc.mutation.SetPrepareToBid(v)
 	}
+	if _, ok := tpc.mutation.GeoCoordinate(); !ok {
+		v := tenderprofile.DefaultGeoCoordinate
+		tpc.mutation.SetGeoCoordinate(v)
+	}
 	if _, ok := tpc.mutation.KeyProject(); !ok {
 		v := tenderprofile.DefaultKeyProject
 		tpc.mutation.SetKeyProject(v)

@@ -79,7 +79,7 @@ func (TenderProfile) Fields() []ent.Field {
 		field.Time("estimated_project_start_date").Optional().Nillable(),
 		field.Time("estimated_project_end_date").Optional().Nillable(),
 		field.Strings("attachments").Optional(),
-		field.Floats("geo_coordinate").Optional(),
+		field.Floats("geo_coordinate").Optional().Default([]float64{}),
 		field.JSON("geo_bounds", [][]float64{}).
 			Optional().
 			Annotations(

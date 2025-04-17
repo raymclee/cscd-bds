@@ -53,7 +53,7 @@ GET https://830bi.3311csci.com/webroot/decision#?activeTab=eaa5d867-374d-4de6-95
 
 
 ###
-GET https://restapi.amap.com/v3/geocode/geo?key={{key}}&address=香港特别行政区东区新艺工业大厦
+GET https://restapi.amap.com/v3/geocode/geo?key={{key}}&address=鴨脷洲大街17-23號，平瀾街7-9號及新市街37至39號
 
 
 ###

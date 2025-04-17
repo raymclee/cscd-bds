@@ -718,6 +718,10 @@ func init() {
 	tenderprofileDescPrepareToBid := tenderprofileFields[23].Descriptor()
 	// tenderprofile.DefaultPrepareToBid holds the default value on creation for the prepare_to_bid field.
 	tenderprofile.DefaultPrepareToBid = tenderprofileDescPrepareToBid.Default.(bool)
+	// tenderprofileDescGeoCoordinate is the schema descriptor for geo_coordinate field.
+	tenderprofileDescGeoCoordinate := tenderprofileFields[30].Descriptor()
+	// tenderprofile.DefaultGeoCoordinate holds the default value on creation for the geo_coordinate field.
+	tenderprofile.DefaultGeoCoordinate = tenderprofileDescGeoCoordinate.Default.([]float64)
 	// tenderprofileDescKeyProject is the schema descriptor for key_project field.
 	tenderprofileDescKeyProject := tenderprofileFields[47].Descriptor()
 	// tenderprofile.DefaultKeyProject holds the default value on creation for the key_project field.
